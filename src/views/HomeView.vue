@@ -1,12 +1,10 @@
 <template>
-    <div>
-        <cardProjetos :name="um"></cardProjetos>
-    </div>
+    <Input></Input>
 </template>
 
 <script setup>
 import {ref} from 'vue'
-import cardProjetos from '/src/components/cardProjetos.vue'
+import Input from '../components/Input.vue';
 
 let um=ref('um')
 
