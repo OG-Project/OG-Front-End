@@ -2,6 +2,8 @@
 
 import { Tarefa } from '../models/Tarefa.js';
 import {ref} from 'vue';
+import tinycolor from "tinycolor2";
+
 
 
 const isHovered = ref(false);
@@ -13,21 +15,32 @@ const props = defineProps({
     preset:String
 })
 let tarefa
-let teste
+let kanban
 let hoverCard
+let tira
+
 
 tarefa = {
     backgroundColor: props.tarefa.cor,
     width: "6%",
     height: "100%"
 }
-teste = {
+tira = {
+    width: props.largura,
+    height: props.altura,
+    backgroundColor:props.tarefa.cor,
+    color: verificaCorTexto(props.tarefa),
+    display:"flex",
+    alignItems:"center",
+    padding:"1.5vh",
+    fontSize:"16px"
+}
+kanban = {
     width: props.largura,
     height: props.altura,
     backgroundColor: "#D9D9D9",
     marginBottom: "30px",
     display: "flex",  
-    marginLeft:"100px",
 }
 
 hoverCard = {
@@ -46,12 +59,20 @@ function hover() {
 function unhover() {
   isHovered.value = false;
 }
+function verificaCorTexto(tarefa){
+    if(tinycolor(tarefa.cor).isDark()){
+    return "white"
+}else{
+    return "black"
+}
+}
 
 
 </script>
 
 <template>
-    <div :style="isHovered ? hoverCard : teste " 
+    <!-- Preset 1 Kanban -->
+    <div :style="isHovered ? hoverCard : kanban " 
         @mouseover="hover"
         @mouseout="unhover"
         v-if="preset==1">
@@ -79,9 +100,18 @@ function unhover() {
                 </div>
 
     </div>
-    <div >
-
+    <!-- Preset 2 Tira -->
+    <div :style="tira" v-if="preset==2">
+        <div v-for="propriedade of props.tarefa.propriedades" class="flex column gap-2">
+            <div v-if="propriedade.id==1">
+                <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg" >
+                <path d="M11.5 7H17L11.5 1.5V7ZM2.5 0H12.5L18.5 6V16C18.5 16.5304 18.2893 17.0391 17.9142 17.4142C17.5391 17.7893 17.0304 18 16.5 18H2.5C1.96957 18 1.46086 17.7893 1.08579 17.4142C0.710714 17.0391 0.5 16.5304 0.5 16V2C0.5 0.89 1.39 0 2.5 0ZM2.5 2V16H16.5V9H9.5V2H2.5Z" fill="white"/>
+                </svg>
+            </div>
+            <p v-if="propriedade.id==1">{{ propriedade.nome }}</p>
+        </div>
     </div>
+
 </template>
 
 <style >

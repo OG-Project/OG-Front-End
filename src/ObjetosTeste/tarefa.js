@@ -1,4 +1,4 @@
-import {nomeTarefa,propriedade2} from './propriedade.js'
+import {dataFinal, nomeTarefa,propriedade2} from './propriedade.js'
 
 export const tarefa={
     id:1,
@@ -7,6 +7,7 @@ export const tarefa={
     cor:"blue",
     propriedades:[
         nomeTarefa,
-        propriedade2
+        propriedade2,
+        dataFinal
     ]
 }

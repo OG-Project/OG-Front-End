@@ -1,13 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import cardTarefas from './components/cardTarefas.vue'
-import {tarefa} from './ObjetosTeste/tarefa.js'
+import calendario from './components/calendario.vue';
+
 
 </script>
 
 <template>
   <RouterView />
-  <cardTarefas :tarefa=tarefa altura="10vh" largura="20vw" preset="2"></cardTarefas>
+  <calendario></calendario>
 </template>
 
 <style scoped>
