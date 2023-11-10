@@ -43,7 +43,6 @@
 
                             <div>{{final}}</div></div>
                     </div>
-
     </div>
 </template>
 
@@ -80,7 +79,6 @@ const props=defineProps({
     }
     
 })
-
 
 const grafico={
     display: "flex",
