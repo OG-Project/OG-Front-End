@@ -1,6 +1,13 @@
 <template>
     <div>
-        <cardProjetos :name="um" :reponsavel="dois" :descricao="tres" :tipo="quatro" />
+        <cardProjetos
+         :name="name" 
+         :reponsavel="reponsavel" 
+         :descricao="descricao" 
+         :tipo="tipo" 
+         :feito="feito"
+         :comeco="comeco"
+         :final="final" />
     </div>
 </template>
 
@@ -8,11 +15,13 @@
 import {ref} from 'vue'
 import cardProjetos from '/src/components/cardProjetos.vue'
 
-let um=ref('Juninho')
-let dois=ref('Juninho')
-let tres=ref('Juninho vai lavar na tentativa de ser limpo porque eu não sei esse negocios é diferente de mais da ligado e por aií vai e vamo tentando colocar muito texto até agora hoje tenho tentativas')
-let quatro=ref('Juninho')
-
+let name=ref('Juninho Titulo lindo de mais para caber aqui reponsavel ')
+let reponsavel=ref('Juninho Dobkoski queiroz cunha de alcantara')
+let descricao=ref('Juninho vai lavar na tentativa de ser limpo porque eu não sei esses negocios é diferente de mais da ligado e por aí vai e vamo tentando colocar muito texto até agora hoje dois tres')
+let tipo=ref('Juninho Tipo de gente linda cheirosa e gostosa :)')
+let feito=ref(100)
+let comeco=ref('12/23/2045')
+let final=ref('12/23/2045')
 </script>
 
 <style scoped>
