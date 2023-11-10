@@ -7,7 +7,7 @@ import {tarefa} from './ObjetosTeste/tarefa.js'
 
 <template>
   <RouterView />
-  <cardTarefas :tarefa=tarefa></cardTarefas>
+  <cardTarefas :tarefa=tarefa altura="10vh" largura="20vw" preset="2"></cardTarefas>
 </template>
 
 <style scoped>

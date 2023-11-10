@@ -4,7 +4,7 @@ export const tarefa={
     id:1,
     usuario:null,
     tipo:null,
-    cor:"red",
+    cor:"blue",
     propriedades:[
         nomeTarefa,
         propriedade2
