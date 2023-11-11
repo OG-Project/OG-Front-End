@@ -9,6 +9,6 @@ export const propriedade2={
 }
 export const dataFinal = {
     id:3,
-    nome:"30-12-2023",
+    nome:"15-11-2023",
     tipo:"data"
 }

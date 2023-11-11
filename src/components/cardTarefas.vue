@@ -33,7 +33,7 @@ tira = {
     display:"flex",
     alignItems:"center",
     padding:"1.5vh",
-    fontSize:"16px"
+    fontSize:"12px"
 }
 kanban = {
     width: props.largura,
