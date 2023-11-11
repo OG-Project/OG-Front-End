@@ -3,6 +3,6 @@ import { Propiedade } from "./Propriedade"
 
  export const Projeto={
     id: Number,
-    tarefas : Tarefa ,
+    tarefas : {} ,
     propiedades : Propiedade
 }

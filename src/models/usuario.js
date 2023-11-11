@@ -1,4 +1,5 @@
-import { Equipe } from "./Equipe"
+import { Equipe } from "./Equipe";
+
  export const Usuario={
     id: Number,
     nome: String,
@@ -7,15 +8,5 @@ import { Equipe } from "./Equipe"
     dataNascimento: Date,
     email: String,
     senha:String,
-    equipeAtual: Equipe
+    equipeAtual: {}
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,4 @@
 <template>
-    <Input></Input>
 </template>
 
 <script setup>

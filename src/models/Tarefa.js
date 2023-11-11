@@ -1,9 +1,10 @@
- import { Usuario } from "./usuario"
+import { Usuario } from "./usuario"
  import { Propiedade } from "./Propriedade"
+ import { Status } from "./Status"
  export const Tarefa={
     id : Number,
-    usuario : Usuario,
-    tipo : Status,
-    propriedades : Propiedade 
+    usuario : {},
+    tipo : {}= Status,
+    propriedades : {}= Propiedade 
 
 }
