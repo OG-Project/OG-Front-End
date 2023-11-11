@@ -1,7 +1,4 @@
 <template>
-    <div>
-        <cardProjetos :name="um"></cardProjetos>
-    </div>
     <CheckBox tipo="checkbox"></CheckBox>
     <CheckBox tipo="toggle"></CheckBox>
 </template>
