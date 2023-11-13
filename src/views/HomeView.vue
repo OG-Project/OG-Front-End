@@ -1,12 +1,12 @@
 <template>
     <div>
-        <cardProjetos :name="um"></cardProjetos>
+        <datePick ></datePick>
     </div>
 </template>
 
 <script setup>
 import {ref} from 'vue'
-import cardProjetos from '/src/components/cardProjetos.vue'
+import datePick from '/src/components/datePick.vue'
 
 let um=ref('um')
 
