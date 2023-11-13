@@ -1,39 +1,18 @@
 <template>
     <div class="flex flex-col w-[full] h-[100%] items-center justify-end">
         <div class="flex flex-row">
-            <button v-on:click="setaEsquerdaMes()">&lt</button>
-
-            <button v-on:click="setaDireitaMes(data)">></button>
+            <Calendar v-model="mes"  view="month"/>
 
             <button v-on:click="abrePopUp()" class="text-[50px]"> {{ format(data, "MMMM", { locale: ptBR }).charAt(0).toUpperCase() +
                 format(data, "MMMM", { locale: ptBR }).slice(1) }}</button>
-            <div  class="h-[100px] w-[100px] bg-red-500 absolute">
-                <button v-on:click="fechaPopUp()">X</button>
-            </div>
-
-            <select v-on:change="getCalendario()" v-model="data">
-                <option :value="setMonth(data, 0)">Janeiro</option>
-                <option :value="setMonth(data, 1)">Fevereiro</option>
-                <option :value="setMonth(data, 2)">Março</option>
-                <option :value="setMonth(data, 3)">Abril</option>
-                <option :value="setMonth(data, 4)">Maio</option>
-                <option :value="setMonth(data, 5)">Junho</option>
-                <option :value="setMonth(data, 6)">Julho</option>
-                <option :value="setMonth(data, 7)">Agosto</option>
-                <option :value="setMonth(data, 8)">Setembro</option>
-                <option :value="setMonth(data, 9)">Outubro</option>
-                <option :value="setMonth(data, 10)">Novembro</option>
-                <option :value="setMonth(data, 11)">Dezembro</option>
-            </select>
-
+            
             <h1 class="text-[50px]">{{ getYear(data) }}</h1>
         </div>
         <div class="h-full flex ">
             <div class="calendario">
                 <div v-for="dia of calendario" class="dia">
                     <h1 v-if="getMonth(dia) == getMonth(data)" class="m-[10px]">{{ format(dia, 'd') }}</h1>
-                    <h1 v-if="getMonth(dia) != getMonth(data)" class="m-[10px] text-[#9C9494]">{{ format(dia,
-                        'd') }}
+                    <h1 v-if="getMonth(dia) != getMonth(data)" class="m-[10px] text-[#9C9494]">{{ format(dia,'d') }}
                     </h1>
                     <div v-for="tarefa of tarefas" v-if="tarefas.length < 3" class="h-[25%]">
                         <div v-for="propriedade of tarefa.propriedades">
@@ -57,22 +36,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,watch } from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { tarefas } from '../ObjetosTeste/tarefa.js'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear } from 'date-fns';
+import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 
 let data = Date.now()
-let popUp = false
+let mes = ref()
 let calendario = ref();
-getCalendario()
-
+watch(mes, (novoMes) => {
+      getCalendario(novoMes);
+    });
 
 // Muda de acordo com o mes
-function getCalendario() {
-    console.log(data)
+function getCalendario(novoMes) {
+       
+    data = setMonth(data,getMonth(novoMes))
+    data = setYear(data, getYear(novoMes))
     const d = new Date(data)
     const primeiroDiaDoMes = startOfMonth(new Date(d));
     const ultimoDiaDoMes = endOfMonth(new Date(d));
@@ -88,6 +70,7 @@ function getCalendario() {
         lista2.push(addDays(ultimoDiaDoMes, i))
     }
     calendario.value = [...lista, ...todosOsDiasDoMes, ...lista2]
+
 }
 
 function setaEsquerdaMes() {
@@ -99,15 +82,6 @@ function setaEsquerdaMes() {
 function setaDireitaMes() {
     data = setMonth(data, getMonth(data) + 1)
     getCalendario()
-}
-function abrePopUp() {
-    
-    popUp = true
-    console.log(popUp)
-
-}
-function fechaPopUp() {
-    popUp = false
 }
 
 </script>
