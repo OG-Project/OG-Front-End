@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mojs/core": "^1.7.1",
     "pinia": "^2.1.7",
     "primevue": "^3.40.1",
     "tailwind": "^4.0.0",
