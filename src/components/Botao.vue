@@ -533,7 +533,6 @@ let Funcao = props.funcaoClick;
 
 function click() {
   Funcao();
-
   isClick.value = true;
   // Define um atraso de 2 segundos (2000 milissegundos) para reverter isClick
   setTimeout(() => {
