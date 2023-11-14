@@ -1,18 +1,31 @@
+
+<!--
+    EXEMPLOS - WIDTH E HEIGTh VOCÊ DECIDE
+    <Input styleInput="input-claro" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="23" height="5" direcao="direita"></Input>
+<br>
+<Input styleInput="input-escuro" icon="../src/imagem-vetores/icon-lapis.svg" width="23" height="5"></Input>
+<br>
+<Input styleInput="input-claro" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="23" height="5"></Input>
+<br>
+<Input styleInput="input-transparente-escuro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="23" height="10"></Input>
+<br>
+<Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="38" height="10"></Input> -->
+
 <template>
     
    <div class="styleInputPadrao" 
-        v-if="icon!='null'"  :style="estilizaDivInput">
+        v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
         <img :src=icon :style="tamanhoIcon">
         <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
    </div>
-   <div class=" bg-transparent
-        border-b-roxo
-        border-b-2 border-transparent 
-        max-w-max grid grid-row-2  justify-around 
-        items-center focus-within:border-roxo 
-        focus-within:rounded-sm focus-within:border-2" 
+   <div class="styleInputPadrao" 
         v-if="icon=='null'">
         <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+   </div>
+   <div class="styleInputPadraoDireita" 
+        v-if="direcao=='direita'" :style="estilizaDivInput">
+        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+        <img :src=icon :style="tamanhoIcon">
    </div>
 </template>
 
@@ -33,12 +46,12 @@ import {Equipe} from '../models/Equipe'
         },
         width:Number,
         height:Number,
-        desabilitado:ref(false)  
+        desabilitado:ref(false),
+        direcao:String  
       })
     
     onMounted(()=>{
            console.log(Usuario.equipeAtual=Equipe);
-           
         }
         
     )
@@ -53,7 +66,7 @@ import {Equipe} from '../models/Equipe'
         height: props.height+"vh",
         backgroundColor:"inherit",
         color: verificaCor(),
-        fontSize: verificaTamanho()
+        fontSize: verificaTamanho(),
     }
 
     const estilizaDivInput={
@@ -63,27 +76,28 @@ import {Equipe} from '../models/Equipe'
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-grande-escuro" || 
-        props.styleInput=="input-escuro-grande" || props.styleInput=="input-grande-escuro-grande"){
+        props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande"){
             return "#484848"
         }else if(props.styleInput=="input-claro" || props.styleInput=="input-grande-claro" || 
-        props.styleInput=="input-claro-grande" || props.styleInput=="input-grande-claro-grande"){
+        props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande"){
             return "#D7D7D7"
         }
     }
 
     function verificaTamanho(){
         //Aumenta o tamanho da font size de acordo 
-        if(props.styleInput=="input-escuro-grande" || props.styleInput=="input-grande-escuro-grande" 
-        || props.styleInput=="input-claro-grande" || props.styleInput=="input-grande-claro-grande"){
+        if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
+        || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
+        props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande"){
             return "30px"
-        }
+        }   
     }
 
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-transparente-escuro"){
             return"white"
-        }else if(props.styleInput=="input-transparente-claro" || props.styleInput=="input-transparente-claro"){
+        }else if(props.styleInput="input-transparente-claro"){
             return 'black';
         }
     }
@@ -101,6 +115,18 @@ import {Equipe} from '../models/Equipe'
         focus-within:rounded-sm focus-within:border-2;
         display: grid;
         grid-template-columns: 20% 80%;
+        
+    }
+
+    .styleInputPadraoDireita{
+        @apply bg-transparent
+        border-b-roxo
+        border-b-2 border-transparent 
+        max-w-max 
+        items-center focus-within:border-roxo 
+        focus-within:rounded-sm focus-within:border-2;
+        display: grid;
+        grid-template-columns: 80% 20%;
     }
     .inputStyle{
         @apply focus-visible:outline-0;
