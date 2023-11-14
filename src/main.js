@@ -12,7 +12,6 @@ import TabMenu from 'primevue/tabmenu';
 import Calendar from 'primevue/calendar';
 import "primevue/resources/themes/lara-light-purple/theme.css";
 
-
 const app = createApp(App)
 
 app.use(createPinia())
