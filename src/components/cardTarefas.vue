@@ -49,7 +49,6 @@ hoverCard = {
     backgroundColor: "#D9D9D9",
     marginBottom: "30px",
     display: "flex",  
-    marginLeft:"100px",
     border: "2px solid purple"
 }
 function hover() {

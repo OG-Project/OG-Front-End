@@ -529,11 +529,9 @@ function unhover() {
   isHovered.value = false;
 }
 
-let Funcao = props.funcaoClick;
-
 function click() {
-  Funcao();
-
+  props.funcaoClick();
+  console.log('aaa')
   isClick.value = true;
   // Define um atraso de 2 segundos (2000 milissegundos) para reverter isClick
   setTimeout(() => {
