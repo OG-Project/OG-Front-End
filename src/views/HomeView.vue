@@ -1,17 +1,17 @@
 <template>
-    <CheckBox tipo="checkbox"></CheckBox>
-    <CheckBox tipo="toggle"></CheckBox>
+        <Botao preset="Deletar"></Botao>
 </template>
 
 <script setup>
 import {ref} from 'vue'
 import cardProjetos from '/src/components/cardProjetos.vue'
 import CheckBox from '../components/checkBox.vue';
-
+import Tabelas from '../components/Tabelas.vue';
+import Botao from '../components/Botao.vue';
 let um=ref('um')
-
 </script>
-
+    
 <style scoped>
 @import url(../assets/main.css);
+
 </style>

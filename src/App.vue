@@ -1,10 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Tabelas from './components/Tabelas.vue';
 </script>
 
 <template>
-
-  <RouterView />
+  <RouterView/>
 </template>
 
 <style scoped>
