@@ -29,7 +29,7 @@
                         <div class="barraCinzaGrafico">
                             
                             <div :style="grafico" class="barraRoxaGrafico">
-                                <div class='absolute right-[45%]'> {{feito}}% </div>
+                                <div class='absolute right-[44%]'> {{feito}}% </div>
                             </div>
                             
                         </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-
+import {ref,onMounted} from "vue"
 const props=defineProps({
     name:{
         type:String,
@@ -79,12 +79,20 @@ const props=defineProps({
     }
     
 })
+let alinhamento=ref(43)
+onMounted(() => {
+
+})
+
 
 const grafico={
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     width: props.feito+"%",
+}
+const alinha={
+    right: alinhamento.value+"%"
 }
 
 </script>
