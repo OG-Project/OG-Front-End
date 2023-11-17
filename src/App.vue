@@ -13,9 +13,6 @@ import { tarefas } from './ObjetosTeste/tarefa.js'
   <div class="flex items-center justify-center w-screen h-screen">
     <calendario></calendario>
   </div>
-  <div v-for="tarefa of tarefas">
-    <cardTarefas preset="1" altura="78px" largura="300px" tarefa="tarefa"></cardTarefas>
-  </div>
 </template>
 
 <style scoped></style>

@@ -1,4 +1,4 @@
-import {dataFinal, nomeTarefa,propriedade2,dataFinal2} from './propriedade.js'
+import {dataFinal, nomeTarefa,propriedade2,dataFinal2,dataFinal3,dataFinal4} from './propriedade.js'
 
 export const tarefas= [
     {
@@ -31,7 +31,9 @@ export const tarefas= [
         propriedades:[
             nomeTarefa,
             propriedade2,
-            dataFinal
+            dataFinal,
+            dataFinal3,
+            dataFinal4
         ]
     },
     {
