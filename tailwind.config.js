@@ -19,6 +19,10 @@ export default {
         'cinza-escuro': '#484848',
         'cinza-claro': '#D7D7D7'
       },
+
+      width:{
+        
+      },
     },
   },
   plugins: [],

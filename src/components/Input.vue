@@ -19,7 +19,7 @@
         <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
    </div>
    <div class="styleInputPadrao" 
-        v-if="icon=='null'">
+        v-if="icon=='null'"  :style="estilizaDivInput">
         <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
    </div>
    <div class="styleInputPadraoDireita" 
@@ -64,6 +64,7 @@ import {Equipe} from '../models/Equipe'
     const estilizaInput={
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebido
         height: props.height+"vh",
+        width:  props.width+"vh",
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanho(),
@@ -71,6 +72,7 @@ import {Equipe} from '../models/Equipe'
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
+    
     }
 
     function verificaCorBack(){
@@ -95,7 +97,7 @@ import {Equipe} from '../models/Equipe'
 
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
-        if(props.styleInput=="input-escuro" || props.styleInput=="input-transparente-escuro"){
+        if(props.styleInput=="input-escuro" || props.styleInput=="input-transparente-escuro" || props.styleInput=="input-transparente-escuro-grande" ){
             return"white"
         }else if(props.styleInput="input-transparente-claro"){
             return 'black';
