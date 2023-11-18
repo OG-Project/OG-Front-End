@@ -90,28 +90,26 @@
                 </div>
             </div>
         </div>
-        <div class="h-[85%] w-[18.6%] flex flex-col justify-start">
+        <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
             <div class="calendario">
-                <div v-for="dia of calendario" class="dia">
-                    <h1 v-if="getMonth(dia) == getMonth(data)" class="m-[10px]">{{ format(dia, 'd') }}</h1>
-                    <h1 v-else="getMonth(dia) != getMonth(data)" class="m-[10px] text-[#9C9494]">{{ format(dia, 'd') }}
+                <div v-for="dia of calendario" class="dia" @dragover="retornaDia(dia.dia)" @mouseenter="hover(dia)"
+                    @mouseleave="getCalendario()">
+                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[10px]">{{ format(dia.dia, 'd') }}</h1>
+                    <h1 v-else="getMonth(dia.dia) != getMonth(data)" class="m-[10px] text-[#9C9494]">{{ format(dia.dia, 'd')
+                    }}
                     </h1>
-                    <div class="tarefasDoDia">
-                        <div v-for="tarefa of tarefas" v-if="tarefas.length < 3">
-                            <div v-for="propriedade of tarefa.propriedades" >
-                                <div v-if="propriedade.nome == format(dia, 'dd-MM-yyyy')">
-                                    <cardTarefas :tarefa=tarefa altura="27px" largura="133px" preset="2" ></cardTarefas>
-                                </div>
-                            </div>
-                        </div>
-                        <div v-for="tarefa of tarefas" >
-                            <div v-for="propriedade of tarefa.propriedades" >
-                                <div v-if="propriedade.nome == format(dia, 'dd-MM-yyyy') && tarefas.length >= 3" class="pb-[4%]">
-                                    <cardTarefas :tarefa=tarefa altura="27px" largura="133px" preset="2" ></cardTarefas>
+                    <div :style="dia.style">
+                        <div v-for="tarefa of tarefas">
+                            <div v-for="propriedade of tarefa.propriedades">
+                                <div v-if="propriedade.nome == format(dia.dia, 'dd-MM-yyyy')"
+                                    v-bind="adicionaNaLista(tarefa, dia), verificaTarefasDoDia(dia)" class="pb-[4%] w-max"
+                                    draggable="true" @dragend="trocaDia(propriedade, diaNovo)">
+                                    <cardTarefas :tarefa=tarefa altura="27px" largura="133px" preset="2"></cardTarefas>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div v-if="dia.temTres == true" class="w-[40%] h-[4%] bg-gray-400 flex justify-center"></div>
                 </div>
             </div>
         </div>
@@ -122,13 +120,12 @@
 import { ref } from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { tarefas } from '../ObjetosTeste/tarefa.js'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth } from 'date-fns';
-import { da, ptBR } from 'date-fns/locale';
-
+import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 
 let data = Date.now()
-let mes = ref()
+let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 getCalendario();
@@ -136,6 +133,7 @@ getCalendario();
 
 // Muda de acordo com o mes
 function getCalendario() {
+    let listaDeDias = [];
     const d = new Date(data)
     const primeiroDiaDoMes = startOfMonth(new Date(d));
     const ultimoDiaDoMes = endOfMonth(new Date(d));
@@ -156,9 +154,51 @@ function getCalendario() {
         }
     }
     calendario.value = [...lista, ...todosOsDiasDoMes, ...lista2]
+    calendario.value.forEach(dia => {
+        dia.listaDeTarefas = 0
+        let dia1 = {
+            dia,
+            listaDeTarefas: [],
+            temTres: false,
+            style: dia.style = {
+                height: "45%",
+                display: "flex",
+                overflow: "hidden",
+                flexDirection: "column",
+                gap: "2%",
+            }
+        }
+        listaDeDias.push(dia1)
+    });
+    calendario.value = listaDeDias;
+
 
 
 }
+function hover(dia) {
+    if (dia != null) {
+        if (dia.temTres) {
+            dia.style = {
+                height: "30%",
+                width:"11.6%",
+                display: "flex",
+                overflow: "hidden",
+                flexDirection: "column",
+                gap: "2%",
+                paddingBottom:"2px",
+                backgroundColor:"lightgray",
+                position:"absolute",
+                borderBottomLeftRadius: "10%",
+                borderBottomRightRadius: "10%",
+                boxShadow:"0px 2px  rgb(189, 189, 189)"
+
+            }
+            console.log(dia.style)
+        } 
+
+    }
+}
+
 
 function setaEsquerda() {
     data = setYear(data, getYear(data) - 1)
@@ -184,6 +224,30 @@ function escolheMes(numero) {
     fechaPopUp()
     getCalendario()
 }
+function trocaDia(propriedade, dia) {
+    propriedade.nome = format(dia, "dd-MM-yyyy")
+    getCalendario()
+
+}
+function retornaDia(dia) {
+    diaNovo = dia;
+}
+function verificaTarefasDoDia(dia) {
+    if (dia.listaDeTarefas.length >= 3) {
+        dia.temTres = true
+    } else if (dia.listaDeTarefas.length < 3) {
+        dia.temTres = false
+    }
+}
+function adicionaNaLista(tarefa, dia) {
+    if (dia.listaDeTarefas.includes(tarefa)) {
+    } else {
+        dia.listaDeTarefas.push(tarefa)
+    }
+}
+
+
+
 
 </script>
 
@@ -226,6 +290,7 @@ function escolheMes(numero) {
         border-radius: 10%;
         font-weight: 700;
         font-size: 20px;
+        box-shadow:0px 2px 5px rgb(138, 138, 138);
     }
 
     .calendario {
@@ -237,15 +302,6 @@ function escolheMes(numero) {
         justify-content: center;
         align-items: start;
         gap: 5%;
-    }
-
-
-    .tarefasDoDia {
-        height: 45%;
-        display: flex;
-        overflow: hidden;
-        flex-direction: column;
-        gap: 2%;
     }
 
     ::-webkit-scrollbar {
