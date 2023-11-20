@@ -13,7 +13,7 @@
 
 <template>
     
-   <div class="styleInputPadrao" 
+   <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
         <img :src=icon :style="tamanhoIcon">
         <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
@@ -57,14 +57,14 @@ import {Equipe} from '../models/Equipe'
     )
     const tamanhoIcon={
         //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
-        width:(props.width/2)+"vw",
-        height: (props.height/2)+"vh",
+        width:(props.width/1.30)+"%",
+        height: (props.height/1.30)+"%",
     }
 
     const estilizaInput={
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebido
-        height: props.height+"vh",
-        width:  props.width+"vh",
+        height: props.height+"%",
+        width:  props.width+"%", 
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanho(),
@@ -79,6 +79,7 @@ import {Equipe} from '../models/Equipe'
          // só muda a cor de fundo da div do input de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-grande-escuro" || 
         props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande"){
+            console.log(props.width)
             return "#484848"
         }else if(props.styleInput=="input-claro" || props.styleInput=="input-grande-claro" || 
         props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande"){
@@ -91,7 +92,7 @@ import {Equipe} from '../models/Equipe'
         if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
         || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
         props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande"){
-            return "30px"
+            return "3vh"
         }   
     }
 
@@ -108,31 +109,40 @@ import {Equipe} from '../models/Equipe'
 <style>
 @import url(../assets/main.css);
 @layer components{
+    .styleInputPadraoIcon{
+       @apply bg-transparent
+        border-b-roxo
+        border-b-2 border-transparent 
+        items-center focus-within:border-roxo 
+        justify-between
+        focus-within:rounded-sm focus-within:border-2;
+        display: grid;
+        grid-template-columns: 20% 80%;
+    
+        
+    }
+
     .styleInputPadrao{
        @apply bg-transparent
         border-b-roxo
         border-b-2 border-transparent 
-        max-w-max 
         items-center focus-within:border-roxo 
-        focus-within:rounded-sm focus-within:border-2;
-        display: grid;
-        grid-template-columns: 20% 80%;
-        
+        justify-between
+        focus-within:rounded-sm focus-within:border-2; 
     }
 
     .styleInputPadraoDireita{
         @apply bg-transparent
         border-b-roxo
-        border-b-2 border-transparent 
-        max-w-max 
+        border-b-4 border-transparent 
         items-center focus-within:border-roxo 
-        focus-within:rounded-sm focus-within:border-2;
+        gap-1
+        focus-within:rounded-sm focus-within:border-4;
         display: grid;
         grid-template-columns: 80% 20%;
     }
     .inputStyle{
         @apply focus-visible:outline-0;
-
     }
 }
 </style>
