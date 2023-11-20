@@ -13,7 +13,7 @@
         </div>
         
         <div class='h-full flex flex-col justify-around items-center'>
-                <div class='text-3xl flex justify-start border-b-2 border-purple-400'>
+                <div class='w-14 text-3xl flex justify-start border-b-2 border-purple-400'>
                     Segurança
                 </div>
             <div class=' flex w-full justify-around items-center'>
@@ -32,7 +32,8 @@
                 <label>teste</label>
                 <Input />
             </div>
-            <Botao preset='PadraoRoxo' texto='Salvar Alterações' />
+            
+            <Botao tamanhoBotao='grande' preset='PadraoRoxo' texto='Salvar Alterações' />
         </div>
     </div>
 </template>
