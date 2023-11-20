@@ -1,5 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Tabelas from './components/Tabelas.vue';
+</script>
+
+<template>
+  <RouterView/>
 import Input from './components/Input.vue'
 
 import fundoPopUp from './components/fundoPopUp.vue';
@@ -20,7 +25,6 @@ const funcaoPopUp = useCounterStore();
   </button>
   </div>
   <Input width="100" height="80" styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" conteudoInput="Propriedade" direcao="direita"></Input>
-
 </template>
 
 <style scoped>
