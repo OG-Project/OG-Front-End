@@ -33,12 +33,13 @@ function executar(emit) {
   :final="final"
   :tipo="tipo"
   :feito="feito" /> -->
-<!--   
-  <RouterView /> -->
-  <button @click="mostrar=!mostrar" >mostrar</button>
+  
+  <RouterView></RouterView>
+
+  <!-- <button @click="mostrar=!mostrar" >mostrar</button>
   <transition name="slide-fade">
     <BarraLateral v-if="mostrar" @fechar="(n)=> console.log(n.value)" />
-  </transition>
+  </transition> -->
 </template>
 
 <style scoped>
