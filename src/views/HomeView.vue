@@ -1,5 +1,5 @@
 <template>
-        <Botao preset="Deletar"></Botao>
+        <Tabelas tipo="bar"></Tabelas>
 </template>
 
 <script setup>

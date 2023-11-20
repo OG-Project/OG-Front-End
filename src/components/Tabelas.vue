@@ -5,32 +5,53 @@ import { onMounted } from 'vue';
 const props = defineProps({
   tipo: {
     type: String,
+    default: 'line'
   },
+  x: {
+    type: [],
+    default: [
+    'Segunda-Feira',
+    'Terça-Feira',
+    'Quarta-Feira',
+    'Quinta-Feira',
+    'Sexta-Feira',
+    'Sábado',
+    'Domingo'
+  ]
+  },
+  listaDeObjetos: {
+    type: [],
+    default: [{
+      label: 'Tarefa 1',
+      backgroundColor: 'rgb(255, 99, 132)',
+      borderColor: 'rgb(255, 99, 132)',
+      data: [8, 0, 0, 0, 0, 0, 0],
+    },
+    {
+    label: 'Tarefa 2',
+      backgroundColor: 'rgb(99, 255, 132)',
+      borderColor: 'rgb(99, 255, 132)',
+      data: [8, 3, 4, 0,5, 7, 1],
+    }
+  ]
+  },
+  eixo:{
+    type: String,
+    default: 'x'
+  }
 });
 
-const labels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-  ];
+const labels = props.x;
 
   const data = {
     labels: labels,
-    datasets: [{
-      label: 'My First dataset',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45],
-    }]
+    datasets: props.listaDeObjetos
   };
 
   const config = {
-    type: 'line',
+    type: props.tipo,
     data: data,
-    options: {}
+    options: {indexAxis: props.eixo}
   };
 
   onMounted(() => {
