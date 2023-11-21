@@ -20,26 +20,28 @@
                         </button>
                     </div>
                     <div class="w-[36.5%] flex justify-end">
-                        <h1 class="text-[50px] ">{{ getYear(data) }}</h1>
+                        <h1 class="text-[2.5vw] ">{{ getYear(data) }}</h1>
                     </div>
                 </div>
 
-                <div v-if="abrePopup == true" class="absolute w-[18%] flex justify-center h-[280px] ml-[5%] bg-roxoEscuro"
+                <div v-if="abrePopup == true" class="absolute w-[20%] flex justify-center h-[300px] ml-[5%] bg-roxoEscuro"
                     @mouseleave="fecharPopUp()">
                     <div class="w-full flex justify-end absolute">
                         <button @click="fechaPopUp()"
-                            class="text-[40px] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
+                            class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
                     </div>
 
                     <div class="fundoPopup">
-                        <div class="w-[90%] flex flex-row justify-center items-center bg-brancoNeve mt-[5px]">
-                            <div class="w-full flex pl-8 justify-center">
-                                <button @click="setaEsquerda()">&lt</button>
+                        <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
+                            <div class="w-full h-full flex justify-center items-center gap-[1%]">
+                                <div class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                    <button @click="setaEsquerda()"><div class="setaEsquerda"></div></button>
+                                </div>
                                 <p>{{ getYear(data) }}</p>
-                                <button @click="setaDireita()">></button>
+                                <div class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                    <button @click="setaDireita()"><div  class="setaDireita"></div></button>
+                                </div>
                             </div>
-
-
                         </div>
                         <div class="popUp">
                             <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
@@ -94,8 +96,8 @@
             <div class="calendario">
                 <div v-for="dia of calendario" class="dia" @dragover="retornaDia(dia.dia)" @mouseenter="hover(dia)"
                     @mouseleave="getCalendario()">
-                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[10px]">{{ format(dia.dia, 'd') }}</h1>
-                    <h1 v-else="getMonth(dia.dia) != getMonth(data)" class="m-[10px] text-[#9C9494]">{{ format(dia.dia, 'd')
+                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(dia.dia, 'd') }}</h1>
+                    <h1 v-else="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(dia.dia, 'd')
                     }}
                     </h1>
                     <div :style="dia.style">
@@ -104,12 +106,14 @@
                                 <div v-if="propriedade.nome == format(dia.dia, 'dd-MM-yyyy')"
                                     v-bind="adicionaNaLista(tarefa, dia), verificaTarefasDoDia(dia)" class="pb-[4%] w-max"
                                     draggable="true" @dragend="trocaDia(propriedade, diaNovo)">
-                                    <cardTarefas :tarefa=tarefa altura="27px" largura="133px" preset="2"></cardTarefas>
+                                    <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div v-if="dia.temTres == true" class="w-[40%] h-[4%] bg-gray-400 flex justify-center"></div>
+                    <div class="w-full h-[20%] flex justify-center mt-[5%]">
+                        <div v-if="dia.temTres == true" class="w-[40%] h-[15%] bg-gray-400 flex items-end"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -179,22 +183,22 @@ function hover(dia) {
     if (dia != null) {
         if (dia.temTres) {
             dia.style = {
-                height: "30%",
-                width:"11.6%",
+                height: "max-content",
+                width: "11.6%",
                 display: "flex",
                 overflow: "hidden",
                 flexDirection: "column",
                 gap: "2%",
-                paddingBottom:"2px",
-                backgroundColor:"lightgray",
-                position:"absolute",
+                paddingBottom: "1%",
+                backgroundColor: "lightgray",
+                position: "absolute",
                 borderBottomLeftRadius: "10%",
                 borderBottomRightRadius: "10%",
-                boxShadow:"0px 2px  rgb(189, 189, 189)"
+                boxShadow: "0px 2px rgb(189, 189, 189)",
 
             }
             console.log(dia.style)
-        } 
+        }
 
     }
 }
@@ -267,10 +271,11 @@ function adicionaNaLista(tarefa, dia) {
         overflow-y: scroll;
         overflow-x: hidden;
         position: relative;
+
     }
 
     .popUp {
-        width: 290px;
+        width: 100%;
         height: 85%;
         background-color: #FBFBFB;
         display: flex;
@@ -279,9 +284,13 @@ function adicionaNaLista(tarefa, dia) {
     }
 
     .fundoPopup {
-        clip-path: polygon(25% 0, 74% 0, 100% 22%, 100% 100%, 0 100%, 0 22%);
+        width: 95%;
+        clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 100%, 0 100%, 0 25%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
-
 
     .dia {
         width: 100%;
@@ -289,8 +298,8 @@ function adicionaNaLista(tarefa, dia) {
         background-color: lightgray;
         border-radius: 10%;
         font-weight: 700;
-        font-size: 20px;
-        box-shadow:0px 2px 5px rgb(138, 138, 138);
+        font-size: 1vw;
+        box-shadow: 0px 3px 6px rgb(145, 145, 145);
     }
 
     .calendario {
@@ -302,6 +311,22 @@ function adicionaNaLista(tarefa, dia) {
         justify-content: center;
         align-items: start;
         gap: 5%;
+    }
+    .setaEsquerda{
+        width: 7px;
+        height: 7px;
+        border-left:2px solid black ;
+        border-bottom:2px solid black ;
+        border-radius: 10%;
+        transform: rotate(45deg);
+    }
+    .setaDireita{
+        width: 7px;
+        height: 7px;
+        border-right:2px solid black ;
+        border-top:2px solid black ;
+        border-radius: 10%;
+        transform: rotate(45deg);
     }
 
     ::-webkit-scrollbar {

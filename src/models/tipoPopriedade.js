@@ -3,6 +3,7 @@
     STRING: String,
     NUMBER: Number, 
     DATE: Date, 
+    STATUS:String,
     BLOB:Blob
  } 
  

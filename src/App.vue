@@ -1,6 +1,8 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import calendario from './components/calendario.vue';
+import kanbanDePropriedade from './components/KanbanDePropriedade.vue';
+
 import cardTarefas from './components/cardTarefas.vue'
 import { tarefas } from './ObjetosTeste/tarefa.js'
 
@@ -13,6 +15,11 @@ import { tarefas } from './ObjetosTeste/tarefa.js'
   <div class="flex items-center justify-center w-screen h-screen">
     <calendario></calendario>
   </div>
+  <div class="flex items-center justify-center w-screen h-screen">
+    <kanbanDePropriedade></kanbanDePropriedade>
+  </div>
+
+
 </template>
 
 <style scoped></style>

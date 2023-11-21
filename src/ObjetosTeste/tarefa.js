@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import {dataFinal, nomeTarefa,propriedade2,dataFinal2,dataFinal3,dataFinal4} from './propriedade.js'
+import {propriedades} from './propriedade.js'
 
 export const tarefas= ref(
     [
@@ -8,45 +8,29 @@ export const tarefas= ref(
             usuario:null,
             tipo:null,
             cor:"#A81212",
-            propriedades:[
-                nomeTarefa,
-                propriedade2,
-                dataFinal2
-            ]
+            propriedades:propriedades
         },
         {
             id:2,
             usuario:null,
             tipo:null,
             cor:"green",
-            propriedades:[
-                nomeTarefa,
-                propriedade2,
-                dataFinal4
-    
-            ]
+            propriedades:propriedades
         },
         {
             id:3,
             usuario:null,
             tipo:null,
             cor:"blue",
-            propriedades:[
-                nomeTarefa,
-                propriedade2,
-                dataFinal,
-            ]
+            propriedades:propriedades
         },
         {
             id:4,
             usuario:null,
             tipo:null,
             cor:"blue",
-            propriedades:[
-                nomeTarefa,
-                propriedade2,
-                dataFinal3
-            ]
-        }
+            propriedades:propriedades
+        },
+        
     ]
 )
