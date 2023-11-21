@@ -18,8 +18,7 @@ const funcaoPopUp = useCounterStore();
   <button @click="funcaoPopUp.abrePopUp()">
     teste
   </button>
-  </div>
-  <Input width="100" height="80" styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" conteudoInput="Propriedade" direcao="direita"></Input>
+</div>
 
 </template>
 

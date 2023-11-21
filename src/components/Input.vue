@@ -62,17 +62,17 @@ import {Equipe} from '../models/Equipe'
     }
 
     const estilizaInput={
-        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebido
-        height: props.height+"%",
-        width:  props.width+"%", 
+        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanho(),
+        width: semIcon(),
     }
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
-    
+        height: props.height+"%",
+        width:  props.width+"%", 
     }
 
     function verificaCorBack(){
@@ -104,6 +104,12 @@ import {Equipe} from '../models/Equipe'
             return 'black';
         }
     }
+    function semIcon(){
+        if(props.icon!=undefined){
+            return "100%";
+        }
+        return "80%";
+    }
 
 </script>
 <style>
@@ -112,32 +118,31 @@ import {Equipe} from '../models/Equipe'
     .styleInputPadraoIcon{
        @apply bg-transparent
         border-b-roxo
+        max-w-max
+        w-min
         border-b-2 border-transparent 
-        items-center focus-within:border-roxo 
-        justify-between
-        focus-within:rounded-sm focus-within:border-2;
+        items-center focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
         display: grid;
-        grid-template-columns: 20% 80%;
-    
-        
+        grid-template-columns: 20% 80%;  
     }
 
     .styleInputPadrao{
        @apply bg-transparent
         border-b-roxo
         border-b-2 border-transparent 
-        items-center focus-within:border-roxo 
-        justify-between
-        focus-within:rounded-sm focus-within:border-2; 
+        max-w-max
+        items-center  focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm; 
     }
 
     .styleInputPadraoDireita{
         @apply bg-transparent
         border-b-roxo
         border-b-4 border-transparent 
-        items-center focus-within:border-roxo 
-        gap-1
-        focus-within:rounded-sm focus-within:border-4;
+        max-w-max
+        items-center  focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
         display: grid;
         grid-template-columns: 80% 20%;
     }

@@ -1,22 +1,29 @@
 <template>
-    <select class="styleSelectPadrao" :style="estilizaDivSelect" >
-        <option v-for="opcao of listaSelect" >{{ opcao }}</option>
-    </select>
+    <div class="styleSelectPadrao " :style="estilizaDivSelect">
+        <select>
+            <option v-for="opcao of listaSelect" >{{ opcao }}</option>
+        </select>
+    </div>
 
 </template>
 
 <script setup>
     const props=defineProps({
         listaSelect:[],
-        styleSelect: String
+        styleSelect: String,
+        tamanho: String
     })
 
 
 
     const estilizaDivSelect={
         backgroundColor: verificaCorBack(),
-        color: verificaCorTexto()
-    }
+        color: verificaCorTexto(),
+        fontSize: props.tamanho+"vh",
+        width: "100%",
+        heigth: '100%'
+
+        }
 
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
@@ -47,10 +54,10 @@
     .styleSelectPadrao{
        @apply bg-transparent
         border-b-roxo
-        border-b-2 border-transparent 
+        border-b-4 border-transparent 
         max-w-max 
-        items-center focus-within:border-roxo 
-        focus-within:rounded-sm focus-within:border-2;
+        items-center focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
     }
 
     select{
