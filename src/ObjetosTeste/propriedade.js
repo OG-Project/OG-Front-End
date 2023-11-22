@@ -5,34 +5,28 @@ export const propriedades = ref(
 
         {
             id: 1,
-            nome: "lavar Junin",
-            tipo: "String"
+            nome: "Nome",
+            valor: "Lavar Junin",
+            tipo: "STRING"
         },
 
         {
             id: 2,
-            nome: "Concluído",
-            tipo: "Status"
+            nome: "Status",
+            valor: "Concluído",
+            tipo: "STATUS"
         },
         {
             id: 3,
-            nome: "10-11-2023",
-            tipo: "data"
+            nome: "Data de Entrega",
+            valor: "10-11-2023",
+            tipo: "DATE"
         },
         {
             id: 4,
-            nome: "01-12-2023",
-            tipo: "data"
+            nome: "Data de Termino",
+            valor: "01-12-2023",
+            tipo: "DATE"
         },
-        {
-            id: 5,
-            nome: "10-11-2023",
-            tipo: "data"
-        },
-        {
-            id: 6,
-            nome: "10-11-2023",
-            tipo: "data"
-        }
     ]
 );

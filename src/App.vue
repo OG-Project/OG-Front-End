@@ -13,10 +13,10 @@ import { tarefas } from './ObjetosTeste/tarefa.js'
 <template>
   <RouterView />
   <div class="flex items-center justify-center w-screen h-screen">
-    <calendario></calendario>
+    <kanbanDePropriedade></kanbanDePropriedade>
   </div>
   <div class="flex items-center justify-center w-screen h-screen">
-    <kanbanDePropriedade></kanbanDePropriedade>
+    <calendario></calendario>
   </div>
 
 

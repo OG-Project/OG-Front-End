@@ -5,6 +5,7 @@
     DATE: Date, 
     STATUS:String,
     BLOB:Blob
+    
  } 
  
  // Caso tiver mais arrumar

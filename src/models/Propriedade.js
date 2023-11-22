@@ -3,5 +3,6 @@
  export const Propiedade={
     id: Number,
     nome : String,
-    tipo : {}
+    valor : String,
+    tipo : TipoPropiedade
 }
