@@ -103,10 +103,10 @@
                     <div :style="dia.style">
                         <div v-for="tarefa of tarefas">
                             <div v-for="propriedade of tarefa.propriedades">
-                                <div v-if="propriedade.valor == format(dia.dia, 'dd-MM-yyyy')"
+                                <div v-if="propriedade.valor == format(dia.dia, 'dd/MM/yyyy')"
                                     v-bind="adicionaNaLista(tarefa, dia), verificaTarefasDoDia(dia)" class="pb-[4%] w-max"
                                     draggable="true" @dragend="trocaDia(propriedade, diaNovo)">
-                                    <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                                    <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2" ></cardTarefas>
                                 </div>
                             </div>
                         </div>

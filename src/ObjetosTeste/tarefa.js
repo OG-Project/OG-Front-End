@@ -1,36 +1,8 @@
 import { ref } from 'vue'
-import {propriedades} from './propriedade.js'
+import {propriedades,propriedades2} from './propriedade.js'
+import { conexaoBD } from '../stores/conexaoBD';
 
-export const tarefas= ref(
-    [
-        {
-            id:1,
-            usuario:null,
-            tipo:null,
-            cor:"#A81212",
-            propriedades:propriedades
-        },
-        {
-            id:2,
-            usuario:null,
-            tipo:null,
-            cor:"green",
-            propriedades:propriedades
-        },
-        {
-            id:3,
-            usuario:null,
-            tipo:null,
-            cor:"blue",
-            propriedades:propriedades
-        },
-        {
-            id:4,
-            usuario:null,
-            tipo:null,
-            cor:"blue",
-            propriedades:propriedades
-        },
-        
-    ]
-)
+const api = conexaoBD();
+console.log(api.procurar());
+
+export const tarefas= ref(api.procurar())

@@ -14,13 +14,12 @@ const props = defineProps({
     altura:String,
     preset:String
 })
-let tarefa
+let tarefa1
 let kanban
 let hoverCard
 let tira
 
-
-tarefa = {
+tarefa1 = {
     backgroundColor: props.tarefa.cor,
     width: "6%",
     height: "100%"
@@ -75,7 +74,7 @@ function verificaCorTexto(tarefa){
         @mouseover="hover"
         @mouseout="unhover"
         v-if="preset==1">
-        <div :style="tarefa" > </div>
+        <div :style="tarefa1" > </div>
         <div class="w-[30%] ml-[5%] flex pt-[5%]" v-for="propriedade of props.tarefa.propriedades">
             <p v-if="propriedade.id == '1'" class="truncate text-[2vh]">{{ propriedade.nome }}</p>
         </div>

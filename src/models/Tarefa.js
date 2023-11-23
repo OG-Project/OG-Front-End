@@ -4,6 +4,7 @@
     id : Number,
     usuario : {},
     tipo : {},
+    cor:String,
     propriedades : {} 
 
 }
