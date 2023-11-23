@@ -1,17 +1,27 @@
 <template>
     <div class="styleSelectPadrao " :style="estilizaDivSelect">
-        <select>
-            <option v-for="opcao of listaSelect" >{{ opcao }}</option>
+        <select :style="estilizaSelect" @input="$emit('update:modelValue', $event.target.value)">
+            <option v-for="opcao of listaSelect" class="flex items-center justify-center" :value="opcaoSelecionada">{{ opcao }}</option>
         </select>
     </div>
 
 </template>
 
 <script setup>
+defineEmits(['update:modelValue'])
     const props=defineProps({
         listaSelect:[],
         styleSelect: String,
-        tamanho: String
+        fonteTamanho: String,
+        largura:{
+            type: String,
+            default: "100%"
+        },
+        altura:{
+            type: String,
+            default: "100%"
+        },
+        opcaoSelecionada:String
     })
 
 
@@ -19,11 +29,18 @@
     const estilizaDivSelect={
         backgroundColor: verificaCorBack(),
         color: verificaCorTexto(),
-        fontSize: props.tamanho+"vh",
-        width: "100%",
-        heigth: '100%'
-
+        fontSize: props.fonteTamanho+"vh",
         }
+
+    const estilizaSelect={
+        width:props.largura,
+        heigth: props.altura,
+        maxWidth: props.largura,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        }
+    
 
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
@@ -52,16 +69,20 @@
 
 @layer components{
     .styleSelectPadrao{
-       @apply bg-transparent
-        border-b-roxo
-        border-b-4 border-transparent 
-        max-w-max 
-        items-center focus-within:outline-roxo 
-        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
+       @apply   border-4 
+        border-transparent
+        border-b-roxo    
+        pt-2
+        pb-2
+        px-4
+        border-b-4
+        w-max
+        items-center justify-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-md truncate;
     }
 
     select{
-        @apply focus-visible:outline-0;
+        @apply focus-visible:outline-0 bg-inherit truncate max-w-[100%];
     }
 }
 </style>

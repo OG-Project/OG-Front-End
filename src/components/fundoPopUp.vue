@@ -15,8 +15,10 @@
     
 </template>
 <script setup>
-import {useCounterStore} from '../stores/funcaoPopUp'
-const funcaoPopUp = useCounterStore();
+import {funcaoPopUpStore} from '../stores/funcaoPopUp'
+const funcaoPopUp = funcaoPopUpStore();
+
+
     const props=defineProps({
         listaSelect:[],
         styleSelect: String
@@ -27,13 +29,14 @@ const funcaoPopUp = useCounterStore();
 
 @layer components{
     .style-bg-roxo{
-       @apply w-[30%] h-[70%] bg-roxoEscuro backdrop-blur-xl flex-col-reverse  absolute;
+       @apply  h-[80vh] bg-roxoEscuro backdrop-blur-xl flex-col-reverse  absolute max-w-max;
        backdrop-filter: blur(10px);
        animation-name: aparecePopUp;
        animation-duration: 0.09s;
        animation-iteration-count: initial;
        animation-timing-function: cubic-bezier(0.15, 0.15, 0.15, 0.15); 
        overflow: hidden; 
+       width: fit-content;
     }
     @keyframes aparecePopUp {
         from{
@@ -44,7 +47,7 @@ const funcaoPopUp = useCounterStore();
         }
     }
     .style-bg-branco{
-        @apply w-[100%] h-[95%] bg-brancoNeve;
+        @apply w-[100vw] h-[75vh] bg-brancoNeve max-w-max;
         clip-path: polygon(20% 0%, 80% 0%, 94% 15%, 94% 100%, 6% 100%, 6% 15%);
     }
     .botao-sair{

@@ -3,11 +3,11 @@ import { RouterLink, RouterView } from 'vue-router'
 import Input from './components/Input.vue'
 
 import fundoPopUp from './components/fundoPopUp.vue';
-import {useCounterStore} from './stores/funcaoPopUp'
+import {funcaoPopUpStore} from './stores/funcaoPopUp'
 
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 
-const funcaoPopUp = useCounterStore();
+const funcaoPopUp = funcaoPopUpStore();
  
 </script>
 
@@ -27,3 +27,5 @@ const funcaoPopUp = useCounterStore();
   
 
 </style>
+
+
