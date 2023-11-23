@@ -42,13 +42,17 @@ const props = defineProps({
     tamanhoPadrao: {
       type: String,
       default: 'nao'
+
     }
+
+ 
   },
   corBordaClick: String,
   tamanhoDaBorda: String,
   preset: String,
   funcaoClick: Function,
   tamanhoPadrao: {
+
     type: String,
     default: 'medio'
   },
@@ -71,6 +75,7 @@ let clickBotao;
 let iconeCor = "invert-0";
 let width = "";
 let height = "";
+
 let sombras = ""
 
 switch (props.sombreado) {
@@ -100,6 +105,7 @@ switch (props.tamanhoPadrao) {
     width = props.width;
     break;
 }
+
 switch (Preset) {
   case "Deletar":
     Texto = "Deletar";

@@ -44,7 +44,7 @@ let ativo = false;
 let corBolaToggle = ref('#620BA7');
 
 function check(tipo) {
-  if (ativo === false) {
+  if (!ativo) {
     ativo = true;
     if (tipo === 'toggle') {
       const animation = new mojs.Html({
@@ -104,5 +104,4 @@ function check(tipo) {
     width: 50px;
     height: 50px;
   }
-
 </style>

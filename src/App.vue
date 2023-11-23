@@ -1,5 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Tabelas from './components/Tabelas.vue';
+</script>
+
+<template>
+  <RouterView/>
 import Input from './components/Input.vue'
 
 import fundoPopUp from './components/fundoPopUp.vue';
@@ -18,8 +23,6 @@ const funcaoPopUp = funcaoPopUpStore();
   <button @click="funcaoPopUp.abrePopUp()">
     teste
   </button>
-</div>
-
 </template>
 
 <style scoped>

@@ -1,13 +1,15 @@
 <template>
-    <div>
-
-    </div>
+        <Tabelas tipo="bar"></Tabelas>
 </template>
 
-<script>
-    
+<script setup>
+import {ref} from 'vue'
+import cardProjetos from '/src/components/cardProjetos.vue'
+import CheckBox from '../components/checkBox.vue';
+import Tabelas from '../components/Tabelas.vue';
+import Botao from '../components/Botao.vue';
 </script>
-
-<style>
-
-</style>
+    
+<style scoped>
+@import url(../assets/main.css);
+</template>
