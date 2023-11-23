@@ -1,20 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 
-
-
-function executar(emit) {
-  console.log(emit.value)
-  mostrar=emit.value
-}
-
 </script>
 
 <template>
-
-  
-  <RouterView></RouterView>
-
+  <RouterView />
 </template>
 
 <style scoped>

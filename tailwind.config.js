@@ -23,6 +23,10 @@ export default {
       width:{
         
       },
+      fontFamily:{
+        'Poppins' :'Poppins, sans-serif',
+        'SourceSans' :'Source-Sans-3, sans-serif'
+      }
     },
   },
   plugins: [],

@@ -1,7 +1,5 @@
 <template>
-    <div>
-
-    </div>
+        <Tabelas tipo="bar"></Tabelas>
 </template>
 
 
@@ -10,6 +8,5 @@
 </script>
 
 <style lang="scss" scoped>
-
 
 </style>

@@ -6,34 +6,33 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </div>
-            <Input width="80" height="5" />
+            <Input width="100" />
             <div>
                 tarefa
             </div>
         </div>
         
-        <div class='h-full flex flex-col justify-around items-center'>
-                <div class='w-14 text-3xl flex justify-start border-b-2 border-purple-400'>
+        <div class='h-full flex flex-col justify-evenly items-center'>
+                <div class='font-SourceSans w-72 text-3xl flex justify-start border-b-2 border-purple-400'>
                     Segurança
                 </div>
-            <div class=' flex w-full justify-around items-center'>
-                <label>teste</label>
-                <Input width="80" height="5" />
+            <div class='font-Poppins flex w-full justify-around items-center'>
+                <label class='text-left'>Alterar<br>Usuario</label>
+                <Input conteudoInput="email" />
             </div>
-            <div class=' flex w-full justify-around items-center'>
-                <label>teste</label>
-                <Input width="80" height="5" />
+            <div class='font-Poppins flex w-full justify-around items-center'>
+                <label class='text-left'>Alterar<br>E-mail</label>
+                <Input conteudoInput="email" />
             </div>
-            <div class=' flex w-full justify-around items-center'>
-                <label>teste</label>
-                <Input width="80" height="5" />
+            <div class='font-Poppins flex w-full justify-around items-center'>
+                <label class='text-left'>Alterar<br>Senha</label>
+                <Input conteudoInput="email" />
             </div>
-            <div class='flex w-full justify-around items-center'>
-                <label>teste</label>
-                <Input />
+            <div class='font-Poppins flex w-full justify-around items-center'>
+                <label class='text-left'>Confirmar<br>Senha</label>
+                <Input conteudoInput="email" ></Input>
             </div>
-            
-            <Botao tamanhoBotao='grande' preset='PadraoRoxo' texto='Salvar Alterações' />
+            <Botao tamanhoPadrao="pequeno" preset='PadraoRoxo' texto='Salvar Alterações' />
         </div>
     </div>
 </template>
@@ -43,6 +42,6 @@ import Input  from "../components/Input.vue";
 import Botao  from "../components/Botao.vue";
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
