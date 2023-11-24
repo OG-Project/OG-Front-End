@@ -27,7 +27,7 @@ const funcaoPopUp = useCounterStore();
 
 @layer components{
     .style-bg-roxo{
-       @apply w-[30%] h-[70%] bg-roxoEscuro backdrop-blur-xl flex-col-reverse  absolute;
+       @apply w-full xl:w-[30%] h-[70%] bg-roxoEscuro backdrop-blur-xl flex-col-reverse  absolute;
        backdrop-filter: blur(10px);
        animation-name: aparecePopUp;
        animation-duration: 0.09s;
