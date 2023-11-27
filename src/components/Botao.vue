@@ -15,6 +15,7 @@
     </button>
   </div>
   <div v-if="TemIcon === 'nao'">
+
     <button :class="tamanhoComClass"
       :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
       @mouseover="hover"
@@ -52,15 +53,27 @@ const props = defineProps({
     tamanhoPadrao: {
       type: String,
       default: 'nao'
-  }
+
+    }
+
+ 
   },
   corBordaClick: String,
   tamanhoDaBorda: String,
   preset: String,
   funcaoClick: Function,
   tamanhoPadrao: {
-      type: String,
-      default: 'medio'
+
+    type: String,
+    default: 'medio'
+  },
+  sombreado: {
+    type: String,
+    default: 'nao'
+  },
+  parametrosFuncao:{
+    type: [],
+    default: null
   }
 });
 
@@ -91,6 +104,18 @@ let height = "";
       tamanhoComClass.value = "personalizadoId"
     break;
   }
+
+let sombras = ""
+
+switch (props.sombreado) {
+  case 'nao':
+    sombras = ''
+    break;
+  case 'sim':
+    sombras = 'rgba(0, 0, 0, 0.35) 0px 5px 15px'
+
+}
+
 switch (Preset) {
   case "Deletar":
     Texto = "Deletar";
@@ -103,7 +128,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #CD0000",
       color: "#CD0000",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -114,7 +139,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     clickBotao = {
@@ -125,7 +150,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     break;
@@ -140,7 +165,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #389300",
       color: "#389300",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -151,7 +176,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     clickBotao = {
@@ -162,7 +187,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
     break;
   case "Sair":
@@ -176,7 +201,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #CD0000",
       color: "#CD0000",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -187,7 +212,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     clickBotao = {
@@ -198,7 +223,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
     break;
 
@@ -213,7 +238,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #620BA7",
       color: "#620BA7",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -224,7 +249,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #620BA7",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     if (isHovered) {
@@ -241,7 +266,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #ECC3FF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     if (isClick) {
@@ -262,7 +287,7 @@ switch (Preset) {
       alignItems: "center",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -272,7 +297,7 @@ switch (Preset) {
       alignItems: "center",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     clickBotao = {
@@ -283,7 +308,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #ECC3FF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
     break;
 
@@ -297,7 +322,7 @@ switch (Preset) {
       alignItems: "center",
       color: "#620BA7",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -307,7 +332,7 @@ switch (Preset) {
       alignItems: "center",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     clickBotao = {
@@ -318,7 +343,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #ECC3FF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
     break;
 
@@ -334,7 +359,7 @@ switch (Preset) {
       alignItems: "center",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -346,7 +371,7 @@ switch (Preset) {
       color: "#FFFFFF",
       border: props.tamanhoDaBorda + " solid #8E00FF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     clickBotao = {
@@ -358,7 +383,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #ECC3FF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
     break;
 
@@ -374,7 +399,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#620BA7",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -386,7 +411,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #8E00FF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     clickBotao = {
@@ -398,7 +423,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #ECC3FF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
     break;
 
@@ -414,7 +439,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #620BA7",
       color: "#620BA7",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     hoverBotao = {
@@ -426,7 +451,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #620BA7",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     if (isHovered) {
@@ -444,7 +469,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #ECC3FF",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
-      boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+      boxShadow: sombras,
     };
 
     if (isClick) {
@@ -499,10 +524,8 @@ function unhover() {
   isHovered.value = false;
 }
 
-let Funcao = props.funcaoClick;
-
 function click() {
-  Funcao();
+  props.funcaoClick(props.parametrosFuncao);
   isClick.value = true;
   // Define um atraso de 2 segundos (2000 milissegundos) para reverter isClick
   setTimeout(() => {
@@ -531,3 +554,4 @@ function click() {
 }
 
 </style>
+

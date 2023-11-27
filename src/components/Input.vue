@@ -15,17 +15,23 @@
     
    <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
-        <img :src=icon :style="tamanhoIcon">
-        <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+        <div class="flex justify-center">
+            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+        </div>
+        <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado >
    </div>
    <div class="styleInputPadrao" 
         v-if="icon=='null'"  :style="estilizaDivInput">
         <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
    </div>
-   <div class="styleInputPadraoDireita" 
+   <div class="styleInputPadraoIconDireita" :class="styleInputPadraoDireita" 
         v-if="direcao=='direita'" :style="estilizaDivInput">
-        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
-        <img :src=icon :style="tamanhoIcon">
+        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
+        :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
+        <div class="flex justify-center">
+            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+        </div>
    </div>
 </template>
 
@@ -33,6 +39,9 @@
 import { onMounted, ref } from 'vue';
 import {Usuario} from '../models/usuario'
 import {Equipe} from '../models/Equipe'
+
+//funcao de passar para o pai 
+    defineEmits(['update:modelValue'])
   const props=defineProps({
         styleInput: String, // pode passar input-escuro, input-claro, input-transparente-escuro, input-transparente-claro
         icon: {
@@ -47,9 +56,11 @@ import {Equipe} from '../models/Equipe'
         width:Number,
         height:Number,
         desabilitado:ref(false),
-        direcao:String  
+        direcao:String ,
+        modelValue:String,
+        tipo: String,
       })
-    
+    const styleInputPadraoDireita= ".styleInputPadraoDireita"
     onMounted(()=>{
            console.log(Usuario.equipeAtual=Equipe);
         }
@@ -57,22 +68,23 @@ import {Equipe} from '../models/Equipe'
     )
     const tamanhoIcon={
         //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
-        width:(props.width/1.30)+"%",
-        height: (props.height/1.30)+"%",
+        width:(props.width)+"%",
+        height: (props.height/1.10)+"%",
     }
 
     const estilizaInput={
-        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebido
-        height: props.height+"%",
-        width:  props.width+"%", 
+        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanho(),
+        width: semIcon(),
+
     }
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
-    
+        height: props.height+"%",
+        width:  props.width+"%", 
     }
 
     function verificaCorBack(){
@@ -92,7 +104,9 @@ import {Equipe} from '../models/Equipe'
         if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
         || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
         props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande"){
+
             return "3rem"
+
         }   
     }
 
@@ -104,45 +118,69 @@ import {Equipe} from '../models/Equipe'
             return 'black';
         }
     }
+    function semIcon(){
+        if(props.icon!=undefined){
+            return "100%";
+        }
+        return "80%";
+    }
 
 </script>
-<style>
+<style lang="scss">
 @import url(../assets/main.css);
-@layer components{
-    .styleInputPadraoIcon{
-       @apply bg-transparent
-        border-b-roxo
-        border-b-2 border-transparent 
-        items-center focus-within:border-roxo 
-        justify-between
-        focus-within:rounded-sm focus-within:border-2;
-        display: grid;
-        grid-template-columns: 20% 80%;
-    
-        
-    }
 
     .styleInputPadrao{
-       @apply bg-transparent
-        border-b-roxo
-        border-b-2 border-transparent 
+       @apply 
+       border-4 
+        border-transparent
+        border-b-roxo    
+        pt-2
+        pb-2
+        px-4
+        max-w-max
+        w-min
+        border-b-4
         items-center focus-within:border-roxo 
-        justify-between
-        focus-within:rounded-sm focus-within:border-2; 
+        focus-within:border-4 focus-within:rounded-md;
     }
 
-    .styleInputPadraoDireita{
-        @apply bg-transparent
-        border-b-roxo
-        border-b-4 border-transparent 
+    .styleInputPadraoIconDireita{
+       @apply 
+        border-4 
+        border-transparent
+        border-b-roxo    
+        pt-2
+        pb-2
+        px-4
+        max-w-max
+        w-min
+        border-b-4
         items-center focus-within:border-roxo 
-        gap-1
-        focus-within:rounded-sm focus-within:border-4;
+        focus-within:border-4 focus-within:rounded-md;
         display: grid;
         grid-template-columns: 80% 20%;
+        align-content: center;
+    }
+
+    .styleInputPadraoIcon{
+       @apply 
+       border-4 
+        border-transparent
+        border-b-roxo    
+        pt-2
+        pb-2
+        px-4
+        max-w-max
+        w-min
+        border-b-4
+        items-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-md;
+        display: grid;
+        grid-template-columns: 20% 80%;
+        align-content: center;
     }
     .inputStyle{
-        @apply focus-visible:outline-0;
+        @apply focus-visible:outline-0 pr-5 ;
     }
-}
+
 </style>

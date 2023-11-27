@@ -9,3 +9,6 @@ import CheckBox from '../components/checkBox.vue';
 import Tabelas from '../components/Tabelas.vue';
 import Botao from '../components/Botao.vue';
 </script>
+    
+
+

@@ -3,24 +3,19 @@ import { RouterLink, RouterView } from 'vue-router'
 import Tabelas from './components/Tabelas.vue';
 
 import Input from './components/Input.vue'
-
 import fundoPopUp from './components/fundoPopUp.vue';
-import {useCounterStore} from './stores/funcaoPopUp'
+import {funcaoPopUpStore} from './stores/funcaoPopUp'
 
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 import Convite from './components/convite.vue';
 
-const funcaoPopUp = useCounterStore();
- 
+const funcaoPopUp = funcaoPopUpStore();
 </script>
 
 <template>
+
   <RouterView />
-  <div class="w-full h-screen bg-red-50">
-   <Convite></Convite>
-  <button @click="funcaoPopUp.abrePopUp()">
-    teste
-  </button>
-  </div>
+  
 </template>
 
+<style scoped>
