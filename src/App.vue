@@ -8,17 +8,9 @@ import {funcaoPopUpStore} from './stores/funcaoPopUp'
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 
 const funcaoPopUp = funcaoPopUpStore();
- 
 </script>
 
 <template>
-  <RouterView />
-
-  <div class="w-full h-screen bg-red-50">
-    <PopUpCriaPropriedade></PopUpCriaPropriedade>
-  <button @click="funcaoPopUp.abrePopUp()">
-    teste
-  </button>
 </template>
 
 <style scoped>
@@ -26,4 +18,5 @@ const funcaoPopUp = funcaoPopUpStore();
   
 
 </style>
+
 

@@ -179,7 +179,6 @@ import {Equipe} from '../models/Equipe'
     }
     .inputStyle{
         @apply focus-visible:outline-0 pr-5 ;
-        
     }
 
 </style>

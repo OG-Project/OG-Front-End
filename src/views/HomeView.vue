@@ -12,4 +12,4 @@ import Botao from '../components/Botao.vue';
     
 <style scoped>
 @import url(../assets/main.css);
-</template>
+</style>
