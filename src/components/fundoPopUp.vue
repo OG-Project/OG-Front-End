@@ -27,7 +27,7 @@ const funcaoPopUp = useCounterStore();
 
 @layer components{
     .style-bg-roxo{
-       @apply w-full xl:w-[30%] h-[70%] bg-roxoEscuro backdrop-blur-xl flex-col-reverse  absolute;
+       @apply w-full xl:w-[30%] h-[70vh]  bg-roxoEscuro backdrop-blur-xl flex-col-reverse absolute;
        backdrop-filter: blur(10px);
        animation-name: aparecePopUp;
        animation-duration: 0.09s;
@@ -44,11 +44,11 @@ const funcaoPopUp = useCounterStore();
         }
     }
     .style-bg-branco{
-        @apply w-[100%] h-[95%] bg-brancoNeve;
+        @apply w-full w-[100%] h-[] bg-brancoNeve;
         clip-path: polygon(20% 0%, 80% 0%, 94% 15%, 94% 100%, 6% 100%, 6% 15%);
     }
     .botao-sair{
-        @apply w-[5%] h-[5%]  top-3 right-4 absolute 
+        @apply w-[5%] h-[5%] top-3 right-4 absolute 
     }
     .blur-background {
         @apply fixed inset-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg absolute ;
