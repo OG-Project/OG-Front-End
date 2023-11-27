@@ -104,7 +104,9 @@ import {Equipe} from '../models/Equipe'
         if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
         || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
         props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande"){
-            return "48px"
+
+            return "3rem"
+
         }   
     }
 
