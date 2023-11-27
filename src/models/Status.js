@@ -1,4 +1,4 @@
 
- const Status ={ 
+ export const Status ={ 
     ATIVO: "ATIVO" ,
     INATIVO:"INATIVO" } 

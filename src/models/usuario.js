@@ -1,4 +1,5 @@
-import { Equipe } from "./Equipe"
+import { Equipe } from "./Equipe";
+
  export const Usuario={
     id: Number,
     nome: String,
@@ -9,12 +10,6 @@ import { Equipe } from "./Equipe"
     senha:String,
     equipeAtual: {}
 }
-
-
-
-
-
-
 
 
 

@@ -1,8 +1,7 @@
  import { TipoPropiedade } from "./tipoPopriedade"
  
- export const Propiedade={
+ export const Propriedade={
     id: Number,
     nome : String,
-    valor : String,
-    tipo : TipoPropiedade
+    tipo : {}= TipoPropiedade
 }

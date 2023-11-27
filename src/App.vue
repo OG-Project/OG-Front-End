@@ -1,18 +1,29 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import calendario from './components/calendario.vue';
-import kanbanDePropriedade from './components/KanbanDePropriedade.vue';
+import Tabelas from './components/Tabelas.vue';
+import Input from './components/Input.vue'
+import fundoPopUp from './components/fundoPopUp.vue';
+import {funcaoPopUpStore} from './stores/funcaoPopUp'
 
-import cardTarefas from './components/cardTarefas.vue'
+import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 
-
+const funcaoPopUp = funcaoPopUpStore();
+ 
 </script>
 
 <template>
   <RouterView />
-  <div class="flex items-center justify-center w-screen h-screen">
-    <calendario></calendario>
-  </div>
+
+  <div class="w-full h-screen bg-red-50">
+    <PopUpCriaPropriedade></PopUpCriaPropriedade>
+  <button @click="funcaoPopUp.abrePopUp()">
+    teste
+  </button>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+  
+
+</style>
+

@@ -1,8 +1,9 @@
 import { Projeto } from "./Projeto"
 import { Usuario } from "./usuario"
-export const Equipe= {
+export const Equipe = {
     id: Number,
     nomeEquipe: String,
-    projeto: {},
+
+    projeto: {} = Projeto,
     usuarios: {}
 }

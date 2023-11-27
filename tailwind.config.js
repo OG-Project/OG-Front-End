@@ -16,7 +16,11 @@ export default {
         'correct' : '#29CD00',
         'info' : '#36213E',
         'roxoAtencao' : '#8E00FF',
-        'attention' : '#8E00FF'
+        'cinza-escuro': '#484848',
+        'cinza-claro': '#D7D7D7'
+      },
+
+      width:{
         
       },
     },
