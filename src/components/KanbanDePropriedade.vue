@@ -20,7 +20,6 @@
 <script>
 import { ref, watch } from 'vue';
 import { propriedades } from '../ObjetosTeste/propriedade.js';
-import { tarefas } from '../ObjetosTeste/tarefa.js';
 import CardTarefas from './cardTarefas.vue';
 
 export default {

@@ -102,13 +102,14 @@
                     </h1>
                     <div :style="dia.style">
                         <div v-for="tarefa of tarefas">
-                            <div v-for="propriedade of tarefa.propriedades">
-                                <div v-if="propriedade.valor == format(dia.dia, 'dd/MM/yyyy')"
+                            <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                <div v-if="propriedade.valor == format(dia.dia, 'yyyy-MM-dd')"
                                     v-bind="adicionaNaLista(tarefa, dia), verificaTarefasDoDia(dia)" class="pb-[4%] w-max"
                                     draggable="true" @dragend="trocaDia(propriedade, diaNovo)">
                                     <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2" ></cardTarefas>
                                 </div>
                             </div>
+                            <button v-on:click="console.log(tarefa.valorPropriedadeTarefas)" class="bg-black w-[10%] h-[10%]"></button>
                         </div>
                     </div>
                     <div class="w-full h-[20%] flex justify-center mt-[5%]">
@@ -123,17 +124,20 @@
 <script setup>
 import { ref } from 'vue';
 import cardTarefas from './cardTarefas.vue'
-import { tarefas } from '../ObjetosTeste/tarefa.js'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { conexaoBD } from '../stores/conexaoBD';
 
 
 let data = Date.now()
 let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
-getCalendario();
+let api = conexaoBD()
+api.procurar()
+let tarefas = defineTarefas()
 
+getCalendario();
 
 // Muda de acordo com o mes
 function getCalendario() {
@@ -143,6 +147,7 @@ function getCalendario() {
     const ultimoDiaDoMes = endOfMonth(new Date(d));
     const todosOsDiasDoMes = eachDayOfInterval({ start: primeiroDiaDoMes, end: ultimoDiaDoMes });
     let lista = []
+    
     for (let i = primeiroDiaDoMes.getDay(); i > 0; i--) {
         lista.push(subDays(primeiroDiaDoMes, i))
     }
@@ -176,9 +181,12 @@ function getCalendario() {
     });
     calendario.value = listaDeDias;
 
-
-
 }
+
+async function  defineTarefas(){
+    tarefas = ref((await api.api).data)
+}   
+
 function hover(dia) {
     if (dia != null) {
         if (dia.temTres) {
@@ -197,7 +205,6 @@ function hover(dia) {
                 boxShadow: "0px 2px rgb(189, 189, 189)",
 
             }
-            console.log(dia.style)
         }
 
     }

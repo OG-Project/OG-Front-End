@@ -1,7 +1,7 @@
 import './assets/main.css'
 
 import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createPinia,setActivePinia } from 'pinia'
 import PrimeVue from 'primevue/config';
 
 import App from './App.vue'
@@ -12,11 +12,16 @@ import TabMenu from 'primevue/tabmenu';
 import Calendar from 'primevue/calendar';
 import "primevue/resources/themes/lara-light-purple/theme.css";
 
-const app = createApp(App)
 
-app.use(createPinia())
+const app = createApp(App)
+export const pinia = createPinia()
+setActivePinia(pinia)
+app.use(pinia)
 app.use(router)
 app.use(PrimeVue);
+
+
+
 app.component('Tabmenu', TabMenu);
 app.component('Button', Button);
 app.component('Calendar', Calendar);
