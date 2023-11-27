@@ -44,7 +44,7 @@ const funcaoPopUp = useCounterStore();
         }
     }
     .style-bg-branco{
-        @apply w-full w-[100%] h-[] bg-brancoNeve;
+        @apply w-full w-[100%] h-[95%] bg-brancoNeve;
         clip-path: polygon(20% 0%, 80% 0%, 94% 15%, 94% 100%, 6% 100%, 6% 15%);
     }
     .botao-sair{
