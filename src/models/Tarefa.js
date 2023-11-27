@@ -6,5 +6,4 @@ import { Usuario } from "./usuario"
     usuario : {},
     tipo : {}= Status,
     propriedades : {}= Propriedade 
-
 }

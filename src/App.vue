@@ -1,12 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Tabelas from './components/Tabelas.vue';
-</script>
-
-<template>
-  <RouterView/>
 import Input from './components/Input.vue'
-
 import fundoPopUp from './components/fundoPopUp.vue';
 import {funcaoPopUpStore} from './stores/funcaoPopUp'
 
@@ -18,6 +13,7 @@ const funcaoPopUp = funcaoPopUpStore();
 
 <template>
   <RouterView />
+
   <div class="w-full h-screen bg-red-50">
     <PopUpCriaPropriedade></PopUpCriaPropriedade>
   <button @click="funcaoPopUp.abrePopUp()">
@@ -30,5 +26,4 @@ const funcaoPopUp = funcaoPopUpStore();
   
 
 </style>
-
 

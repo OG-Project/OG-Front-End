@@ -10,3 +10,7 @@ import { Equipe } from "./Equipe";
     senha:String,
     equipeAtual: {}
 }
+
+
+
+
