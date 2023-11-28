@@ -1,15 +1,15 @@
 
 <template>
-    <div class="w-full h-full">
-        <FundoPopUp class="w-[80%]">
+    <div>
+        <FundoPopUp>
             <div class=" flex justify-center mt-[4%]">
                 <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
             </div>
             <div class=" flex justify-center mt-[4%] ">
-                <Input styleInput="input-transparente-claro" width="38vw" height="10vh" icon="../src/imagem-vetores/Equipe.svg" conteudoInput="Nome da Equipe"></Input> 
+                <Input styleInput="input-transparente-claro" width="60" height="10" icon="../src/imagem-vetores/Equipe.svg" conteudoInput="Nome da Equipe"></Input> 
             </div>
             <div class=" flex justify-center mt-[4%] ">
-                <Input  styleInput="input-transparente-claro"  width="38vw" height="10vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa"></Input>
+                <Input  styleInput="input-transparente-claro"  width="60" height="10" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa"></Input>
             </div>
             <div class=" flex items-center justify-center mt-[4%]">
                 <TextAreaPadrao   class="flex xl:w-[18vw] xl:h-[10vh] md:w-[36vw] md:h-[8vh] w-full justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"></TextAreaPadrao>

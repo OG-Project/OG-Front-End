@@ -8,6 +8,7 @@ import {funcaoPopUpStore} from './stores/funcaoPopUp'
 
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 import Convite from './components/convite.vue';
+import ListaConvidados from './components/ListaConvidados.vue';
 
 const funcaoPopUp = funcaoPopUpStore();
 </script>
@@ -15,7 +16,5 @@ const funcaoPopUp = funcaoPopUpStore();
 <template>
 
   <RouterView />
-  
+  <ListaConvidados></ListaConvidados>
 </template>
-
-<style scoped>
