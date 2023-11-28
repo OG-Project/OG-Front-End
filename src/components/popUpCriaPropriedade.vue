@@ -1,4 +1,4 @@
-<template>
+   <template>
     <div>
         <FundoPopUp>
             <div class=" flex justify-center mt-[16%]">

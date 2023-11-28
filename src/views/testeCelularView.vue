@@ -32,7 +32,16 @@
                 <label class='text-left'>Confirmar<br>Senha</label>
                 <Input conteudoInput="email" ></Input>
             </div>
-            <Botao tamanhoPadrao="pequeno" preset='PadraoRoxo' texto='Salvar Alterações' />
+            <Botao tamanhoDaBorda="" tamanhoPadrao="pequeno" preset='PadraoRoxo' texto='Salvar Alterações' />
+            <cardProjetos 
+            name="oii" 
+            descricao="sdfdfkjdlsfkja sd hfkasdjhfkja sdhadj kfjd klsajdl ksaj çdl ska jds lak djk kljçslkdasd skaldlkçj  sakljsd lkjsdlçkajds LKÇJLK KJLSDFÇL LKJ LKJLKJ LKJÇL" 
+            feito=100
+            reponsavel="lsdkjfkjhkljh"
+            tipo="UUSDKF"
+            comeco='12/09/2023'
+            final="31//08/2045"
+            ></cardProjetos>
         </div>
     </div>
 </template>
@@ -40,6 +49,7 @@
 <script setup>
 import Input  from "../components/Input.vue";
 import Botao  from "../components/Botao.vue";
+import cardProjetos  from "../components/cardProjetos.vue";
 </script>
 
 <style scoped>
