@@ -11,13 +11,13 @@
                 <div class="grid-template">
                     <p class=" xl:text-2xl sm:text-sm md:text-md">Tipo de dado:</p>
                     <div class=" h-full flex items-start">
-                        <selectPadrao :listaSelect="listaSelecao" fonteTamanho="2.5" largura="20vh" altura="6vh" v-model="tipo"></selectPadrao>
+                        <selectPadrao :listaSelect="listaSelecao" fonteTamanho="2.5" largura="12" altura="6" v-model="tipo"></selectPadrao>
                     </div>
                 </div>
                 <div class="grid-template">
                      <p class=" xl:text-2xl sm:text-sm md:text-md">Visualização:</p>
                     <div class=" h-full flex items-start">
-                        <selectPadrao :listaSelect="listaSelecao" fonteTamanho="2.5" largura="20vh" altura="6vh"></selectPadrao>
+                        <selectPadrao :listaSelect="listaSelecao" fonteTamanho="2.5" largura="12" altura="6"></selectPadrao>
                     </div>
                 </div>
                 <div class="alinhaBotoes">
@@ -77,7 +77,7 @@ onMounted(()=>{
         grid-template-columns: 40% 55%;
     }
     .alinhaBotoes{
-        @apply grid grid-cols-2 justify-center items-center w-[80%] gap-16 p-4 ;
+        @apply flex  justify-between items-center w-[80%] gap-16 p-4 max-[1290px]:flex-wrap  max-[1290px]:justify-center ;
     }
 }
 

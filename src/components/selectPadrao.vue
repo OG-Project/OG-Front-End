@@ -32,9 +32,8 @@ defineEmits(['update:modelValue'])
         }
 
     const estilizaSelect={
-        width:props.largura,
-        heigth: props.altura,
-        maxWidth: props.largura,
+        width:props.largura+"vw",
+        heigth: props.altura+"vh",
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
@@ -43,6 +42,7 @@ defineEmits(['update:modelValue'])
 
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
+         console.log(props.altura)
         if(props.styleSelect=="select-escuro" || props.styleSelect=="select-grande-escuro" || 
         props.styleSelect=="select-escuro-grande" || props.styleSelect=="select-escuro-grande"){
             return "#484848"
@@ -81,7 +81,7 @@ defineEmits(['update:modelValue'])
     }
 
     select{
-        @apply focus-visible:outline-0 bg-inherit truncate max-w-[100%];
+        @apply focus-visible:outline-0 bg-inherit truncate;
     }
 }
 </style>
