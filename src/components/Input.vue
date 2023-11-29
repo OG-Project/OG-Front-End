@@ -14,7 +14,7 @@
 <template>
     
    <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
+        v-if="icon!='null' && direcao!='direita'" :style="this.estilizaDivInput">
         <div class="flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
@@ -36,9 +36,10 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 import {Usuario} from '../models/usuario'
 import {Equipe} from '../models/Equipe'
+
 
 //funcao de passar para o pai 
     defineEmits(['update:modelValue'])
@@ -53,61 +54,127 @@ import {Equipe} from '../models/Equipe'
             type: String,
             default:"Vazio"
         },
-        width:Number,
-        height:Number,
         desabilitado:ref(false),
         direcao:String ,
         modelValue:String,
         tipo: String,
+        largura:String,
+        altura:String
       })
     const styleInputPadraoDireita= ".styleInputPadraoDireita"
-    onMounted(()=>{
-           console.log(Usuario.equipeAtual=Equipe);
+
+        onMounted(()=>{
+            props.largura= widthResponsivo()
+            props.altura = heigthResponsivo();
+       
         }
         
     )
-    const tamanhoIcon={
-        //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
-        width:(props.width)+"%",
-        height: (props.height/1.10)+"%",
+
+    function widthResponsivo(){
+        if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
+        || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
+        props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande" ){
+            return "20vw"
+        } else  if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+            return "10vw"
+        } 
+           return "25vw"
     }
 
-    const estilizaInput={
-        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
+    function heigthResponsivo(){
+        if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro"  || props.styleInput=="input-claro-grande" ||  
+        props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande" ){
+            return "9vh"
+        } 
+        else if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+            return "4vh"
+        } 
+
+        return "6vh"
+           
+    }
+   const tamanhoIcon={
+        //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
+        width:"80%",
+        height:"80%",
+    }
+
+   const estilizaInput={
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanho(),
-        width: semIcon(),
+        width: "100%",
+        height: '100%',
 
     }
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
-        height: props.height+"%",
-        width:  props.width+"%", 
+        height: verificaHeigth(),
+        width: verificaWidth(), 
+    }
+    
+    function verificaHeigth(){
+        let teste=heigthResponsivo()
+        if(props.altura==undefined){
+            console.log(teste)
+            return teste
+        }
+        return props.altura;
+    }
+    function verificaWidth(){
+        if(props.largura==undefined){
+            return widthResponsivo()
+        }
+        return props.largura;
     }
 
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-grande-escuro" || 
-        props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande"){
-            console.log(props.width)
+        props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande" ){
             return "#484848"
         }else if(props.styleInput=="input-claro" || props.styleInput=="input-grande-claro" || 
         props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande"){
             return "#D7D7D7"
         }
     }
+  
+
 
     function verificaTamanho(){
+        console.log("eia")
         //Aumenta o tamanho da font size de acordo 
-        if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
-        || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
-        props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande"){
+        if(props.styleInput==="input-grande" || props.styleInput==="input-grande-escuro"  || props.styleInput==="input-claro-grande" ||  
+        props.styleInput==="input-transparente-claro-grande" || props.styleInput==="input-transparente-escuro-grande" ){
 
-            return "3rem"
+            if(window.innerWidth >= 600 && window.innerWidth <= 850){
+                console.log(window.innerWidth)
+                return "1.1rem"
 
-        }   
+            }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
+                return '1.5rem'
+            }else{
+                return '2.0rem'
+            }
+        }else if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+            if(window.innerWidth >= 600 && window.innerWidth <= 850){
+                console.log(window.innerWidth)
+                return "0.8rem"
+
+            }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
+                return '1.0rem'
+            }else if(window.innerWidth >= 1000 && window.innerWidth <=1500 ){
+                return '1.0rem'
+            }
+        }
+
+        return '1.2rem'
+
     }
 
     function verificaCor(){
@@ -136,7 +203,7 @@ import {Equipe} from '../models/Equipe'
         border-b-roxo    
         pt-2
         pb-2
-        px-4
+        px-2
         max-w-max
         w-min
         border-b-4
@@ -180,7 +247,7 @@ import {Equipe} from '../models/Equipe'
         align-content: center;
     }
     .inputStyle{
-        @apply focus-visible:outline-0 pr-5 ;
+        @apply focus-visible:outline-0 xl:pr-5 sm:pr-1 md:pr-2 bg-transparent;
     }
 
 </style>

@@ -4,7 +4,9 @@ import Tabelas from './components/Tabelas.vue';
 
 import Input from './components/Input.vue'
 import fundoPopUp from './components/fundoPopUp.vue';
-import {funcaoPopUpStore} from './stores/funcaoPopUp'
+import { funcaoPopUpStore } from './stores/funcaoPopUp'
+import calendario from './components/calendario.vue';
+import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
 
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 import Convite from './components/convite.vue';
@@ -15,9 +17,14 @@ import checkBox from './components/checkBox.vue';
 const funcaoPopUp = funcaoPopUpStore();
 </script>
 
-<template >
-  <div class="bg-slate-500 w-full h-[100vh]">
-    <checkBox tamanho="grande"></checkBox>
-  </div>
+<template>
+
+</template>
+
+<style scoped></style>
+
+
+  <RouterView />
+
   
 </template>
