@@ -50,8 +50,12 @@ const funcaoPopUp= funcaoPopUpStore();
 
 function cria(){
     
-    if(tipo.value==''){
-        tipo.value="Texto"
+    if(tipo.value==''|| tipo.value=='Texto'){
+        tipo.value="STRING"
+    }else if(tipo.value=='Numero'){
+        tipo.value="DOUBLE"
+    }else if(tipo.value=="Data"){
+        tipo.value="DATE"
     }
     const cria = criaPropriedadeStore()
     cria.criaPropriedade(nomePropriedade.value,tipo.value)

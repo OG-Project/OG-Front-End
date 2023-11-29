@@ -7,7 +7,7 @@
         </select>
 
         <div class="divMaior">
-            <div v-for="propriedade of nomeDasPropriedades" class="w-full h-[80%] flex justify-start">
+            <div v-for="propriedade of projeto.propriedades" class="w-full h-[80%] flex justify-start">
                 {{ propriedade.nome }}
                 <div v-bind="defineTarefas(propriedade)" v-for="tarefa of listaDeTarefasPorPropriedade">
                     <CardTarefas :tarefa=tarefa altura="2vw" largura="7vw" preset="2"></cardTarefas>
@@ -17,72 +17,40 @@
     </div>
 </template>
 
-<script>
-import { ref, watch } from 'vue';
-import { propriedades } from '../ObjetosTeste/propriedade.js';
+<script setup>
+import { ref } from 'vue';
 import CardTarefas from './cardTarefas.vue';
+import { conexaoBD } from '../stores/conexaoBD';
 
-export default {
-    setup() {
-        const propriedadeAtual = ref(null);
-        const nomeDasPropriedades = ref(defineNomeDasPropriedade(propriedadeAtual.value));
-        watch(propriedadeAtual, () => {
-            nomeDasPropriedades.value = defineNomeDasPropriedade(propriedadeAtual.value);
-        });
-        const listaDeTipos = [
-            {
-                nome: "Texto",
-                valor: "STRING"
-            },
-            {
-                nome: "Numero",
-                valor: "NUMBER"
-            },
-            {
-                nome: "Status",
-                valor: "STATUS"
-            },
-            {
-                nome: "Data",
-                valor: "DATE"
-            },
-        ];
-        let listaDeTarefasPorPropriedade = ref([])
-        return {
-            propriedades,
-            propriedadeAtual,
-            nomeDasPropriedades,
-            listaDeTipos,
-            listaDeTarefasPorPropriedade
-        };
+let api = conexaoBD()
+let projeto = api.procurar("/projeto?id=1")
+console.log(projeto)
+
+const propriedadeAtual = ref(null);
+
+const listaDeTipos = ref([
+    {
+        nome: "Texto",
+        valor: "STRING"
     },
-    components: { CardTarefas, CardTarefas }
-};
-function defineTarefas(propriedade) {
-    let listaDeTarefas;
-    tarefas.value.forEach(tarefa => {
-        if(tarefa.propriedades.includes(propriedade)){
-            listaDeTarefas.push(tarefa)
-        }
-    });
-    listaDeTarefasPorPropriedade =  listaDeTarefas;
-
-}
-
-function defineNomeDasPropriedade(propriedadeAtual) {
-    const propriedadesFiltradas = [];
-
-    propriedades.value.forEach(propriedade => {
-        if (propriedade.tipo === propriedadeAtual) {
-            if (propriedadesFiltradas.nome == propriedade) {
-            } else {
-                propriedadesFiltradas.push(propriedade);
-            }
-        }
-    });
-
-    return propriedadesFiltradas;
-}
+    {
+        nome: "Numero",
+        valor: "NUMBER"
+    },
+    {
+        nome: "Status",
+        valor: "STATUS"
+    },
+    {
+        nome: "Data",
+        valor: "DATE"
+    },
+])
+let listaDeTarefasPorPropriedade = ref()
+ 
+async function definePropriedades() {
+    return ref((await api.api).data)
+}  
 </script>
 
 <style scoped lang="scss">
