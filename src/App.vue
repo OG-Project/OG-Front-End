@@ -11,13 +11,11 @@ import Convite from './components/convite.vue';
 import ListaConvidados from './components/ListaConvidados.vue';
 import Botao from './components/Botao.vue';
 import checkBox from './components/checkBox.vue';
-
-const funcaoPopUp = funcaoPopUpStore();
+import PopUpCriaTarefa from './components/popUpCriaTarefa.vue'
 </script>
 
 <template >
-  <div class="bg-slate-500 w-full h-[100vh]">
-    <checkBox tamanho="grande"></checkBox>
-  </div>
   
+  <PopUpCriaTarefa></PopUpCriaTarefa>
+
 </template>
