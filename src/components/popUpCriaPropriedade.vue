@@ -1,21 +1,21 @@
 <template>
     <div>
-        <FundoPopUp>
+        <FundoPopUp largura="40vw" altura="80vh">
             <div class="w-full h-full flex flex-col justify-between items-center">
                 <div class="flex justify-center h-[30%] items-end">
-                    <Input width="55" height="50" styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg"
+                    <Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg"
                      conteudoInput="Propriedade" direcao="direita"
                      v-model="nomePropriedade" tipo="obrigatorio"></Input>  
                      
                 </div>
                 <div class="grid-template">
-                    <p class="text-[3vh]">Tipo de dado:</p>
+                    <p class=" xl:text-2xl sm:text-sm md:text-md">Tipo de dado:</p>
                     <div class=" h-full flex items-start">
                         <selectPadrao :listaSelect="listaSelecao" fonteTamanho="2.5" largura="20vh" altura="6vh" v-model="tipo"></selectPadrao>
                     </div>
                 </div>
                 <div class="grid-template">
-                     <p class="text-[3vh]">Visualização:</p>
+                     <p class=" xl:text-2xl sm:text-sm md:text-md">Visualização:</p>
                     <div class=" h-full flex items-start">
                         <selectPadrao :listaSelect="listaSelecao" fonteTamanho="2.5" largura="20vh" altura="6vh"></selectPadrao>
                     </div>

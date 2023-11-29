@@ -15,6 +15,9 @@ const funcaoPopUp = funcaoPopUpStore();
   <RouterView/>
   <PopUpCriaPropriedade></PopUpCriaPropriedade>
   <button @click="funcaoPopUp.abrePopUp">teste</button>
+  <Input styleInput="input-transparente-claro-pequeno" icon="../src/imagem-vetores/icon-lapis-preto.svg"
+                     conteudoInput="Propriedade" direcao="direita"
+                     v-model="nomePropriedade" tipo="obrigatorio"></Input>  
 </template>
 
 

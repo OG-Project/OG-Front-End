@@ -1,6 +1,6 @@
 <template>
     <div class="styleSelectPadrao " :style="estilizaDivSelect">
-        <select :style="estilizaSelect" @input="$emit('update:modelValue', $event.target.value)">
+        <select :style="estilizaSelect" @input="$emit('update:modelValue', $event.target.value)" class="xl:text-xl sm:text-sm md:text-md">
             <option v-for="opcao of listaSelect" class="flex items-center justify-center" :value="opcaoSelecionada">{{ opcao }}</option>
         </select>
     </div>
@@ -29,7 +29,6 @@ defineEmits(['update:modelValue'])
     const estilizaDivSelect={
         backgroundColor: verificaCorBack(),
         color: verificaCorTexto(),
-        fontSize: props.fonteTamanho+"vh",
         }
 
     const estilizaSelect={
