@@ -11,6 +11,8 @@ import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 import Convite from './components/convite.vue';
 import ListaConvidados from './components/ListaConvidados.vue';
+import Botao from './components/Botao.vue';
+import checkBox from './components/checkBox.vue';
 
 const funcaoPopUp = funcaoPopUpStore();
 </script>
@@ -23,5 +25,6 @@ const funcaoPopUp = funcaoPopUpStore();
 
 
   <RouterView />
+
   
 </template>
