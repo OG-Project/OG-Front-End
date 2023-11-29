@@ -7,8 +7,8 @@ export const conexaoBD = defineStore('conexaoBD', {
       return {api:axios.get("http://10.4.96.32:8082/tarefa")}
     },
     actions: {
-      procurar(){
-        return axios.get("http://10.4.96.32:8082/tarefa").then(response => response.data)
+      procurar(texto){
+        return axios.get("http://10.4.96.32:8082"+ texto).then(response => response.data)
       }
     }
 })
