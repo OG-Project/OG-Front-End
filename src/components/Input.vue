@@ -174,7 +174,7 @@ import {Equipe} from '../models/Equipe'
         }
 
         return '1.2rem'
-           
+
     }
 
     function verificaCor(){
