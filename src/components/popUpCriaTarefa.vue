@@ -29,9 +29,6 @@ import CheckBox from './checkBox.vue';
 import {funcaoPopUpStore} from '../stores/funcaoPopUp'
 
 import conexaoDB from '../stores/conexaoBD.js'
-
-
-
 const funcaoPopUp = funcaoPopUpStore();
 const props = defineProps({
   listaSelect: [],

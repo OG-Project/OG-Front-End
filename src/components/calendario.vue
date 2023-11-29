@@ -109,7 +109,6 @@
                                     <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2" ></cardTarefas>
                                 </div>
                             </div>
-                            <button v-on:click="console.log(tarefa.valorPropriedadeTarefas)" class="bg-black w-[10%] h-[10%]"></button>
                         </div>
                     </div>
                     <div class="w-full h-[20%] flex justify-center mt-[5%]">
@@ -134,7 +133,7 @@ let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
-api.procurar()
+api.procurar("/tarefa")
 let tarefas = defineTarefas()
 
 getCalendario();
