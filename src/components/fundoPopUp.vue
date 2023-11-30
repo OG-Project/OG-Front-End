@@ -22,8 +22,14 @@ const funcaoPopUp = funcaoPopUpStore();
     const props=defineProps({
         listaSelect:[],
         styleSelect: String,
-        altura: String,
-        largura: String
+        altura: {
+            type: String,
+            default: "80vh"
+        },
+        largura:{
+            type:String, 
+            default: "40vw"
+        }
     })
 
     const estilizaDivTotal={
