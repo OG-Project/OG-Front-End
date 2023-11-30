@@ -16,5 +16,11 @@ const funcaoPopUp = funcaoPopUpStore();
 <template>
 
   <RouterView />
-  <ListaConvidados></ListaConvidados>
+   <ListaConvidados>
+
+   </ListaConvidados>
+
+  <Convite>
+    
+  </Convite>
 </template>
