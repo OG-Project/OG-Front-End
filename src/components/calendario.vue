@@ -181,7 +181,6 @@ function getCalendario() {
     calendario.value = listaDeDias;
 
 }
-
 async function  defineTarefas(){
     tarefas = ref((await api.api).data)
 }   
