@@ -101,9 +101,10 @@
                     }}
                     </h1>
                     <div :style="dia.style">
-                        <div v-for="tarefa of tarefas">
+                        <div v-for="tarefa of tarefas"> 
                             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                <div v-if="propriedade.valor == format(dia.dia, 'yyyy-MM-dd')"
+                                {{ console.log(propriedade) }}
+                                <div v-if="propriedade.valor.valor == format(dia.dia, 'yyyy-MM-dd')"
                                     v-bind="adicionaNaLista(tarefa, dia), verificaTarefasDoDia(dia)" class="pb-[4%] w-max"
                                     draggable="true" @dragend="trocaDia(propriedade, diaNovo)">
                                     <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2" ></cardTarefas>
@@ -133,9 +134,10 @@ let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
-api.procurar("/tarefa")
-let tarefas = defineTarefas()
 
+let tarefasApi = api.procurar("/tarefa")
+let tarefas = defineTarefas()
+console.log(tarefas)
 getCalendario();
 
 // Muda de acordo com o mes
@@ -182,7 +184,8 @@ function getCalendario() {
 
 }
 async function  defineTarefas(){
-    tarefas = ref((await api.api).data)
+    return tarefas = await(tarefasApi)
+
 }   
 
 function hover(dia) {

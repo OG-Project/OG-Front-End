@@ -6,7 +6,7 @@ import fundoPopUp from './components/fundoPopUp.vue';
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
 import calendario from './components/calendario.vue';
 import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
-
+import timeLine from './components/timeLine.vue';
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 
 const funcaoPopUp = funcaoPopUpStore();

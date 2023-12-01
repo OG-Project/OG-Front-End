@@ -7,21 +7,25 @@
         </select>
 
         <div class="divMaior">
-            <div class="w-[89%] ">
-                <div v-for="propriedade of projeto.propriedades"
-                    class="w-[25%] h-max flex items-center flex-col bg-[#B6BFE9] pt-[5px]">
-                    <div class="w-[80%] p-[1%] flex justify-center bg-white font-Poppins font-medium text-[1vw] ">
-                        {{ propriedade.nome }}
-                    </div>
-                    <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
-                        <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
-                    </div>
-                    <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
-                        <p>+ Nova</p>
+            <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
+                <div v-for="propriedade of projeto.propriedades" class="w-[25%]">
+                    <div v-if="propriedade.tipo == propriedadeAtual">
+                        <div class="listaDeTarefasPorPropriedade">
+                            <div class="w-[80%] p-[1%] flex justify-center bg-white font-Poppins font-medium text-[1vw] ">
+                                {{ propriedade.nome }}
+                            </div>
+                            <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
+                                <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
+                            </div>
+                            <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
+                                <p>+ Nova</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
-
+                <div class="novaPropriedade">
+                    <h1>+Nova</h1>
+                </div>
             </div>
         </div>
     </div>
@@ -35,18 +39,17 @@ import { conexaoBD } from '../stores/conexaoBD';
 let api = conexaoBD()
 let projetoApi = api.procurar("/projeto?id=1")
 let projeto = projetoObjeto()
-console.log(projeto)
 
 const propriedadeAtual = ref(null);
 
 const listaDeTipos = ref([
     {
         nome: "Texto",
-        valor: "STRING"
+        valor: "TEXTO"
     },
     {
         nome: "Numero",
-        valor: "NUMBER"
+        valor: "NUMERO"
     },
     {
         nome: "Status",
@@ -54,7 +57,7 @@ const listaDeTipos = ref([
     },
     {
         nome: "Data",
-        valor: "DATE"
+        valor: "DATA"
     },
 ])
 let listaDeTarefasPorPropriedade = ref()
@@ -86,6 +89,17 @@ async function projetoObjeto() {
     overflow-x: auto;
     position: relative;
     box-shadow: "0px 2px rgb(189, 189, 189)";
+}
+
+.novaPropriedade {
+    @apply w-[25%] h-[60%] flex-col bg-[#A79DB0] pt-[5px] flex justify-center items-center text-[2vw];
+    box-shadow: 0px 5px 7px rgb(99, 99, 99);
+
+}
+
+.listaDeTarefasPorPropriedade {
+    @apply w-full h-max flex items-center flex-col bg-[#B6BFE9] pt-[5px];
+    box-shadow: 0px 5px 7px rgb(99, 99, 99);
 
 }
 </style>
