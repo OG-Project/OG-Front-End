@@ -1,11 +1,11 @@
 <template>
-    <div class="flex justify-center">
-            <div class="convites-bg flex flex-col  bg-[#FEFBFF] shadow shadow-gray-950">
+    <div class="grid-template flex">
+            <div class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950">
                 <div class="flex justify-center">
-                <h1 class="font-semibold xl:text-xl mt-5">CONVITES</h1>
+                <h1 class="font-semibold xl:text-xl">CONVITES</h1>
                 </div>
-                <div class="flex justify-center items-center flex-col mt-4 ml-5">
-                    <div class="flex justify-center items-center mt-4 mb-2">
+                <div class="flex items-center flex-col mt-5 ml-5">
+                    <div class=" w-full flex items-center mt-10 mb-2">
                         <img class="imgDePerfil" src="img" alt="">
                         <h2 class="md:text-sm xl:text-xl">{{ Usuario.nome }}</h2>
                         <img class="imgIcon" src="img" alt="">
@@ -40,7 +40,10 @@ Usuario.img = ""
         @apply 
         xl:h-[24vh] 
         lg:h-[18vh]
-        md:h-[21vh] w-full;
+        md:h-[21vh]
+        justify-items-center justify-center;
+        display: grid;
+        grid-template-columns: 0% 0%;
         clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
     }
 
@@ -62,19 +65,11 @@ Usuario.img = ""
         text-xs ml-[30px] mb-[3px];
     }
 
-    @media (min-width: 2560px) {
-        .convites-bg {
-             @apply w-[20vw];
-        }
-        .selectEdit{
-            @apply 2xl:text-2xl
-        }
+    .grid-template{ 
+        @apply w-[80%%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+        display: grid;
+        grid-template-columns: 40% 55%;
     }
-
-    @media(min-width: 1280px) and (max-width: 1440px){
-        
-    }
-
-
+   
 
 </style>
