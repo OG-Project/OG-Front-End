@@ -18,16 +18,17 @@
         <div class="flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
-        <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+        <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
    </div>
    <div class="styleInputPadrao" 
         v-if="icon=='null'"  :style="estilizaDivInput">
-        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
    </div>
    <div class="styleInputPadraoIconDireita" :class="styleInputPadraoDireita" 
         v-if="direcao=='direita'" :style="estilizaDivInput">
-        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
         :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
         <div class="flex justify-center">

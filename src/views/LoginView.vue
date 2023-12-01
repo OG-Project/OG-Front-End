@@ -2,7 +2,6 @@
 import { useRouter } from "vue-router";
 import Botao from "../components/Botao.vue";
 import Input from "../components/Input.vue";
-
 import iconeGoogle from "../imagem-vetores/iconeGoogle.svg";
 import iconeLinkedin from "../imagem-vetores/iconeLinkedin.svg";
 import iconePessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
@@ -11,9 +10,10 @@ import imgVetorSenha from "../imagem-vetores/iconeCadeadoSenhaLogin.svg";
 import imgEmailRegistro from "../imagem-vetores/iconeEmailRegistro.svg";
 import imgPessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
 import { conexaoBD } from "../stores/conexaoBD.js";
-import VueCookies from 'vue-cookies';
-
-
+import VueCookies from "vue-cookies";
+import { criaUsuarioStore } from "../stores/criarUsuario.js";
+import olho from "../imagem-vetores/olho.svg";
+import olhoOculto from "../imagem-vetores/olhoOculto.svg";
 import { ref } from "vue";
 
 const router = useRouter();
@@ -31,25 +31,21 @@ const banco = conexaoBD();
 let tipo = ref("login");
 let usuarioLogin = ref("");
 let senhaUsuarioLogin = ref("");
-let usuarioCadastro = ref('');
-let emailCadastro = ref('');
-let senhaCadastro = ref('');
-let confirmarSenhaCadastro = ref('');
-
+let usuarioCadastro = ref("");
+let emailCadastro = ref("");
+let senhaCadastro = ref("");
+let confirmarSenhaCadastro = ref("");
 
 async function fazerLogin() {
-    let usuarios = banco.procurar('/usuario');
-    let listaUsuarios = await (usuarios);
-    listaUsuarios.forEach(usuario => {
-        if(usuarioLogin.value === usuario.username){
-            if(senhaUsuarioLogin.value === usuario.senha){
-                VueCookies.set('usuarioCookie', usuario , 1);
-                console.log("logou sua bixa 😜")
-                console.log(VueCookies.get('usuarioCookie'))
-            }
-        }
-    });
-
+  let usuarios = banco.procurar("/usuario");
+  let listaUsuarios = await usuarios;
+  listaUsuarios.forEach((usuario) => {
+    if (usuarioLogin.value === usuario.username) {
+      if (senhaUsuarioLogin.value === usuario.senha) {
+        VueCookies.set("usuarioCookie", usuario, 1);
+      }
+    }
+  });
 }
 
 function trocaDeTela() {
@@ -59,10 +55,60 @@ function trocaDeTela() {
   } else {
     document.body.style.overflow = "hidden";
     tipo.value = "login";
-    console.log(usuarioCadastro.value);
-    console.log(emailCadastro.value);
-    console.log(senhaCadastro.value);
-    console.log(confirmarSenhaCadastro.value);
+  }
+}
+
+async function cadastraUsuario() {
+  const criarUsuario = criaUsuarioStore();
+  let usuarioUnico = true;
+  let usuarios = banco.procurar("/usuario");
+  let listaUsuarios = await usuarios;
+  listaUsuarios.forEach((usuario) => {
+    if (usuario.username != usuarioCadastro.value) {
+      usuarioUnico = true;
+    } else {
+      usuarioUnico = false;
+    }
+  });
+  if (usuarioUnico) {
+    if (emailCadastro.value.indexOf('@') > 0 && emailCadastro.value.indexOf('@') < emailCadastro.value.length - 1 && emailCadastro.value.includes(".")) {
+      if (senhaCadastro.value === confirmarSenhaCadastro.value) {
+        criarUsuario.criaUsuario(
+          usuarioCadastro.value,
+          emailCadastro.value,
+          senhaCadastro.value
+        );
+        usuarioCadastro.value = ""
+        emailCadastro.value  = ""
+        senhaCadastro.value  = ""
+      }
+    }
+  }
+}
+
+
+let vizualizacaoDeSenha = ref("password");
+let vizualizacaoDeSenhaConfirmacao = ref("password");
+let iconeDaSenha = ref(olho);
+let iconeDaSenhaConfirmacao = ref(olho);
+function mostraSenhas(){
+  if(vizualizacaoDeSenha.value === ""){
+    vizualizacaoDeSenha.value = "password"
+    iconeDaSenha.value = olho
+  }
+  else{
+    vizualizacaoDeSenha.value = ""
+    iconeDaSenha.value = olhoOculto
+  }
+}
+function mostraSenhaConfirmacao(){
+  if(vizualizacaoDeSenhaConfirmacao.value === ""){
+    vizualizacaoDeSenhaConfirmacao.value = "password"
+    iconeDaSenhaConfirmacao.value = olho
+  }
+  else{
+    vizualizacaoDeSenhaConfirmacao.value = ""
+    iconeDaSenhaConfirmacao.value = olhoOculto
   }
 }
 </script>
@@ -85,12 +131,18 @@ function trocaDeTela() {
             conteudoInput="User"
             v-model="usuarioLogin"
           ></Input>
+          <div class="flex flex-row justify-center items-center pl-10">
           <Input
             styleInput="input-transparente-escuro"
             :icon="iconeSenhaLogin"
             conteudoInput="Senha"
             v-model="senhaUsuarioLogin"
+            :tipo="vizualizacaoDeSenha"
           ></Input>
+          <button class="h-[100%] w-[8%]" @click="mostraSenhas">
+            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4">
+          </button>
+          </div>
           <Botao
             :funcaoClick="fazerLogin"
             preset="PadraoRoxo"
@@ -138,23 +190,41 @@ function trocaDeTela() {
             conteudoInput="E-Mail"
             v-model="emailCadastro"
           ></Input>
+          <div class="flex flex-row justify-center items-center pl-10">
           <Input
             styleInput="input-transparente-escuro"
-            :icon="imgVetorSenha"
+            :icon="iconeSenhaLogin"
             conteudoInput="Senha"
             v-model="senhaCadastro"
+            :tipo="vizualizacaoDeSenha"
           ></Input>
+          <button class="h-[100%] w-[8%] flex items-center justify-center" @click="mostraSenhas">
+            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4">
+          </button>
+          </div>
+          <div class="flex flex-row justify-center items-center pl-10">
           <Input
             styleInput="input-transparente-escuro"
-            :icon="imgVetorSenha"
+            :icon="iconeSenhaLogin"
             conteudoInput="Confirmar Senha"
             v-model="confirmarSenhaCadastro"
+            :tipo="vizualizacaoDeSenhaConfirmacao"
           ></Input>
+          <button class="h-[100%] w-[8%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
+            <img :src="iconeDaSenhaConfirmacao" class="h-[100%] w-[100%] invert ml-4">
+          </button>
+          </div>
           <Botao
-            :funcaoClick="trocaDeTela"
+            :funcaoClick="cadastraUsuario"
             preset="PadraoRoxo"
             texto="Cadastrar"
             tamanhoPadrao="grande"
+          ></Botao>
+          <Botao
+            :funcaoClick="trocaDeTela"
+            preset="PadraoBranco"
+            texto="Sair"
+            tamanhoPadrao="medio"
           ></Botao>
         </div>
       </Transition>
@@ -194,7 +264,7 @@ function trocaDeTela() {
 .registro-leave-from,
 .registro-enter-to {
   opacity: 1;
-  transform: translateX(-9.5vw);
+  transform: translateX(-11vw);
 }
 
 .login-enter-active,
@@ -205,7 +275,7 @@ function trocaDeTela() {
 .login-enter-to,
 .login-leave-from {
   opacity: 1;
-  transform: translateX(9.5vw);
+  transform: translateX(10.0vw);
 }
 
 .login-leave-active,
