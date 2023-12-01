@@ -14,11 +14,12 @@
 <template>
     
    <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita'" :style="this.estilizaDivInput">
+        v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
         <div class="flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
-        <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado >
+        <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
    </div>
    <div class="styleInputPadrao" 
         v-if="icon=='null'"  :style="estilizaDivInput">
@@ -98,8 +99,8 @@ import {Equipe} from '../models/Equipe'
     }
    const tamanhoIcon={
         //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
-        width:"80%",
-        height:"80%",
+        width:"60%",
+        height:"60%",
     }
 
    const estilizaInput={
