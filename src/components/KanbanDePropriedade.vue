@@ -8,18 +8,17 @@
 
         <div class="divMaior">
             <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-                <div v-for="propriedade of projeto.propriedades" class="w-[25%]">
-                    <div v-if="propriedade.tipo == propriedadeAtual">
-                        <div class="listaDeTarefasPorPropriedade">
-                            <div class="w-[80%] p-[1%] flex justify-center bg-white font-Poppins font-medium text-[1vw] ">
-                                {{ propriedade.nome }}
-                            </div>
-                            <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
-                                <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
-                            </div>
-                            <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
-                                <p>+ Nova</p>
-                            </div>
+                {{ console.log(lista) }}
+                <div v-for="propriedade of lista"  class="w-[25%]">
+                    <div  class="listaDeTarefasPorPropriedade">
+                        <div class="w-[80%] p-[1%] flex justify-center bg-white font-Poppins font-medium text-[1vw] ">
+                            {{ propriedade.nome }}
+                        </div>
+                        <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
+                            <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
+                        </div>
+                        <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
+                            <p>+ Nova</p>
                         </div>
                     </div>
                 </div>
@@ -32,16 +31,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,watch } from 'vue';
 import CardTarefas from './cardTarefas.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 
 let api = conexaoBD()
 let projetoApi = api.procurar("/projeto?id=1")
 let projeto = projetoObjeto()
-
+let listaDeTarefas = [];
+let lista = ref([]);
+console.log(lista)
 const propriedadeAtual = ref(null);
-
 const listaDeTipos = ref([
     {
         nome: "Texto",
@@ -62,6 +62,9 @@ const listaDeTipos = ref([
 ])
 let listaDeTarefasPorPropriedade = ref()
 
+watch(propriedadeAtual, async() =>{
+    await defineListaDeTarefas()
+})
 
 async function definePropriedades() {
     return ref((await api.api).data)
@@ -70,6 +73,20 @@ async function projetoObjeto() {
 
     const resultado = await projetoApi;
     return projeto = resultado[0]
+}
+async function defineListaDeTarefas() {
+    listaDeTarefas = []
+    let projetoTeste = (await (projeto))
+
+    projetoTeste.propriedades.forEach(propriedade => {
+        if (propriedade.tipo == propriedadeAtual.value) {
+            listaDeTarefas.push(propriedade)
+            
+        }
+    });
+    lista = listaDeTarefas
+    console.log(lista)
+
 }
 </script>
 
