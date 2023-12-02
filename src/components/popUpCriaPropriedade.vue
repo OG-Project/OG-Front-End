@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <FundoPopUp largura="40vw" altura="80vh">
             <div class="w-full h-full flex flex-col justify-between items-center">
                 <div class="flex justify-center h-[30%] items-end">
@@ -22,10 +22,10 @@
                 </div>
                 <div class="alinhaBotoes">
                     <div class="flex items-center justify-start" @click="limpaTudo()">
-                        <Botao preset="Sair" width="20vh" height="6vh" tamanhoDaFonte="3vh" tamanhoPadrao="personalizado" :funcaoClick="funcaoPopUp.fechaPopUp" ></Botao>
+                        <Botao preset="Sair"  tamanhoDaFonte="3vh"  tamanhoPadrao="medio" :funcaoClick="funcaoPopUp.fechaPopUp" ></Botao>
                     </div>
                     <div class="flex items-center justify-end">
-                        <Botao preset="PadraoVazado" texto="CRIAR" tamanho-da-borda="4px" tamanhoPadrao="personalizado" width="20vh" height="6vh" tamanhoDaFonte="3vh" sombras='nao' :funcaoClick="cria" ></Botao>
+                        <Botao preset="PadraoVazado" texto="CRIAR" tamanho-da-borda="4px" tamanhoPadrao="medio" tamanhoDaFonte="3vh" sombras='nao' :funcaoClick="cria" ></Botao>
                     </div>
                    
                 </div>
@@ -51,11 +51,13 @@ const funcaoPopUp= funcaoPopUpStore();
 function cria(){
     
     if(tipo.value==''|| tipo.value=='Texto'){
-        tipo.value="STRING"
+        tipo.value="TEXTO"
     }else if(tipo.value=='Numero'){
-        tipo.value="DOUBLE"
+        tipo.value="NUMERO"
     }else if(tipo.value=="Data"){
-        tipo.value="DATE"
+        tipo.value="DATA"
+    }else if(tipo.value=="Seleção"){
+        tipo.value="SELECAO"
     }
     const cria = criaPropriedadeStore()
     cria.criaPropriedade(nomePropriedade.value,tipo.value)

@@ -1,32 +1,23 @@
 
-<!--
-    EXEMPLOS - WIDTH E HEIGTh VOCÊ DECIDE
-    <Input styleInput="input-claro" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="23" height="5" direcao="direita"></Input>
-<br>
-<Input styleInput="input-escuro" icon="../src/imagem-vetores/icon-lapis.svg" width="23" height="5"></Input>
-<br>
-<Input styleInput="input-claro" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="23" height="5"></Input>
-<br>
-<Input styleInput="input-transparente-escuro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="23" height="10"></Input>
-<br>
+<!-- <br>
 <Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="38" height="10"></Input> -->
 
 <template>
     
    <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita'" :style="this.estilizaDivInput">
+        v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
         <div class="flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
-        <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado >
+        <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle xl:pl-5 sm:pl-1 md:pl-2" :disabled=desabilitado >
    </div>
-   <div class="styleInputPadrao" 
+   <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null'"  :style="estilizaDivInput">
-        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
    </div>
-   <div class="styleInputPadraoIconDireita" :class="styleInputPadraoDireita" 
+   <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
         v-if="direcao=='direita'" :style="estilizaDivInput">
-        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle xl:pr-5 sm:pr-1 md:pr-2" :disabled=desabilitado 
         :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
         <div class="flex justify-center">
@@ -59,17 +50,14 @@ import {Equipe} from '../models/Equipe'
         modelValue:String,
         tipo: String,
         largura:String,
-        altura:String
+        altura:String,
+        fontSize: String,
+        corHover: String
       })
-    const styleInputPadraoDireita= ".styleInputPadraoDireita"
-
-        onMounted(()=>{
-            props.largura= widthResponsivo()
-            props.altura = heigthResponsivo();
-       
-        }
-        
-    )
+    const hoverPadrao = {
+        color : verificaCorHover()
+    }
+        onMounted(()=>{})
 
     function widthResponsivo(){
         if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
@@ -79,7 +67,7 @@ import {Equipe} from '../models/Equipe'
         } else  if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
         || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
             return "10vw"
-        } 
+        }
            return "25vw"
     }
 
@@ -105,7 +93,7 @@ import {Equipe} from '../models/Equipe'
    const estilizaInput={
         backgroundColor:"inherit",
         color: verificaCor(),
-        fontSize: verificaTamanho(),
+        fontSize: verificaTamanhoFont(),
         width: "100%",
         height: '100%',
 
@@ -142,13 +130,19 @@ import {Equipe} from '../models/Equipe'
             return "#D7D7D7"
         }
     }
-  
+    function verificaCorHover(){
+        if(props.corHover=="escuro"){
+            return "#484848"
+        }
+        return "#D7D7D7"
+    }
 
 
-    function verificaTamanho(){
-        console.log("eia")
-        //Aumenta o tamanho da font size de acordo 
-        if(props.styleInput==="input-grande" || props.styleInput==="input-grande-escuro"  || props.styleInput==="input-claro-grande" ||  
+    function verificaTamanhoFont(){
+        //Aumenta o tamanho da font size de acordo com a tela
+        if(props.fontSize == undefined){ 
+
+            if(props.styleInput==="input-grande" || props.styleInput==="input-grande-escuro"  || props.styleInput==="input-claro-grande" ||
         props.styleInput==="input-transparente-claro-grande" || props.styleInput==="input-transparente-escuro-grande" ){
 
             if(window.innerWidth >= 600 && window.innerWidth <= 850){
@@ -162,19 +156,19 @@ import {Equipe} from '../models/Equipe'
             }
         }else if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
         || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
-            if(window.innerWidth >= 600 && window.innerWidth <= 850){
-                console.log(window.innerWidth)
-                return "0.8rem"
+                if(window.innerWidth >= 600 && window.innerWidth <= 850){
+                    console.log(window.innerWidth)
+                    return "0.8rem"
 
-            }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
-                return '1.0rem'
-            }else if(window.innerWidth >= 1000 && window.innerWidth <=1500 ){
-                return '1.0rem'
+                }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
+                    return '1.0rem'
+                }else if(window.innerWidth >= 1000 && window.innerWidth <=1500 ){
+                    return '1.0rem'
+                }
             }
+             return '1.2rem'
         }
-
-        return '1.2rem'
-
+     return props.fontSize;
     }
 
     function verificaCor(){
@@ -185,15 +179,16 @@ import {Equipe} from '../models/Equipe'
             return 'black';
         }
     }
-    function semIcon(){
-        if(props.icon!=undefined){
-            return "100%";
-        }
-        return "80%";
-    }
 
+    function hoverStyle(){
+            if(props.corHover=="escuro"){
+                return props.corHover=="#484848"
+        }
+           return props.corHover=="#D7D7D7"  
+    }
+    
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import url(../assets/main.css);
 
     .styleInputPadrao{
@@ -201,14 +196,17 @@ import {Equipe} from '../models/Equipe'
        border-4 
         border-transparent
         border-b-roxo    
-        pt-2
-        pb-2
         px-2
         max-w-max
         w-min
         border-b-4
+        hover:rounded-[4px] hover:border-4
         items-center focus-within:border-roxo 
-        focus-within:border-4 focus-within:rounded-md;
+        focus-within:border-4 focus-within:rounded-[4px];
+        
+    }
+    .styleInputPadrao:hover{
+        background-color: v-bind('hoverPadrao.color');
     }
 
     .styleInputPadraoIconDireita{
@@ -222,16 +220,20 @@ import {Equipe} from '../models/Equipe'
         max-w-max
         w-min
         border-b-4
+        hover:rounded-[4px] hover:border-4
         items-center focus-within:border-roxo 
-        focus-within:border-4 focus-within:rounded-md;
+        focus-within:border-4 focus-within:rounded-[4px] ;
         display: grid;
         grid-template-columns: 80% 20%;
         align-content: center;
     }
+    .styleInputPadraoIconDireita:hover{
+        background-color: v-bind('hoverPadrao.color');
+    }
 
     .styleInputPadraoIcon{
        @apply 
-       border-4 
+        border-4 
         border-transparent
         border-b-roxo    
         pt-2
@@ -240,14 +242,20 @@ import {Equipe} from '../models/Equipe'
         max-w-max
         w-min
         border-b-4
+        hover:rounded-[4px] hover:border-4
         items-center focus-within:border-roxo 
-        focus-within:border-4 focus-within:rounded-md;
+        focus-within:border-4 focus-within:rounded-[4px];
         display: grid;
         grid-template-columns: 20% 80%;
         align-content: center;
     }
+    .styleInputPadraoIcon:hover{
+        background-color: v-bind('hoverPadrao.color');
+    }
+    
+   
     .inputStyle{
-        @apply focus-visible:outline-0 xl:pr-5 sm:pr-1 md:pr-2 bg-transparent;
+        @apply focus-visible:outline-0  bg-transparent;
     }
 
 </style>

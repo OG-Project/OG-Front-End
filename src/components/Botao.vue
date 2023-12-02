@@ -63,7 +63,6 @@ const props = defineProps({
   preset: String,
   funcaoClick: Function,
   tamanhoPadrao: {
-
     type: String,
     default: 'medio'
   },
