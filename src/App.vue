@@ -1,4 +1,5 @@
 <script setup>
+
 import { RouterLink, RouterView } from 'vue-router'
 import Tabelas from './components/Tabelas.vue';
 
@@ -13,18 +14,15 @@ import Convite from './components/ConvitePopUp.vue';
 import ListaConvidados from './components/ListaConvidados.vue';
 import ListaUsuarioEquipePopUp from './components/listaUsuarioEquipePopUp.vue';
 
-const funcaoPopUp = funcaoPopUpStore();
+import { RouterView } from 'vue-router'
 </script>
-
 <template>
+
   <ListaUsuarioEquipePopUp>
 
   </ListaUsuarioEquipePopUp>
-  
+
+    <RouterView></RouterView>
 </template>
-
-<style scoped>
-</style>
-
 
 
