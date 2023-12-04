@@ -125,7 +125,9 @@ import {Equipe} from '../models/Equipe'
             console.log(teste)
             return teste
         }
+        console.log(props.altura)
         return props.altura;
+
     }
     function verificaWidth(){
         if(props.largura==undefined){

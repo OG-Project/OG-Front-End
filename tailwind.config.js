@@ -1,4 +1,8 @@
 
+import { min } from 'date-fns'
+
+
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -6,7 +10,9 @@ export default {
     "./src/**/*.{js,ts,vue}",
   ],
   theme: {
+   
     extend: {
+      
       colors:{
         'roxoEscuro' : '#36213E',
         'roxo' : '#620BA7',
@@ -18,8 +24,7 @@ export default {
         'info' : '#36213E',
         'roxoAtencao' : '#8E00FF',
         'cinza-escuro': '#484848',
-        'cinza-claro': '#D7D7D7'
-      },
+        'cinza-claro': '#D7D7D7',
 
       width:{
         
@@ -28,7 +33,9 @@ export default {
         'Poppins' : 'Poppins, sans-serif',
         'Source Sans 3':'Source Sans 3, sans-serif'
       },
+
     },
   },
   plugins: [],
+}
 }

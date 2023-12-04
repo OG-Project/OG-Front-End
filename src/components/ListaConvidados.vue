@@ -1,24 +1,24 @@
-    <template>
-        <div class="flex justify-center">
-            <div class="convites-bg flex justify-center items-center flex-col    w-full h-full ">
-                <div class="flex justify-center mt-[8%]">
-                    <h1 class="flex justify-center font-semibold xl:text-xl sm:text-xs">CONVITES</h1>
+<template>
+    <div class="grid-template flex">
+            <div class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950">
+                <div class="flex justify-center">
+                <h1 class="font-semibold xl:text-xl">CONVITES</h1>
                 </div>
-                <div class="">
-                     <div class="flex justify-center  items-center mt-[8%] xl:w-[19vw] w-full mb-[2vh]">
+                <div class="flex items-center flex-col mt-5 ml-5">
+                    <div class=" w-full flex items-center mt-10 mb-2">
                         <img class="imgDePerfil" src="img" alt="">
-                        <h2 class="mt-[0%] xl:text-[1vw] sm:text-xs">{{ Usuario.nome }} </h2> 
+                        <h2 class="md:text-sm xl:text-xl">{{ Usuario.nome }}</h2>
                         <img class="imgIcon" src="img" alt="">
+                        <SelectPadrao class="selectEdit" styleSelect="select-cinza" :listaSelect="opcoesSelect"></SelectPadrao>
                     </div>
                 </div>
             </div>
-        </div>      
-        
-    </template>
+        </div>
+  </template>
 
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
-  
+import { defineProps, computed } from 'vue';
 
 const Usuario = {
     nome: String,
@@ -27,7 +27,7 @@ const Usuario = {
 }
 const opcoesSelect = ['Edit', 'View']
 Usuario.nome = "EduardoCosta"
-Usuario.img = ""
+Usuario.img = "" 
 
 </script>
 
@@ -37,9 +37,13 @@ Usuario.img = ""
 
     
     .convites-bg {
-        @apply xl:w-[24vw] xl:h-[24vh] 
-        md:w-[36vw] md:h-[14vh] w-full 
-        bg-[#FEFBFF] shadow-md shadow-gray-950 ;
+        @apply 
+        xl:h-[24vh] 
+        lg:h-[18vh]
+        md:h-[21vh]
+        justify-items-center justify-center;
+        display: grid;
+        grid-template-columns: 0% 0%;
         clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
     }
 
@@ -47,23 +51,25 @@ Usuario.img = ""
         @apply bg-cover 
         bg-center flex flex-col justify-center 
         items-center mr-[-25px] ml-[10px] 
-        xl:w-[2vw] xl:h-[4vh]  h-full;
+        xl:w-[2vw] xl:h-[4vh];
     }
 
     .imgDePerfil {
-        @apply rounded-full bg-cover bg-center flex flex-col mr-[5px] ml-[-25px] xl:w-[2vw] xl:h-[4vh] h-full;
+        @apply rounded-full bg-cover bg-center flex 
+        flex-col mr-[5px] ml-[-25px]
+        xl:w-[2vw] xl:h-[4vh];
     }
 
     .selectEdit {
-        background-color: 787878;
-        color: #ffff;
-        margin-left: 35px;
-        height: 4vh;
-        width: 8vw ;
-        margin-top: -3px;
-
-
+        @apply
+        text-xs ml-[30px] mb-[3px];
     }
 
+    .grid-template{ 
+        @apply w-[80%%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+        display: grid;
+        grid-template-columns: 40% 55%;
+    }
+   
 
 </style>

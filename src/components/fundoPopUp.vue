@@ -70,5 +70,12 @@ const funcaoPopUp = funcaoPopUpStore();
         @apply fixed inset-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg absolute ;
        
     }
+
+    @media(min-width: 2560px){
+        .style-bg-branco{
+            @apply w-[25vw]
+        }
+    }
+
 }   
 </style>
