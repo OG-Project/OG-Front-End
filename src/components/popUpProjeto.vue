@@ -6,7 +6,13 @@
                     <Input styleInput="input-transparente-claro" icon="../src/imagem-vetores/icon-lapis-preto.svg" conteudoInput="Nome Projeto"  direcao="direita" largura="15vw" fontSize="1.5rem"></Input>
                 </div>
                 <div class="h-[5%] w-[50%] flex items-center justify-center">
-                    <Input styleInput="input-transparente-claro-pequeno" conteudoInput="Tipo Projeto"  ></Input>
+                    <Input styleInput="input-transparente-claro-pequeno" conteudoInput="Tipo Projeto"></Input>
+                </div>
+                <div class="h-[5%] w-[50%] flex items-center justify-center">
+                    <Input styleInput="input-transparente-claro-pequeno" conteudoInput="Data Inicio"></Input>
+                </div>
+                <div class="h-[5%] w-[50%] flex items-center justify-center">
+                    <selectPadrao></selectPadrao>
                 </div>
             </div>
         </FundoPopUp>

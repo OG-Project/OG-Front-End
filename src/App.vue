@@ -1,4 +1,5 @@
 <script setup>
+<<<<<<< HEAD
 import { RouterLink, RouterView } from 'vue-router'
 import Tabelas from './components/Tabelas.vue';
 
@@ -18,8 +19,9 @@ import PopUpProjeto from './components/popUpProjeto.vue';
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 
-</script>
+import { RouterView } from 'vue-router'
 
+</script>
 <template>
  
     <div class=" flex justify-center">
@@ -33,6 +35,3 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
 </template>
 
 <style scoped></style>
-
-
-  

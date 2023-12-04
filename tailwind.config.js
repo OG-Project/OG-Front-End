@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -22,6 +23,10 @@ export default {
 
       width:{
         
+      },
+      fontFamily:{
+        'Poppins' : 'Poppins, sans-serif',
+        'Source Sans 3':'Source Sans 3, sans-serif'
       },
     },
   },

@@ -9,15 +9,18 @@
         <div class="flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
-        <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle xl:pl-5 sm:pl-1 md:pl-2" :disabled=desabilitado >
+        <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
    </div>
    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null'"  :style="estilizaDivInput">
-        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
+
    </div>
    <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
         v-if="direcao=='direita'" :style="estilizaDivInput">
-        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle xl:pr-5 sm:pr-1 md:pr-2" :disabled=desabilitado 
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
         :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
         <div class="flex justify-center">
@@ -86,8 +89,8 @@ import {Equipe} from '../models/Equipe'
     }
    const tamanhoIcon={
         //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
-        width:"80%",
-        height:"80%",
+        width:"60%",
+        height:"60%",
     }
 
    const estilizaInput={
