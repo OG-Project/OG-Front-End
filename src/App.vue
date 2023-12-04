@@ -11,17 +11,15 @@ import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 import Convite from './components/ConvitePopUp.vue';
 import ListaConvidados from './components/ListaConvidados.vue';
+import ListaUsuarioEquipePopUp from './components/listaUsuarioEquipePopUp.vue';
 
 const funcaoPopUp = funcaoPopUpStore();
 </script>
 
 <template>
-  <Convite>
+  <ListaUsuarioEquipePopUp>
 
-  </Convite>
-
-
- 
+  </ListaUsuarioEquipePopUp>
   
 </template>
 

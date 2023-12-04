@@ -111,7 +111,7 @@ Usuario.img = ""
 
     @media(min-width: 1280px ) and ( max-width: 1440px){
         .divGeral{
-            @apply w-[50vw]
+            @apply w-[50vw];
         }
         .listaConvidados{
             @apply w-[30vw];
@@ -121,13 +121,13 @@ Usuario.img = ""
 
     @media(min-width: 1440px) and (min-height: 1080px){
         .botao{
-           @apply xl:mt-[8%]
+           @apply xl:mt-[4%] ;
         }
     }
 
     @media(min-width: 768px) and (min-height: 1080px){
         .botao{
-           @apply md:mt-[25%]
+           @apply md:mt-[25%];
         }
     }
    
