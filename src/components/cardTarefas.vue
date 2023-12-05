@@ -3,8 +3,7 @@
 import { Tarefa } from '../models/Tarefa.js';
 import { ref } from 'vue';
 import tinycolor from "tinycolor2";
-
-
+import VueCookies from "vue-cookies";
 
 const isHovered = ref(false);
 
@@ -18,7 +17,7 @@ let tarefa1
 let kanban
 let hoverCard
 let tira
-
+let usuarioLogado =  $cookies.get("usuarioCookie");
 tarefa1 = {
     backgroundColor: props.tarefa.cor,
     width: "6%",
@@ -35,15 +34,15 @@ tira = {
     fontSize: "0.7vw"
 }
 kanban = {
-    width: "15.2vw",
+    width: "13.5vw",
     height: "8vh",
     backgroundColor: "#D9D9D9",
     display: "flex",
-    
+
 }
 
 hoverCard = {
-    width: "15.2vw",
+    width: "13.5vw",
     height: "8vh",
     backgroundColor: "#D9D9D9",
     display: "flex",
@@ -63,7 +62,6 @@ function verificaCorTexto(tarefa) {
         return "black"
     }
 }
-console.log(props.tarefa.nome)
 
 </script>
 
@@ -71,26 +69,28 @@ console.log(props.tarefa.nome)
     <!-- Preset 1 Kanban -->
     <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1">
         <div :style="tarefa1"> </div>
-        <div class="w-[30%] m-[5%]">
+        <div class="w-[60%] m-[5%] font-Poppins font-medium text-[1vw]" >
             <p class="truncate text-[2vh]">{{ props.tarefa.nome }}</p>
         </div>
         <div class="teste2">
-            <div class="h-[45%] flex items-center">
+            <div class="h-[50%] flex items-center">
                 <svg width="1.9vw" height="7" viewBox="0 0 29 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <ellipse cx="2.96387" cy="3.33062" rx="2.78614" ry="2.88189" fill="black" />
                     <ellipse cx="14.1084" cy="3.33062" rx="2.78614" ry="2.88189" fill="black" />
                     <ellipse cx="25.2529" cy="3.33062" rx="2.78614" ry="2.88189" fill="black" />
                 </svg>
             </div>
-            <div class="h-[55%]">
+            <div class="h-[50%] flex justify-center">
                 <div class="bola"></div>
             </div>
 
         </div>
-        <div class="abaRoxa">
-            <svg width="2vh" height="2vh" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M14.6252 14.3234L0.464865 14.3233L14.6257 0.610178L14.6252 14.3234Z" fill="#620BA7" />
-            </svg>
+        <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas"  >
+            <div v-if="tarefa.tarefa.id == props.tarefa.id" class="flex justify-end pl-[20%]">
+                <svg width="2vh" height="2vh" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.6252 14.3234L0.464865 14.3233L14.6257 0.610178L14.6252 14.3234Z" fill="#620BA7" />
+                </svg>
+            </div>
         </div>
 
     </div>
@@ -114,24 +114,22 @@ console.log(props.tarefa.nome)
     .teste2 {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
-        width: 53%;
+        align-items: center;
+        width: 15%;
         height: 100%;
     }
 
     .bola {
-        width: 2vw;
-        height: 2vw;
+        width: 1.5vw;
+        height: 1.5vw;
         border-radius: 100%;
         background-color: orange;
     }
 
     .abaRoxa {
         height: 100%;
-        width: 7%;
         display: flex;
         align-items: flex-end;
-        justify-content: flex-end;
     }
 }
 </style>

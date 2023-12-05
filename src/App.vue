@@ -18,6 +18,9 @@ const funcaoPopUp = funcaoPopUpStore();
   <div class="w-[100%] h-screen flex justify-center items-center">
     <KanbanDePropriedade></KanbanDePropriedade>
   </div>
+  <div class="w-[100%] h-screen flex justify-center items-center">
+    <calendario></calendario>
+  </div>
 
 </template>
 

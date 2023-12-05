@@ -8,14 +8,17 @@
 
         <div class="divMaior">
             <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-                {{ console.log(lista) }}
-                <div v-for="propriedade of lista"  class="w-[25%]">
-                    <div  class="listaDeTarefasPorPropriedade">
+                <div v-for="propriedade of lista" class="w-[20%]">
+                    <div class="listaDeTarefasPorPropriedade">
                         <div class="w-[80%] p-[1%] flex justify-center bg-white font-Poppins font-medium text-[1vw] ">
                             {{ propriedade.nome }}
                         </div>
                         <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
-                            <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
+                            <div v-for="propriedadeTarefa of tarefa.valorPropriedadeTarefas">
+                                <div v-if="propriedadeTarefa.propriedade.id == propriedade.id ">
+                                    <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
+                                </div>
+                            </div>
                         </div>
                         <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
                             <p>+ Nova</p>
@@ -31,17 +34,20 @@
 </template>
 
 <script setup>
-import { ref,watch } from 'vue';
+import { ref, watch } from 'vue';
 import CardTarefas from './cardTarefas.vue';
 import { conexaoBD } from '../stores/conexaoBD';
+import VueCookies from "vue-cookies"
 
 let api = conexaoBD()
 let projetoApi = api.procurar("/projeto?id=1")
 let projeto = projetoObjeto()
 let listaDeTarefas = [];
 let lista = ref([]);
-console.log(lista)
-const propriedadeAtual = ref(null);
+cookies()
+defineListaDeTarefas()
+
+const propriedadeAtual = ref("STATUS");
 const listaDeTipos = ref([
     {
         nome: "Texto",
@@ -60,14 +66,17 @@ const listaDeTipos = ref([
         valor: "DATA"
     },
 ])
-let listaDeTarefasPorPropriedade = ref()
 
-watch(propriedadeAtual, async() =>{
+watch(propriedadeAtual, async () => {
     await defineListaDeTarefas()
 })
 
 async function definePropriedades() {
     return ref((await api.api).data)
+}
+async function cookies() {
+    let usuario = await api.procurar("/usuario/id?id=2")
+    $cookies.set("usuarioCookie", usuario, 1000000000)
 }
 async function projetoObjeto() {
 
@@ -77,16 +86,18 @@ async function projetoObjeto() {
 async function defineListaDeTarefas() {
     listaDeTarefas = []
     let projetoTeste = (await (projeto))
-
-    projetoTeste.propriedades.forEach(propriedade => {
-        if (propriedade.tipo == propriedadeAtual.value) {
+    if(propriedadeAtual.value == "STATUS"){
+        projetoTeste.statusList.forEach(status => {
+            listaDeTarefas.push(status)
+    });
+    }else{
+        projetoTeste.propriedades.forEach(propriedade => {
+            if (propriedade.tipo == propriedadeAtual.value) {
             listaDeTarefas.push(propriedade)
-            
         }
     });
-    lista = listaDeTarefas
-    console.log(lista)
-
+}
+    lista.value = listaDeTarefas
 }
 </script>
 
@@ -97,7 +108,7 @@ async function defineListaDeTarefas() {
     @apply bg-brancoNeve;
     display: flex;
     flex-direction: column;
-    width: 90%;
+    width: 100%;
     height: 72%;
     align-items: center;
     justify-content: center;
@@ -109,7 +120,7 @@ async function defineListaDeTarefas() {
 }
 
 .novaPropriedade {
-    @apply w-[25%] h-[60%] flex-col bg-[#A79DB0] pt-[5px] flex justify-center items-center text-[2vw];
+    @apply w-[20%] h-[50%] flex-col bg-[#A79DB0] pt-[5px] flex justify-center items-center text-[2vw];
     box-shadow: 0px 5px 7px rgb(99, 99, 99);
 
 }
