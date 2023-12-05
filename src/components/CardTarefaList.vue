@@ -1,19 +1,14 @@
 <template>
-<div class='max-w-[1760px] w-max'>
-    <div :style="distribuicao" class='h-[50px] items-center ml-9 grid'>
-        <div v-for="propriedade in propriedades" class='border-r-2 last:border-none text-center border-black px-4 truncate'>
-            {{propriedade}}
-        </div>
-    </div>
-    
-    <div draggable='true' 
-    @dragstart="drag(tarefa,index)" 
-    @drop="dropTarefa(index)" 
-    @dragenter.prevent
-    @dragover.prevent
-    v-for="(tarefa,index) in tarefas" 
-    class='dropZone card mb-2 flex'>
-        <div handle class="pl-4">
+<draggable class='' 
+  :list="props.tarefas"  
+  ghost-class="ghost"
+  handle=".handle"
+  @start="drag=true" 
+  @end="drag=false" 
+  >
+  <template #item="{element,index}">
+    <div class='card' > 
+        <div class=' handle'>
             <svg  width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect y="0.973022" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
             <rect x="11.4297" y="0.9729" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
@@ -23,8 +18,47 @@
             <rect x="11.4297" y="24.343" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
             </svg>
         </div>
+        <div :style="distribuicao" class='grid w-full'>
+            <div class='border-r-2 text-center last:border-none border-white px-4 truncate' v-for="valor in element.valores" >
+                {{valor}}
+            </div>
+        </div>
+    </div>
+   </template>
+</draggable>
+
+
+
+
+<div class='max-w-[1760px] w-max'>
+    <div :style="distribuicao" class='h-[50px] items-center ml-9 grid'>
+        <div v-for="propriedade in propriedades" class='border-r-2 last:border-none text-center border-black px-4 truncate'>
+            {{propriedade}}
+        </div>
+    </div>
+    
+    <div draggable='true' 
+    @drag="drag($event)"
+    @dragstart="dragStart($event,tarefa,index)" 
+    @dragend="dragEnd($event)"
+    @drop="dropTarefa(index)" 
+    @dragenter.prevent
+    @dragover.prevent
+    v-for="(tarefa,index) in tarefas" :key='index' 
+    class='card'>
+        <div handle="true" class="pl-4">
+            <svg  width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect y="0.973022" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
+            <rect x="11.4297" y="0.9729" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
+            <rect y="12.658" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
+            <rect x="11.4297" y="12.658" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
+            <rect y="24.343" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
+            <rect x="11.4297" y="24.343" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
+            </svg>
+        </div>
+
         <div :style="distribuicao" class='grid w-full '>
-                <div v-for="valor in tarefa.valores" class=' border-r-2 text-center last:border-none border-white px-4 truncate'>
+                <div v-for="valor in tarefa.valores" class='border-r-2 text-center last:border-none border-white px-4 truncate'>
                     {{valor}} 
                 </div>
         </div>
@@ -34,6 +68,7 @@
 
 <script setup>
 import {ref, onMounted} from 'vue'
+import draggable from 'vuedraggable'
 const props=defineProps({
     tarefas:[]
 })
@@ -50,31 +85,38 @@ let tarefaMovidaIndex=ref(0)
 const distribuicao={
     gridTemplateColumns: "repeat("+props.tarefas[0].propriedades.length+", minmax(0, 1fr))"
 }
-function drag(tarefa,i) {
-    
-    // console.log(tarefa)
+function dragStart(event,tarefa,i) {
+    console.log('start')
+    event.dataTransfer.dropEffect='move'
+    event.target.classList.add('dragging')
     tarefaMovida.value=tarefa
     // console.log(i)
     tarefaMovidaIndex.value=i
-    console.log(tarefaMovida)
+    // console.log(tarefaMovida)
 }
+function drag(event){
+    // event.target.classList.add('dragging')
+    console.log('oi')
+}
+function dragEnd(event){
+    console.log('end')
+
+    event.target.classList.remove('dragging')
+}
+
 function dropTarefa(i){
 //  e.preventDefault()
-
- console.log(i)
+//  console.log(i)
 //  props.tarefas[tarefaMovidaIndex.value]=props.tarefas[i]
 //  props.tarefas[i]=tarefaMovida.value
 for (let i of props.tarefas) {
  if (i == tarefaMovida.value) {
-   console.log(props.tarefas)
+//    console.log(props.tarefas)
    props.tarefas.splice(props.tarefas.indexOf(i), 1)
-   console.log(props.tarefas)
+//    console.log(props.tarefas)
  }
 }
  props.tarefas.splice(i,0,tarefaMovida.value)
- console.log(tarefaMovidaIndex.value)
- console.log(tarefaMovidaIndex)
- console.log(tarefaMovidaIndex.value)
 
 }
 </script>
@@ -84,13 +126,9 @@ for (let i of props.tarefas) {
 @layer components{
     .card{
         @apply
-        /* w-[1760px]  */
-        
+        mb-2 
+        flex
         h-[50px] 
-        /* flex 
-        justify-around 
-        */
-        
         items-center  
         bg-[#CCC9CE] 
         hover:bg-[#CD98FD] 
@@ -99,7 +137,14 @@ for (let i of props.tarefas) {
         active:outline-2
         ;
     }
-    
+    .handle{
+        @apply pl-4 cursor-move;
+    }
+    .ghost{
+        @apply  border-roxo border-2
+        /* shadow-md shadow-purple-200 */
+        ;
+    }
 }
 </style>
 <!--
