@@ -11,7 +11,7 @@
       <!-- Exibe o texto do botão -->
       <p>{{ Texto }}</p>
       <!-- Exibe um ícone se houver um definido -->
-      <img :src="icon" style="height: 67.31%" />
+      <img :src="icon" :style="estiloIcone" />
     </button>
   </div>
   <div v-if="TemIcon === 'nao'">
@@ -74,18 +74,33 @@ const props = defineProps({
   parametrosFuncao:{
     type: [],
     default: null
-  }
+  },
+  inverterCorIcon: {
+    type: String,
+    default: "nao"
+  },
 });
 
+
+let corInvertidaIcon = ref('invert');
 let TemIcon = props.temIcon;
 let Texto = props.texto;
 let Preset = props.preset;
 let botao;
 let hoverBotao;
 let clickBotao;
-let iconeCor = "invert-0";
 let width = "";
 let height = "";
+
+let estiloIcone = {
+  width: "15%",
+  filter: corInvertidaIcon.value,
+};
+
+
+  switch(props.inverterCorIcon){
+    
+  }
 
   switch (props.tamanhoPadrao) {
   
@@ -253,9 +268,12 @@ switch (Preset) {
     };
 
     if (isHovered) {
-      iconeCor = "invert";
+      if(props.inverterCorIcon === 'sim'){
+        corInvertidaIcon.value = "invert-0";
+      }
+      corInvertidaIcon.value = "invert";
     } else {
-      iconeCor = "invert-0";
+      corInvertidaIcon.value = "invert";
     }
 
     clickBotao = {
@@ -268,12 +286,6 @@ switch (Preset) {
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
-
-    if (isClick) {
-      iconeCor = "invert";
-    } else {
-      iconeCor = "invert-0";
-    }
 
     break;
 
@@ -372,6 +384,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #8E00FF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
+      
     };
 
     clickBotao = {
@@ -414,6 +427,15 @@ switch (Preset) {
       boxShadow: sombras,
     };
 
+    if (isHovered) {
+      if(props.inverterCorIcon === 'sim'){
+        corInvertidaIcon.value = "invert-0";
+      }
+      corInvertidaIcon.value = "invert";
+    } else {
+      corInvertidaIcon.value = "invert";
+    }
+
     clickBotao = {
       backgroundColor: "#620BA7",
       display: "flex",
@@ -455,9 +477,12 @@ switch (Preset) {
     };
 
     if (isHovered) {
-      iconeCor = "invert";
+      if(props.inverterCorIcon === 'sim'){
+        corInvertidaIcon.value = "invert-0";
+      }
+      corInvertidaIcon.value = "invert";
     } else {
-      iconeCor = "invert-0";
+      corInvertidaIcon.value = "invert";
     }
 
     clickBotao = {
@@ -473,9 +498,9 @@ switch (Preset) {
     };
 
     if (isClick) {
-      iconeCor = "invert";
+      corInvertidaIcon.value = "invert";
     } else {
-      iconeCor = "invert-0";
+      corInvertidaIcon.value = "invert";
     }
 
     break;
