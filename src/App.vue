@@ -9,7 +9,7 @@ import calendario from './components/calendario.vue';
 import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
 
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
-import Convite from './components/ConvitePopUp.vue';
+import Convite from './components/ConviteEquipePopUp.vue';
 import ListaConvidados from './components/ListaConvidados.vue';
 import ListaUsuarioEquipePopUp from './components/listaUsuarioEquipePopUp.vue';
 

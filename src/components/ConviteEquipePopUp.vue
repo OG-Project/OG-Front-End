@@ -12,7 +12,7 @@
                     <div class=" grid-template  flex w-full">
                         <Input  styleInput="input-transparente-claro"  largura="70vw" altura="10vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa"></Input>
                     </div>
-                    <div class=" grid-template  flex w-full p-10 xl:p-7">
+                    <div class=" grid-template flex w-full p-10 xl:p-7">
                         <TextAreaPadrao   class="flex xl:w-[18vw] xl:h-[10vh] md:w-[36vw] md:h-[8vh] w-full justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"></TextAreaPadrao>
                     </div> 
                     <div class="flex justify-center">
