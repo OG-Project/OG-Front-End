@@ -6,7 +6,7 @@
     
    <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
-        <div class="flex justify-center">
+        <div class="w-full flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
         <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
@@ -23,7 +23,7 @@
         <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
         :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
-        <div class="flex justify-center">
+        <div class="flex w-full justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
    </div>
@@ -83,12 +83,9 @@ import {Equipe} from '../models/Equipe'
         || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
             return "4vh"
         } 
-
-        return "6vh"
-           
+        return "6vh"   
     }
    const tamanhoIcon={
-        //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
         width:"60%",
         height:"60%",
     }
@@ -97,15 +94,12 @@ import {Equipe} from '../models/Equipe'
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanhoFont(),
-        width: "100%",
-        height: '100%',
-
     }
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
-        height: verificaHeigth(),
-        width: verificaWidth(), 
+        height: verificaHeigth()+'vh',
+        width: verificaWidth()+"vw", 
     }
     
     function verificaHeigth(){
@@ -145,27 +139,13 @@ import {Equipe} from '../models/Equipe'
         //Aumenta o tamanho da font size de acordo com a tela
         if(props.fontSize == undefined){ 
 
-            if(props.styleInput==="input-grande" || props.styleInput==="input-grande-escuro"  || props.styleInput==="input-claro-grande" ||
-        props.styleInput==="input-transparente-claro-grande" || props.styleInput==="input-transparente-escuro-grande" ){
-
-            if(window.innerWidth >= 600 && window.innerWidth <= 850){
-                console.log(window.innerWidth)
-                return "1.1rem"
-
-            }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
-                return '1.5rem'
-            }else{
-                return '2.0rem'
-            }
-        }else if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+         if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
         || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
                 if(window.innerWidth >= 600 && window.innerWidth <= 850){
                     console.log(window.innerWidth)
                     return "0.8rem"
 
                 }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
-                    return '1.0rem'
-                }else if(window.innerWidth >= 1000 && window.innerWidth <=1500 ){
                     return '1.0rem'
                 }
             }

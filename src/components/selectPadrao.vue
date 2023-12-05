@@ -24,17 +24,19 @@ defineEmits(['update:modelValue'])
         opcaoSelecionada:String
     })
 
-
+    const hoverPadrao = {
+        color : verificaCorHover()
+    }
 
     const estilizaDivSelect={
         backgroundColor: verificaCorBack(),
         color: verificaCorTexto(),
+        height: props.altura+"vh",
+        width:props.largura+"vw"
         }
 
     const estilizaSelect={
-        width:props.largura+"vw",
-        heigth: props.altura+"vh",
-        overflow: 'hidden',
+        
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         }
@@ -61,6 +63,13 @@ defineEmits(['update:modelValue'])
             return "black"
         }
     }
+
+    function verificaCorHover(){
+        if(props.corHover=="escuro"){
+            return "#484848"
+        }
+        return "#D7D7D7"
+    }
 </script>
 
 <style>
@@ -76,12 +85,15 @@ defineEmits(['update:modelValue'])
         px-4
         border-b-4
         w-max
-        items-center justify-center focus-within:border-roxo 
-        focus-within:border-4 focus-within:rounded-md truncate;
+        h-[100%]
+        flex items-center justify-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-[4px] truncate ;
     }
-
+    .styleSelectPadrao:hover{
+        background-color: v-bind('hoverPadrao.color');
+    }
     select{
-        @apply focus-visible:outline-0 bg-inherit truncate;
+        @apply focus-visible:outline-0 bg-inherit truncate flex items-center;
     }
 }
 </style>
