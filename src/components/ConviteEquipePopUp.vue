@@ -10,13 +10,16 @@
                     <Input styleInput="input-transparente-claro" largura="70vw" altura="10vh" icon="../src/imagem-vetores/Equipe.svg" conteudoInput="Nome da Equipe"></Input> 
                     </div>
                     <div class=" grid-template  flex w-full">
-                        <Input  styleInput="input-transparente-claro"  largura="70vw" altura="10vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa"></Input>
+                        <Input styleInput="input-transparente-claro"  largura="70vw" altura="10vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa"></Input>
                     </div>
-                    <div class=" grid-template flex w-full p-10 xl:p-7">
+                    <div class="grid-template flex w-full mt-[1vh]">
+                        <Botao class="flex justify-center" preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem"></Botao>
+                    </div>
+                    <div class=" grid-template flex w-full p-5 xl:p-3">
                         <TextAreaPadrao   class="flex xl:w-[18vw] xl:h-[10vh] md:w-[36vw] md:h-[8vh] w-full justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"></TextAreaPadrao>
                     </div> 
-                    <div class="flex justify-center">
-                        <ListaConvidados class="listaConvidados"></ListaConvidados>
+                    <div class="convidados-div flex justify-center">
+                        <ListaConvidados  texto="Convites" class="listaConvidados"></ListaConvidados>
                     </div>
                     <div class="botao flex  justify-end mx-[3vw] w-[86%] xl:w-[80%] ">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="0.9rem"  >
@@ -54,7 +57,7 @@ Usuario.img = ""
 @layer components {
 
     .botao{
-        @apply w-[80%] h-[11%] gap-4  items-center justify-items-center justify-center  md:mt-[6%] lg:mt-[8%] xl:mt-[1%] 2xl:mt-[8%]; 
+        @apply w-[80%] h-[11%] gap-4  items-center justify-items-center justify-center  md:mt-[4%] lg:mt-[8%] xl:mt-[4%] ; 
         display: grid;
         grid-template-columns: 40% 55%;
     }
@@ -81,6 +84,7 @@ Usuario.img = ""
         .divGeral{
             @apply w-[55vw];
         }
+
     }
 
     @media(min-width: 1024px){
@@ -119,15 +123,28 @@ Usuario.img = ""
         }
     }
 
-    @media(min-width: 1440px) and (min-height: 1080px){
+    @media(min-width: 1440px) and (min-height: 768px){
         .botao{
-           @apply xl:mt-[4%] ;
+            @apply 2xl:mt-[1%] xl:mt-[1%]
         }
+        .convidados-div{
+            @apply xl:mt-0
+        }
+
     }
 
     @media(min-width: 768px) and (min-height: 1080px){
         .botao{
-           @apply md:mt-[25%];
+           @apply md:mt-[20%] xl:mt-[4%];
+        }
+        .convidados-div{
+            @apply mt-[4%]
+        }
+    }
+
+    @media(min-width: 1366px){
+        .botao{
+            @apply mt-[1vh]
         }
     }
    

@@ -1,35 +1,46 @@
 <template>
     <div class="grid-template flex">
-            <div class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950">
-                <div class="flex justify-center">
-                <h1 class="font-semibold xl:text-xl">CONVITES</h1>
-                </div>
-                <div class="flex items-center flex-col mt-5 ml-5">
-                    <div class=" w-full flex items-center mt-10 mb-2">
-                        <img class="imgDePerfil" src="img" alt="">
-                        <h2 class="md:text-sm xl:text-xl">{{ Usuario.nome }}</h2>
-                        <img class="imgIcon" src="img" alt="">
-                        <SelectPadrao class="selectEdit" styleSelect="select-cinza" :listaSelect="opcoesSelect"></SelectPadrao>
-                    </div>
-                </div>
-            </div>
+      <div
+        class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950 "
+        :style="{height: altura}"
+      >
+        <div class="flex justify-center">
+          <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
         </div>
+        <div class="flex items-center flex-col ml-5">
+          <div class="w-full flex items-center mt-8 mb-2">
+            <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :alt="altDaImagemPerfil" />
+            <h2 class="md:text-sm xl:text-xl mt-2">{{ Usuario.nome }}</h2>
+            <img class="imgIcon" :src="caminhoDaImagemIcon" :alt="altDaImagemIcon" />
+            <SelectPadrao
+              class="selectEdit"
+              styleSelect="select-cinza"
+              :listaSelect="opcoesSelect"
+            ></SelectPadrao>
+          </div>
+        </div>
+      </div>
+    </div>
   </template>
-
-<script setup>
-import SelectPadrao from './selectPadrao.vue';
-import { defineProps, computed } from 'vue';
-
-const Usuario = {
-    nome: String,
+  
+  <script setup>
+  import SelectPadrao from './selectPadrao.vue';
+  import { defineProps } from 'vue';
+  
+  const props = defineProps(['altura', 'nome', 'caminhoDaImagem', 'altDaImagem', 'texto']);
+  
+  const Usuario = {
+    nome: props.nome || "EduardoCosta",
     permissao: String,
     img: String
-}
-const opcoesSelect = ['Edit', 'View']
-Usuario.nome = "EduardoCosta"
-Usuario.img = "" 
-
-</script>
+  };
+  const opcoesSelect = ['Edit', 'View'];
+  </script>
+  
+  <style lang="scss">
+  /* ... o restante do seu estilo permanece o mesmo ... */
+  </style>
+  
 
 <style lang="scss">
 
@@ -50,19 +61,19 @@ Usuario.img = ""
     .imgIcon {
         @apply bg-cover 
         bg-center flex flex-col justify-center 
-        items-center mr-[-25px] ml-[10px] 
+        items-center mr-[-25px] ml-[10px]  
         xl:w-[2vw] xl:h-[4vh];
     }
 
     .imgDePerfil {
         @apply rounded-full bg-cover bg-center flex 
-        flex-col mr-[5px] ml-[-25px]
+        flex-col  mr-[5px] ml-[-25px] mt-2
         xl:w-[2vw] xl:h-[4vh];
     }
 
     .selectEdit {
         @apply
-        text-xs ml-[30px] mb-[3px];
+        text-xs ml-[5px] mb-[3px] mt-2;
     }
 
     .grid-template{ 
