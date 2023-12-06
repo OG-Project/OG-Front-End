@@ -9,13 +9,25 @@
         <div class="divMaior">
             <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
                 <div v-for="propriedade of lista" class="w-[20%]">
+
+
                     <div class="listaDeTarefasPorPropriedade">
                         <div class="w-[80%] p-[1%] flex justify-center bg-white font-Poppins font-medium text-[1vw] ">
                             {{ propriedade.nome }}
                         </div>
-                        <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
-                            <div v-for="propriedadeTarefa of tarefa.valorPropriedadeTarefas">
-                                <div v-if="propriedadeTarefa.propriedade.id == propriedade.id ">
+                        <div v-if="propriedadeAtual.value != 'STATUS'">
+                            <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
+                                <div v-for="propriedadeTarefa of tarefa.valorPropriedadeTarefas">
+                                    <div v-if="propriedadeTarefa.propriedade.id == propriedade.id">
+                                        <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="propriedadeAtual == 'STATUS'">
+                            <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
+                                {{ console.log(projeto) }}
+                                <div v-if="tarefa.status != null && tarefa.status.id == propriedade.id">
                                     <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                                 </div>
                             </div>
@@ -75,7 +87,7 @@ async function definePropriedades() {
     return ref((await api.api).data)
 }
 async function cookies() {
-    let usuario = await api.procurar("/usuario/id?id=2")
+    let usuario = await api.procurar("/usuario/id?id=5")
     $cookies.set("usuarioCookie", usuario, 1000000000)
 }
 async function projetoObjeto() {
@@ -86,17 +98,17 @@ async function projetoObjeto() {
 async function defineListaDeTarefas() {
     listaDeTarefas = []
     let projetoTeste = (await (projeto))
-    if(propriedadeAtual.value == "STATUS"){
+    if (propriedadeAtual.value == "STATUS") {
         projetoTeste.statusList.forEach(status => {
             listaDeTarefas.push(status)
-    });
-    }else{
+        });
+    } else {
         projetoTeste.propriedades.forEach(propriedade => {
             if (propriedade.tipo == propriedadeAtual.value) {
-            listaDeTarefas.push(propriedade)
-        }
-    });
-}
+                listaDeTarefas.push(propriedade)
+            }
+        });
+    }
     lista.value = listaDeTarefas
 }
 </script>

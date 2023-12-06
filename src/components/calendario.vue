@@ -34,12 +34,18 @@
                     <div class="fundoPopup">
                         <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
                             <div class="w-full h-full flex justify-center items-center gap-[1%]">
-                                <div class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                    <button @click="setaEsquerda()"><div class="setaEsquerda"></div></button>
+                                <div
+                                    class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                    <button @click="setaEsquerda()">
+                                        <div class="setaEsquerda"></div>
+                                    </button>
                                 </div>
                                 <p>{{ getYear(data) }}</p>
-                                <div class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                    <button @click="setaDireita()"><div  class="setaDireita"></div></button>
+                                <div
+                                    class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                    <button @click="setaDireita()">
+                                        <div class="setaDireita"></div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -94,20 +100,21 @@
         </div>
         <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
             <div class="calendario">
-                <div v-for="dia of calendario" class="dia" @dragover="retornaDia(dia.dia)" @mouseenter="hover(dia)"
-                    @mouseleave="getCalendario()">
+                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDia(dia.dia)"
+                    @mouseenter="hover(dia)" @mouseleave="getCalendario()">
                     <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(dia.dia, 'd') }}</h1>
-                    <h1 v-else="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(dia.dia, 'd')
+                    <h1 v-else="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(dia.dia,
+                        'd')
                     }}
                     </h1>
                     <div :style="dia.style">
-                        <div v-for="tarefa of tarefas"> 
+                        <div v-for="tarefa of tarefas">
                             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
                                 {{ console.log(propriedade) }}
                                 <div v-if="propriedade.valor.valor == format(dia.dia, 'yyyy-MM-dd')"
                                     v-bind="adicionaNaLista(tarefa, dia), verificaTarefasDoDia(dia)" class="pb-[4%] w-max"
                                     draggable="true" @dragend="trocaDia(propriedade, diaNovo)">
-                                    <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2" ></cardTarefas>
+                                    <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                                 </div>
                             </div>
                         </div>
@@ -124,7 +131,7 @@
 <script setup>
 import { ref } from 'vue';
 import cardTarefas from './cardTarefas.vue'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, } from 'date-fns';
+import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, getDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 
@@ -134,12 +141,30 @@ let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
-
+let cardDia
 let tarefasApi = api.procurar("/tarefa")
 let tarefas = defineTarefas()
+let border = "none"
 console.log(tarefas)
 getCalendario();
 
+
+function estilizaDia(dia) {
+    if (getDate(dia.dia) == getDate(Date.now()) && getMonth(dia.dia)==getMonth(Date.now()) && getYear(dia.dia)==getYear(Date.now())) {
+        border = "2px solid purple"
+    }
+    cardDia = {
+        width: "100%",
+        height: "100%",
+        backgroundColor: "lightgray",
+        borderRadius: "10%",
+        fontWeight: "700",
+        fontSize: "1vw",
+        boxShadow: "0px 3px 6px rgb(145, 145, 145)",
+        border: border
+    }
+    border = "none"
+}
 // Muda de acordo com o mes
 function getCalendario() {
     let listaDeDias = [];
@@ -148,7 +173,7 @@ function getCalendario() {
     const ultimoDiaDoMes = endOfMonth(new Date(d));
     const todosOsDiasDoMes = eachDayOfInterval({ start: primeiroDiaDoMes, end: ultimoDiaDoMes });
     let lista = []
-    
+
     for (let i = primeiroDiaDoMes.getDay(); i > 0; i--) {
         lista.push(subDays(primeiroDiaDoMes, i))
     }
@@ -166,6 +191,7 @@ function getCalendario() {
     calendario.value = [...lista, ...todosOsDiasDoMes, ...lista2]
     calendario.value.forEach(dia => {
         dia.listaDeTarefas = 0
+
         let dia1 = {
             dia,
             listaDeTarefas: [],
@@ -176,6 +202,7 @@ function getCalendario() {
                 overflow: "hidden",
                 flexDirection: "column",
                 gap: "2%",
+                border: border
             }
         }
         listaDeDias.push(dia1)
@@ -183,10 +210,10 @@ function getCalendario() {
     calendario.value = listaDeDias;
 
 }
-async function  defineTarefas(){
-    return tarefas = await(tarefasApi)
+async function defineTarefas() {
+    return tarefas = await (tarefasApi)
 
-}   
+}
 
 function hover(dia) {
     if (dia != null) {
@@ -300,16 +327,6 @@ function adicionaNaLista(tarefa, dia) {
         justify-content: center;
     }
 
-    .dia {
-        width: 100%;
-        height: 100%;
-        background-color: lightgray;
-        border-radius: 10%;
-        font-weight: 700;
-        font-size: 1vw;
-        box-shadow: 0px 3px 6px rgb(145, 145, 145);
-    }
-
     .calendario {
         width: 100%;
         height: 100%;
@@ -320,19 +337,21 @@ function adicionaNaLista(tarefa, dia) {
         align-items: start;
         gap: 5%;
     }
-    .setaEsquerda{
+
+    .setaEsquerda {
         width: 7px;
         height: 7px;
-        border-left:2px solid black ;
-        border-bottom:2px solid black ;
+        border-left: 2px solid black;
+        border-bottom: 2px solid black;
         border-radius: 10%;
         transform: rotate(45deg);
     }
-    .setaDireita{
+
+    .setaDireita {
         width: 7px;
         height: 7px;
-        border-right:2px solid black ;
-        border-top:2px solid black ;
+        border-right: 2px solid black;
+        border-top: 2px solid black;
         border-radius: 10%;
         transform: rotate(45deg);
     }
