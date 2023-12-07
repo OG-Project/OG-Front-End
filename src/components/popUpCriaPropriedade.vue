@@ -25,7 +25,7 @@
                         <Botao preset="Sair"  tamanhoDaFonte="3vh"  tamanhoPadrao="medio" :funcaoClick="funcaoPopUp.fechaPopUp" ></Botao>
                     </div>
                     <div class="flex items-center justify-end">
-                        <Botao preset="PadraoVazado" texto="CRIAR" tamanho-da-borda="4px" tamanhoPadrao="medio" tamanhoDaFonte="3vh" sombras='nao' :funcaoClick="cria" ></Botao>
+                        <Botao preset="PadraoVazado" texto="Criar" tamanho-da-borda="4px" tamanhoPadrao="medio" tamanhoDaFonte="3vh" sombras='nao' :funcaoClick="cria" ></Botao>
                     </div>
                    
                 </div>

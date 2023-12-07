@@ -1,14 +1,14 @@
     <template>
         <div class="flex justify-center">
             <div class="convites-bg flex justify-center items-center flex-col    w-full h-full ">
-                <div class="flex justify-center mt-[8%]">
-                    <h1 class="flex justify-center font-semibold xl:text-xl sm:text-xs">CONVITES</h1>
+                <div class=" h-full w-full flex items-start justify-center mt-[8%]">
+                    <h1 class="font-semibold xl:text-xl sm:text-xs">CONVITES</h1>
                 </div>
                 <div class="">
                      <div class="flex justify-center  items-center mt-[8%] xl:w-[19vw] w-full mb-[2vh]">
                         <img class="imgDePerfil" src="img" alt="">
                         <h2 class="mt-[0%] xl:text-[1vw] sm:text-xs">{{ Usuario.nome }} </h2> 
-                        <img class="imgIcon" src="img" alt="">
+                        <img class="imgIcon" src="../imagem-vetores/Sair.svg" alt="">
                     </div>
                 </div>
             </div>
@@ -18,8 +18,6 @@
 
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
-  
-
 const Usuario = {
     nome: String,
     permissao: String,
@@ -29,6 +27,7 @@ const opcoesSelect = ['Edit', 'View']
 Usuario.nome = "EduardoCosta"
 Usuario.img = ""
 
+// criar uma const que estiliza a div branca 
 </script>
 
 <style lang="scss">
@@ -47,7 +46,7 @@ Usuario.img = ""
         @apply bg-cover 
         bg-center flex flex-col justify-center 
         items-center mr-[-25px] ml-[10px] 
-        xl:w-[2vw] xl:h-[4vh]  h-full;
+        xl:w-[1.5vw] xl:h-[4vh]  h-full;
     }
 
     .imgDePerfil {

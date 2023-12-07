@@ -6,7 +6,7 @@
     
    <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
-        <div class="w-full flex justify-center">
+        <div class=" flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
         <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
@@ -23,7 +23,7 @@
         <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
         :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
-        <div class="flex w-full justify-center">
+        <div class="flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
    </div>
@@ -94,12 +94,13 @@ import {Equipe} from '../models/Equipe'
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanhoFont(),
+        height: verificaHeigth()+'vh',
+        width: verificaWidth()+"vw", 
     }
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
-        height: verificaHeigth()+'vh',
-        width: verificaWidth()+"vw", 
+        
     }
     
     function verificaHeigth(){

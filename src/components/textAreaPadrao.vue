@@ -1,13 +1,13 @@
 
 <template>
   <form>
-    <textarea :placeholder="props.placeholder" :style="estilo"></textarea>
+    <textarea :placeholder="props.placeholder" :style="estilo"  @input="$emit('update:modelValue', $event.target.value)"></textarea>
   </form>
 </template>
 
 <script setup>
 import { defineProps, ref } from 'vue';
-
+defineEmits(['update:modelValue'])
 const props = defineProps({
   placeholder: {
     type: String,

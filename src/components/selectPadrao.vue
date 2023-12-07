@@ -1,6 +1,7 @@
 <template>
     <div class="styleSelectPadrao " :style="estilizaDivSelect">
         <select :style="estilizaSelect" @input="$emit('update:modelValue', $event.target.value)" class="xl:text-xl sm:text-sm md:text-md">
+            <option value="" disabled selected>{{ placeholderSelect }}</option>
             <option v-for="opcao of listaSelect" class="flex items-center justify-center" :value="opcaoSelecionada">{{ opcao }}</option>
         </select>
     </div>
@@ -21,7 +22,8 @@ defineEmits(['update:modelValue'])
             type: String,
             default: "100%"
         },
-        opcaoSelecionada:String
+        opcaoSelecionada:String,
+        placeholderSelect:String
     })
 
     const hoverPadrao = {
