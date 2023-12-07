@@ -5,19 +5,19 @@
             <div class="flex justify-center">
                 <div class="primeiraDiv flex justify-center">
                     <img class="imgEquipe rounded-full" src="img" alt="">
-                    <h1 class=" text-3xl 2xl:w-[10vw] xl:w-[15vw] lg:w-[20vw]">Equipe OG</h1>
+                    <h1 class=" text-3xl 2xl:w-[10vw] xl:w-[15vw] lg:w-[20vw] md:w-[30vw]">Equipe OG</h1>
                 </div>
             </div>
-            <div class="flex justify-center p-10 " v-for="Usuario of usuarios">
+            <div class="flex justify-center p-10" v-for="Usuario of usuarios">
                 <img class="imgIcon" src="" alt="">
                 <div class="primeiraDiv">
                     <img class="imgPerfil" src="usuarios.img" alt="">
-                    <h1 class=" text-xl w-[14vw]">{{usuarios.nome}}</h1>
+                    <h1 class=" text-xl w-[14vw] ">{{usuarios.nome}}</h1>
                 </div>
                 <SelectPadrao class="styleSelectPadraoBranco text-sm" styleSelect="select-branco" :listaSelect="opcoesSelect"></SelectPadrao> 
             </div>
             <div>
-                <div class="div-adiciona flex justify-center w-[55vw] 2xl:w-[55vw] xl:w-[70vw] lg:w-[80vw] ">
+                <div class="div-adiciona ">
                     <div class="grid-template flex justify-start">
                         <Input styleInput="input-transparente-claro"  largura="70vw" altura="10vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa"></Input>
                     </div>
@@ -70,19 +70,23 @@ Usuario.img = ""
 <style>
 
 .div-lista{
-    @apply flex w-[80vw] lg:w-[120vw] p-2 2xl:ml-4 xl:ml-[12%] lg:ml-[20%] ;
+    @apply flex 2xl:w-[80vw] xl:w-[85vw] lg:w-[120vw] md:w-[153vw] p-2 2xl:ml-4 xl:ml-[12%]  ;
 }
 
 .botaoConfirma{
- @apply flex justify-end mx-[6vw] w-[86%] xl:w-[80%] p-10 ;
+ @apply flex justify-end mx-[6vw] w-[86%] xl:w-[80%] p-10 2xl:mt-1 xl:mt-[3vh] 2xl:mx-[6vw] lg:mt-[8vh] md:mt-[7vh] ;
 }
 
 .botaoSair{
-  @apply flex justify-start mx-[2vw] w-[86%] xl:w-[80%] mt-[-9.1vh];
+  @apply flex justify-start 2xl:mx-[2vw] xl:mx-[4vw] lg:mx-[4vw] md:mx-[6vw] w-[86%] xl:w-[80%] mt-[-9.1vh] 2xl:mt-[-9.1vh] xl:mt-[-8.7vh] lg:mt-[-8.7vh] md:mt-[-8.7vh];
+}
+
+.div-adiciona{
+    @apply  flex justify-center w-[55vw] 2xl:w-[55vw] xl:w-[70vw] lg:w-[80vw] md:w-[100vw];
 }
 
 .divGeral{
-        @apply w-[30vw] 2xl:w-[30vw] xl:w-[40vw] lg:w-[45vw] flex justify-center flex-col ;
+        @apply w-[30vw] 2xl:w-[30vw] xl:w-[40vw] lg:w-[45vw] md:w-[55vw] flex justify-center flex-col ;
     }
 
 .listaConvidados{
@@ -180,7 +184,5 @@ Usuario.img = ""
             @apply 2xl:mx-[2vw] w-[86%] xl:w-[80%] 2xl:mt-[-8.8vh];
         }
     }
-
-  
-
+    
 </style>
