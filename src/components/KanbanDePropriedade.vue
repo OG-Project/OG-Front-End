@@ -12,10 +12,16 @@
 
 
                     <div class="listaDeTarefasPorPropriedade">
-                        <div class="w-[80%] p-[1%] flex justify-center bg-white font-Poppins font-medium text-[1vw] ">
-                            {{ propriedade.nome }}
+                        <div
+                            class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
+                            <div class="w-[90%] flex justify-center">
+                                {{ propriedade.nome }}
+                            </div>
+                            <div class="w-[10%]">
+                                <img src="../assets/image 3.png">
+                            </div>
                         </div>
-                        <div v-if="propriedadeAtual.value != 'STATUS'">
+                        <div v-if="propriedadeAtual != 'STATUS'">
                             <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
                                 <div v-for="propriedadeTarefa of tarefa.valorPropriedadeTarefas">
                                     <div v-if="propriedadeTarefa.propriedade.id == propriedade.id">
@@ -25,8 +31,8 @@
                             </div>
                         </div>
                         <div v-if="propriedadeAtual == 'STATUS'">
+
                             <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
-                                {{ console.log(projeto) }}
                                 <div v-if="tarefa.status != null && tarefa.status.id == propriedade.id">
                                     <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                                 </div>
@@ -125,7 +131,7 @@ async function defineListaDeTarefas() {
     align-items: center;
     justify-content: center;
     clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: auto;
     position: relative;
     box-shadow: "0px 2px rgb(189, 189, 189)";
