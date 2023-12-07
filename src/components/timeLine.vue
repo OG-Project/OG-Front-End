@@ -3,84 +3,77 @@
         <div class="h-[80%] w-[80%] flex flex-col justify-start">
             <div class="flex flex-col  items-center">
                 <div class="w-full h-full flex flex-row text-[64px]">
-                    <div class="w-[50%] flex flex-row" @click="abrePopUp()">
+                    <button class="w-[50%] flex flex-row" @click="abrePopUp()">
                         {{ format(data, "MMMM", {
                             locale: ptBR
                         }).charAt(0).toUpperCase() +
                             format(data, "MMMM", { locale: ptBR }).slice(1) }}
-                    </div>
+                    </button>
 
                     <div class="w-[50%] flex justify-end">
                         {{ horaAtual }}
                     </div>
                 </div>
-                <div class="flex flex-row w-full h-full justify-center items-center gap-[2%]">
-                    <div class="w-[24px] h-[24px] rounded-full border-[1px] border-black flex justify-center items-center">
-                        <button @click="setaEsquerda()">
-                            <div class="setaEsquerda"></div>
-                        </button>
-                    </div>
-                    <div class="flex flex-row w-[80%] h-full overflow-auto gap-[3.48%] font-Poppins text-[24px]">
-                        <carousel :items-to-show="1.5">
 
-                            <slide v-for="dia of calendario" class="dia">
-
-                                <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(dia.dia, 'd') }}
-                                </h1>
-
-                            </slide>
-                        </carousel>
-
-                    </div>
-                    <div class="w-[24px] h-[24px] rounded-full border-[1px] border-black flex justify-center items-center">
-                        <button @click="setaDireita()">
-                            <div class="setaDireita"></div>
-                        </button>
-                    </div>
+                <Carousel :value="calendario" :numVisible="20" :numScroll="1" 
+                    circular class="w-[90%]">
+                    <template #item="dia"  >
+                        <div class="font-Poppins text-[24px]">
+                            <button v-if="getMonth(dia.data.dia) == getMonth(data)" @click="diaSelecionado = dia.data.dia">
+                                {{ format(dia.data.dia, 'd') }}
+                            </button>
+                        </div>
+                    </template>
+                </Carousel>
+                <div>
+                    {{ format(diaSelecionado,"hh:mm") }}
                 </div>
             </div>
         </div>
-        <div v-if="abrePopup == true" class="absolute w-[20%] flex justify-center h-[300px] ml-[5%] bg-roxoEscuro"
-            @mouseleave="fecharPopUp()">
-            <div class="w-full flex justify-end absolute">
-                <button @click="fechaPopUp()"
-                    class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
-            </div>
-
-            <div class="fundoPopup">
-                <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
-                    <div class="w-full h-full flex justify-center items-center gap-[1%]">
-                        <div
-                            class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                            <button @click="setaEsquerda()">
-                                <div class="setaEsquerda"></div>
-                            </button>
-                        </div>
-                        <p>{{ getYear(data) }}</p>
-                        <div
-                            class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                            <button @click="setaDireita()">
-                                <div class="setaDireita"></div>
-                            </button>
-                        </div>
-                    </div>
+        <!-- Começo do Popup -->
+        <div v-if="abrePopup == true" class="absolute w-full h-full flex justify-start">
+            <div class="absolute w-[20%] flex justify-center h-[300px] mt-[9%] ml-[10%] bg-roxoEscuro"
+                @mouseleave="fecharPopUp()">
+                <div class="w-full flex justify-end absolute">
+                    <button @click="fechaPopUp()"
+                        class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
                 </div>
-                <div class="popUp">
-                    <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
-                        <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
-                        <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
-                        <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
-                        <button @click="escolheMes(3)" class="border-b-2 w-[70%]">Abril</button>
-                        <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
-                        <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
+
+                <div class="fundoPopup">
+                    <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
+                        <div class="w-full h-full flex justify-center items-center gap-[1%]">
+                            <div
+                                class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                <button @click="setaEsquerda()">
+                                    <div class="setaEsquerda"></div>
+                                </button>
+                            </div>
+                            <p>{{ getYear(data) }}</p>
+                            <div
+                                class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                <button @click="setaDireita()">
+                                    <div class="setaDireita"></div>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="w-[50%] flex flex-col  pt-5 justify-center items-center text-[20px]">
-                        <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
-                        <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
-                        <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
-                        <button @click="escolheMes(9)" class="border-b-2 w-[70%]">Outubro</button>
-                        <button @click="escolheMes(10)" class="border-b-2 w-[70%]">Novembro</button>
-                        <button @click="escolheMes(11)" class="border-b-2 w-[70%]">Dezembro</button>
+                    <div class="popUp">
+                        <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
+                            <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
+                            <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
+                            <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
+                            <button @click="escolheMes(3)" class="border-b-2 w-[70%]">Abril</button>
+                            <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
+                            <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
+                        </div>
+                        <div class="w-[50%] flex flex-col  pt-5 justify-center items-center text-[20px]">
+                            <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
+                            <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
+                            <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
+                            <button @click="escolheMes(9)" class="border-b-2 w-[70%]">Outubro</button>
+                            <button @click="escolheMes(10)" class="border-b-2 w-[70%]">Novembro</button>
+                            <button @click="escolheMes(11)" class="border-b-2 w-[70%]">Dezembro</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -89,18 +82,21 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, VueElement } from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
-import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import Carousel from 'primevue/carousel';
 
 
 let horaAtual = ref()
+
 defineHora()
 
+let setaRef = ref(null)
 
+let diaSelecionado
 let data = Date.now()
 let diaNovo = ref()
 let calendario = ref();
@@ -114,6 +110,9 @@ getCalendario();
 function defineHora() {
     horaAtual.value = format(Date.now(), "HH:mm")
     setTimeout((() => defineHora()), 1000)
+}
+function teste(teste) {
+    alert(teste)
 }
 // Muda de acordo com o mes
 function getCalendario() {
