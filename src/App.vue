@@ -12,17 +12,18 @@ import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
 import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
 import ListaConvidados from './components/ListaConvidados.vue';
 import ListaMembrosEquipe from './components/listaMembrosEquipe.vue';
-import ConviteEquipePopUp from './components/ConviteEquipePopUp.vue';
+import ConviteEquipePopUp from './components/ConviteEquipePopUp.vue'
 
 </script>
 <template>
+<ListaConvidados>
 
-  <ListaConvidados>
+</ListaConvidados>
+<ConviteEquipePopUp>
+  
+</ConviteEquipePopUp>
 
-  </ListaConvidados>
-  <ListaMembrosEquipe>
-    
-  </ListaMembrosEquipe>
+
 </template>
 
 <style scoped>

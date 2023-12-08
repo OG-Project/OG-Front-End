@@ -27,18 +27,20 @@
                 <Botao class="flex justify-center" preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem"></Botao>
             </div>
             <div class="div-lista ">
-                <ListaConvidados texto="Convites" class="listaConvidados"></ListaConvidados>
+                <ListaConvidados texto="Convites" mostrar-select="true" class="listaConvidados"></ListaConvidados>
             </div>
-            <div>
-                <div class="botaoConfirma">
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem"  >
+            <div class="botao">
+                <div class="gap-2">
+                    <Botao preset="Sair" tamanhoPadrao="medio" tamanhoDaFonte="0.9rem"  >
                     </Botao>
                 </div>
-            <div class="botaoSair">
-                <Botao preset="Sair" tamanhoPadrao="medio" texto="Sair" tamanhoDaFonte="0.9rem"  >
-                </Botao>
+                <div>
+                    <div>
+                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem"  >
+                        </Botao>
+                    </div>
+              </div>
             </div>
-        </div>
       </div>
       </fundoPopUp>
     </div>
@@ -67,18 +69,14 @@ Usuario.img = ""
 
 </script>
 
-<style>
+<style scoped>
 
 .div-lista{
-    @apply flex 2xl:w-[80vw] xl:w-[85vw] lg:w-[120vw] md:w-[153vw] p-2 2xl:ml-4 xl:ml-[12%]  ;
+    @apply flex 2xl:w-[80vw] xl:w-[85vw] lg:w-[125vw] md:w-[153vw] p-2 2xl:ml-4 xl:ml-[12%]  ;
 }
 
-.botaoConfirma{
- @apply flex justify-end mx-[6vw] w-[86%] xl:w-[80%] p-10 2xl:mt-1 xl:mt-[3vh] 2xl:mx-[6vw] lg:mt-[8vh] md:mt-[7vh] ;
-}
-
-.botaoSair{
-  @apply flex justify-start 2xl:mx-[2vw] xl:mx-[4vw] lg:mx-[4vw] md:mx-[6vw] w-[86%] xl:w-[80%] mt-[-9.1vh] 2xl:mt-[-9.1vh] xl:mt-[-8.7vh] lg:mt-[-8.7vh] md:mt-[-8.7vh];
+.botao{
+ @apply flex justify-center 2xl:gap-20 xl:gap-16 lg:gap-12 md:gap-16 w-[60%]  p-10 2xl:mt-1 xl:mt-[3vh]  2xl:mx-[6vw] xl:mx-[8vw] lg:mx-[9vw] md:mx-[11vw] lg:mt-[10vh] md:mt-[7vh] ;
 }
 
 .div-adiciona{
@@ -177,11 +175,8 @@ Usuario.img = ""
         .div-adiciona{
             @apply 2xl:w-[45vw];
         }
-        .botaoConfirma{
-            @apply 2xl:w-[80%] 2xl:mx-[4.5vw] 2xl:mt-[2vh];
-        }
-        .botaoSair{
-            @apply 2xl:mx-[2vw] w-[86%] xl:w-[80%] 2xl:mt-[-8.8vh];
+        .botao{
+            @apply 2xl:w-[52%] gap-8 2xl:mt-[2vh];
         }
     }
     

@@ -19,7 +19,7 @@
                         <TextAreaPadrao   class="flex xl:w-[18vw] xl:h-[10vh] md:w-[36vw] md:h-[8vh] w-full justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"></TextAreaPadrao>
                     </div> 
                     <div class="convidados-div flex justify-center">
-                        <ListaConvidados  texto="Convites" class="listaConvidados"></ListaConvidados>
+                        <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados"></ListaConvidados>
                     </div>
                     <div class="botao flex  justify-end mx-[3vw] w-[86%] xl:w-[80%] ">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="0.9rem"  >
