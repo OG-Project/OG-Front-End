@@ -16,6 +16,7 @@ import ConviteEquipePopUp from './components/ConviteEquipePopUp.vue'
 
 </script>
 <template>
+
 </template>
 
 <style scoped>
