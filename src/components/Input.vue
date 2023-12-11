@@ -9,13 +9,20 @@
         <div class=" flex justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
-        <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)">
+        <div>
+            <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+             @input="$emit('update:modelValue', $event.target.value)">
+        </div>
    </div>
    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null'"  :style="estilizaDivInput">
-        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)">
+        <div class="estiloPlaceHolder">
+            
+            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" class="peer focus:bg-black"> 
+            <label for="inputStyle" class="peer-focus:!mb-[3.3%] peer-focus:bg-roxo peer-hover:bg-cinza-claro peer-focus:rounded-md peer-focus:text-white peer-focus:w-[7%] peer-focus:flex peer-focus:item-center peer-focus:justify-center ">{{ conteudoInput }}</label>
+        </div>
+       
 
    </div>
    <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
@@ -33,8 +40,6 @@
 import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 import {Usuario} from '../models/usuario'
 import {Equipe} from '../models/Equipe'
-
-
 //funcao de passar para o pai 
     defineEmits(['update:modelValue'])
   const props=defineProps({
@@ -44,10 +49,7 @@ import {Equipe} from '../models/Equipe'
             default:"null"
         },
         direcao: String,
-        conteudoInput:{
-            type: String,
-            default:"Vazio"
-        },
+        conteudoInput:String,
         desabilitado:ref(false),
         direcao:String ,
         modelValue:String,
@@ -55,12 +57,18 @@ import {Equipe} from '../models/Equipe'
         largura:String,
         altura:String,
         fontSize: String,
-        corHover: String
+        corHover: String,
+        tamanhoMinimoAltura:String,
       })
+      const placeholderEmcima=false;
     const hoverPadrao = {
         color : verificaCorHover()
     }
-        onMounted(()=>{})
+    
+    function teste(){
+       estilizaDivPlaceHolder.top="0",
+       estilizaDivPlaceHolder.backgroundColor="black"
+    }
 
     function widthResponsivo(){
         if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
@@ -95,8 +103,16 @@ import {Equipe} from '../models/Equipe'
         color: verificaCor(),
         fontSize: verificaTamanhoFont(),
         height: verificaHeigth()+'vh',
-        width: verificaWidth()+"vw", 
+        width: verificaWidth()+"vw",
+        minHeight: props.tamanhoMinimoAltura+"vh"
     }
+
+    const estilizaDivPlaceHolder= ref({
+        fontSize: verificaTamanhoFont(),
+        position: "absolute",
+        top: "",
+        backgroundColor: ""
+    })
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
@@ -109,7 +125,9 @@ import {Equipe} from '../models/Equipe'
             console.log(teste)
             return teste
         }
+        console.log(props.altura)
         return props.altura;
+
     }
     function verificaWidth(){
         if(props.largura==undefined){
@@ -185,8 +203,8 @@ import {Equipe} from '../models/Equipe'
         w-min
         border-b-4
         hover:rounded-[4px] hover:border-4
-        items-center focus-within:border-roxo 
-        focus-within:border-4 focus-within:rounded-[4px];
+         focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-[4px] break-all;
         
     }
     .styleInputPadrao:hover{
@@ -205,7 +223,7 @@ import {Equipe} from '../models/Equipe'
         w-min
         border-b-4
         hover:rounded-[4px] hover:border-4
-        items-center focus-within:border-roxo 
+         focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px] ;
         display: grid;
         grid-template-columns: 80% 20%;
@@ -227,7 +245,7 @@ import {Equipe} from '../models/Equipe'
         w-min
         border-b-4
         hover:rounded-[4px] hover:border-4
-        items-center focus-within:border-roxo 
+         focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px];
         display: grid;
         grid-template-columns: 20% 80%;
@@ -237,9 +255,24 @@ import {Equipe} from '../models/Equipe'
         background-color: v-bind('hoverPadrao.color');
     }
     
-   
-    .inputStyle{
-        @apply focus-visible:outline-0  bg-transparent;
+    #inputStyle{
+        @apply focus-visible:outline-0  bg-transparent whitespace-pre-wrap;
     }
 
+    
+
+    .estiloPlaceHolder{
+        @apply flex items-center
+    }
+
+    .estiloPlaceHolder label{
+        @apply absolute;
+    }
+
+
+
+    // <div class="relative">
+//     <input type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+//     <label for="floating_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Floating filled</label>
+// </div>
 </style>

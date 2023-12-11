@@ -1,34 +1,46 @@
-    <template>
+<template>
+    <div class="grid-template flex">
+      <div
+        class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950 "
+        :style="{height: altura}"
+      >
         <div class="flex justify-center">
-            <div class="convites-bg flex justify-center items-center flex-col    w-full h-full ">
-                <div class=" h-full w-full flex items-start justify-center mt-[8%]">
-                    <h1 class="font-semibold xl:text-xl sm:text-xs">CONVITES</h1>
-                </div>
-                <div class="">
-                     <div class="flex justify-center  items-center mt-[8%] xl:w-[19vw] w-full mb-[2vh]">
-                        <img class="imgDePerfil" src="img" alt="">
-                        <h2 class="mt-[0%] xl:text-[1vw] sm:text-xs">{{ Usuario.nome }} </h2> 
-                        <img class="imgIcon" src="../imagem-vetores/Sair.svg" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>      
-        
-    </template>
-
-<script setup>
-import SelectPadrao from './selectPadrao.vue';
-const Usuario = {
-    nome: String,
+          <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
+        </div>
+        <div class="flex items-center flex-col ml-5">
+          <div class="w-full flex items-center mt-8 mb-2">
+            <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :alt="altDaImagemPerfil" />
+            <h2 class="md:text-sm xl:text-xl mt-2">{{ Usuario.nome }}</h2>
+            <img class="imgIcon" :src="caminhoDaImagemIcon" :alt="altDaImagemIcon" />
+            <SelectPadrao
+              class="selectEdit"
+              styleSelect="select-cinza"
+              :listaSelect="opcoesSelect"
+            ></SelectPadrao>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+  <script setup>
+  import SelectPadrao from './selectPadrao.vue';
+  import { defineProps } from 'vue';
+  
+  const props = defineProps(['altura', 'nome', 'caminhoDaImagem', 'altDaImagem', 'texto']);
+  
+  const Usuario = {
+    nome: props.nome || "EduardoCosta",
     permissao: String,
     img: String
-}
-const opcoesSelect = ['Edit', 'View']
-Usuario.nome = "EduardoCosta"
-Usuario.img = ""
-
-// criar uma const que estiliza a div branca 
-</script>
+  };
+  const opcoesSelect = ['Edit', 'View'];
+  </script>
+  
+  <style lang="scss">
+  /* ... o restante do seu estilo permanece o mesmo ... */
+  </style>
+  
 
 <style lang="scss">
 
@@ -36,33 +48,39 @@ Usuario.img = ""
 
     
     .convites-bg {
-        @apply xl:w-[24vw] xl:h-[24vh] 
-        md:w-[36vw] md:h-[14vh] w-full 
-        bg-[#FEFBFF] shadow-md shadow-gray-950 ;
+        @apply 
+        xl:h-[24vh] 
+        lg:h-[18vh]
+        md:h-[21vh]
+        justify-items-center justify-center;
+        display: grid;
+        grid-template-columns: 0% 0%;
         clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
     }
 
     .imgIcon {
         @apply bg-cover 
         bg-center flex flex-col justify-center 
-        items-center mr-[-25px] ml-[10px] 
-        xl:w-[1.5vw] xl:h-[4vh]  h-full;
+        items-center mr-[-25px] ml-[10px]  
+        xl:w-[2vw] xl:h-[4vh];
     }
 
     .imgDePerfil {
-        @apply rounded-full bg-cover bg-center flex flex-col mr-[5px] ml-[-25px] xl:w-[2vw] xl:h-[4vh] h-full;
+        @apply rounded-full bg-cover bg-center flex 
+        flex-col  mr-[5px] ml-[-25px] mt-2
+        xl:w-[2vw] xl:h-[4vh];
     }
 
     .selectEdit {
-        background-color: 787878;
-        color: #ffff;
-        margin-left: 35px;
-        height: 4vh;
-        width: 8vw ;
-        margin-top: -3px;
-
-
+        @apply
+        text-xs ml-[5px] mb-[3px] mt-2;
     }
 
+    .grid-template{ 
+        @apply w-[80%%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+        display: grid;
+        grid-template-columns: 40% 55%;
+    }
+   
 
 </style>

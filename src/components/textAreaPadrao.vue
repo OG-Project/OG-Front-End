@@ -1,7 +1,9 @@
 
 <template>
-  <form>
-    <textarea :placeholder="props.placeholder" :style="estilo"  @input="$emit('update:modelValue', $event.target.value)"></textarea>
+  <form >
+    <div >
+     <textarea :placeholder="props.placeholder" :style="estilo"  @input="$emit('update:modelValue', $event.target.value)" class="textarea" ></textarea>
+    </div>
   </form>
 </template>
 
@@ -35,6 +37,10 @@ const props = defineProps({
   }
 });
 
+const hoverPadrao = {
+        color : ""
+    }
+
 const estilo = ref({});
 
 const estiloBranco = {
@@ -57,6 +63,15 @@ const estiloPreto = {
   resize: props.resize
 };
 
+const estiloTransparente = {
+  width: props.width,
+  height: props.height,
+  fontSize: props.tamanhoDaFonte,
+  color: '#000000',
+  borderBottom: 'solid 4px #620BA7',
+  resize: props.resize
+};
+
 switch (props.preset) {
   case 'branco':
     estilo.value = estiloBranco;
@@ -64,8 +79,19 @@ switch (props.preset) {
   case 'preto':
     estilo.value = estiloPreto;
     break;
+  case 'transparente':
+    estilo.value= estiloTransparente;
+    hoverPadrao.color="#D7D7D7";
+    break;
   default:
     estilo.value = estiloBranco;
     break;
 }
 </script>
+
+<style lang="scss" scoped>
+
+textarea:hover{
+    background-color: v-bind('hoverPadrao.color');
+  }
+</style>

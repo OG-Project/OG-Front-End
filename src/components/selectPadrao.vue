@@ -54,6 +54,10 @@ defineEmits(['update:modelValue'])
         props.styleSelect=="select-claro-grande" || props.styleSelect=="select-claro-grande"){
             return "#D7D7D7"
         }
+        else if (props.styleSelect=="select-cinza" || props.styleSelect=="select-grande-cinza" ||
+        props.styleSelect=="select-cinza-grande"){
+            return "#787878"
+        }
     }
 
     function verificaCorTexto(){
@@ -63,6 +67,10 @@ defineEmits(['update:modelValue'])
         }else if(props.styleSelect=="select-claro" || props.styleSelect=="select-grande-claro" || 
         props.styleSelect=="select-claro-grande" || props.styleSelect=="select-claro-grande"){
             return "black"
+        }
+        else if(props.styleSelect=="select-cinza" || props.styleSelect=="select-grande-cinza" ||
+        props.styleSelect=="select-cinza-grande"){
+            return "#FFFFFF"
         }
     }
 

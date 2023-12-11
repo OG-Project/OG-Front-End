@@ -70,5 +70,12 @@ const funcaoPopUp = funcaoPopUpStore();
         
        
     }
+
+    @media(min-width: 2560px){
+        .style-bg-branco{
+            @apply w-[25vw]
+        }
+    }
+
 }   
 </style>
