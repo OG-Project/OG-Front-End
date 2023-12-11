@@ -16,14 +16,6 @@ import ConviteEquipePopUp from './components/ConviteEquipePopUp.vue'
 
 </script>
 <template>
-<ListaConvidados>
-
-</ListaConvidados>
-<ConviteEquipePopUp>
-  
-</ConviteEquipePopUp>
-
-
 </template>
 
 <style scoped>
