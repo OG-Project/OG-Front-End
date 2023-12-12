@@ -1,14 +1,14 @@
 import {defineStore} from "pinia";
 
 
-export const useCounterStore = defineStore('fechaPopUP', {
+export const funcaoPopUpStore = defineStore('fechaPopUP', {
     state: () => {
       return { variavelModal: true }
     },
 
     actions: {
         abrePopUp(){
-            this.variavelModal=true;
+        this.variavelModal=true;
         return this.variavelModal;
       },
       fechaPopUp(){

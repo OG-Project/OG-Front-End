@@ -15,24 +15,36 @@
     
    <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
-        <img :src=icon :style="tamanhoIcon">
-        <input :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+        <div class="flex justify-center">
+            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+        </div>
+        <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
    </div>
    <div class="styleInputPadrao" 
         v-if="icon=='null'"  :style="estilizaDivInput">
-        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
    </div>
-   <div class="styleInputPadraoDireita" 
+   <div class="styleInputPadraoIconDireita" :class="styleInputPadraoDireita" 
         v-if="direcao=='direita'" :style="estilizaDivInput">
-        <input :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado>
-        <img :src=icon :style="tamanhoIcon">
+        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
+        :value="modelValue"
+    @input="$emit('update:modelValue', $event.target.value)">
+        <div class="flex justify-center">
+            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+        </div>
    </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 import {Usuario} from '../models/usuario'
 import {Equipe} from '../models/Equipe'
+
+
+//funcao de passar para o pai 
+    defineEmits(['update:modelValue'])
   const props=defineProps({
         styleInput: String, // pode passar input-escuro, input-claro, input-transparente-escuro, input-transparente-claro
         icon: {
@@ -44,22 +56,54 @@ import {Equipe} from '../models/Equipe'
             type: String,
             default:"Vazio"
         },
-        width:Number,
-        height:Number,
         desabilitado:ref(false),
-        direcao:String  
+        direcao:String ,
+        modelValue:String,
+        tipo: String,
+        largura:String,
+        altura:String
       })
-    
-    onMounted(()=>{
-           console.log(Usuario.equipeAtual=Equipe);
+    const styleInputPadraoDireita= ".styleInputPadraoDireita"
+
+        onMounted(()=>{
+            props.largura= widthResponsivo()
+            props.altura = heigthResponsivo();
+       
         }
         
     )
-    const tamanhoIcon={
-        //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
-        width:(props.width/1.30)+"%",
-        height: (props.height/1.30)+"%",
+
+    function widthResponsivo(){
+        if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
+        || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
+        props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande" ){
+            return "20vw"
+        } else  if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+            return "10vw"
+        } 
+           return "25vw"
     }
+
+    function heigthResponsivo(){
+        if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro"  || props.styleInput=="input-claro-grande" ||  
+        props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande" ){
+            return "9vh"
+        } 
+        else if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+            return "4vh"
+        } 
+
+        return "6vh"
+           
+    }
+   const tamanhoIcon={
+        //faz função que decide o tamanho do icon como 10 vezes menor que o input (henrique) acho esse tamanho bom
+        width:"60%",
+        height:"60%",
+    }
+
 
     const estilizaInput={
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
@@ -74,27 +118,70 @@ import {Equipe} from '../models/Equipe'
         backgroundColor: verificaCorBack(),
         height: props.height+"%",
         width:  props.width+"%", 
+        height: verificaHeigth(),
+        width: verificaWidth(), 
+    }
+    
+    function verificaHeigth(){
+        let teste=heigthResponsivo()
+        if(props.altura==undefined){
+            console.log(teste)
+            return teste
+        }
+        console.log(props.altura)
+        return props.altura;
+
+    }
+    function verificaWidth(){
+        if(props.largura==undefined){
+            return widthResponsivo()
+        }
+        return props.largura;
     }
 
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-grande-escuro" || 
-        props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande"){
-            console.log(props.width)
+        props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande" ){
             return "#484848"
         }else if(props.styleInput=="input-claro" || props.styleInput=="input-grande-claro" || 
         props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande"){
             return "#D7D7D7"
         }
     }
+  
+
 
     function verificaTamanho(){
+        console.log("eia")
         //Aumenta o tamanho da font size de acordo 
-        if(props.styleInput=="input-grande" || props.styleInput=="input-grande-escuro-grande" 
-        || props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande" || 
-        props.styleInput=="input-transparente-claro-grande" || props.styleInput=="input-transparente-escuro-grande"){
-            return "3vh"
-        }   
+        if(props.styleInput==="input-grande" || props.styleInput==="input-grande-escuro"  || props.styleInput==="input-claro-grande" ||  
+        props.styleInput==="input-transparente-claro-grande" || props.styleInput==="input-transparente-escuro-grande" ){
+
+            if(window.innerWidth >= 600 && window.innerWidth <= 850){
+                console.log(window.innerWidth)
+                return "1.1rem"
+
+            }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
+                return '1.5rem'
+            }else{
+                return '2.0rem'
+            }
+        }else if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+            if(window.innerWidth >= 600 && window.innerWidth <= 850){
+                console.log(window.innerWidth)
+                return "0.8rem"
+
+            }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
+                return '1.0rem'
+            }else if(window.innerWidth >= 1000 && window.innerWidth <=1500 ){
+                return '1.0rem'
+            }
+        }
+
+        return '1.2rem'
+
     }
 
     function verificaCor(){
@@ -113,8 +200,9 @@ import {Equipe} from '../models/Equipe'
     }
 
 </script>
-<style>
+<style lang="scss">
 @import url(../assets/main.css);
+
 @layer components{
     .styleInputPadraoIcon{
        @apply bg-transparent
@@ -144,11 +232,61 @@ import {Equipe} from '../models/Equipe'
         max-w-max
         items-center  focus-within:outline-roxo 
         focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
+    }
+
+    .styleInputPadrao{
+       @apply 
+       border-4 
+        border-transparent
+        border-b-roxo    
+        pt-2
+        pb-2
+        px-2
+        max-w-max
+        w-min
+        border-b-4
+        items-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-md;
+    }
+
+    .styleInputPadraoIconDireita{
+       @apply 
+        border-4 
+        border-transparent
+        border-b-roxo    
+        pt-2
+        pb-2
+        px-4
+        max-w-max
+        w-min
+        border-b-4
+        items-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-md;
         display: grid;
         grid-template-columns: 80% 20%;
+        align-content: center;
+    }
+
+    .styleInputPadraoIcon{
+       @apply 
+       border-4 
+        border-transparent
+        border-b-roxo    
+        pt-2
+        pb-2
+        px-4
+        max-w-max
+        w-min
+        border-b-4
+        items-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-md;
+        display: grid;
+        grid-template-columns: 20% 80%;
+        align-content: center;
     }
     .inputStyle{
-        @apply focus-visible:outline-0;
+        @apply focus-visible:outline-0 xl:pr-5 sm:pr-1 md:pr-2 bg-transparent;
     }
 }
+
 </style>

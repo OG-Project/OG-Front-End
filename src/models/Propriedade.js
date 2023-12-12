@@ -1,6 +1,6 @@
  import { TipoPropiedade } from "./tipoPopriedade"
  
- export const Propiedade={
+ export const Propriedade={
     id: Number,
     nome : String,
     tipo : {}= TipoPropiedade
