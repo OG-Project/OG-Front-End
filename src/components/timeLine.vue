@@ -1,32 +1,44 @@
 <template>
     <div class="divMaior">
-        <div class="h-[80%] w-[80%] flex flex-col justify-start">
-            <div class="flex flex-col  items-center">
-                <div class="w-full h-full flex flex-row text-[64px]">
+        <div class="h-[95%] w-[80%] flex flex-col justify-start">
+            <div class="h-full flex flex-col  items-center">
+                <button @click="mudaIntervalo()">
+                    {{ tipoDeIntervalo }}
+                    {{ console.log(tipoDeIntervalo) }}
+                </button>
+                <div class="w-full h-[20%] flex flex-row text-[64px]">
                     <button class="w-[50%] flex flex-row" @click="abrePopUp()">
                         {{ format(data, "MMMM", {
                             locale: ptBR
                         }).charAt(0).toUpperCase() +
                             format(data, "MMMM", { locale: ptBR }).slice(1) }}
                     </button>
-
                     <div class="w-[50%] flex justify-end">
                         {{ horaAtual }}
                     </div>
                 </div>
 
-                <Carousel :value="calendario" :numVisible="20" :numScroll="1" 
-                    circular class="w-[90%]">
-                    <template #item="dia"  >
+                <Carousel :value="calendario" :numVisible="20" :numScroll="1" circular class="w-[90%] h-[10%]">
+                    <template #item="dia">
                         <div class="font-Poppins text-[24px]">
-                            <button v-if="getMonth(dia.data.dia) == getMonth(data)" @click="diaSelecionado = dia.data.dia">
+                            <button v-if="getMonth(dia.data.dia) == getMonth(data)"
+                                @click="diaSelecionado.dia.value = dia.data.dia">
                                 {{ format(dia.data.dia, 'd') }}
                             </button>
                         </div>
                     </template>
                 </Carousel>
-                <div>
-                    {{ format(diaSelecionado,"hh:mm") }}
+                <div class="w-full">
+                    <div class="colunaDeHoras">
+                        <div v-for="hora of diaSelecionado.listaDeHoras" class=" h-[40%]">
+                            <div>
+                                {{ hora }}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,8 +107,13 @@ let horaAtual = ref()
 defineHora()
 
 let setaRef = ref(null)
-
-let diaSelecionado
+let tipoDeIntervalo = ref(1)
+let diaSelecionado =
+{
+    dia: ref(Date.now()),
+    listaDeHoras: []
+}
+defineListaDeHoras(diaSelecionado)
 let data = Date.now()
 let diaNovo = ref()
 let calendario = ref();
@@ -104,7 +121,6 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 api.procurar("/tarefa")
 let tarefas = defineTarefas()
-
 getCalendario();
 
 function defineHora() {
@@ -188,7 +204,30 @@ function adicionaNaLista(tarefa, dia) {
     }
 }
 
+function defineListaDeHoras(dia) {
+    let listaDeHoras2 = []
+    let hora
+    if (tipoDeIntervalo != 0) {
+        for (var i = 0; i < 24; i++) {
+            console.log(i)
+            if (i < 10) {
+                i = "0" + i
+            }
+            hora = i + ":00"
+            listaDeHoras2.push(hora)
+        }
+    }
+    dia.listaDeHoras = listaDeHoras2
 
+
+}
+function mudaIntervalo() {
+    if (tipoDeIntervalo.value == 1) {
+        tipoDeIntervalo.value = 2
+    } else {
+        tipoDeIntervalo.value = 1
+    }
+}
 
 
 </script>
@@ -210,6 +249,10 @@ function adicionaNaLista(tarefa, dia) {
         overflow-x: hidden;
         position: relative;
 
+    }
+
+    .colunaDeHoras {
+        @apply rounded-[1.7vh] w-[5%] h-full bg-gray-300 flex items-center flex-col
     }
 
     .popUp {
