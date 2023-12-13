@@ -18,7 +18,7 @@
       >
       <template #item="{element,index}">
     <div class='card' > 
-        <div class=' handle'>
+        <div class='handle'>
             <svg  width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect y="0.973022" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
             <rect x="11.4297" y="0.9729" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF"/>
@@ -29,7 +29,7 @@
             </svg>
         </div>
         <div class='grid w-full grid-flow-col'>
-            <div class='border-r-2 text-center last:border-none border-white px-4 truncate'   v-for="(valor,index) in element" >
+            <div class='border-r-2 text-center last:border-none border-white px-4 truncate'   v-for="(valor,index) in checkValor(element)" >
                 {{index}} {{valor}}
             </div>
         </div>
@@ -48,6 +48,8 @@ const props=defineProps({
   tarefas:[]
 })
 
+let arrayDePropriedadesEcolhidas=['nome','descricao','status','Data de Entrega']
+
 let propriedades=computed(()=>{
   let tamanho=['Nome','Descrição','Status']
   for(let item of props.tarefas[0].valorPropriedadeTarefas){
@@ -56,24 +58,29 @@ let propriedades=computed(()=>{
 
   return tamanho
 })
+let numeroDePropriedades=computed(()=>{
+  return propriedades.length  
+})
+
 function checkValor(objeto){
+  
   let chavesValores=Object.entries(objeto)
-  let propriedadesChekadas=[]
+  let valoresCheck=[]
+
   console.log(propriedades)
+
   for(let i of chavesValores){
-    if(i[0]=='nome'){
-      console.log(i[1])
-    }
-    if(i[0]=='descricao'){
-      console.log(i[1])
-    }
-    if(i[0]=='status'){
-      console.log(i[1]!=null? i[1].nome: 'Não Tem')
-    }
-    if(i[0]){
+
+    for(let j of arrayDePropriedadesEcolhidas){
+
+      if(i[0]==j){
+        valoresCheck.push(i[1])
+      }
 
     }
+    console.log(i[0]=='valorPropriedadeTarefas')
   }
+  return valoresCheck
 }
 onMounted(()=>{
   for(let i of props.tarefas){
@@ -82,6 +89,9 @@ onMounted(()=>{
   }
 })
 
+const distribuicao={
+    gridTemplateColumns: "repeat("+numeroDePropriedades+", minmax(0, 1fr))"
+}
 </script>
 
 <style scoped>

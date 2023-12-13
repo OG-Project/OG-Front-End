@@ -20,6 +20,8 @@ onBeforeMount(async()=>{
     console.log(result)
     tarefas.value=result
     console.log(tarefas.value)
+  }).catch((error)=>{
+    console.log(error);
   })
 })
 </script>
