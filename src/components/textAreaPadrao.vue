@@ -2,7 +2,7 @@
 <template>
   <form >
     <div >
-     <textarea :placeholder="props.placeholder" :style="estilo"  @input="$emit('update:modelValue', $event.target.value)" class="textarea" ></textarea>
+     <textarea :placeholder="props.placeholder" :style="estilo"  @input="$emit('update:modelValue', $event.target.value)"  ></textarea>
     </div>
   </form>
 </template>
@@ -93,5 +93,6 @@ switch (props.preset) {
 
 textarea:hover{
     background-color: v-bind('hoverPadrao.color');
-  }
+}
+
 </style>

@@ -1,48 +1,55 @@
 <template>
-    <div class="grid-template flex">
-      <div
-        class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950 "
-        :style="{height: altura}"
-      >
-        <div class="flex justify-center">
-          <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
-        </div>
-        <div class="flex items-center flex-col ml-5">
-          <div class="w-full flex items-center mt-8 mb-2">
-            <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :alt="altDaImagemPerfil" />
-            <h2 class="md:text-sm xl:text-xl mt-2">{{ Usuario.nome }}</h2>
-            <img class="imgIcon" :src="caminhoDaImagemIcon" :alt="altDaImagemIcon" />
+  <div class="grid-template flex">
+    <div
+      class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950 "
+      :style="{height: altura}"
+    >
+      <div class="flex justify-center">
+        <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
+      </div>
+      <div class="flex items-center flex-col ml-5">
+        <div class="w-full flex items-center mt-8 mb-2">
+          <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :alt="altDaImagemPerfil" />
+          <h2 class="md:text-sm xl:text-xl mt-2">{{ Usuario.nome }}</h2>
+            <img class="imgIcon" src="../imagem-vetores/sair.svg"  :style="imagemIcon" />
+          
+          <!-- Condição para renderizar o SelectPadrao -->
+          <template v-if="mostrarSelect">
             <SelectPadrao
               class="selectEdit"
               styleSelect="select-cinza"
               :listaSelect="opcoesSelect"
             ></SelectPadrao>
-          </div>
+          </template>
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import SelectPadrao from './selectPadrao.vue';
-  import { defineProps } from 'vue';
-  
-  const props = defineProps(['altura', 'nome', 'caminhoDaImagem', 'altDaImagem', 'texto']);
-  
-  const Usuario = {
-    nome: props.nome || "EduardoCosta",
-    permissao: String,
-    img: String
-  };
-  const opcoesSelect = ['Edit', 'View'];
-  </script>
-  
+  </div>
+</template>
+
+<script setup>
+import SelectPadrao from './selectPadrao.vue';
+import { defineProps } from 'vue';
+
+const props = defineProps(['altura', 'nome', 'caminhoDaImagemPerfil', 'caminhoDaImagemIcon', 'altDaImagemIcon', 'texto', 'mostrarSelect']);
+
+const Usuario = {
+  nome: props.nome || "EduardoCosta",
+  permissao: String,
+  img: String
+};
+const opcoesSelect = ['Edit', 'View'];
+
+const imagemIcon={
+  height: props.altDaImagemIcon,
+}
+</script>
   <style lang="scss">
   /* ... o restante do seu estilo permanece o mesmo ... */
   </style>
   
 
-<style lang="scss">
+<style lang="scss" scoped>
 
 @import url(../assets/main.css);
 
@@ -73,7 +80,7 @@
 
     .selectEdit {
         @apply
-        text-xs ml-[5px] mb-[3px] mt-2;
+        text-xs ml-[30px] mb-[10px] mt-2;
     }
 
     .grid-template{ 

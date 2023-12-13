@@ -6,31 +6,29 @@
     
    <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
-        <div class=" flex justify-center">
+        <div class=" flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
-        <div>
-            <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" class="inputStyle" :disabled=desabilitado :value="modelValue"
-             @input="$emit('update:modelValue', $event.target.value)">
-        </div>
+            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)" @click=" teste()"  :placeholder=conteudoInput > 
+           
+
    </div>
    <div class="styleInputPadrao flex items-center" 
-        v-if="icon=='null'"  :style="estilizaDivInput">
+        v-if="icon=='null'"  >
         <div class="estiloPlaceHolder">
-            
             <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" class="peer focus:bg-black"> 
-            <label for="inputStyle" class="peer-focus:!mb-[3.3%] peer-focus:bg-roxo peer-hover:bg-cinza-claro peer-focus:rounded-md peer-focus:text-white peer-focus:w-[7%] peer-focus:flex peer-focus:item-center peer-focus:justify-center ">{{ conteudoInput }}</label>
+        @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" class="peer" placeholder=" "  > 
+            <label :style="estilizaDivPlaceHolder" for="inputStyle"  class=" absolute !text-sm text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">{{ conteudoInput }}</label>
         </div>
-       
-
+        
    </div>
    <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
         v-if="direcao=='direita'" :style="estilizaDivInput">
         <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
         :value="modelValue"
     @input="$emit('update:modelValue', $event.target.value)">
-        <div class="flex justify-center">
+        <div class="flex tems-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
    </div>
@@ -60,14 +58,12 @@ import {Equipe} from '../models/Equipe'
         corHover: String,
         tamanhoMinimoAltura:String,
       })
-      const placeholderEmcima=false;
+
+      onMounted(() => {
+
+      })
     const hoverPadrao = {
         color : verificaCorHover()
-    }
-    
-    function teste(){
-       estilizaDivPlaceHolder.top="0",
-       estilizaDivPlaceHolder.backgroundColor="black"
     }
 
     function widthResponsivo(){
@@ -104,19 +100,17 @@ import {Equipe} from '../models/Equipe'
         fontSize: verificaTamanhoFont(),
         height: verificaHeigth()+'vh',
         width: verificaWidth()+"vw",
-        minHeight: props.tamanhoMinimoAltura+"vh"
     }
 
-    const estilizaDivPlaceHolder= ref({
+    const estilizaDivPlaceHolder= {
         fontSize: verificaTamanhoFont(),
         position: "absolute",
         top: "",
         backgroundColor: ""
-    })
+    }
 
     const estilizaDivInput={
         backgroundColor: verificaCorBack(),
-        
     }
     
     function verificaHeigth(){
@@ -130,10 +124,19 @@ import {Equipe} from '../models/Equipe'
 
     }
     function verificaWidth(){
-        if(props.largura==undefined){
-            return widthResponsivo()
+        if(props.largura==undefined ){
+            if(props.icon==undefined){
+                return widthResponsivo()
+            }
+            return (widthResponsivo()*0.80)
+        }else{
+            if(props.icon==undefined){
+                return props.largura;
+            }
+            console.log("ta vindo")
+            return (props.largura*0.80)
         }
-        return props.largura;
+        
     }
 
     function verificaCorBack(){
@@ -204,7 +207,7 @@ import {Equipe} from '../models/Equipe'
         border-b-4
         hover:rounded-[4px] hover:border-4
          focus-within:border-roxo 
-        focus-within:border-4 focus-within:rounded-[4px] break-all;
+        focus-within:border-4 focus-within:rounded-[4px]  ;
         
     }
     .styleInputPadrao:hover{
@@ -220,7 +223,6 @@ import {Equipe} from '../models/Equipe'
         pb-2
         px-4
         max-w-max
-        w-min
         border-b-4
         hover:rounded-[4px] hover:border-4
          focus-within:border-roxo 
@@ -240,15 +242,14 @@ import {Equipe} from '../models/Equipe'
         border-b-roxo    
         pt-2
         pb-2
-        px-4
+        px-2
         max-w-max
-        w-min
         border-b-4
         hover:rounded-[4px] hover:border-4
          focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px];
         display: grid;
-        grid-template-columns: 20% 80%;
+        grid-template-columns: 10% 70%;
         align-content: center;
     }
     .styleInputPadraoIcon:hover{
@@ -256,7 +257,7 @@ import {Equipe} from '../models/Equipe'
     }
     
     #inputStyle{
-        @apply focus-visible:outline-0  bg-transparent whitespace-pre-wrap;
+        @apply focus-visible:outline-0  bg-transparent m-1;
     }
 
     

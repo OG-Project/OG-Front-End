@@ -58,6 +58,10 @@ defineEmits(['update:modelValue'])
         props.styleSelect=="select-cinza-grande"){
             return "#787878"
         }
+        else if (props.styleSelect=="select-branco" || props.styleSelect=="select-grande-cinza" ||
+        props.styleSelect=="select-branco-grande"){
+            return "#FEFBFF"
+        }
     }
 
     function verificaCorTexto(){
@@ -86,6 +90,7 @@ defineEmits(['update:modelValue'])
 @import url(../assets/main.css);
 
 @layer components{
+
     .styleSelectPadrao{
        @apply   border-4 
         border-transparent

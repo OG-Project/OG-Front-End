@@ -1,4 +1,5 @@
 <script setup>
+
 import {RouterView} from 'vue-router'
 import Input from './components/Input.vue'
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
@@ -10,8 +11,11 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
 <template>
   <Navbar></Navbar>
     <RouterView />
+
+
 </template>
-<style scoped></style>
 
+<style scoped>
 
+</style>
 
