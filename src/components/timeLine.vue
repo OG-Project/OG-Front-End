@@ -2,43 +2,50 @@
     <div class="divMaior">
         <div class="h-[95%] w-[80%] flex flex-col justify-start">
             <div class="h-full flex flex-col  items-center">
-                <button @click="mudaIntervalo()">
-                    {{ tipoDeIntervalo }}
-                    {{ console.log(tipoDeIntervalo) }}
-                </button>
-                <div class="w-full h-[20%] flex flex-row text-[64px]">
-                    <button class="w-[50%] flex flex-row" @click="abrePopUp()">
-                        {{ format(data, "MMMM", {
-                            locale: ptBR
-                        }).charAt(0).toUpperCase() +
-                            format(data, "MMMM", { locale: ptBR }).slice(1) }}
-                    </button>
-                    <div class="w-[50%] flex justify-end">
-                        {{ horaAtual }}
-                    </div>
-                </div>
-
-                <Carousel :value="calendario" :numVisible="20" :numScroll="1" circular class="w-[90%] h-[10%]">
-                    <template #item="dia">
-                        <div class="font-Poppins text-[24px]">
-                            <button v-if="getMonth(dia.data.dia) == getMonth(data)"
-                                @click="diaSelecionado.dia.value = dia.data.dia">
-                                {{ format(dia.data.dia, 'd') }}
+                <div class="sticky top-0 w-full h-full flex flex-col  items-center bg-[#FBFBFB]">
+                    <div class="w-full h-full ">
+                        <button @click="mudaIntervalo()">
+                            {{ tipoDeIntervalo }}
+                            {{ console.log(tipoDeIntervalo) }}
+                        </button>
+                        <div class="w-full h-[50%] flex flex-row text-[64px]">
+                            <button class="w-[50%] flex flex-row" @click="abrePopUp()">
+                                {{ format(data, "MMMM", {
+                                    locale: ptBR
+                                }).charAt(0).toUpperCase() +
+                                    format(data, "MMMM", { locale: ptBR }).slice(1) }}
                             </button>
-                        </div>
-                    </template>
-                </Carousel>
-                <div class="w-full">
-                    <div class="colunaDeHoras">
-                        <div v-for="hora of diaSelecionado.listaDeHoras" class=" h-[40%]">
-                            <div>
-                                {{ hora }}
+                            <div class="w-[50%] flex justify-end">
+                                {{ horaAtual }}
                             </div>
                         </div>
+                        <div class="flex justify-center">
+                            <Carousel :value="calendario" :numVisible="20" :numScroll="1" circular class="w-[90%] h-[15%] ">
+                                <template #item="dia">
+                                    <div class="font-Poppins text-[24px]">
+                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)"
+                                            @click="diaSelecionado.dia.value = dia.data.dia">
+                                            {{ format(dia.data.dia, 'd') }}
+                                        </button>
+                                    </div>
+                                </template>
+                            </Carousel>
+                        </div>
                     </div>
-                    <div>
+                </div>
+                <div class="w-full max-h-min">
+                    <div v-for="hora of diaSelecionado.listaDeHoras" class=" h-[4%] flex gap-2">
 
+                        <div :class="'colunaDeHoras h-32 flex items-start justify-center rounded-none ' +
+                            (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
+                            {{ hora }}
+                        </div>
+
+                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro">
+
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -252,7 +259,7 @@ function mudaIntervalo() {
     }
 
     .colunaDeHoras {
-        @apply rounded-[1.7vh] w-[5%] h-full bg-gray-300 flex items-center flex-col
+        @apply rounded-[1.7vh] w-[5%] max-h-min bg-gray-300 flex gap-[8vh]
     }
 
     .popUp {
