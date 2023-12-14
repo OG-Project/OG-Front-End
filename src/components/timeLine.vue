@@ -2,12 +2,8 @@
     <div class="divMaior">
         <div class="h-[95%] w-[80%] flex flex-col justify-start">
             <div class="h-full flex flex-col  items-center">
-                <div class="sticky top-0 w-full h-full flex flex-col  items-center bg-[#FBFBFB]">
-                    <div class="w-full h-full ">
-                        <button @click="mudaIntervalo()">
-                            {{ tipoDeIntervalo }}
-                            {{ console.log(tipoDeIntervalo) }}
-                        </button>
+                <div class="fixed top-[14%] w-full h-[18%] flex flex-col items-center bg-[#FBFBFB]">
+                    <div class="w-[72%] h-full ">
                         <div class="w-full h-[50%] flex flex-row text-[64px]">
                             <button class="w-[50%] flex flex-row" @click="abrePopUp()">
                                 {{ format(data, "MMMM", {
@@ -19,8 +15,17 @@
                                 {{ horaAtual }}
                             </div>
                         </div>
-                        <div class="flex justify-center">
-                            <Carousel :value="calendario" :numVisible="20" :numScroll="1" circular class="w-[90%] h-[15%] ">
+                        <div class="flex justify-center w-full h-[50%]">
+                            <div class="w-[20%] flex flex-col justify-end">
+                                <button @click="mudaIntervalo()" class=" bg-gray-500 w-[60%] h-[40%]">
+                                    {{ visualizacao }}
+                                </button>
+                                <div class="flex justify-center items-end ">
+                                    <p>HH:mm</p>
+                                </div>
+                            </div>
+                            <Carousel :value="calendario" :numVisible="20" :numScroll="1" circular
+                                class="w-[95%] h-[100%] flex justify-end">
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
                                         <button v-if="getMonth(dia.data.dia) == getMonth(data)"
@@ -32,8 +37,57 @@
                             </Carousel>
                         </div>
                     </div>
+                    <!-- Começo do Popup -->
+                    <div v-if="abrePopup == true" class="absolute w-full h-full flex justify-start">
+                        <div class="absolute w-[20%] flex justify-center h-[300px] mt-[9%] ml-[10%] bg-roxoEscuro"
+                            @mouseleave="fecharPopUp()">
+                            <div class="w-full flex justify-end absolute">
+                                <button @click="fechaPopUp()"
+                                    class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
+                            </div>
+
+                            <div class="fundoPopup">
+                                <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
+                                    <div class="w-full h-full flex justify-center items-center gap-[1%]">
+                                        <div
+                                            class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                            <button @click="setaEsquerda()">
+                                                <div class="setaEsquerda"></div>
+                                            </button>
+                                        </div>
+                                        <p>{{ getYear(data) }}</p>
+                                        <div
+                                            class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                            <button @click="setaDireita()">
+                                                <div class="setaDireita"></div>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="popUp">
+                                    <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
+                                        <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
+                                        <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
+                                        <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
+                                        <button @click="escolheMes(3)" class="border-b-2 w-[70%]">Abril</button>
+                                        <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
+                                        <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
+                                    </div>
+                                    <div class="w-[50%] flex flex-col  pt-5 justify-center items-center text-[20px]">
+                                        <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
+                                        <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
+                                        <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
+                                        <button @click="escolheMes(9)" class="border-b-2 w-[70%]">Outubro</button>
+                                        <button @click="escolheMes(10)" class="border-b-2 w-[70%]">Novembro</button>
+                                        <button @click="escolheMes(11)" class="border-b-2 w-[70%]">Dezembro</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="w-full max-h-min">
+                <div class="w-full max-h-min mt-[11%]">
+
                     <div v-for="hora of diaSelecionado.listaDeHoras" class=" h-[4%] flex gap-2">
 
                         <div :class="'colunaDeHoras h-32 flex items-start justify-center rounded-none ' +
@@ -49,56 +103,8 @@
                 </div>
             </div>
         </div>
-        <!-- Começo do Popup -->
-        <div v-if="abrePopup == true" class="absolute w-full h-full flex justify-start">
-            <div class="absolute w-[20%] flex justify-center h-[300px] mt-[9%] ml-[10%] bg-roxoEscuro"
-                @mouseleave="fecharPopUp()">
-                <div class="w-full flex justify-end absolute">
-                    <button @click="fechaPopUp()"
-                        class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
-                </div>
-
-                <div class="fundoPopup">
-                    <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
-                        <div class="w-full h-full flex justify-center items-center gap-[1%]">
-                            <div
-                                class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                <button @click="setaEsquerda()">
-                                    <div class="setaEsquerda"></div>
-                                </button>
-                            </div>
-                            <p>{{ getYear(data) }}</p>
-                            <div
-                                class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                <button @click="setaDireita()">
-                                    <div class="setaDireita"></div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="popUp">
-                        <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
-                            <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
-                            <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
-                            <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
-                            <button @click="escolheMes(3)" class="border-b-2 w-[70%]">Abril</button>
-                            <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
-                            <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
-                        </div>
-                        <div class="w-[50%] flex flex-col  pt-5 justify-center items-center text-[20px]">
-                            <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
-                            <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
-                            <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
-                            <button @click="escolheMes(9)" class="border-b-2 w-[70%]">Outubro</button>
-                            <button @click="escolheMes(10)" class="border-b-2 w-[70%]">Novembro</button>
-                            <button @click="escolheMes(11)" class="border-b-2 w-[70%]">Dezembro</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</template>
+</template>aliza
 
 <script setup>
 import { ref, VueElement } from 'vue';
@@ -115,10 +121,12 @@ defineHora()
 
 let setaRef = ref(null)
 let tipoDeIntervalo = ref(1)
+let visualizacao = ref()
+defineVizualizacao()
 let diaSelecionado =
 {
     dia: ref(Date.now()),
-    listaDeHoras: []
+    listaDeHoras: ref([])
 }
 defineListaDeHoras(diaSelecionado)
 let data = Date.now()
@@ -136,6 +144,13 @@ function defineHora() {
 }
 function teste(teste) {
     alert(teste)
+}
+function defineVizualizacao() {
+    if (tipoDeIntervalo.value == 1) {
+        visualizacao.value = "01:00"
+    } else {
+        visualizacao.value = "00:30"
+    }
 }
 // Muda de acordo com o mes
 function getCalendario() {
@@ -196,35 +211,47 @@ function escolheMes(numero) {
     fechaPopUp()
     getCalendario()
 }
-function trocaDia(propriedade, dia) {
-    propriedade.valor = format(dia, "dd-MM-yyyy")
-    getCalendario()
 
-}
-function retornaDia(dia) {
-    diaNovo = dia;
-}
-function adicionaNaLista(tarefa, dia) {
-    if (dia.listaDeTarefas.includes(tarefa)) {
-    } else {
-        dia.listaDeTarefas.push(tarefa)
-    }
-}
 
 function defineListaDeHoras(dia) {
     let listaDeHoras2 = []
     let hora
-    if (tipoDeIntervalo != 0) {
+    let numeroAuxiliar
+    console.log(tipoDeIntervalo)
+    if (tipoDeIntervalo.value == 1) {
         for (var i = 0; i < 24; i++) {
-            console.log(i)
             if (i < 10) {
-                i = "0" + i
+                numeroAuxiliar = "0" + i
             }
-            hora = i + ":00"
+            hora = numeroAuxiliar + ":00"
             listaDeHoras2.push(hora)
         }
+    } else {
+        for (var i = 0; i < 24;) {
+            numeroAuxiliar = " " + i
+
+            if (numeroAuxiliar.includes(".5")) {
+
+                if (i < 10 && numeroAuxiliar.includes(".5")) {
+                    numeroAuxiliar = "0" + parseInt(i) + ":30"
+                }else{
+                    numeroAuxiliar =parseInt(i) + ":30"
+                }   
+            } else {
+
+                if (i < 10 ) {
+                    numeroAuxiliar = "0" + i + ":00"
+                }else{
+                    numeroAuxiliar =i + ":00"
+                }   
+            }
+            hora = numeroAuxiliar
+            listaDeHoras2.push(hora)
+
+            i = i + (0.5)
+        }
     }
-    dia.listaDeHoras = listaDeHoras2
+    dia.listaDeHoras.value = listaDeHoras2
 
 
 }
@@ -234,6 +261,8 @@ function mudaIntervalo() {
     } else {
         tipoDeIntervalo.value = 1
     }
+    defineVizualizacao()
+    defineListaDeHoras()
 }
 
 
