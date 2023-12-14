@@ -25,6 +25,7 @@ export default {
         'roxoAtencao' : '#8E00FF',
         'cinza-escuro': '#484848',
         'cinza-claro': '#D7D7D7',
+        'roxo-claro': '#DBB3FF',
 
       width:{
         

@@ -1,9 +1,9 @@
 <template>
     <div class="styleSelectPadrao " :style="estilizaDivSelect">
-        <select :style="estilizaSelect" @input="$emit('update:modelValue', $event.target.value)" class="xl:text-xl sm:text-sm md:text-md">
-            <option value="" disabled selected>{{ placeholderSelect }}</option>
+        <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex justify-center xl:text-xl sm:text-sm md:text-md">
+            <option class="flex  justify-center" value="" disabled selected>{{ placeholderSelect }}</option>
             <option v-for="opcao of listaSelect" class="flex items-center justify-center" :value="opcaoSelecionada">{{ opcao }}</option>
-        </select>
+        </select>   
     </div>
 
 </template>
@@ -35,13 +35,12 @@ defineEmits(['update:modelValue'])
         color: verificaCorTexto(),
         height: props.altura+"vh",
         width:props.largura+"vw"
-        }
+    }
 
     const estilizaSelect={
-        
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        }
+        fontSize: props.fonteTamanho    
+
+    }
     
 
     function verificaCorBack(){

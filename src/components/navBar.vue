@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="h-[8vh] w-[50%] flex items-center gap-8 justify-end mr-8">
-        <Input styleInput="input-claro-pequeno" largura="20%" altura="10%"></Input>
+        <Input styleInput="input-claro-pequeno" largura="20%" altura="10%" conteudoInput="Pesquisar..."></Input>
         <img :src="notificacao">
         <img :src="UserIcon">
     </div>
