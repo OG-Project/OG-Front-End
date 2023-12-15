@@ -24,9 +24,10 @@ onBeforeMount(async()=>{
     console.log(error);
   })
 })
+let array=['nome','descricao','status','Data de Entrega']
 </script>
 <template>
-  <CardList :tarefas="tarefas" />
+  <CardList :tarefas="tarefas" :arrayDePropriedadesEcolhidas="array" />
   
   <RouterView />
 

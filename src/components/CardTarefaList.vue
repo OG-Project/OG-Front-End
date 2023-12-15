@@ -4,7 +4,7 @@
     <div>
       <div class='h-[50px] items-center ml-9 grid grid-flow-col '>
         <div v-for="(propriedade,index) in propriedades" class='border-r-2 last:border-none text-center border-black px-4 truncate' >
-          {{index<3 ? propriedade : propriedade.propriedade.nome}}
+          {{index<3 ? propriedade : propriedade}}
         </div>
       
         </div>
@@ -15,10 +15,11 @@
       :list="props.tarefas"
       @start="dragging = true"
       @end="dragging = false"
+      
       ghost-class="ghost"
       handle='.handle'
       >
-      <template #item="{element,index}">
+      <template @change="mudou()" #item="{element,index}">
     <div class='card' > 
         <div class='handle'>
             <svg  width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -48,17 +49,38 @@
 import draggable from 'vuedraggable'
 import {reactive,computed,ref,onMounted,onBeforeMount} from 'vue'
 const props=defineProps({
-  tarefas:[]
+  tarefas:[],
+  arrayDePropriedadesEcolhidas:[]
 })
 
-
-
-let arrayDePropriedadesEcolhidas=['nome','descricao','status','Data de Entrega']
+let arrayDePropriedadesEcolhidas=props.arrayDePropriedadesEcolhidas
+let tamanhoDistribuicao=ref(arrayDePropriedadesEcolhidas.length)
 
 let propriedades=computed(()=>{
-  let tamanho=['Nome','Descrição','Status']
-  for(let item of props.tarefas[0].valorPropriedadeTarefas){
-    tamanho.push(item)
+  let tamanho=[]
+  for(let i of arrayDePropriedadesEcolhidas){
+    if(i=='nome'){
+
+      tamanho.push('Nome')
+
+    } else if(i=='descricao'){
+
+      tamanho.push('Descrição')
+
+    } else if(i=='status'){
+
+      tamanho.push('Status')
+
+    } else {
+
+      for(let item of props.tarefas[0].valorPropriedadeTarefas){
+      console.log(item.propriedade.nome)
+      tamanho.push(item.propriedade.nome)
+      }
+
+    }
+
+    
   }
 
   
@@ -72,32 +94,29 @@ function checkValor(objeto){
 
   console.log(propriedades)
 
-  for(let i of chavesValores){
+  for(let i of arrayDePropriedadesEcolhidas){
   
-    for(let j of arrayDePropriedadesEcolhidas){
-
-      if(i[0]==j){
-        if(j=='status'){
-          valoresCheck.push(i[1]!=null ? i[1].nome : 'Não tem')
+    for(let j of chavesValores){
+      if(j[0]==i){
+        if(i=='status'){
+          valoresCheck.push(j[1]!=null ? j[1].nome : 'Não tem')
         }else{
-          valoresCheck.push(i[1])
+          valoresCheck.push(j[1])
         }
       }
-
-      if(i[0]=="valorPropriedadeTarefas"){
-          console.log('caiu aqui')
-          console.log(i[0]=='valorPropriedadeTarefas')
-          for(let k of i[1]){
-            if(k.propriedade.nome==j){
-              console.log(k.valor.valor)
-              valoresCheck.push(k.valor.valor)
-            }
+      if(j[0]=="valorPropriedadeTarefas"){
+        console.log('caiu aqui')
+        console.log(j[0]=='valorPropriedadeTarefas')
+        for(let k of j[1]){
+          if(k.propriedade.nome==i){
+            console.log(k.valor.valor)
+            valoresCheck.push(k.valor.valor)
           }
         }
-  
-
+      }
     }
   }
+  // i[0]!='nome' && i[0]!='status' && i[0]!='descricao' && i[0]!='id' && i[0]!='cor' && i[0]!='dataCriacao' 
   return valoresCheck
 }
 onMounted(()=>{
@@ -105,11 +124,14 @@ onMounted(()=>{
     checkValor(i)
     
   }
+console.log(tamanhoDistribuicao.value)
 })
 onBeforeMount(()=>{
 
 })
-
+function mudou(){
+  console.log('mudou')
+}
 
 </script>
 
@@ -135,7 +157,7 @@ onBeforeMount(()=>{
   ;
 }
 .ghost {
-  opacity: 0.5;
+  opacity: 0.60;
 }
 
 </style>
