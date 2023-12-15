@@ -16,6 +16,7 @@ import CriarEquipePopUp from './components/CriarEquipePopUp.vue';
   <CriarEquipePopUp>
     
   </CriarEquipePopUp>
+
 </template>
 
 <style scoped>

@@ -1,19 +1,19 @@
 <template>
   <!-- Verifica se o botão deve ter um ícone ou não -->
   <div v-if="TemIcon === 'sim'">
-    <!-- Configura o estilo do botão com base em diferentes estados (clique, hover, etc.) -->
-    <button :class="tamanhoComClass"
-      :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
+  <button :class="tamanhoComClass"
+    :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
+    @mouseover="hover"
+    @mouseout="unhover"
+    @click="click"
+  >
+    <p>{{ Texto }}</p>
+    <img :src="icon" 
       @mouseover="hover"
       @mouseout="unhover"
-      @click="click"
-    >
-      <!-- Exibe o texto do botão -->
-      <p>{{ Texto }}</p>
-      <!-- Exibe um ícone se houver um definido -->
-      <img :src="icon" style="height: 67.31%" />
-    </button>
-  </div>
+      :style="estiloIcone"/>
+  </button>
+</div>
   <div v-if="TemIcon === 'nao'">
 
     <button :class="tamanhoComClass"
@@ -28,6 +28,7 @@
 </template>
 
 <script setup>
+import { de } from "date-fns/locale";
 import { ref, onMounted, defineProps } from "vue";
 
 // Define variáveis reativas para controlar os estados de hover e clique
@@ -74,18 +75,28 @@ const props = defineProps({
   parametrosFuncao:{
     type: [],
     default: null
-  }
+  },
+  inverterCorIcon: {
+    type: String,
+    default: "nao"
+  },
 });
 
+
+let corInvertidaIcon = ref('invert(0%)');
 let TemIcon = props.temIcon;
 let Texto = props.texto;
 let Preset = props.preset;
 let botao;
 let hoverBotao;
 let clickBotao;
-let iconeCor = "invert-0";
 let width = "";
 let height = "";
+
+let estiloIcone = {
+  width: "15%",
+  filter: corInvertidaIcon.value,
+};
 
   switch (props.tamanhoPadrao) {
   
@@ -252,12 +263,6 @@ switch (Preset) {
       boxShadow: sombras,
     };
 
-    if (isHovered) {
-      iconeCor = "invert";
-    } else {
-      iconeCor = "invert-0";
-    }
-
     clickBotao = {
       backgroundColor: "#620BA7",
       display: "flex",
@@ -268,12 +273,6 @@ switch (Preset) {
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
-
-    if (isClick) {
-      iconeCor = "invert";
-    } else {
-      iconeCor = "invert-0";
-    }
 
     break;
 
@@ -372,6 +371,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #8E00FF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
+      
     };
 
     clickBotao = {
@@ -454,12 +454,6 @@ switch (Preset) {
       boxShadow: sombras,
     };
 
-    if (isHovered) {
-      iconeCor = "invert";
-    } else {
-      iconeCor = "invert-0";
-    }
-
     clickBotao = {
       backgroundColor: "#620BA7",
       display: "flex",
@@ -471,12 +465,6 @@ switch (Preset) {
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
-
-    if (isClick) {
-      iconeCor = "invert";
-    } else {
-      iconeCor = "invert-0";
-    }
 
     break;
 
@@ -518,10 +506,34 @@ switch (Preset) {
 
 function hover() {
   isHovered.value = true;
+
+  switch(props.inverterCorIcon) {
+    case 'sim':
+      corInvertidaIcon.value = "invert(100%)";
+      break;
+    case 'nao':
+      corInvertidaIcon.value = "invert(0%)";
+      break;
+    default:
+      corInvertidaIcon.value = "invert(0%)";
+      break;
+  }
 }
 
 function unhover() {
   isHovered.value = false;
+
+  switch(props.inverterCorIcon) {
+    case 'sim':
+      corInvertidaIcon.value = "invert(0%)";
+      break;
+    case 'nao':
+      corInvertidaIcon.value = "invert(0%)";
+      break;
+    default:
+      corInvertidaIcon.value = "invert(0%)";
+      break;
+  }
 }
 
 function click() {
