@@ -40,25 +40,27 @@
                 
             </div>
             <div class=" w-[60%] h-full flex-row">
-                <div class="bg-brancoNeve shadow  w-max h-max flex flex-col  pt-6 justify-end p-4 m-6 gap-10">
+                <div class="bg-brancoNeve shadow  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[4%] m-[3%] gap-10">
                     <div class="flex flex-row justify-between items-center">
                         <p>Propriedades</p>
                         <p>Status</p>
-                        <selectPadrao placeholder-select="Buscar por"></selectPadrao>
+                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor"></selectPadrao>
                     </div>
-                    <div class="flex flex-row items-center gap-4 max-h-[3vh]" v-for="propriedade of listaPropriedades">
-                            <p class="w-[33%]">{{ propriedade.nome }}</p>
-                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                            <div class="bg-roxo-claro rounded-md p-1 w-[33%]">
-                                Tarefas Atribuidas
+                        <div class="scrollBar">
+                            <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades">
+                                    <p class="w-[33%]">{{ propriedade.nome }}</p>
+                                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                        Tarefas Atribuidas
+                                    </div>
                             </div>
-                    </div>
+                        </div>
                 </div>
             </div>
         </div>
         
         <div class="h-[1%] w-[76%] flex items-end justify-end pr-4 ">
-            <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="personalizado" tamanhoDaFonte="3vh" sombras='nao' :funcaoClick="criarProjeto" width="5" heigth="1" ></Botao>
+            <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio" tamanhoDaFonte="2.5 vh" sombras='nao' :funcaoClick="criarProjeto" width="5" heigth="1" ></Botao>
          </div>
 </template>
 
@@ -74,14 +76,15 @@
     import {criaProjetoStore} from '../stores/criaProjeto'
     
     const conexao = conexaoBD();
-    let listaSelecao=ref([]);
+    var listaSelecao=ref([]);
     let nomeProjeto=ref("");
     let tipoProjeto=ref("");
     let dataInicioProjeto=ref("");
     let equipesRelacionadasProjeto=ref("");
     let descricaoProjeto = ref("");
     let responsaveisProjeto= ref("");
-    let listaPropriedades=ref([]);
+    var listaPropriedades=ref([]);
+    let buscarPor = ref("");
     watch(responsaveisProjeto,async ()=>{
         pesquisaBancoUserName();
     })
@@ -89,6 +92,7 @@
         console.log(conexao.procurar('/equipe'))
         defineSelect()
         propriedadesDoProjeto();
+        buscandoPor();
     })
 
     async function defineSelect(){
@@ -106,12 +110,15 @@
     }
 
     async function propriedadesDoProjeto(){
-    let listaAux = (await conexao.procurar('/propriedade'))
-       let listaAux1=[]
+    var listaAux = (await conexao.procurar('/propriedade'))
+       var listaAux1=[]
         listaAux.forEach(equipeAtual => {
             listaAux1.push(equipeAtual);
             listaPropriedades.value=listaAux1
+            
         });
+        
+        return listaPropriedades;
     }
     
     function criarProjeto(){
@@ -119,8 +126,42 @@
         criaProjeto.criaProjeto(nomeProjeto.value,descricaoProjeto.value)
         console.log(""+nomeProjeto.value+" "+descricaoProjeto.value)
     }
+
+    
+    async function buscandoPor(){
+        console.log(listaPropriedades.value.sort())
+
+    }
 </script>
 
 <style lang="scss">
+  .scrollBar::-webkit-scrollbar {
+  width: 0.7vw; /* Largura da barra de rolagem */
+}
 
+.scrollBar::-webkit-scrollbar-thumb {
+  @apply bg-gray-200; 
+  border-radius: 10px; 
+  
+}
+
+.scrollBar::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-300; 
+  border-radius: 10px;
+  
+}
+
+.scrollBar::-webkit-scrollbar-track {
+ display: none;
+}
+.scrollBar::-webkit-scrollbar-button {
+  display: none;
+}
+
+.scrollBar{
+    position: relative;
+    overflow: hidden;
+    transition: overflow-y 0.3s ease;
+    @apply  p-2 overflow-y-auto w-full;
+}
 </style>

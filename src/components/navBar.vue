@@ -3,7 +3,7 @@
     <div class="h-[8vh] w-[50%] flex gap-8">
       <BarraLateral></BarraLateral>
       <div class="h-[8vh] flex items-center">
-        <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px"> </Botao>
+        <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh"> </Botao>
       </div>
     </div>
     <div class="h-[8vh] w-[50%] flex items-center gap-8 justify-end mr-8">
