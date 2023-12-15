@@ -2,9 +2,9 @@
     <div class="divMaior">
         <div class="h-[95%] w-[80%] flex flex-col justify-start">
             <div class="h-full flex flex-col  items-center">
-                <div class="fixed top-[14%] w-full h-[18%] flex flex-col items-center bg-[#FBFBFB]">
-                    <div class="w-[72%] h-full ">
-                        <div class="w-full h-[50%] flex flex-row text-[64px]">
+                <div class="fixed top-[14%] w-[80%] h-[18%] flex flex-col items-center bg-[#FBFBFB]">
+                    <div class="w-[89%] h-full ">
+                        <div class="w-[80%] h-[50%] flex flex-row text-[64px]">
                             <button class="w-[50%] flex flex-row" @click="abrePopUp()">
                                 {{ format(data, "MMMM", {
                                     locale: ptBR
@@ -16,11 +16,11 @@
                             </div>
                         </div>
                         <div class="flex justify-center w-full h-[50%]">
-                            <div class="w-[20%] flex flex-col justify-end">
-                                <button @click="mudaIntervalo()" class=" bg-gray-500 w-[60%] h-[40%]">
+                            <div class="w-[20%] flex flex-col justify-end items-center">
+                                <button @click="mudaIntervalo()" class=" bg-gray-300 w-[90%] h-[60%] rounded-xl">
                                     {{ visualizacao }}
                                 </button>
-                                <div class="flex justify-center items-end ">
+                                <div>
                                     <p>HH:mm</p>
                                 </div>
                             </div>
@@ -28,8 +28,8 @@
                                 class="w-[95%] h-[100%] flex justify-end">
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
-                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)"
-                                            @click="diaSelecionado.dia.value = dia.data.dia">
+                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)" 
+                                            @click="diaSelecionado.dia.value = dia.data.dia" v-bind="adicionaNaLista()">
                                             {{ format(dia.data.dia, 'd') }}
                                         </button>
                                     </div>
@@ -88,12 +88,28 @@
                 </div>
                 <div class="w-full max-h-min mt-[11%]">
 
-                    <div v-for="hora of diaSelecionado.listaDeHoras" class=" h-[4%] flex gap-2">
+                    <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras" class=" h-[4%] flex gap-2">
 
-                        <div :class="'colunaDeHoras h-32 flex items-start justify-center rounded-none ' +
+                        <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                             (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
                             {{ hora }}
                         </div>
+
+
+                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row" v-for="tarefa of diaSelecionado.listaDeTarefas">
+                            {{ console.log(diaSelecionado.listaDeTarefas.value) }}
+                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                        </div>
+                    </div>
+
+
+                    <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras" class=" h-[2%] flex gap-2">
+
+                        <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
+                            (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
+                            {{ hora }}
+                        </div>
+
 
                         <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro">
 
@@ -109,16 +125,16 @@
 <script setup>
 import { ref, VueElement } from 'vue';
 import cardTarefas from './cardTarefas.vue'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, } from 'date-fns';
+import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import Carousel from 'primevue/carousel';
+import { Propriedade } from '../models/Propriedade';
 
 
 let horaAtual = ref()
 
 defineHora()
-
 let setaRef = ref(null)
 let tipoDeIntervalo = ref(1)
 let visualizacao = ref()
@@ -126,24 +142,39 @@ defineVizualizacao()
 let diaSelecionado =
 {
     dia: ref(Date.now()),
-    listaDeHoras: ref([])
+    listaDeHoras: ref([]),
+    listaDeTarefas: ref([])
 }
-defineListaDeHoras(diaSelecionado)
+defineListaDeHoras()
 let data = Date.now()
 let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
 api.procurar("/tarefa")
-let tarefas = defineTarefas()
 getCalendario();
+
+async function adicionaNaLista() {
+    let api = conexaoBD()
+    let listaDeTarefasTeste = api.procurar("/tarefa")
+    let listaDeTarefasTeste2 = await listaDeTarefasTeste
+    let lista
+    listaDeTarefasTeste2.forEach(tarefa => {
+        tarefa.valorPropriedadeTarefas.forEach(propriedade => {
+            if (format(diaSelecionado, "yyyy-MM-dd'T'HH" == propriedade.valor.valor)) {
+                if (!lista.includes(tarefa)) {
+                    lista.push(tarefa)
+                }
+            }
+        });
+    });
+    diaSelecionado.listaDeTarefas = lista;
+
+}
 
 function defineHora() {
     horaAtual.value = format(Date.now(), "HH:mm")
     setTimeout((() => defineHora()), 1000)
-}
-function teste(teste) {
-    alert(teste)
 }
 function defineVizualizacao() {
     if (tipoDeIntervalo.value == 1) {
@@ -181,9 +212,6 @@ function getCalendario() {
     calendario.value = listaDeDias;
 
 }
-async function defineTarefas() {
-    tarefas = ref((await api.api).data)
-}
 
 function abrePopUp() {
     abrePopup.value = true
@@ -213,20 +241,23 @@ function escolheMes(numero) {
 }
 
 
-function defineListaDeHoras(dia) {
+function defineListaDeHoras() {
     let listaDeHoras2 = []
     let hora
     let numeroAuxiliar
-    console.log(tipoDeIntervalo)
+    console.log(tipoDeIntervalo.value)
     if (tipoDeIntervalo.value == 1) {
         for (var i = 0; i < 24; i++) {
             if (i < 10) {
                 numeroAuxiliar = "0" + i
+            } else {
+                numeroAuxiliar = i
             }
             hora = numeroAuxiliar + ":00"
+            console.log(i)
             listaDeHoras2.push(hora)
         }
-    } else {
+    } else if (tipoDeIntervalo.value == 2) {
         for (var i = 0; i < 24;) {
             numeroAuxiliar = " " + i
 
@@ -234,16 +265,16 @@ function defineListaDeHoras(dia) {
 
                 if (i < 10 && numeroAuxiliar.includes(".5")) {
                     numeroAuxiliar = "0" + parseInt(i) + ":30"
-                }else{
-                    numeroAuxiliar =parseInt(i) + ":30"
-                }   
+                } else {
+                    numeroAuxiliar = parseInt(i) + ":30"
+                }
             } else {
 
-                if (i < 10 ) {
+                if (i < 10) {
                     numeroAuxiliar = "0" + i + ":00"
-                }else{
-                    numeroAuxiliar =i + ":00"
-                }   
+                } else {
+                    numeroAuxiliar = i + ":00"
+                }
             }
             hora = numeroAuxiliar
             listaDeHoras2.push(hora)
@@ -251,7 +282,7 @@ function defineListaDeHoras(dia) {
             i = i + (0.5)
         }
     }
-    dia.listaDeHoras.value = listaDeHoras2
+    diaSelecionado.listaDeHoras = listaDeHoras2
 
 
 }
