@@ -1,6 +1,6 @@
 <template>
     <div>
-      <fundoPopUp largura="" altura="88vh">
+      <fundoPopUp largura="" altura="90vh">
       <div class="divGeral">
             <div class="flex justify-center">
                 <div class="primeiraDiv flex justify-center">

@@ -17,6 +17,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       cadastrar(objeto, textoRequisicao){
         console.log(objeto.nome)
         return axios.post("http://10.4.96.32:8082"+textoRequisicao,objeto)
+      },
+      atualizar(objeto,textoRequisicao){
+        return axios.put("http://10.4.96.32:8082"+textoRequisicao,objeto)
       }
     }
 })
