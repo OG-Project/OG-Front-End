@@ -114,14 +114,8 @@ function mostraSenhaConfirmacao(){
 </script>
 
 <template>
-  <div class="tamanhoImagemFundoLogin flex" id="imagemDeFundoLogin">
-    <div class="h-[100vh] w-[70%] flex items-center justify-center flex-col">
-      <div class="flex items-center justify-center flex-col h-full">
-        <img class="tamanhoDaLogoLogin" src="../imagem-vetores/logo.svg" />
-        <img class="tamanhoDoNomeLogin" src="../imagem-vetores/nome.svg" />
-      </div>
-    </div>
-    <div id="bordaCinza">
+    <navBar></navBar>
+    <div id="bordaCinza" class="flex">
       <Transition name="login">
         <div v-if="tipo === 'login'" :style="conteudoFormulario">
           <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
@@ -229,11 +223,10 @@ function mostraSenhaConfirmacao(){
         </div>
       </Transition>
     </div>
-  </div>
 </template>
 <style scoped>
 #bordaCinza {
-  @apply flex justify-center items-center 2xl:h-[100%] 2xl:w-[30vw] xl:h-[100%] xl:w-[35vw] lg:h-[100%] lg:w-[45vw] md:h-[100%] md:w-[75vw] bg-[#C4C4C4];
+  @apply flex justify-center items-center 2xl:h-[100%] 2xl:w-[30vw] xl:h-[100%] xl:w-[30vw] lg:h-[100%] lg:w-[30vw] md:h-[100%] md:w-[75vw] bg-[#C4C4C4];
   clip-path: polygon(28% 0, 100% 0, 100% 100%, 28% 100%, 0 80%, 0 20%);
   background-image: linear-gradient(#000000, #320461);
 }

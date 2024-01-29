@@ -2,7 +2,7 @@
 
 import { RouterLink, RouterView } from 'vue-router'
 import Tabelas from './components/Tabelas.vue';
-
+import LoginView from './views/LoginView.vue';
 import Input from './components/Input.vue'
 import fundoPopUp from './components/fundoPopUp.vue';
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
@@ -16,7 +16,7 @@ import ConviteEquipePopUp from './components/ConviteEquipePopUp.vue'
 
 </script>
 <template>
-
+    <RouterView></RouterView>
 </template>
 
 <style scoped>
