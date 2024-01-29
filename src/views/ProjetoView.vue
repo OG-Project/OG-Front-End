@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div  class="h-[5%] flex  items-start justify-start gap-3">
-                            <Input styleInput="input-transparente-claro-pequeno" conteudoInput="Responsavéis pelo gerenciamento" largura="18" altura="2" fontSize="1.0rem" v-model="responsaveisProjeto" tipo="float"></Input>
+                            <inputDepesquisa></inputDepesquisa>>
                             <div v-if="responsaveisProjeto!=''">
                                 <div class="w-full bg-brancoNeve h-full rounded-sm border-transparent shadow-md  ">
                                     <div>
@@ -63,8 +63,8 @@
 </template>
 
 <script setup>
-    import FundoPopUp from '../components/fundoPopUp.vue';
     import Input from '../components/Input.vue';
+    import inputDepesquisa from '../components/inputDePesquisa.vue';
     import selectPadrao from '../components/selectPadrao.vue';
     import Botao from '../components/Botao.vue';
     import { conexaoBD } from '../stores/conexaoBD';

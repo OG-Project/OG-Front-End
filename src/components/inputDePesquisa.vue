@@ -26,7 +26,7 @@
   </div>
 </template>
 <script setup>
-import Input from "../components/Input.vue";
+import Input from "./Input.vue";
 import { ref, watch } from "vue";
 import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
 
