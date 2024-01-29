@@ -9,20 +9,18 @@
                 </div>
                 <div class="grid grid-cols-2">
                     <div class=" w-full h-[90%] flex flex-col gap-16">
-                        <div class="h-[5%] flex items-start justify-start">
-                                <Input styleInput="input-transparente-claro-pequeno" conteudoInput="Tipo Projeto" largura="19" altura="2" fontSize="1.0rem"></Input>
-                        </div>
+                    
                         <div class="h-[5%] flex items-start justify-start mt-2">
                                  <Input styleInput="input-transparente-claro-pequeno"  largura="19" v-model="dataInicioProjeto" tipo="date" conteudoInput="Data Inicio" altura="2"></Input>
                         </div>
-                        <div >
+                        <div>
                             <div class="w-full grid grid-cols-2">
                                     <selectPadrao altura="4" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes" v-model="equipesRelacionadasProjeto" fonte-tamanho="1rem" ></selectPadrao>
                                     <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"></Botao>
                             </div>
                         </div>
                         <div  class="h-[5%] flex  items-start justify-start gap-3">
-                            <Input styleInput="input-transparente-claro-pequeno" conteudoInput="Responsavéis pelo gerenciamento" largura="18" altura="2" fontSize="1.0rem" v-model="responsaveisProjeto"></Input>
+                            <Input styleInput="input-transparente-claro-pequeno" conteudoInput="Responsavéis pelo gerenciamento" largura="18" altura="2" fontSize="1.0rem" v-model="responsaveisProjeto" tipo="float"></Input>
                             <div v-if="responsaveisProjeto!=''">
                                 <div class="w-full bg-brancoNeve h-full rounded-sm border-transparent shadow-md  ">
                                     <div>

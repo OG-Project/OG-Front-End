@@ -1,33 +1,38 @@
 
 <!-- <br>
 <Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="38" height="10"></Input> -->
-
+<!-- PARA GERAR UM INPUT FLOAT PRECISA COLOCAR  "tipo==float" -->
 <template>
     
    <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita'" :style="estilizaDivInput">
+        v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
         <div class=" flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
             <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)" @click=" teste()"  :placeholder=conteudoInput > 
-           
-
    </div>
+
    <div class="styleInputPadrao flex items-center" 
-        v-if="icon=='null'"  >
+                    v-if="icon=='null' & tipo=='float'">
         <div class="estiloPlaceHolder">
             <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" class="peer" placeholder=" "  > 
-            <label :style="estilizaDivPlaceHolder" for="inputStyle"  class=" absolute !text-sm text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">{{ conteudoInput }}</label>
+                 @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" class="peer" placeholder=" "  > 
+            <label :style="estilizaDivPlaceHolder" for="inputStyle"  class=" absolute  text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">{{ conteudoInput }}</label>
         </div>
-        
+   </div>
+
+   <div class="styleInputPadrao" 
+        v-if="icon=='null' && tipo!='float'"  >
+            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" :placeholder=conteudoInput  > 
+      
    </div>
    <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
-        v-if="direcao=='direita'" :style="estilizaDivInput">
+        v-if="direcao=='direita' && tipo!='float'" :style="estilizaDivInput">
         <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
         :value="modelValue"
-    @input="$emit('update:modelValue', $event.target.value)">
+        @input="$emit('update:modelValue', $event.target.value)">
         <div class="flex tems-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
