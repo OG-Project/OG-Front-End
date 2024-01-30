@@ -1,9 +1,7 @@
 
 <template>
-  <form >
-    <div >
-     <textarea :placeholder="props.placeholder" :style="estilo"  @input="$emit('update:modelValue', $event.target.value)"  ></textarea>
-    </div>
+  <form>
+    <textarea :placeholder="props.placeholder" :style="estilo" @input="$emit('update:modelValue', $event.target.value)" :value="modelValue"></textarea>
   </form>
 </template>
 
@@ -34,7 +32,8 @@ const props = defineProps({
   resize: {
     type: String,
     default: "both"
-  }
+  },
+  modelValue:String
 });
 
 const hoverPadrao = {

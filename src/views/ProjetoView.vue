@@ -34,7 +34,7 @@
                 </div>
                     
                 <div class=" w-[50vw]">
-                    <ListaConvidados altura="20vh" altDaImagemIcon="2vh" lagImagemIcon="4vw" ></ListaConvidados>
+                    <ListaConvidados altura="20vh" altDaImagemIcon="2vh" lagImagemIcon="4vw" :listaConvidados=listaDeUsuariosParaBusca texto="Equipes Vinculadas"></ListaConvidados>
                 </div>
                 
             </div>
@@ -58,7 +58,7 @@
                 </div>
                 
             </div>
-            <div >
+            <div>
                 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
             </div>
         </div>
@@ -117,7 +117,7 @@
         let listaAux1=[]
         listaAux.forEach(usuarioAtual => {
             console.log(usuarioAtual.username)
-            listaAux1.push(usuarioAtual.username);
+            listaAux1.push(usuarioAtual.nome);
             listaDeUsuariosParaBusca.value=listaAux1
         });
     }
