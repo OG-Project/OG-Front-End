@@ -8,35 +8,42 @@
         <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
-        <div class="w-full flex items-center mt-8 mb-2">
-          <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :alt="altDaImagemPerfil" />
-          <h2 class="md:text-sm xl:text-xl mt-2">{{ Usuario.nome }}</h2>
-          <img class="imgIcon" :src="caminhoDaImagemIcon" :alt="altDaImagemIcon" />
-          <!-- Condição para renderizar o SelectPadrao -->
-          <template v-if="mostrarSelect">
+        <div class="w-full flex items-center mt-8 mb-2" v-for="convidado in listaConvidados" :key="convidado.nome">
+             <!-- Renderiza as imagens apenas se houver usuários convidados -->
+        <template v-if="listaConvidados.length > 0">
+          <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :style="altDaImagemPerfil" />
+          
+        </template>
+
+        <h2 class="nome-convidado md:text-sm xl:text-xl w-[15vh]">{{ truncarNome(convidado.nome, 15) }}</h2>
+
+        <template v-if="listaConvidados.length > 0">
+          <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem" />
+        </template>
+        
+        <!-- Renderiza o SelectPadrao apenas se houver usuários convidados -->
+        <template v-if="mostrarSelect">
+          <template v-if="listaConvidados.length > 0">
             <SelectPadrao
               class="selectEdit"
-              styleSelect="select-cinza"
+             styleSelect="select-cinza"
               :listaSelect="opcoesSelect"
             ></SelectPadrao>
           </template>
+        </template>
+        
+    
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
 import { defineProps } from 'vue';
 
-const props = defineProps(['altura', 'nome', 'caminhoDaImagem', 'altDaImagem', 'texto', 'mostrarSelect']);
-
-const Usuario = {
-  nome: props.nome || "EduardoCosta",
-  permissao: String,
-  img: String
-};
+const props = defineProps(['altura', 'nome', 'caminhoDaImagem', 'altDaImagem', 'texto', 'mostrarSelect', 'listaConvidados']);
+const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 const opcoesSelect = ['Edit', 'View'];
 </script>
   <style lang="scss">
@@ -48,7 +55,13 @@ const opcoesSelect = ['Edit', 'View'];
 
 @import url(../assets/main.css);
 
-    
+    .nome-convidado {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
     .convites-bg {
         @apply 
         xl:h-[24vh] 
@@ -69,13 +82,13 @@ const opcoesSelect = ['Edit', 'View'];
 
     .imgDePerfil {
         @apply rounded-full bg-cover bg-center flex 
-        flex-col  mr-[5px] ml-[-25px] mt-2
+        flex-col  mr-[5px] ml-[-25px]
         xl:w-[2vw] xl:h-[4vh];
     }
 
     .selectEdit {
         @apply
-        text-xs ml-[30px] mb-[10px] mt-2;
+        text-xs ml-[30px] mb-[10px] mt-2 ;
     }
 
     .grid-template{ 
