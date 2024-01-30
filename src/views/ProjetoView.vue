@@ -1,5 +1,5 @@
 <template class="w-full h-full">
-    <div class="w-full h-full grid grid-cols-2">
+    <div class="gridTotal">
             <div class=" flex flex-col  gap-6 pl-[5%] mt-[3%]">
                  <div class="flex items-start justify-start font-semibold">
                     <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"  largura="40" altura="8"  fontSize="2.5rem" v-model="nomeProjeto"></Input>
@@ -20,10 +20,11 @@
                             </div>
                         </div>
                         <div  class="h-[5%] flex  items-start justify-start gap-3">
-                            <inputDePesquisa :lista-da-pesquisa=responsaveisProjeto></inputDePesquisa>
+                            <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca></inputDePesquisa>
                             <div v-if="responsaveisProjeto!=''">
                                 <div class="w-full bg-brancoNeve h-full rounded-sm border-transparent shadow-md  ">
                                     <div>
+                                        <!-- 17.65% -->
                                         aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                                     </div>
                                 </div> 
@@ -37,8 +38,8 @@
                 </div>
                 
             </div>
-            <div class=" w-[60%] h-full flex-row">
-                <div class="bg-brancoNeve shadow  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[4%] m-[3%] gap-10">
+            <div class=" w-[83%] h-full flex-row  ">
+                <div class="bg-brancoNeve shadow  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
                     <div class="flex flex-row justify-between items-center">
                         <p>Propriedades</p>
                         <p>Status</p>
@@ -53,13 +54,19 @@
                                     </div>
                             </div>
                         </div>
+
                 </div>
+                
+            </div>
+            <div >
+                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
             </div>
         </div>
         
-        <div class="h-[1%] w-[76%] flex items-end justify-end pr-4 ">
+        <div class="h-[1%] w-[70.4%] flex items-end justify-end pr-4 ">
             <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio" tamanhoDaFonte="2.5 vh" sombras='nao' :funcaoClick="criarProjeto" width="5" heigth="1" ></Botao>
          </div>
+         
 </template>
 
 <script setup>
@@ -81,6 +88,7 @@
     let equipesRelacionadasProjeto=ref("");
     let descricaoProjeto = ref("");
     let responsaveisProjeto= ref([]);
+    let listaDeUsuariosParaBusca= ref([])
     var listaPropriedades=ref([]);
     let buscarPor = ref("");
    
@@ -102,15 +110,15 @@
     }
 
     async function pesquisaBancoUserName(){
-        console.log(responsaveisProjeto)
-        console.log(conexao.procurar("/usuario/username?username="+responsaveisProjeto.value))
+        console.log(listaDeUsuariosParaBusca)
+        console.log(conexao.procurar("/usuario/username?username="+listaDeUsuariosParaBusca.value))
 
         let listaAux = (await conexao.procurar('/usuario'))
         let listaAux1=[]
         listaAux.forEach(usuarioAtual => {
             console.log(usuarioAtual.username)
             listaAux1.push(usuarioAtual.username);
-            responsaveisProjeto.value=listaAux1
+            listaDeUsuariosParaBusca.value=listaAux1
         });
     }
 
@@ -168,5 +176,12 @@
     overflow: hidden;
     transition: overflow-y 0.3s ease;
     @apply  p-2 overflow-y-auto w-full;
+}
+
+.gridTotal{
+  display: grid;
+  grid-template-columns: 41.175% 41.175% 17.65%;
+  width: 100%; /* Isso é opcional, dependendo do contexto do seu layout */
+  height: 100%; /* Isso também é opcional, dependendo do contexto do seu layout */
 }
 </style>

@@ -7,15 +7,15 @@ import { Propriedade } from "../models/Propriedade";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
-      return {api:axios.get("http://10.4.96.32:8082/propriedade")}
+      return {api:axios.get("http://10.4.96.58:8082/propriedade")}
     },
     actions: {
       procurar(textoRequisicao){
         
-        return axios.get("http://10.4.96.32:8082"+ textoRequisicao).then(response => response.data)
+        return axios.get("http://10.4.96.58:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
-        return axios.post("http://10.4.96.32:8082"+textoRequisicao,objeto)
+        return axios.post("http://10.4.96.58:8082"+textoRequisicao,objeto)
       },
       
     }
