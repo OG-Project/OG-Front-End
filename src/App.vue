@@ -1,17 +1,19 @@
 <script setup>
 
-import { RouterLink, RouterView } from 'vue-router'
-import Tabelas from './components/Tabelas.vue';
-
+import {RouterView} from 'vue-router'
 import Input from './components/Input.vue'
-import fundoPopUp from './components/fundoPopUp.vue';
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
-import calendario from './components/calendario.vue';
-import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
-import CriarEquipePopUp from './components/CriarEquipePopUp.vue';
+
+import Navbar from '@/components/Navbar.vue';
+const funcaoPopUpPropriedade = funcaoPopUpStore();
+const funcaoPopUpProjeto= funcaoPopUpStore();
+
 
 </script>
 <template>
+  <Navbar></Navbar>
+    <RouterView />
+
 
   <CriarEquipePopUp>
     
@@ -20,5 +22,6 @@ import CriarEquipePopUp from './components/CriarEquipePopUp.vue';
 </template>
 
 <style scoped>
+
 </style>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full flex justify-center items-center absolute" v-if="funcaoPopUp.variavelModal==true">
+    <div class="w-screen h-screen flex justify-center items-center absolute z-50 top-0" v-if="funcaoPopUp.variavelModal==true">
         <div class="blur-background" v-if="funcaoPopUp.variavelModal==true" @click=" funcaoPopUp.fechaPopUp()"></div>
             <div class="style-bg-roxo" :style="estilizaDivTotal">
                 <img src="../imagem-vetores/botao-x.svg" class="botao-sair" @click=" funcaoPopUp.fechaPopUp()">
@@ -48,7 +48,6 @@ const funcaoPopUp = funcaoPopUpStore();
        animation-name: aparecePopUp;
        animation-duration: 0.09s;
        animation-iteration-count: initial;
-       animation-timing-function: cubic-bezier(0.15, 0.15, 0.15, 0.15); 
        overflow: hidden; 
     }
     @keyframes aparecePopUp {
@@ -67,7 +66,8 @@ const funcaoPopUp = funcaoPopUpStore();
         @apply w-[5%] h-[5%] top-3 right-4 absolute 
     }
     .blur-background {
-        @apply fixed inset-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg absolute ;
+        @apply fixed z-0 top-0 inset-0 w-screen h-screen bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg ;
+        
        
     }
 

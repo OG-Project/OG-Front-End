@@ -24,6 +24,7 @@
         <!-- Renderiza o SelectPadrao apenas se houver usuários convidados -->
         <template v-if="mostrarSelect">
           <template v-if="listaConvidados.length > 0">
+
             <SelectPadrao
               class="selectEdit"
              styleSelect="select-cinza"
@@ -44,7 +45,12 @@ import { defineProps } from 'vue';
 
 const props = defineProps(['altura', 'nome', 'caminhoDaImagem', 'altDaImagem', 'texto', 'mostrarSelect', 'listaConvidados']);
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
 const opcoesSelect = ['Edit', 'View'];
+
+const imagemIcon={
+  height: props.altDaImagemIcon,
+}
 </script>
   <style lang="scss">
   /* ... o restante do seu estilo permanece o mesmo ... */
