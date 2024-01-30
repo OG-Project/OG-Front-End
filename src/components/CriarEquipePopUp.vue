@@ -9,16 +9,16 @@
                        <Input styleInput="input-transparente-claro" largura="70vw" altura="8vh" icon="../src/imagem-vetores/Equipe.svg" conteudoInput="Nome da Equipe" v-model="nome" ></Input> 
                  </div>
                     <div class=" grid-template  flex w-full">
-                        <Input styleInput="input-transparente-claro"  largura="70vw" altura="8vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa" v-model="usuarioconvidado"></Input>
+                        <Input styleInput="input-transparente-claro"  largura="70vw" altura="8vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa" v-model="usuarioConvidado"></Input>
                  </div>
                  <div class="grid-template flex w-full mt-[1vh]">
-                      <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" @funcaoClick="adicionarPessoa"></Botao>
+                      <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" @funcaoClick="adicionarMembro"></Botao>
                  </div>
                  <div class=" grid-template flex w-full p-5 xl:p-3">
                       <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[24vw] lg:w-[36vw] md:w-[36vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
                  </div> 
                  <div class="convidados-div flex justify-center">
-                       <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" :lista-convidados="listaConvidados"></ListaConvidados>
+                       <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" :lista-convidados="usuarioconvidado"></ListaConvidados>
                  </div>
                  <div class="botao flex  justify-end mx-[3vw] w-[86%] xl:w-[80%] ">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="0.9rem" :funcaoClick="cadastrarEquipe">
@@ -45,7 +45,6 @@
   let nome = ref('');
   let descricao = ref('');
   let mensagemError = ref("");
-  let listaConvidados = ref([{nome: 'eduardo costa do nascimento'}]);
  
   function cadastrarEquipe() { 
   const cria = criaEquipeStore();
@@ -66,19 +65,23 @@
 
   nome.value = '';
   descricao.value = '';
+
+
  };
 
-  async function adicionarPessoa(){
-    let usuario = banco.procurar("/usuario/email?=" + usuarioconvidado);
-    let UsuarioConvidado = await usuario;
-    UsuarioConvidado.forEach((usuario) => {
-    if (usuarioconvidado.value === usuario.email) {
-         listaConvidados.value.push(usuarioconvidado.value);
-    }
 
-    usuarioconvidado.value=""
-    })
-}
+ let listaUsuarios = await usuarios;
+  listaUsuarios.forEach((usuario) => {
+    if (usuarioLogin.value === usuario.username) {
+      if (senhaUsuarioLogin.value === usuario.senha) {
+        VueCookies.set("usuarioCookie", usuario, 1);
+      }
+    }
+  });
+
+
+ 
+
  </script>
  <style scoped>
     @import url(../assets/main.css);
