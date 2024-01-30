@@ -8,7 +8,6 @@
         <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
-
         <div class="w-full flex items-center mt-8 mb-2" v-for="convidado in listaConvidados" :key="convidado.nome">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
         <template v-if="listaConvidados.length > 0">
