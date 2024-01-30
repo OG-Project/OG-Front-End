@@ -36,13 +36,25 @@
         </div>
       </div>
     </div>
-  </div>
+  </div>  
 </template>
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
 import { defineProps } from 'vue';
 
-const props = defineProps(['altura', 'nome', 'caminhoDaImagem', 'altDaImagem', 'texto', 'mostrarSelect', 'listaConvidados']);
+const props = defineProps({
+  altura:String,
+  nome:String,
+  caminhoDaImagemIcon:String,
+  altDaImagem:String,
+  texto:String,
+  mostrarSelect:String,
+  listaConvidados:{
+    type: []
+  }
+})
+
+
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 const opcoesSelect = ['Edit', 'View'];
 </script>
