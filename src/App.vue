@@ -27,10 +27,11 @@ onBeforeMount(async()=>{
 let array=['nome','descricao','status','Data de Entrega']
 </script>
 <template>
+  
   <CardList :tarefas="tarefas" :arrayDePropriedadesEcolhidas="array" />
   
   <RouterView />
-
+  
 </template>
 <style>
 
