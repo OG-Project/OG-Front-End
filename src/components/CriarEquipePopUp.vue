@@ -18,7 +18,7 @@
                       <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[24vw] lg:w-[36vw] md:w-[36vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
                  </div> 
                  <div class="convidados-div flex justify-center">
-                       <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" :lista-convidados="usuarioconvidado"></ListaConvidados>
+                       <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" ></ListaConvidados>
                  </div>
                  <div class="botao flex  justify-end mx-[3vw] w-[86%] xl:w-[80%] ">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="0.9rem" :funcaoClick="cadastrarEquipe">
@@ -68,16 +68,6 @@
 
 
  };
-
-
- let listaUsuarios = await usuarios;
-  listaUsuarios.forEach((usuario) => {
-    if (usuarioLogin.value === usuario.username) {
-      if (senhaUsuarioLogin.value === usuario.senha) {
-        VueCookies.set("usuarioCookie", usuario, 1);
-      }
-    }
-  });
 
 
  
