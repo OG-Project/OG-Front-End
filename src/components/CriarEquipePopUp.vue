@@ -66,7 +66,6 @@
   nome.value = '';
   descricao.value = '';
 
-
  };
 
 
