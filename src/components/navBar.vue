@@ -1,10 +1,12 @@
 <template>
   <div class="h-[8vh] w-full flex">
-    <div class="h-[8vh] w-[50%] flex gap-8">
+    <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral></BarraLateral>
+    </div>
+    <div class="h-[8vh] w-[35%] flex gap-8">
       <div class="h-[8vh] flex items-center">
         <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px"> </Botao>
-      </div>
+    </div>
     </div>
     <div class="h-[8vh] w-[50%] flex items-center gap-8 justify-end mr-8">
         <Input styleInput="input-claro-pequeno" largura="20%" altura="10%"></Input>
@@ -19,4 +21,6 @@ import Botao from "../components/Botao.vue";
 import notificacao from "../imagem-vetores/Notificacao.svg"
 import UserIcon from "../imagem-vetores/UserIcon.svg"
 </script>
-<style scoped></style>
+<style scoped>
+  
+</style>
