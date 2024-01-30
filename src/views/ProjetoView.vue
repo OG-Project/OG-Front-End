@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div  class="h-[5%] flex  items-start justify-start gap-3">
-                            <inputDepesquisa></inputDepesquisa>>
+                            <inputDePesquisa :lista-da-pesquisa=responsaveisProjeto></inputDePesquisa>
                             <div v-if="responsaveisProjeto!=''">
                                 <div class="w-full bg-brancoNeve h-full rounded-sm border-transparent shadow-md  ">
                                     <div>
@@ -64,7 +64,7 @@
 
 <script setup>
     import Input from '../components/Input.vue';
-    import inputDepesquisa from '../components/inputDePesquisa.vue';
+    import inputDePesquisa from '../components/inputDePesquisa.vue';
     import selectPadrao from '../components/selectPadrao.vue';
     import Botao from '../components/Botao.vue';
     import { conexaoBD } from '../stores/conexaoBD';
@@ -80,17 +80,16 @@
     let dataInicioProjeto=ref("");
     let equipesRelacionadasProjeto=ref("");
     let descricaoProjeto = ref("");
-    let responsaveisProjeto= ref("");
+    let responsaveisProjeto= ref([]);
     var listaPropriedades=ref([]);
     let buscarPor = ref("");
-    watch(responsaveisProjeto,async ()=>{
-        pesquisaBancoUserName();
-    })
+   
     onMounted(() => { 
         console.log(conexao.procurar('/equipe'))
         defineSelect()
         propriedadesDoProjeto();
         buscandoPor();
+        pesquisaBancoUserName();
     })
 
     async function defineSelect(){
@@ -105,6 +104,14 @@
     async function pesquisaBancoUserName(){
         console.log(responsaveisProjeto)
         console.log(conexao.procurar("/usuario/username?username="+responsaveisProjeto.value))
+
+        let listaAux = (await conexao.procurar('/usuario'))
+        let listaAux1=[]
+        listaAux.forEach(usuarioAtual => {
+            console.log(usuarioAtual.username)
+            listaAux1.push(usuarioAtual.username);
+            responsaveisProjeto.value=listaAux1
+        });
     }
 
     async function propriedadesDoProjeto(){
