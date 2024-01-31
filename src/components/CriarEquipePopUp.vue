@@ -6,19 +6,19 @@
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                  </div>
                  <div class=" grid-template  flex w-full p-5">
-                       <Input styleInput="input-transparente-claro" largura="70vw" altura="8vh" icon="../src/imagem-vetores/Equipe.svg" conteudoInput="Nome da Equipe" v-model="nome" ></Input> 
+                       <Input styleInput="input-transparente-claro" largura="70vw" altura="10vh" icon="../src/imagem-vetores/Equipe.svg" conteudoInput="Nome da Equipe" v-model="nome" ></Input> 
                  </div>
                     <div class=" grid-template  flex w-full">
-                        <Input styleInput="input-transparente-claro"  largura="70vw" altura="8vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Pessoa" v-model="usuarioConvidado"></Input>
+                        <Input styleInput="input-transparente-claro"  largura="70vw" altura="10vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
                  </div>
                  <div class="grid-template flex w-full mt-[1vh]">
-                      <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" @funcaoClick="adicionarMembro"></Botao>
+                      <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
                  </div>
                  <div class=" grid-template flex w-full p-5 xl:p-3">
                       <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[24vw] lg:w-[36vw] md:w-[36vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
                  </div> 
                  <div class="convidados-div flex justify-center">
-                       <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" ></ListaConvidados>
+                       <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="25vh" :listaConvidados="membrosEquipe" ></ListaConvidados>
                  </div>
                  <div class="botao flex  justify-end mx-[3vw] w-[86%] xl:w-[80%] ">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="0.9rem" :funcaoClick="cadastrarEquipe">
@@ -39,12 +39,32 @@
   import ListaConvidados from './ListaConvidados.vue';
   import { conexaoBD } from "../stores/conexaoBD.js";
   import { criaEquipeStore } from "../stores/criarEquipe";
-
+import { Equipe } from '../models/Equipe';
 
   const banco = conexaoBD();
   let nome = ref('');
   let descricao = ref('');
+  let usuarioConvidado = ref('');
   let mensagemError = ref("");
+  let membrosEquipe = ref([]);
+  let usuarios = banco.procurar("/usuario")
+
+ async function adicionarMembro(){
+    let listaUsuarios = await usuarios;
+    listaUsuarios.forEach((usuario) => {
+    if (usuarioConvidado.value === usuario.username) {
+        membrosEquipe.value.push(usuario);
+
+    }if(usuarioConvidado.value === usuario.nome) {
+        membrosEquipe.value.push(usuario);
+
+    }if(usuarioConvidado.value === usuario.email) {
+        membrosEquipe.value.push(usuario);
+    
+    }
+
+});
+  }
  
   function cadastrarEquipe() { 
   const cria = criaEquipeStore();
@@ -58,18 +78,17 @@
 
   cria.criaEquipe(
         nome.value,
-        descricao.value
+        descricao.value,
+        membrosEquipe.value
+    
    );
 
   console.log('Equipe cadastrada:', cria);
 
   nome.value = '';
   descricao.value = '';
-
+  membrosEquipe.value = '';
  };
-
-
- 
 
  </script>
  <style scoped>

@@ -15,7 +15,7 @@
           
         </template>
 
-        <h2 class="nome-convidado md:text-sm xl:text-xl w-[15vh]">{{ truncarNome(convidado, 15) }}</h2>
+        <h2 class="nome-convidado md:text-sm xl:text-xl w-[15vh]">{{ truncarNome(convidado.nome , 15) }}</h2>
 
         <template v-if="listaConvidados.length > 0">
           <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem" />
