@@ -60,7 +60,7 @@
               />
             </svg>
           </div>
-          <div class="grid w-full grid-cols-">
+          <div class="grid w-full">
             <div
               class="border-r-2 text-center last:border-none border-white px-4 truncate"
               v-for="(valor, index) in checkValor(element)"
@@ -79,7 +79,7 @@
 
 <script setup>
 import { reactive, computed, ref, onMounted, onBeforeMount } from "vue";
-import draggable from "vuedraggable";
+import draggable from 'vuedraggable';
 const props = defineProps({
   tarefas: [],
   arrayDePropriedadesEcolhidas: [],
@@ -89,23 +89,8 @@ let valueTarefas=computed(()=>{
   return props.tarefas
 })
 
-// const classe=reactive({
-//   gridTemplateColumns: "repeat("+tamanhoDistribuicao.value+", minmax(0, 1fr));"
-// })
-let style=computed(()=>{
-  return {
-     gridTemplateColumns: "repeat("+tamanhoDistribuicao.value+", minmax(0, 1fr));"
-
-  }
-})
-// const styleObject = reactive({
-//   color: 'red',
-//   fontSize: '13px'
-// })
-
 
 let arrayDePropriedadesEcolhidas = props.arrayDePropriedadesEcolhidas;
-let tamanhoDistribuicao = ref(arrayDePropriedadesEcolhidas.length);
 
 let propriedades = computed(() => {
   let tamanho = [];
@@ -116,22 +101,19 @@ let propriedades = computed(() => {
       tamanho.push("Descrição");
     } else if (i == "status") {
       tamanho.push("Status");
-    } else {
-      for (let item of props.tarefas[0].valorPropriedadeTarefas) {
-        console.log(item.propriedade.nome);
-        tamanho.push(item.propriedade.nome);
-      }
     }
+    //erro aqui
+     else {
+      console.log(props.tarefas)
+      
+    }
+    // erro aqui
   }
-  
   return tamanho;
 });
-
 function checkValor(objeto) {
   let chavesValores = Object.entries(objeto);
   let valoresCheck = [];
-
-  console.log(propriedades);
 
   for (let i of arrayDePropriedadesEcolhidas) {
     for (let j of chavesValores) {
@@ -161,12 +143,6 @@ function alteraTarefa(){
   console.log(valueTarefas)
 }
 
-onMounted(() => {
-  for (let i of props.tarefas) {
-    checkValor(i);
-  }
-  console.log(tamanhoDistribuicao.value);
-});
 
 </script>
 
@@ -189,5 +165,8 @@ onMounted(() => {
 }
 .ghost {
   opacity: 0.6;
+}
+.distribuicao{
+  grid-template-columns: v-bind(style)
 }
 </style>

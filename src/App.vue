@@ -29,7 +29,7 @@ let array=['nome','descricao','status','Data de Entrega']
 <template>
   
   <CardList :tarefas="tarefas" :arrayDePropriedadesEcolhidas="array" />
-  
+  <div>oi</div>
   <RouterView />
   
 </template>
