@@ -11,7 +11,7 @@
           styleInput="input-transparente-claro-grande"
         ></Input>
       </div>
-      <div class="flex flex-col pl-12 mt-12 min-h-[12vh] w-[90%] flex">
+      <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
         <TextAreaPadrao
           width="95%"
           height="16vh"
