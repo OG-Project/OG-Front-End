@@ -40,13 +40,20 @@
             </div>
             <div class=" w-[83%] h-full flex-row  ">
                 <div class="bg-brancoNeve shadow  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
-                    <div class="flex flex-row justify-between items-center">
+                    <div class="flex flex-row justify-between items-center" @click="buscandoPor()">
                         <p>Propriedades</p>
                         <p>Status</p>
-                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor"></selectPadrao>
+                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"></selectPadrao>
                     </div>
                         <div class="scrollBar">
-                            <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades">
+                            <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades" v-if="listaSelecionada=='' && buscarPor==''">
+                                    <p class="w-[33%]">{{ propriedade.nome }}</p>
+                                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                        Tarefas Atribuidas
+                                    </div>
+                            </div>
+                            <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada" v-if="listaSelecionada!=[]">
                                     <p class="w-[33%]">{{ propriedade.nome }}</p>
                                     <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
                                     <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
@@ -59,7 +66,7 @@
                 
             </div>
             <div>
-                AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+                AAAAAAAAAAAAAAAAAAAAAAA
             </div>
         </div>
         
@@ -91,7 +98,8 @@
     let listaDeUsuariosParaBusca= ref([])
     var listaPropriedades=ref([]);
     let buscarPor = ref("");
-   
+    let opcoesSelect =["Data","Numero","Seleção","Texto"]
+    let listaSelecionada =ref([])
     onMounted(() => { 
         console.log(conexao.procurar('/equipe'))
         defineSelect()
@@ -142,8 +150,20 @@
 
     
     async function buscandoPor(){
-        console.log(listaPropriedades.value.sort())
+        var listaAux= []
+        var listaAux1=[]
+        listaAux= listaPropriedades.value
+        let opcaoSelecionada= this.buscarPor.toLowerCase()
+        listaAux.forEach(opcaoAtual => {
+            console.log("opção atual: "+ opcaoAtual.tipo)
+            console.log(opcaoSelecionada)
+            if(opcaoAtual.tipo.toLowerCase()==this.buscarPor.toLowerCase()){
 
+                listaAux1.push(opcaoAtual)
+                console.log("listaSElecionada"+listaSelecionada)
+            }
+        });
+        listaSelecionada.value=listaAux1;
     }
 </script>
 

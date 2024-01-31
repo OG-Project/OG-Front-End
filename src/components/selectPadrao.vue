@@ -1,14 +1,17 @@
 <template>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <div class="styleSelectPadrao " :style="estilizaDivSelect">
         <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex justify-center xl:text-xl sm:text-sm md:text-md">
-            <option class="flex  justify-center" value="" disabled selected>{{ placeholderSelect }}</option>
-            <option v-for="opcao of listaSelect" class="flex items-center justify-center" :value="opcaoSelecionada">{{ opcao }}</option>
+            <option class="options" value="" disabled selected >{{ placeholderSelect }}</option>
+            <option v-for="opcao of listaSelect" class="options" :value="opcaoSelecionada">{{ opcao }}</option>
         </select>   
+        
     </div>
 
 </template>
 
 <script setup>
+
 defineEmits(['update:modelValue'])
     const props=defineProps({
         listaSelect:[],
@@ -42,6 +45,11 @@ defineEmits(['update:modelValue'])
 
     }
     
+    const selectButton = document.querySelector('.inline-flex button');
+    const selectList = document.querySelector('.absolute');
+
+      
+
 
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
@@ -109,5 +117,10 @@ defineEmits(['update:modelValue'])
     select{
         @apply focus-visible:outline-0 bg-inherit truncate flex items-center;
     }
+
+    .options{
+        @apply h-full
+    }
+   
 }
 </style>
