@@ -91,7 +91,6 @@ import {Equipe} from '../models/Equipe'
          // só muda a cor de fundo da div do input de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-grande-escuro" || 
         props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande"){
-            console.log(props.width)
             return "#484848"
         }else if(props.styleInput=="input-claro" || props.styleInput=="input-grande-claro" || 
         props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande"){

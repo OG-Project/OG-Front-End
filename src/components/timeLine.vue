@@ -4,8 +4,8 @@
             <div class="h-full flex flex-col  items-center">
                 <div class="fixed top-[14%] w-[80%] h-[18%] flex flex-col items-center bg-[#FBFBFB]">
                     <div class="w-[89%] h-full ">
-                        <div class="w-[80%] h-[50%] flex flex-row text-[64px]">
-                            <button class="w-[50%] flex flex-row" @click="abrePopUp()">
+                        <div class="w-[100%] h-[50%] flex flex-row text-[64px]">
+                            <button class="w-[70%] flex flex-row" @click="abrePopUp()">
                                 {{ format(data, "MMMM", {
                                     locale: ptBR
                                 }).charAt(0).toUpperCase() +
@@ -28,9 +28,10 @@
                                 class="w-[95%] h-[100%] flex justify-end">
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
-                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)" 
-                                            @click="diaSelecionado.dia.value = dia.data.dia" v-bind="adicionaNaLista()">
-                                            {{ format(dia.data.dia, 'd') }}
+                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)">
+                                            <button @click="diaSelecionado.dia.value = dia.data.dia">
+                                                {{ format(dia.data.dia, 'dd') }}
+                                            </button>
                                         </button>
                                     </div>
                                 </template>
@@ -88,7 +89,8 @@
                 </div>
                 <div class="w-full max-h-min mt-[11%]">
 
-                    <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras" class=" h-[4%] flex gap-2">
+                    <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras.value"
+                        class=" h-[4%] flex gap-2">
 
                         <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                             (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
@@ -96,14 +98,22 @@
                         </div>
 
 
-                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row" v-for="tarefa of diaSelecionado.listaDeTarefas">
-                            {{ console.log(diaSelecionado.listaDeTarefas.value) }}
-                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                        <div
+                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
+                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value">
+                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                    {{ console.log(hora) }}
+                                    <div v-if="format(new Date(propriedade.valor.valor), 'HH:mm') == hora">
+                                        AAAAAAAAAAAAAAAAAAAAAAAAAAA
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
 
-                    <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras" class=" h-[2%] flex gap-2">
+                    <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras.value"
+                        class=" h-[2%] flex gap-2">
 
                         <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                             (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
@@ -112,7 +122,14 @@
 
 
                         <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro">
-
+                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value">
+                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                    {{ console.log(hora) }}
+                                    <div v-if="format(new Date(propriedade.valor.valor), 'HH:mm') == hora">
+                                        AAAAAAAAAAAAAAAAAAAAAAAAAAA
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -123,9 +140,9 @@
 </template>aliza
 
 <script setup>
-import { ref, VueElement } from 'vue';
+import { ref, VueElement, watch } from 'vue';
 import cardTarefas from './cardTarefas.vue'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours } from 'date-fns';
+import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours, parse } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import Carousel from 'primevue/carousel';
@@ -153,24 +170,31 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 api.procurar("/tarefa")
 getCalendario();
+adicionaNaLista();
+
+watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
+    adicionaNaLista();
+});
 
 async function adicionaNaLista() {
     let api = conexaoBD()
     let listaDeTarefasTeste = api.procurar("/tarefa")
     let listaDeTarefasTeste2 = await listaDeTarefasTeste
-    let lista
+    let lista = []
+    let hora
     listaDeTarefasTeste2.forEach(tarefa => {
         tarefa.valorPropriedadeTarefas.forEach(propriedade => {
-            if (format(diaSelecionado, "yyyy-MM-dd'T'HH" == propriedade.valor.valor)) {
+            const dataFormatada = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd');
+            if (format(diaSelecionado.dia.value, 'yyyy-MM-dd') == dataFormatada) {
                 if (!lista.includes(tarefa)) {
+                    console.log(tarefa)
                     lista.push(tarefa)
                 }
             }
         });
     });
-    diaSelecionado.listaDeTarefas = lista;
-
-}
+    diaSelecionado.listaDeTarefas.value = lista;
+};
 
 function defineHora() {
     horaAtual.value = format(Date.now(), "HH:mm")
@@ -245,7 +269,6 @@ function defineListaDeHoras() {
     let listaDeHoras2 = []
     let hora
     let numeroAuxiliar
-    console.log(tipoDeIntervalo.value)
     if (tipoDeIntervalo.value == 1) {
         for (var i = 0; i < 24; i++) {
             if (i < 10) {
@@ -254,7 +277,6 @@ function defineListaDeHoras() {
                 numeroAuxiliar = i
             }
             hora = numeroAuxiliar + ":00"
-            console.log(i)
             listaDeHoras2.push(hora)
         }
     } else if (tipoDeIntervalo.value == 2) {
@@ -282,7 +304,7 @@ function defineListaDeHoras() {
             i = i + (0.5)
         }
     }
-    diaSelecionado.listaDeHoras = listaDeHoras2
+    diaSelecionado.listaDeHoras.value = listaDeHoras2
 
 
 }
