@@ -7,7 +7,7 @@
     >
       <img class="h-[50px] w-[50px]" src="../imagem-vetores/haburguer.svg" />
     </div>
-    <div v-if="aberto" class="sidebar slide-in flex">
+    <div v-if="aberto" class="sidebar slide-in flex fixed">
       <div class="transition h-[100vh] w-[10vw] bg-roxoEscuro">
         <div class="flex-col h-full flex justify-between gap-6">
           <div class="ml-4 mt-6">

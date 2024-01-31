@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="props.tipo === 'checkbox'">
+    <div v-if="props.tipo === 'checkbox'" class="flex items-center">
       <input id="checkbox" type="checkbox" @click="check('checkbox')" />
     </div>
     <div v-if="props.tipo === 'toggle'">
