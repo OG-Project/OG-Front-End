@@ -17,7 +17,7 @@ let tarefa1
 let kanban
 let hoverCard
 let tira
-let usuarioLogado =  $cookies.get("usuarioCookie");
+let usuarioLogado = $cookies.get("usuarioCookie");
 tarefa1 = {
     backgroundColor: props.tarefa.cor,
     width: "6%",
@@ -69,7 +69,7 @@ function verificaCorTexto(tarefa) {
     <!-- Preset 1 Kanban -->
     <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1">
         <div :style="tarefa1"> </div>
-        <div class="w-[60%] m-[5%] font-Poppins font-medium text-[1vw]" >
+        <div class="w-[60%] m-[5%] font-Poppins font-medium text-[1vw]">
             <p class="truncate text-[2vh]">{{ props.tarefa.nome }}</p>
         </div>
         <div class="teste2">
@@ -85,7 +85,7 @@ function verificaCorTexto(tarefa) {
             </div>
 
         </div>
-        <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas"  >
+        <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
             <div v-if="tarefa.tarefa.id == props.tarefa.id" class="flex justify-end pl-[20%]">
                 <svg width="2vh" height="2vh" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M14.6252 14.3234L0.464865 14.3233L14.6257 0.610178L14.6252 14.3234Z" fill="#620BA7" />

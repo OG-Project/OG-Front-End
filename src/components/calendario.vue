@@ -24,47 +24,56 @@
                     </div>
                 </div>
 
-                <div v-if="abrePopup == true" class="absolute w-[20%] flex justify-center h-[300px] ml-[5%] bg-roxoEscuro"
-                    @mouseleave="fecharPopUp()">
-                    <div class="w-full flex justify-end absolute">
-                        <button @click="fechaPopUp()"
-                            class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
-                    </div>
-
-                    <div class="fundoPopup">
-                        <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
-                            <div class="w-full h-full flex justify-center items-center gap-[1%]">
-                                <div
-                                    class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                    <button @click="setaEsquerda()">
-                                        <div class="setaEsquerda"></div>
-                                    </button>
-                                </div>
-                                <p>{{ getYear(data) }}</p>
-                                <div
-                                    class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                    <button @click="setaDireita()">
-                                        <div class="setaDireita"></div>
-                                    </button>
-                                </div>
-                            </div>
+                <!-- Começo do Popup -->
+                <div v-if="abrePopup == true" class="absolute w-full h-full flex justify-start">
+                    <div class="absolute w-[20%] flex justify-center h-[300px] mt-[9%] ml-[10%] bg-roxoEscuro"
+                        @mouseleave="fecharPopUp()">
+                        <div class="w-full flex justify-end absolute">
+                            <button @click="fechaPopUp()"
+                                class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
                         </div>
-                        <div class="popUp">
-                            <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
-                                <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
-                                <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
-                                <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
-                                <button @click="escolheMes(3)" class="border-b-2 w-[70%]">Abril</button>
-                                <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
-                                <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
+
+                        <div class="fundoPopup">
+                            <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
+                                <div class="w-full h-full flex justify-center items-center gap-[1%]">
+                                    <button @click="setaEsquerda()">
+                                        <div
+                                            class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
+
+                                            <div class="setaEsquerda"></div>
+
+                                        </div>
+                                    </button>
+                                    <div class="w-[25%]">
+                                        <p class="text-3xl">{{ getYear(data) }}</p>
+                                    </div>
+                                    <button @click="setaDireita()">
+
+                                        <div
+                                            class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                            <div class="setaDireita"></div>
+                                        </div>
+                                    </button>
+
+                                </div>
                             </div>
-                            <div class="w-[50%] flex flex-col  pt-5 justify-center items-center text-[20px]">
-                                <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
-                                <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
-                                <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
-                                <button @click="escolheMes(9)" class="border-b-2 w-[70%]">Outubro</button>
-                                <button @click="escolheMes(10)" class="border-b-2 w-[70%]">Novembro</button>
-                                <button @click="escolheMes(11)" class="border-b-2 w-[70%]">Dezembro</button>
+                            <div class="popUp">
+                                <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
+                                    <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
+                                    <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
+                                    <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
+                                    <button @click="escolheMes(3)" class="border-b-2 w-[70%]">Abril</button>
+                                    <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
+                                    <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
+                                </div>
+                                <div class="w-[50%] flex flex-col  pt-5 justify-center items-center text-[20px]">
+                                    <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
+                                    <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
+                                    <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
+                                    <button @click="escolheMes(9)" class="border-b-2 w-[70%]">Outubro</button>
+                                    <button @click="escolheMes(10)" class="border-b-2 w-[70%]">Novembro</button>
+                                    <button @click="escolheMes(11)" class="border-b-2 w-[70%]">Dezembro</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,7 +159,7 @@ getCalendario();
 
 
 function estilizaDia(dia) {
-    if (getDate(dia.dia) == getDate(Date.now()) && getMonth(dia.dia)==getMonth(Date.now()) && getYear(dia.dia)==getYear(Date.now())) {
+    if (getDate(dia.dia) == getDate(Date.now()) && getMonth(dia.dia) == getMonth(Date.now()) && getYear(dia.dia) == getYear(Date.now())) {
         border = "2px solid purple"
     }
     cardDia = {

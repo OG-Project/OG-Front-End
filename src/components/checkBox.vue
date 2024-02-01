@@ -6,13 +6,7 @@
     <div v-if="props.tipo === 'toggle'">
       <div :style="estiloToggle" id="bordaToggle" @click="check('toggle')">
         <svg style="width: 60px;height: 30px;">
-          <circle
-            id="toggle"
-            :cx="posicaoBola"
-            cy="15"
-            r="12px"
-            :fill="corBolaToggle"
-          ></circle>
+          <circle id="toggle" :cx="posicaoBola" cy="15" r="12px" :fill="corBolaToggle"></circle>
         </svg>
       </div>
     </div>
@@ -93,15 +87,16 @@ function check(tipo) {
 </script>
 
 <style scoped>
-  input[type="checkbox"]{
-    accent-color: #620BA7;
-    
-  }
-  #checkbox{
-    border-radius: 0px;
-    border-color: #620BA7;
-    cursor: pointer;
-    width: 50px;
-    height: 50px;
-  }
+input[type="checkbox"] {
+  accent-color: #620BA7;
+
+}
+
+#checkbox {
+  border-radius: 0px;
+  border-color: #620BA7;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+}
 </style>

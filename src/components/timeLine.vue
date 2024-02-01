@@ -24,13 +24,20 @@
                                     <p>HH:mm</p>
                                 </div>
                             </div>
-                            <Carousel :value="calendario" :numVisible="20" :numScroll="1" circular
-                                class="w-[95%] h-[100%] flex justify-end">
+                            <Carousel :value="calendario" :page="format(diaSelecionado.dia.value, 'dd') - 1" :numVisible="20"
+                                :numScroll="1" circular class="w-[95%] h-[100%] flex justify-end">
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
                                         <button v-if="getMonth(dia.data.dia) == getMonth(data)">
                                             <button @click="diaSelecionado.dia.value = dia.data.dia">
-                                                {{ format(dia.data.dia, 'dd') }}
+                                                <div v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')"
+                                                    class="riscoAbaixoDoDia">
+                                                    {{ format(dia.data.dia, 'dd') }}
+                                                </div>
+                                                <div
+                                                    v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') != format(dia.data.dia, 'yyyy/MM/dd')">
+                                                    {{ format(dia.data.dia, 'dd') }}
+                                                </div>
                                             </button>
                                         </button>
                                     </div>
@@ -40,33 +47,38 @@
                     </div>
                     <!-- Começo do Popup -->
                     <div v-if="abrePopup == true" class="absolute w-full h-full flex justify-start">
-                        <div class="absolute w-[20%] flex justify-center h-[300px] mt-[9%] ml-[10%] bg-roxoEscuro"
-                            @mouseleave="fecharPopUp()">
+                        <div class="absolute w-full h-full z-0" @click="fecharPopUp()"></div>
+                        <div class="absolute w-[20%] flex justify-center h-[300px] mt-[9%] ml-[10%] bg-roxoEscuro">
                             <div class="w-full flex justify-end absolute">
                                 <button @click="fechaPopUp()"
                                     class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
                             </div>
 
                             <div class="fundoPopup">
-                                <div class="w-[100%] flex flex-row justify-center items-center bg-brancoNeve ">
+                                <div class="w-[100%] h-[20%] flex flex-row bg-brancoNeve ">
                                     <div class="w-full h-full flex justify-center items-center gap-[1%]">
-                                        <div
-                                            class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                            <button @click="setaEsquerda()">
+                                        <button @click="setaEsquerda()" class="h-[30%]">
+                                            <div
+                                                class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
+
                                                 <div class="setaEsquerda"></div>
-                                            </button>
+
+                                            </div>
+                                        </button>
+                                        <div class="w-[25%] h-[50%]">
+                                            <p class="text-3xl">{{ getYear(data) }}</p>
                                         </div>
-                                        <p>{{ getYear(data) }}</p>
-                                        <div
-                                            class="w-[17px] h-[17px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                            <button @click="setaDireita()">
+                                        <button @click="setaDireita()" class="h-[30%]">
+                                            <div
+                                                class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
                                                 <div class="setaDireita"></div>
-                                            </button>
-                                        </div>
+                                            </div>
+                                        </button>
+
                                     </div>
                                 </div>
                                 <div class="popUp">
-                                    <div class="w-[50%] flex flex-col pt-5 justify-center items-center text-[20px]">
+                                    <div class="w-[50%] flex flex-col gap-[3px] justify-end items-center text-[20px]">
                                         <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
                                         <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
                                         <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
@@ -74,7 +86,7 @@
                                         <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
                                         <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
                                     </div>
-                                    <div class="w-[50%] flex flex-col  pt-5 justify-center items-center text-[20px]">
+                                    <div class="w-[50%] flex flex-col gap-[3px] justify-end items-center text-[20px]">
                                         <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
                                         <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
                                         <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
@@ -100,11 +112,13 @@
 
                         <div
                             class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
-                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value">
-                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                    {{ console.log(hora) }}
-                                    <div v-if="format(new Date(propriedade.valor.valor), 'HH:mm') == hora">
-                                        AAAAAAAAAAAAAAAAAAAAAAAAAAA
+                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row gap-2">
+                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas" >
+                                    <div v-if="format(new Date(propriedade.valor.valor), 'yyyy/MM/dd') == format(diaSelecionado.dia.value, 'yyyy/MM/dd') 
+                                        && format(new Date(propriedade.valor.valor), 'HH:mm') == hora"  class="">
+                                        <div >
+                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -124,8 +138,8 @@
                         <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro">
                             <div v-for="tarefa of diaSelecionado.listaDeTarefas.value">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                    {{ console.log(hora) }}
-                                    <div v-if="format(new Date(propriedade.valor.valor), 'HH:mm') == hora">
+                                    <div
+                                        v-if="format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(diaSelecionado.dia.value, 'yyyy-MM-dd') && format(new Date(propriedade.valor.valor), 'HH:mm') == hora">
                                         AAAAAAAAAAAAAAAAAAAAAAAAAAA
                                     </div>
                                 </div>
@@ -142,7 +156,7 @@
 <script setup>
 import { ref, VueElement, watch } from 'vue';
 import cardTarefas from './cardTarefas.vue'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours, parse } from 'date-fns';
+import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours, parse, setDay, setDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import Carousel from 'primevue/carousel';
@@ -187,7 +201,6 @@ async function adicionaNaLista() {
             const dataFormatada = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd');
             if (format(diaSelecionado.dia.value, 'yyyy-MM-dd') == dataFormatada) {
                 if (!lista.includes(tarefa)) {
-                    console.log(tarefa)
                     lista.push(tarefa)
                 }
             }
@@ -236,15 +249,20 @@ function getCalendario() {
     calendario.value = listaDeDias;
 
 }
+function escolheMes(numero) {
+    data = setMonth(data, numero)
+    data = setDate(data, 1)
+    diaSelecionado.dia.value = data
+    fechaPopUp()
+    getCalendario()
+}
 
 function abrePopUp() {
     abrePopup.value = true
 
 }
 function fechaPopUp(e) {
-
     abrePopup.value = false
-
 }
 
 function setaEsquerda() {
@@ -258,11 +276,6 @@ function setaDireita() {
     getCalendario()
 }
 
-function escolheMes(numero) {
-    data = setMonth(data, numero)
-    fechaPopUp()
-    getCalendario()
-}
 
 
 function defineListaDeHoras() {
@@ -346,11 +359,16 @@ function mudaIntervalo() {
 
     .popUp {
         width: 100%;
-        height: 85%;
+        height: 75%;
         background-color: #FBFBFB;
         display: flex;
         flex-direction: row;
 
+    }
+
+    .riscoAbaixoDoDia {
+        width: 100%;
+        border-bottom: 3px solid purple;
     }
 
     .fundoPopup {
@@ -363,8 +381,8 @@ function mudaIntervalo() {
     }
 
     .setaEsquerda {
-        width: 7px;
-        height: 7px;
+        width: 10px;
+        height: 10px;
         border-left: 2px solid black;
         border-bottom: 2px solid black;
         border-radius: 10%;
@@ -372,8 +390,8 @@ function mudaIntervalo() {
     }
 
     .setaDireita {
-        width: 7px;
-        height: 7px;
+        width: 10px;
+        height: 10px;
         border-right: 2px solid black;
         border-top: 2px solid black;
         border-radius: 10%;
@@ -402,5 +420,4 @@ function mudaIntervalo() {
     }
 
 
-}
-</style>
+}</style>
