@@ -24,7 +24,7 @@ onBeforeMount(async()=>{
     console.log(error);
   })
 })
-let array=['nome','descricao','status','Data de Entrega']
+let array=['nome','descricao','status','data de termino','data do meu jogo']
 </script>
 <template>
   

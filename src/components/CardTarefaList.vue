@@ -2,12 +2,12 @@
   <div class="max-w-[1760px] w-max">
     <!-- header com propriedades -->
     <div>
-      <div class="h-[50px] items-center ml-9 grid grid-cols-12">
+      <div class="h-[50px] items-center ml-9 grid grid-flow-col">
         <div
           v-for="(propriedade, index) in propriedades"
           class="border-r-2 last:border-none text-center border-black px-4 truncate"
         >
-          {{ index < 3 ? propriedade : propriedade }}
+          {{ propriedade }}
         </div>
       </div>
     </div>
@@ -60,7 +60,7 @@
               />
             </svg>
           </div>
-          <div class="grid w-full">
+          <div class="grid w-full grid-flow-col">
             <div
               class="border-r-2 text-center last:border-none border-white px-4 truncate"
               v-for="(valor, index) in checkValor(element)"
@@ -89,28 +89,38 @@ let valueTarefas=computed(()=>{
   return props.tarefas
 })
 
-
 let arrayDePropriedadesEcolhidas = props.arrayDePropriedadesEcolhidas;
 
 let propriedades = computed(() => {
   let tamanho = [];
   for (let i of arrayDePropriedadesEcolhidas) {
+    console.log("aqui")
     if (i == "nome") {
       tamanho.push("Nome");
     } else if (i == "descricao") {
       tamanho.push("Descrição");
     } else if (i == "status") {
       tamanho.push("Status");
+    }else {
+      //erro aqui
+      try {
+        for (let item of props.tarefas[0].valorPropriedadeTarefas) {
+          if(i==item.propriedade.nome){
+            tamanho.push(item.propriedade.nome);
+          }
+          console.log(item.propriedade.nome);
+        }
+      } catch (error) {
+        console.log(error)
+      }   
+      //erro
     }
-    //erro aqui
-     else {
-      console.log(props.tarefas)
-      
-    }
-    // erro aqui
   }
   return tamanho;
 });
+
+
+
 function checkValor(objeto) {
   let chavesValores = Object.entries(objeto);
   let valoresCheck = [];
@@ -143,7 +153,6 @@ function alteraTarefa(){
   console.log(valueTarefas)
 }
 
-
 </script>
 
 <style scoped>
@@ -167,6 +176,6 @@ function alteraTarefa(){
   opacity: 0.6;
 }
 .distribuicao{
-  grid-template-columns: v-bind(style)
+  grid-template-columns: "repeat("+v-bind(arrayDePropriedadesEcolhidas.length)+", minmax(0, 1fr));"
 }
 </style>
