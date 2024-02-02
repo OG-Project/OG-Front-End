@@ -1,4 +1,4 @@
-<template class="w-full h-full">
+<template>
     <div class="gridTotal">
         <div class=" flex flex-col  gap-6 pl-[5%] mt-[3%]">
             <div class="flex items-start justify-start font-semibold">
@@ -93,34 +93,102 @@
                     </div>
 
                 </div>
-                <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp()">
+                <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp()"
+                    v-if="funcaoPopUp.variavelModal == false">
                     <p>Nova</p>
                     <img src="../imagem-vetores/sinalDeMaisIcon.svg">
                 </div>
 
+                <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
+                    <!-- fiz como um popUp, tem um botão que abre o popUp -->
+                    <div class="animation">
+                        <div class="flex justify-end">
+                            <img src="../imagem-vetores/triangulo.svg">
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <div class="pl-2">
+                                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                                    v-model="nomePropriedade"></Input>
+                            </div>
+                            <div class="pr-2">
+                                <selectPadrao placeholderSelect="Tipo"
+                                    :lista-select="['Texto', 'Data', 'Numero', 'Seleção']" largura="5" altura="3.8"
+                                    fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
+                            </div>
 
-            </div>
+                        </div>
+                        <div class="flex felx-row justify-between">
+                            <div class="pl-2 pt-2 pb-2">
+                                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                            </div>
+                            <div class="pr-2 pt-2 pb-2">
+                                <!-- mudar a função -->
+                                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedade"></Botao>
+                            </div>
+                        </div>
 
-        </div>
-        <div>
-            AAAAAAAAAAAAAAAAAAAAAAA
-        </div>
-        <div v-if="funcaoPopUp.variavelModal == true"
-            class="w-full h-full absolute flex flex-row items-center justify-center mt-[11.5%] ml-[10.54%]">
-            <div class="h-[10%] w-[18%] bg-brancoNeve shadow-md">
-                <div>
-                    <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem"></Input>
-                    <selectPadrao></selectPadrao>
+                    </div>
                 </div>
-                
+            </div>
+
+        </div>
+        <div class="flex justify-end items-end">
+            <div class="w-[20vw] h-[88vh] flex flex-col border-2 gap-8 overflow-y-auto border-black">
+                <div class="h-[6%] pt-8 flex items-end justify-center">
+                    <h1 class="text-3xl font-semibold">Informações</h1>
+                </div>
+                <div class="pt-8 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
+                    <div class="flex pl-8">
+                        <div class="w-[50%] justify-start flex-row">
+                            <p>Nome do projeto</p>
+                        </div>
+                        <div class="w-[40%] justify-end flex-row">
+                            <p class="w-[100%] text-[#620BA7]">asdasd asdasd asdasdasdasd asdasd</p>
+                        </div>
+                    </div>
+                    <div class="flex pl-8">
+                        <div class="w-[50%] justify-start flex-row">
+                            <p>Data Inicial</p>
+                        </div>
+                        <div class="w-[40%] justify-end flex-row">
+                            <p class="text-[#620BA7]">13/02/2006</p>
+                        </div>
+                    </div>
+                    <div class="flex pl-8">
+                        <div class="w-[50%] justify-start flex-row">
+                            <p>Data Inicial</p>
+                        </div>
+                        <div class="w-[40%] justify-end flex-row">
+                            <p class="text-[#620BA7]">13/02/2006</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-[4%] flex items-center justify-center p-8">
+                    <h1 class="text-xl font-semibold">Status</h1>
+                </div>
+                <div class="h-[4%] flex items-center justify-center">
+                    <div class="flex items-center justify-center h-[80%] w-[100%]">
+                        <p class="h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
+                            Status aleatório
+                        </p>
+                    </div>
+                </div>
+                <div class="h-[4%] flex items-center justify-center p-8">
+                    <h1 class="text-xl font-semibold">Propriedades</h1>
+                </div>
+                <div class="h-[35%] flex flex-col items-center justify-center p-8">
+                    <img :src="NotePad" class="h-[200px] w-[200px]" />
+                    <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
+                </div>
             </div>
         </div>
+
     </div>
 
 
     <div class="h-[1%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5 vh" sombras='nao' :funcaoClick="criarProjeto" width="5" heigth="1"></Botao>
+            tamanhoDaFonte="2.5 vh" sombras='nao' :funcaoClick="criarProjeto"></Botao>
     </div>
 </template>
 
@@ -130,19 +198,22 @@ import inputDePesquisa from '../components/inputDePesquisa.vue';
 import selectPadrao from '../components/selectPadrao.vue';
 import Botao from '../components/Botao.vue';
 import { conexaoBD } from '../stores/conexaoBD';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, onUpdated, ref, watch } from 'vue';
 import TextAreaPadrao from '../components/textAreaPadrao.vue';
 import ListaConvidados from '../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../stores/criaProjeto'
 import { th } from 'date-fns/locale';
 import { isThisSecond } from 'date-fns';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
+import { criaPropriedadeStore } from '../stores/criaPropriedade'
 
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 var listaSelecao = ref([]);
 let nomeProjeto = ref("");
 let tipoProjeto = ref("");
+let nomePropriedade = ref("");
+let tipoPropriedade = ref("");
 let dataInicioProjeto = ref("");
 let equipesRelacionadasProjeto = ref("");
 let descricaoProjeto = ref("");
@@ -161,6 +232,10 @@ onMounted(() => {
     pesquisaBancoUserName();
     statusDoProjeto();
     funcaoPopUp.variavelModal = false;
+})
+
+onUpdated(() => {
+    propriedadesDoProjeto();
 })
 
 async function defineSelect() {
@@ -242,6 +317,13 @@ function navegaPelaTabela(opcaoSelecionada) {
     console.log(opcaoSelecionadaNaTabela)
 }
 
+function criaPropriedade() {
+    const criaProjeto = criaPropriedadeStore()
+    criaProjeto.criaPropriedade(nomePropriedade.value, tipoPropriedade.value.toUpperCase())
+    funcaoPopUp.fechaPopUp();
+
+}
+
 </script>
 
 <style lang="scss">
@@ -284,5 +366,23 @@ function navegaPelaTabela(opcaoSelecionada) {
     /* Isso é opcional, dependendo do contexto do seu layout */
     height: 100%;
     /* Isso também é opcional, dependendo do contexto do seu layout */
+}
+
+.animation {
+    @apply w-[65%] bg-brancoNeve shadow-md flex justify-around flex-col;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+    /*isso é opcional */
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>
