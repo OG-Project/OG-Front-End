@@ -71,61 +71,62 @@ async function cadastraUsuario() {
     }
   });
   if (usuarioUnico) {
-    if (emailCadastro.value.indexOf('@') > 0 && emailCadastro.value.indexOf('@') < emailCadastro.value.length - 1 && emailCadastro.value.includes(".")) {
+    if (
+      emailCadastro.value.indexOf("@") > 0 &&
+      emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
+      emailCadastro.value.includes(".")
+    ) {
       if (senhaCadastro.value === confirmarSenhaCadastro.value) {
         criarUsuario.criaUsuario(
           usuarioCadastro.value,
           emailCadastro.value,
           senhaCadastro.value
         );
-        usuarioCadastro.value = ""
-        emailCadastro.value  = ""
-        senhaCadastro.value  = ""
+        usuarioCadastro.value = "";
+        emailCadastro.value = "";
+        senhaCadastro.value = "";
       }
     }
   }
 }
 
-
 let vizualizacaoDeSenha = ref("password");
 let vizualizacaoDeSenhaConfirmacao = ref("password");
 let iconeDaSenha = ref(olho);
 let iconeDaSenhaConfirmacao = ref(olho);
-function mostraSenhas(){
-  if(vizualizacaoDeSenha.value === ""){
-    vizualizacaoDeSenha.value = "password"
-    iconeDaSenha.value = olho
-  }
-  else{
-    vizualizacaoDeSenha.value = ""
-    iconeDaSenha.value = olhoOculto
+function mostraSenhas() {
+  if (vizualizacaoDeSenha.value === "") {
+    vizualizacaoDeSenha.value = "password";
+    iconeDaSenha.value = olho;
+  } else {
+    vizualizacaoDeSenha.value = "";
+    iconeDaSenha.value = olhoOculto;
   }
 }
-function mostraSenhaConfirmacao(){
-  if(vizualizacaoDeSenhaConfirmacao.value === ""){
-    vizualizacaoDeSenhaConfirmacao.value = "password"
-    iconeDaSenhaConfirmacao.value = olho
-  }
-  else{
-    vizualizacaoDeSenhaConfirmacao.value = ""
-    iconeDaSenhaConfirmacao.value = olhoOculto
+function mostraSenhaConfirmacao() {
+  if (vizualizacaoDeSenhaConfirmacao.value === "") {
+    vizualizacaoDeSenhaConfirmacao.value = "password";
+    iconeDaSenhaConfirmacao.value = olho;
+  } else {
+    vizualizacaoDeSenhaConfirmacao.value = "";
+    iconeDaSenhaConfirmacao.value = olhoOculto;
   }
 }
 </script>
 
 <template>
-    <navBar></navBar>
-    <div id="bordaCinza" class="flex">
-      <Transition name="login">
-        <div v-if="tipo === 'login'" :style="conteudoFormulario">
-          <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="iconePessoaLogin"
-            conteudoInput="User"
-            v-model="usuarioLogin"
-          ></Input>
-          <div class="flex flex-row justify-center items-center pl-10">
+  <navBar></navBar>
+  <div id="bordaCinza" class="flex">
+    <Transition name="login">
+      <div v-if="tipo === 'login'" :style="conteudoFormulario">
+        <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
+        <Input
+          styleInput="input-transparente-escuro"
+          :icon="iconePessoaLogin"
+          conteudoInput="User"
+          v-model="usuarioLogin"
+        ></Input>
+        <div class="flex flex-row justify-center items-center pl-10">
           <Input
             styleInput="input-transparente-escuro"
             :icon="iconeSenhaLogin"
@@ -134,57 +135,57 @@ function mostraSenhaConfirmacao(){
             :tipo="vizualizacaoDeSenha"
           ></Input>
           <button class="h-[100%] w-[8%]" @click="mostraSenhas">
-            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4">
+            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4" />
           </button>
-          </div>
-          <Botao
-            :funcaoClick="fazerLogin"
-            preset="PadraoRoxo"
-            texto="Acessar"
-            tamanhoPadrao="grande"
-          ></Botao>
-
-          <Botao
-            :funcaoClick="trocaDeTela"
-            preset="PadraoBranco"
-            texto="Criar Conta"
-            tamanhoPadrao="medio"
-          ></Botao>
-          <div class="flex items-center justify-center w-[70%]">
-            <hr style="width: 20%; text-align: left; margin-left: 0" />
-            <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
-            <hr style="width: 20%; text-align: left; margin-left: 0" />
-          </div>
-          <Botao
-            preset="PadraoBrancoIcon"
-            :icon="iconeGoogle"
-            texto="Google"
-            ladoDoIcon="row-reverse"
-          ></Botao>
-          <Botao
-            preset="PadraoBrancoIcon"
-            :icon="iconeLinkedin"
-            texto="Linkedin"
-            ladoDoIcon="row-reverse"
-          ></Botao>
         </div>
-      </Transition>
-      <Transition name="registro">
-        <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
-          <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="imgPessoaLogin"
-            conteudoInput="Usuario"
-            v-model="usuarioCadastro"
-          ></Input>
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="imgEmailRegistro"
-            conteudoInput="E-Mail"
-            v-model="emailCadastro"
-          ></Input>
-          <div class="flex flex-row justify-center items-center pl-10">
+        <Botao
+          :funcaoClick="fazerLogin"
+          preset="PadraoRoxo"
+          texto="Acessar"
+          tamanhoPadrao="grande"
+        ></Botao>
+
+        <Botao
+          :funcaoClick="trocaDeTela"
+          preset="PadraoBranco"
+          texto="Criar Conta"
+          tamanhoPadrao="medio"
+        ></Botao>
+        <div class="flex items-center justify-center w-[70%]">
+          <hr style="width: 20%; text-align: left; margin-left: 0" />
+          <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
+          <hr style="width: 20%; text-align: left; margin-left: 0" />
+        </div>
+        <Botao
+          preset="PadraoBrancoIcon"
+          :icon="iconeGoogle"
+          texto="Google"
+          ladoDoIcon="row-reverse"
+        ></Botao>
+        <Botao
+          preset="PadraoBrancoIcon"
+          :icon="iconeLinkedin"
+          texto="Linkedin"
+          ladoDoIcon="row-reverse"
+        ></Botao>
+      </div>
+    </Transition>
+    <Transition name="registro">
+      <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
+        <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
+        <Input
+          styleInput="input-transparente-escuro"
+          :icon="imgPessoaLogin"
+          conteudoInput="Usuario"
+          v-model="usuarioCadastro"
+        ></Input>
+        <Input
+          styleInput="input-transparente-escuro"
+          :icon="imgEmailRegistro"
+          conteudoInput="E-Mail"
+          v-model="emailCadastro"
+        ></Input>
+        <div class="flex flex-row justify-center items-center pl-10">
           <Input
             styleInput="input-transparente-escuro"
             :icon="iconeSenhaLogin"
@@ -192,11 +193,14 @@ function mostraSenhaConfirmacao(){
             v-model="senhaCadastro"
             :tipo="vizualizacaoDeSenha"
           ></Input>
-          <button class="h-[100%] w-[8%] flex items-center justify-center" @click="mostraSenhas">
-            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4">
+          <button
+            class="h-[100%] w-[8%] flex items-center justify-center"
+            @click="mostraSenhas"
+          >
+            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4" />
           </button>
-          </div>
-          <div class="flex flex-row justify-center items-center pl-10">
+        </div>
+        <div class="flex flex-row justify-center items-center pl-10">
           <Input
             styleInput="input-transparente-escuro"
             :icon="iconeSenhaLogin"
@@ -204,25 +208,28 @@ function mostraSenhaConfirmacao(){
             v-model="confirmarSenhaCadastro"
             :tipo="vizualizacaoDeSenhaConfirmacao"
           ></Input>
-          <button class="h-[100%] w-[8%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
-            <img :src="iconeDaSenhaConfirmacao" class="h-[100%] w-[100%] invert ml-4">
+          <button
+            class="h-[100%] w-[8%] flex items-center justify-center"
+            @click="mostraSenhaConfirmacao"
+          >
+            <img :src="iconeDaSenhaConfirmacao" class="h-[100%] w-[100%] invert ml-4" />
           </button>
-          </div>
-          <Botao
-            :funcaoClick="cadastraUsuario"
-            preset="PadraoRoxo"
-            texto="Cadastrar"
-            tamanhoPadrao="grande"
-          ></Botao>
-          <Botao
-            :funcaoClick="trocaDeTela"
-            preset="PadraoBranco"
-            texto="Sair"
-            tamanhoPadrao="medio"
-          ></Botao>
         </div>
-      </Transition>
-    </div>
+        <Botao
+          :funcaoClick="cadastraUsuario"
+          preset="PadraoRoxo"
+          texto="Cadastrar"
+          tamanhoPadrao="grande"
+        ></Botao>
+        <Botao
+          :funcaoClick="trocaDeTela"
+          preset="PadraoBranco"
+          texto="Sair"
+          tamanhoPadrao="medio"
+        ></Botao>
+      </div>
+    </Transition>
+  </div>
 </template>
 <style scoped>
 #bordaCinza {
@@ -268,7 +275,7 @@ function mostraSenhaConfirmacao(){
 .login-enter-to,
 .login-leave-from {
   opacity: 1;
-  transform: translateX(10.0vw);
+  transform: translateX(10vw);
 }
 
 .login-leave-active,

@@ -1,17 +1,27 @@
 
 <template>
   <form>
-    <textarea :placeholder="props.placeholder" :style="estilo"></textarea>
+    <textarea
+      :placeholder="props.placeholder"
+      :style="estilo"
+      :value="modelValue"
+      @input="$emit('update:modelValue', $event.target.value)"
+    />
   </form>
 </template>
 
 <script setup>
 import { defineProps, ref } from 'vue';
 
+defineEmits(['update:modelValue']);
 const props = defineProps({
   placeholder: {
     type: String,
     default: "Digite aqui sua mensagem"
+  },
+  modelValue: {
+    type: String,
+    default: '',
   },
   width: {
     type: String,
