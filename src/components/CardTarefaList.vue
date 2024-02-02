@@ -1,10 +1,11 @@
 <template>
   <div class="max-w-[1760px] w-max">
     <!-- header com propriedades -->
-    <div>
-      <div class="h-[50px] items-center ml-9 grid grid-flow-col">
+    <div class="w-max">
+      <div class="h-[50px] items-center ml-9 flex">
         <div
           v-for="(propriedade, index) in propriedades"
+          :style="{ width: 1760 / arrayDePropriedadesEcolhidas.length + 'px' }"
           class="border-r-2 last:border-none text-center border-black px-4 truncate"
         >
           {{ propriedade }}
@@ -20,6 +21,7 @@
       ghost-class="ghost"
       handle=".handle"
       @change="alteraTarefa()"
+      class="w-max"
     >
       <template #item="{ element, index }">
         <div class="card">
@@ -60,8 +62,9 @@
               />
             </svg>
           </div>
-          <div class="grid w-full grid-flow-col">
+          <div class="w-full flex">
             <div
+              :style="{ width: 1760 / arrayDePropriedadesEcolhidas.length + 'px' }"
               class="border-r-2 text-center last:border-none border-white px-4 truncate"
               v-for="(valor, index) in checkValor(element)"
             >
@@ -91,7 +94,7 @@ let valueTarefas=computed(()=>{
 
 let arrayDePropriedadesEcolhidas = props.arrayDePropriedadesEcolhidas;
 
-let propriedades = computed(() => {
+const propriedades = computed(() => {
   let tamanho = [];
   for (let i of arrayDePropriedadesEcolhidas) {
     console.log("aqui")
@@ -112,14 +115,16 @@ let propriedades = computed(() => {
         }
       } catch (error) {
         console.log(error)
-      }   
+      }
       //erro
     }
   }
   return tamanho;
 });
 
-
+const divisao=reactive({
+  width: ""+(1760/arrayDePropriedadesEcolhidas.length)+"px;"
+})
 
 function checkValor(objeto) {
   let chavesValores = Object.entries(objeto);
@@ -140,7 +145,16 @@ function checkValor(objeto) {
         for (let k of j[1]) {
           if (k.propriedade.nome == i) {
             console.log(k.valor.valor);
-            valoresCheck.push(k.valor.valor);
+            if(k.propriedade.tipo=='DATA'){
+              let date = new Date(k.valor.valor)
+              // weekday: 'long'
+              console.log(date.toLocaleDateString("pt-br",{ year: 'numeric', month: 'numeric', day: 'numeric'})
+              +" "+("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2))
+              valoresCheck.push(date.toLocaleDateString("pt-br",{ year: 'numeric', month: 'numeric', day: 'numeric'})
+              +" "+("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2))
+            }else{
+              valoresCheck.push(k.valor.valor);
+            }
           }
         }
       }
@@ -151,8 +165,16 @@ function checkValor(objeto) {
 }
 function alteraTarefa(){
   console.log(valueTarefas)
+  valueTarefas.sort((a,b)=>{
+    if(a.valorPropriedadeTarefas.valor.valor>b.valorPropriedadeTarefas.valor.valor){
+      return 1
+    }else if(a.valorPropriedadeTarefas.valor.valor<b.valorPropriedadeTarefas.valor.valor){
+      return -1
+    }else{
+      return 0
+    }
+  })
 }
-
 </script>
 
 <style scoped>
@@ -175,7 +197,7 @@ function alteraTarefa(){
 .ghost {
   opacity: 0.6;
 }
-.distribuicao{
-  grid-template-columns: "repeat("+v-bind(arrayDePropriedadesEcolhidas.length)+", minmax(0, 1fr));"
+.distribuicao {
+  width: (1760/ (v-bind(arrayDePropriedadesEcolhidas.length)))+"px;";
 }
 </style>
