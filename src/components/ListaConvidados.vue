@@ -4,18 +4,18 @@
       class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950 "
       :style="{height: altura}"
     >
-      <div class="flex justify-center">
-        <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
+      <div class="flex justify-center overfloow-y:auto">
+        <h1 class="font-semibold xl:text-xl" :alt="texto">{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
-        <div class="w-full flex items-center mt-8 mb-2" v-for="convidado in listaConvidados" :key="convidado.nome">
+        <div class="w-full flex items-center mt-8 mb-2 " v-for="convidado in listaConvidados" :key="convidado.nome">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
         <template v-if="listaConvidados.length > 0">
           <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :style="altDaImagemPerfil" />
           
         </template>
 
-        <h2 class="nome-convidado md:text-sm xl:text-xl w-[15vh]">{{ truncarNome(convidado.nome , 15) }}</h2>
+        <h2 class="nome-convidado md:text-sm xl:text-lg w-[15vh] ">{{ truncarNome(convidado.nome , 15) }}</h2>
 
         <template v-if="listaConvidados.length > 0">
           <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem" />
@@ -26,8 +26,8 @@
           <template v-if="listaConvidados.length > 0">
 
             <SelectPadrao
-              class="selectEdit"
-             styleSelect="select-cinza"
+              class="selectEdit" 
+             styleSelect="select-cinza" 
               :listaSelect="opcoesSelect"
             ></SelectPadrao>
           </template>
@@ -95,8 +95,8 @@ const imagemIcon={
     .imgIcon {
         @apply bg-cover 
         bg-center flex flex-col justify-center 
-        items-center mr-[-25px] ml-[10px]  
-        xl:w-[2vw] xl:h-[4vh];
+        items-center mr-[-10px] ml-[5px]  
+        xl:w-[2vw] xl:h-[3vh];
     }
 
     .imgDePerfil {
@@ -107,7 +107,7 @@ const imagemIcon={
 
     .selectEdit {
         @apply
-        text-xs ml-[30px] mb-[10px] mt-2 ;
+        text-xs ml-[20px] mb-[10px] mt-2 w-[5vw] h-[5vh] ;
     }
 
     .grid-template{ 
