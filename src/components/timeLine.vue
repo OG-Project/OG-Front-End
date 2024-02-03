@@ -24,8 +24,9 @@
                                     <p>HH:mm</p>
                                 </div>
                             </div>
-                            <Carousel :value="calendario" :page="format(diaSelecionado.dia.value, 'dd') - 1" :numVisible="20"
-                                :numScroll="1" circular class="w-[95%] h-[100%] flex justify-end">
+                            <Carousel :value="calendario" :page="gerarDiaSelecionado(diaSelecionado.dia.value)" :numVisible="20" 
+                                 circular class="w-[95%] h-[100%] flex justify-end" id="carrosel">
+                                 
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
                                         <button v-if="getMonth(dia.data.dia) == getMonth(data)">
@@ -112,11 +113,10 @@
 
                         <div
                             class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
-                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row gap-2">
-                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas" >
-                                    <div v-if="format(new Date(propriedade.valor.valor), 'yyyy/MM/dd') == format(diaSelecionado.dia.value, 'yyyy/MM/dd') 
-                                        && format(new Date(propriedade.valor.valor), 'HH:mm') == hora"  class="">
-                                        <div >
+                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class=" flex flex-row ">
+                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH')+(':00'))==hora" class=" pl-[5%] pt-[5%]">
+                                        <div class="mr-2">
                                             <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                                         </div>
                                     </div>
@@ -135,12 +135,15 @@
                         </div>
 
 
-                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro">
-                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value">
+                        <div
+                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
+                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="w-0 flex flex-row gap-2">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                    <div
-                                        v-if="format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(diaSelecionado.dia.value, 'yyyy-MM-dd') && format(new Date(propriedade.valor.valor), 'HH:mm') == hora">
-                                        AAAAAAAAAAAAAAAAAAAAAAAAAAA
+                                    {{ console.log(getMinutes(new Date(propriedade.valor.valor))) }}
+                                    <div v-if="(format(new Date(propriedade.valor.valor),'HH')+(getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"  class="pl-[5%] pt-[5%]">
+                                        <div>
+                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -156,23 +159,25 @@
 <script setup>
 import { ref, VueElement, watch } from 'vue';
 import cardTarefas from './cardTarefas.vue'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours, parse, setDay, setDate } from 'date-fns';
+import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours, parse, setDay, setDate, lastDayOfMonth, getMinutes } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import Carousel from 'primevue/carousel';
 import { Propriedade } from '../models/Propriedade';
 
 
+
 let horaAtual = ref()
 
 defineHora()
+let index = 0;
 let setaRef = ref(null)
 let tipoDeIntervalo = ref(1)
 let visualizacao = ref()
 defineVizualizacao()
 let diaSelecionado =
 {
-    dia: ref(Date.now()),
+    dia: ref(new Date(Date.now())),
     listaDeHoras: ref([]),
     listaDeTarefas: ref([])
 }
@@ -189,6 +194,15 @@ adicionaNaLista();
 watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
     adicionaNaLista();
 });
+
+function gerarDiaSelecionado(dia){
+     dia = format(diaSelecionado.dia.value, 'dd') - 1
+    let ultimoDia = format(endOfMonth(diaSelecionado.dia.value), 'dd')
+    if(dia > ultimoDia - 20){
+        return ultimoDia -20
+    }
+    return dia
+}
 
 async function adicionaNaLista() {
     let api = conexaoBD()
@@ -209,6 +223,19 @@ async function adicionaNaLista() {
     diaSelecionado.listaDeTarefas.value = lista;
 };
 
+function verificaHora(propriedade){
+    console.log(diaSelecionado.listaDeHoras.value[index])
+    console.log(diaSelecionado.listaDeHoras.value[index])
+    if(format(new Date(propriedade.valor.valor), 'HH:mm')>=diaSelecionado.listaDeHoras.value[index] && format(new Date(propriedade.valor.valor), 'HH:mm')<diaSelecionado.listaDeHoras.value[(index+1)]){
+        return true;
+    }
+    index = index+1
+    if(index>=23){
+        index = 0;
+    }
+    return false;
+}
+
 function defineHora() {
     horaAtual.value = format(Date.now(), "HH:mm")
     setTimeout((() => defineHora()), 1000)
@@ -220,6 +247,7 @@ function defineVizualizacao() {
         visualizacao.value = "00:30"
     }
 }
+
 // Muda de acordo com o mes
 function getCalendario() {
     let listaDeDias = [];
