@@ -57,7 +57,7 @@ const props = defineProps({
 
     }
 
- 
+
   },
   corBordaClick: String,
   tamanhoDaBorda: String,
@@ -71,7 +71,7 @@ const props = defineProps({
     type: String,
     default: 'nao'
   },
-  parametrosFuncao:{
+  parametrosFuncao: {
     type: [],
     default: null
   },
