@@ -5,12 +5,14 @@
                 <div class="fixed top-[14%] w-[80%] h-[18%] flex flex-col items-center bg-[#FBFBFB]">
                     <div class="w-[89%] h-full ">
                         <div class="w-[100%] h-[50%] flex flex-row text-[64px]">
-                            <button class="w-[70%] flex flex-row" @click="abrePopUp()">
-                                {{ format(data, "MMMM", {
-                                    locale: ptBR
-                                }).charAt(0).toUpperCase() +
-                                    format(data, "MMMM", { locale: ptBR }).slice(1) }}
-                            </button>
+                            <div class="w-[70%]">
+                                <button class="flex flex-row" @click="abrePopUp()">
+                                    {{ format(data, "MMMM", {
+                                        locale: ptBR
+                                    }).charAt(0).toUpperCase() +
+                                        format(data, "MMMM", { locale: ptBR }).slice(1) }}
+                                </button>
+                            </div>
                             <div class="w-[50%] flex justify-end">
                                 {{ horaAtual }}
                             </div>
@@ -24,9 +26,11 @@
                                     <p>HH:mm</p>
                                 </div>
                             </div>
-                            <Carousel :value="calendario" :page="gerarDiaSelecionado(diaSelecionado.dia.value)" :numVisible="20" 
-                                 circular class="w-[95%] h-[100%] flex justify-end" id="carrosel">
-                                 
+                            {{ console.log(gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))) }}
+                            <Carousel :value="calendario"
+                                :page="gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))" :numVisible="20"
+                                circular class="w-[95%] h-[100%] flex justify-end">
+
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
                                         <button v-if="getMonth(dia.data.dia) == getMonth(data)">
@@ -112,12 +116,14 @@
 
 
                         <div
-                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
+                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row" @dragover="retornaHora(hora)">
                             <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class=" flex flex-row ">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH')+(':00'))==hora" class=" pl-[5%] pt-[5%]">
-                                        <div class="mr-2">
-                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
+                                        class=" pl-[5%] pt-[5%]">
+                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade,horaNova)">
+                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
+                                            </cardTarefas>
                                         </div>
                                     </div>
                                 </div>
@@ -127,29 +133,27 @@
 
 
                     <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras.value"
-                        class=" h-[2%] flex gap-2">
+                        class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)" >
 
                         <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                             (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
                             {{ hora }}
                         </div>
-
-
                         <div
                             class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
-                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="w-0 flex flex-row gap-2">
+                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                    {{ console.log(getMinutes(new Date(propriedade.valor.valor))) }}
-                                    <div v-if="(format(new Date(propriedade.valor.valor),'HH')+(getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"  class="pl-[5%] pt-[5%]">
-                                        <div>
-                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
+                                        class="pl-[5%] pt-[5%]">
+                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade)">
+                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
+                                            </cardTarefas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -159,7 +163,7 @@
 <script setup>
 import { ref, VueElement, watch } from 'vue';
 import cardTarefas from './cardTarefas.vue'
-import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getDate, getHours, parse, setDay, setDate, lastDayOfMonth, getMinutes } from 'date-fns';
+import { subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, setDate, getMinutes, setHours, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import Carousel from 'primevue/carousel';
@@ -170,8 +174,8 @@ import { Propriedade } from '../models/Propriedade';
 let horaAtual = ref()
 
 defineHora()
-let index = 0;
 let setaRef = ref(null)
+let horaNova = ref()
 let tipoDeIntervalo = ref(1)
 let visualizacao = ref()
 defineVizualizacao()
@@ -187,6 +191,7 @@ let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
+let index = 0;
 api.procurar("/tarefa")
 getCalendario();
 adicionaNaLista();
@@ -195,11 +200,13 @@ watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
     adicionaNaLista();
 });
 
-function gerarDiaSelecionado(dia){
-     dia = format(diaSelecionado.dia.value, 'dd') - 1
+function gerarDiaSelecionado(dia) {
     let ultimoDia = format(endOfMonth(diaSelecionado.dia.value), 'dd')
-    if(dia > ultimoDia - 20){
-        return ultimoDia -20
+    if (dia > ultimoDia - 20) {
+        return ultimoDia - 20
+    }
+    if (index == 0 && dia < 20) {
+        dia = 0;
     }
     return dia
 }
@@ -223,17 +230,9 @@ async function adicionaNaLista() {
     diaSelecionado.listaDeTarefas.value = lista;
 };
 
-function verificaHora(propriedade){
-    console.log(diaSelecionado.listaDeHoras.value[index])
-    console.log(diaSelecionado.listaDeHoras.value[index])
-    if(format(new Date(propriedade.valor.valor), 'HH:mm')>=diaSelecionado.listaDeHoras.value[index] && format(new Date(propriedade.valor.valor), 'HH:mm')<diaSelecionado.listaDeHoras.value[(index+1)]){
-        return true;
-    }
-    index = index+1
-    if(index>=23){
-        index = 0;
-    }
-    return false;
+function mudaHoraPropriedade(propriedade){
+    propriedade.valor.valor = format(new Date(propriedade.valor.valor),'yyyy-MM-dd') + "T"+horaNova+":00";
+    
 }
 
 function defineHora() {
@@ -247,7 +246,9 @@ function defineVizualizacao() {
         visualizacao.value = "00:30"
     }
 }
-
+function retornaHora(hora){
+    horaNova = hora;
+}
 // Muda de acordo com o mes
 function getCalendario() {
     let listaDeDias = [];
@@ -448,4 +449,5 @@ function mudaIntervalo() {
     }
 
 
-}</style>
+}
+</style>

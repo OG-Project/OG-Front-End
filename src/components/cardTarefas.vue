@@ -95,7 +95,7 @@ function verificaCorTexto(tarefa) {
 
     </div>
     <!-- Preset 2 Tira -->
-    <div :style="tira" v-if="preset == 2">
+    <div :style="tira" v-if="preset == 2" id="draggableElement" draggable="true">
         <div class="flex column gap-2 ">
             <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -131,5 +131,16 @@ function verificaCorTexto(tarefa) {
         display: flex;
         align-items: flex-end;
     }
+
+    #draggableElement {
+  background-color: blue;
+  color: white;
+  transition: transform 0.3s ease; /* Adicionando uma transição para suavizar o movimento */
+}
+
+#draggableElement:active {
+  transform: scale(1.1); /* Aumenta um pouco o tamanho quando arrastado */
+}
+
 }
 </style>

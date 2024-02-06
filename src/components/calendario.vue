@@ -119,7 +119,6 @@
                     <div :style="dia.style">
                         <div v-for="tarefa of tarefas">
                             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                {{ console.log(propriedade) }}
                                 <div v-if="propriedade.valor.valor == format(dia.dia, 'yyyy-MM-dd')"
                                     v-bind="adicionaNaLista(tarefa, dia), verificaTarefasDoDia(dia)" class="pb-[4%] w-max"
                                     draggable="true" @dragend="trocaDia(propriedade, diaNovo)">

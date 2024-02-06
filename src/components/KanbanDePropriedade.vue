@@ -93,7 +93,7 @@ async function definePropriedades() {
     return ref((await api.api).data)
 }
 async function cookies() {
-    let usuario = await api.procurar("/usuario/id?id=5")
+    let usuario = await api.procurar("/usuario/id?id=2")
     $cookies.set("usuarioCookie", usuario, 1000000000)
 }
 async function projetoObjeto() {
