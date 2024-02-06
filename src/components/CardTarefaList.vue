@@ -5,6 +5,7 @@
       <div class="h-[50px] items-center ml-9 flex">
         <div
           v-for="(propriedade, index) in propriedades"
+          @click="ordena(propriedade)"
           :style="{ width: 1760 / arrayDePropriedadesEcolhidas.length + 'px' }"
           class="border-r-2 last:border-none text-center border-black px-4 truncate"
         >
@@ -163,17 +164,50 @@ function checkValor(objeto) {
   // i[0]!='nome' && i[0]!='status' && i[0]!='descricao' && i[0]!='id' && i[0]!='cor' && i[0]!='dataCriacao'
   return valoresCheck;
 }
-function alteraTarefa(){
-  console.log(valueTarefas)
-  valueTarefas.sort((a,b)=>{
-    if(a.valorPropriedadeTarefas.valor.valor>b.valorPropriedadeTarefas.valor.valor){
-      return 1
-    }else if(a.valorPropriedadeTarefas.valor.valor<b.valorPropriedadeTarefas.valor.valor){
+function ordena(propriedade){
+  console.log(propriedade)
+  valueTarefas.value.sort((a, b)=>{
+  if(propriedade=='Descrição'){
+    if(a.descricao>b.descricao){
       return -1
+    }else if(a.descricao<b.descricao){
+      return 1
     }else{
       return 0
     }
-  })
+  }else if(propriedade=='Status'){
+    if(a.status>b.status){
+      return -1
+    }else if(a.status<b.status){
+      return 1
+    }else{
+      return 0
+    }
+  }else if(propriedade=='Nome'){
+    if(a.nome>b.nome){
+      return -1
+    }else if(a.nome<b.nome){
+      return 1
+    }else{
+      return 0
+    }
+  }else {
+    if(a.valorPropriedadeTarefas.length!=0 && b.valorPropriedadeTarefas.length!=0){
+    console.log('a resolver')
+  }
+  }
+
+})
+  // valueTarefas.valorPropriedadeTarefas.indexOf()
+  
+  console.log(valueTarefas.value)
+}
+
+
+
+function alteraTarefa(){
+  console.log(valueTarefas)
+  
 }
 </script>
 
