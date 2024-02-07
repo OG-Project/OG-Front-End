@@ -7,7 +7,7 @@
             </div>
             <div class="h-[18%] w-max flex items-center ">
                 <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="10vh" preset="transparente"
-                    tamanhoDaFonte="1.5rem"></TextAreaPadrao>
+                    tamanhoDaFonte="1.5rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
             <div class="grid grid-cols-2">
                 <div class=" w-full h-[90%] flex flex-col gap-16">
@@ -47,12 +47,24 @@
         <div class=" w-[83%] h-full flex-row  ">
             <div
                 class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
-                <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                    <p @click="navegaPelaTabela('propriedade')">Propriedades</p>
-                    <p @click="navegaPelaTabela('status')">Status</p>
-                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                        styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+                <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
+                    <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
+                        <p @click="navegaPelaTabela('propriedade')" class="bg-roxo-claro p-2">Propriedades</p>
+                        <p @click="navegaPelaTabela('status')">Status</p>
+                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                            styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+                    </div>
                 </div>
+
+                <div v-if="opcaoSelecionadaNaTabela == 'status'">
+                    <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
+                        <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
+                        <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2">Status</p>
+                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                            styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+                    </div>
+                </div>
+
                 <div class="scrollBar">
                     <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
                         <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
@@ -123,7 +135,8 @@
                             </div>
                             <div class="pr-2 pt-2 pb-2">
                                 <!-- mudar a função -->
-                                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedade"></Botao>
+                                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
+                                </Botao>
                             </div>
                         </div>
 
@@ -132,8 +145,8 @@
             </div>
 
         </div>
-        <div class="flex justify-end items-end">
-            <div class="w-[20vw] h-[88vh] flex flex-col border-2 gap-8 overflow-y-auto border-black">
+        <div class="flex justify-end items-end ">
+            <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
                 <div class="h-[6%] pt-8 flex items-end justify-center">
                     <h1 class="text-3xl font-semibold">Informações</h1>
                 </div>
@@ -188,7 +201,7 @@
 
     <div class="h-[1%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5 vh" sombras='nao' :funcaoClick="criarProjeto"></Botao>
+            tamanhoDaFonte="2.5 vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
     </div>
 </template>
 
@@ -202,11 +215,11 @@ import { onMounted, onUpdated, ref, watch } from 'vue';
 import TextAreaPadrao from '../components/textAreaPadrao.vue';
 import ListaConvidados from '../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../stores/criaProjeto'
-import { th } from 'date-fns/locale';
-import { isThisSecond } from 'date-fns';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 import { criaPropriedadeStore } from '../stores/criaPropriedade'
-
+import { Propriedade } from '../models/Propriedade';
+import { Projeto } from '../models/Projeto';
+import VueCookies from 'vue-cookies';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 var listaSelecao = ref([]);
@@ -225,19 +238,21 @@ let opcoesSelect = ["Todos", "Data", "Numero", "Seleção", "Texto"]
 let listaSelecionada = ref([])
 let opcaoSelecionadaNaTabela = ref("")
 let listaStatus = ref([])
+let AuxParaCriarPropriedades = []
+let AuxParaCriarProjeto= []
+
 onMounted(() => {
     defineSelect()
-    propriedadesDoProjeto();
     buscandoPor();
     pesquisaBancoUserName();
     statusDoProjeto();
+    buscaPropriedadeCookies();
     funcaoPopUp.variavelModal = false;
 })
 
-onUpdated(() => {
-    propriedadesDoProjeto();
+onUpdated(() =>{
+    criarProjetoCookies();
 })
-
 async function defineSelect() {
     let listaAux = (await conexao.procurar('/equipe'))
     let listaAux1 = []
@@ -245,31 +260,22 @@ async function defineSelect() {
         listaAux1.push(equipeAtual.nome);
         listaSelecao.value = listaAux1
     });
+    
+}
+
+function buscaPropriedadeCookies() {
+    const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
+    listaPropriedades.value = propriedadeArmazenada
+
 }
 
 async function pesquisaBancoUserName() {
-    console.log(listaDeUsuariosParaBusca)
-    console.log(conexao.procurar("/usuario/username?username=" + listaDeUsuariosParaBusca.value))
-
     let listaAux = (await conexao.procurar('/usuario'))
     let listaAux1 = []
     listaAux.forEach(usuarioAtual => {
-        console.log(usuarioAtual.username)
         listaAux1.push(usuarioAtual.nome);
         listaDeUsuariosParaBusca.value = listaAux1
     });
-}
-
-async function propriedadesDoProjeto() {
-    var listaAux = (await conexao.procurar('/propriedade'))
-    var listaAux1 = []
-    listaAux.forEach(equipeAtual => {
-        listaAux1.push(equipeAtual);
-        listaPropriedades.value = listaAux1
-
-    });
-
-    return listaPropriedades;
 }
 
 async function statusDoProjeto() {
@@ -280,14 +286,24 @@ async function statusDoProjeto() {
         listaStatus.value = listaAux1
 
     });
-
     return listaStatus;
 }
 
-function criarProjeto() {
+function criarProjetoCookies() {
+    const criaProjetoCookies = Projeto
+    criaProjetoCookies.descricao = descricaoProjeto.value;
+    criaProjetoCookies.nome = nomeProjeto.value;
+    criaProjetoCookies.equipes = equipesRelacionadasProjeto.value;
+    AuxParaCriarProjeto.push({...criaProjetoCookies})
+    VueCookies.set('projetoCookie', AuxParaCriarProjeto,86400000000)
+    console.log(VueCookies.get('projetoCookie'))
+}
+
+function criaProjeto() {
     const criaProjeto = criaProjetoStore()
     criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value)
     console.log("" + nomeProjeto.value + " " + descricaoProjeto.value)
+    criaPropriedade();
 }
 
 
@@ -295,14 +311,11 @@ async function buscandoPor() {
     var listaAux = []
     var listaAux1 = []
     listaAux = listaPropriedades.value
-    let opcaoSelecionada = this.buscarPor.toLowerCase()
     listaAux.forEach(opcaoAtual => {
-        console.log("opção atual: " + opcaoAtual.tipo)
-        console.log(opcaoSelecionada)
-        if (opcaoAtual.tipo.toLowerCase() == this.buscarPor.toLowerCase()) {
-
-            listaAux1.push(opcaoAtual)
-            console.log("listaSElecionada" + listaSelecionada)
+        if (opcaoAtual.tipo != "") {
+            if (opcaoAtual.tipo.toLowerCase() == this.buscarPor.toLowerCase()) {
+                listaAux1.push(opcaoAtual)
+            }
         }
     });
     listaSelecionada.value = listaAux1;
@@ -314,34 +327,38 @@ function navegaPelaTabela(opcaoSelecionada) {
     } else if (opcaoSelecionada == 'status') {
         this.opcaoSelecionadaNaTabela = 'status'
     }
-    console.log(opcaoSelecionadaNaTabela)
 }
+function criaPropriedadeCookies() {
+    let propriedadeCriada = Propriedade
+    propriedadeCriada.nome = nomePropriedade.value
+    propriedadeCriada.tipo = tipoPropriedade.value
+    AuxParaCriarPropriedades.push({ ...propriedadeCriada })
+    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 86400000000, 1)
+    listaPropriedades.value = AuxParaCriarPropriedades
+    funcaoPopUp.fechaPopUp();
 
+
+}
 function criaPropriedade() {
     const criaProjeto = criaPropriedadeStore()
     criaProjeto.criaPropriedade(nomePropriedade.value, tipoPropriedade.value.toUpperCase())
-    funcaoPopUp.fechaPopUp();
 
 }
-
 </script>
 
 <style lang="scss">
 .scrollBar::-webkit-scrollbar {
     width: 0.7vw;
-    /* Largura da barra de rolagem */
 }
 
 .scrollBar::-webkit-scrollbar-thumb {
     @apply bg-gray-200;
     border-radius: 10px;
-
 }
 
 .scrollBar::-webkit-scrollbar-thumb:hover {
     @apply bg-gray-300;
     border-radius: 10px;
-
 }
 
 .scrollBar::-webkit-scrollbar-track {
@@ -363,15 +380,12 @@ function criaPropriedade() {
     display: grid;
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
-    /* Isso é opcional, dependendo do contexto do seu layout */
     height: 100%;
-    /* Isso também é opcional, dependendo do contexto do seu layout */
 }
 
 .animation {
     @apply w-[65%] bg-brancoNeve shadow-md flex justify-around flex-col;
     animation: myAnim 0.15s ease 0s 1 normal none;
-    /*isso é opcional */
 }
 
 @keyframes myAnim {
