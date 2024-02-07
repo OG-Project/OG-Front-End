@@ -1,29 +1,27 @@
     <template>
         <div>
-            <div>
-            <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="entrar" tamanhoDaFonte="0.9rem" :funcaoClick="entrar"></Botao>
-            </div>
-            <fundoPopUp  largura="" altura="76vh">
+            <fundoPopUp  largura="" altura="100%">
                 <div class="divGeral">
                     <div class=" grid-template flex w-full">
                             <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                     </div>
-                    <div class=" grid-template  flex w-full p-5">
-                        <Input styleInput="input-transparente-claro" largura="70vw" altura="10vh" icon="../src/imagem-vetores/Equipe.svg" conteudoInput="Nome da Equipe" v-model="nome" ></Input> 
+                    <div class=" grid-template  flex w-full mt-[1vh] p-5">
+                            <img class="imagem" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
+                        <Input class="computedClasses" styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
                     </div>
                         <div class=" grid-template  flex w-full">
-                            <Input styleInput="input-transparente-claro"  largura="70vw" altura="10vh" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+                            <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
                     </div>
                     <div class="grid-template flex w-full mt-[1vh]">
                         <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
                     </div>
-                    <div class=" grid-template flex w-full p-5 xl:p-3">
-                        <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[24vw] lg:w-[36vw] md:w-[36vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
+                    <div class=" grid-template flex w-full mt-[1vh]">
+                        <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
                     </div> 
-                    <div class="convidados-div flex justify-center">
-                        <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="25vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
+                    <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
+                        <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
                     </div>
-                    <div class="botao flex  justify-end mx-[3vw] w-[80%] ">
+                    <div class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
                             <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
                             </Botao>
                     </div>
@@ -42,8 +40,7 @@
     import ListaConvidados from './ListaConvidados.vue';
     import { conexaoBD } from "../stores/conexaoBD.js";
     import { criaEquipeStore } from "../stores/criarEquipe";
-    import VueCookies from "vue-cookies";
-import { getActivePinia } from 'pinia';
+    import {  computed } from 'vue';
 
     const banco = conexaoBD();
     let nome = ref('');
@@ -51,7 +48,33 @@ import { getActivePinia } from 'pinia';
     let usuarioConvidado = ref('');
     let mensagemError = ref("");
     let membrosEquipe = ref([]);
-    let usuarios = banco.procurar("/usuario")
+    let usuarios = banco.procurar("/usuario");
+
+    function larguraInput(){
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+        return '25';
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return '28';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '25';
+    } else {
+        return '13';
+    }
+    };
+
+    function larguraInputConvidado(){
+        const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+        return '30';
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return '35';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '35';
+    } else {
+        return '18';
+    }
+    }
 
     async function listaUsuarios(){
         let listaUsuarios = await usuarios;
@@ -106,10 +129,6 @@ import { getActivePinia } from 'pinia';
         banco.atualizar(membro, '/usuario');
     });
 
-
-
-    
-
     console.log('Equipe cadastrada:', cria);
 
     nome.value = '';
@@ -119,28 +138,32 @@ import { getActivePinia } from 'pinia';
 
     };
 
+
     </script>
     <style scoped>
         @import url(../assets/main.css);
 
-
         @layer components {
+        
+        .imagem {
+            @apply xl:h-[6vh] xl:w-[3vw];
+        }
 
         .mensagem-error {
             @apply flex justify-center text-red-600 mt-10;
         }
         .botao{
-            @apply w-[80%] h-[11%] gap-4  items-center justify-items-center justify-center  md:mt-[4%] lg:mt-[8%] xl:mt-[4%] ; 
+            @apply w-[80%] h-[100%] gap-4  items-center; 
             display: grid;
             grid-template-columns: 40% 55%;
         }
 
         .convidados-div{
-            @apply h-full
+            @apply h-full;
         }
 
         .grid-template{ 
-            @apply w-[80%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+            @apply w-[80%] h-[11%] gap-4  items-center justify-items-center justify-center; 
             display: grid;
             grid-template-columns: 40% 55%;
         }
@@ -150,7 +173,7 @@ import { getActivePinia } from 'pinia';
         }
 
         .listaConvidados{
-            @apply w-full h-full 2xl:w-[80%] 2xl:h-[20%] xl:w-[60%] xl:h-[30%] lg:w-[50%] lg:h-[20%]
+            @apply w-full h-full 2xl:w-[100%] 2xl:h-[20%] xl:w-[60%] xl:h-[30%] lg:w-[50%] lg:h-[20%];
         }
         .divGeral{
             @apply w-full flex justify-center p-5 flex-col;
@@ -160,9 +183,12 @@ import { getActivePinia } from 'pinia';
             .divGeral{
             @apply w-[55vw];
             }
+            .imagem{
+                @apply h-[6vh] w-[3vw];
+            }
 
         }
-
+        
         @media(min-width: 1024px){
             .divGeral{
                 @apply w-[50vw];
@@ -173,6 +199,12 @@ import { getActivePinia } from 'pinia';
 
         }
 
+        @media (max-width: 1024px) {
+            .imagem{
+                @apply lg:h-[5vh] lg:w-[5vw] md:h-[4vh] md:w-[4vh];
+            }
+        }
+
         @media(min-width: 768px){
             .divGeral{
                 @apply md:w-[55VW];
@@ -181,9 +213,10 @@ import { getActivePinia } from 'pinia';
                 @apply w-[40vw];
             }
             .botao{
-                @apply lg:mt-[5%] md:mt-[5%]
+                @apply md:mt-[5%];  
             }
         }
+
         @media(min-width: 1280px){
             .divGeral{
                 @apply w-[25VW];
@@ -198,34 +231,12 @@ import { getActivePinia } from 'pinia';
                 @apply w-[50vw];
             }
             .listaConvidados{
-                @apply w-[30vw];           
+                @apply w-[35vw];           
+            }
+            .imagem{
+                @apply h-[5vh] w-[4vw];
             }
         }
-
-        @media(min-width: 1440px) and (min-height: 768px){
-            .botao{
-                @apply 2xl:mt-[10%] xl:mt-[10%]
-            }
-            .convidados-div{
-                @apply xl:mt-0
-            }
-
-        }
-
-        @media(min-width: 768px) and (min-height: 1080px){
-            .botao{
-                @apply lg:mt-[5%] md:mt-[10%] xl:mt-[4%];
-            }
-            .convidados-div{
-                @apply mt-[4%]
-            }
-        }
-
-        @media(min-width: 1366px){
-            .botao{
-                @apply mt-[1vh]
-            }
-        }
-            
+    
     }
     </style>

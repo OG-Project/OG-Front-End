@@ -127,6 +127,7 @@ import {Equipe} from '../models/Equipe'
         return props.altura;
 
     }
+    
     function verificaWidth(){
         if(props.largura==undefined ){
             if(props.icon==undefined){
