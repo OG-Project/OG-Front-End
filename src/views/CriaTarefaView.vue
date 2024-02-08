@@ -22,7 +22,7 @@
         ></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center gap-16 mt-4 h-[5%] w-[100%]">
-        <div class="flex flex-col justify-center w-[14%]">
+        <div class="flex flex-col justify-center w-[18%]">
           <p>Propriedades</p>
           <button
             class="flex flex-col justify-center h-[70%] w-[100%]"
@@ -31,7 +31,7 @@
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center w-[14%]">
+        <div class="flex flex-col justify-center w-[11%]">
           <p>Status</p>
           <button
             class="flex flex-col justify-center h-[70%] w-[100%]"
@@ -40,7 +40,7 @@
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center w-[14%]">
+        <div class="flex flex-col justify-center w-[18%]">
           <p>SubTarefas</p>
           <button
             class="flex flex-col justify-center h-[70%] w-[100%]"
@@ -50,15 +50,54 @@
           </button>
         </div>
       </div>
-      <div v-if="propriedadeSendoCriada">
-        <div
-          v-if="propriedadeSendoCriada"
-          class="h-full flex flex-row pl-12 pt-6 pb-6"
-        >
+
+      <div v-if="statusSendoCriado">
+        <div v-if="statusSendoCriado" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
-          <div class="animation ">
-            <div class="flex justify-end">
-              <img src="../imagem-vetores/triangulo.svg" />
+          <div class="animation">
+            <div class="flex justify-start">
+              <img src="../imagem-vetores/trianguloStart.svg" />
+            </div>
+            <div class="flex flex-row justify-between">
+              <div class="pl-2">
+                <Input
+                  largura="10"
+                  conteudoInput="Nome Subtarefa"
+                  fontSize="1rem"
+                  altura="3.8"
+                  v-model="nomeStatus"
+                ></Input>
+              </div>
+              <div class="pr-2">
+                <ColorPicker v-model="corStatus" class="border-2 rounded-lg" />
+              </div>
+            </div>
+            <div class="flex felx-row justify-between">
+              <div class="pl-2 pt-2 pb-2">
+                <Botao
+                  preset="Sair"
+                  tamanhoPadrao="pequeno"
+                  :funcaoClick="abreFechaCriaStatus"
+                ></Botao>
+              </div>
+              <div class="pr-2 pt-2 pb-2">
+                <Botao
+                  preset="Confirmar"
+                  tamanhoPadrao="pequeno"
+                  :funcaoClick="criaStatus"
+                ></Botao>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div v-if="propriedadeSendoCriada">
+        <div v-if="propriedadeSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
+          <!-- fiz como um popUp, tem um botão que abre o popUp -->
+          <div class="animation">
+            <div class="flex justify-start">
+              <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
             <div class="flex flex-row justify-between">
               <div class="pl-2">
@@ -102,15 +141,12 @@
         </div>
       </div>
 
-      <div v-if="statusSendoCriado">
-        <div
-          v-if="statusSendoCriado"
-          class="h-full flex flex-row pl-12 pt-6 pb-6"
-        >
+      <div v-if="subtarefaSendoCriada">
+        <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
-          <div class="animation ">
-            <div class="flex justify-end">
-              <img src="../imagem-vetores/triangulo.svg" />
+          <div class="animation">
+            <div class="flex justify-start">
+              <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
             <div class="flex flex-row justify-between">
               <div class="pl-2">
@@ -119,12 +155,17 @@
                   conteudoInput="Nome Status"
                   fontSize="1rem"
                   altura="3.8"
-                  v-model="nomeStatus"
+                  v-model="nomeSubtarefa"
                 ></Input>
               </div>
-              <div class="pr-2">
-                <ColorPicker v-model="corStatus" class="border-2 rounded-lg"/>
-              </div>
+             <selectPadrao
+                  placeholderSelect="Tipo"
+                  :lista-select="['Em Progresso','Concluido']"
+                  largura="5"
+                  altura="3.8"
+                  fonteTamanho="1rem"
+                  v-model="statusSubtarefa"
+                />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
@@ -138,21 +179,21 @@
                 <Botao
                   preset="Confirmar"
                   tamanhoPadrao="pequeno"
-                  :funcaoClick="criaStatus"
+                  :funcaoClick="criaSubtarefa"
                 ></Botao>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="subtarefaSendoCriada"></div>
+      
       <p class="pl-12 mt-4">Arquivos({{ numeroDeArquivos }})...</p>
       <div
         id="exploradorDeArquivos"
         v-if="numeroDeArquivos != 0"
         class="flex gap-4 h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto"
       >
-      <p></p>
+        <p></p>
         <!-- v-for com os arquivos -->
       </div>
       <div class="pl-12 mt-4">
@@ -177,6 +218,33 @@
           <option>Em Progresso</option>
           <option>Concluído</option>
         </select>
+      </div>
+      <!-- Sub Tarefa -->
+      <div
+        class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-4 overflow-auto"
+        id="subtarefaOverflow"
+      >
+        <div v-for="(subtarefa, index) of subtarefas" :key="subtarefa.id">
+          <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
+            <div class="flex gap-2">
+              <CheckBox
+                class="flex justify-center"
+                @click="trocaStatusDaSubTarefa(subtarefa, index)"
+                :ativoProps="subtarefa.concluida"
+              ></CheckBox>
+              <p>{{ subtarefa.nome }}</p>
+            </div>
+            <div class="flex gap-2 justify-center">
+              <p>Status:</p>
+              <div v-if="subtarefa.concluida">
+                <p class="flex items-center justify-center bg-[#7CC0E5]">Concluído</p>
+              </div>
+              <div v-else>
+                <p class="flex items-center justify-center bg-[#C6B473]">Em Progresso</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- Fazer um v-for de propriedades -->
       <div class="pl-12 mt-4">
@@ -234,7 +302,7 @@
         </div>
       </div>
     </div>
-    <div class="w-[40vw] min-h-[96%] flex flex-col">
+    <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
       <div class="w-[80%] h-[80vh] shadow-2xl border-2">
         <div class="flex justify-around h-[4%]">
           <button
@@ -330,11 +398,11 @@
       </div>
     </div>
 
-    <div class="w-[20vw] min-h-[88vh] max-h-[88vh] flex flex-col border-2 gap-8 overflow-y-auto overflow-x-hidden" id="propriedadesOverflow">
+    <div id="propriedadesOverflow">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
         <h1 class="min-h-[9%] text-3xl font-semibold">Informações</h1>
       </div>
-      <div class="gap-4 min-h-[10%] w-[100%] flex flex-col">
+      <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
         <div class="flex pl-8">
           <div class="w-[50%] justify-start flex-row">
             <p>Nome do projeto</p>
@@ -359,27 +427,35 @@
             <p class="text-[#620BA7]">13/02/2006</p>
           </div>
         </div>
-        
       </div>
-      <div class="h-[4%] flex items-center justify-center p-8">
+      <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
-      <div class="h-[4%] flex items-center justify-center">
-        <div class="flex items-center justify-center h-[80%] w-[100%]">
-          <p class="h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
+      <div class="min-h-[4%] flex items-center justify-center">
+        <div class="flex items-center justify-center min-h-[80%] w-[100%]">
+          <p class="min-h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
             Status aleatório
           </p>
         </div>
       </div>
-      <div class="h-[4%] flex items-center justify-center p-8">
+      <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Propriedades</h1>
       </div>
-      <div v-if="propriedadesDaTarefa.length==0" class="h-[35%] flex flex-col items-center justify-center p-8">
+      <div
+        v-if="propriedadesDaTarefa.length == 0"
+        class="h-[35%] flex flex-col items-center justify-center p-8"
+      >
         <img :src="NotePad" class="h-[200px] w-[200px]" />
         <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
       </div>
-      <div v-if="propriedadesDaTarefa.length!=0" class="min-h-[35%] flex flex-col items-center">
-        <div v-for="propriedade of propriedadesDaTarefa" class="flex flex-col justify-around py-4 w-[80%]">
+      <div
+        v-if="propriedadesDaTarefa.length != 0"
+        class="min-h-[35%] flex flex-col items-center"
+      >
+        <div
+          v-for="propriedade of propriedadesDaTarefa"
+          class="flex flex-col justify-around py-4 w-[80%]"
+        >
           <p class="pb-4">Nome: {{ propriedade.nome }}</p>
           <p>Valor: {{ propriedade.valor }}</p>
         </div>
@@ -407,6 +483,19 @@ let tipoPropriedade = ref("");
 let nomeStatus = ref("");
 let corStatus = ref("");
 
+let nomeSubtarefa = ref("");
+let statusSubtarefa = ref("");
+
+//Função que troca o valor da Subtarefa de concluido pra em progresso
+function trocaStatusDaSubTarefa(subtarefa, index) {
+  console.log(subtarefa.concluida);
+  subtarefas.value[index].concluida = !subtarefas.value[index].concluida;
+  console.log(subtarefa.concluida);
+  numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
+  porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
+  barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+}
+
 function criaStatus() {
   let statusNovo = {
     nome: nomeStatus.value,
@@ -416,7 +505,28 @@ function criaStatus() {
   statusSendoCriado.value = false;
 }
 
-function criaPropriedade(){
+function criaSubtarefa(){
+  let booleanDaSubtarefa = ref()
+  if(statusSubtarefa.value === 'Em Progresso'){
+    booleanDaSubtarefa.value = false
+  }
+  else{
+    booleanDaSubtarefa.value = true
+  }
+  let subtarefaNova = {
+    nome: nomeSubtarefa.value,
+    concluida: booleanDaSubtarefa.balue,
+    status: statusSubtarefa.value,
+  };
+  subtarefas.value.push(subtarefaNova);
+  subtarefaSendoCriada.value = false;
+  numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
+  porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
+  barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+  numeroDeTarefas.value = subtarefas.value.length;
+}
+
+function criaPropriedade() {
   let propriedade = {
     nome: nomePropriedade.value,
     tipo: tipoPropriedade.value,
@@ -426,7 +536,6 @@ function criaPropriedade(){
   console.log(propriedades.value);
   propriedades.value.push(propriedade);
   propriedadeSendoCriada.value = false;
-
 }
 
 let comentarioSendoEnviado = ref("");
@@ -487,25 +596,33 @@ const propriedadesDaTarefa = ref([
     tipo: "Tipo da Propriedade",
     valor: ref(123),
   },
-  {
-    nome: "Nome da Propriedade",
-    tipo: "Tipo da Propriedade",
-    valor: ref(123),
-  }
 ]);
 
 const subtarefas = ref([
   {
-    nome: "Nome da Subtarefa",
-    concluida: false,
+    nome: "Nome da Subtarefa 1",
+    concluida: ref(true),
+    status: "Em Progresso",
   },
   {
-    nome: "Nome da Subtarefa",
-    concluida: false,
+    nome: "Nome da Subtarefa 2",
+    concluida: ref(true),
+    status: "Concluído",
   },
   {
-    nome: "Nome da Subtarefa",
-    concluida: false,
+    nome: "Nome da Subtarefa 3",
+    concluida: ref(false),
+    status: "Em Progresso",
+  },
+  {
+    nome: "Nome da Subtarefa 4",
+    concluida: ref(false),
+    status: "Em Progresso",
+  },
+  {
+    nome: "Nome da Subtarefa 5",
+    concluida: ref(false),
+    status: "Em Progresso",
   },
 ]);
 
@@ -551,11 +668,25 @@ const status = ref([
   },
 ]);
 
+function numeroDeSubTarefasConcluidas() {
+  let numeroDeSubTarefasC = ref(0);
+  subtarefas.value.forEach((subtarefa) => {
+    if (subtarefa.concluida) {
+      console.log(numeroDeSubTarefasC.value);
+      numeroDeSubTarefasC.value++;
+      console.log(numeroDeSubTarefasC.value);
+    }
+  });
+  console.log(subtarefas.value);
+  return numeroDeSubTarefasC.value;
+}
+
+
 const estaDivValorAberta = ref(false);
 let numeroDeArquivos = ref(1);
-let numeroDeTarefasConcluidas = ref(6);
-let numeroDeTarefas = ref(8);
-let porcentagemDeTarefasConcluidas = ref(0);
+let numeroDeTarefasConcluidas = ref(numeroDeSubTarefasConcluidas());
+let numeroDeTarefas = ref(subtarefas.value.length);
+let porcentagemDeTarefasConcluidas = ref(atualizaPorcentagemDeTarefasConcluidas());
 
 let estiloBotaoPropriedades = ref({
   borderBottom: "solid 4px #620BA7",
@@ -619,12 +750,13 @@ let estiloOpcaoClicadoStatus = {
 };
 
 function atualizaPorcentagemDeTarefasConcluidas() {
-  porcentagemDeTarefasConcluidas.value =
-    (numeroDeTarefasConcluidas.value / numeroDeTarefas.value) * 100;
+  console.log((numeroDeTarefasConcluidas.value / numeroDeTarefas.value) * 100);
+  console.log(numeroDeTarefas.value);
+  console.log(numeroDeTarefasConcluidas.value);
+  return (numeroDeTarefasConcluidas.value / numeroDeTarefas.value) * 100;
 }
 
 watch(() => {
-  atualizaPorcentagemDeTarefasConcluidas();
   clicouOpcaoStatus();
   clicouOpcaoPropriedades();
 });
@@ -663,7 +795,18 @@ const props = defineProps({
   background-color: #c4c4c4;
   clip-path: polygon(60% 0, 0 0, 0 100%, 58% 100%, 100% 82%, 100% 18%);
 }
-
+#propriedadesOverflow {
+  width: 20vw;
+  border: 2px solid;
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 88vh;
+  max-height: 88vh;
+  height: auto; /* Allow automatic height adjustment */
+}
 #botao-sair {
   width: 4%;
   height: 4%;
@@ -741,7 +884,22 @@ const props = defineProps({
   background-color: #d8d8d8;
 }
 
+#subtarefaOverflow::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  width: 6px;
+  background-color: #f1f1f1;
+}
 
+#subtarefaOverflow::-webkit-scrollbar {
+  width: 8px;
+  background-color: #f1f1f1;
+}
+
+#subtarefaOverflow::-webkit-scrollbar-thumb {
+  width: 6px;
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+  background-color: #d8d8d8;
+}
 
 #filtroDeSubTarefa {
   font-size: small;
