@@ -201,7 +201,7 @@
 
     <div class="h-[1%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5 vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
+            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
     </div>
 </template>
 
@@ -228,18 +228,19 @@ let tipoProjeto = ref("");
 let nomePropriedade = ref("");
 let tipoPropriedade = ref("");
 let dataInicioProjeto = ref("");
-let equipesRelacionadasProjeto = ref("");
+let equipesEscolhidaRelacionadaProjeto = ref("");
 let descricaoProjeto = ref("");
 let responsaveisProjeto = ref([]);
-let listaDeUsuariosParaBusca = ref([])
+let listaDeUsuariosParaBusca = ref([]);
 var listaPropriedades = ref([]);
 let buscarPor = ref("");
-let opcoesSelect = ["Todos", "Data", "Numero", "Seleção", "Texto"]
-let listaSelecionada = ref([])
-let opcaoSelecionadaNaTabela = ref("")
-let listaStatus = ref([])
-let AuxParaCriarPropriedades = []
-let AuxParaCriarProjeto= []
+let opcoesSelect = ["Todos", "Data", "Numero", "Seleção", "Texto"];
+let listaSelecionada = ref([]);
+let opcaoSelecionadaNaTabela = ref("");
+let listaStatus = ref([]);
+let equipesRelacionadasProjeto= ref([]);
+let AuxParaCriarPropriedades = [];
+
 
 onMounted(() => {
     defineSelect()
@@ -247,10 +248,12 @@ onMounted(() => {
     pesquisaBancoUserName();
     statusDoProjeto();
     buscaPropriedadeCookies();
+    buscaProjetoCookies();
     funcaoPopUp.variavelModal = false;
+
 })
 
-onUpdated(() =>{
+onUpdated(() => {
     criarProjetoCookies();
 })
 async function defineSelect() {
@@ -260,12 +263,23 @@ async function defineSelect() {
         listaAux1.push(equipeAtual.nome);
         listaSelecao.value = listaAux1
     });
-    
+
 }
 
 function buscaPropriedadeCookies() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
     listaPropriedades.value = propriedadeArmazenada
+
+}
+
+function buscaProjetoCookies() {
+    
+    if (VueCookies.get("projetoCookie") != null) {
+        const variavelCookieProjeto=(VueCookies.get('projetoCookie'))
+        descricaoProjeto.value=variavelCookieProjeto.descricao;
+        nomeProjeto.value= variavelCookieProjeto.nome;
+        equipesEscolhidaRelacionadaProjeto.value= variavelCookieProjeto.equipes;
+    }
 
 }
 
@@ -290,18 +304,21 @@ async function statusDoProjeto() {
 }
 
 function criarProjetoCookies() {
-    const criaProjetoCookies = Projeto
-    criaProjetoCookies.descricao = descricaoProjeto.value;
-    criaProjetoCookies.nome = nomeProjeto.value;
-    criaProjetoCookies.equipes = equipesRelacionadasProjeto.value;
-    AuxParaCriarProjeto.push({...criaProjetoCookies})
-    VueCookies.set('projetoCookie', AuxParaCriarProjeto,86400000000)
-    console.log(VueCookies.get('projetoCookie'))
+        const criaProjetoCookies = Projeto
+        criaProjetoCookies.descricao = descricaoProjeto.value;
+        criaProjetoCookies.nome = nomeProjeto.value;
+        console.log(criaProjetoCookies.equipes)
+        criaProjetoCookies.equipes = equipesEscolhidaRelacionadaProjeto.value;
+        VueCookies.set('projetoCookie', criaProjetoCookies, 86400000000)
+        console.log(VueCookies.get('projetoCookie'))
+        buscaProjetoCookies();
 }
+
+
 
 function criaProjeto() {
     const criaProjeto = criaProjetoStore()
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value)
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value,equipesRelacionadasProjeto.value)
     console.log("" + nomeProjeto.value + " " + descricaoProjeto.value)
     criaPropriedade();
 }
@@ -329,18 +346,23 @@ function navegaPelaTabela(opcaoSelecionada) {
     }
 }
 function criaPropriedadeCookies() {
+
     let propriedadeCriada = Propriedade
     propriedadeCriada.nome = nomePropriedade.value
     propriedadeCriada.tipo = tipoPropriedade.value
     AuxParaCriarPropriedades.push({ ...propriedadeCriada })
-    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 86400000000, 1)
+    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 86400000000, 1, 1)
     listaPropriedades.value = AuxParaCriarPropriedades
+
     funcaoPopUp.fechaPopUp();
 
 
 }
 function criaPropriedade() {
     const criaProjeto = criaPropriedadeStore()
+    if(tipoPropriedade.value=="Seleção"){
+        tipoPropriedade.value="SELECAO"
+    }
     criaProjeto.criaPropriedade(nomePropriedade.value, tipoPropriedade.value.toUpperCase())
 
 }

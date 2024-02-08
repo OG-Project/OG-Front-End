@@ -1,7 +1,7 @@
 <template>
     <div :class=styleSelect :style="estilizaDivSelect">
-        <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex justify-center xl:text-xl sm:text-sm md:text-md">
-            <option class="options" value="" disabled selected >{{ placeholderSelect }}</option>
+        <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex items-center justify-center xl:text-xl sm:text-sm md:text-md">
+            <option class="options" value="" disabled selected  v-if="opcaoSelecionada==''">{{ placeholderSelect }}</option>
             <option v-for="opcao of listaSelect" class="options" :value="opcaoSelecionada">{{ opcao }}</option>
         </select>   
     </div>
@@ -9,6 +9,8 @@
 </template>
 
 <script setup>
+import { onUpdated } from 'vue';
+
 
 defineEmits(['update:modelValue'])
     const props=defineProps({
@@ -30,7 +32,13 @@ defineEmits(['update:modelValue'])
             default: 'styleSelectPadrao'
         },
     }
+
+   
     )
+
+    onUpdated(() => {
+    
+    })
 
     const hoverPadrao = {
         color : verificaCorHover()
@@ -44,7 +52,7 @@ defineEmits(['update:modelValue'])
     }
 
     const estilizaSelect={
-        fontSize: props.fonteTamanho    
+        fontSize: props.fonteTamanho 
 
     }
     
@@ -138,7 +146,7 @@ defineEmits(['update:modelValue'])
     }
 
     option{
-         
+        @apply flex justify-center items-center;
     }
    
 }
