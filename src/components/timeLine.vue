@@ -26,7 +26,6 @@
                                     <p>HH:mm</p>
                                 </div>
                             </div>
-                            {{ console.log(gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))) }}
                             <Carousel :value="calendario"
                                 :page="gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))" :numVisible="20"
                                 circular class="w-[95%] h-[100%] flex justify-end">
@@ -115,13 +114,13 @@
                         </div>
 
 
-                        <div
-                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row" @dragover="retornaHora(hora)">
+                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
+                            @dragover="retornaHora(hora)">
                             <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class=" flex flex-row ">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
                                     <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
                                         class=" pl-[5%] pt-[5%]">
-                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade,horaNova)">
+                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
                                             <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
                                             </cardTarefas>
                                         </div>
@@ -133,7 +132,7 @@
 
 
                     <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras.value"
-                        class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)" >
+                        class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)">
 
                         <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                             (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
@@ -145,7 +144,7 @@
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
                                     <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
                                         class="pl-[5%] pt-[5%]">
-                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade)">
+                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
                                             <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
                                             </cardTarefas>
                                         </div>
@@ -219,6 +218,7 @@ async function adicionaNaLista() {
     let hora
     listaDeTarefasTeste2.forEach(tarefa => {
         tarefa.valorPropriedadeTarefas.forEach(propriedade => {
+
             const dataFormatada = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd');
             if (format(diaSelecionado.dia.value, 'yyyy-MM-dd') == dataFormatada) {
                 if (!lista.includes(tarefa)) {
@@ -230,9 +230,42 @@ async function adicionaNaLista() {
     diaSelecionado.listaDeTarefas.value = lista;
 };
 
-function mudaHoraPropriedade(propriedade){
-    propriedade.valor.valor = format(new Date(propriedade.valor.valor),'yyyy-MM-dd') + "T"+horaNova+":00";
-    
+async function mudaHoraPropriedade(propriedade, tarefa) {
+    let textoTipo = "";
+    let tarefaNova = {
+        id: tarefa.id,
+        nome: tarefa.nome,
+        descricao: tarefa.descricao,
+        dataCriacao: tarefa.dataCriacao,
+        cor: tarefa.cor,
+        valorPropriedadeTarefas: [],
+        status: tarefa.status,
+        comentarios: tarefa.comentarios
+
+    }
+    propriedade.valor.valor = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') + "T" + horaNova + ":00";
+
+    if (propriedade.propriedade.tipo == "DATA") {
+        tarefa.valorPropriedadeTarefas.forEach(propriedade => {
+
+            let propriedadeNova = {
+                id: propriedade.id,
+                propriedade: {
+                    nome: propriedade.propriedade.nome,
+                    tipo: propriedade.propriedade.tipo
+                },
+                valor: {
+                    id: propriedade.valor.id,
+                    data: propriedade.valor.valor
+                }
+            }
+            tarefaNova.valorPropriedadeTarefas.push(propriedadeNova)
+        });
+    }
+
+    console.log(tarefa)
+    console.log(await tarefaNova)
+    api.atualizar(tarefaNova, "/tarefa")
 }
 
 function defineHora() {
@@ -246,7 +279,7 @@ function defineVizualizacao() {
         visualizacao.value = "00:30"
     }
 }
-function retornaHora(hora){
+function retornaHora(hora) {
     horaNova = hora;
 }
 // Muda de acordo com o mes
