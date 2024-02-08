@@ -121,10 +121,12 @@
             membro.equipes = [];
         }
 
-        membro.equipes.push({
-            nome: nome.value,
-            descricao: descricao.value
-        })
+        const equipeUsuario={
+                nome: equipeCriada.nome,
+                descricao: equipeCriada.descricao
+        }
+
+        membro.equipes.push(equipeUsuario)
 
         banco.atualizar(membro, '/usuario');
     });

@@ -1,7 +1,7 @@
 <template>
   <div class="grid-template flex">
     <div
-      class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 "
+      class="convites-bg flex-col w-full bg-[#FEFBFF] shadow-md  shadow-gray-200 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 "
       :style="{height: altura}"
     >
       <div class="flex justify-center overfloow-y:auto">
@@ -93,8 +93,9 @@ const imagemIcon={
         justify-items-center justify-center;
         display: grid;
         grid-template-columns: 0% 0%;
-        clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
+        
     }
+ 
 
     .imgIcon {
         @apply bg-cover 
