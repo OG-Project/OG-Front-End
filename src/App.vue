@@ -6,20 +6,22 @@ import { funcaoPopUpStore } from './stores/funcaoPopUp'
 
 
 import Navbar from '@/components/Navbar.vue';
+import CriarEquipePopUp from './components/CriarEquipePopUp.vue';
+import ListaMembrosEquipe from './components/listaMembrosEquipe.vue'; 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 
 
 
 </script>
+
 <template>
-  <Navbar></Navbar>
-    <RouterView />
+  <RouterView />
+
+<CriarEquipePopUp>
+</CriarEquipePopUp>
 
 
-  <CriarEquipePopUp>
-    
-  </CriarEquipePopUp>
 
 </template>
 
