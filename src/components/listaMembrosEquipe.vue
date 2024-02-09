@@ -5,14 +5,14 @@
             <div class="flex justify-center">
                 <div class="primeiraDiv justify-end">
                     <img class="imagemEquipe" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
-                    <h1 class=" text-3xl 2xl:w-[20vw] xl:w-[30vw] lg:w-[40vw] md:w-[70vw]">Equipe OG</h1>
+                    <h1 class=" text-3xl 2xl:w-[20vw] xl:w-[30vw] lg:w-[40vw] md:w-[70vw]">{{ equipeSelecionada }}</h1>
                 </div>
             </div>
             <div class="flex justify-center p-5" v-for="Usuario of usuarios">
                 <img class="imgIcon" src="../src/imagem-vetores/adicionarPessoa.svg" alt="">
                 <div class="corDiv">
                     <img class="imgPerfil" src="usuarios.img" alt="">
-                    <h1 class=" text-xl 2xl:w-[10vw] xl:w-[15vw] lg:w-[15vw] md:w-[15vw] ">{{usuarios.nome}}</h1>
+                    <h1 class=" text-xl 2xl:w-[10vw] xl:w-[15vw] lg:w-[15vw] md:w-[15vw] "></h1>
                 </div>
                 <SelectPadrao class="styleSelectPadraoBranco text-sm" styleSelect="select-branco" :listaSelect="opcoesSelect"></SelectPadrao> 
             </div>
@@ -52,6 +52,16 @@ import SelectPadrao from './selectPadrao.vue'
 import Input from './Input.vue';
 import ListaConvidados from './ListaConvidados.vue';
 import Botao from './Botao.vue';
+import { conexaoBD } from "../stores/conexaoBD.js";
+import { ref } from 'vue';
+
+let membros = ref([]);
+const banco = conexaoBD();
+let usuarios = banco.procurar("/usuario");
+let equipes = banco.procurar("/equipe");
+let equipeSelecionada= ref ('');
+
+listaUsuarios();
 
 function larguraInputConvidado(){
         const screenWidth = window.innerWidth;
@@ -66,28 +76,23 @@ function larguraInputConvidado(){
     }
     }
 
-const Usuario = {
-    nome: String,
-    permissao: String,
-    img: String
-}
-const opcoesSelect = ['Edit', 'View']
-Usuario.nome = "",
-Usuario.img = ""
 
- let usuarios=[
-  Usuario.nome = "bolsonaro",
-  Usuario.img = "img",
-  
-  
-]
+    async function listaUsuarios(){
+        let listaUsuarios = await usuarios;
+        if (listaUsuarios.length > 0) {
+        equipeSelecionada.value = listaUsuarios[0].equipe;
+        
+        // Filtra os usuários pela equipe selecionada
+        membros.value = listaUsuarios.filter(usuario => usuario.equipe === equipeSelecionada.value);
+    }
+    }
 
 </script>
 
 <style scoped>
 
 .imagemEquipe {
-   @apply 2xl:h-[6vh] 2xl:w-[3vw] xl:h-[5vh] xl:w-[4vw];
+   @apply 2xl:h-[6vh] 2xl:w-[3vw] xl:h-[5vh] xl:w-[4vw] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
 }
 
 .div-lista{
@@ -121,7 +126,7 @@ Usuario.img = ""
         @apply bg-cover 
         bg-center flex flex-col justify-center 
         items-center mr-[1vw] ml-[2vw] mt-[10px]
-        2xl:w-[2vw] 2xl:h-[4vh];
+        2xl:w-[2vw] 2xl:h-[4vh] xl:w-[3vw] xl:h-[4vh] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
     }
 
 .styleSelectPadraoBranco{
