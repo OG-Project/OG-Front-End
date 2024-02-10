@@ -32,7 +32,7 @@
                         </div>
                         <div v-if="propriedadeAtual == 'STATUS'">
 
-                            <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
+                            <div v-for="tarefa of projeto.tarefas" class="w-[80%] pt-[2vh]">
                                 <div v-if="tarefa.status != null && tarefa.status.id == propriedade.id">
                                     <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                                 </div>
