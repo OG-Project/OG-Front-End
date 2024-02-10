@@ -25,12 +25,14 @@
                         </div>
                     </div>
                     <div class="h-[5%] flex  items-start justify-start gap-3">
-                        <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca></inputDePesquisa>
-                        <div v-if="responsaveisProjeto != ''">
-                            <div class="w-full bg-brancoNeve h-full rounded-sm border-transparent shadow-md  ">
+                        <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
+                            place-holder-pesquisa="Responsáveis pelo projeto"
+                            @item-selecionado="pegaValorSelecionadoPesquisa"></inputDePesquisa>
+                        <div v-if="responsaveisProjeto!= ''">
+                            <div v-for="responsavel of responsaveisProjeto " class="w-full bg-brancoNeve h-full rounded-sm border-transparent shadow-md  ">
                                 <div>
+                                        {{ responsavel }}
                                     <!-- 17.65% -->
-                                    aaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                                 </div>
                             </div>
                         </div>
@@ -238,13 +240,14 @@ let opcoesSelect = ["Todos", "Data", "Numero", "Seleção", "Texto"];
 let listaSelecionada = ref([]);
 let opcaoSelecionadaNaTabela = ref("");
 let listaStatus = ref([]);
-let equipesRelacionadasProjeto= ref([]);
+let equipesRelacionadasProjeto = ref([]);
 let AuxParaCriarPropriedades = [];
-
-
+let itemSelecionadoPesquisa = ref("")
+let listaAuxResponsaveisProjeto = []
 onMounted(() => {
     defineSelect()
     buscandoPor();
+
     pesquisaBancoUserName();
     statusDoProjeto();
     buscaPropriedadeCookies();
@@ -273,12 +276,12 @@ function buscaPropriedadeCookies() {
 }
 
 function buscaProjetoCookies() {
-    
+
     if (VueCookies.get("projetoCookie") != null) {
-        const variavelCookieProjeto=(VueCookies.get('projetoCookie'))
-        descricaoProjeto.value=variavelCookieProjeto.descricao;
-        nomeProjeto.value= variavelCookieProjeto.nome;
-        equipesEscolhidaRelacionadaProjeto.value= variavelCookieProjeto.equipes;
+        const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
+        descricaoProjeto.value = variavelCookieProjeto.descricao;
+        nomeProjeto.value = variavelCookieProjeto.nome;
+        equipesEscolhidaRelacionadaProjeto.value = variavelCookieProjeto.equipes;
     }
 
 }
@@ -304,21 +307,32 @@ async function statusDoProjeto() {
 }
 
 function criarProjetoCookies() {
-        const criaProjetoCookies = Projeto
-        criaProjetoCookies.descricao = descricaoProjeto.value;
-        criaProjetoCookies.nome = nomeProjeto.value;
-        console.log(criaProjetoCookies.equipes)
-        criaProjetoCookies.equipes = equipesEscolhidaRelacionadaProjeto.value;
-        VueCookies.set('projetoCookie', criaProjetoCookies, 86400000000)
-        console.log(VueCookies.get('projetoCookie'))
-        buscaProjetoCookies();
+    const criaProjetoCookies = Projeto
+    criaProjetoCookies.descricao = descricaoProjeto.value;
+    criaProjetoCookies.nome = nomeProjeto.value;
+    console.log(criaProjetoCookies.equipes)
+    criaProjetoCookies.equipes = equipesEscolhidaRelacionadaProjeto.value;
+    VueCookies.set('projetoCookie', criaProjetoCookies, 86400000000)
+    console.log(VueCookies.get('projetoCookie'))
+    buscaProjetoCookies();
 }
 
-
+async function pegaValorSelecionadoPesquisa(n) {
+    console.log(n)
+    let listaAux = (await conexao.procurar('/usuario'))
+    listaAux.forEach(usuarioAtual => {
+        if (n == usuarioAtual.nome) {
+            listaAuxResponsaveisProjeto.push(usuarioAtual.nome) 
+            console.log(responsaveisProjeto)
+            responsaveisProjeto = listaAuxResponsaveisProjeto
+        }
+    });
+    
+}
 
 function criaProjeto() {
     const criaProjeto = criaProjetoStore()
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value,equipesRelacionadasProjeto.value)
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, equipesRelacionadasProjeto.value)
     console.log("" + nomeProjeto.value + " " + descricaoProjeto.value)
     criaPropriedade();
 }
@@ -351,7 +365,7 @@ function criaPropriedadeCookies() {
     propriedadeCriada.nome = nomePropriedade.value
     propriedadeCriada.tipo = tipoPropriedade.value
     AuxParaCriarPropriedades.push({ ...propriedadeCriada })
-    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 86400000000, 1, 1)
+    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 86400000000)
     listaPropriedades.value = AuxParaCriarPropriedades
 
     funcaoPopUp.fechaPopUp();
@@ -360,8 +374,8 @@ function criaPropriedadeCookies() {
 }
 function criaPropriedade() {
     const criaProjeto = criaPropriedadeStore()
-    if(tipoPropriedade.value=="Seleção"){
-        tipoPropriedade.value="SELECAO"
+    if (tipoPropriedade.value == "Seleção") {
+        tipoPropriedade.value = "SELECAO"
     }
     criaProjeto.criaPropriedade(nomePropriedade.value, tipoPropriedade.value.toUpperCase())
 
