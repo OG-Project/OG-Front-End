@@ -1,7 +1,7 @@
 <template>
         <div class="w-[1400px] h-[877px] flex flex-col  ">
                 <div>
-                        <h1 class="m-20 text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
+                        <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
                 </div>
                 <div class="flex justify-center gap-8">
                         <div class="flex flex-col gap-y-10">
@@ -53,7 +53,7 @@
                         </div>
                 </div>
 
-                <div class="flex justify-end mr-40 mt-80">
+                <div class="flex justify-end mr-[15%] mt-80">
                         <Botao preset="PadraoRoxo" texto="Editar" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
                 </div>
             </div>
