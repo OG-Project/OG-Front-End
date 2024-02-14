@@ -16,11 +16,6 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
 <template>
   <RouterView />
 
-<CriarEquipePopUp>
-</CriarEquipePopUp>
-
-
-
 </template>
 
 <style scoped>
