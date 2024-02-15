@@ -10,23 +10,23 @@
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Nome" 
-                                        v-model="nome" 
+                                        v-model="PerfilStore.nome" 
                                         tipo="obrigatorio" />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
-                                        <span class="text-xl">Cadastro</span>
+                                        <span class="text-xl">Username</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Cadastro" 
-                                        v-model="cadastro" 
+                                        conteudoInput="Username" 
+                                        v-model="PerfilStore.username" 
                                         tipo="obrigatorio" />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
-                                        <span class="text-xl">Cargo</span>
+                                        <span class="text-xl">E-mail</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Cargo" 
-                                        v-model="cargo" 
+                                        conteudoInput="E-mail" 
+                                        v-model="PerfilStore.email" 
                                         tipo="obrigatorio" />
                                 </div>
                                 
@@ -35,26 +35,28 @@
                         
                         <div class="flex flex-col gap-y-10">
                                 <div class="flex justify-between items-center gap-5">
+                                        <span class="text-xl">Sobrenome</span>
+                                        <Input 
+                                        styleInput="input-transparente-claro-grande" 
+                                        conteudoInput="Sobrenome" 
+                                        v-model="PerfilStore.sobrenome" 
+                                        tipo="obrigatorio" />
+                                </div>
+                                <div class="flex justify-between items-center gap-5">
                                         <span class="text-xl">Data de Nascimento</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Data de Nascimento" 
-                                        v-model="dataDeNascimento" 
+                                        v-model="PerfilStore.dataDeNascimento" 
                                         tipo="obrigatorio" />
                                 </div>
-                                <div class="flex justify-between items-center gap-5">
-                                        <span class="text-xl">Setor</span>
-                                        <Input 
-                                        styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Setor" 
-                                        v-model="setor" 
-                                        tipo="obrigatorio" />
-                                </div>
+                                
                         </div>
                 </div>
 
                 <div class="flex justify-end mr-[15%] mt-80">
-                        <Botao preset="PadraoRoxo" texto="Editar" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
+                        <Botao v-if="!editar" :funcaoClick="alterarEmail" preset="PadraoRoxo" texto="Editar E-mail" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
+                        <Botao v-else :funcaoClick="alterarEmail" preset="PadraoRoxo" texto="Confirmar Edição" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
                 </div>
             </div>
 </template>
@@ -62,13 +64,30 @@
 <script setup>
 import Input from '../components/Input.vue'
 import Botao from '../components/Botao.vue'
-let nome
-let cargo
-let setor
-let cadastro
-let dataDeNascimento
+import VueCookies from "vue-cookies";
+import {perfilStore} from '../stores/perfilStore'
+import { ref, onMounted } from 'vue';
+let usuario= VueCookies.get("usuarioCookie")
+const PerfilStore=perfilStore()
 
+PerfilStore.nome
+let editar=ref(false)
 
+function alterarEmail(){
+        editar.value=!editar.value
+        if(editar.value){
+                PerfilStore.alteraInformacoes(PerfilStore.email)
+        }
+        console.log("altera")
+}
+onMounted(()=>{
+PerfilStore.nome=usuario.nome
+PerfilStore.sobrenome=usuario.sobrenome
+PerfilStore.email=usuario.email
+PerfilStore.username=usuario.username
+PerfilStore.dataDeNascimento=usuario.dataDeNascimento
+
+})
 </script>
 
 <style scoped>

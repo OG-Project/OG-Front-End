@@ -6,8 +6,7 @@
                 <Botao preset="PadraoRoxo" texto="Perfil" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh">
                 </Botao>
                 <router-link
-                to="{name: informacoes}" >oi</router-link>
-                <Select :listaSelect="listaSelecao" fonteTamanho="2.5" largura="12" altura="6" v-model="tipo"></Select>
+                to="{name: informacoes}" >oi</router-link>  
                 <Botao preset="PadraoRoxo" texto="Segurança" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
                 <Botao preset="PadraoRoxo" texto="Acessibilidade" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
                 <Botao preset="PadraoRoxo" texto="Privacidade" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
@@ -16,14 +15,17 @@
         </div>
 
         <div>
-            <router-view />
+            <ComponentAcessibilidade />
+            <!-- <ComponentInformacao /> -->
+            <!-- <router-view /> -->
         </div>
     </div>
 </template>
 
 <script setup>
 import Botao from '../components/Botao.vue'
-import Select from '../components/selectPadrao.vue'
+import ComponentInformacao from '../components/componentInformacoes.vue'
+import ComponentAcessibilidade from '../components/componentAcessibilidade.vue';
 </script>
 
 <style scoped>

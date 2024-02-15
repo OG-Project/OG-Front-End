@@ -18,12 +18,12 @@ const router = createRouter({
       path:'/perfil',
       name:'Perfil',
       component: () => import('../views/PerfilView.vue'),
-      children:[
-        {
-          path:'/:informacoes',
-          component: ()=>import('../components/componentInformacoes.vue')
-        }
-      ]
+      // children:[
+      //   {
+      //     path:'/:informacoes',
+      //     component: ()=>import('../components/componentInformacoes.vue')
+      //   }
+      // ]
     },
   ]
 })
