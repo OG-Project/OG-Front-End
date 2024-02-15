@@ -65,10 +65,6 @@ const imagemIcon={
   height: props.altDaImagemIcon,
 }
 </script>
-  <style lang="scss">
-  /* ... o restante do seu estilo permanece o mesmo ... */
-  </style>
-  
 
 <style lang="scss" scoped>
 

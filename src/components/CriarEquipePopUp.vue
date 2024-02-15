@@ -41,6 +41,7 @@
     import { conexaoBD } from "../stores/conexaoBD.js";
     import { criaEquipeStore } from "../stores/criarEquipe";
     import {  computed } from 'vue';
+    import { VueCookies } from 'vue-cookies';
 
     const banco = conexaoBD();
     let nome = ref('');
