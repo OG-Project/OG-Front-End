@@ -9,30 +9,51 @@
      </div>
      <div class="flex justify-center">
           <div class="listaEquipes">
-             <div class="criarEquipe">
+             <div class="criarEquipe"  v-for="equipe in equipesUsuario">
                     <div class="flex justify-center">
                         <div class="corDiv">
                          <img class="imagemEquipe" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
-                         <p class=" text-3xl mt-5 ml-4 text-[#877E7E]">camelinho</p>
+                         <p class=" text-3xl mt-5 ml-4 text-[#877E7E]">{{ equipe.nome }}</p>
                         </div>
                         <div>
                             <img class="imgIcon" src="../src/imagem-vetores/adicionarPessoa.svg" alt="">
                         </div>
                     </div>
                     <div class="textArea">
-                        <p></p>
+                        <p>{{ equipe.descricao }}</p>
                     </div>
              </div>
              <div class="maisEquipes">
-
+                <img class="flex w-[8vw] h-[16vh]" src="../src/imagem-vetores/adicionarPessoa.svg" alt="">
              </div>  
+             
          </div>
      </div>
     </div>
  </template>
  
  <script setup>
-   import navBar from "../components/navBar.vue"
+  import navBar from "../components/navBar.vue"
+  import VueCookies from "vue-cookies";
+  import { ref, } from 'vue';
+  import { conexaoBD } from "../stores/conexaoBD.js";
+
+  let equipesUsuario = ref([]);
+  const banco = conexaoBD();
+  const usuarioLogado = VueCookies.get('usuarioCookie')
+  let usuarios = banco.procurar("/usuario");
+
+  listaUsuarios();
+
+  async function listaUsuarios(){
+        let listaUsuarios = await usuarios;
+        listaUsuarios.forEach((usuario)=>{
+           if(usuarioLogado.nome === usuario.nome ){ 
+            equipesUsuario.value = usuario.equipes;
+           }
+        })
+        
+    }
  </script>
  
  <style scoped>
@@ -53,15 +74,17 @@
  }
 
  .maisEquipes{
- @apply flex flex-col ml-16 mr-20 w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400;
+ @apply flex flex-col ml-16 mr-16 w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400 justify-center items-center;
  }
  
  .listaEquipes{
-    @apply flex justify-start p-16 w-[88vw] h-[73vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
+    @apply flex flex-wrap justify-start p-16 w-[88vw] h-[73vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
+    flex: 1 1 px;
+
  }
  
  .criarEquipe{
-     @apply flex flex-col ml-16 mr-20 w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400;
+     @apply flex flex-col ml-16 mr-16 w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400;
  }
  
  .imagemEquipe{

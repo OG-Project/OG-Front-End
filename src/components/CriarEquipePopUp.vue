@@ -91,54 +91,55 @@
         listaUsuarios();
     }
     
-    function cadastrarEquipe() { 
-    const cria = criaEquipeStore();
+    async function cadastrarEquipe() { 
+        const cria = criaEquipeStore();
                 
-    if (!nome.value.trim()) {
-        console.log("O nome da equipe é obrigatório.");
-        return;
-    }
-
-    mensagemError.value = "";
-
-    cria.criaEquipe(
-            nome.value,
-            descricao.value,
-            membrosEquipe.value
-        
-    )
-
-    const equipeCriada={
-        nome : nome.value,
-        descricao : descricao.value,
-        membros: membrosEquipe.value
-
-    };
-
-    banco.cadastrar(equipeCriada, '/equipe');
-
-    membrosEquipe.value.forEach(membro =>{
-        if(!membro.equipes) {
-            membro.equipes = [];
-        }
-
-        const equipeUsuario={
-                nome: equipeCriada.nome,
-                descricao: equipeCriada.descricao
-        }
-
-        membro.equipes.push(equipeUsuario)
-
-        banco.atualizar(membro, '/usuario');
-    });
-
-    console.log('Equipe cadastrada:', cria);
-
-    nome.value = '';
-    descricao.value = '';
-    membrosEquipe.value = '';
-
-
+                if (!nome.value.trim()) {
+                    console.log("O nome da equipe é obrigatório.");
+                    return;
+                }
+            
+                mensagemError.value = "";
+            
+                // Criar a equipe
+                cria.criaEquipe(
+                    nome.value,
+                    descricao.value,
+                    membrosEquipe.value
+                );
+            
+                // Cadastrar a equipe no banco de dados
+                const equipeCriada = await banco.cadastrar({
+                    nome: nome.value,
+                    descricao: descricao.value,
+                    membros: membrosEquipe.value
+                }, '/equipe');
+            
+                // Atualizar cada membro da equipe com a nova equipe
+                membrosEquipe.value.forEach(async membro => {
+                    // Adicionar a nova equipe à lista de equipes do membro
+                    if (!membro.equipes) {
+                        membro.equipes = [];
+                    }
+                    membro.equipes.push({
+                        id: equipeCriada.id,
+                        equipe:{
+                            nome: equipeCriada.nome.value,
+                            descricao: equipeCriada.descricao.value
+                        },
+                        permissao: null // Aqui você pode definir a permissão conforme necessário
+                    });
+            
+                    // Atualizar o usuário no banco de dados com a lista atualizada de equipes
+                    await banco.atualizar(membro, `/usuario/${membro.id}`);
+                });
+            
+                console.log('Equipe cadastrada:', equipeCriada);
+            
+                // Limpar os campos após o cadastro da equipe
+                nome.value = '';
+                descricao.value = '';
+                membrosEquipe.value = [];
     };
 
 
