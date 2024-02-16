@@ -9,19 +9,27 @@
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Alterar Idioma</span>
-                        <selectPadrao />
+                        <span class="text-xl">Permitir que visualizem suas tarefas</span>
+                        <CheckBox tipo="toggle" el-id="checkDigitarVoz" @envia-valor="visu($event)"></CheckBox>                           
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Digitar com a voz</span>
-                        <CheckBox tipo="toggle" el-id="checkDigitarVoz" @envia-valor="digitarVoz($event)"></CheckBox>                           
-                    </div>
-                    <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Libras</span>
+                        <span class="text-xl">Permitir que visualizem seu email</span>
                         <CheckBox tipo="toggle" el-id="checkLibras" @envia-valor="libras($event)"></CheckBox>
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Teclado Virtual</span>
+                        <span class="text-xl">Permitir que visualizem a aparencia do seu site</span>
+                        <CheckBox tipo="toggle" el-id="checkTecladoVirtual" @envia-valor="tecladoVirtual($event)"></CheckBox>                                        
+                    </div>
+                    <div class="flex justify-between items-center gap-5">
+                        <span class="text-xl">Permitir que salvem suas tarefas ou projetos</span>
+                        <CheckBox tipo="toggle" el-id="checkDigitarVoz" @envia-valor="digitarVoz($event)"></CheckBox>                           
+                    </div>
+                    <div class="flex justify-between items-center gap-5">
+                        <span class="text-xl">Permitir que visualizem seus grupos</span>
+                        <CheckBox tipo="toggle" el-id="checkLibras" @envia-valor="libras($event)"></CheckBox>
+                    </div>
+                    <div class="flex justify-between items-center gap-5">
+                        <span class="text-xl">Permitir que outros usuarios conseguiam ver saus tarefas atrasadas</span>
                         <CheckBox tipo="toggle" el-id="checkTecladoVirtual" @envia-valor="tecladoVirtual($event)"></CheckBox>                                        
                     </div>
                 </div>
@@ -33,16 +41,9 @@
 
 <script setup>
 import CheckBox from '../components/checkBox.vue'
-import selectPadrao from './selectPadrao.vue';
-function digitarVoz(a){
-    console.log(a.valor+" digitar")
-}
-function libras(a){
-    console.log(a.valor+" libras")
-}
-function tecladoVirtual(a){
-    console.log(a.valor+" teclado")
-}
+
+
+
 </script>
 
 <style scoped>

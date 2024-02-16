@@ -53,21 +53,31 @@
                                 
                         </div>
                 </div>
-
-                <div class="flex justify-end mr-[15%] mt-80">
-                        <Botao v-if="!editar" :funcaoClick="alterarEmail" preset="PadraoRoxo" texto="Editar E-mail" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
-                        <Botao v-else :funcaoClick="alterarEmail" preset="PadraoRoxo" texto="Confirmar Edição" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
+                <!-- conferir se de fato vamos usar isso de alteração -->
+                <div class="flex justify-end mr-[15%] mt-[23%]">
+                        <Botao v-if="!editar" 
+                        :funcaoClick="alterarEmail" 
+                        preset="PadraoRoxo" 
+                        texto="Editar E-mail" 
+                        tamanhoDaBorda="2px" 
+                        tamanhoDaFonte="2.0vh" />
+                        <Botao v-else 
+                        :funcaoClick="alterarEmail" 
+                        preset="PadraoRoxo" 
+                        texto="Confirmar Edição" 
+                        tamanhoDaBorda="2px" 
+                        tamanhoDaFonte="2.0vh" />
                 </div>
-            </div>
+        </div>
 </template>
 
 <script setup>
 import Input from '../components/Input.vue'
 import Botao from '../components/Botao.vue'
-import VueCookies from "vue-cookies";
+// import VueCookies from "vue-cookies";
 import {perfilStore} from '../stores/perfilStore'
 import { ref, onMounted } from 'vue';
-let usuario= VueCookies.get("usuarioCookie")
+// let usuario= VueCookies.get("usuarioCookie")
 const PerfilStore=perfilStore()
 
 PerfilStore.nome
@@ -81,11 +91,12 @@ function alterarEmail(){
         console.log("altera")
 }
 onMounted(()=>{
-PerfilStore.nome=usuario.nome
-PerfilStore.sobrenome=usuario.sobrenome
-PerfilStore.email=usuario.email
-PerfilStore.username=usuario.username
-PerfilStore.dataDeNascimento=usuario.dataDeNascimento
+        // erros pelo fato do cookie
+// PerfilStore.nome=usuario.nome
+// PerfilStore.sobrenome=usuario.sobrenome
+// PerfilStore.email=usuario.email
+// PerfilStore.username=usuario.username
+// PerfilStore.dataDeNascimento=usuario.dataDeNascimento
 
 })
 </script>

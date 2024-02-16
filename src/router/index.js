@@ -28,6 +28,16 @@ const router = createRouter({
           path:'acessibilidade',
           name:'Acessibilidade',
           component: ()=>import('../components/componentAcessibilidade.vue')
+        },
+        {
+          path:'seguranca',
+          name:'Seguranca',
+          component: ()=>import('../components/componentSeguranca.vue')
+        },
+        {
+          path:'privacidade',
+          name:'Privacidade',
+          component: ()=>import('../components/componentPrivacidade.vue')
         }
       ]
     },

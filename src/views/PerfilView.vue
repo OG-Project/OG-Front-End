@@ -3,8 +3,6 @@
         <div class="flex  flex-col items-center w-[443px] h-[877px] drop-shadow-md bg-[#FEFBFF]">
             <div class="w-[329px] rounded-full h-[329px] mt-10 mb-16 bg-emerald-400" ></div>
             <div class=" flex flex-col gap-10">    
-                <router-link to="/perfil/informacoes">to</router-link>
-             
                 <Botao :funcaoClick="informacao" preset="PadraoRoxo" texto="Informações" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
                 <Botao :funcaoClick="seguranca" preset="PadraoRoxo" texto="Segurança" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
                 <Botao :funcaoClick="acessibilidade" preset="PadraoRoxo" texto="Acessibilidade" tamanhoDaBorda="2px" tamanhoDaFonte="2.0vh" />
@@ -14,6 +12,7 @@
         </div>
 
         <div>
+            <!-- <componentSegurancaVue /> -->
             <!-- <ComponentAcessibilidade /> -->
             <!-- <ComponentInformacao /> -->
             <Transition name="slide-fade" mode="out-in">
@@ -25,7 +24,9 @@
 
 <script setup>
 import Botao from '../components/Botao.vue'
+import componentSegurancaVue from '../components/componentSeguranca.vue';
 import router from '../router';
+
 function informacao(){
     
     router.push({name:'Informacoes'})
@@ -38,6 +39,14 @@ function acessibilidade(){
     router.push({name: 'Acessibilidade'})
     // router.push('/perfil/acessibilidade')
     
+
+}
+function seguranca(){
+    router.push({name: 'Seguranca'})
+
+}
+function privacidade(){
+    router.push({name: 'Privacidade'})
 
 }
 </script>
