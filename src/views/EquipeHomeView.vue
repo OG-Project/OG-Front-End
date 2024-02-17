@@ -7,26 +7,25 @@
               Equipes
          </h1>
      </div>
-     <div class="flex justify-center">
-          <div class="listaEquipes">
-             <div class="criarEquipe"  v-for="equipe in equipesUsuario">
-                    <div class="flex justify-center">
+     <div class="flex justify-center ">
+          <div class="listaEquipes overflow-auto">
+             <div class="criarEquipe "  v-for="equipe in equipesUsuario">
+                <div class="flex justify-center">
                         <div class="corDiv">
                          <img class="imagemEquipe" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
-                         <p class=" text-3xl mt-5 ml-4 text-[#877E7E]">{{ equipe.nome }}</p>
+                         <p class=" text-2xl mt-5 ml-4 text-[#877E7E]">{{ equipe.equipe.nome }}</p>
                         </div>
                         <div>
-                            <img class="imgIcon" src="../src/imagem-vetores/adicionarPessoa.svg" alt="">
+                            <img class="imgIcon" src="../imagem-vetores/engrenagem.svg" alt="">
                         </div>
                     </div>
                     <div class="textArea">
-                        <p>{{ equipe.descricao }}</p>
+                        <p>{{ equipe.equipe.descricao }}</p>
                     </div>
-             </div>
-             <div class="maisEquipes">
-                <img class="flex w-[8vw] h-[16vh]" src="../src/imagem-vetores/adicionarPessoa.svg" alt="">
-             </div>  
-             
+                </div>
+                <div class="maisEquipes">
+                    <img class="flex w-[8vw] h-[6vh]" src="../imagem-vetores/maisIcon.svg" alt="">
+                </div>  
          </div>
      </div>
     </div>
@@ -74,17 +73,21 @@
  }
 
  .maisEquipes{
- @apply flex flex-col ml-16 mr-16 w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400 justify-center items-center;
+ @apply flex flex-col ml-[5vw] mr-16 mt-[5vh] w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400 justify-center items-center;
  }
  
  .listaEquipes{
-    @apply flex flex-wrap justify-start p-16 w-[88vw] h-[73vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
+    @apply  flex flex-wrap justify-start w-[88vw] h-[73vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
     flex: 1 1 px;
+   
+ }
 
+ ::-webkit-scrollbar{
+    @apply hidden;
  }
  
  .criarEquipe{
-     @apply flex flex-col ml-16 mr-16 w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400;
+     @apply flex flex-col ml-[5vw] mr-16 mt-[5vh] w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400;
  }
  
  .imagemEquipe{
@@ -92,7 +95,7 @@
  }
  
  .imgIcon{
-     @apply flex ml-2 mt-2 h-[4vh] w-[2vw];
+     @apply flex ml-2 mt-2 h-[4vh] w-[2vw] ;
  }
  </style>
  

@@ -6,7 +6,7 @@
                             <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                     </div>
                     <div class=" grid-template  flex w-full mt-[1vh] p-5">
-                            <img class="imagem" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
+                            <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
                         <Input class="computedClasses" styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
                     </div>
                         <div class=" grid-template  flex w-full">
@@ -32,7 +32,7 @@
     </template>
 
     <script setup>
-    import { ref } from 'vue';
+    import { onMounted, ref,watch } from 'vue';
     import fundoPopUp from './fundoPopUp.vue';
     import Input from './Input.vue';
     import textAreaPadrao from './textAreaPadrao.vue';
@@ -40,8 +40,8 @@
     import ListaConvidados from './ListaConvidados.vue';
     import { conexaoBD } from "../stores/conexaoBD.js";
     import { criaEquipeStore } from "../stores/criarEquipe";
-    import {  computed } from 'vue';
-    import { VueCookies } from 'vue-cookies';
+    import { EquipeUsuario } from '../models/EquipeUsuario';
+    
 
     const banco = conexaoBD();
     let nome = ref('');
@@ -51,6 +51,10 @@
     let membrosEquipe = ref([]);
     let usuarios = banco.procurar("/usuario");
 
+    let equipes = banco.procurar("/equipe")
+
+    
+    
     function larguraInput(){
     const screenWidth = window.innerWidth;
     if (screenWidth <= 768) {
@@ -91,56 +95,55 @@
         listaUsuarios();
     }
     
-    async function cadastrarEquipe() { 
+     async function cadastrarEquipe() { 
         const cria = criaEquipeStore();
+        
                 
                 if (!nome.value.trim()) {
-                    console.log("O nome da equipe é obrigatório.");
-                    return;
+                    console.log("É obrigatorio o nome da equipe");
+                    return ;
+                    
                 }
             
                 mensagemError.value = "";
             
-                // Criar a equipe
-                cria.criaEquipe(
+                 cria.criaEquipe(
                     nome.value,
-                    descricao.value,
-                    membrosEquipe.value
+                    descricao.value
                 );
-            
-                // Cadastrar a equipe no banco de dados
-                const equipeCriada = await banco.cadastrar({
+                adicionandoEquipeUsuario()
+                
+    };
+    
+    async function adicionandoEquipeUsuario(){
+        const equipeUsuario = EquipeUsuario
+        let equipes = banco.procurar("/equipe")
+        
+                equipeUsuario.equipe = {
                     nome: nome.value,
                     descricao: descricao.value,
-                    membros: membrosEquipe.value
-                }, '/equipe');
-            
-                // Atualizar cada membro da equipe com a nova equipe
-                membrosEquipe.value.forEach(async membro => {
-                    // Adicionar a nova equipe à lista de equipes do membro
-                    if (!membro.equipes) {
-                        membro.equipes = [];
+                }
+                
+                let listaEquipes = await equipes;
+                listaEquipes.forEach((equipe) =>{
+                    if(equipeUsuario.equipe.nome == equipe.nome){ 
+                        equipeUsuario.equipe.id = equipe.id
                     }
-                    membro.equipes.push({
-                        id: equipeCriada.id,
-                        equipe:{
-                            nome: equipeCriada.nome.value,
-                            descricao: equipeCriada.descricao.value
-                        },
-                        permissao: null // Aqui você pode definir a permissão conforme necessário
-                    });
-            
-                    // Atualizar o usuário no banco de dados com a lista atualizada de equipes
-                    await banco.atualizar(membro, `/usuario/${membro.id}`);
+                })
+                
+                if (equipeUsuario.equipe.id) {
+                    membrosEquipe.value.forEach(async membro => {
+                    membro.equipes.push(equipeUsuario);
+                    banco.atualizar(membro, "/usuario");
                 });
-            
-                console.log('Equipe cadastrada:', equipeCriada);
-            
-                // Limpar os campos após o cadastro da equipe
+            }
+
                 nome.value = '';
                 descricao.value = '';
                 membrosEquipe.value = [];
-    };
+    }
+    // atualizar, da um push na lista de equipes ja presente no front end após criar a equipe no back end.
+    //  
 
 
     </script>
