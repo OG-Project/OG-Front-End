@@ -131,15 +131,15 @@ import {Equipe} from '../models/Equipe'
     function verificaWidth(){
         if(props.largura==undefined ){
             if(props.icon==undefined){
-                return widthResponsivo()
+                return (widthResponsivo()*0.80)
             }
-            return (widthResponsivo()*0.80)
+            return widthResponsivo();
         }else{
             if(props.icon==undefined){
-                return props.largura;
+                return (props.largura*0.80);
             }
             console.log("ta vindo")
-            return (props.largura*0.80)
+            return (props.largura)
         }
         
     }

@@ -1,39 +1,81 @@
 <template>
     <div class="gridTotal">
-        <div class=" flex flex-col  gap-6 pl-[5%] mt-[3%]">
+        <div class=" flex flex-col  gap-6 pl-[5%] mt-[3%] overflow-hidden">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto" largura="40"
+                <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto" largura="30"
                     altura="8" fontSize="2.5rem" v-model="nomeProjeto"></Input>
             </div>
             <div class="h-[18%] w-max flex items-center ">
                 <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="10vh" preset="transparente"
                     tamanhoDaFonte="1.5rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
-            <div class="grid grid-cols-2">
+            <div >
                 <div class=" w-full h-[90%] flex flex-col gap-16">
-
                     <div class="h-[5%] flex items-start justify-start mt-2">
-                        <Input styleInput="input-transparente-claro-pequeno" largura="19" v-model="dataInicioProjeto"
+                        <Input styleInput="input-transparente-claro-pequeno" largura="13" v-model="dataInicioProjeto"
                             tipo="date" conteudoInput="Data Inicio" altura="2"></Input>
                     </div>
                     <div>
-                        <div class="w-full grid grid-cols-2">
-                            <selectPadrao altura="4" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
+                        <div class="w-[50%] grid grid-cols-2">
+                            
+                                <selectPadrao altura="4" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
                                 v-model="equipesRelacionadasProjeto" fonte-tamanho="1rem"></selectPadrao>
-                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno">
-                            </Botao>
+                            
+                            
+                           
+                                <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno">
+                                 </Botao>
+                            
                         </div>
                     </div>
-                    <div class="h-[5%] flex  items-start justify-start gap-3">
+                    <div class="flex flex-row  items-start justify-start gap-3 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             place-holder-pesquisa="Responsáveis pelo projeto"
-                            @item-selecionado="pegaValorSelecionadoPesquisa"></inputDePesquisa>
-                        <div v-if="responsaveisProjeto!= ''">
-                            <div v-for="responsavel of responsaveisProjeto " class="w-full bg-brancoNeve h-full rounded-sm border-transparent shadow-md  ">
-                                <div>
-                                        {{ responsavel }}
-                                    <!-- 17.65% -->
+                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13vw" ></inputDePesquisa>
+                        <div v-if="responsaveisProjeto != '' && responsaveisProjeto.length <= 2 && !variavelModalMaisUsuarios">
+                            <div
+                                class=" bg-brancoNeve p-3 rounded-sm border-transparent shadow-md flex flex-row items-center gap-2 max-h-max  w-max ">
+                                <div v-for="responsavel of responsaveisProjeto " class="w-full h-full">
+                                    <div
+                                        class="bg-roxo-claro rounded-md p-1  max-h-max  w-max flex flex-row items-center gap-1">
+                                        <img src="../imagem-vetores/userTodoPreto.svg">
+                                        <p>{{ responsavel }}</p>
+                                        <img src="../imagem-vetores/X-preto.svg">
+                                    </div>
                                 </div>
+
+                            </div>
+                        </div>
+                        <div v-if="responsaveisProjeto.length > 2" class="z-50">
+                            <div
+                                class=" bg-brancoNeve p-3 rounded-sm border-transparent shadow-md flex flex-row items-center gap-2 max-h-max  w-max z-50">
+                                <div v-for="responsavel of listaParaRenderizarDoisUsuarios " 
+                                    v-if="!variavelModalMaisUsuarios">
+                                    <div
+                                        class="bg-roxo-claro rounded-md p-1  max-h-max  w-max flex flex-row items-center gap-1">
+                                        <img src="../imagem-vetores/userTodoPreto.svg">
+                                        <p>{{ responsavel }}</p>
+                                        <img src="../imagem-vetores/X-preto.svg">
+                                    </div>
+                                    
+                                </div>
+                                <div class="w-full h-full -rotate-90" @click="trocaVariavelModalMaisUsuarios" v-if="!variavelModalMaisUsuarios">
+                                         <img src="../imagem-vetores/setaParaMaisUsuarios.svg">
+                                </div>
+                                <div v-for="responsavel of responsaveisProjeto " class="w-full h-full"
+                                    v-if="variavelModalMaisUsuarios">
+                                    <div
+                                        class="bg-roxo-claro rounded-md p-1  max-h-max  w-max flex flex-row items-center gap-1">
+                                        <img src="../imagem-vetores/userTodoPreto.svg">
+                                        <p>{{ responsavel }}</p>
+                                        <img src="../imagem-vetores/X-preto.svg">
+                                    </div>
+                                    
+                                </div>
+                                <div class="w-full h-full rotate-90" @click="trocaVariavelModalMaisUsuarios" v-if="variavelModalMaisUsuarios">
+                                        <img src="../imagem-vetores/setaParaMaisUsuarios.svg">
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -46,7 +88,7 @@
             </div>
 
         </div>
-        <div class=" w-[83%] h-full flex-row  ">
+        <div class=" w-[83%] h-full flex-row z-40 ">
             <div
                 class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
                 <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
@@ -232,7 +274,6 @@ let tipoPropriedade = ref("");
 let dataInicioProjeto = ref("");
 let equipesEscolhidaRelacionadaProjeto = ref("");
 let descricaoProjeto = ref("");
-let responsaveisProjeto = ref([]);
 let listaDeUsuariosParaBusca = ref([]);
 var listaPropriedades = ref([]);
 let buscarPor = ref("");
@@ -244,6 +285,11 @@ let equipesRelacionadasProjeto = ref([]);
 let AuxParaCriarPropriedades = [];
 let itemSelecionadoPesquisa = ref("")
 let listaAuxResponsaveisProjeto = []
+let responsaveisProjeto = ref([]);
+let listaParaRenderizarDoisUsuarios = ref([])
+let auxListaParaRenderizarDoisUsuarios = [];
+let cont = 0;
+let variavelModalMaisUsuarios = ref(Boolean);
 onMounted(() => {
     defineSelect()
     buscandoPor();
@@ -253,11 +299,15 @@ onMounted(() => {
     buscaPropriedadeCookies();
     buscaProjetoCookies();
     funcaoPopUp.variavelModal = false;
-
+    variavelModalMaisUsuarios.value=false;
 })
 
 onUpdated(() => {
     criarProjetoCookies();
+})
+
+watch(listaAuxResponsaveisProjeto, (novovalor, valorAntigo) => {
+    pegaValorSelecionadoPesquisa();
 })
 async function defineSelect() {
     let listaAux = (await conexao.procurar('/equipe'))
@@ -317,17 +367,24 @@ function criarProjetoCookies() {
     buscaProjetoCookies();
 }
 
-async function pegaValorSelecionadoPesquisa(n) {
-    console.log(n)
+async function pegaValorSelecionadoPesquisa(valorPesquisa) {
     let listaAux = (await conexao.procurar('/usuario'))
+    console.log()
     listaAux.forEach(usuarioAtual => {
-        if (n == usuarioAtual.nome) {
-            listaAuxResponsaveisProjeto.push(usuarioAtual.nome) 
+        if (valorPesquisa == usuarioAtual.nome && !responsaveisProjeto.value.includes(valorPesquisa)) {
+            listaAuxResponsaveisProjeto.push(usuarioAtual.nome)
             console.log(responsaveisProjeto)
-            responsaveisProjeto = listaAuxResponsaveisProjeto
+            responsaveisProjeto.value = null;
+            responsaveisProjeto.value = listaAuxResponsaveisProjeto;
+            cont++;
+            if (cont == 1 || cont == 2) {
+                auxListaParaRenderizarDoisUsuarios.push(usuarioAtual.nome)
+                listaParaRenderizarDoisUsuarios.value = null;
+                listaParaRenderizarDoisUsuarios.value = auxListaParaRenderizarDoisUsuarios;
+            }
         }
     });
-    
+
 }
 
 function criaProjeto() {
@@ -337,6 +394,12 @@ function criaProjeto() {
     criaPropriedade();
 }
 
+function trocaVariavelModalMaisUsuarios() {
+    let auxBoolean = variavelModalMaisUsuarios.value
+    variavelModalMaisUsuarios.value=null;
+    variavelModalMaisUsuarios.value = !auxBoolean ;
+    console.log(variavelModalMaisUsuarios.value)
+}
 
 async function buscandoPor() {
     var listaAux = []
@@ -365,7 +428,7 @@ function criaPropriedadeCookies() {
     propriedadeCriada.nome = nomePropriedade.value
     propriedadeCriada.tipo = tipoPropriedade.value
     AuxParaCriarPropriedades.push({ ...propriedadeCriada })
-    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 86400000000)
+    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 864000000)
     listaPropriedades.value = AuxParaCriarPropriedades
 
     funcaoPopUp.fechaPopUp();
@@ -434,5 +497,4 @@ function criaPropriedade() {
         opacity: 1;
         transform: translateY(0);
     }
-}
-</style>
+}</style>
