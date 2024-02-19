@@ -41,6 +41,11 @@ const router = createRouter({
         }
       ]
     },
+    // {
+    //   path:'/perfil/:user',
+    //   name:'PerfilUsuario',
+
+    // }
   ]
 })
 

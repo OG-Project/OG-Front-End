@@ -74,10 +74,11 @@
 <script setup>
 import Input from '../components/Input.vue'
 import Botao from '../components/Botao.vue'
-// import VueCookies from "vue-cookies";
+import VueCookies from "vue-cookies";
 import {perfilStore} from '../stores/perfilStore'
 import { ref, onMounted } from 'vue';
-// let usuario= VueCookies.get("usuarioCookie")
+import { Usuario } from '../models/usuario';
+
 const PerfilStore=perfilStore()
 
 PerfilStore.nome
@@ -91,12 +92,21 @@ function alterarEmail(){
         console.log("altera")
 }
 onMounted(()=>{
+        let user=Usuario
+        user.dataNascimento="12/12/2012"
+        user.email="teste@gmail"
+        user.nome="teste"
+        user.sobrenome="testedando"
+        user.senha="123"
+        user.username="LoucoDaXJ6"
+        VueCookies.set("usuarioCookie",JSON.stringify(user))
+        let usuario= VueCookies.get("usuarioCookie")
         // erros pelo fato do cookie
-// PerfilStore.nome=usuario.nome
-// PerfilStore.sobrenome=usuario.sobrenome
-// PerfilStore.email=usuario.email
-// PerfilStore.username=usuario.username
-// PerfilStore.dataDeNascimento=usuario.dataDeNascimento
+PerfilStore.nome=usuario.nome
+PerfilStore.sobrenome=usuario.sobrenome
+PerfilStore.email=usuario.email
+PerfilStore.username=usuario.username
+PerfilStore.dataDeNascimento=usuario.dataNascimento
 
 })
 </script>

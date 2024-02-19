@@ -9,7 +9,7 @@
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Alterar Idioma</span>
+                        <span class="text-xl ">Alterar Idioma</span>
                         <selectPadrao />
                     </div>
                     <div class="flex justify-between items-center gap-5">
