@@ -10,10 +10,13 @@
                     </div>
                 </div>
             </div>
-     </div>
+
+        </div>
+    </div>
+
 </template>
 <script setup>
-import {funcaoPopUpStore} from '../stores/funcaoPopUp'
+import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 const funcaoPopUp = funcaoPopUpStore();
 
 
@@ -37,7 +40,6 @@ const funcaoPopUp = funcaoPopUpStore();
 </script>
 <style >
 @import url(../assets/main.css);
-
 @layer components{
     .style-bg-roxo{
        @apply  bg-roxoEscuro backdrop-blur-xl flex-col-reverse  absolute ;
@@ -48,11 +50,13 @@ const funcaoPopUp = funcaoPopUpStore();
        animation-iteration-count: initial;
        overflow: hidden; 
     }
+
     @keyframes aparecePopUp {
-        from{
+        from {
             bottom: 10%;
         }
-        to{
+
+        to {
             bottom: 15%
         }
     }
@@ -62,11 +66,11 @@ const funcaoPopUp = funcaoPopUpStore();
     }
     .botao-sair{
         @apply w-[5%] h-[5%] top-3 right-4 absolute 
+
     }
+
     .blur-background {
         @apply fixed z-0 top-0 inset-0 w-screen h-screen bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg ;
-        
-       
     }
 
     @media(min-width: 2560px){
@@ -77,3 +81,4 @@ const funcaoPopUp = funcaoPopUpStore();
 
 }   
 </style>
+

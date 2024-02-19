@@ -10,14 +10,14 @@ const props = defineProps({
   x: {
     type: [],
     default: [
-    'Segunda-Feira',
-    'Terça-Feira',
-    'Quarta-Feira',
-    'Quinta-Feira',
-    'Sexta-Feira',
-    'Sábado',
-    'Domingo'
-  ]
+      'Segunda-Feira',
+      'Terça-Feira',
+      'Quarta-Feira',
+      'Quinta-Feira',
+      'Sexta-Feira',
+      'Sábado',
+      'Domingo'
+    ]
   },
   listaDeObjetos: {
     type: [],
@@ -28,14 +28,14 @@ const props = defineProps({
       data: [8, 0, 0, 0, 0, 0, 0],
     },
     {
-    label: 'Tarefa 2',
+      label: 'Tarefa 2',
       backgroundColor: 'rgb(99, 255, 132)',
       borderColor: 'rgb(99, 255, 132)',
-      data: [8, 3, 4, 0,5, 7, 1],
+      data: [8, 3, 4, 0, 5, 7, 1],
     }
-  ]
+    ]
   },
-  eixo:{
+  eixo: {
     type: String,
     default: 'x'
   }
@@ -43,27 +43,27 @@ const props = defineProps({
 
 const labels = props.x;
 
-  const data = {
-    labels: labels,
-    datasets: props.listaDeObjetos
-  };
+const data = {
+  labels: labels,
+  datasets: props.listaDeObjetos
+};
 
-  const config = {
-    type: props.tipo,
-    data: data,
-    options: {indexAxis: props.eixo}
-  };
+const config = {
+  type: props.tipo,
+  data: data,
+  options: { indexAxis: props.eixo }
+};
 
-  onMounted(() => {
-    const novaTabela = new Chart(
-      document.getElementById('tabela'),
-      config
-    );
-  });
+onMounted(() => {
+  const novaTabela = new Chart(
+    document.getElementById('tabela'),
+    config
+  );
+});
 
 </script>
 <template>
-    <div>
-        <canvas id="tabela"></canvas>
-    </div>
+  <div>
+    <canvas id="tabela"></canvas>
+  </div>
 </template>
