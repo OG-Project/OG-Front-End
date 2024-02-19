@@ -102,7 +102,7 @@ if (props.modoEscuro === "nao") {
   };
 
   espacoRespostasPesquisa.value = {
-    width: props.largura,
+    width: props.largura+"vw",
     backgroundColor: "#FEFBFF",
   };
 
@@ -124,7 +124,7 @@ if (props.modoEscuro === "nao") {
     color: "#FEFBFF",
   };
   espacoRespostasPesquisa.value = {
-    width: props.largura,
+    width: props.largura+"vw",
     backgroundColor: "#620BA7",
   };
   //   corLinha.value = {

@@ -1,6 +1,6 @@
 <template>
     <div class="gridTotal">
-        <div class=" flex flex-col  gap-6 pl-[5%] mt-[3%] overflow-hidden">
+        <div class=" flex flex-col  gap-5 pl-[5%] mt-[3%] overflow-hidden">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto" largura="30"
                     altura="8" fontSize="2.5rem" v-model="nomeProjeto"></Input>
@@ -9,8 +9,8 @@
                 <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="10vh" preset="transparente"
                     tamanhoDaFonte="1.5rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
-            <div >
-                <div class=" w-full h-[90%] flex flex-col gap-16">
+            <div class="flex-auto h-[60%] w-full">
+                <div class=" w-full h-[70%] flex flex-col gap-16">
                     <div class="h-[5%] flex items-start justify-start mt-2">
                         <Input styleInput="input-transparente-claro-pequeno" largura="13" v-model="dataInicioProjeto"
                             tipo="date" conteudoInput="Data Inicio" altura="2"></Input>
@@ -31,7 +31,7 @@
                     <div class="flex flex-row  items-start justify-start gap-3 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             place-holder-pesquisa="Responsáveis pelo projeto"
-                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13vw" ></inputDePesquisa>
+                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" ></inputDePesquisa>
                         <div v-if="responsaveisProjeto != '' && responsaveisProjeto.length <= 2 && !variavelModalMaisUsuarios">
                             <div
                                 class=" bg-brancoNeve p-3 rounded-sm border-transparent shadow-md flex flex-row items-center gap-2 max-h-max  w-max ">
@@ -83,7 +83,7 @@
             </div>
 
             <div class=" w-[50vw]">
-                <ListaConvidados altura="20vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
+                <ListaConvidados altura="30vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
                     :listaConvidados=listaDeUsuariosParaBusca texto="Equipes Vinculadas"></ListaConvidados>
             </div>
 
