@@ -158,21 +158,21 @@
                   v-model="nomeSubtarefa"
                 ></Input>
               </div>
-             <selectPadrao
-                  placeholderSelect="Tipo"
-                  :lista-select="['Em Progresso','Concluido']"
-                  largura="5"
-                  altura="3.8"
-                  fonteTamanho="1rem"
-                  v-model="statusSubtarefa"
-                />
+              <selectPadrao
+                placeholderSelect="Status"
+                :lista-select="['Em Progresso', 'Concluido']"
+                largura="5"
+                altura="3.8"
+                fonteTamanho="1rem"
+                v-model="statusSubtarefa"
+              />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
                 <Botao
                   preset="Sair"
                   tamanhoPadrao="pequeno"
-                  :funcaoClick="abreFechaCriaStatus"
+                  :funcaoClick="abreFechaCriaSubTarefas"
                 ></Botao>
               </div>
               <div class="pr-2 pt-2 pb-2">
@@ -186,7 +186,7 @@
           </div>
         </div>
       </div>
-      
+
       <p class="pl-12 mt-4">Arquivos({{ numeroDeArquivos }})...</p>
       <div
         id="exploradorDeArquivos"
@@ -214,14 +214,10 @@
           </div>
           <p class="pl-4">Tarefas Concluidas {{ porcentagemDeTarefasConcluidas }}%</p>
         </div>
-        <select id="filtroDeSubTarefa">
-          <option>Em Progresso</option>
-          <option>Concluído</option>
-        </select>
       </div>
       <!-- Sub Tarefa -->
       <div
-        class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-4 overflow-auto"
+        class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-2 overflow-auto"
         id="subtarefaOverflow"
       >
         <div v-for="(subtarefa, index) of subtarefas" :key="subtarefa.id">
@@ -302,6 +298,7 @@
         </div>
       </div>
     </div>
+    <!-- Propriedades e Status -->
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
       <div class="w-[80%] h-[80vh] shadow-2xl border-2">
         <div class="flex justify-around h-[4%]">
@@ -333,8 +330,11 @@
               class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center"
             >
               <div class="flex gap-2 items-center w-[40%]">
-                <CheckBox></CheckBox>
-                <p>{{ propriedade.nome }}</p>
+                <CheckBox
+                  @click="adicionaExcluiPropriedadeNaTarefa(propriedade, index)"
+                  :ativoProps="propriedade.estaNaTarefa"
+                ></CheckBox>
+                <p class="break-all">{{ propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
                 <p>Tipo: {{ propriedade.tipo }}</p>
@@ -369,7 +369,7 @@
           class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto"
         >
           <div
-            v-for="(stats, index) in status"
+            v-for="(statsAdd, index) in status"
             :key="index"
             class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center"
           >
@@ -377,12 +377,12 @@
               class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center"
             >
               <div class="w-[35%] flex gap-2 items-center pl-4">
-                <CheckBox></CheckBox>
-                <p>{{ stats.nome }}</p>
+                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)"></CheckBox>
+                <p class="break-all">{{ statsAdd.nome }}</p>
               </div>
-              <p class="w-[30%]">Cor: #{{ stats.cor }}</p>
+              <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
               <div class="w-[30%] flex justify-center">
-                <ColorPicker v-model="stats.cor" class="border-2 rounded-lg" />
+                <ColorPicker v-model="statsAdd.cor" class="border-2 rounded-lg" />
               </div>
             </div>
           </div>
@@ -408,7 +408,9 @@
             <p>Nome do projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="w-[100%] text-[#620BA7]">asdasd asdasd asdasdasdasd asdasd</p>
+            <p class="w-[100%] text-[#620BA7] break-all">
+              asdasd asdasddasdasdasdasdasd asdasdas asdasdasdasd asdasd
+            </p>
           </div>
         </div>
         <div class="flex pl-8">
@@ -416,7 +418,7 @@
             <p>Responsável</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="text-[#620BA7]">Kanye West</p>
+            <p class="text-[#620BA7] break-all">Kanye West</p>
           </div>
         </div>
         <div class="flex pl-8">
@@ -431,12 +433,16 @@
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
-      <div class="min-h-[4%] flex items-center justify-center">
-        <div class="flex items-center justify-center min-h-[80%] w-[100%]">
-          <p class="min-h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
-            Status aleatório
-          </p>
-        </div>
+      <div
+        v-for="status of statusDaTarefa"
+        class="min-h-[4%] flex items-center justify-center gap-4"
+      >
+        <p
+          :style="{ 'background-color': '#' + status.cor }"
+          class="flex items-center justify-center"
+        >
+          {{ status.nome }}
+        </p>
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Propriedades</h1>
@@ -456,7 +462,7 @@
           v-for="propriedade of propriedadesDaTarefa"
           class="flex flex-col justify-around py-4 w-[80%]"
         >
-          <p class="pb-4">Nome: {{ propriedade.nome }}</p>
+          <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
           <p>Valor: {{ propriedade.valor }}</p>
         </div>
       </div>
@@ -488,9 +494,7 @@ let statusSubtarefa = ref("");
 
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 function trocaStatusDaSubTarefa(subtarefa, index) {
-  console.log(subtarefa.concluida);
   subtarefas.value[index].concluida = !subtarefas.value[index].concluida;
-  console.log(subtarefa.concluida);
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
@@ -500,22 +504,22 @@ function criaStatus() {
   let statusNovo = {
     nome: nomeStatus.value,
     cor: corStatus.value,
+    estaNaTarefa: ref(false),
   };
   status.value.push(statusNovo);
   statusSendoCriado.value = false;
 }
 
-function criaSubtarefa(){
-  let booleanDaSubtarefa = ref()
-  if(statusSubtarefa.value === 'Em Progresso'){
-    booleanDaSubtarefa.value = false
-  }
-  else{
-    booleanDaSubtarefa.value = true
+function criaSubtarefa() {
+  let booleanDaSubtarefa = ref();
+  if (statusSubtarefa.value == "Em Progresso") {
+    booleanDaSubtarefa.value = false;
+  } else if (statusSubtarefa.value == "Concluido") {
+    booleanDaSubtarefa.value = true;
   }
   let subtarefaNova = {
     nome: nomeSubtarefa.value,
-    concluida: booleanDaSubtarefa.balue,
+    concluida: booleanDaSubtarefa.value,
     status: statusSubtarefa.value,
   };
   subtarefas.value.push(subtarefaNova);
@@ -531,9 +535,8 @@ function criaPropriedade() {
     nome: nomePropriedade.value,
     tipo: tipoPropriedade.value,
     valor: "",
-    sendoEditado: false,
+    estaNaTarefa: ref(),
   };
-  console.log(propriedades.value);
   propriedades.value.push(propriedade);
   propriedadeSendoCriada.value = false;
 }
@@ -562,6 +565,39 @@ function abreFechaCriaSubTarefas() {
   statusSendoCriado.value = false;
 }
 
+let statusDaTarefa = ref([]);
+
+function adicionaExcluiStatusNaTarefa(status) {
+  status.estaNaTarefa = !status.estaNaTarefa;
+  if (status.estaNaTarefa) {
+    statusDaTarefa.value.push(status);
+    console.log(statusDaTarefa.value);
+  } else {
+    statusDaTarefa.value.forEach((statusDeletar) => {
+      if (statusDeletar === status) {
+        statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(statusDeletar), 1);
+      }
+      console.log(statusDaTarefa.value);
+    });
+  }
+}
+
+function adicionaExcluiPropriedadeNaTarefa(propriedade) {
+  propriedade.estaNaTarefa = !propriedade.estaNaTarefa;
+  if (propriedade.estaNaTarefa) {
+    propriedadesDaTarefa.value.push(propriedade);
+  } else {
+    propriedadesDaTarefa.value.forEach((propriedadeDeletar) => {
+      if (propriedadeDeletar === propriedade) {
+        propriedadesDaTarefa.value.splice(
+          propriedadesDaTarefa.value.indexOf(propriedadeDeletar),
+          1
+        );
+      }
+    });
+  }
+}
+
 let usuario = {
   nome: "Kanye West",
   fotoDoAutor:
@@ -580,72 +616,13 @@ function enviaComentario(comentario) {
 
 const Comentarios = ref([]);
 
-const propriedadesDaTarefa = ref([
-  {
-    nome: "Nome da Propriedade",
-    tipo: "Tipo da Propriedade",
-    valor: ref(123),
-  },
-  {
-    nome: "Nome da Propriedade",
-    tipo: "Tipo da Propriedade",
-    valor: ref(123),
-  },
-  {
-    nome: "Nome da Propriedade",
-    tipo: "Tipo da Propriedade",
-    valor: ref(123),
-  },
-]);
+const propriedadesDaTarefa = ref([]);
 
-const subtarefas = ref([
-  {
-    nome: "Nome da Subtarefa 1",
-    concluida: ref(true),
-    status: "Em Progresso",
-  },
-  {
-    nome: "Nome da Subtarefa 2",
-    concluida: ref(true),
-    status: "Concluído",
-  },
-  {
-    nome: "Nome da Subtarefa 3",
-    concluida: ref(false),
-    status: "Em Progresso",
-  },
-  {
-    nome: "Nome da Subtarefa 4",
-    concluida: ref(false),
-    status: "Em Progresso",
-  },
-  {
-    nome: "Nome da Subtarefa 5",
-    concluida: ref(false),
-    status: "Em Progresso",
-  },
-]);
+let ativoPropriedades = ref(false);
 
-const propriedades = ref([
-  {
-    nome: "Nome da Propriedade",
-    tipo: "Tipo da Propriedade",
-    valor: ref(123),
-    sendoEditado: false,
-  },
-  {
-    nome: "Nome da Propriedade",
-    tipo: "Tipo da Propriedade",
-    valor: ref(123),
-    sendoEditado: false,
-  },
-  {
-    nome: "Nome da Propriedade",
-    tipo: "Tipo da Propriedade",
-    valor: ref(123),
-    sendoEditado: false,
-  },
-]);
+const subtarefas = ref([]);
+
+const propriedades = ref([]);
 
 let abreFechaComentarioBoolean = ref(false);
 
@@ -653,34 +630,17 @@ function abreFechaComentario() {
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
-const status = ref([
-  {
-    nome: "Nome",
-    cor: "ff0000",
-  },
-  {
-    nome: "Nome",
-    cor: "ffee00",
-  },
-  {
-    nome: "Nome",
-    cor: "00ff00",
-  },
-]);
+const status = ref([]);
 
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
   subtarefas.value.forEach((subtarefa) => {
     if (subtarefa.concluida) {
-      console.log(numeroDeSubTarefasC.value);
       numeroDeSubTarefasC.value++;
-      console.log(numeroDeSubTarefasC.value);
     }
   });
-  console.log(subtarefas.value);
   return numeroDeSubTarefasC.value;
 }
-
 
 const estaDivValorAberta = ref(false);
 let numeroDeArquivos = ref(1);
@@ -750,10 +710,11 @@ let estiloOpcaoClicadoStatus = {
 };
 
 function atualizaPorcentagemDeTarefasConcluidas() {
-  console.log((numeroDeTarefasConcluidas.value / numeroDeTarefas.value) * 100);
-  console.log(numeroDeTarefas.value);
-  console.log(numeroDeTarefasConcluidas.value);
-  return (numeroDeTarefasConcluidas.value / numeroDeTarefas.value) * 100;
+  let porcentagem = (numeroDeTarefasConcluidas.value / numeroDeTarefas.value) * 100;
+  if (numeroDeTarefas.value === 0) {
+    porcentagem = 0;
+  }
+  return porcentagem;
 }
 
 watch(() => {

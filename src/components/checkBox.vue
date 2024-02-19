@@ -4,15 +4,15 @@
       <input
         id="checkbox"
         type="checkbox"
-        :checked="props.ativoProps"
-        @click="check('checkbox')"
+        :checked="props.modelValue"
+        @click="check('checkbox'), $emit('update:modelValue', $event.target.value)"
       />
     </div>
     <div v-if="props.tipo === 'toggle'">
       <div
         :style="estiloToggle"
         id="bordaToggle"
-        @click="check('toggle')"
+        @click="check('toggle'), $emit('update:modelValue', $event.target.value)"
       >
         <svg :style="estiloSVG">
           <circle
@@ -33,7 +33,7 @@ import { ref } from "vue";
 import mojs from "@mojs/core";
 import { defineProps, onMounted } from "vue";
 
-defineEmits(["update:ativo"]);
+defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   tipo: {
@@ -44,13 +44,14 @@ const props = defineProps({
     type: String,
     default: "medio",
   },
-  ativoProps: {
-    type: Boolean
-  }
+  modelValue: {
+      type: Boolean, // Adjust type if necessary
+      default: false,
+    },
 });
 
 let posicaoBola = ref(14);
-let ativo = ref(props.ativoProps);
+let ativo = ref(props.modelValue);
 let corBolaToggle = ref("#620BA7");
 let estiloSVG = ref({
   width: "60px",
@@ -170,9 +171,11 @@ switch (props.tamanho) {
 let estiloToggle = ref(estiloBolaInicio.value);
 
 function check(tipo) {
-  if (!props.ativoProps) {
-    props.ativoProps = true;
-    console.log(props.ativoProps)
+  console.log(ativo)
+  console.log(ativo.value)
+  if (ativo.value === false) {
+    ativo.value = true;
+    console.log(ativo.value);
     if (tipo === "toggle") {
       const animation = new mojs.Html({
         el: "#toggle",
@@ -186,8 +189,8 @@ function check(tipo) {
       animation.play();
     }
   } else {
-    props.ativoProps = false;
-    console.log(props.ativoProps)
+    ativo.value = false;
+    console.log(ativo.value);
     if (tipo === "toggle") {
       const animation = new mojs.Html({
         el: "#toggle",
