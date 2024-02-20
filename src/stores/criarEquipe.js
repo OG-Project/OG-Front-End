@@ -9,12 +9,15 @@ export const criaEquipeStore = defineStore('criaEquipe',{
           }
     },
     actions:{
-        criaEquipe(nome,descricao){
-            let equipeCriada = Equipe
+        criaEquipe(equipe){
             let api = conexaoBD();
-            equipeCriada.nome=nome;
-            equipeCriada.descricao=descricao;
-            api.cadastrar(equipeCriada,"/equipe");
+            return api.cadastrar(equipe,"/equipe");
+        },
+        
+        adicionaUsuarioAEquipe(userId, equipeId) {
+            let api = conexaoBD();
+            api.adicionaUsuarioAEquipe(userId,equipeId,"/usuario/add");   
+            
         }
     }
 })

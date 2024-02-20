@@ -4,12 +4,12 @@
       <div class="divGeral">
             <div class="flex justify-center">
                 <div class="primeiraDiv justify-end">
-                    <img class="imagemEquipe" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
+                    <img class="imagemEquipe" src="../imagem-vetores/adicionarPessoa.svg" alt="">
                     <h1 class=" text-3xl 2xl:w-[20vw] xl:w-[30vw] lg:w-[40vw] md:w-[70vw]">{{ equipeSelecionada }}</h1>
                 </div>
             </div>
             <div class="flex justify-center p-5" v-for="Usuario of usuarios">
-                <img class="imgIcon" src="../src/imagem-vetores/adicionarPessoa.svg" alt="">
+                <img class="imgIcon" src="../imagem-vetores/adicionarPessoa.svg" alt="">
                 <div class="corDiv">
                     <img class="imgPerfil" src="usuarios.img" alt="">
                     <h1 class=" text-xl 2xl:w-[10vw] xl:w-[15vw] lg:w-[15vw] md:w-[15vw] "></h1>
