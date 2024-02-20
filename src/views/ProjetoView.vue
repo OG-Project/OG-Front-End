@@ -45,182 +45,187 @@
                             </div>
                         </div>
                         <div v-if="responsaveisProjeto.length > 3">
-                            
-                            <Carousel :value="responsaveisProjeto" :num-visible="3" class="w-[80%]" :num-scroll="1" >
-                                {{ console.log(responsaveisProjeto) }}
-                                <template #item="responsavel">
+                            <div class="-rotate-90">
+                                <img src="../imagem-vetores/setaParaMaisUsuarios.svg">
+                            </div>
+                            <div
+                                class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
+                                <div v-for="responsavel of responsaveisProjeto">
                                     <div
-                                        class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
-                                            <div
-                                                class="bg-roxo-claro rounded-md p-[0.15rem]    w-max flex flex-row items-center gap-1 h-[30%]">
-                                                <img src="../imagem-vetores/userTodoPreto.svg">
-                                                <p>{{ responsavel.data }}</p>
-                                                <img src="../imagem-vetores/X-preto.svg">
-                                            </div>
+                                        class="bg-roxo-claro rounded-md p-[0.15rem]    w-max flex flex-row items-center gap-1 h-[30%]">
+                                        <img src="../imagem-vetores/userTodoPreto.svg">
+                                        <p>{{ responsavel }}</p>
+                                        <img src="../imagem-vetores/X-preto.svg">
                                     </div>
-                                </template>
-                            </Carousel>
+                                </div>
+                            </div>
+                            <div class="rotate-90">
+                                <img src="../imagem-vetores/setaParaMaisUsuarios.svg">
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="">
+                <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
+                    :listaConvidados="listaDeUsuariosParaBusca" texto="Equipes Vinculadas"></ListaConvidados>
             </div>
         </div>
 
-        <div class="">
-            <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                :listaConvidados="listaDeUsuariosParaBusca" texto="Equipes Vinculadas"></ListaConvidados>
-        </div>
-
-    </div>
-    <div class=" w-[83%] h-full flex-row z-40 ">
-        <div class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
-            <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
-                <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                    <p @click="navegaPelaTabela('propriedade')" class="bg-roxo-claro p-2">Propriedades</p>
-                    <p @click="navegaPelaTabela('status')">Status</p>
-                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                        styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
-                </div>
-            </div>
-
-            <div v-if="opcaoSelecionadaNaTabela == 'status'">
-                <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                    <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
-                    <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2">Status</p>
-                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                        styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
-                </div>
-            </div>
-
-            <div class="scrollBar">
-                <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
-                        v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
-                        <p class="w-[33%]">{{ propriedade.nome }}</p>
-                        <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                        <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                            Tarefas Atribuidas
-                        </div>
-                    </div>
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
-                        v-if="listaSelecionada != []">
-                        <p class="w-[33%]">{{ propriedade.nome }}</p>
-                        <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                        <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                            Tarefas Atribuidas
-                        </div>
+        <div class=" w-[83%] h-full flex-row z-40 ">
+            <div
+                class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
+                <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
+                    <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
+                        <p @click="navegaPelaTabela('propriedade')" class="bg-roxo-claro p-2">Propriedades</p>
+                        <p @click="navegaPelaTabela('status')">Status</p>
+                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                            styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
                     </div>
                 </div>
+
                 <div v-if="opcaoSelecionadaNaTabela == 'status'">
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
-                        v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
-                        <p class="w-[33%]">{{ status.nome }}</p>
-                        <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
-                        <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                            Tarefas Atribuidas
+                    <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
+                        <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
+                        <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2">Status</p>
+                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                            styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+                    </div>
+                </div>
+
+                <div class="scrollBar">
+                    <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
+                            v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
+                            <p class="w-[33%]">{{ propriedade.nome }}</p>
+                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                Tarefas Atribuidas
+                            </div>
+                        </div>
+                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
+                            v-if="listaSelecionada != []">
+                            <p class="w-[33%]">{{ propriedade.nome }}</p>
+                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                Tarefas Atribuidas
+                            </div>
                         </div>
                     </div>
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
-                        v-if="listaSelecionada != []">
-                        <p class="w-[33%]">{{ status.nome }}</p>
-                        <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
-                        <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                            Tarefas Atribuidas
+                    <div v-if="opcaoSelecionadaNaTabela == 'status'">
+                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
+                            v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
+                            <p class="w-[33%]">{{ status.nome }}</p>
+                            <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
+                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                Tarefas Atribuidas
+                            </div>
                         </div>
+                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
+                            v-if="listaSelecionada != []">
+                            <p class="w-[33%]">{{ status.nome }}</p>
+                            <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
+                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                Tarefas Atribuidas
+                            </div>
+                        </div>
+
                     </div>
 
                 </div>
+                <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp()"
+                    v-if="funcaoPopUp.variavelModal == false">
+                    <p>Nova</p>
+                    <img src="../imagem-vetores/sinalDeMaisIcon.svg">
+                </div>
 
+                <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
+                    <!-- fiz como um popUp, tem um botão que abre o popUp -->
+                    <div class="animation">
+                        <div class="flex justify-end">
+                            <img src="../imagem-vetores/triangulo.svg">
+                        </div>
+                        <div class="flex flex-row justify-between">
+                            <div class="pl-2">
+                                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                                    v-model="nomePropriedade"></Input>
+                            </div>
+                            <div class="pr-2">
+                                <selectPadrao placeholderSelect="Tipo"
+                                    :lista-select="['Texto', 'Data', 'Numero', 'Seleção']" largura="5" altura="3.8"
+                                    fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
+                            </div>
+
+                        </div>
+                        <div class="flex felx-row justify-between">
+                            <div class="pl-2 pt-2 pb-2">
+                                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                            </div>
+                            <div class="pr-2 pt-2 pb-2">
+                                <!-- mudar a função -->
+                                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
+                                </Botao>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
-            <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp()"
-                v-if="funcaoPopUp.variavelModal == false">
-                <p>Nova</p>
-                <img src="../imagem-vetores/sinalDeMaisIcon.svg">
-            </div>
 
-            <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
-                <!-- fiz como um popUp, tem um botão que abre o popUp -->
-                <div class="animation">
-                    <div class="flex justify-end">
-                        <img src="../imagem-vetores/triangulo.svg">
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <div class="pl-2">
-                            <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                                v-model="nomePropriedade"></Input>
+        </div>
+        <div class="flex justify-end items-end ">
+            <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
+                <div class="h-[6%] pt-8 flex items-end justify-center">
+                    <h1 class="text-3xl font-semibold">Informações</h1>
+                </div>
+                <div class="pt-8 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
+                    <div class="flex pl-8">
+                        <div class="w-[50%] justify-start flex-row">
+                            <p>Nome do projeto</p>
                         </div>
-                        <div class="pr-2">
-                            <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                                largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
-                        </div>
-
-                    </div>
-                    <div class="flex felx-row justify-between">
-                        <div class="pl-2 pt-2 pb-2">
-                            <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
-                        </div>
-                        <div class="pr-2 pt-2 pb-2">
-                            <!-- mudar a função -->
-                            <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
-                            </Botao>
+                        <div class="w-[40%] justify-end flex-row">
+                            <p class="w-[100%] text-[#620BA7]">asdasd asdasd asdasdasdasd asdasd</p>
                         </div>
                     </div>
-
+                    <div class="flex pl-8">
+                        <div class="w-[50%] justify-start flex-row">
+                            <p>Data Inicial</p>
+                        </div>
+                        <div class="w-[40%] justify-end flex-row">
+                            <p class="text-[#620BA7]">13/02/2006</p>
+                        </div>
+                    </div>
+                    <div class="flex pl-8">
+                        <div class="w-[50%] justify-start flex-row">
+                            <p>Data Inicial</p>
+                        </div>
+                        <div class="w-[40%] justify-end flex-row">
+                            <p class="text-[#620BA7]">13/02/2006</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-[4%] flex items-center justify-center p-8">
+                    <h1 class="text-xl font-semibold">Status</h1>
+                </div>
+                <div class="h-[4%] flex items-center justify-center">
+                    <div class="flex items-center justify-center h-[80%] w-[100%]">
+                        <p class="h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
+                            Status aleatório
+                        </p>
+                    </div>
+                </div>
+                <div class="h-[4%] flex items-center justify-center p-8">
+                    <h1 class="text-xl font-semibold">Propriedades</h1>
+                </div>
+                <div class="h-[35%] flex flex-col items-center justify-center p-8">
+                    <img :src="NotePad" class="h-[200px] w-[200px]" />
+                    <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
                 </div>
             </div>
         </div>
 
     </div>
-    <div class="flex justify-end items-end ">
-        <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
-            <div class="h-[6%] pt-8 flex items-end justify-center">
-                <h1 class="text-3xl font-semibold">Informações</h1>
-            </div>
-            <div class="pt-8 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
-                <div class="flex pl-8">
-                    <div class="w-[50%] justify-start flex-row">
-                        <p>Nome do projeto</p>
-                    </div>
-                    <div class="w-[40%] justify-end flex-row">
-                        <p class="w-[100%] text-[#620BA7]">asdasd asdasd asdasdasdasd asdasd</p>
-                    </div>
-                </div>
-                <div class="flex pl-8">
-                    <div class="w-[50%] justify-start flex-row">
-                        <p>Data Inicial</p>
-                    </div>
-                    <div class="w-[40%] justify-end flex-row">
-                        <p class="text-[#620BA7]">13/02/2006</p>
-                    </div>
-                </div>
-                <div class="flex pl-8">
-                    <div class="w-[50%] justify-start flex-row">
-                        <p>Data Inicial</p>
-                    </div>
-                    <div class="w-[40%] justify-end flex-row">
-                        <p class="text-[#620BA7]">13/02/2006</p>
-                    </div>
-                </div>
-            </div>
-            <div class="h-[4%] flex items-center justify-center p-8">
-                <h1 class="text-xl font-semibold">Status</h1>
-            </div>
-            <div class="h-[4%] flex items-center justify-center">
-                <div class="flex items-center justify-center h-[80%] w-[100%]">
-                    <p class="h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
-                        Status aleatório
-                    </p>
-                </div>
-            </div>
-            <div class="h-[4%] flex items-center justify-center p-8">
-                <h1 class="text-xl font-semibold">Propriedades</h1>
-            </div>
-            <div class="h-[35%] flex flex-col items-center justify-center p-8">
-                <img :src="NotePad" class="h-[200px] w-[200px]" />
-                <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
-            </div>
-        </div>
-    </div>
+
 
     <div class="h-[1%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
