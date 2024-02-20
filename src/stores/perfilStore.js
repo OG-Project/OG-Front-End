@@ -9,7 +9,10 @@ export const perfilStore = defineStore('perfilStore', {
          sobrenome:'',
          email:'',
          username:'',
-         dataDeNascimento:''
+         dataDeNascimento:'',
+         isVlibras:false,
+         isVoiceMaker:false,
+         isTecladoVirtual:false
         }
     },
     actions:{
@@ -21,6 +24,9 @@ export const perfilStore = defineStore('perfilStore', {
             api.atualizar(usuarioAlterado,"/usuario")
 
             
+        },
+        acessibilidade(){
+            return {vlibras: this.isVlibras,voiceMaker:this.isVoiceMaker,tecladoVirtual: this.isTecladoVirtual}
         }
     }
 

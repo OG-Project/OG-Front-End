@@ -6,9 +6,10 @@ import { funcaoPopUpStore } from './stores/funcaoPopUp'
 
 
 import Navbar from '@/components/Navbar.vue';
+import { perfilStore } from './stores/perfilStore';
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
-import vueVlibrasSsr, {VLibras} from '@vue-a11y/vlibras'
+let perfil=perfilStore()
 
 
 
@@ -17,7 +18,14 @@ import vueVlibrasSsr, {VLibras} from '@vue-a11y/vlibras'
 <template>
   <Navbar></Navbar>
     <RouterView />
-    <VLibras src="" urlWidget="" />
+    <div v-if="perfil.acessibilidade().vlibras">
+      <!-- <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
+      </div> -->
+    </div>
 
   <CriarEquipePopUp>
     
