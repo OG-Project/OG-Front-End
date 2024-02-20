@@ -59,23 +59,18 @@
                 <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDia(dia.dia)"
                     @mouseenter="hover(dia)">
                     <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(new Date(dia.dia), 'd') }}</h1>
-                    <h1 v-else="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
-                        Date(dia.dia),
-                        'd')
+                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
+                        Date(dia.dia), 'd')
                     }}
                     </h1>
                     <div :style="dia.style">
-                        <!-- <div v-for="tarefa of tarefas">
-                            <div v-for="propriedade of tarefa.valorPropriedadeTarefas"> -->
-                                {{ console.log(dia.listaDeTarefas) }}
-                        <div v-for="tarefa of dia.listaDeTarefas.value">
-                            <div v-bind="adicionaNaLista(tarefa, dia), verificaQauntidadetarefa(dia)"
-                                class="pb-[4%] w-max" @dragend="trocaDia(propriedade, diaNovo)">
+
+                        <div v-for="tarefa of dia.listaDeTarefas">
+                            <div v-bind="adicionaNaLista(tarefa, dia), verificaQauntidadetarefa(dia)" class="pb-[4%] w-max"
+                                @dragend="trocaDia(propriedade, diaNovo)">
                                 <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                             </div>
                         </div>
-                        <!-- </div>
-                        </div> -->
                     </div>
                     <div class="w-full h-[20%] flex justify-center mt-[5%]">
                         <div v-if="dia.temTres == true" class="w-[40%] h-[15%] bg-gray-400 flex items-end"></div>
@@ -146,14 +141,13 @@ async function getCalendario() {
         }
     }
     calendario.value = [...lista, ...todosOsDiasDoMes, ...lista2]
-    calendario.value.forEach(dia => {
-        dia1.listaDeTarefas.value = null
-        let lista = verificaTarefasDoDia(dia)
+    await Promise.all(calendario.value.map(async dia => {
+        let lista = await verificaTarefasDoDia(dia)
         let dia1 = {
-            dia,
-            listaDeTarefas: ref(lista),
+            dia: dia,
+            listaDeTarefas: [],
             temTres: false,
-            style: dia.style = {
+            style: {
                 height: "45%",
                 display: "flex",
                 overflow: "hidden",
@@ -162,31 +156,29 @@ async function getCalendario() {
                 border: border
             }
         }
+        dia1.listaDeTarefas = lista
         listaDeDias.push(dia1)
-    });
-    calendario = listaDeDias;
+    }));
+    calendario.value = listaDeDias;
 
 }
 async function defineTarefas() {
     return tarefas = await (tarefasApi)
 
 }
-function verificaTarefasDoDia(dia) {
+async function verificaTarefasDoDia(dia) {
     let lista = []
     let tarefas
-    (async () => {
-       tarefas = await tarefasApi
-       tarefas.forEach(tarefa => {
-           tarefa.valorPropriedadeTarefas.forEach(propriedade => {
-               if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA") {
-                   if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
-                       lista.push(tarefa)
-                   }
-               }
-           });
-       });
-    })()
-    
+    tarefas = await tarefasApi
+    tarefas.forEach(tarefa => {
+        tarefa.valorPropriedadeTarefas.forEach(propriedade => {
+            if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA") {
+                if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
+                    lista.push(tarefa)
+                }
+            }
+        });
+    });
     return lista
 }
 
@@ -247,9 +239,9 @@ function retornaDia(dia) {
     diaNovo = dia;
 }
 function verificaQauntidadetarefa(dia) {
-    if (dia.listaDeTarefas.length >= 3) {
+    if (dia.listaDeTarefas.value.length >= 3) {
         dia.temTres = true
-    } else if (dia.listaDeTarefas.length < 3) {
+    } else if (dia.listaDeTarefas.value.length < 3) {
         dia.temTres = false
     }
 }
