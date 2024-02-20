@@ -2,3 +2,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .FonteTituloGrande {
+        @apply font-['Poppins'] text-4xl;
+    }
+
+    .FonteTituloMedio {
+        @apply font-['Poppins'] text-2xl;
+    }
+
+    .FonteTituloPequeno {
+        @apply font-['Poppins'] text-xl;
+    }
+
+    .FonteTextoGrande {
+        @apply font-['Source_Sans_3'] text-xl
+    }
+
+    .FonteTextoMedio {
+        @apply font-['Source_Sans_3'] text-lg
+    }
+
+    .FonteTextoPequeno {
+        @apply font-['Source_Sans_3'] text-md
+    }
+}

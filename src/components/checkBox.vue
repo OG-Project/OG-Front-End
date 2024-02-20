@@ -204,6 +204,33 @@ function check(tipo) {
     }
   }
 }
+function valorJaPassado(){
+  if(props.modelValue === false){
+    if (tipo === "toggle") {
+      const animation = new mojs.Html({
+        el: "#toggle",
+        x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
+        onComplete: () => {
+          estiloToggle.value = estiloBolaInicio.value;
+          corBolaToggle.value = "#620BA7";
+        },
+      });
+      animation.play();
+    }
+  }
+  else{
+    const animation = new mojs.Html({
+        el: "#toggle",
+        x: { 0: maximoMovimentoBola.value, easing: "sin.in" },
+        onComplete: () => {
+          estiloToggle.value = estiloBolaFinal.value;
+          corBolaToggle.value = "#F3F3F3";
+        },
+      });
+
+      animation.play();
+  }
+}
 </script>
 
 <style scoped>
