@@ -2,11 +2,11 @@
   <div :style="tamanhoPesquisa">
     <div v-if="temIcon">
       <Input :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa"
-        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa"></Input>
+        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :fontSize="fontSize"></Input>
     </div>
     <div v-if="!temIcon" @="$emit('itemSelecionado', conteudoDaPesquisa)" >
       <Input :largura="props.largura" styleInput="input-transparente-claro" 
-        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa"></Input>
+        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :fontSize="fontSize"></Input>
     </div>
 
     <div v-if="conteudoDaPesquisa != '' && !itemsIguais"
@@ -39,7 +39,8 @@ const props = defineProps({
   placeHolderPesquisa: {
     type:String,
     default:'Pesquisa'
-  }
+  },
+  fontSize:String
 
 });
  
