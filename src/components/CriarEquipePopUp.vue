@@ -32,7 +32,7 @@
     </template>
 
     <script setup>
-    import { onMounted, ref,watch } from 'vue';
+    import { ref } from 'vue';
     import fundoPopUp from './fundoPopUp.vue';
     import Input from './Input.vue';
     import textAreaPadrao from './textAreaPadrao.vue';
@@ -40,7 +40,7 @@
     import ListaConvidados from './ListaConvidados.vue';
     import { conexaoBD } from "../stores/conexaoBD.js";
     import { criaEquipeStore } from "../stores/criarEquipe";
-    import { EquipeUsuario } from '../models/EquipeUsuario';
+    import VueCookies from "vue-cookies";
     
 
     const banco = conexaoBD();
@@ -48,16 +48,16 @@
     let descricao = ref('');
     let usuarioConvidado = ref('');
     let mensagemError = ref("");
+    const usuarioLogado = VueCookies.get('usuarioCookie');
     let membrosEquipe = ref([]);
     let usuarios = banco.procurar("/usuario");
-    let equipes = banco.procurar("/equipe")
+    
     const equipeCadastrada={
         nome:"",
         descricao:""
     }
-
-    console.log(equipes);
     
+    console.log(usuarioLogado)
     function larguraInput(){
     const screenWidth = window.innerWidth;
     if (screenWidth <= 768) {
@@ -87,10 +87,9 @@
     async function listaUsuarios(){
         let listaUsuarios = await usuarios;
         listaUsuarios.forEach((usuario)=>{
-        if(usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.nome 
-        || usuarioConvidado.value === usuario.email){
-            membrosEquipe.value.push(usuario);
-        }
+        if(usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email){
+                membrosEquipe.value.push(usuario);
+            }
         })
     }
     
@@ -115,6 +114,10 @@
                     equipeCadastrada
                 );    
 
+                const usuarioJaAdicionado = membrosEquipe.value.some(membro => membro.id === usuarioLogado.id);
+                 if (!usuarioJaAdicionado) {
+                 membrosEquipe.value.push(usuarioLogado);
+                 }
                 
                 const ids = membrosEquipe.value.map(m => {
                     return Number(m.id);
@@ -129,38 +132,11 @@
                 console.log(equipe)
 
                 banco.adicionarUsuarios(ids,equipe.id,"/usuario/add")
-    };
-    
-    async function adicionandoEquipeUsuario(){
-      
-        const equipeUsuario = EquipeUsuario
-        equipeUsuario.equipe = {
-                    nome: nome.value,
-                    descricao: descricao.value,
-                }
-                console.log(equipes);
-       
-               let listaEquipes = await equipes;
-                listaEquipes.forEach((equipe) =>{
-                 if(equipeUsuario.equipe.nome == equipe.nome || nome.value == equipe.nome){ 
-                        equipeUsuario.equipe.id = equipe.id
-                    }
-               })
-        
-                membrosEquipe.value.forEach(async membro => {
-                    if(!membro.equipes){
-                        membro.equipes = [];
-                    }
-                    membro.equipes.push(equipeUsuario);
-                    banco.atualizar(membro, "/usuario");
-                });
-            
-                cria.adicionaUsuarioAEquipe(membrosEquipe.id,) 
-            
-    }
-    // atualizar, da um push na lista de equipes ja presente no front end após criar a equipe no back end.
-    //  
 
+                nome.value = ""
+                descricao.value = ""
+                membrosEquipe = ""
+    };
 
     </script>
     <style scoped>

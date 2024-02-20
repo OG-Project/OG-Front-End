@@ -12,7 +12,7 @@
              <div class="criarEquipe "  v-for="equipe in equipesUsuario">
                 <div class="flex justify-center">
                         <div class="corDiv">
-                         <img class="imagemEquipe" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
+                         <img class="imagemEquipe" src="" alt="">
                          <p class=" text-2xl mt-5 ml-4 text-[#877E7E]">{{ equipe.equipe.nome }}</p>
                         </div>
                         <div>
