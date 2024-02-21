@@ -15,17 +15,32 @@
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Digitar com a voz</span>
                         {{perfil.isVoiceMaker}}
-                        <CheckBox :checked="Boolean(perfil.isVoiceMaker)" tipo="toggle" el-id="checkDigitarVoz" @envia-valor="digitarVoz($event)"></CheckBox>                           
+                        <CheckBox 
+                        :checked="Boolean(1)" 
+                        tipo="toggle" 
+                        el-id="checkDigitarVoz" 
+                        @envia-valor="digitarVoz($event)">
+                        </CheckBox>                           
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Libras</span>
                         {{ perfil.isVlibras }}
-                        <CheckBox :checked="Boolean(perfil.isVlibras)" tipo="toggle" el-id="checkLibras" @envia-valor="libras($event)"></CheckBox>
+                        <CheckBox 
+                        :checked="Boolean(1)" 
+                        tipo="toggle" 
+                        el-id="checkLibras" 
+                        @envia-valor="libras($event)">
+                        </CheckBox>
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Teclado Virtual</span>
                         {{ perfil.isTecladoVirtual }}
-                        <CheckBox :checked="Boolean(perfil.isTecladoVirtual)" tipo="toggle" el-id="checkTecladoVirtual" @envia-valor="tecladoVirtual($event)"></CheckBox>                                        
+                        <CheckBox 
+                        :checked="Boolean(0)" 
+                        tipo="toggle" 
+                        el-id="checkTecladoVirtual" 
+                        @envia-valor="tecladoVirtual($event)">
+                        </CheckBox>                                        
                     </div>
                 </div>
             </div>
@@ -35,17 +50,17 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
 import CheckBox from '../components/checkBox.vue'
 import { perfilStore } from '../stores/perfilStore';
 import selectPadrao from './selectPadrao.vue';
 import VueCookies from "vue-cookies";
 let perfil=perfilStore()
 
-
+onBeforeMount(()=>{
+})
 // mexer com cookies
 onMounted(()=>{
-    
     // VueCookies.set("isVlibras", JSON.stringify(false))
     // VueCookies.set("isVoiceMaker", JSON.stringify(true))
     // VueCookies.set("isTecladovirtual", JSON.stringify(false))
@@ -58,6 +73,7 @@ onMounted(()=>{
     console.log(perfil.isTecladoVirtual)
     console.log(perfil.isVlibras)
     console.log(perfil.isVoiceMaker)
+    
    
 })
 

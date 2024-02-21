@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import mojs from '@mojs/core';
 import { defineProps, onMounted } from 'vue';
 
@@ -165,17 +165,24 @@ switch(props.tamanho) {
 }
 
 let estiloToggle;
-onMounted(async()=>{
+onBeforeMount(()=>{
+
   console.log(ativo.value)
-  if(await ativo.value){
-     corBolaToggle.value = '#F3F3F3';
-     estiloToggle = ref(estiloBolaFinal.value);
-    }else{
-      estiloToggle = ref(estiloBolaInicio.value);
-      corBolaToggle.value = '#620BA7'
+  if(ativo.value){
+    corBolaToggle.value = '#F3F3F3';
+    estiloToggle = ref(estiloBolaFinal.value);
+    console.log(estiloToggle)
+  }else if(!ativo.value){
+    corBolaToggle.value = '#620BA7'
+    estiloToggle = ref(estiloBolaInicio.value);
+    console.log(estiloToggle)
   }
 
-  if(await ativo.value){
+})
+
+onMounted(()=>{
+
+  if(ativo.value){
     const animation = new mojs.Html({
       el: '#'+idCircle,
       x: { 0: maximoMovimentoBola.value, easing: 'sin.in' },
@@ -185,7 +192,7 @@ onMounted(async()=>{
       },
     });
     animation.play();
-  }else{
+  }else if(!ativo.value){
     const animation = new mojs.Html({
       el: '#'+idCircle,
       x: { [maximoMovimentoBola.value]: 0, easing: 'sin.out' },
@@ -195,7 +202,6 @@ onMounted(async()=>{
       },
     });
     animation.play();
-    
   }
 })
 
