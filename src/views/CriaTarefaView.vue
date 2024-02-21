@@ -1,7 +1,6 @@
 <template>
   <navBar></navBar>
   <div id="bgBranco" class="flex flex-row min-h-[96%] w-full">
-    <div></div>
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input
@@ -50,10 +49,9 @@
           </button>
         </div>
       </div>
-
+      <!-- Pop-Up utilizado para criar status -->
       <div v-if="statusSendoCriado">
         <div v-if="statusSendoCriado" class="h-full flex flex-row pl-12 pt-6 pb-6">
-          <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
@@ -91,6 +89,8 @@
           </div>
         </div>
       </div>
+
+      <!-- Pop-Up para criar uma propriedade -->
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
@@ -141,9 +141,10 @@
         </div>
       </div>
 
+      
+
       <div v-if="subtarefaSendoCriada">
         <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
-          <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
@@ -226,7 +227,7 @@
               <CheckBox
                 class="flex justify-center"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)"
-                :ativoProps="subtarefa.concluida"
+                :model-value="subtarefa.concluida"
               ></CheckBox>
               <p>{{ subtarefa.nome }}</p>
             </div>
@@ -356,8 +357,12 @@
                 </button>
               </div>
               <div class="flex justify-center">
-                  <img class="w-[50%]" @click="deletaPropriedade(propriedade)" :src="BotaoX"/>
-                </div>
+                <img
+                  class="w-[50%]"
+                  @click="deletaPropriedade(propriedade)"
+                  :src="BotaoX"
+                />
+              </div>
             </div>
             <div
               class="w-[100%] pl-4 min-h-[5vh] flex items-center"
@@ -395,7 +400,7 @@
               <div class="w-[40%] flex justify-between">
                 <ColorPicker v-model="statsAdd.cor" class="border-2 rounded-lg ml-8" />
                 <div class="flex justify-center">
-                  <img class="w-[50%]" @click="deletaStatus(statsAdd)" :src="BotaoX"/>
+                  <img class="w-[50%]" @click="deletaStatus(statsAdd)" :src="BotaoX" />
                 </div>
               </div>
             </div>
@@ -527,7 +532,7 @@ let tipoPropriedade = ref("");
 //Variáveis utiliazadas na hora de criar um status
 
 let nomeStatus = ref("");
-let corStatus = ref("");
+let corStatus = ref("ff0000");
 
 //Variaveis utilizadas na hora de criar uma subtarefa
 
@@ -537,27 +542,29 @@ let statusSubtarefa = ref("");
 //Função utilizada para criar um Status
 
 function criaStatus() {
-  let statusNovo = {
+  if(nomeStatus.value != ''){
+    let statusNovo = {
     nome: nomeStatus.value,
     cor: corStatus.value,
     estaNaTarefa: ref(false),
   };
+  nomeStatus.value = "";
   status.value.push(statusNovo);
   statusSendoCriado.value = false;
+  }
 }
 
 //Função que deleta status
 
-function deletaStatus(stat){
-  console.log("entrou")
+function deletaStatus(stat) {
   status.value.forEach((statParaDeletar) => {
-    console.log("entrou na forEach")
-    console.log(stat)
-    console.log(statParaDeletar)
     if (stat === statParaDeletar) {
-      console.log("entrou no if de ser igual")
       status.value.splice(status.value.indexOf(stat), 1);
-      console.log("deletou")
+    }
+  });
+  statusDaTarefa.value.forEach((statParaDeletar) => {
+    if (stat === statParaDeletar) {
+      statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(stat), 1);
     }
   });
 }
@@ -578,10 +585,10 @@ function criaSubtarefa() {
   };
   subtarefas.value.push(subtarefaNova);
   subtarefaSendoCriada.value = false;
+  numeroDeTarefas.value = subtarefas.value.length;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
-  numeroDeTarefas.value = subtarefas.value.length;
 }
 
 //Função utilizada para deletar uma Subtarefa
@@ -592,24 +599,35 @@ function deletaSubtarefa(subtarefa) {
       subtarefas.value.splice(subtarefas.value.indexOf(subtarefa), 1);
     }
   });
-
+  numeroDeTarefas.value = subtarefas.value.length;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
-  numeroDeTarefas.value = subtarefas.value.length;
 }
 
 //Função utilizada para criar uma Propriedade
 
 function criaPropriedade() {
-  let propriedade = {
-    nome: nomePropriedade.value,
-    tipo: tipoPropriedade.value,
-    valor: "",
-    estaNaTarefa: ref(),
-  };
-  propriedades.value.push(propriedade);
-  propriedadeSendoCriada.value = false;
+  if (
+    tipoPropriedade.value != "Escolha o Tipo" &&
+    tipoPropriedade.value != null &&
+    tipoPropriedade.value != "" &&
+    tipoPropriedade.value != " "
+  ) {
+    if (nomePropriedade.value != "") {
+      console.log(tipoPropriedade.value);
+      let propriedade = {
+        nome: nomePropriedade.value,
+        tipo: tipoPropriedade.value,
+        valor: "",
+        estaNaTarefa: ref(),
+      };
+      nomePropriedade.value = "";
+      tipoPropriedade.value = "";
+      propriedades.value.push(propriedade);
+      propriedadeSendoCriada.value = false;
+    }
+  }
 }
 
 //Função que deleta uma propriedade
@@ -618,6 +636,14 @@ function deletaPropriedade(propriedade) {
   propriedades.value.forEach((propriedadeParaDeletar) => {
     if (propriedadeParaDeletar === propriedade) {
       propriedades.value.splice(propriedades.value.indexOf(propriedade), 1);
+    }
+  });
+  propriedadesDaTarefa.value.forEach((propriedadeParaDeletar) => {
+    if (propriedadeParaDeletar === propriedade) {
+      propriedadesDaTarefa.value.splice(
+        propriedadesDaTarefa.value.indexOf(propriedade),
+        1
+      );
     }
   });
 }
