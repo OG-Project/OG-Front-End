@@ -1,6 +1,6 @@
 <template>
     <div class="gridTotal">
-        <div class=" flex flex-col  gap-6 pl-[5%] mt-[3%] overflow-hidden">
+        <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto" largura="30"
                     altura="6" fontSize="1.5rem" v-model="nomeProjeto"></Input>
@@ -29,49 +29,28 @@
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             place-holder-pesquisa="Responsáveis pelo projeto"
                             @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem"></inputDePesquisa>
-                        <div
-                            v-if="responsaveisProjeto != '' && responsaveisProjeto.length <= 3">
+                        <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
                                 class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
                                 <div v-for="responsavel of responsaveisProjeto ">
                                     <div
-                                        class="bg-roxo-claro rounded-md p-[0.15rem]    w-max flex flex-row items-center gap-1 h-[30%]">
+                                        class="bg-roxo-claro rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
                                         <img src="../imagem-vetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
                                         <img src="../imagem-vetores/X-preto.svg">
                                     </div>
                                 </div>
 
-                            </div>
-                        </div>
-                        <div v-if="responsaveisProjeto.length > 3">
-                            <div class="-rotate-90">
-                                <img src="../imagem-vetores/setaParaMaisUsuarios.svg">
-                            </div>
-                            <div
-                                class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
-                                <div v-for="responsavel of responsaveisProjeto">
-                                    <div
-                                        class="bg-roxo-claro rounded-md p-[0.15rem]    w-max flex flex-row items-center gap-1 h-[30%]">
-                                        <img src="../imagem-vetores/userTodoPreto.svg">
-                                        <p>{{ responsavel }}</p>
-                                        <img src="../imagem-vetores/X-preto.svg">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rotate-90">
-                                <img src="../imagem-vetores/setaParaMaisUsuarios.svg">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="">
+            <div class=" pt-8 w-[96%]">
                 <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
                     :listaConvidados="listaDeUsuariosParaBusca" texto="Equipes Vinculadas"></ListaConvidados>
             </div>
         </div>
-
         <div class=" w-[83%] h-full flex-row z-40 ">
             <div
                 class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
@@ -113,8 +92,7 @@
                         </div>
                     </div>
                     <div v-if="opcaoSelecionadaNaTabela == 'status'">
-                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
-                            >
+                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus">
                             <p class="w-[33%]">{{ status.nome }}</p>
                             <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
                             <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
@@ -227,7 +205,7 @@
     </div>
 
 
-    <div class="h-[1%] w-[70.4%] flex items-end justify-end pr-4 ">
+    <div class="h-[10%] w-[70.4%] flex items-center justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
     </div>
@@ -249,6 +227,7 @@ import { Propriedade } from '../models/Propriedade';
 import { Projeto } from '../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Carousel from 'primevue/carousel';
+
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 var listaSelecao = ref([]);
@@ -276,7 +255,7 @@ let auxListaParaRenderizarDoisUsuarios = [];
 let cont = 0;
 let variavelModalMaisUsuarios = ref(Boolean);
 
-funcaoPopUp.variavelModal=false
+funcaoPopUp.variavelModal = false
 onMounted(() => {
     defineSelect()
     buscandoPor();
@@ -284,16 +263,15 @@ onMounted(() => {
     statusDoProjeto();
     buscaPropriedadeCookies();
     buscaProjetoCookies();
-    
+
 })
 
-onUpdated(()=>{
-        criarProjetoCookies();
+onUpdated(() => {
+    criarProjetoCookies();
 })
 
-watch(listaAuxResponsaveisProjeto, (novovalor, valorAntigo) => {
-    pegaValorSelecionadoPesquisa();
-})
+
+
 async function defineSelect() {
     let listaAux = (await conexao.procurar('/equipe'))
     let listaAux1 = []
@@ -350,17 +328,12 @@ function criarProjetoCookies() {
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
     let listaAux = (await conexao.procurar('/usuario'))
     listaAux.forEach(usuarioAtual => {
-        if (valorPesquisa == usuarioAtual.nome && !responsaveisProjeto.value.includes(valorPesquisa)) {
-            listaAuxResponsaveisProjeto.push(usuarioAtual.nome)
+        if (valorPesquisa == usuarioAtual.username && !responsaveisProjeto.value.includes(valorPesquisa)) {
+            listaAuxResponsaveisProjeto.push(usuarioAtual.username)
             console.log(responsaveisProjeto)
             responsaveisProjeto.value = null;
             responsaveisProjeto.value = listaAuxResponsaveisProjeto;
             cont++;
-            if (cont == 1 || cont == 2) {
-                auxListaParaRenderizarDoisUsuarios.push(usuarioAtual.nome)
-                listaParaRenderizarDoisUsuarios.value = null;
-                listaParaRenderizarDoisUsuarios.value = auxListaParaRenderizarDoisUsuarios;
-            }
         }
     });
 
@@ -371,13 +344,6 @@ function criaProjeto() {
     criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, equipesRelacionadasProjeto.value)
     console.log("" + nomeProjeto.value + " " + descricaoProjeto.value)
     criaPropriedade();
-}
-
-function trocaVariavelModalMaisUsuarios() {
-    let auxBoolean = variavelModalMaisUsuarios.value
-    variavelModalMaisUsuarios.value = null;
-    variavelModalMaisUsuarios.value = !auxBoolean;
-    console.log(variavelModalMaisUsuarios.value)
 }
 
 async function buscandoPor() {
@@ -476,5 +442,51 @@ function criaPropriedade() {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.scrollListaResponsaveis::-webkit-scrollbar {
+    height: 0.3vw;
+}
+
+.scrollListaResponsaveis::-webkit-scrollbar-thumb {
+    @apply bg-gray-200;
+    border-radius: 10px;
+    width: 5vw;
+    display: none;
+}
+
+.scrollListaResponsaveis::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-300;
+    border-radius: 10px;
+}
+
+.scrollListaResponsaveis::-webkit-scrollbar-track {
+    display: none;
+}
+
+.scrollListaResponsaveis::-webkit-scrollbar-button {
+    display: none;
+}
+
+.scrollListaResponsaveis {
+    position: relative;
+    overflow: auto;
+    transition: overflow-y 0.3s ease;
+    @apply overflow-y-auto w-[80%];
+}
+
+.scrollListaResponsaveis {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+    cursor: -o-grab;
+    cursor: grab;
+}
+
+
+.scrollListaResponsaveis:active {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: -o-grabbing;
+    cursor: grabbing;
 }
 </style>

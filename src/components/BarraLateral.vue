@@ -1,5 +1,5 @@
 <template>
-  <div class=" z-[9999] bg-opacity-40">
+  <div class=" z-[995] bg-opacity-40">
     <div v-if="!aberto" @click="openClose()" class="h-[8vh] w-[4vw] flex items-center justify-center">
         <img class="h-[50px] w-[50px]" src="../imagem-vetores/haburguer.svg">
     </div>
@@ -9,7 +9,7 @@
           <div class="ml-4 mt-6">
             <img
               class="cursor-pointer"
-              src="../imagem-vetores/botao-x.svg"
+              src="../imagem-vetores/botao-x-branco.svg"
               @click="openClose()"
             />
           </div>

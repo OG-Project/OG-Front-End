@@ -119,7 +119,7 @@ const imagemIcon={
     }
 
     .grid-template{ 
-        @apply w-[80%%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+        @apply w-[80%%] h-[11%] gap-4  ; 
         display: grid;
         grid-template-columns: 40% 55%;
     }
