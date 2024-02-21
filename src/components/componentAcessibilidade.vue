@@ -14,15 +14,18 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Digitar com a voz</span>
-                        <CheckBox :checked=perfil.acessibilidade().voiceMaker tipo="toggle" el-id="checkDigitarVoz" @envia-valor="digitarVoz($event)"></CheckBox>                           
+                        {{perfil.isVoiceMaker}}
+                        <CheckBox :checked="Boolean(perfil.isVoiceMaker)" tipo="toggle" el-id="checkDigitarVoz" @envia-valor="digitarVoz($event)"></CheckBox>                           
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Libras</span>
-                        <CheckBox :checked=perfil.acessibilidade().vlibras tipo="toggle" el-id="checkLibras" @envia-valor="libras($event)"></CheckBox>
+                        {{ perfil.isVlibras }}
+                        <CheckBox :checked="Boolean(perfil.isVlibras)" tipo="toggle" el-id="checkLibras" @envia-valor="libras($event)"></CheckBox>
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Teclado Virtual</span>
-                        <CheckBox :checked=perfil.acessibilidade().tecladoVirtual tipo="toggle" el-id="checkTecladoVirtual" @envia-valor="tecladoVirtual($event)"></CheckBox>                                        
+                        {{ perfil.isTecladoVirtual }}
+                        <CheckBox :checked="Boolean(perfil.isTecladoVirtual)" tipo="toggle" el-id="checkTecladoVirtual" @envia-valor="tecladoVirtual($event)"></CheckBox>                                        
                     </div>
                 </div>
             </div>
@@ -40,15 +43,21 @@ import VueCookies from "vue-cookies";
 let perfil=perfilStore()
 
 
-VueCookies.set("isVlibras", JSON.stringify(false))
-VueCookies.set("isVoiceMaker", JSON.stringify(true))
-VueCookies.set("isTecladovirtual", JSON.stringify(false))
-
 // mexer com cookies
 onMounted(()=>{
-    perfilStore.isVlibras=VueCookies.get("isVlibras")
-    perfilStore.isVoiceMaker=VueCookies.get("isVoiceMaker")
-    perfilStore.isTecladoVirtual=VueCookies.get("isTecladovirtual")
+    
+    // VueCookies.set("isVlibras", JSON.stringify(false))
+    // VueCookies.set("isVoiceMaker", JSON.stringify(true))
+    // VueCookies.set("isTecladovirtual", JSON.stringify(false))
+    perfil.isVlibras=VueCookies.get("isVlibras")
+    perfil.isVoiceMaker=VueCookies.get("isVoiceMaker")
+    perfil.isTecladoVirtual=VueCookies.get("isTecladovirtual")
+    // console.log(VueCookies.get("isTecladovirtual"))
+    // console.log(VueCookies.get("isVoiceMaker"))
+    // console.log(VueCookies.get("isVlibras"))
+    console.log(perfil.isTecladoVirtual)
+    console.log(perfil.isVlibras)
+    console.log(perfil.isVoiceMaker)
    
 })
 
