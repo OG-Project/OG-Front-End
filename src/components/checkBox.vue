@@ -181,7 +181,6 @@ onBeforeMount(()=>{
 })
 
 onMounted(()=>{
-
   if(ativo.value){
     const animation = new mojs.Html({
       el: '#'+idCircle,
@@ -203,6 +202,7 @@ onMounted(()=>{
     });
     animation.play();
   }
+
 })
 
 

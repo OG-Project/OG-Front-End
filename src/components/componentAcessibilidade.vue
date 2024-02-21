@@ -14,33 +14,33 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Digitar com a voz</span>
-                        {{perfil.isVoiceMaker}}
                         <CheckBox 
-                        :checked="Boolean(1)" 
+                        :checked="Boolean(gerarBooleano(VueCookies.get('isVoiceMaker')))" 
                         tipo="toggle" 
                         el-id="checkDigitarVoz" 
                         @envia-valor="digitarVoz($event)">
-                        </CheckBox>                           
+                        </CheckBox>                  
+                        <!-- Boolean(1) -->
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Libras</span>
-                        {{ perfil.isVlibras }}
                         <CheckBox 
-                        :checked="Boolean(1)" 
+                        :checked="Boolean(gerarBooleano(VueCookies.get('isVlibras')))" 
                         tipo="toggle" 
                         el-id="checkLibras" 
                         @envia-valor="libras($event)">
                         </CheckBox>
+                        <!-- Boolean(1) -->
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Teclado Virtual</span>
-                        {{ perfil.isTecladoVirtual }}
                         <CheckBox 
-                        :checked="Boolean(0)" 
+                        :checked="Boolean(gerarBooleano(VueCookies.get('isTecladovirtual')))" 
                         tipo="toggle" 
                         el-id="checkTecladoVirtual" 
                         @envia-valor="tecladoVirtual($event)">
                         </CheckBox>                                        
+                        <!-- Boolean(0) -->
                     </div>
                 </div>
             </div>
@@ -61,35 +61,32 @@ onBeforeMount(()=>{
 })
 // mexer com cookies
 onMounted(()=>{
-    // VueCookies.set("isVlibras", JSON.stringify(false))
-    // VueCookies.set("isVoiceMaker", JSON.stringify(true))
-    // VueCookies.set("isTecladovirtual", JSON.stringify(false))
-    perfil.isVlibras=VueCookies.get("isVlibras")
-    perfil.isVoiceMaker=VueCookies.get("isVoiceMaker")
-    perfil.isTecladoVirtual=VueCookies.get("isTecladovirtual")
-    // console.log(VueCookies.get("isTecladovirtual"))
-    // console.log(VueCookies.get("isVoiceMaker"))
-    // console.log(VueCookies.get("isVlibras"))
-    console.log(perfil.isTecladoVirtual)
-    console.log(perfil.isVlibras)
-    console.log(perfil.isVoiceMaker)
     
-   
 })
+
+function gerarBooleano(boolean){
+    if(boolean=="true"){
+        console.log('foi booleano '+ boolean)
+        return 1
+    }else if(boolean=="false"){
+        console.log('foi booleano '+ boolean)
+        return 0
+    }
+}
 
 function digitarVoz(a){
     perfil.isVoiceMaker=a.valor
-    VueCookies.set("isVoiceMaker", JSON.stringify(perfil.isVoiceMaker))
+    VueCookies.set("isVoiceMaker", perfil.isVoiceMaker)
     console.log(a.valor+" digitar")
 }
 function libras(a){
     perfil.isVlibras=a.valor
-    VueCookies.set("isVlibras", JSON.stringify(perfil.isVlibras))
+    VueCookies.set("isVlibras", perfil.isVlibras)
     console.log(a.valor+" libras")
 }
 function tecladoVirtual(a){
     perfil.isTecladoVirtual=a.valor
-    VueCookies.set("isTecladovirtual", JSON.stringify(perfil.isTecladoVirtual))
+    VueCookies.set("isTecladovirtual", perfil.isTecladoVirtual)
     console.log(a.valor+" teclado")
 }
 </script>
