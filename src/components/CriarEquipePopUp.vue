@@ -7,6 +7,7 @@
                     </div>
                     <div class=" grid-template  flex w-full mt-[1vh] p-5">
                             <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
+                            <h1>Nome equipe</h1>
                         <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
                     </div>
                         <div class=" grid-template  flex w-full">

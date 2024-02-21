@@ -1,6 +1,43 @@
 <template>
-    <div>
-        <fundoPopUp  largura="" altura="100%">
+ <div>
+    <fundoPopUp v-if="!editando" largura="" altura="100%">
+            <div class="divGeral">
+                <div class=" grid-template flex w-full">
+                        <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Editar Equipe</h1>
+                </div>
+                <div class=" grid-template  flex w-full mt-[1vh] p-5">
+                        <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
+                        <div class="styleH1Padrao">
+                            <h1 class=" flex 2xl:h-[4vh]  2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] "> nome equipe</h1>
+                        </div>
+                </div>
+                <div class=" grid-template flex w-full mt-[1vh]">
+                    <div class="textArea">
+                        <p>descrição da equipe</p>
+                    </div>
+                </div> 
+                <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
+                    <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
+                </div>
+                <div>
+                    <div class="botao">
+                    <div class="flex justify-start xl:mt-[6vh] lg:mt-[8vh] md:mt-[10vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
+                        <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem">
+                        </Botao>
+                    </div>
+                    <div class=" flex justify-end xl:mt-[6vh] lg:mt-[8vh] md:mt-[10vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
+                        </Botao>
+                    </div>
+                    
+                </div>
+                </div>
+            </div>
+                
+        </fundoPopUp>
+    </div>
+   <div>
+        <fundoPopUp v-if="editando" largura="" altura="100%">
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
@@ -21,8 +58,12 @@
                 <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
                     <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
                 </div>
-                <div class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                <div v-if="!adicionarNovosMembros" class="botaoSalvar flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                        </Botao>
+                </div>
+                <div v-if="adicionarNovosMembros" class="botaoSalvar flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar convites" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
                         </Botao>
                 </div>
             </div>
@@ -51,6 +92,8 @@ let mensagemError = ref("");
 const usuarioLogado = VueCookies.get('usuarioCookie');
 let membrosEquipe = ref([]);
 let usuarios = banco.procurar("/usuario");
+let editando = ref(false);
+let adicionarNovosMembros = ref(false);
 
 const equipeCadastrada={
     nome:"",
@@ -58,6 +101,10 @@ const equipeCadastrada={
 }
 
 console.log(usuarioLogado)
+
+async function editarEquipe(){
+    editando.value = !editando.value;
+}
 function larguraInput(){
 const screenWidth = window.innerWidth;
 if (screenWidth <= 768) {
@@ -94,6 +141,7 @@ async function listaUsuarios(){
 }
 
 async function adicionarMembro(){
+    adicionarNovosMembros = !adicionarNovosMembros
     listaUsuarios();
 }
 
@@ -143,6 +191,27 @@ async function adicionarMembro(){
     @import url(../assets/main.css);
 
     @layer components {
+
+    .styleH1Padrao{
+       @apply 
+       border-4 
+        border-transparent
+        border-b-roxo    
+        px-2
+        max-w-max
+        w-min
+        border-b-4
+        hover:rounded-[4px] hover:border-4
+         focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-[4px]  ;
+        
+    }
+
+    .textArea{
+     @apply flex  2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black
+     border-transparent border-b-roxo border-b-4  focus-within:border-roxo focus-within:border-4;
+     border-bottom: 'solid 4px #620BA7' ;
+ }
     
     .imagem {
         @apply xl:h-[6vh] xl:w-[3vw];
@@ -151,8 +220,14 @@ async function adicionarMembro(){
     .mensagem-error {
         @apply flex justify-center text-red-600 mt-10;
     }
-    .botao{
+
+    .botaoSalvar{
         @apply w-[80%] h-[100%] gap-4  items-center; 
+        display: grid;
+        grid-template-columns: 40% 55%;
+    }
+    .botao{
+        @apply w-[100%] h-[100%] gap-4  items-center; 
         display: grid;
         grid-template-columns: 40% 55%;
     }

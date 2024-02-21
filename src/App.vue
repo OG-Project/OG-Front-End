@@ -7,7 +7,7 @@ import { funcaoPopUpStore } from './stores/funcaoPopUp'
 import Navbar from '@/components/Navbar.vue';
 import criarEquipePopUp from './components/CriarEquipePopUp.vue';
 import ListaMembrosEquipe from './components/listaMembrosEquipe.vue'; 
-import EditarEquipePopUp from './components/editarEquipePopUp.vue';
+import editarEquipePopUp from './components/editarEquipePopUp.vue';
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 
@@ -16,8 +16,10 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
 
 <template>
   <RouterView />
-  <EditarEquipePopUp>
-  </EditarEquipePopUp>
+<editarEquipePopUp>
+  
+</editarEquipePopUp>
+
     
   
 </template>
