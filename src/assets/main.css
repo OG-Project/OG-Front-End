@@ -4,5 +4,5 @@
 @tailwind utilities;
 
 html{
-    @apply fill-fontFamily-Poppins
+    @apply fill-fontFamily-Poppins md:text-sm xl:text-lg  2xl:ml-2 sm:text-xs;
 }

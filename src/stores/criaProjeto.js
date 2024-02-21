@@ -4,17 +4,17 @@ import {conexaoBD} from './conexaoBD'
 export const criaProjetoStore = defineStore('criaProjeto', {
     state: () => {
       return { 
-        nomeProjeto: '',
-        tipoProjeto:'',
+        nomeProjeto: ''
       }
     },
 
     actions: {
-        criaProjeto(nome,descricao){
+        criaProjeto(nome,descricao,equipes){
         let projetoCriado= Projeto
         let api= conexaoBD();
         projetoCriado.nome=nome;
         projetoCriado.descricao=descricao;
+        projetoCriado.equipes=[]
         console.log(projetoCriado)
         api.cadastrar(projetoCriado,'/projeto')
       },

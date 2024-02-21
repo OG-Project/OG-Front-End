@@ -15,7 +15,9 @@
           
         </template>
 
+
         <h2 class="nome-convidado md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1">{{ truncarNome(convidado.nome , 15) }}</h2>
+
 
         <template v-if="listaConvidados.length > 0">
           <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem" />
@@ -117,7 +119,7 @@ const imagemIcon={
     }
 
     .grid-template{ 
-        @apply w-[80%%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+        @apply w-[80%%] h-[11%] gap-4  ; 
         display: grid;
         grid-template-columns: 40% 55%;
     }
