@@ -30,7 +30,7 @@
                             place-holder-pesquisa="Responsáveis pelo projeto"
                             @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem"></inputDePesquisa>
                         <div
-                            v-if="responsaveisProjeto != '' && responsaveisProjeto.length <= 3 && !variavelModalMaisUsuarios">
+                            v-if="responsaveisProjeto != '' && responsaveisProjeto.length <= 3">
                             <div
                                 class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
                                 <div v-for="responsavel of responsaveisProjeto ">
@@ -114,7 +114,7 @@
                     </div>
                     <div v-if="opcaoSelecionadaNaTabela == 'status'">
                         <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
-                            v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
+                            >
                             <p class="w-[33%]">{{ status.nome }}</p>
                             <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
                             <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
@@ -275,20 +275,20 @@ let listaParaRenderizarDoisUsuarios = ref([])
 let auxListaParaRenderizarDoisUsuarios = [];
 let cont = 0;
 let variavelModalMaisUsuarios = ref(Boolean);
+
+funcaoPopUp.variavelModal=false
 onMounted(() => {
     defineSelect()
     buscandoPor();
-
     pesquisaBancoUserName();
     statusDoProjeto();
     buscaPropriedadeCookies();
     buscaProjetoCookies();
-    funcaoPopUp.variavelModal = false;
-    variavelModalMaisUsuarios.value = false;
+    
 })
 
-onUpdated(() => {
-    criarProjetoCookies();
+onUpdated(()=>{
+        criarProjetoCookies();
 })
 
 watch(listaAuxResponsaveisProjeto, (novovalor, valorAntigo) => {
@@ -311,7 +311,6 @@ function buscaPropriedadeCookies() {
 }
 
 function buscaProjetoCookies() {
-
     if (VueCookies.get("projetoCookie") != null) {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
@@ -323,38 +322,33 @@ function buscaProjetoCookies() {
 
 async function pesquisaBancoUserName() {
     let listaAux = (await conexao.procurar('/usuario'))
-    let listaAux1 = []
     listaAux.forEach(usuarioAtual => {
-        listaAux1.push(usuarioAtual.nome);
-        listaDeUsuariosParaBusca.value = listaAux1
+        listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
     });
+    return listaDeUsuariosParaBusca;
 }
 
 async function statusDoProjeto() {
     var listaAux = (await conexao.procurar('/status'))
-    var listaAux1 = []
-    listaAux.forEach(equipeAtual => {
-        listaAux1.push(equipeAtual);
-        listaStatus.value = listaAux1
-
+    listaAux.forEach(statusAtual => {
+        listaStatus.value.push(statusAtual)
     });
     return listaStatus;
 }
 
 function criarProjetoCookies() {
+    console.log(nomeProjeto.value)
     const criaProjetoCookies = Projeto
     criaProjetoCookies.descricao = descricaoProjeto.value;
     criaProjetoCookies.nome = nomeProjeto.value;
-    console.log(criaProjetoCookies.equipes)
     criaProjetoCookies.equipes = equipesEscolhidaRelacionadaProjeto.value;
-    VueCookies.set('projetoCookie', criaProjetoCookies, 86400000000)
+    VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
     console.log(VueCookies.get('projetoCookie'))
     buscaProjetoCookies();
 }
 
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
     let listaAux = (await conexao.procurar('/usuario'))
-    console.log()
     listaAux.forEach(usuarioAtual => {
         if (valorPesquisa == usuarioAtual.nome && !responsaveisProjeto.value.includes(valorPesquisa)) {
             listaAuxResponsaveisProjeto.push(usuarioAtual.nome)
