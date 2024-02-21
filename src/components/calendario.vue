@@ -56,15 +56,14 @@
         </div>
         <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
             <div class="calendario">
-                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDia(dia.dia)"
-                    @mouseenter="hover(dia)">
+                 <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDia(dia.dia)"
+                    @mouseenter="hover(dia)" @mouseleave="getCalendario()">
                     <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(new Date(dia.dia), 'd') }}</h1>
                     <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
                         Date(dia.dia), 'd')
                     }}
                     </h1>
                     <div :style="dia.style">
-
                         <div v-for="tarefa of dia.listaDeTarefas">
                             <div v-bind="adicionaNaLista(tarefa, dia), verificaQauntidadetarefa(dia)" class="pb-[4%] w-max"
                                 @dragend="trocaDia(propriedade, diaNovo)">
@@ -72,7 +71,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-full h-[20%] flex justify-center mt-[5%]">
+                    <div class="w-full h-[20%] flex justify-center items-center">
                         <div v-if="dia.temTres == true" class="w-[40%] h-[15%] bg-gray-400 flex items-end"></div>
                     </div>
                 </div>
@@ -120,6 +119,7 @@ function estilizaDia(dia) {
 // Muda de acordo com o mes
 async function getCalendario() {
     let listaDeDias = [];
+    let dias;
     const d = new Date(data)
     const primeiroDiaDoMes = startOfMonth(new Date(d));
     const ultimoDiaDoMes = endOfMonth(new Date(d));
@@ -140,14 +140,15 @@ async function getCalendario() {
             lista2.push(addDays(ultimoDiaDoMes, i))
         }
     }
-    calendario.value = [...lista, ...todosOsDiasDoMes, ...lista2]
-    await Promise.all(calendario.value.map(async dia => {
+    dias = [...lista, ...todosOsDiasDoMes, ...lista2]
+    for(const dia of dias) {
         let lista = await verificaTarefasDoDia(dia)
+        lista = lista
         let dia1 = {
-            dia: dia,
+            dia:dia,
             listaDeTarefas: [],
             temTres: false,
-            style: {
+            style: dia.style = {
                 height: "45%",
                 display: "flex",
                 overflow: "hidden",
@@ -156,11 +157,11 @@ async function getCalendario() {
                 border: border
             }
         }
-        dia1.listaDeTarefas = lista
+        dia1.listaDeTarefas = await lista
         listaDeDias.push(dia1)
-    }));
-    calendario.value = listaDeDias;
+    }
 
+    calendario.value = listaDeDias;
 }
 async function defineTarefas() {
     return tarefas = await (tarefasApi)
@@ -221,9 +222,7 @@ function abrePopUp() {
 
 }
 function fechaPopUp(e) {
-
     abrePopup.value = false
-
 }
 function escolheMes(numero) {
     data = setMonth(data, numero)
@@ -239,16 +238,16 @@ function retornaDia(dia) {
     diaNovo = dia;
 }
 function verificaQauntidadetarefa(dia) {
-    if (dia.listaDeTarefas.value.length >= 3) {
+    if (dia.listaDeTarefas.length >= 3) {
         dia.temTres = true
-    } else if (dia.listaDeTarefas.value.length < 3) {
+    } else if (dia.listaDeTarefas.length < 3) {
         dia.temTres = false
     }
 }
 function adicionaNaLista(tarefa, dia) {
-    if (dia.listaDeTarefas.value.includes(tarefa)) {
+    if (dia.listaDeTarefas.includes(tarefa)) {
     } else {
-        dia.listaDeTarefas.value.push(tarefa)
+        dia.listaDeTarefas.push(tarefa)
     }
 }
 
