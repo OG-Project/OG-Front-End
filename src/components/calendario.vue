@@ -1,6 +1,6 @@
 <template>
     <div class="divMaior">
-        <div class="sticky top-0 h-[20%] w-full bg-[#FBFBFB] flex justify-center">
+        <div class="sticky top-0 h-[20%] w-full bg-[#FBFBFB] flex justify-center z-10">
             <div class="flex flex-row w-full ">
                 <div class="flex w-full">
                     <div class="w-[50%] h-full ml-[7%] flex flex-row items-center gap-4">
@@ -56,7 +56,7 @@
         </div>
         <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
             <div class="calendario">
-                 <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDia(dia.dia)"
+                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDia(dia.dia)"
                     @mouseenter="hover(dia)" @mouseleave="getCalendario()">
                     <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(new Date(dia.dia), 'd') }}</h1>
                     <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
@@ -65,14 +65,13 @@
                     </h1>
                     <div :style="dia.style">
                         <div v-for="tarefa of dia.listaDeTarefas">
-                            <div v-bind="adicionaNaLista(tarefa, dia), verificaQauntidadetarefa(dia)" class="pb-[4%] w-max"
-                                @dragend="trocaDia(propriedade, diaNovo)">
-                                <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max" @dragend="trocaDia(tarefa, diaNovo)">
+                                <cardTarefas :tarefa=tarefa.tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                             </div>
                         </div>
                     </div>
                     <div class="w-full h-[20%] flex justify-center items-center">
-                        <div v-if="dia.temTres == true" class="w-[40%] h-[15%] bg-gray-400 flex items-end"></div>
+                        <div class="w-[40%] h-[15%] bg-gray-400 flex items-end" v-if="dia.temTres == true"></div>
                     </div>
                 </div>
             </div>
@@ -95,7 +94,7 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 let cardDia
 let tarefasApi = api.procurar("/tarefa")
-let tarefas = defineTarefas()
+let tarefas
 let border = "none"
 getCalendario();
 
@@ -111,13 +110,14 @@ function estilizaDia(dia) {
         borderRadius: "10%",
         fontWeight: "700",
         fontSize: "1vw",
-        boxShadow: "0px 3px 6px rgb(145, 145, 145)",
+        boxShadow: "0px 6px 6px rgb(145, 145, 145)",
         border: border
     }
     border = "none"
 }
 // Muda de acordo com o mes
 async function getCalendario() {
+    calendario.value = []
     let listaDeDias = [];
     let dias;
     const d = new Date(data)
@@ -141,45 +141,48 @@ async function getCalendario() {
         }
     }
     dias = [...lista, ...todosOsDiasDoMes, ...lista2]
-    for(const dia of dias) {
+    tarefas = await defineTarefas()
+    for (const dia of dias) {
         let lista = await verificaTarefasDoDia(dia)
-        lista = lista
         let dia1 = {
-            dia:dia,
-            listaDeTarefas: [],
+            dia: dia,
+            listaDeTarefas: ref([]),
             temTres: false,
             style: dia.style = {
                 height: "45%",
                 display: "flex",
                 overflow: "hidden",
                 flexDirection: "column",
-                gap: "2%",
+                gap: "12%",
                 border: border
             }
         }
-        dia1.listaDeTarefas = await lista
+        dia1.listaDeTarefas = lista
         listaDeDias.push(dia1)
     }
-
+    console.log(calendario)
     calendario.value = listaDeDias;
+    listaDeDias = null
 }
 async function defineTarefas() {
     return tarefas = await (tarefasApi)
 
 }
-async function verificaTarefasDoDia(dia) {
+function verificaTarefasDoDia(dia) {
     let lista = []
-    let tarefas
-    tarefas = await tarefasApi
-    tarefas.forEach(tarefa => {
-        tarefa.valorPropriedadeTarefas.forEach(propriedade => {
+    for (const tarefa of tarefas) {
+        for (const propriedade of tarefa.valorPropriedadeTarefas) {
             if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA") {
                 if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
-                    lista.push(tarefa)
+                    let tarefaObjeto = {
+                        tarefa: tarefa,
+                        propriedade: propriedade
+                    }
+                    lista.push(tarefaObjeto)
                 }
             }
-        });
-    });
+        };
+    };
     return lista
 }
 
@@ -188,21 +191,21 @@ function hover(dia) {
         if (dia.temTres) {
             dia.style = {
                 height: "max-content",
-                width: "11.6%",
+                width: "11.5%",
                 display: "flex",
                 overflow: "hidden",
                 flexDirection: "column",
-                gap: "2%",
+                gap: "8px",
+                position:"absolute",
                 paddingBottom: "1%",
                 backgroundColor: "lightgray",
-                position: "absolute",
                 borderBottomLeftRadius: "10%",
                 borderBottomRightRadius: "10%",
-                boxShadow: "0px 2px rgb(189, 189, 189)",
-
+                zIndex:"0",
+                boxShadow: "0px 6px 6px rgb(145, 145, 145)",
             }
+            dia.temTres = false
         }
-
     }
 }
 
@@ -217,20 +220,8 @@ function setaDireita() {
     data = setMonth(data, getMonth(data) + 1)
     getCalendario()
 }
-function abrePopUp() {
-    abrePopup.value = true
-
-}
-function fechaPopUp(e) {
-    abrePopup.value = false
-}
-function escolheMes(numero) {
-    data = setMonth(data, numero)
-    fechaPopUp()
-    getCalendario()
-}
-function trocaDia(propriedade, dia) {
-    propriedade.valor.valor = format(new Date(dia), "dd-MM-yyyy")
+function trocaDia(tarefa, dia) {
+    tarefa.propriedade.valor.valor = new Date(dia)
     getCalendario()
 
 }
@@ -244,15 +235,6 @@ function verificaQauntidadetarefa(dia) {
         dia.temTres = false
     }
 }
-function adicionaNaLista(tarefa, dia) {
-    if (dia.listaDeTarefas.includes(tarefa)) {
-    } else {
-        dia.listaDeTarefas.push(tarefa)
-    }
-}
-
-
-
 
 </script>
 
