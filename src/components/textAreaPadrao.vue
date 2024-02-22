@@ -1,9 +1,7 @@
 
 <template>
-
   <form>
     <textarea :placeholder="props.placeholder" :style="estilo" @input="$emit('update:modelValue', $event.target.value)" :value="modelValue"></textarea>
-
   </form>
 </template>
 

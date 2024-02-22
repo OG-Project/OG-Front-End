@@ -56,13 +56,13 @@
                 <!-- conferir se de fato vamos usar isso de alteração -->
                 <div class="flex justify-end mr-[15%] mt-[23%]">
                         <Botao v-if="!editar" 
-                        :funcaoClick="alterarEmail" 
+                        :funcaoClick="alterarEmail()" 
                         preset="PadraoRoxo" 
                         texto="Editar E-mail" 
                         tamanhoDaBorda="2px" 
                         tamanhoDaFonte="2.0vh" />
                         <Botao v-else 
-                        :funcaoClick="alterarEmail" 
+                        :funcaoClick="alterarEmail()" 
                         preset="PadraoRoxo" 
                         texto="Confirmar Edição" 
                         tamanhoDaBorda="2px" 
@@ -76,7 +76,7 @@ import Input from '../components/Input.vue'
 import Botao from '../components/Botao.vue'
 import VueCookies from "vue-cookies";
 import {perfilStore} from '../stores/perfilStore'
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeMount } from 'vue';
 import { Usuario } from '../models/usuario';
 
 const PerfilStore=perfilStore()
@@ -85,28 +85,32 @@ PerfilStore.nome
 let editar=ref(false)
 
 function alterarEmail(){
-        editar.value=!editar.value
-        if(editar.value){
-                PerfilStore.alteraInformacoes(PerfilStore.email)
-        }
-        console.log("altera")
+        // PROBLEMA AQUI 
+
+        // editar.value=!editar.value
+        // if(editar.value){
+        //         PerfilStore.alteraInformacoes(PerfilStore.email)
+        // }
+        // console.log("altera")
 }
-onMounted(()=>{
-        let user=Usuario
-        user.dataNascimento="12/12/2012"
-        user.email="teste@gmail"
-        user.nome="teste"
-        user.sobrenome="testedando"
-        user.senha="123"
-        user.username="LoucoDaXJ6"
-        VueCookies.set("usuarioCookie",JSON.stringify(user))
+onBeforeMount(()=>{
         let usuario= VueCookies.get("usuarioCookie")
         // erros pelo fato do cookie
-PerfilStore.nome=usuario.nome
-PerfilStore.sobrenome=usuario.sobrenome
-PerfilStore.email=usuario.email
-PerfilStore.username=usuario.username
-PerfilStore.dataDeNascimento=usuario.dataNascimento
+        PerfilStore.nome=usuario.nome
+        PerfilStore.sobrenome=usuario.sobrenome
+        PerfilStore.email=usuario.email
+        PerfilStore.username=usuario.username
+        PerfilStore.dataDeNascimento=usuario.dataNascimento
+})
+onMounted(()=>{
+        // let user=Usuario
+        // user.dataNascimento="12/12/2012"
+        // user.email="teste@gmail"
+        // user.nome="teste"
+        // user.sobrenome="testedando"
+        // user.senha="123"
+        // user.username="LoucoDaXJ6"
+        // VueCookies.set("usuarioCookie",JSON.stringify(user))
 
 })
 </script>

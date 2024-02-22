@@ -7,9 +7,12 @@ import VueCookies from "vue-cookies";
 
 import Navbar from '@/components/Navbar.vue';
 import { onMounted, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { perfilStore } from './stores/perfilStore';
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
-
+const perfil=perfilStore()
+const {isVlibras}=storeToRefs(perfil)
 // let ativado='';
 
 // watch(ativado,async (newValue,oldValue)=>{
@@ -30,7 +33,7 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
     <RouterView />
     <!-- {{ VueCookies.get('isVlibras') }}
     {{ ativado }} -->
-    <div v-show="VueCookies.get('isVlibras')=='true'">
+    <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
       <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper>
@@ -39,10 +42,6 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
       </div>
     </div>
 
-  <CriarEquipePopUp>
-    
-  </CriarEquipePopUp>
-  
 </template>
 
 <style scoped>

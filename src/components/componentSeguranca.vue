@@ -14,7 +14,7 @@
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos.
                         </div>
-                        <Botao :funcaoClick="alteraSenha" preset="PadraoRoxo" texto="Alterar Senha">
+                        <Botao :funcaoClick="abrePopUp" :parametrosFuncao="['senha']" preset="PadraoRoxo" texto="Alterar Senha">
                         </Botao>
                     </div>
                     <div class="flex items-center gap-8">
@@ -30,7 +30,7 @@
                                 desconectar a conta do Google.
                             </div>
                         </div>
-                        <Botao :funcaoClick="alteraEmail" preset="PadraoRoxo" texto="Alterar E-mail">
+                        <Botao :funcaoClick="abrePopUp" :parametrosFuncao="['email']" preset="PadraoRoxo" texto="Alterar E-mail">
                         </Botao>
                     </div>
                     <!-- tudo errado, arrumar -->
@@ -41,15 +41,16 @@
                         v-model="email" 
                         tipo="obrigatorio" />
                     </div> -->
+                    <!-- <alteraSenha v-if="PerfilStore.popUpSenha"></alteraSenha>
+                   <alterarEmail v-if="PerfilStore.popUpEmail"></alterarEmail>  -->
                 </div>
             </div>
         </div>
         <div class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
             <span>Deseja deletar sua Conta?</span>
-            <Botao :funcaoClick="alterarEmail" preset="PadraoRoxo" texto="Confirmar Edição" tamanhoDaBorda="2px"
-                tamanhoDaFonte="2.0vh" />
         </div>
-        <alteraSenha></alteraSenha>
+        
+        
     </div>
 </template>
 
@@ -60,16 +61,40 @@ import Input from '../components/Input.vue'
 import Botao from './Botao.vue';
 import VueCookies from "vue-cookies";
 import alteraSenha from './alterarSenha.vue'
+import { ref } from 'vue';
+import alterarEmail from './alterarEmail.vue';
 
 let funcaoPopUp=funcaoPopUpStore()
 const PerfilStore = perfilStore()
 let usuario=VueCookies.get('usuarioCookie')
 
 let isLogadoGoogle=false
+let popUpSenha=ref(false);
+let popUpEmail=ref(false);
 let senha;
 let confirmarSenha;
 let celular;
 let email;
+
+function abrePopUp(tipo){
+console.log(tipo)
+if (tipo[0] == 'senha') {
+    console.log(tipo[0])
+    console.log(PerfilStore.popUpSenha+'senha')
+    console.log(PerfilStore.popUpEmail+'email')
+    PerfilStore.popUpSenha = true;
+    PerfilStore.popUpEmail = false;
+    console.log(PerfilStore.popUpSenha+'senha')
+    console.log(PerfilStore.popUpEmail+'email')
+} else {
+    PerfilStore.popUpEmail = true;
+    PerfilStore.popUpSenha = false;
+}
+
+funcaoPopUp.abrePopUp()
+
+}
+
 
 </script>
 

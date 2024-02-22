@@ -1,21 +1,23 @@
 <template>
   <div class="grid-template flex">
     <div
-      class="convites-bg flex-col w-full bg-[#FEFBFF] shadow shadow-gray-950 "
+      class="convites-bg flex-col w-full bg-[#FEFBFF] shadow-md  shadow-gray-200 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 "
       :style="{height: altura}"
     >
-      <div class="flex justify-center">
-        <h1 class="font-semibold xl:text-2xl" :alt="texto">{{ texto }}</h1>
+      <div class="flex justify-center overfloow-y:auto">
+        <h1 class="font-semibold xl:text-xl" :alt="texto">{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
-        <div class="w-full flex items-center mt-8 mb-2" v-for="convidado in listaConvidados" :key="convidado.nome">
+        <div class="w-full flex items-center mt-5 mb-2 " v-for="convidado in listaConvidados" :key="convidado.nome">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
         <template v-if="listaConvidados.length > 0">
           <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :style="altDaImagemPerfil" />
           
         </template>
 
-        <h2 class="nome-convidado md:text-sm xl:text-xl w-[15vh]">{{ truncarNome(convidado, 15) }}</h2>
+
+        <h2 class="nome-convidado md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1">{{ truncarNome(convidado.nome , 15) }}</h2>
+
 
         <template v-if="listaConvidados.length > 0">
           <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem" />
@@ -26,8 +28,8 @@
           <template v-if="listaConvidados.length > 0">
 
             <SelectPadrao
-              class="selectEdit"
-             styleSelect="select-cinza"
+              class="selectEdit" 
+             styleSelect="select-cinza" 
               :listaSelect="opcoesSelect"
             ></SelectPadrao>
           </template>
@@ -74,6 +76,10 @@ const imagemIcon={
 
 @import url(../assets/main.css);
 
+    ::-webkit-scrollbar{
+    @apply hidden;
+    }
+
     .nome-convidado {
       white-space: nowrap;
       overflow: hidden;
@@ -81,37 +87,39 @@ const imagemIcon={
       max-width: 100%;
     }
 
-    .convites-bg {
-        @apply 
+    .convites-bg::-webkit-scrollbar{
+        @apply hidden
         xl:h-[24vh] 
         lg:h-[18vh]
         md:h-[21vh]
         justify-items-center justify-center;
         display: grid;
         grid-template-columns: 0% 0%;
-        clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
+        
     }
+ 
 
     .imgIcon {
         @apply bg-cover 
         bg-center flex flex-col justify-center 
-        items-center mr-[-25px] ml-[10px]  
-        xl:w-[2vw] xl:h-[4vh];
+        items-center 2xl:mr-[1vw] 2xl:ml-[2vw] xl:mr-[-2vw] xl:ml-[3vw] lg:mr-[-4vw] lg:ml-[4vw] md:mr-[-6vw] md:ml-[6vw]
+        2xl:w-[2vw] 2xl:h-[3vh] xl:w-[2.5vw] xl:h-[4vh] lg:w-[3vw] lg:h-[5vh] md:w-[4vw] md:h-[6vh];
     }
 
     .imgDePerfil {
         @apply rounded-full bg-cover bg-center flex 
-        flex-col  mr-[5px] ml-[-25px]
-        xl:w-[2vw] xl:h-[4vh];
+        flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw]
+        2xl:w-[3vw] 2xl:h-[5vh] xl:w-[3vw] xl:h-[6vh] lg:w-[4vw] lg:h-[8vh] md:w-[5vw] md:h-[10vh];
     }
 
     .selectEdit {
         @apply
-        text-xs ml-[30px] mb-[10px] mt-2 ;
+        text-xs 2xl:ml-[0vw] xl:ml-[4vw] lg:ml-[6vw] md:ml-[8vw] mb-[10px] mt-2
+         2xl:w-[5vw] 2xl:h-[5vh] xl:w-[8vw] xl:h-[4vw] lg:w-[10vw] lg:h-[5vw] md:w-[12vw] md:h-[6vw] ;
     }
 
     .grid-template{ 
-        @apply w-[80%%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+        @apply w-[80%%] h-[11%] gap-4  ; 
         display: grid;
         grid-template-columns: 40% 55%;
     }

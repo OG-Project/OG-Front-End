@@ -1,4 +1,6 @@
 <template>
+    <alterarSenha v-if="popUpSenha" ></alterarSenha>
+    <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center">
         <div class="flex  flex-col items-center w-[443px] h-[877px] drop-shadow-md bg-[#FEFBFF]">
             <div class="w-[329px] rounded-full h-[329px] mt-10 mb-16 bg-emerald-400" ></div>
@@ -12,10 +14,6 @@
         </div>
 
         <div>
-   
-            <!-- <componentSegurancaVue /> -->
-            <!-- <ComponentAcessibilidade /> -->
-            <!-- <ComponentInformacao /> -->
             <Transition name="slide-fade" mode="out-in">
                 <router-view />
             </Transition>
@@ -24,9 +22,17 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia';
+import { perfilStore } from '../stores/perfilStore';
 import Botao from '../components/Botao.vue'
-import componentSegurancaVue from '../components/componentSeguranca.vue';
 import router from '../router';
+import alterarEmail from '../components/alterarEmail.vue';
+import alterarSenha from '../components/alterarSenha.vue';
+// import { funcaoPopUpStore } from '../stores/funcaoPopUp';
+// let funcaoPopUp=funcaoPopUpStore()
+
+const perfil=perfilStore()
+const {popUpSenha,popUpEmail}=storeToRefs(perfil)
 
 function informacao(){
     
