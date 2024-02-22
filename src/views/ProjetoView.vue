@@ -20,7 +20,7 @@
                             <selectPadrao altura="5" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
                                 v-model="equipesRelacionadasProjeto" fonte-tamanho="1rem"></selectPadrao>
 
-                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno">
+                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno" :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
                             </Botao>
 
                         </div>
@@ -48,7 +48,7 @@
             </div>
             <div class=" pt-8 w-[96%]">
                 <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaDeUsuariosParaBusca" texto="Equipes Vinculadas"></ListaConvidados>
+                    :listaConvidados="listaEquipesConvidadas.value" texto="Equipes Vinculadas"></ListaConvidados>
             </div>
         </div>
         <div class=" w-[83%] h-full flex-row z-40 ">
@@ -112,7 +112,7 @@
 
                 </div>
                 <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp()"
-                    v-if="funcaoPopUp.variavelModal == false">
+                    v-if="funcaoPopUp.variavelModal == false ">
                     <p>Nova</p>
                     <img src="../imagem-vetores/sinalDeMaisIcon.svg">
                 </div>
@@ -205,7 +205,7 @@
     </div>
 
 
-    <div class="h-[10%] w-[70.4%] flex items-center justify-end pr-4 ">
+    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
     </div>
@@ -250,11 +250,8 @@ let AuxParaCriarPropriedades = [];
 let itemSelecionadoPesquisa = ref("")
 let listaAuxResponsaveisProjeto = []
 let responsaveisProjeto = ref([]);
-let listaParaRenderizarDoisUsuarios = ref([])
-let auxListaParaRenderizarDoisUsuarios = [];
-let cont = 0;
-let variavelModalMaisUsuarios = ref(Boolean);
-
+let listaEquipesConvidadas= ref([])
+let listaEquipesAux=[]
 funcaoPopUp.variavelModal = false
 onMounted(() => {
     defineSelect()
@@ -271,7 +268,6 @@ onUpdated(() => {
 })
 
 
-
 async function defineSelect() {
     let listaAux = (await conexao.procurar('/equipe'))
     let listaAux1 = []
@@ -279,7 +275,7 @@ async function defineSelect() {
         listaAux1.push(equipeAtual.nome);
         listaSelecao.value = listaAux1
     });
-
+    return listaSelecao
 }
 
 function buscaPropriedadeCookies() {
@@ -388,6 +384,15 @@ function criaPropriedade() {
     criaProjeto.criaPropriedade(nomePropriedade.value, tipoPropriedade.value.toUpperCase())
 
 }
+
+async function colocaListaEquipes(equipe){
+    let lista= await defineSelect()
+    if(lista.value.includes())
+
+    listaEquipesAux.push(equipe)
+    listaEquipesConvidadas.value.push(listaEquipesAux)
+    console.log(listaEquipesConvidadas.value)
+}
 </script>
 
 <style lang="scss">
@@ -424,7 +429,7 @@ function criaPropriedade() {
     display: grid;
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
-    height: 100%;
+    height: 90%;
 }
 
 .animation {

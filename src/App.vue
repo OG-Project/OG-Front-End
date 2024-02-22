@@ -20,7 +20,6 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
   <Navbar></Navbar>
   <RouterView />
 
-<FundoPopUp></FundoPopUp>
 
 
 
