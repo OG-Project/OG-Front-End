@@ -79,13 +79,10 @@ let email;
 function abrePopUp(tipo){
 console.log(tipo)
 if (tipo[0] == 'senha') {
-    console.log(tipo[0])
-    console.log(PerfilStore.popUpSenha+'senha')
-    console.log(PerfilStore.popUpEmail+'email')
+ 
     PerfilStore.popUpSenha = true;
     PerfilStore.popUpEmail = false;
-    console.log(PerfilStore.popUpSenha+'senha')
-    console.log(PerfilStore.popUpEmail+'email')
+
 } else {
     PerfilStore.popUpEmail = true;
     PerfilStore.popUpSenha = false;

@@ -40,10 +40,25 @@
 </template>
 
 <script setup>
-
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import Botao from './Botao.vue';
+import { ref } from 'vue';
+import { perfilStore } from '../stores/perfilStore';
+let perfil=perfilStore()
+
+let senhaNova=ref('')
+let senhaConfirmada=ref('')
+
+function alteraSenha(){
+    if(senhaNova.value==senhaConfirmada.value){
+        alert('igual')
+    }else{
+        alert('insira de novo')
+    }
+    console.log('oi')
+}
+
 </script>
 
 <style scoped>
