@@ -141,8 +141,6 @@
         </div>
       </div>
 
-      
-
       <div v-if="subtarefaSendoCriada">
         <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
@@ -282,25 +280,59 @@
         </div>
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of Comentarios">
-            <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-              <img
-                :src="comentario.fotoDoAutor"
-                class="shadow-2xl h-[65px] mr-4 ml-4 pt-4 rounded-full"
-              />
-              <div class="pt-6 w-[80%]">
-                <p>
-                  {{ comentario.autor }}
-                </p>
-                <p class="pt-4 pb-4 pr-4 break-all">
-                  {{ comentario.comentario }}
-                </p>
-              </div>
-              <div class="h-[10%] flex justify-center pt-2">
+            <div
+              class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] items-end flex flex-col"
+            >
+              <div class="w-[15%] gap-4 flex justify-center pt-2">
+                <img
+                  class="w-[25%]"
+                  :src="iconeLapisPreto"
+                  @click="trocaComentarioSendoEditado"
+                />
                 <img
                   @click="deletaComentario(comentario)"
-                  class="w-[40%]"
+                  class="w-[25%]"
                   :src="BotaoX"
                 />
+              </div>
+              <div class="flex w-[100%] mb-2">
+                <img
+                  :src="comentario.fotoDoAutor"
+                  class="shadow-2xl h-[65px] mr-4 ml-4 pt-4 rounded-full"
+                />
+                <div class="w-[100%]">
+                  <p>
+                    {{ comentario.autor }}
+                  </p>
+
+                  <div v-if="comentarioSendoEditado">
+                    <TextAreaPadrao
+                      width="25vw"
+                      height="15vh"
+                      class="pt-4 pb-4"
+                      placeholder="Descrição da tarefa"
+                      tamanho-da-fonte="1rem"
+                      resize="vertical"
+                      v-model="comentario.comentario"
+                    ></TextAreaPadrao>
+                  </div>
+                  <div v-if="!comentarioSendoEditado">
+                    <p class="pt-4 pb-4 pr-4 break-all">
+                      {{ comentario.comentario }}
+                    </p>
+                  </div>
+                  <div v-if="comentarioSendoEditado">
+                    <Botao
+                      texto="Editar"
+                      preset="PadraoRoxo"
+                      tamanhoPadrao="pequeno"
+                      :funcaoClick="editarComentario"
+                      :parametrosFuncao="
+                        comentario
+                      "
+                    ></Botao>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -358,25 +390,48 @@
               </div>
               <div class="flex justify-center">
                 <img
-                  class="w-[50%]"
+                  class="w-[100%] mr-4"
                   @click="deletaPropriedade(propriedade)"
                   :src="BotaoX"
                 />
               </div>
             </div>
             <div
-              class="w-[100%] pl-4 min-h-[5vh] flex items-center"
+              class="w-[100%] min-h-[5vh] flex items-center justify-center"
               v-if="propriedade.sendoEditado"
             >
-              <Input
-                altura="2"
-                largura="35"
-                conteudoInput=" "
-                v-model="propriedade.valor"
-                width="80%"
-                @input="editarPropriedade(index, propriedade.valor)"
-              >
-              </Input>
+              <div v-if="propriedade.tipo === 'Texto'">
+                <Input
+                  altura="2"
+                  largura="35"
+                  conteudoInput=" "
+                  v-model="propriedade.valor"
+                  width="80%"
+                  @input="editarPropriedade(index, propriedade.valor)"
+                >
+                </Input>
+              </div>
+              <div v-if="propriedade.tipo === 'Data'">
+                <Calendar
+                  class="border-2 rounded-lg border-[#620BA7]"
+                  border
+                  v-model="propriedade.valor"
+                  dateFormat="dd/mm/yy"
+                  showIcon
+                  iconDisplay="input"
+                />
+              </div>
+              <div v-if="propriedade.tipo === 'Numero'">
+                <InputNumber
+                  class="border-2 rounded-lg border-[#620BA7]"
+                  showIcon
+                  iconDisplay="input"
+                  v-model="propriedade.valor"
+                  inputId="minmaxfraction"
+                  minFractionDigits="0"
+                  maxFractionDigits="2"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -398,9 +453,13 @@
               </div>
               <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
               <div class="w-[40%] flex justify-between">
-                <ColorPicker v-model="statsAdd.cor" class="border-2 rounded-lg ml-8" />
+                <ColorPicker v-model="statsAdd.cor" class="border-2 rounded-lg ml-16" />
                 <div class="flex justify-center">
-                  <img class="w-[50%]" @click="deletaStatus(statsAdd)" :src="BotaoX" />
+                  <img
+                    class="w-[100%] mr-4"
+                    @click="deletaStatus(statsAdd)"
+                    :src="BotaoX"
+                  />
                 </div>
               </div>
             </div>
@@ -458,7 +517,7 @@
       >
         <p
           :style="{ 'background-color': '#' + status.cor }"
-          class="flex items-center justify-center"
+          class="flex items-center justify-center px-4"
         >
           {{ status.nome }}
         </p>
@@ -501,7 +560,10 @@ import SelectPadrao from "../components/selectPadrao.vue";
 import { ref, watch } from "vue";
 import navBar from "../components/navBar.vue";
 import ColorPicker from "primevue/colorpicker";
-import BotaoX from "../imagem-vetores/botao-x.svg";
+import BotaoX from "../imagem-vetores/XPreto.svg";
+import InputNumber from "primevue/inputnumber";
+import Calendar from "primevue/calendar";
+import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
 
 //Estilização usando Java Script
 
@@ -542,15 +604,15 @@ let statusSubtarefa = ref("");
 //Função utilizada para criar um Status
 
 function criaStatus() {
-  if(nomeStatus.value != ''){
+  if (nomeStatus.value != "") {
     let statusNovo = {
-    nome: nomeStatus.value,
-    cor: corStatus.value,
-    estaNaTarefa: ref(false),
-  };
-  nomeStatus.value = "";
-  status.value.push(statusNovo);
-  statusSendoCriado.value = false;
+      nome: nomeStatus.value,
+      cor: corStatus.value,
+      estaNaTarefa: ref(false),
+    };
+    nomeStatus.value = "";
+    status.value.push(statusNovo);
+    statusSendoCriado.value = false;
   }
 }
 
@@ -572,23 +634,25 @@ function deletaStatus(stat) {
 //Função utilizada para criar uma Subtarefa
 
 function criaSubtarefa() {
-  let booleanDaSubtarefa = ref();
-  if (statusSubtarefa.value == "Em Progresso") {
-    booleanDaSubtarefa.value = false;
-  } else if (statusSubtarefa.value == "Concluido") {
-    booleanDaSubtarefa.value = true;
+  if (nomeSubtarefa.value != "") {
+    let booleanDaSubtarefa = ref();
+    if (statusSubtarefa.value == "Em Progresso") {
+      booleanDaSubtarefa.value = false;
+    } else if (statusSubtarefa.value == "Concluido") {
+      booleanDaSubtarefa.value = true;
+    }
+    let subtarefaNova = {
+      nome: nomeSubtarefa.value,
+      concluida: booleanDaSubtarefa.value,
+      status: statusSubtarefa.value,
+    };
+    subtarefas.value.push(subtarefaNova);
+    subtarefaSendoCriada.value = false;
+    numeroDeTarefas.value = subtarefas.value.length;
+    numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
+    porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
+    barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
   }
-  let subtarefaNova = {
-    nome: nomeSubtarefa.value,
-    concluida: booleanDaSubtarefa.value,
-    status: statusSubtarefa.value,
-  };
-  subtarefas.value.push(subtarefaNova);
-  subtarefaSendoCriada.value = false;
-  numeroDeTarefas.value = subtarefas.value.length;
-  numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
-  porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
-  barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
 }
 
 //Função utilizada para deletar uma Subtarefa
@@ -755,6 +819,20 @@ function deletaComentario(comentario) {
   });
 }
 
+//Função que troca o valor da variavel de comentario sendo editado
+
+function trocaComentarioSendoEditado() {
+  comentarioSendoEditado.value = !comentarioSendoEditado.value;
+}
+
+function editarComentario(comentario){
+  console.log(comentario)
+  if(comentario.comentario === ''){
+    deletaComentario(comentario)
+  }
+  trocaComentarioSendoEditado()
+}
+
 //Variavel utilizada para armazenar os comentarios da tarefa
 
 const Comentarios = ref([]);
@@ -808,6 +886,10 @@ let numeroDeTarefas = ref(subtarefas.value.length);
 //Armazena as informações da conta de porcentagem de quantas tarefas foram concluidas
 
 let porcentagemDeTarefasConcluidas = ref(atualizaPorcentagemDeTarefasConcluidas());
+
+//Armazena se o comentario já enviado está sendo editado ou não
+
+let comentarioSendoEditado = ref(false);
 
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
