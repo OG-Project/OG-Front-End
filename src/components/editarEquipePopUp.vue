@@ -1,31 +1,28 @@
 <template>
- <div>
-    <fundoPopUp v-if="!editando" largura="" altura="100%">
+
+    <fundoPopUp v-if="!editando" largura="" altura="60%" >
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
-                        <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Editar Equipe</h1>
+                        <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                         <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
                         <div class="styleH1Padrao">
-                            <h1 class=" flex 2xl:h-[4vh]  2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] "> nome equipe</h1>
+                            <h1 class=" flex 2xl:h-[4vh]  2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeSelecionada.equipe.nome"> {{ truncarNome(equipeSelecionada.equipe.nome , 20)  }}</h1>
                         </div>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
                     <div class="textArea">
-                        <p>descrição da equipe</p>
+                        <p>{{ equipeSelecionada.equipe.descricao }}</p>
                     </div>
                 </div> 
-                <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                    <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
-                </div>
                 <div>
                     <div class="botao">
-                    <div class="flex justify-start xl:mt-[6vh] lg:mt-[8vh] md:mt-[10vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
-                        <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem">
+                    <div class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
+                        <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem" :funcaoClick="deletarEquipe">
                         </Botao>
                     </div>
-                    <div class=" flex justify-end xl:mt-[6vh] lg:mt-[8vh] md:mt-[10vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
+                    <div class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
                         </Botao>
                     </div>
@@ -35,9 +32,8 @@
             </div>
                 
         </fundoPopUp>
-    </div>
-   <div>
-        <fundoPopUp v-if="editando" largura="" altura="100%">
+
+        <fundoPopUp v-if="editando" largura="" altura="60%">
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
@@ -46,30 +42,17 @@
                         <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
                     <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
                 </div>
-                    <div class=" grid-template  flex w-full">
-                        <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInputConvidado()" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
-                </div>
-                <div class="grid-template flex w-full mt-[1vh]">
-                    <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
-                </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
-                    <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
+                    <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="20vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
                 </div> 
-                <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                    <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
-                </div>
-                <div v-if="!adicionarNovosMembros" class="botaoSalvar flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
-                        </Botao>
-                </div>
-                <div v-if="adicionarNovosMembros" class="botaoSalvar flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar convites" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                <div class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
                         </Botao>
                 </div>
             </div>
                 
         </fundoPopUp>
-    </div>
+
 </template>
 
 <script setup>
@@ -78,29 +61,23 @@ import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
 import Botao from './Botao.vue';
-import ListaConvidados from './ListaConvidados.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
-import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
 
 
 const banco = conexaoBD();
+const equipeSelecionada = VueCookies.get('equipeSelecionada')
 let nome = ref('');
 let descricao = ref('');
-let usuarioConvidado = ref('');
 let mensagemError = ref("");
 const usuarioLogado = VueCookies.get('usuarioCookie');
-let membrosEquipe = ref([]);
-let usuarios = banco.procurar("/usuario");
 let editando = ref(false);
-let adicionarNovosMembros = ref(false);
-
-const equipeCadastrada={
-    nome:"",
-    descricao:""
-}
+let equipes = banco.procurar("/equipe");
 
 console.log(usuarioLogado)
+console.log(equipeSelecionada)
+
+const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 async function editarEquipe(){
     editando.value = !editando.value;
@@ -118,73 +95,56 @@ if (screenWidth <= 768) {
 }
 };
 
-function larguraInputConvidado(){
-    const screenWidth = window.innerWidth;
-if (screenWidth <= 768) {
-    return '30';
-} else if (screenWidth > 768 && screenWidth <= 1024) {
-    return '35';
-} else if (screenWidth > 1024 && screenWidth < 1920) {
-    return '35';
-} else {
-    return '18';
-}
-}
+async function deletarEquipe(){
 
-async function listaUsuarios(){
-    let listaUsuarios = await usuarios;
-    listaUsuarios.forEach((usuario)=>{
-    if(usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email){
-            membrosEquipe.value.push(usuario);
+    let listaEquipes = await equipes;
+    listaEquipes.forEach((equipe) =>{
+        if(equipeSelecionada.equipe.id == equipe.id){
+        
+            banco.deletarEquipe(equipe.id,equipeSelecionada.id,'/equipe')
         }
     })
+
 }
 
-async function adicionarMembro(){
-    adicionarNovosMembros = !adicionarNovosMembros
-    listaUsuarios();
-}
+ async function atualizarEquipe() { 
+    const equipeAtualizar ={
+        id: '',
+        nome: '',
+        descricao: ''
+    };
 
- async function cadastrarEquipe() { 
-    const cria = criaEquipeStore();
-    
             if (!nome.value.trim()) {
                 console.log("É obrigatorio o nome da equipe");
                 return ;
                 
             }
-        equipeCadastrada.nome = nome.value
-        equipeCadastrada.descricao = descricao.value
-            mensagemError.value = "";
-         console.log(equipeCadastrada)
-         console.log(membrosEquipe.value)
-            const equipePromise = cria.criaEquipe(
-                equipeCadastrada
-            );    
 
-            const usuarioJaAdicionado = membrosEquipe.value.some(membro => membro.id === usuarioLogado.id);
-             if (!usuarioJaAdicionado) {
-             membrosEquipe.value.push(usuarioLogado);
-             }
+
+        let listaEquipes = await equipes;
+        listaEquipes.forEach((equipe)=>{
+        if(equipeSelecionada.equipe.id == equipe.id){
             
-            const ids = membrosEquipe.value.map(m => {
-                return Number(m.id);
-            })
-           
-            let equipe;
-            await equipePromise.then(e => {
-                equipe = e.data
-                console.log(e.data)
-            })
+            equipeAtualizar.id = equipe.id
+            equipeAtualizar.nome = nome.value
+            equipeAtualizar.descricao = descricao.value
+            mensagemError.value = "";
+        
+            console.log(equipeAtualizar.nome)
+            console.log(equipeAtualizar.descricao)
 
-            console.log(equipe)
-
-            banco.adicionarUsuarios(ids,equipe.id,"/usuario/add")
+            banco.atualizar(equipeAtualizar, "/equipe");
+        }
+        })
 
             nome.value = ""
             descricao.value = ""
-            membrosEquipe = ""
-};
+
+            editando.value = false;
+
+
+            window.location.reload();
+}
 
 </script>
 <style scoped>
@@ -208,7 +168,7 @@ async function adicionarMembro(){
     }
 
     .textArea{
-     @apply flex  2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black
+     @apply flex  2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg
      border-transparent border-b-roxo border-b-4  focus-within:border-roxo focus-within:border-4;
      border-bottom: 'solid 4px #620BA7' ;
  }

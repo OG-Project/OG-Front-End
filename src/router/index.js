@@ -23,6 +23,11 @@ const router = createRouter({
       path: '/equipe',
       name: 'Equipe',
       component: () => import('../views/EquipeHomeView.vue')
+    },
+    {
+      path: '/editarEquipe',
+      name: 'Editar',
+      component: () => import('../components/editarEquipePopUp.vue')
     }
   ]
 })
