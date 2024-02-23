@@ -38,6 +38,11 @@ const router = createRouter({
           path:'privacidade',
           name:'Privacidade',
           component: ()=>import('../components/componentPrivacidade.vue')
+        },
+        {
+          path:'aparencia',
+          name:'Aparencia',
+          component: ()=>import('../components/componentAparencia.vue')
         }
       ]
     },

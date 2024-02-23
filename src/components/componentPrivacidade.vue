@@ -10,28 +10,17 @@
                 <div class="flex flex-col gap-10">
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Permitir que visualizem suas tarefas</span>
-                        <CheckBox tipo="toggle" el-id="checkDigitarVoz" @envia-valor="visu($event)"></CheckBox>                           
+                        <CheckBox tipo="toggle" el-id="checkDigitarVoz" @envia-valor="visualizacaoTarefa($event)"></CheckBox>                           
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Permitir que visualizem seu email</span>
-                        <CheckBox tipo="toggle" el-id="checkLibras" @envia-valor="libras($event)"></CheckBox>
+                        <CheckBox tipo="toggle" el-id="checkLibras" @envia-valor="visualizacaoEmail($event)"></CheckBox>
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Permitir que visualizem a aparencia do seu site</span>
-                        <CheckBox tipo="toggle" el-id="checkTecladoVirtual" @envia-valor="tecladoVirtual($event)"></CheckBox>                                        
+                        <span class="text-xl">Permitir que visualizem suas Equipes</span>
+                        <CheckBox tipo="toggle" el-id="checkLibras" @envia-valor="visualizacaoEquipes($event)"></CheckBox>
                     </div>
-                    <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Permitir que salvem suas tarefas ou projetos</span>
-                        <CheckBox tipo="toggle" el-id="checkDigitarVoz" @envia-valor="digitarVoz($event)"></CheckBox>                           
-                    </div>
-                    <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Permitir que visualizem seus grupos</span>
-                        <CheckBox tipo="toggle" el-id="checkLibras" @envia-valor="libras($event)"></CheckBox>
-                    </div>
-                    <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Permitir que outros usuarios conseguiam ver saus tarefas atrasadas</span>
-                        <CheckBox tipo="toggle" el-id="checkTecladoVirtual" @envia-valor="tecladoVirtual($event)"></CheckBox>                                        
-                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -41,7 +30,16 @@
 
 <script setup>
 import CheckBox from '../components/checkBox.vue'
+import { VueCookies } from 'vue-cookies';
+function visualizacaoTarefa(valor){
+    
+}
+function visualizacaoEquipes(valor){
 
+}
+function visualizacaoEmail(valor){
+
+}
 
 
 </script>

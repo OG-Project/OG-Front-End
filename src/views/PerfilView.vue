@@ -56,6 +56,10 @@ function privacidade(){
     router.push({name: 'Privacidade'})
 
 }
+function aparencia(){
+    router.push({name: 'Aparencia'})
+
+}
 </script>
 
 <style scoped>
