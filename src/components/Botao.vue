@@ -555,7 +555,7 @@ function click() {
   }
 
   .pequenoId{
-    @apply 2xl:w-[5vw] 2xl:h-[4vh]  lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm
+    @apply 2xl:w-[8vw] 2xl:h-[4vh]  lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm
   }
 
   .grandeId{

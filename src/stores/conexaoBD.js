@@ -7,29 +7,29 @@ import { Propriedade } from "../models/Propriedade";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
-      return {api:axios.get("http://localhost:8085")}
+      return {api:axios.get("http://10.4.96.35:8082/propriedade")}
     },
     actions: {
       procurar(textoRequisicao){
         
         // return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
-        return axios.get("http://localhost:8085"+ textoRequisicao).then(response => response.data)
+        return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
         console.log(objeto.nome)
-        return axios.post("http://localhost:8085"+textoRequisicao,objeto)
+        return axios.post("http://10.4.96.35:8082"+textoRequisicao,objeto)
       },
       atualizar(objeto,textoRequisicao){
-        return axios.put("http://localhost:8085"+textoRequisicao,objeto)
+        return axios.put("http://10.4.96.35:8082"+textoRequisicao,objeto)
       },
       adicionaUsuarioAEquipe(userId, equipeId, textoRequisicao){
-        return axios.patch("http://localhost:8085"+textoRequisicao,userId,equipeId)
+        return axios.patch("http://10.4.96.35:8082"+textoRequisicao,userId,equipeId)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch(`http://localhost:8085${textoRequisicao}/${equipeId}`, ids)
+        return axios.patch(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`, ids)
       },
-      deletarEquipe(id,ueId,textoRequisicao){
-        return axios.delete(`http://localhost:8085${textoRequisicao}/${id}/${ueId}`)
+      deletarEquipe(id,textoRequisicao){
+        return axios.delete(`http://10.4.96.35:8082${textoRequisicao}/${id}`)
       }
       
     }

@@ -13,7 +13,7 @@
                 <div class="flex justify-center"  >
                         <div class="corDiv">
                          <img class="imagemEquipe" src="" alt="">
-                         <p class=" text-2xl mt-5 ml-4 text-[#877E7E] " >{{ truncarNome(equipe.equipe.nome , 12) }}</p>
+                         <p class=" text-2xl mt-5 ml-4 text-[#877E7E] " >{{ truncarNome(equipe.equipe.nome , larguraNomeEquipe()) }}</p>
                         </div>
                             <div  @click="abrePopUp(equipe, 'engrenagem')">
                                 <img class="imgIcon " src="../imagem-vetores/engrenagem.svg" alt="">
@@ -31,7 +31,7 @@
             <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
         </div>
         <div class="absolute top-0 left-0 right-0">
-            <CriarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></CriarEquipePopUp>
+           <CriarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></CriarEquipePopUp>
         </div>
      </div>
     </div>
@@ -44,9 +44,7 @@
   import { conexaoBD } from "../stores/conexaoBD.js";
   import editarEquipePopUp from "../components/editarEquipePopUp.vue";
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import CriarEquipePopUp from "../components/CriarEquipePopUp.vue";
-
-  const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+  import CriarEquipePopUp from "../components/CriarEquipePopUp.vue";
 
   let equipesUsuario = ref([]);
   const banco = conexaoBD();
@@ -59,6 +57,8 @@ import CriarEquipePopUp from "../components/CriarEquipePopUp.vue";
   const nomeCompleto = ref('');
 
   listaUsuarios();
+
+  const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
   async function listaUsuarios(){
         let listaUsuarios = await usuarios;
@@ -86,16 +86,26 @@ import CriarEquipePopUp from "../components/CriarEquipePopUp.vue";
 
   }
 
-function mostrarNomeCompleto(nome) {
+  function larguraNomeEquipe(){
+        const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+        return 8;
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return 8;
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return 8;
+    } else {
+        return 14;
+    }
+    }
+
+  function mostrarNomeCompleto(nome) {
     nomeCompleto.value = nome;
-}
+  }
 
-function limparNomeCompleto() {
+  function limparNomeCompleto() {
     nomeCompleto.value = '';
-}
-
- 
-  
+  }
  </script>
  
  <style scoped>
@@ -104,13 +114,14 @@ function limparNomeCompleto() {
     cursor: pointer;
  }
  .textArea{
-     @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  bg-[#D7D7D7] text-black text-lg
+     @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full  
+     bg-[#D7D7D7] text-black text-lg
      border-transparent border-b-roxo border-b-4  focus-within:border-roxo focus-within:border-4;
      border-bottom: 'solid 4px #620BA7' ;
  }
  
  .corDiv{
-    @apply flex  ml-10 h-20 w-[13vw] 
+    @apply flex  ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[15vw] lg:w-[21vw] md:w-[25vw]
     border-transparent
     border-b-roxo    
     border-b-4
@@ -120,11 +131,12 @@ function limparNomeCompleto() {
  }
 
  .maisEquipes{
- @apply flex flex-col ml-[5vw] mr-16 mt-[5vh] w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400 justify-center items-center;
+ @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh]
+     2xl:w-[20vw] 2xl:h-[23vh] xl:w-[23.5vw] xl:h-[23vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400 justify-center items-center;
  }
  
  .listaEquipes{
-    @apply  flex flex-wrap justify-start w-[88vw] h-[73vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
+    @apply  flex flex-wrap justify-start w-[88vw] h-[75vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
     flex: 1 1 px;
    
  }
@@ -134,15 +146,17 @@ function limparNomeCompleto() {
  }
  
  .criarEquipe{
-     @apply flex flex-col ml-[5vw] mr-16 mt-[5vh] w-[20vw] h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400;
+     @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh]
+     2xl:w-[20vw] 2xl:h-[23vh] xl:w-[23.5vw] xl:h-[23vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md  shadow-gray-400;
  }
  
  .imagemEquipe{
-     @apply flex ml-2 mt-5 2xl:h-[4vh] 2xl:w-[2vw] rounded-full;
+     @apply flex ml-2 mt-5 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] rounded-full;
  }
  
  .imgIcon{
-     @apply flex ml-2 mt-2 h-[4vh] w-[2vw] ;
+     @apply flex 2xl:ml-8 2xl:mt-2 lg:ml-4 lg:mt-2 md:ml-2 md:mt-0
+     2xl:h-[4vh] 2xl:w-[2vw] lg:h-[4vh] lg:w-[3vw] md:h-[6vh] md:w-[4vw]   ;
  }
  </style>
  
