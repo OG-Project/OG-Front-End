@@ -203,6 +203,7 @@
           texto="Anexar"
           tamanhoPadrao="pequeno"
           inverterCorIcon="sim"
+          @upload="onUpload"
         ></Botao>
       </div>
       <div class="pl-12 mt-4">
@@ -327,9 +328,7 @@
                       preset="PadraoRoxo"
                       tamanhoPadrao="pequeno"
                       :funcaoClick="editarComentario"
-                      :parametrosFuncao="
-                        comentario
-                      "
+                      :parametrosFuncao="comentario"
                     ></Botao>
                   </div>
                 </div>
@@ -341,7 +340,7 @@
     </div>
     <!-- Propriedades e Status -->
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
-      <div class="w-[80%] h-[80vh] shadow-2xl border-2">
+      <div class="w-[80%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
           <button
             class="w-[33%]"
@@ -353,9 +352,31 @@
           <button class="w-[33%]" @click="clicouOpcaoStatus()" :style="estiloBotaoStatus">
             Status
           </button>
-          <select class="w-[33%] flex text-center">
-            <option>Ordenar Por</option>
-          </select>
+          <div
+            v-if="opcaoEstaClicadaPropriedades"
+            class="w-[33%] flex items-center justify-center"
+          >
+            <select
+              class="flex text-center w-[100%]"
+              v-model="parametroDoFiltroPropriedade"
+            >
+              <option selected="selected">Ordenar Por</option>
+              <option>Texto</option>
+              <option>Data</option>
+              <option>Numero</option>
+              <option>Seleção</option>
+            </select>
+          </div>
+          <div
+            v-if="opcaoEstaClicadaStatus"
+            class="w-[33%] flex items-center justify-center"
+          >
+            <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
+              <option value="Ordenar Por">Ordenar Por</option>
+              <option value="az">A - Z</option>
+              <option value="za">Z - A</option>
+            </select>
+          </div>
         </div>
 
         <div
@@ -363,7 +384,7 @@
           class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto"
         >
           <div
-            v-for="(propriedade, index) in propriedades"
+            v-for="(propriedade, index) in listaFiltradaPropriedades"
             :key="index"
             class="w-[100%] min-h-[3vh] gap-2 flex flex-col items-center justify-center"
           >
@@ -440,7 +461,7 @@
           class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto"
         >
           <div
-            v-for="(statsAdd, index) in status"
+            v-for="(statsAdd, index) in listaFiltradaStatus"
             :key="index"
             class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center"
           >
@@ -476,7 +497,7 @@
       </div>
     </div>
 
-    <div id="propriedadesOverflow">
+    <div id="propriedadesOverflow" class="shadow-xl border-2">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
         <h1 class="min-h-[9%] text-3xl font-semibold">Informações</h1>
       </div>
@@ -541,13 +562,19 @@
           class="flex flex-col justify-around py-4 w-[80%]"
         >
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
-          <p>Valor: {{ propriedade.valor }}</p>
+          <div v-if="propriedade.tipo==='Data'">
+            <p>Valor: {{format(new Date(propriedade.valor), 'dd/MM/yyyy') }}</p>
+          </div>
+          <div v-else>
+            <p>Valor: {{ propriedade.valor }}</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import { format } from "date-fns";
 import Input from "../components/Input.vue";
 import NotePad from "../imagem-vetores/NotePad.svg";
 import Botao from "../components/Botao.vue";
@@ -564,6 +591,32 @@ import BotaoX from "../imagem-vetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
 import Calendar from "primevue/calendar";
 import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
+import TreeSelect from "primevue/treeselect";
+import { computed } from "vue";
+
+const parametroDoFiltroStatus = ref('Ordenar Por');
+
+const parametroDoFiltroPropriedade = ref("Ordenar Por");
+
+//Variavel utilizada para armazenar os comentarios da tarefa
+
+const Comentarios = ref([]);
+
+//Variavel que armazena as propriedades atreladas a tarefa
+
+const propriedadesDaTarefa = ref([]);
+
+//Variavel que armazena as Subtarefas atreladas a tarefa
+
+const subtarefas = ref([]);
+
+//Variavel que armazena as propriedades que podem ser atreladas a tarefa
+
+const propriedades = ref([]);
+
+//Variavel que armazena os status que podem ser atreladas a tarefa
+
+const status = ref([]);
 
 //Estilização usando Java Script
 
@@ -589,7 +642,7 @@ let numeroDeArquivos = ref(0);
 //Variáveis usadas na hora de criar uma propriedade
 
 let nomePropriedade = ref("");
-let tipoPropriedade = ref("");
+let tipoPropriedade = ref("Texto");
 
 //Variáveis utiliazadas na hora de criar um status
 
@@ -672,6 +725,13 @@ function deletaSubtarefa(subtarefa) {
 //Função utilizada para criar uma Propriedade
 
 function criaPropriedade() {
+  if (
+    tipoPropriedade.value != "Data" &&
+    tipoPropriedade.value != "Numero" &&
+    tipoPropriedade.value != "Seleção"
+  ) {
+    tipoPropriedade.value = "Texto";
+  }
   if (
     tipoPropriedade.value != "Escolha o Tipo" &&
     tipoPropriedade.value != null &&
@@ -825,34 +885,36 @@ function trocaComentarioSendoEditado() {
   comentarioSendoEditado.value = !comentarioSendoEditado.value;
 }
 
-function editarComentario(comentario){
-  console.log(comentario)
-  if(comentario.comentario === ''){
-    deletaComentario(comentario)
+function editarComentario(comentario) {
+  console.log(comentario);
+  if (comentario.comentario === "") {
+    deletaComentario(comentario);
   }
-  trocaComentarioSendoEditado()
+  trocaComentarioSendoEditado();
 }
 
-//Variavel utilizada para armazenar os comentarios da tarefa
+const listaFiltradaStatus = computed(() => {
+  if (parametroDoFiltroStatus.value === 'Ordenar Por' || parametroDoFiltroStatus.value === '') { // Check for empty string
+    return status.value;
+  }
+  switch (parametroDoFiltroStatus.value) {
+    case 'az':
+      return status.value.sort((a, b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0));
+    case 'za':
+      return status.value.sort((a, b) => (a.nome < b.nome) ? 1 : ((b.nome < a.nome) ? -1 : 0));
+  }
+});
 
-const Comentarios = ref([]);
+const listaFiltradaPropriedades = computed(() => {
+  if (parametroDoFiltroPropriedade.value === "Ordenar Por") {
+    // Check for empty string
+    return propriedades.value;
+  }
 
-//Variavel que armazena as propriedades atreladas a tarefa
-
-const propriedadesDaTarefa = ref([]);
-
-//Variavel que armazena as Subtarefas atreladas a tarefa
-
-const subtarefas = ref([]);
-
-//Variavel que armazena as propriedades que podem ser atreladas a tarefa
-
-const propriedades = ref([]);
-
-//Variavel que armazena os status que podem ser atreladas a tarefa
-
-const status = ref([]);
-
+  return propriedades.value.filter(
+    (propriedade) => propriedade.tipo === parametroDoFiltroPropriedade.value
+  );
+});
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 function numeroDeSubTarefasConcluidas() {
@@ -984,7 +1046,6 @@ watch(() => {
 }
 #propriedadesOverflow {
   width: 20vw;
-  border: 2px solid;
   gap: 8px;
   display: flex;
   flex-direction: column;

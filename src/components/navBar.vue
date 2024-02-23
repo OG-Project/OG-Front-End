@@ -1,8 +1,8 @@
 <template>
   <div class="h-[8vh] w-full flex">
     <div class="h-[8vh] w-[15%] flex gap-8">
-      <BarraLateral></BarraLateral>
-      <div class="h-[8vh] flex items-center">
+      <BarraLateral class="w-[45%]"></BarraLateral>
+      <div class="h-[8vh]  w-[15%] flex items-center">
         <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px"> </Botao>
     </div>
     </div>

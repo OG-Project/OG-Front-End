@@ -86,7 +86,6 @@
                   fill="white"
                 />
               </svg>
-
               <div>Sair</div>
             </div>
           </div>
