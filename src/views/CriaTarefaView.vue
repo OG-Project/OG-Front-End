@@ -203,7 +203,6 @@
           texto="Anexar"
           tamanhoPadrao="pequeno"
           inverterCorIcon="sim"
-          @upload="onUpload"
         ></Botao>
       </div>
       <div class="pl-12 mt-4">
@@ -453,6 +452,25 @@
                   maxFractionDigits="2"
                 />
               </div>
+              <div v-if="propriedade.tipo === 'Seleção'">
+                <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
+                  <Input
+                    altura="2"
+                    largura="35"
+                    conteudoInput=" "
+                    v-model="propriedade.valor[index]"
+                    width="60%"
+                    @input="editarPropriedade(index, valor)"
+                  >
+                  </Input>
+                  <img
+                    class="w-[100%] mr-4"
+                    @click="deletaValorSelect(propriedade.valor, index)"
+                    :src="BotaoX"
+                  />
+                </div>
+                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">Adicionar +</p>
+              </div>
             </div>
           </div>
         </div>
@@ -562,8 +580,14 @@
           class="flex flex-col justify-around py-4 w-[80%]"
         >
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
-          <div v-if="propriedade.tipo==='Data'">
-            <p>Valor: {{format(new Date(propriedade.valor), 'dd/MM/yyyy') }}</p>
+          <div v-if="propriedade.tipo === 'Data'">
+            <p>Valor: {{ format(new Date(propriedade.valor), "dd/MM/yyyy") }}</p>
+          </div>
+          <div v-if="propriedade.tipo === 'Seleção'" class="flex">
+            <p>Valor:</p>
+            <select class="flex text-center w-[80%]">
+              <option v-for="valor in propriedade.valor">{{ valor }}</option>
+            </select>
           </div>
           <div v-else>
             <p>Valor: {{ propriedade.valor }}</p>
@@ -594,7 +618,7 @@ import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
 import TreeSelect from "primevue/treeselect";
 import { computed } from "vue";
 
-const parametroDoFiltroStatus = ref('Ordenar Por');
+const parametroDoFiltroStatus = ref("Ordenar Por");
 
 const parametroDoFiltroPropriedade = ref("Ordenar Por");
 
@@ -684,6 +708,14 @@ function deletaStatus(stat) {
   });
 }
 
+function adicionaValorSelect(listaSelect) {
+  listaSelect.push("");
+}
+
+function deletaValorSelect(listaSelect, index) {
+  listaSelect.splice(index, 1);
+}
+
 //Função utilizada para criar uma Subtarefa
 
 function criaSubtarefa() {
@@ -746,6 +778,9 @@ function criaPropriedade() {
         valor: "",
         estaNaTarefa: ref(),
       };
+      if (tipoPropriedade.value === "Seleção") {
+        propriedade.valor = ref([]);
+      }
       nomePropriedade.value = "";
       tipoPropriedade.value = "";
       propriedades.value.push(propriedade);
@@ -894,14 +929,22 @@ function editarComentario(comentario) {
 }
 
 const listaFiltradaStatus = computed(() => {
-  if (parametroDoFiltroStatus.value === 'Ordenar Por' || parametroDoFiltroStatus.value === '') { // Check for empty string
+  if (
+    parametroDoFiltroStatus.value === "Ordenar Por" ||
+    parametroDoFiltroStatus.value === ""
+  ) {
+    // Check for empty string
     return status.value;
   }
   switch (parametroDoFiltroStatus.value) {
-    case 'az':
-      return status.value.sort((a, b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0));
-    case 'za':
-      return status.value.sort((a, b) => (a.nome < b.nome) ? 1 : ((b.nome < a.nome) ? -1 : 0));
+    case "az":
+      return status.value.sort((a, b) =>
+        a.nome > b.nome ? 1 : b.nome > a.nome ? -1 : 0
+      );
+    case "za":
+      return status.value.sort((a, b) =>
+        a.nome < b.nome ? 1 : b.nome < a.nome ? -1 : 0
+      );
   }
 });
 
