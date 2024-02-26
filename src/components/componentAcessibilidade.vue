@@ -61,7 +61,7 @@ onBeforeMount(()=>{
 })
 // mexer com cookies
 onMounted(()=>{
-    
+    VueCookies.config('30d')
 })
 
 function gerarBooleano(boolean){

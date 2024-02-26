@@ -14,7 +14,9 @@ export const perfilStore = defineStore('perfilStore', {
          popUpEmail:false,
          isVlibras:false,
          isVoiceMaker:false,
-         isTecladoVirtual:false
+         isTecladoVirtual:false,
+         fonte: '',
+         corPrincipal: ''
         }
     },
     actions:{
