@@ -4,7 +4,7 @@
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input
-          largura="40"
+          largura="32"
           altura="6"
           fontSize="2rem"
           conteudoInput="Nome da tarefa"
