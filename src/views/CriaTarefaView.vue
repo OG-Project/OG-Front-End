@@ -676,7 +676,7 @@ let corStatus = ref("ff0000");
 //Variaveis utilizadas na hora de criar uma subtarefa
 
 let nomeSubtarefa = ref("");
-let statusSubtarefa = ref("");
+let statusSubtarefa = ref("Em Progresso");
 
 //Função utilizada para criar um Status
 
@@ -719,7 +719,11 @@ function deletaValorSelect(listaSelect, index) {
 //Função utilizada para criar uma Subtarefa
 
 function criaSubtarefa() {
+  console.log(statusSubtarefa.value)
   if (nomeSubtarefa.value != "") {
+    if (statusSubtarefa.value === "") {
+      nomeSubtarefa.value = '';
+    }
     let booleanDaSubtarefa = ref();
     if (statusSubtarefa.value == "Em Progresso") {
       booleanDaSubtarefa.value = false;
