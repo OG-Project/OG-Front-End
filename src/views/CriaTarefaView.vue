@@ -20,29 +20,29 @@
           resize="none"
         ></TextAreaPadrao>
       </div>
-      <div class="flex pl-12 items-center gap-16 mt-4 h-[5%] w-[100%]">
-        <div class="flex flex-col justify-center w-[18%]">
+      <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
+        <div class="flex flex-col justify-center items-center w-[30%]">
           <p>Propriedades</p>
           <button
-            class="flex flex-col justify-center h-[70%] w-[100%]"
+            class="flex flex-col justify-center h-[70%]"
             @click="abreFechaCriaPropriedades()"
           >
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center w-[11%]">
+        <div class="flex flex-col justify-center items-center w-[30%]">
           <p>Status</p>
           <button
-            class="flex flex-col justify-center h-[70%] w-[100%]"
+            class="flex flex-col justify-center break-keep h-[70%]"
             @click="abreFechaCriaStatus()"
           >
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center w-[18%]">
+        <div class="flex flex-col justify-center items-center w-[30%]">
           <p>SubTarefas</p>
           <button
-            class="flex flex-col justify-center h-[70%] w-[100%]"
+            class="flex flex-col justify-center h-[70%]"
             @click="abreFechaCriaSubTarefas()"
           >
             + Criar
@@ -251,8 +251,8 @@
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
             <img
-              :src="usuario.fotoDoAutor"
-              class="shadow-2xl h-[65px] mr-4 ml-4 pt-4 rounded-full"
+              :src="usuario.foto"
+              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full"
             />
             <div class="pb-2 flex flex-col items-end">
               <TextAreaPadrao
@@ -272,7 +272,7 @@
                 :parametrosFuncao="[
                   comentarioSendoEnviado,
                   usuario.username,
-                  usuario.fotoDoAutor,
+                  usuario.foto,
                 ]"
               ></Botao>
             </div>
@@ -297,8 +297,8 @@
               </div>
               <div class="flex w-[100%] mb-2">
                 <img
-                  :src="comentario.fotoDoAutor"
-                  class="shadow-2xl h-[65px] mr-4 ml-4 pt-4 rounded-full"
+                  :src="comentario.foto"
+                  class="shadow-2xl h-[60px] w-[60px] mr-4 ml-4 rounded-full"
                 />
                 <div class="w-[100%]">
                   <p>
@@ -620,6 +620,8 @@ import { computed } from "vue";
 import VueCookies from "vue-cookies";
 import { Usuario } from "../models/usuario";
 
+
+
 const parametroDoFiltroStatus = ref("Ordenar Por");
 
 const parametroDoFiltroPropriedade = ref("Ordenar Por");
@@ -827,7 +829,6 @@ let subtarefaSendoCriada = ref(false);
 //Funções que trocam os valores das variaveis instanciadas acima
 
 function abreFechaCriaStatus() {
-  console.log(usuario)
   statusSendoCriado.value = !statusSendoCriado.value;
   propriedadeSendoCriada.value = false;
   subtarefaSendoCriada.value = false;
@@ -881,7 +882,7 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade) {
   }
 }
 
-//Usuario de teste excluir depois
+//Usuario Logado
 
 let usuario = VueCookies.get('usuarioCookie')
 
@@ -892,6 +893,7 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
+  usuario.foto = "https://i.pinimg.com/736x/fd/1d/5b/fd1d5bdb9eb1f207073f614be842a889.jpg"
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
@@ -901,7 +903,7 @@ function enviaComentario(comentario) {
   Comentarios.value.push({
     autor: comentario[1],
     comentario: comentario[0],
-    fotoDoAutor: comentario[2],
+    foto: comentario[2],
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
