@@ -20,6 +20,10 @@
     "tinycolor2": "^1.6.0",
     "vue": "^3.3.4",
     "vue-cookies": "^1.8.3",
+
+    "vue-date-fns": "^2.0.2",
+    "vue-router": "^4.2.5"
+
     "vue-dragscroll": "^4.0.5",
     "vue-router": "^4.2.5",
     "vue-slick-carousel": "^1.0.6",
@@ -27,6 +31,7 @@
     "vue3-click-outside": "^0.0.1",
     "vuedraggable": "^2.24.3",
     "vueperslides": "^3.5.1"
+
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
