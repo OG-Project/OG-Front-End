@@ -25,13 +25,14 @@ export default {
         'roxoAtencao' : '#8E00FF',
         'cinza-escuro': '#484848',
         'cinza-claro': '#D7D7D7',
+        'roxo-claro': '#DBB3FF',
 
       width:{
         
       },
       fontFamily:{
-        'Poppins' : ['Poppins', 'sans-serif'],
-        'Source_Sans_3':['Source Sans 3', 'sans-serif']
+        'Poppins' : 'Poppins, sans-serif',
+        'Source Sans 3':'Source Sans 3, sans-serif'
       },
 
     },

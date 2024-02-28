@@ -13,7 +13,7 @@
           <div class="ml-4 mt-6">
             <img
               class="cursor-pointer"
-              src="../imagem-vetores/botao-x.svg"
+              src="../imagem-vetores/botao-x-branco.svg"
               @click="openClose()"
             />
           </div>

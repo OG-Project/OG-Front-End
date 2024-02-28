@@ -1,13 +1,17 @@
 <template>
-    <div class="styleSelectPadrao " :style="estilizaDivSelect">
-        <select :style="estilizaSelect" @input="$emit('update:modelValue', $event.target.value)" class="xl:text-xl sm:text-sm md:text-md">
-            <option v-for="opcao of listaSelect" class="flex items-center justify-center" :value="opcaoSelecionada">{{ opcao }}</option>
-        </select>
+    <div :class=styleSelect :style="estilizaDivSelect">
+        <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex items-center justify-center xl:text-xl sm:text-sm md:text-md">
+            <option class="options" value="" disabled selected  v-if="opcaoSelecionada==''">{{ placeholderSelect }}</option>
+            <option v-for="opcao of listaSelect" class="options" :value="opcaoSelecionada">{{ opcao }}</option>
+        </select>   
     </div>
 
 </template>
 
 <script setup>
+import { onUpdated } from 'vue';
+
+
 defineEmits(['update:modelValue'])
     const props=defineProps({
         listaSelect:[],
@@ -21,24 +25,42 @@ defineEmits(['update:modelValue'])
             type: String,
             default: "100%"
         },
-        opcaoSelecionada:String
+        opcaoSelecionada:String,
+        placeholderSelect:String,
+        styleSelect:{
+            type:String,
+            default: 'styleSelectPadrao'
+        },
+    }
+
+   
+    )
+
+    onUpdated(() => {
+    
     })
 
-
+    const hoverPadrao = {
+        color : verificaCorHover()
+    }
 
     const estilizaDivSelect={
         backgroundColor: verificaCorBack(),
         color: verificaCorTexto(),
-        }
+        height: props.altura+"vh",
+        width:props.largura+"vw"
+    }
 
     const estilizaSelect={
-        width:props.largura+"vw",
-        heigth: props.altura+"vh",
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        }
+        fontSize: props.fonteTamanho 
+
+    }
     
+    const selectButton = document.querySelector('.inline-flex button');
+    const selectList = document.querySelector('.absolute');
+
+      
+
 
     function verificaCorBack(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
@@ -73,6 +95,13 @@ defineEmits(['update:modelValue'])
             return "#FFFFFF"
         }
     }
+
+    function verificaCorHover(){
+        if(props.corHover=="escuro"){
+            return "#484848"
+        }
+        return "#D7D7D7"
+    }
 </script>
 
 <style>
@@ -89,12 +118,36 @@ defineEmits(['update:modelValue'])
         px-4
         border-b-4
         w-max
-        items-center justify-center focus-within:border-roxo 
-        focus-within:border-4 focus-within:rounded-md truncate;
+        h-[100%]
+        flex items-center justify-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-[4px] truncate ;
+    }
+    .styleSelectSemBordaBaixo{
+       @apply   border-4 
+        border-transparent   
+        pt-2
+        pb-2
+        px-4
+        w-max
+        h-[100%]
+        flex items-center justify-center focus-within:border-roxo 
+        focus-within:border-4 focus-within:rounded-[4px] truncate ;
+    }
+    .styleSelectPadrao:hover{
+        background-color: v-bind('hoverPadrao.color');
+    }
+    select{
+        @apply focus-visible:outline-0 bg-inherit truncate flex items-center;
+
     }
 
-    select{
-        @apply focus-visible:outline-0 bg-inherit truncate;
+    select option:checked{
+        background-color: rgba(220, 179, 255, 0.192)
     }
+
+    option{
+        @apply flex justify-center items-center;
+    }
+   
 }
 </style>

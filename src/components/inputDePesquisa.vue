@@ -1,37 +1,33 @@
 <template>
   <div :style="tamanhoPesquisa">
-    <Input
-      :largura="props.largura"
-      styleInput="input-transparente-escuro"
-      :icon="iconePesquisa"
-      conteudoInput="Pesquisa"
-      v-model="conteudoDaPesquisa"
-    ></Input>
-    <div
-      v-if="conteudoDaPesquisa != '' && !itemsIguais"
-      style="overflow-y: auto; overflow-x: hidden; max-height: 16vh; border-radius: 5px"
-      id="barraDePesquisa"
-    >
-      <div
-        v-for="itemPesquisado in listaRenderizada"
-        :style="espacoRespostasPesquisa"
-        @click="passaValorProInput(itemPesquisado)"
-      >
+    <div v-if="temIcon">
+      <Input :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa"
+        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :fontSize="fontSize"></Input>
+    </div>
+    <div v-if="!temIcon" @="$emit('itemSelecionado', conteudoDaPesquisa)" >
+      <Input :largura="props.largura" styleInput="input-transparente-claro" 
+        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :fontSize="fontSize"></Input>
+    </div>
+
+    <div v-if="conteudoDaPesquisa != '' && !itemsIguais"
+      style="overflow-y: auto; overflow-x: hidden; max-height: 16vh; border-radius: 5px" id="barraDePesquisa">
+      <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
+        @click="passaValorProInput(itemPesquisado)" >
         <div :style="respostaPesquisa">
           <p>{{ itemPesquisado }}</p>
         </div>
-        <hr/>
+        <hr />
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import Input from "../components/Input.vue";
-import { ref, watch } from "vue";
+import Input from "./Input.vue";
+import { createVNode, ref, watch } from "vue";
 import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
 
 let conteudoDaPesquisa = ref("");
-
+defineEmits(['itemSelecionado'])
 const props = defineProps({
   listaDaPesquisa: [],
   largura: String,
@@ -39,8 +35,15 @@ const props = defineProps({
     type: String,
     default: "nao",
   },
-});
+  temIcon: Boolean,
+  placeHolderPesquisa: {
+    type:String,
+    default:'Pesquisa'
+  },
+  fontSize:String
 
+});
+ 
 let itemsIguais = ref(false);
 
 let listaRenderizada = ref([]);
@@ -100,13 +103,13 @@ if (props.modoEscuro === "nao") {
   };
 
   espacoRespostasPesquisa.value = {
-    width: props.largura,
+    width: props.largura+"vw",
     backgroundColor: "#FEFBFF",
   };
 
-//   corLinha.value = {
-//     backgroundColor: "#620BA7",
-//   };
+  //   corLinha.value = {
+  //     backgroundColor: "#620BA7",
+  //   };
 } else if (props.modoEscuro == "sim") {
   respostaPesquisa.value = {
     width: props.largura,
@@ -122,13 +125,13 @@ if (props.modoEscuro === "nao") {
     color: "#FEFBFF",
   };
   espacoRespostasPesquisa.value = {
-    width: props.largura,
+    width: props.largura+"vw",
     backgroundColor: "#620BA7",
   };
-//   corLinha.value = {
-//     width: props.largura,
-//     backgroundColor: "#36213E",
-//   };
+  //   corLinha.value = {
+  //     width: props.largura,
+  //     backgroundColor: "#36213E",
+  //   };
 }
 </script>
 <style scoped>
@@ -136,22 +139,28 @@ if (props.modoEscuro === "nao") {
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
   width: 6px;
   background-color: #f1f1f1;
-  border-top-right-radius: 5px; /* 4px */
-  border-bottom-right-radius: 5px; /* 4px */
+  border-top-right-radius: 5px;
+  /* 4px */
+  border-bottom-right-radius: 5px;
+  /* 4px */
 }
 
 #barraDePesquisa::-webkit-scrollbar {
   width: 8px;
   background-color: #f1f1f1;
-  border-top-right-radius: 5px; /* 4px */
-  border-bottom-right-radius: 5px; /* 4px */
+  border-top-right-radius: 5px;
+  /* 4px */
+  border-bottom-right-radius: 5px;
+  /* 4px */
 }
 
 #barraDePesquisa::-webkit-scrollbar-thumb {
   width: 6px;
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
   background-color: #d8d8d8;
-  border-top-right-radius: 5px; /* 4px */
-  border-bottom-right-radius: 5px; /* 4px */
+  border-top-right-radius: 5px;
+  /* 4px */
+  border-bottom-right-radius: 5px;
+  /* 4px */
 }
 </style>
