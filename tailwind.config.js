@@ -27,14 +27,13 @@ export default {
         'cinza-claro': '#D7D7D7',
         'roxo-claro': '#DBB3FF',
 
-      width:{
+    },
+    width:{
         
-      },
-      fontFamily:{
-        poppins: ["Poppins", "sans-serif"],
-        sourceSans:["Source Sans 3", "sans-serif"]
-      },
-
+    },
+    fontFamily:{
+      poppins: ['"Poppins"', '"sans-serif"'],
+      sourceSans:['"Source Sans 3"', '"sans-serif"']
     },
   },
   plugins: [],

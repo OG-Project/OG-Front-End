@@ -26,8 +26,6 @@ export const perfilStore = defineStore('perfilStore', {
             usuarioAlterado.email=emailNovo
             console.log(usuarioAlterado)
             api.atualizar(usuarioAlterado,"/usuario")
-
-            
         },
         acessibilidade(){
             return {vlibras: this.isVlibras,voiceMaker:this.isVoiceMaker,tecladoVirtual: this.isTecladoVirtual}

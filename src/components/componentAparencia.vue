@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[1400px] h-[877px] flex flex-col  ">
+    <div class="font-sourceSans w-[1400px] h-[877px] flex flex-col  ">
         <div>
             <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Aparência
@@ -9,19 +9,19 @@
             <div class="flex justify-start">
                 <div class="flex">
                     <div class="flex flex-col gap-10">
-                        <div class="w-20 h-20 bg-slate-700">
+                        <div :style="styleCor" class="w-20 h-20 ">
                             cor
                         </div>
-                        <div class="w-20 h-20 bg-slate-600">
+                        <div :style="styleCor" class="w-20 h-20 bg-slate-600">
                             cor
                         </div>
-                        <div class="w-20 h-20 bg-slate-500">
+                        <div :style="styleCor" class="w-20 h-20 bg-slate-500">
                             cor
                         </div>
-                        <div class="w-20 h-20 bg-slate-400">
+                        <div :style="styleCor" class="w-20 h-20 bg-slate-400">
                             cor
                         </div>
-                        <div class="w-20 h-20 bg-slate-300">
+                        <div :style="styleCor" class="w-20 h-20 bg-slate-300">
                             cor
                         </div>
                     </div>
@@ -104,11 +104,17 @@ onMounted(()=>{
 
 })
 
+let cor=ref('#80A4ED')
+const styleCor=ref({
+    backgroundColor: cor,
+    color:  contraste(cor),
+    fontFamily: 'Poppi'
+})
 
-let cor=ref('')
 function mudarcor(){
- alert(cor.value)
- alert(contraste(cor.value))
+//  alert(cor.value)
+ styleCor.value.color=contraste(cor.value)
+//  alert(contraste(cor.value))
 }
 // criar um molde sem functions ativadas 
 // e apenas mude variaveis auxuliares que

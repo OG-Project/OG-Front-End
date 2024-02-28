@@ -14,7 +14,11 @@
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos.
                         </div>
-                        <Botao :funcaoClick="abrePopUp" :parametrosFuncao="['senha']" preset="PadraoRoxo" texto="Alterar Senha">
+                        <Botao 
+                        :funcaoClick="abrePopUp" 
+                        :parametrosFuncao="['senha']" 
+                        preset="PadraoRoxo" 
+                        texto="Alterar Senha">
                         </Botao>
                     </div>
                     <div class="flex items-center gap-8">
@@ -30,7 +34,11 @@
                                 desconectar a conta do Google.
                             </div>
                         </div>
-                        <Botao :funcaoClick="abrePopUp" :parametrosFuncao="['email']" preset="PadraoRoxo" texto="Alterar E-mail">
+                        <Botao 
+                        :funcaoClick="abrePopUp" 
+                        :parametrosFuncao="['email']" 
+                        preset="PadraoRoxo" 
+                        texto="Alterar E-mail">
                         </Botao>
                     </div>
                     <!-- tudo errado, arrumar -->
@@ -49,7 +57,6 @@
         <div class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
             <span>Deseja deletar sua Conta?</span>
         </div>
-        
         
     </div>
 </template>
