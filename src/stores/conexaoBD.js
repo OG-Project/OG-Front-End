@@ -15,6 +15,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         console.log(objeto)
         return axios.post("http://10.4.96.35:8082"+textoRequisicao,objeto)
       },
+      cadastrarPassandoLista(objeto, textoRequisicao, lista){
+        console.log(objeto)
+        return axios.post("http://10.4.96.35:8082"+textoRequisicao,objeto,lista)
+      },
       atualizar(objeto,textoRequisicao){
         return axios.put("http://10.4.96.35:8082"+textoRequisicao,objeto)
       }

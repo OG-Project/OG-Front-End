@@ -20,7 +20,8 @@
                             <selectPadrao altura="5" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
                                 v-model="equipesRelacionadasProjeto" fonte-tamanho="1rem"></selectPadrao>
 
-                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno">
+                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
+                                :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
                             </Botao>
 
                         </div>
@@ -46,12 +47,12 @@
                     </div>
                 </div>
             </div>
-            <div class=" pt-8 w-[96%]">
-                <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaDeUsuariosParaBusca" texto="Equipes Vinculadas"></ListaConvidados>
+            <div class=" pt-8 w-[96%] ">
+                <ListaConvidados altura="30vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
+                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]"></ListaConvidados>
             </div>
         </div>
-        <div class=" w-[83%] h-full flex-row z-40 ">
+        <div class=" w-[83%] h-[90%] flex-row z-40 ">
             <div
                 class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
                 <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
@@ -205,7 +206,7 @@
     </div>
 
 
-    <div class="h-[10%] w-[70.4%] flex items-center justify-end pr-4 ">
+    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
     </div>
@@ -250,11 +251,9 @@ let AuxParaCriarPropriedades = [];
 let itemSelecionadoPesquisa = ref("")
 let listaAuxResponsaveisProjeto = []
 let responsaveisProjeto = ref([]);
-let listaParaRenderizarDoisUsuarios = ref([])
-let auxListaParaRenderizarDoisUsuarios = [];
-let cont = 0;
-let variavelModalMaisUsuarios = ref(Boolean);
-
+let listaEquipesConvidadas = ref([])
+let listaEquipesSelecionadas = ref([])
+let i = 0;
 funcaoPopUp.variavelModal = false
 onMounted(() => {
     defineSelect()
@@ -263,13 +262,12 @@ onMounted(() => {
     statusDoProjeto();
     buscaPropriedadeCookies();
     buscaProjetoCookies();
-
+    listaEquipesConvidadas.value = []
 })
 
 onUpdated(() => {
     criarProjetoCookies();
 })
-
 
 
 async function defineSelect() {
@@ -279,7 +277,7 @@ async function defineSelect() {
         listaAux1.push(equipeAtual.nome);
         listaSelecao.value = listaAux1
     });
-
+    return listaSelecao
 }
 
 function buscaPropriedadeCookies() {
@@ -293,7 +291,12 @@ function buscaProjetoCookies() {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
-        equipesEscolhidaRelacionadaProjeto.value = variavelCookieProjeto.equipes;
+        console.log(variavelCookieProjeto.equipes)
+        if (variavelCookieProjeto.equipes.length != null) {
+            listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
+            console.log(listaEquipesSelecionadas.value)
+            
+        }
     }
 
 }
@@ -315,11 +318,15 @@ async function statusDoProjeto() {
 }
 
 function criarProjetoCookies() {
-    console.log(nomeProjeto.value)
     const criaProjetoCookies = Projeto
     criaProjetoCookies.descricao = descricaoProjeto.value;
     criaProjetoCookies.nome = nomeProjeto.value;
-    criaProjetoCookies.equipes = equipesEscolhidaRelacionadaProjeto.value;
+   
+    if (listaEquipesSelecionadas.value != "") {
+        console.log(listaEquipesSelecionadas.value)
+        criaProjetoCookies.equipes = listaEquipesSelecionadas.value.map((x) => x)
+       console.log(criaProjetoCookies.equipes)
+    }
     VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
     console.log(VueCookies.get('projetoCookie'))
     buscaProjetoCookies();
@@ -336,14 +343,14 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
             cont++;
         }
     });
+    buscaProjetoCookies();
 
 }
 
 function criaProjeto() {
-    const criaProjeto = criaProjetoStore()
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, equipesRelacionadasProjeto.value)
-    console.log("" + nomeProjeto.value + " " + descricaoProjeto.value)
-    criaPropriedade();
+    const criaProjeto = criaProjetoStore()  
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value,listaEquipesSelecionadas.value)
+   
 }
 
 async function buscandoPor() {
@@ -368,7 +375,6 @@ function navegaPelaTabela(opcaoSelecionada) {
     }
 }
 function criaPropriedadeCookies() {
-
     let propriedadeCriada = Propriedade
     propriedadeCriada.nome = nomePropriedade.value
     propriedadeCriada.tipo = tipoPropriedade.value
@@ -377,8 +383,6 @@ function criaPropriedadeCookies() {
     listaPropriedades.value = AuxParaCriarPropriedades
 
     funcaoPopUp.fechaPopUp();
-
-
 }
 function criaPropriedade() {
     const criaProjeto = criaPropriedadeStore()
@@ -387,6 +391,15 @@ function criaPropriedade() {
     }
     criaProjeto.criaPropriedade(nomePropriedade.value, tipoPropriedade.value.toUpperCase())
 
+}
+
+async function colocaListaEquipes(equipe) {
+    listaEquipesConvidadas.value=""
+    let listaEquipes = await conexao.procurar('/equipe')
+    let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipe[0]);
+    listaEquipesSelecionadas.value.push(equipeVinculada)
+    console.log(listaEquipesSelecionadas.value)
+    console.log(defineSelect())
 }
 </script>
 
@@ -424,7 +437,7 @@ function criaPropriedade() {
     display: grid;
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
-    height: 100%;
+    height: 90%;
 }
 
 .animation {
