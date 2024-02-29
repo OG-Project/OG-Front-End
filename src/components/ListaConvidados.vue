@@ -1,11 +1,11 @@
 <template>
   <div class="grid-template flex">
     <div
-      class="convites-bg flex-col w-full bg-[#FEFBFF] shadow-md  shadow-gray-200 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 "
+      class="convites-bg flex-col w-full bg-[#FEFBFF] shadow-md  shadow-gray-200 overflow-y-auto scrollbar-thin"
       :style="{height: altura}"
     >
       <div class="flex justify-center overfloow-y:auto">
-        <h1 class="font-semibold xl:text-xl" :alt="texto">{{ texto }}</h1>
+        <h1 class="font-semibold " >{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
         <div class="w-full flex items-center mt-5 mb-2 " v-for="convidado in listaConvidados" :key="convidado.nome">
@@ -88,11 +88,7 @@ const imagemIcon={
     }
 
     .convites-bg::-webkit-scrollbar{
-        @apply hidden
-        xl:h-[24vh] 
-        lg:h-[18vh]
-        md:h-[21vh]
-        justify-items-center justify-center;
+        @apply hidden justify-items-center justify-center;
         display: grid;
         grid-template-columns: 0% 0%;
         
@@ -119,7 +115,7 @@ const imagemIcon={
     }
 
     .grid-template{ 
-        @apply w-[80%%] h-[11%] gap-4  ; 
+        @apply w-[80%] h-[11%] gap-4  ; 
         display: grid;
         grid-template-columns: 40% 55%;
     }

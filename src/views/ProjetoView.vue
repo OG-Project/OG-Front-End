@@ -20,7 +20,8 @@
                             <selectPadrao altura="5" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
                                 v-model="equipesRelacionadasProjeto" fonte-tamanho="1rem"></selectPadrao>
 
-                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno" :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
+                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
+                                :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
                             </Botao>
 
                         </div>
@@ -46,12 +47,12 @@
                     </div>
                 </div>
             </div>
-            <div class=" pt-8 w-[96%]">
-                <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesConvidadas.value" texto="Equipes Vinculadas"></ListaConvidados>
+            <div class=" pt-8 w-[96%] ">
+                <ListaConvidados altura="30vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
+                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]"></ListaConvidados>
             </div>
         </div>
-        <div class=" w-[83%] h-full flex-row z-40 ">
+        <div class=" w-[83%] h-[90%] flex-row z-40 ">
             <div
                 class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
                 <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
@@ -112,7 +113,7 @@
 
                 </div>
                 <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp()"
-                    v-if="funcaoPopUp.variavelModal == false ">
+                    v-if="funcaoPopUp.variavelModal == false">
                     <p>Nova</p>
                     <img src="../imagem-vetores/sinalDeMaisIcon.svg">
                 </div>
@@ -250,8 +251,9 @@ let AuxParaCriarPropriedades = [];
 let itemSelecionadoPesquisa = ref("")
 let listaAuxResponsaveisProjeto = []
 let responsaveisProjeto = ref([]);
-let listaEquipesConvidadas= ref([])
-let listaEquipesAux=[]
+let listaEquipesConvidadas = ref([])
+let listaEquipesSelecionadas = ref([])
+let i = 0;
 funcaoPopUp.variavelModal = false
 onMounted(() => {
     defineSelect()
@@ -260,7 +262,7 @@ onMounted(() => {
     statusDoProjeto();
     buscaPropriedadeCookies();
     buscaProjetoCookies();
-
+    listaEquipesConvidadas.value = []
 })
 
 onUpdated(() => {
@@ -289,7 +291,12 @@ function buscaProjetoCookies() {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
-        equipesEscolhidaRelacionadaProjeto.value = variavelCookieProjeto.equipes;
+        console.log(variavelCookieProjeto.equipes)
+        if (variavelCookieProjeto.equipes.length != 0) {
+            listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
+            console.log(listaEquipesSelecionadas.value)
+            
+        }
     }
 
 }
@@ -311,11 +318,15 @@ async function statusDoProjeto() {
 }
 
 function criarProjetoCookies() {
-    console.log(nomeProjeto.value)
     const criaProjetoCookies = Projeto
     criaProjetoCookies.descricao = descricaoProjeto.value;
     criaProjetoCookies.nome = nomeProjeto.value;
-    criaProjetoCookies.equipes = equipesEscolhidaRelacionadaProjeto.value;
+   
+    if (listaEquipesSelecionadas.value != "") {
+        console.log(listaEquipesSelecionadas.value)
+        criaProjetoCookies.equipes = listaEquipesSelecionadas.value.map((x) => x)
+       console.log(criaProjetoCookies.equipes)
+    }
     VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
     console.log(VueCookies.get('projetoCookie'))
     buscaProjetoCookies();
@@ -332,13 +343,14 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
             cont++;
         }
     });
+    buscaProjetoCookies();
 
 }
 
 function criaProjeto() {
     const criaProjeto = criaProjetoStore()
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, equipesRelacionadasProjeto.value)
-    console.log("" + nomeProjeto.value + " " + descricaoProjeto.value)
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value)
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipesSelecionadas.value)
     criaPropriedade();
 }
 
@@ -364,7 +376,6 @@ function navegaPelaTabela(opcaoSelecionada) {
     }
 }
 function criaPropriedadeCookies() {
-
     let propriedadeCriada = Propriedade
     propriedadeCriada.nome = nomePropriedade.value
     propriedadeCriada.tipo = tipoPropriedade.value
@@ -373,8 +384,6 @@ function criaPropriedadeCookies() {
     listaPropriedades.value = AuxParaCriarPropriedades
 
     funcaoPopUp.fechaPopUp();
-
-
 }
 function criaPropriedade() {
     const criaProjeto = criaPropriedadeStore()
@@ -385,13 +394,14 @@ function criaPropriedade() {
 
 }
 
-async function colocaListaEquipes(equipe){
-    let lista= await defineSelect()
-    if(lista.value.includes())
-
-    listaEquipesAux.push(equipe)
-    listaEquipesConvidadas.value.push(listaEquipesAux)
-    console.log(listaEquipesConvidadas.value)
+async function colocaListaEquipes(equipe) {
+    listaEquipesConvidadas.value=""
+    let listaEquipes = await conexao.procurar('/equipe')
+    let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipe[0]);
+    listaEquipesSelecionadas.value.push(equipeVinculada)
+    listaEquipesConvidadas.value=null
+    console.log(listaEquipesSelecionadas.value)
+    console.log(defineSelect())
 }
 </script>
 

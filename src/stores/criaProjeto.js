@@ -16,7 +16,8 @@ export const criaProjetoStore = defineStore('criaProjeto', {
         projetoCriado.descricao=descricao;
         projetoCriado.equipes=[]
         console.log(projetoCriado)
-        api.cadastrar(projetoCriado,'/projeto')
+        console.log(api.cadastrar(projetoCriado,'/projeto'))
+        api.cadastrarPassandoLista(projetoCriado,"/projeto",equipes)
       },
     },
   })
