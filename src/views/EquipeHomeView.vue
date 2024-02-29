@@ -9,13 +9,13 @@
      </div>
      <div class="flex justify-center ">
           <div class="listaEquipes overflow-auto" >
-             <div class="criarEquipe "  :class="'mao-clique'" @mouseover="mostrarNomeCompleto(equipe.equipe.nome)" @mouseleave="limparNomeCompleto()" :title="nomeCompleto"  v-for="equipe in equipesUsuario">
+             <div class="criarEquipe " @click="abrePaginaEquipe(equipe)" href="#/equipe/telaInicial" :class="'mao-clique'" @mouseover="mostrarNomeCompleto(equipe.equipe.nome)" @mouseleave="limparNomeCompleto()" :title="nomeCompleto"  v-for="equipe in equipesUsuario">
                 <div class="flex justify-center"  >
                         <div class="corDiv">
                          <img class="imagemEquipe" src="" alt="">
                          <p class=" text-2xl mt-5 ml-4 text-[#877E7E] " >{{ truncarNome(equipe.equipe.nome , larguraNomeEquipe()) }}</p>
                         </div>
-                            <div  @click="abrePopUp(equipe, 'engrenagem')">
+                            <div  @click.stop="abrePopUp(equipe, 'engrenagem') ">
                                 <img class="imgIcon " src="../imagem-vetores/engrenagem.svg" alt="">
                             </div>
                     </div>
@@ -33,6 +33,7 @@
         <div class="absolute top-0 left-0 right-0">
            <CriarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></CriarEquipePopUp>
         </div>
+    
      </div>
     </div>
  </template>
@@ -45,6 +46,7 @@
   import editarEquipePopUp from "../components/editarEquipePopUp.vue";
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
   import CriarEquipePopUp from "../components/CriarEquipePopUp.vue";
+  import {useRouter} from 'vue-router'
 
   let equipesUsuario = ref([]);
   const banco = conexaoBD();
@@ -55,6 +57,8 @@
   let variavelCria = false;
   let variavelEngrenagem = false;
   const nomeCompleto = ref('');
+  const router = useRouter();
+
 
   listaUsuarios();
 
@@ -68,6 +72,14 @@
            }
         })
     }
+
+  function abrePaginaEquipe(equipe){
+    const equipeSelecionada = equipe;
+    console.log(equipeSelecionada)
+    VueCookies.set("equipeSelecionada", equipeSelecionada, 30000)
+    router.push({name: 'telaInicial'})
+
+  }
 
   function abrePopUp(equipe, tipo){
 

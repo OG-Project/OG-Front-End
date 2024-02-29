@@ -8,7 +8,7 @@
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                         <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
                         <div class="styleH1Padrao">
-                            <h1 class=" flex 2xl:h-[4vh]  2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeSelecionada.equipe.nome"> {{ truncarNome(equipeSelecionada.equipe.nome , 20)  }}</h1>
+                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeSelecionada.equipe.nome"> {{ truncarNome(equipeSelecionada.equipe.nome , 20)  }}</h1>
                         </div>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
@@ -56,13 +56,14 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
 import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
+import {useRouter} from 'vue-router'
 
 
 const banco = conexaoBD();
@@ -73,9 +74,7 @@ let mensagemError = ref("");
 const usuarioLogado = VueCookies.get('usuarioCookie');
 let editando = ref(false);
 let equipes = banco.procurar("/equipe");
-
-console.log(usuarioLogado)
-console.log(equipeSelecionada)
+const router = useRouter();
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -102,7 +101,12 @@ async function deletarEquipe(){
         if(equipeSelecionada.equipe.id == equipe.id){
         
             banco.deletarEquipe(equipe.id,'/equipe')
-            window.location.reload();
+            if(router.currentRoute.value.path == '/equipe'){
+                window.location.reload();
+            }
+            router.push({path:'/equipe'})
+            VueCookies.remove('equipeSelecionada');
+         
         }
     })
 
@@ -138,9 +142,10 @@ async function deletarEquipe(){
         }
         })
 
+        VueCookies.set('equipeSelecionada', { equipe: equipeAtualizar });
+
             nome.value = ""
             descricao.value = ""
-
             editando.value = false;
 
 

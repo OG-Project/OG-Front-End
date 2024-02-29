@@ -59,7 +59,7 @@ defineEmits(['update:modelValue'])
         }
         else if (props.styleSelect=="select-branco" || props.styleSelect=="select-grande-cinza" ||
         props.styleSelect=="select-branco-grande"){
-            return "#FEFBFF"
+            return "#FBFBFB"
         }
     }
 
