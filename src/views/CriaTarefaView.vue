@@ -9,6 +9,7 @@
           fontSize="2rem"
           conteudoInput="Nome da tarefa"
           styleInput="input-transparente-claro-grande"
+          v-model="tarefa.nome"
         ></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
@@ -18,10 +19,11 @@
           placeholder="Descrição da tarefa"
           tamanho-da-fonte="1rem"
           resize="none"
+          v-model="tarefa.descricao"
         ></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
-        <div class="flex flex-col justify-center items-center w-[30%]">
+        <div class="flex flex-col justify-center w-[38%]">
           <p>Propriedades</p>
           <button
             class="flex flex-col justify-center h-[70%]"
@@ -30,7 +32,7 @@
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center items-center w-[30%]">
+        <div class="flex flex-col justify-center w-[30%]">
           <p>Status</p>
           <button
             class="flex flex-col justify-center break-keep h-[70%]"
@@ -39,7 +41,7 @@
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center items-center w-[30%]">
+        <div class="flex flex-col justify-center w-[30%]">
           <p>SubTarefas</p>
           <button
             class="flex flex-col justify-center h-[70%]"
@@ -469,7 +471,9 @@
                     :src="BotaoX"
                   />
                 </div>
-                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">Adicionar +</p>
+                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">
+                  Adicionar +
+                </p>
               </div>
             </div>
           </div>
@@ -604,10 +608,7 @@ import NotePad from "../imagem-vetores/NotePad.svg";
 import Botao from "../components/Botao.vue";
 import CheckBox from "../components/checkBox.vue";
 import iconAnexo from "../imagem-vetores/anexoIcon.svg";
-import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import TextAreaPadrao from "../components/textAreaPadrao.vue";
-import ProgressBar from "primevue/progressbar";
-import SelectPadrao from "../components/selectPadrao.vue";
 import { ref, watch } from "vue";
 import navBar from "../components/navBar.vue";
 import ColorPicker from "primevue/colorpicker";
@@ -615,12 +616,9 @@ import BotaoX from "../imagem-vetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
 import Calendar from "primevue/calendar";
 import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
-import TreeSelect from "primevue/treeselect";
 import { computed } from "vue";
+import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
-import { Usuario } from "../models/usuario";
-
-
 
 const parametroDoFiltroStatus = ref("Ordenar Por");
 
@@ -723,10 +721,10 @@ function deletaValorSelect(listaSelect, index) {
 //Função utilizada para criar uma Subtarefa
 
 function criaSubtarefa() {
-  console.log(statusSubtarefa.value)
+  console.log(statusSubtarefa.value);
   if (nomeSubtarefa.value != "") {
     if (statusSubtarefa.value === "") {
-      nomeSubtarefa.value = '';
+      nomeSubtarefa.value = "";
     }
     let booleanDaSubtarefa = ref();
     if (statusSubtarefa.value == "Em Progresso") {
@@ -818,6 +816,29 @@ function deletaPropriedade(propriedade) {
 //Variavel utilizada para armazenar um comentario ainda nao enviado
 let comentarioSendoEnviado = ref("");
 
+let tarefa = ref({
+  nome: "",
+  descricao: "",
+  arquivos: [],
+  comentarios: [],
+});
+
+onUpdated(() => {
+    VueCookies.set("TarefaNaoFinalizada", tarefa.value, 1000000);
+})
+
+onMounted(() => {
+  tarefa.value = {
+    nome: "",
+    descricao: "",
+    arquivos: [],
+    comentarios: [],
+  };
+  const cookieData = VueCookies.get("TarefaNaoFinalizada");
+  if (cookieData && cookieData.nome != "") {
+    tarefa.value = cookieData;
+  }
+});
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
 let propriedadeSendoCriada = ref(false);
@@ -884,7 +905,7 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade) {
 
 //Usuario Logado
 
-let usuario = VueCookies.get('usuarioCookie')
+let usuario = VueCookies.get("usuarioCookie");
 
 //Variavel utilizada para abrir e fechar os comentarios
 
@@ -893,7 +914,8 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
-  usuario.foto = "https://i.pinimg.com/736x/fd/1d/5b/fd1d5bdb9eb1f207073f614be842a889.jpg"
+  usuario.foto =
+    "https://i.pinimg.com/736x/fd/1d/5b/fd1d5bdb9eb1f207073f614be842a889.jpg";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
@@ -1068,10 +1090,6 @@ function clicouOpcaoStatus() {
     };
   }
 }
-watch(() => {
-  clicouOpcaoStatus();
-  clicouOpcaoPropriedades();
-});
 </script>
 <style scoped>
 #fundoPopUp {

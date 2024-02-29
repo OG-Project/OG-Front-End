@@ -42,8 +42,9 @@ async function fazerLogin() {
   listaUsuarios.forEach((usuario) => {
     if (usuarioLogin.value === usuario.username) {
       if (senhaUsuarioLogin.value === usuario.senha) {
-        console.log("davi")
-        VueCookies.set("usuarioCookie", usuario,  1000);
+        usuarioLogin.value = "";
+        senhaUsuarioLogin.value = "";
+        VueCookies.set("usuarioCookie", usuario,  100000000000);
       }
     }
   });
@@ -82,6 +83,7 @@ async function cadastraUsuario() {
         usuarioCadastro.value = ""
         emailCadastro.value  = ""
         senhaCadastro.value  = ""
+        confirmarSenhaCadastro.value = ""
       }
     }
   }
