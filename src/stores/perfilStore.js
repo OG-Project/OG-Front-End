@@ -16,7 +16,10 @@ export const perfilStore = defineStore('perfilStore', {
          isVoiceMaker:false,
          isTecladoVirtual:false,
          fonte: '',
-         corPrincipal: ''
+         corEscura: '#36213E',
+         cor: '#620BA7',
+         corAtencao: '#8E00FF',
+         corClickBorder: '#ECC3FF'
         }
     },
     actions:{
