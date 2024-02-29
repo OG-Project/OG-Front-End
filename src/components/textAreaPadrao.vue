@@ -13,6 +13,10 @@ const props = defineProps({
     type: String,
     default: "Digite aqui sua mensagem"
   },
+  modelValue: {
+    type: String,
+    default: '',
+  },
   width: {
     type: String,
     default: "80vw" // Usando 80% da largura da viewport

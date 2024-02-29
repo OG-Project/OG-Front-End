@@ -1,10 +1,14 @@
 <template>
-  <div class=" z-[995] bg-opacity-40">
-    <div v-if="!aberto" @click="openClose()" class="h-[8vh] w-[4vw] flex items-center justify-center">
-        <img class="h-[50px] w-[50px]" src="../imagem-vetores/haburguer.svg">
+  <div class="bg-opacity-40">
+    <div
+      v-if="!aberto"
+      @click="openClose()"
+      class="h-[8vh] w-[4vw] flex items-center justify-center"
+    >
+      <img class="h-[50px] w-[50px]" src="../imagem-vetores/haburguer.svg" />
     </div>
-    <div v-if="aberto" class="sidebar slide-in">
-      <div class="transition h-[100vh] w-[180px] bg-roxoEscuro">
+    <div v-if="aberto" class="sidebar slide-in flex fixed">
+      <div class="transition h-[100vh] w-[10vw] bg-roxoEscuro">
         <div class="flex-col h-full flex justify-between gap-6">
           <div class="ml-4 mt-6">
             <img
@@ -82,29 +86,27 @@
                   fill="white"
                 />
               </svg>
-
               <div>Sair</div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="transition h-[100vh] w-[90vw] bg-opacity-50 backdrop-blur">
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 const aberto = ref(false);
 function openClose() {
-        if(aberto.value){
-            aberto.value = false;
-        }
-        else{
-            aberto.value = true;
-        }
-        
+  if (aberto.value) {
+    aberto.value = false;
+  } else {
+    aberto.value = true;
+  }
 }
-
 </script>
 
 <style scoped>
@@ -125,6 +127,7 @@ function openClose() {
 .slide-in-closed {
   transform: translateX(-100%);
 }
+
 
 /* @apply uses Tailwind CSS to apply styles without using ';' */
 @layer components {

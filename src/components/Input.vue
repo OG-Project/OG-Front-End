@@ -1,10 +1,4 @@
-
-<!-- <br>
-<Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="38" height="10"></Input> -->
-<!-- PARA GERAR UM INPUT FLOAT PRECISA COLOCAR  "tipo==float" -->
-<template>
-    
-   <div class="styleInputPadraoIcon" 
+ <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
         <div class=" flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
