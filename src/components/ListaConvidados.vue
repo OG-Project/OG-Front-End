@@ -8,7 +8,7 @@
         <h1 class="font-semibold xl:text-xl">{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
-        <div class="w-full flex items-center mt-5 mb-2 " v-for="convidado in listaConvidados" :key="convidado.nome" :style="{marginLeft: marginLeft}">
+        <div class="w-full flex items-center mt-5 mb-2" v-for="convidado in listaConvidados" :key="convidado.nome" :style="{'margin-left':marginLeft, 'margin-right': marginRight}">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
         <template v-if="listaConvidados.length > 0">
           <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :style="altDaImagemPerfil" />
@@ -52,12 +52,12 @@ const props = defineProps({
   texto:String,
   mostrarSelect:String,
   marginLeft: String,
+  marginRight: String,
   listaConvidados:{
     type: Array,
     default:[]
   }
 })
-
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 

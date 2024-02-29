@@ -41,14 +41,17 @@
   import VueCookies from "vue-cookies";
   import editarEquipePopUp from "../components/editarEquipePopUp.vue";
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
+  import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('usuarioCookie');
+
 const funcaoPopUp = funcaoPopUpStore();
 funcaoPopUp.variavelModal=false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
+
+
 
 console.log(usuarioLogado)
 console.log(equipeSelecionada)

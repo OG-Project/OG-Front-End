@@ -84,20 +84,23 @@
     }
     }
 
-    async function listaUsuarios(){
-        let listaUsuarios = await usuarios;
-        listaUsuarios.forEach((usuario)=>{
-        if(usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email){
+    async function listaUsuarios() {
+    let listaUsuarios = await usuarios;
+    listaUsuarios.forEach((usuario) => {
+        if (usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email) {
+            if (!membrosEquipe.value.some((membro) => membro.username === usuario.username || membro.email === usuario.email)) {
                 membrosEquipe.value.push(usuario);
+            } else {
+                console.log("Esse membro já foi adicionado à equipe.");
             }
-        })
+        }
+    });
     }
-    
-    async function adicionarMembro(){
-        listaUsuarios();
+
+    async function adicionarMembro() {
+        await listaUsuarios();
     }
-    
-     async function cadastrarEquipe() { 
+    async function cadastrarEquipe() { 
         const cria = criaEquipeStore();
         
                 if (!nome.value.trim()) {
@@ -137,7 +140,7 @@
                 descricao.value = ""
                 membrosEquipe = ""
 
-                window.location.reload();
+              
     };
 
     </script>

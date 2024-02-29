@@ -1,16 +1,16 @@
 <template>
       <fundoPopUp largura="" altura="100%">
-      <div class="divGeral">
+      <div class="divGeral" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" src="" alt="">
              <h1 class="2xl:mt-8 xl:mt-2 lg:mt- text-4xl 2xl:mr-5 ">{{ equipeSelecionada.equipe.nome }}</h1>
           </div>
-          <div class="div-membros flex flex-col overflow-auto">
-             <div class="flex justify-center 2xl:ml-5" >
+          <div class="div-membros flex flex-col overflow-auto" >
+             <div class="flex justify-center 2xl:ml-5" v-for="membro in listaMembros" :key="membro.id" >
                     <img class="imgIcon" src="" alt="">
                     <div class="corDiv">
                       <img class="imgDePerfil" src="" alt="">
-                      <h1 class="flex mt-5 text-xl md:text-lg">membro</h1>
+                      <h1 class="flex mt-5 text-xl md:text-lg">{{ membro.nome }}</h1>
                     </div>
                     <SelectPadrao class="styleSelectPadraoBranco md:mr-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
@@ -24,7 +24,7 @@
                </div>
             </div>
             <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
-                <ListaConvidados marginLeft="5vw"  texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados" ></ListaConvidados>
+                <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados" ></ListaConvidados>
             </div>
              <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
                 <div class="gap-2">
@@ -32,7 +32,7 @@
                 </div>
                 <div>
                     <div>
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem"></Botao>
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                 </div>
             </div>
@@ -47,24 +47,48 @@ import SelectPadrao from './selectPadrao.vue'
 import Input from './Input.vue';
 import ListaConvidados from './ListaConvidados.vue';
 import Botao from './Botao.vue';
-import { conexaoBD } from "../stores/conexaoBD.js";
-import { ref } from 'vue';
+import { conexaoBD} from "../stores/conexaoBD.js";
+import { ref, onMounted} from 'vue';
 import VueCookies from "vue-cookies";
 
+onMounted(exibirMembrosNaLista)
+
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
-let membros = ref([]);
 const banco = conexaoBD();
+let listaMembros = ref([])
 let membrosConvidados = ref([]);
-let usuarios = banco.procurar("/usuario");
 let usuarioConvidado = ref('');
-
-
+const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
+let usuarios = banco.procurar('/usuario'); 
 
+ async function buscarMembrosEquipe(){
+    console.log(await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros")))
+   return await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros"));   
+   
+}
+
+async function exibirMembrosNaLista() {
+   listaMembros.value = await buscarMembrosEquipe();
+}
+
+
+function marginLeftConvidado(){
+    if (screenWidth <= 768) {
+        return '6vw';
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return '0vw';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '0vw';
+    } else if( screenWidth > 1920 && screenWidth < 2560){
+        return '6vw'
+    }else if(screenWidth >= 2560){
+        return '3vw';
+    }
+}
 
 
 function larguraInputConvidado(){
-        const screenWidth = window.innerWidth;
     if (screenWidth <= 768) {
         return '28';
     } else if (screenWidth > 768 && screenWidth <= 1024) {
@@ -86,7 +110,27 @@ function larguraInputConvidado(){
     }
     
     async function adicionarMembro(){
-        listaUsuarios();
+        let usuarioJaConvidado = membrosConvidados.value.some((membro) => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
+    
+    if (usuarioJaConvidado) {
+        console.log("Você já convidou essa pessoa.");
+    } else {
+        await listaUsuarios();
+    }
+        
+    }
+
+    function confirmarConvites(){
+        const ids = membrosConvidados.value.map(m => {
+                    return Number(m.id);
+        })
+        if(membrosConvidados.value.some((membro) => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value)){
+             console.log("Esse membro ja faz parte da equipe")
+        }
+        else{
+            banco.adicionarUsuarios(ids,equipeSelecionada.equipe.id,"/usuario/add")
+        }
+        
     }
 
 </script>
