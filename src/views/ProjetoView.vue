@@ -292,7 +292,7 @@ function buscaProjetoCookies() {
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         console.log(variavelCookieProjeto.equipes)
-        if (variavelCookieProjeto.equipes.length != 0) {
+        if (variavelCookieProjeto.equipes.length != null) {
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             console.log(listaEquipesSelecionadas.value)
             
@@ -348,10 +348,9 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 }
 
 function criaProjeto() {
-    const criaProjeto = criaProjetoStore()
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value)
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipesSelecionadas.value)
-    criaPropriedade();
+    const criaProjeto = criaProjetoStore()  
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value,listaEquipesSelecionadas.value)
+   
 }
 
 async function buscandoPor() {
@@ -399,7 +398,6 @@ async function colocaListaEquipes(equipe) {
     let listaEquipes = await conexao.procurar('/equipe')
     let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipe[0]);
     listaEquipesSelecionadas.value.push(equipeVinculada)
-    listaEquipesConvidadas.value=null
     console.log(listaEquipesSelecionadas.value)
     console.log(defineSelect())
 }
