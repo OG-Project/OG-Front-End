@@ -2,9 +2,9 @@
   <div class="grid-template flex">
     <div
       class="convites-bg flex-col w-full bg-[#FEFBFF] shadow-md  shadow-gray-200 overflow-y-auto scrollbar-thin"
-      :style="{height: altura}"
-    >
+      :style="{height: altura}">
       <div class="flex justify-center overfloow-y:auto">
+
         <h1 class="font-semibold xl:text-xl">{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
@@ -16,6 +16,7 @@
         </template>
 
         <h2 class="nome-convidado w-[4vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1">{{ truncarNome(convidado.nome , 15) }}</h2>
+
 
         <template v-if="listaConvidados.length > 0">
           <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem" />
@@ -83,8 +84,10 @@ const imagemIcon={
       max-width: 100%;
     }
     .convites-bg::-webkit-scrollbar{
+
         @apply hidden
         justify-items-center justify-center items-center;
+
         display: grid;
         grid-template-columns: 0% 0%;
         
@@ -109,7 +112,9 @@ const imagemIcon={
     }
 
     .grid-template{ 
+
         @apply w-[100%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+
         display: grid;
         grid-template-columns: 40% 55%;
     }
