@@ -11,7 +11,9 @@ import 'primevue/resources/themes/lara-light-teal/theme.css'
 import TabMenu from 'primevue/tabmenu';
 import Calendar from 'primevue/calendar';
 import "primevue/resources/themes/lara-light-purple/theme.css";
-import  draggable  from 'vuedraggable'
+import draggable from "vuedraggable";
+import {ref } from 'vue';
+
 
 const app = createApp(App)
 export const pinia = createPinia()

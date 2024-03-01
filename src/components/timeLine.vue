@@ -51,14 +51,15 @@
 
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
-                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)" >
+                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)">
                                             <button @click="defineDiaSelecionado(dia.data.dia)">
                                                 <div class="h-full">
                                                     {{ format(dia.data.dia, 'dd') }}
                                                 </div>
-                                                <div class="bg-roxo w-full h-[3px]" v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')">
-                                                        
-                                                    </div>
+                                                <div class="bg-roxo w-full h-[3px]"
+                                                    v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')">
+
+                                                </div>
                                             </button>
                                         </button>
                                     </div>
@@ -94,7 +95,6 @@
                         </div>
                     </div>
 
-
                     <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras.value"
                         class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)">
 
@@ -102,8 +102,7 @@
                             (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
                             {{ hora }}
                         </div>
-                        <div
-                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
+                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
                             @dragover="retornaHora(hora)">
                             <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
@@ -125,7 +124,7 @@
 </template>aliza
 
 <script setup>
-import { ref, VueElement, watch } from 'vue';
+import { ref, VueElement, watch, onMounted } from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, setDate, getMinutes, setHours, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -157,12 +156,14 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 let index = 0;
 api.procurar("/tarefa")
-getCalendario();
-adicionaNaLista();
-
-watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
+onMounted(() => {
+    getCalendario();
     adicionaNaLista();
-});
+})
+
+    watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
+        adicionaNaLista();
+    });
 
 function gerarDiaSelecionado(dia) {
     let ultimoDia = format(endOfMonth(diaSelecionado.dia.value), 'dd')
@@ -195,7 +196,7 @@ async function adicionaNaLista() {
     diaSelecionado.listaDeTarefas.value = lista;
 };
 
-function defineDiaSelecionado(dia){
+function defineDiaSelecionado(dia) {
     diaSelecionado.dia.value = dia;
     getCalendario();
 }

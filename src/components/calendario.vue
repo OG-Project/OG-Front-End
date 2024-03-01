@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, getDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -96,8 +96,10 @@ let cardDia
 let tarefasApi = api.procurar("/tarefa")
 let tarefas
 let border = "none"
-getCalendario();
 
+onMounted(() => {
+    getCalendario();
+})
 
 function estilizaDia(dia) {
     if (getDate(dia.dia) == getDate(Date.now()) && getMonth(dia.dia) == getMonth(Date.now()) && getYear(dia.dia) == getYear(Date.now())) {

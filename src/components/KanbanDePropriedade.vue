@@ -8,36 +8,31 @@
 
         <div class="divMaior">
             <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-                <div v-for="propriedade of lista" class="w-[20%]">
+                <div v-for="propriedade of lista" class="w-[20%]" @dragover="verificaListaVaziaBoolean()" @dragleave="listaVaziaBoolean=false">
+                    <div :style="propriedade.style">
 
-
-                    <div class="listaDeTarefasPorPropriedade">
                         <div
                             class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
                             <div class="w-[90%] flex justify-center">
-                                {{ propriedade.nome }}
+                                {{ propriedade.propriedade.nome }}
                             </div>
                             <div class="w-[10%]">
                                 <img src="../assets/image 3.png">
                             </div>
                         </div>
-                        <div v-if="propriedadeAtual != 'STATUS'">
-                            <div v-for="tarefa of projeto.tarefas " class="w-[80%] pt-[2vh]">
-                                <div v-for="propriedadeTarefa of tarefa.valorPropriedadeTarefas">
-                                    <div v-if="propriedadeTarefa.propriedade.id == propriedade.id">
+                        <draggable v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
+                            @end="drag = false">
+                            <template #item="{ element: tarefa }">
+                                <div class="w-full h-full">
+                                    <div class="w-[80%] pt-[2vh]" :key="tarefa.indice" v-if="tarefa != null">
                                         <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                                     </div>
+                                    <div v-if="listaVaziaBoolean" class="w-[20px] h-[20px]">
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div v-if="propriedadeAtual == 'STATUS'">
+                            </template>
+                        </draggable>
 
-                            <div v-for="tarefa of projeto.tarefas" class="w-[80%] pt-[2vh]">
-                                <div v-if="tarefa.status != null && tarefa.status.id == propriedade.id">
-                                    <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
-                                </div>
-                            </div>
-                        </div>
                         <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
                             <p>+ Nova</p>
                         </div>
@@ -52,21 +47,26 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import CardTarefas from './cardTarefas.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import VueCookies from "vue-cookies"
+import draggable from "vuedraggable";
+import sortBy from 'sort-by'
 
 let api = conexaoBD()
 let projetoApi = api.procurar("/projeto?id=1")
 let projeto = projetoObjeto()
 let listaDeTarefas = [];
 let lista = ref([]);
-cookies()
-defineListaDeTarefas()
-
+let listaStyle = ''
+let listaVaziaBoolean = false
 const propriedadeAtual = ref("STATUS");
 const listaDeTipos = ref([
+    {
+        nome: "Status",
+        valor: "STATUS"
+    },
     {
         nome: "Texto",
         valor: "TEXTO"
@@ -85,37 +85,70 @@ const listaDeTipos = ref([
     },
 ])
 
-watch(propriedadeAtual, async () => {
-    await defineListaDeTarefas()
+onMounted(() => {
+    cookies()
+    defineListaDePropriedades()
 })
 
-async function definePropriedades() {
-    return ref((await api.api).data)
-}
+watch(propriedadeAtual, async () => {
+    await defineListaDePropriedades()
+})
+
 async function cookies() {
     let usuario = await api.procurar("/usuario/id?id=21")
     $cookies.set("usuarioCookie", usuario, 1000000000)
+    $cookies.get("projetoCookie", projeto)
 }
 async function projetoObjeto() {
 
     const resultado = await projetoApi;
     return projeto = resultado[0]
 }
-async function defineListaDeTarefas() {
-    listaDeTarefas = []
+async function defineListaDePropriedades() {
+    let listaDePropriedades = []
     let projetoTeste = (await (projeto))
     if (propriedadeAtual.value == "STATUS") {
-        projetoTeste.statusList.forEach(status => {
-            listaDeTarefas.push(status)
-        });
+        for (const status of projetoTeste.statusList) {
+            let listaDeTarefas = []
+            for (const tarefa of projetoTeste.tarefas) {
+                if (tarefa.status != null && status.id == tarefa.status.id) {
+                    listaDeTarefas.push(tarefa)
+                }
+            }
+            let tarefa2 = {
+                propriedade: status,
+                tarefas: listaDeTarefas,
+                style: listaStyle = {
+                    width: "100%",
+                    height: "max-content",
+                    display: "flex",
+                    alignItems: "center",
+                    flexDirection: "column",
+                    backgroundColor: status.cor,
+                    paddingTop: "5px",
+                    boxShadow: " 0px 5px 7px rgb(99, 99, 99)"
+                }
+            }
+            tarefa2.tarefas.sort(sortBy('indice'))
+            console.log(tarefa2.tarefas)
+            listaDePropriedades.push(tarefa2)
+
+        };
     } else {
         projetoTeste.propriedades.forEach(propriedade => {
             if (propriedade.tipo == propriedadeAtual.value) {
-                listaDeTarefas.push(propriedade)
+                lista.value.push(propriedade)
             }
         });
     }
-    lista.value = listaDeTarefas
+    lista.value = []
+    lista.value = listaDePropriedades
+    listaDePropriedades = null;
+}
+function verificaListaVaziaBoolean(tarefas){
+    if(tarefas,length==0){
+        listaVaziaBoolean = true
+    }
 }
 </script>
 
@@ -139,12 +172,6 @@ async function defineListaDeTarefas() {
 
 .novaPropriedade {
     @apply w-[20%] h-[50%] flex-col bg-[#A79DB0] pt-[5px] flex justify-center items-center text-[2vw];
-    box-shadow: 0px 5px 7px rgb(99, 99, 99);
-
-}
-
-.listaDeTarefasPorPropriedade {
-    @apply w-full h-max flex items-center flex-col bg-[#B6BFE9] pt-[5px];
     box-shadow: 0px 5px 7px rgb(99, 99, 99);
 
 }
