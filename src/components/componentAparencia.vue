@@ -5,25 +5,54 @@
                 Aparência
             </h1>
         </div>
-        <div class="pl-32 items-center">
-            <div class="flex justify-start">
-                <div class="flex flex-col gap-10">
-                    <div :style="{backgroundColor:'#'+cores[1]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[2]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[3]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[4]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[5]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[6]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[7]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[8]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[9]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[10]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[11]}" class="w-20 h-20"></div>
-                    <div :style="{backgroundColor:'#'+cores[12]}" class="w-20 h-20"></div>
+        <div class="pl-32 items-center flex">
+            <div class="w-[740px] h-[420px] bg-slate-500"></div>
+
+            <div class="flex flex-col gap-3">
+
+                <div class="flex ">
+                    <div class="w-full flex flex-col items-center">
+                        <div class="pb-1 border-b-2 border-roxo w-max px-12">Titulo</div>
+                        <!-- <div>Tamanho</div> -->
+                        <selectPadrao></selectPadrao>
+                        <selectPadrao></selectPadrao>
+                    </div>
+                    <div class="w-full flex flex-col items-center">
+                        <div class="pb-1 border-b-2 border-roxo w-max px-12">Titulo</div>
+                        <!-- <div>Tamanho</div> -->
+                        <selectPadrao></selectPadrao>
+                        <selectPadrao></selectPadrao>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center items-center gap-3">
+                    <div class="pb-1 border-b-2 border-roxo w-max px-12">Cores</div>
+                    <div class="flex flex-wrap justify-center w-96 gap-5">
+                        <div @click="corEscolhida(cores[1])" :style="{ backgroundColor: '#' + cores[1] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[2])" :style="{ backgroundColor: '#' + cores[2] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[3])" :style="{ backgroundColor: '#' + cores[3] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[4])" :style="{ backgroundColor: '#' + cores[4] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[5])" :style="{ backgroundColor: '#' + cores[5] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[6])" :style="{ backgroundColor: '#' + cores[6] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[7])" :style="{ backgroundColor: '#' + cores[7] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[8])" :style="{ backgroundColor: '#' + cores[8] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[9])" :style="{ backgroundColor: '#' + cores[9] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[10])" :style="{ backgroundColor: '#' + cores[10] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[11])" :style="{ backgroundColor: '#' + cores[11] }" class="cursor-pointer w-10 h-10"></div>
+                        <div @click="corEscolhida(cores[12])" :style="{ backgroundColor: '#' + cores[12] }" class="cursor-pointer w-10 h-10"></div>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
+        <div class="flex justify-end pt-[8%] pr-[15%]">
+            <Botao 
+            :funcaoClick="salvarCor" 
+            preset="PadraoRoxo" 
+            texto="Editar E-mail" 
+            tamanhoDaBorda="2px" 
+            tamanhoDaFonte="2.0vh" />
+        </div>
     </div>
 </template>
 
@@ -32,7 +61,7 @@ import { onMounted, ref } from 'vue';
 import selectPadrao from './selectPadrao.vue';
 import convert from 'color-convert';
 import { perfilStore } from '../stores/perfilStore'
-
+import Botao from './Botao.vue'
 const perfil = perfilStore()
 const cores = ref({
     1: 'FA0808',
@@ -58,6 +87,14 @@ const styleCor = ref({
     color: contraste(cor),
     fontFamily: 'Poppi'
 })
+
+function salvarCor(){
+
+}
+function corEscolhida(a){
+    console.log('cor '+a)
+    c
+}
 
 function contraste(cor) {
     const r = parseInt(String(cor).substr(1, 2), 16)

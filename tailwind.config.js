@@ -31,6 +31,12 @@ export default {
     width:{
         
     },
+    /* Cormorant+Garamond serif */
+    /* Merriweather serif */
+    /* Proza+Libre */
+    /* Quattrocento+Sans */
+    /* Quattrocento serif */
+    /* Work+Sans */
     fontFamily:{
       poppins: ['"Poppins"', '"sans-serif"'],
       sourceSans:['"Source Sans 3"', '"sans-serif"']
