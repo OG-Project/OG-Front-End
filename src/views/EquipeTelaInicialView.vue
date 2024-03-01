@@ -16,7 +16,7 @@
             </div>
             <div class="botaoIcone flex mt-[-3vh] mr-[2.5vw] shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
                 <img class="w-5 "  src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
-                <p class="flex ml-2 mt-[0.2vh] text-md" :class="{ 'imagem-hover-membros': hoverMembros }">20</p>
+                <p class="flex ml-3 mt-[0.2vh] text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
             </div>
             <div class="absolute top-0 left-0 right-0">
                 <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
@@ -37,21 +37,39 @@
 <script setup>
   import navBar from "../components/navBar.vue"
   import Botao from '../components/Botao.vue';
-  import {ref} from 'vue';
+  import {ref, onMounted} from 'vue';
   import VueCookies from "vue-cookies";
   import editarEquipePopUp from "../components/editarEquipePopUp.vue";
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
   import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
+  import { conexaoBD } from "../stores/conexaoBD.js";
+
+   
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('usuarioCookie');
-
 const funcaoPopUp = funcaoPopUpStore();
+const quantidadeMembros = ref([]);
 funcaoPopUp.variavelModal=false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
+const banco = conexaoBD();
 
 
+
+async function buscarMembrosEquipe() {
+    // Chama a função do banco de dados para buscar os membros da equipe
+    quantidadeMembros.value = await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros"));
+  }
+
+  // Chamada da função para buscar membros da equipe assim que o componente for montado
+  onMounted(() => {
+    buscarMembrosEquipe();
+  });
+
+  function numeroMembrosLimitado() {
+    return Math.min(quantidadeMembros.value.length, 99);
+  }
 
 console.log(usuarioLogado)
 console.log(equipeSelecionada)
