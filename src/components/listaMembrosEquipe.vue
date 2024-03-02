@@ -1,5 +1,5 @@
 <template>
-      <fundoPopUp largura="" altura="100%">
+      <fundoPopUp largura="" altura="95%">
       <div class="divGeral" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" src="" alt="">
@@ -7,7 +7,7 @@
           </div>
           <div class="div-membros flex flex-col overflow-auto" >
              <div class="flex justify-center 2xl:ml-5" v-for="membro in listaMembros" :key="membro.id" >
-                    <img class="imgIcon" src="" alt="">
+                    <img class="imgIcon" src="../imagem-vetores/Sair.svg" alt="">
                     <div class="corDiv">
                       <img class="imgDePerfil" src="" alt="">
                       <h1 class="flex mt-5 text-xl md:text-lg">{{ membro.nome }}</h1>
@@ -138,10 +138,9 @@ function larguraInputConvidado(){
 <style scoped>
 
 .styleSelectPadraoBranco{
-        @apply border-4 mt-[2.5vh]
+        @apply border-4 mt-[1vh]
         border-transparent
         border-b-brancoNeve
-        
         border-b-4
         w-max
         items-center justify-center focus-within:border-white
@@ -175,14 +174,14 @@ function larguraInputConvidado(){
     }
 
 .div-membros{
-    @apply w-[100%] h-[25vh];
+    @apply w-[100%] h-[20vh];
 
 }
 
 .imgIcon {
         @apply bg-cover 
         bg-center flex mt-8 md:ml-10
-        2xl:w-[2vw] 2xl:h-[4vh] xl:w-[3vw] xl:h-[4vh] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
+        2xl:w-[1.5vw] 2xl:h-[4vh] xl:w-[3vw] xl:h-[4vh] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
     }
 
 
