@@ -282,13 +282,6 @@ function getCalendario() {
 
 }
 
-function abrePopUp() {
-    abrePopup.value = true
-
-}
-function fechaPopUp(e) {
-    abrePopup.value = false
-}
 
 function setaEsquerda() {
     data = setMonth(data, getMonth(data) - 1)
