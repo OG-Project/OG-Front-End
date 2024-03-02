@@ -6,22 +6,26 @@
             </h1>
         </div>
         <div class="pl-32 items-center flex">
-            <div class="w-[740px] h-[420px] bg-slate-500"></div>
+            <div :style="{backgroundColor:cor,fontFamily:font}" class="w-[740px] h-[420px] bg-slate-500">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                Placeat reiciendis excepturi aspernatur fuga esse itaque.
+                Libero molestias, ipsum eaque inventore dolores veniam sed
+                eligendi architecto minus non amet pariatur maxime!
+            </div>
 
-            <div class="flex flex-col gap-3">
-
-                <div class="flex ">
+            <div class="ml-[] flex flex-col gap-3">
+                <div class="flex gap-4">
                     <div class="w-full flex flex-col items-center">
                         <div class="pb-1 border-b-2 border-roxo w-max px-12">Titulo</div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao></selectPadrao>
-                        <selectPadrao></selectPadrao>
+                        <selectPadrao :listaSelect="fonts"></selectPadrao>
                     </div>
                     <div class="w-full flex flex-col items-center">
                         <div class="pb-1 border-b-2 border-roxo w-max px-12">Titulo</div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao></selectPadrao>
-                        <selectPadrao></selectPadrao>
+                        <selectPadrao :listaSelect="fonts"></selectPadrao>
                     </div>
                 </div>
 
@@ -77,9 +81,14 @@ const cores = ref({
     11: '3C029E',
     12: '7802EB'
 })
-
-
-
+let font=ref()
+/* Cormorant+Garamond serif */
+/* Merriweather serif */
+/* Proza+Libre */
+/* Quattrocento+Sans */
+/* Quattrocento serif */
+/* Work+Sans */
+let fonts=['Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
 
 let cor = ref('#80A4ED')
 const styleCor = ref({
@@ -93,7 +102,7 @@ function salvarCor(){
 }
 function corEscolhida(a){
     console.log('cor '+a)
-    c
+    cor.value="#"+a
 }
 
 function contraste(cor) {
