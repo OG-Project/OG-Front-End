@@ -1,9 +1,9 @@
 <template>
         <div class="w-[1400px] h-[877px] flex flex-col  ">
-                <div>
+                <div :style="{fontFamily:fonteTitulo}">
                         <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
                 </div>
-                <div class="flex justify-center gap-8">
+                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center gap-8">
                         <div class="flex flex-col gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
                                         <span class="text-xl">Nome</span>
@@ -78,8 +78,12 @@ import VueCookies from "vue-cookies";
 import {perfilStore} from '../stores/perfilStore'
 import { ref, onMounted, onBeforeMount } from 'vue';
 import { Usuario } from '../models/usuario';
-
+import { storeToRefs } from 'pinia';
 const PerfilStore=perfilStore()
+const {fonteTitulo} = storeToRefs(PerfilStore)
+const {fonteCorpo} = storeToRefs(PerfilStore)
+
+
 
 PerfilStore.nome
 let editar=ref(false)

@@ -1,11 +1,11 @@
 <template>
     <div class="w-[1400px] h-[877px] flex flex-col">
         <div>
-            <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            <h1 :style="{fontFamily:fonteTitulo}" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Segurança
             </h1>
         </div>
-        <div class="pl-32 items-center">
+        <div :style="{fontFamily:fonteCorpo}" class="pl-32 items-center">
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
                     <div class="flex items-center gap-8">
@@ -54,7 +54,7 @@
                 </div>
             </div>
         </div>
-        <div class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
+        <div :style="{fontFamily:fonteCorpo}" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
             <span>Deseja deletar sua Conta?</span>
         </div>
         
@@ -70,9 +70,14 @@ import VueCookies from "vue-cookies";
 import alteraSenha from './alterarSenha.vue'
 import { ref } from 'vue';
 import alterarEmail from './alterarEmail.vue';
+import { storeToRefs } from 'pinia';
+const PerfilStore = perfilStore()
+const {fonteTitulo} = storeToRefs(PerfilStore)
+const {fonteCorpo} = storeToRefs(PerfilStore)
+
+
 
 let funcaoPopUp=funcaoPopUpStore()
-const PerfilStore = perfilStore()
 let usuario=VueCookies.get('usuarioCookie')
 
 let isLogadoGoogle=false
