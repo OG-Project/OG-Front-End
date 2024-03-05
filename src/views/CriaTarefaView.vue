@@ -280,7 +280,7 @@
             >
               <div class="w-[15%] gap-4 flex justify-center">
                 <div
-                  v-if="comentario.autor === usuarioCookies"
+                  v-if="comentario.autor === usuarioCookies.username"
                   class="w-[80%] mt-2 gap-4 flex justify-center"
                 >
                   <img
