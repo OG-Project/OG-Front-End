@@ -42,7 +42,8 @@ async function fazerLogin() {
   listaUsuarios.forEach((usuario) => {
     if (usuarioLogin.value === usuario.username) {
       if (senhaUsuarioLogin.value === usuario.senha) {
-        VueCookies.set("usuarioCookie", usuario, 1);
+        console.log("davi")
+        VueCookies.set("usuarioCookie", usuario,  1000);
       }
     }
   });

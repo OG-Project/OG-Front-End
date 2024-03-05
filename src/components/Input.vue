@@ -115,7 +115,6 @@ import {Equipe} from '../models/Equipe'
     function verificaHeigth(){
         let teste=heigthResponsivo()
         if(props.altura==undefined){
-            console.log(teste)
             return teste
         }
         return props.altura;

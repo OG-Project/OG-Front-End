@@ -2,21 +2,20 @@
   <div class="grid-template flex">
     <div
       class="convites-bg flex-col w-full bg-[#FEFBFF] shadow-md  shadow-gray-200 overflow-y-auto scrollbar-thin"
-      :style="{height: altura}"
-    >
+      :style="{height: altura}">
       <div class="flex justify-center overfloow-y:auto">
-        <h1 class="font-semibold " >{{ texto }}</h1>
+
+        <h1 class="font-semibold xl:text-xl">{{ texto }}</h1>
       </div>
       <div class="flex items-center flex-col ml-5">
-        <div class="w-full flex items-center mt-5 mb-2 " v-for="convidado in listaConvidados" :key="convidado.nome">
+        <div class="w-full flex items-center mt-5 mb-2" v-for="convidado in listaConvidados" :key="convidado.nome" :style="{'margin-left':marginLeft, 'margin-right': marginRight}">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
         <template v-if="listaConvidados.length > 0">
           <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :style="altDaImagemPerfil" />
           
         </template>
 
-
-        <h2 class="nome-convidado md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1">{{ truncarNome(convidado.nome , 15) }}</h2>
+        <h2 class="nome-convidado w-[4vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1">{{ truncarNome(convidado.nome , 15) }}</h2>
 
 
         <template v-if="listaConvidados.length > 0">
@@ -53,11 +52,13 @@ const props = defineProps({
   caminhoDaImagemPerfil:String,
   texto:String,
   mostrarSelect:String,
+  marginLeft: String,
+  marginRight: String,
   listaConvidados:{
-    type: []
+    type: Array,
+    default:[]
   }
 })
-
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -67,10 +68,6 @@ const imagemIcon={
   height: props.altDaImagemIcon,
 }
 </script>
-  <style lang="scss">
-  /* ... o restante do seu estilo permanece o mesmo ... */
-  </style>
-  
 
 <style lang="scss" scoped>
 
@@ -86,15 +83,15 @@ const imagemIcon={
       text-overflow: ellipsis;
       max-width: 100%;
     }
-
     .convites-bg::-webkit-scrollbar{
-        @apply hidden justify-items-center justify-center;
+
+        @apply hidden
+        justify-items-center justify-center items-center;
+
         display: grid;
         grid-template-columns: 0% 0%;
         
     }
- 
-
     .imgIcon {
         @apply bg-cover 
         bg-center flex flex-col justify-center 
@@ -103,7 +100,7 @@ const imagemIcon={
     }
 
     .imgDePerfil {
-        @apply rounded-full bg-cover bg-center flex 
+        @apply rounded-full bg-cover bg-center flex justify-center  
         flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw]
         2xl:w-[3vw] 2xl:h-[5vh] xl:w-[3vw] xl:h-[6vh] lg:w-[4vw] lg:h-[8vh] md:w-[5vw] md:h-[10vh];
     }
@@ -115,7 +112,9 @@ const imagemIcon={
     }
 
     .grid-template{ 
-        @apply w-[80%] h-[11%] gap-4  ; 
+
+        @apply w-[100%] h-[11%] gap-4  items-center justify-items-center justify-center ; 
+
         display: grid;
         grid-template-columns: 40% 55%;
     }
