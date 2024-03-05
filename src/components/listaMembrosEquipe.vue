@@ -6,8 +6,9 @@
              <h1 class="2xl:mt-8 xl:mt-2 lg:mt- text-4xl 2xl:mr-5 ">{{ equipeSelecionada.equipe.nome }}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-auto" >
-             <div class="flex justify-center 2xl:ml-5" v-for="membro in listaMembros" :key="membro.id" >
-                    <img class="imgIcon" src="../imagem-vetores/Sair.svg" alt="">
+             <div class="flex justify-center 2xl:ml-5" v-for="membro in listaMembros" :key="membro.id">
+                    <img  v-if="membro.id !== usuarioLogado.id"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
+                    <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                       <img class="imgDePerfil" src="" alt="">
                       <h1 class="flex mt-5 text-xl md:text-lg">{{ membro.nome }}</h1>
@@ -54,13 +55,29 @@ import VueCookies from "vue-cookies";
 onMounted(exibirMembrosNaLista)
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
+const usuarioLogado = VueCookies.get('usuarioCookie')
 const banco = conexaoBD();
-let listaMembros = ref([])
+
+let listaMembros = ref([]);
+let membrosEquipe = ref ([]);
 let membrosConvidados = ref([]);
 let usuarioConvidado = ref('');
 const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
 let usuarios = banco.procurar('/usuario'); 
+
+function removerMembro(membro){
+    if (membro && membro.id) {
+        if (membro.id === usuarioLogado.id) {
+            console.error('Você não pode remover a si mesmo da equipe.');
+            return; // Impede a remoção
+        }
+        banco.removerUsuarioDaEquipe(equipeSelecionada.equipe.id,membro.id,"/usuario/removerUsuarioEquipe")
+        
+    } else {
+        console.error('O membro ou sua propriedade id não estão definidos.');
+    }
+}
 
  async function buscarMembrosEquipe(){
     console.log(await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros")))
@@ -69,7 +86,13 @@ let usuarios = banco.procurar('/usuario');
 }
 
 async function exibirMembrosNaLista() {
-   listaMembros.value = await buscarMembrosEquipe();
+   membrosEquipe.value = await buscarMembrosEquipe();
+   if (Array.isArray(membrosEquipe.value)) {
+        // Filtrar espaços nulos (null) da lista de membros da equipe
+        listaMembros.value = membrosEquipe.value.filter(membro => membro != null);
+    } else {
+        console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
+    }
 }
 
 
@@ -110,27 +133,44 @@ function larguraInputConvidado(){
     }
     
     async function adicionarMembro(){
-        let usuarioJaConvidado = membrosConvidados.value.some((membro) => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
+        const membroNaEquipe = listaMembros.value.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
+    
+    if (membroNaEquipe) {
+        console.log("Esse usuário já faz parte da equipe.");
+        return;
+    }
+
+    // Verifica se o usuário já foi convidado
+    const usuarioJaConvidado = membrosConvidados.value.some(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
     
     if (usuarioJaConvidado) {
         console.log("Você já convidou essa pessoa.");
     } else {
         await listaUsuarios();
     }
-        
     }
 
     function confirmarConvites(){
         const ids = membrosConvidados.value.map(m => {
                     return Number(m.id);
         })
-        if(membrosConvidados.value.some((membro) => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value)){
-             console.log("Esse membro ja faz parte da equipe")
-        }
-        else{
-            banco.adicionarUsuarios(ids,equipeSelecionada.equipe.id,"/usuario/add")
-        }
+       
+        // Verifica se o membro a ser convidado foi removido anteriormente
+        const membroRemovido = listaMembros.value.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
         
+        if (membroRemovido) {
+            if(membrosConvidados.value.some((membro) => membro.username == usuarioConvidado.value || membro.email == usuarioConvidado.value)){
+             console.log("Esse membro ja faz parte da equipe")
+            }else{
+        // Se o membro foi removido, adicione-o novamente à equipe
+            banco.adicionarUsuarios([membroRemovido.id], equipeSelecionada.equipe.id, "/usuario/add");
+            console.log("Membro reconvidado com sucesso.");
+            }
+           
+        } else {
+            // Se o membro não foi removido anteriormente, convide-o normalmente
+            banco.adicionarUsuarios(ids, equipeSelecionada.equipe.id, "/usuario/add");
+        }
     }
 
 </script>
@@ -139,6 +179,7 @@ function larguraInputConvidado(){
 
 .styleSelectPadraoBranco{
         @apply border-4 mt-[1vh]
+        flex justify-center
         border-transparent
         border-b-brancoNeve
         border-b-4

@@ -50,6 +50,7 @@ const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('usuarioCookie');
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
+let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal=false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
@@ -59,7 +60,13 @@ const banco = conexaoBD();
 
 async function buscarMembrosEquipe() {
     // Chama a função do banco de dados para buscar os membros da equipe
-    quantidadeMembros.value = await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros"));
+    membrosEquipe.value = await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros"));
+   if (Array.isArray(membrosEquipe.value)) {
+        // Filtrar espaços nulos (null) da lista de membros da equipe
+        quantidadeMembros.value = membrosEquipe.value.filter(membro => membro != null);
+    } else {
+        console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
+    }
   }
 
   // Chamada da função para buscar membros da equipe assim que o componente for montado

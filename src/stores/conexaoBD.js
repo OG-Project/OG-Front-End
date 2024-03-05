@@ -33,6 +33,10 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
           return await ((await axios.get(`http://localhost:8085${textoRequisicao}/${equipeId}`)).data)
+      },
+      removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
+        
+          return axios.delete(`http://localhost:8085${textoRequisicao}/${equipeId}/${userId}`)
       }
       
     }

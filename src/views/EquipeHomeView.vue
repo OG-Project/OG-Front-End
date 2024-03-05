@@ -67,7 +67,7 @@
   async function listaUsuarios(){
         let listaUsuarios = await usuarios;
         listaUsuarios.forEach((usuario)=>{
-           if(usuarioLogado.nome === usuario.nome ){ 
+           if(usuarioLogado.id == usuario.id ){ 
             equipesUsuario.value = usuario.equipes;
            }
         })
@@ -93,7 +93,7 @@
 
     const equipeSelecionada = equipe;
     console.log(equipeSelecionada)
-    VueCookies.set("equipeSelecionada", equipeSelecionada, 30000)
+    VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
     funcaoPopUp.abrePopUp()
 
   }
