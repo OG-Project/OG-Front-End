@@ -153,7 +153,6 @@ let cardDia
 let tarefasApi = api.procurar("/tarefa")
 let tarefas = defineTarefas()
 let border = "none"
-console.log(tarefas)
 getCalendario();
 
 

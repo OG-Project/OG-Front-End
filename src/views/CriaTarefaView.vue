@@ -252,10 +252,7 @@
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-            <img
-              :src="usuario.foto"
-              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full"
-            />
+            <img class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"/>
             <div class="pb-2 flex flex-col items-end">
               <TextAreaPadrao
                 width="25vw"
@@ -271,43 +268,53 @@
                 preset="PadraoRoxo"
                 tamanhoPadrao="pequeno"
                 :funcaoClick="enviaComentario"
-                :parametrosFuncao="[
-                  comentarioSendoEnviado,
-                  usuario.username,
-                  usuario.foto,
-                ]"
+                :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"
               ></Botao>
             </div>
           </div>
         </div>
         <div class="w-[85%] flex flex-col">
-          <div v-for="comentario of Comentarios">
+          <div v-for="comentario of tarefa.comentarios">
             <div
               class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] items-end flex flex-col"
             >
-              <div class="w-[15%] gap-4 flex justify-center pt-2">
-                <img
-                  class="w-[25%]"
-                  :src="iconeLapisPreto"
-                  @click="trocaComentarioSendoEditado"
-                />
-                <img
-                  @click="deletaComentario(comentario)"
-                  class="w-[25%]"
-                  :src="BotaoX"
-                />
+              <div class="w-[15%] gap-4 flex justify-center">
+                <div
+                  v-if="comentario.autor === usuarioCookies.username"
+                  class="w-[80%] mt-2 gap-4 flex justify-center"
+                >
+                  <img
+                    class="w-[25%]"
+                    :src="iconeLapisPreto"
+                    @click="trocaComentarioSendoEditado"
+                  />
+                  <img
+                    @click="deletaComentario(comentario)"
+                    class="w-[25%]"
+                    :src="BotaoX"
+                  />
+                </div>
+                <div
+                  v-if="comentario.autor != usuarioCookies.username"
+                  class="w-[80%] mt-6 gap-4 flex justify-center"
+                ></div>
               </div>
               <div class="flex w-[100%] mb-2">
                 <img
-                  :src="comentario.foto"
-                  class="shadow-2xl h-[60px] w-[60px] mr-4 ml-4 rounded-full"
+                  :src="'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados"
+                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
                 />
-                <div class="w-[100%]">
+                <div class="w-[80%]">
                   <p>
                     {{ comentario.autor }}
                   </p>
 
-                  <div v-if="comentarioSendoEditado">
+                  <div
+                    v-if="
+                      comentarioSendoEditado &&
+                      comentario.autor === usuarioCookies.username
+                    "
+                  >
                     <TextAreaPadrao
                       width="25vw"
                       height="15vh"
@@ -318,12 +325,22 @@
                       v-model="comentario.comentario"
                     ></TextAreaPadrao>
                   </div>
-                  <div v-if="!comentarioSendoEditado">
+                  <div
+                    v-if="
+                      !comentarioSendoEditado ||
+                      comentario.autor != usuarioCookies.username
+                    "
+                  >
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.comentario }}
                     </p>
                   </div>
-                  <div v-if="comentarioSendoEditado">
+                  <div
+                    v-if="
+                      comentarioSendoEditado &&
+                      comentario.autor === usuarioCookies.username
+                    "
+                  >
                     <Botao
                       texto="Editar"
                       preset="PadraoRoxo"
@@ -559,8 +576,8 @@
         class="min-h-[4%] flex items-center justify-center gap-4"
       >
         <p
-          :style="{ 'background-color': '#' + status.cor }"
-          class="flex items-center justify-center px-4"
+          :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
+          class="flex items-center border-2 shadow-md justify-center px-4"
         >
           {{ status.nome }}
         </p>
@@ -610,6 +627,7 @@ import CheckBox from "../components/checkBox.vue";
 import iconAnexo from "../imagem-vetores/anexoIcon.svg";
 import TextAreaPadrao from "../components/textAreaPadrao.vue";
 import { ref, watch } from "vue";
+import selectPadrao from "../components/selectPadrao.vue";
 import navBar from "../components/navBar.vue";
 import ColorPicker from "primevue/colorpicker";
 import BotaoX from "../imagem-vetores/XPreto.svg";
@@ -619,6 +637,10 @@ import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
 import { computed } from "vue";
 import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
+import tinycolor from "tinycolor2";
+import { conexaoBD } from "../stores/conexaoBD.js";
+
+const banco = conexaoBD();
 
 const parametroDoFiltroStatus = ref("Ordenar Por");
 
@@ -680,6 +702,11 @@ let corStatus = ref("ff0000");
 let nomeSubtarefa = ref("");
 let statusSubtarefa = ref("Em Progresso");
 
+function corDaFonte(backgroundColor) {
+  const isLight = tinycolor(backgroundColor).isLight();
+  return isLight ? "#000" : "#fff";
+}
+
 //Função utilizada para criar um Status
 
 function criaStatus() {
@@ -721,7 +748,6 @@ function deletaValorSelect(listaSelect, index) {
 //Função utilizada para criar uma Subtarefa
 
 function criaSubtarefa() {
-  console.log(statusSubtarefa.value);
   if (nomeSubtarefa.value != "") {
     if (statusSubtarefa.value === "") {
       nomeSubtarefa.value = "";
@@ -777,7 +803,6 @@ function criaPropriedade() {
     tipoPropriedade.value != " "
   ) {
     if (nomePropriedade.value != "") {
-      console.log(tipoPropriedade.value);
       let propriedade = {
         nome: nomePropriedade.value,
         tipo: tipoPropriedade.value,
@@ -819,20 +844,21 @@ let comentarioSendoEnviado = ref("");
 let tarefa = ref({
   nome: "",
   descricao: "",
-  arquivos: [],
-  comentarios: [],
+  arquivos: ref([]),
+  comentarios: ref([]),
 });
 
 onUpdated(() => {
-    VueCookies.set("TarefaNaoFinalizada", tarefa.value, 1000000);
-})
+  VueCookies.set("TarefaNaoFinalizada", tarefa.value, 1000000);
+});
 
 onMounted(() => {
+  autenticarUsuario();
   tarefa.value = {
     nome: "",
     descricao: "",
-    arquivos: [],
-    comentarios: [],
+    arquivos: ref([]),
+    comentarios: ref([]),
   };
   const cookieData = VueCookies.get("TarefaNaoFinalizada");
   if (cookieData && cookieData.nome != "") {
@@ -877,13 +903,11 @@ function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
     statusDaTarefa.value.push(status);
-    console.log(statusDaTarefa.value);
   } else {
     statusDaTarefa.value.forEach((statusDeletar) => {
       if (statusDeletar === status) {
         statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(statusDeletar), 1);
       }
-      console.log(statusDaTarefa.value);
     });
   }
 }
@@ -905,7 +929,19 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade) {
 
 //Usuario Logado
 
-let usuario = VueCookies.get("usuarioCookie");
+let usuarioCookies = ref({});
+
+async function autenticarUsuario() {
+  let usuarioId = VueCookies.get("IdUsuarioCookie");
+  let usuarios = banco.procurar("/usuario");
+  let listaUsuarios = await usuarios;
+  listaUsuarios.forEach((usuario) => {
+    if (usuario.id.toString() === usuarioId) {   
+      usuarioCookies.value = usuario;
+      console.log(usuarioCookies.value.foto)
+    }
+  });
+}
 
 //Variavel utilizada para abrir e fechar os comentarios
 
@@ -914,18 +950,16 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
-  usuario.foto =
-    "https://i.pinimg.com/736x/fd/1d/5b/fd1d5bdb9eb1f207073f614be842a889.jpg";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
 //Função que publica o comentario na tarefa
 
 function enviaComentario(comentario) {
-  Comentarios.value.push({
-    autor: comentario[1],
+  tarefa.value.comentarios.push({
+    autor: comentario[1].username,
     comentario: comentario[0],
-    foto: comentario[2],
+    foto: comentario[1].foto,
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
@@ -934,9 +968,9 @@ function enviaComentario(comentario) {
 //
 
 function deletaComentario(comentario) {
-  Comentarios.value.forEach((comentarioParaDeletar) => {
+  tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
-      Comentarios.value.splice(Comentarios.value.indexOf(comentario), 1);
+      tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
     }
   });
 }
@@ -948,7 +982,6 @@ function trocaComentarioSendoEditado() {
 }
 
 function editarComentario(comentario) {
-  console.log(comentario);
   if (comentario.comentario === "") {
     deletaComentario(comentario);
   }
@@ -1100,7 +1133,6 @@ function clicouOpcaoStatus() {
 }
 
 #bgBranco {
-  height: 96%;
   background-color: #ffffff;
 }
 
