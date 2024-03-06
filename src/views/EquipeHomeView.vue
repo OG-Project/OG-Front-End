@@ -1,6 +1,4 @@
 <template>
-    <navBar>
-    </navBar>
     <div>
      <div class="flex justify-center mt-20 p-6 text-5xl">
          <h1>
@@ -27,12 +25,11 @@
                     <img class="flex w-[8vw] h-[6vh]" src="../imagem-vetores/maisIcon.svg" alt="">
                 </div>  
          </div>
-        <div class="absolute top-0 left-0 right-0">
-            <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
-        </div>
-        <div class="absolute top-0 left-0 right-0">
-           <CriarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></CriarEquipePopUp>
-        </div>
+    
+            <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
+        
+           <criarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
+        
     
      </div>
     </div>
@@ -45,7 +42,7 @@
   import { conexaoBD } from "../stores/conexaoBD.js";
   import editarEquipePopUp from "../components/editarEquipePopUp.vue";
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-  import CriarEquipePopUp from "../components/CriarEquipePopUp.vue";
+  import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
   import {useRouter} from 'vue-router'
 
   let equipesUsuario = ref([]);
@@ -83,17 +80,16 @@
 
   function abrePopUp(equipe, tipo){
 
-    if (tipo === 'criar') {
-        variavelCria = true;
-        variavelEngrenagem = false;
-    } else {
-        variavelEngrenagem = true;
+    if (tipo == 'engrenagem') {
         variavelCria = false;
+        variavelEngrenagem = true;
+    } else {
+        variavelEngrenagem = false;
+        variavelCria = true;
     }
-
     const equipeSelecionada = equipe;
     console.log(equipeSelecionada)
-    VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
+    VueCookies.set("equipeSelecionada", equipeSelecionada, 30000)
     funcaoPopUp.abrePopUp()
 
   }

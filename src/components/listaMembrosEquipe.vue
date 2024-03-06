@@ -1,12 +1,12 @@
 <template>
-      <fundoPopUp largura="" altura="95%">
-      <div class="divGeral" >
+      <fundoPopUp largura="" altura="95vh">
+      <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" src="" alt="">
-             <h1 class="2xl:mt-8 xl:mt-2 lg:mt- text-4xl 2xl:mr-5 ">{{ equipeSelecionada.equipe.nome }}</h1>
+             <h1 class="xl:mt-2 lg:mt-10 text-4xl 2xl:mr-5 ">{{ equipeSelecionada.equipe.nome }}</h1>
           </div>
-          <div class="div-membros flex flex-col overflow-auto" >
-             <div class="flex justify-center 2xl:ml-5" v-for="membro in listaMembros" :key="membro.id">
+          <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
+             <div class="flex justify-center" v-for="membro in listaMembros" :key="membro.id">
                     <img  v-if="membro.id !== usuarioLogado.id"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
@@ -113,13 +113,15 @@ function marginLeftConvidado(){
 
 function larguraInputConvidado(){
     if (screenWidth <= 768) {
-        return '28';
+        return '24';
     } else if (screenWidth > 768 && screenWidth <= 1024) {
-        return '25';
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
         return '22';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '19';
     } else if(screenWidth > 2560){
         return '18';
+    }else if(screenWidth >= 2560){
+        return '12';
     }
     }
 
@@ -184,13 +186,13 @@ function larguraInputConvidado(){
         border-b-brancoNeve
         border-b-4
         w-max
-        items-center justify-center focus-within:border-white
+        items-center  focus-within:border-white
         focus-within:border-4 focus-within:rounded-md truncate;
         
     }
 
 .imagemEquipe {
-   @apply 2xl:mt-8 2xl:mr-5 xl:mt-2 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
+   @apply  2xl:mr-5 xl:mt-2 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
 }
 
 .div-lista{
@@ -203,7 +205,7 @@ function larguraInputConvidado(){
   p-10 2xl:mt-[50vh] xl:mt-[8vh] 2xl:mx-[6vw] xl:mx-[8vw] lg:mx-[9vw] md:mx-[11vw] lg:mt-[8vh] md:mt-[8vh];
 }
 .adiciona-membro{
- @apply flex justify-center absolute bottom-[58vh] 2xl:ml-[5vw] xl:ml-[6vw] lg:ml-[5vw] md:ml-[7vw];
+ @apply flex justify-center absolute bottom-[58vh] 2xl:ml-[4vw] xl:ml-[6vw] lg:ml-[5vw] md:ml-[7vw];
 }
 
 .divGeral{
@@ -214,15 +216,20 @@ function larguraInputConvidado(){
         @apply w-full
     }
 
-.div-membros{
-    @apply w-[100%] h-[20vh];
+.div-membros::-webkit-scrollbar {
+    display: none; /* Oculta a barra de rolagem no WebKit (Chrome, Safari, etc.) */
+}
 
+.div-membros {
+    @apply w-[100%] h-[20vh];
+    overflow-y: scroll; /* Adicione overflow-y: scroll para sempre mostrar a barra de rolagem */
+    scrollbar-width: none; /* Oculta a barra de rolagem padrão do navegador */
 }
 
 .imgIcon {
         @apply bg-cover 
         bg-center flex mt-8 md:ml-10
-        2xl:w-[1.5vw] 2xl:h-[4vh] xl:w-[3vw] xl:h-[4vh] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
+        2xl:w-[1.5vw] 2xl:h-[4vh] xl:w-[2vw] xl:h-[4vh] lg:w-[3vw] lg:h-[4vh] md:w-[3.5vw] md:h-[4vh];
     }
 
 
@@ -258,6 +265,9 @@ function larguraInputConvidado(){
     @media(min-width: 2560px){
         .divGeral{
             @apply w-[25vw];
+        }
+        .imgIcon {
+            @apply w-[1vw]
         }
         .div-lista{
             @apply 2xl:w-[53vw];

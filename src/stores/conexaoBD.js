@@ -1,12 +1,11 @@
 
 import {defineStore} from "pinia";
 import axios from "axios";
-import { parse } from "@vue/compiler-dom";
-import { Propriedade } from "../models/Propriedade";
 
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
+
       return {api:axios.get("http://localhost:8085")}
     },
     actions: {
@@ -37,7 +36,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
         
           return axios.delete(`http://localhost:8085${textoRequisicao}/${equipeId}/${userId}`)
-      }
+
+  
       
     }
+  }
 })

@@ -3,4 +3,5 @@ import { Usuario } from "./usuario"
 export const Equipe = {
     id: Number,
     nomeEquipe: String
+
 }

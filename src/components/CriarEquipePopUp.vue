@@ -1,6 +1,6 @@
     <template>
-        <div>
-            <fundoPopUp  largura="" altura="100%">
+        
+            <fundoPopUp  largura="" altura="95vh">
                 <div class="divGeral">
                     <div class=" grid-template flex w-full">
                             <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
@@ -28,7 +28,7 @@
                 </div>
                     
             </fundoPopUp>
-        </div>
+            
     </template>
 
     <script setup>

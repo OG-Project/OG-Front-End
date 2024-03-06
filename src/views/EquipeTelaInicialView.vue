@@ -1,6 +1,4 @@
 <template>
-    <navBar>
-    </navBar>
     <div>
         <div class="corDiv">
             <img class="imagemEquipe" src="" alt="">
@@ -16,15 +14,11 @@
             </div>
             <div class="botaoIcone flex mt-[-3vh] mr-[2.5vw] shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
                 <img class="w-5 "  src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
-                <p class="flex ml-3 mt-[0.2vh] text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
+                <p class="flex ml-2  text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
             </div>
-            <div class="absolute top-0 left-0 right-0">
                 <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
-            </div>
-            <div class="absolute top-0 left-0 right-0">
                 <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true">  </ListaMembrosEquipe>
-            </div>
-            
+          
         </div>
        
     </div>  
@@ -84,7 +78,7 @@ console.log(equipeSelecionada)
   const hover = ref(false);
   const hoverMembros = ref(false);
 
-  function abrePopUp(equipe, tipo){
+ function abrePopUp(equipe, tipo){
 
     if (tipo === 'membros') {
     variavelMembros = true;
@@ -100,7 +94,6 @@ console.log(equipeSelecionada)
     funcaoPopUp.abrePopUp()
 
     }
-
 </script>
 <style scoped>
 .corDiv{

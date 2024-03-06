@@ -1,10 +1,5 @@
-
-<!-- <br>
-<Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="38" height="10"></Input> -->
-<!-- PARA GERAR UM INPUT FLOAT PRECISA COLOCAR  "tipo==float" -->
 <template>
-    
-   <div class="styleInputPadraoIcon" 
+ <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
         <div class=" flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
@@ -130,14 +125,15 @@ import {Equipe} from '../models/Equipe'
     function verificaWidth(){
         if(props.largura==undefined ){
             if(props.icon==undefined){
-                return widthResponsivo()
+                return (widthResponsivo()*0.80)
             }
-            return (widthResponsivo()*0.80)
+            return widthResponsivo();
         }else{
             if(props.icon==undefined){
-                return props.largura;
+                return (props.largura*0.80);
             }
-            return (props.largura*0.80)
+            console.log("ta vindo")
+            return (props.largura)
         }
         
     }

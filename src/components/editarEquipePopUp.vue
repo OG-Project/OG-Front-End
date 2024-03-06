@@ -1,6 +1,5 @@
 <template>
-
-    <fundoPopUp v-if="!editando" largura="" altura="60%" >
+    <fundoPopUp v-if="!editando" largura="" altura="60vh" >
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
@@ -33,7 +32,7 @@
                 
         </fundoPopUp>
 
-        <fundoPopUp v-if="editando" largura="" altura="60%">
+        <fundoPopUp  v-if="editando" largura="" altura="60vh">
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>

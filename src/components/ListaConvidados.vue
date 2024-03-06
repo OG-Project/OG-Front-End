@@ -5,7 +5,9 @@
       :style="{height: altura}"
     >
       <div class="flex justify-center overfloow-y:auto">
+
         <h1 class="font-semibold xl:text-xl">{{ texto }}</h1>
+
       </div>
       <div class="flex items-center flex-col ml-5">
         <div class="w-full flex items-center mt-5 mb-2" v-for="convidado in listaConvidados" :key="convidado.nome" :style="{'margin-left':marginLeft, 'margin-right': marginRight}">
@@ -14,9 +16,7 @@
           <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :style="altDaImagemPerfil" />
           
         </template>
-
         <h2 class="nome-convidado w-[4vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1">{{ truncarNome(convidado.nome , 15) }}</h2>
-
         <template v-if="listaConvidados.length > 0">
           <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem" />
         </template>
@@ -104,7 +104,7 @@ const imagemIcon={
 
     .selectEdit {
         @apply
-        text-xs 2xl:ml-[0vw] xl:ml-[4vw] lg:ml-[6vw] md:ml-[8vw] mb-[10px] mt-2
+        text-xs flex 2xl:ml-[0vw] xl:ml-[4vw] lg:ml-[6vw] md:ml-[8vw] mb-[10px] mt-2 
          2xl:w-[5vw] 2xl:h-[5vh] xl:w-[8vw] xl:h-[4vw] lg:w-[10vw] lg:h-[5vw] md:w-[12vw] md:h-[6vw] ;
     }
 
