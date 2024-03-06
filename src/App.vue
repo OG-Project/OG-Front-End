@@ -9,6 +9,7 @@ import Navbar from '@/components/Navbar.vue';
 import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
+
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
@@ -29,6 +30,7 @@ const {isVlibras}=storeToRefs(perfil)
 </script>
 
 <template>
+  
   <Navbar></Navbar>
     <RouterView />
     <!-- {{ VueCookies.get('isVlibras') }}

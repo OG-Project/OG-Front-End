@@ -1,5 +1,5 @@
 <template>
-    <div class=" w-[1400px] h-[877px] flex flex-col  ">
+    <div class="w-[1400px] h-[877px] flex flex-col  ">
         <div>
             <h1 :style="{fontFamily:fonteTitulo}" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Aparência
@@ -19,13 +19,13 @@
                         <div class="pb-1 border-b-2 border-roxo w-max px-12">Titulo</div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao></selectPadrao>
-                        <selectPadrao @update:model-value="fontTituloEscolhida" placeholderSelect="Fonts" :opcaoSelecionada="perfil.fonteCorpo" :listaSelect="fonts"></selectPadrao>
+                        <selectPadrao @update:model-value="fontTituloEscolhida" placeholderSelect="Fonts" :opcaoSelecionada="perfil.fonteTitulo" :listaSelect="fonts"></selectPadrao>
                     </div>
                     <div class="w-full flex flex-col items-center">
                         <div class="pb-1 border-b-2 border-roxo w-max px-12">Corpo de Texto</div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao></selectPadrao>
-                        <selectPadrao @update:model-value="fontCorpoEscolhida" placeholderSelect="Fonts" :opcaoSelecionada="perfil.fonteTitulo" :listaSelect="fonts"></selectPadrao>
+                        <selectPadrao @update:model-value="fontCorpoEscolhida" placeholderSelect="Fonts" :opcaoSelecionada="perfil.fonteCorpo" :listaSelect="fonts"></selectPadrao>
                     </div>
                 </div>
 
@@ -136,7 +136,7 @@ onBeforeMount(()=>{
 })
 
 onMounted(() => {
-    
+    console.log('fonts '+perfil.fonteCorpo+' '+perfil.fonteTitulo)
     console.log(convert.hsl.hex([314, 82, 56]))
     //  alert(cor.value)
     styleCor.value.color = contraste(cor.value)
