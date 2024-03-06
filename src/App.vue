@@ -3,7 +3,6 @@
 import { RouterLink, RouterView } from 'vue-router'
 import Tabelas from './components/Tabelas.vue';
 import LoginView from './views/LoginView.vue';
-import {RouterView} from 'vue-router'
 import Input from './components/Input.vue'
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
 
