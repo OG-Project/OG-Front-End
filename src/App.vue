@@ -5,10 +5,7 @@ import Input from './components/Input.vue'
 import fundoPopUp from './components/fundoPopUp.vue';
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
 import calendario from './components/calendario.vue';
-import KanbanDePropriedade from './components/KanbanDePropriedade.vue';
-import timeLine from './components/timeLine.vue';
-import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
-import ProjetoView from './views/ProjetoView.vue';
+import KanbanDeStatus from './components/KanbanDeStatus.vue';
  
 
 const funcaoPopUp = funcaoPopUpStore();
@@ -18,7 +15,7 @@ const funcaoPopUp = funcaoPopUpStore();
 <template>
   <RouterView />
   <div class="w-[100%] h-screen flex justify-center items-center">
-    <ProjetoView></ProjetoView>
+    <calendario></calendario>
   </div>
 
 </template>

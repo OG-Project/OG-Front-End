@@ -56,16 +56,15 @@
         </div>
         <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
             <div class="calendario">
-                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDia(dia.dia)"
-                    @mouseenter="hover(dia)" @mouseleave="getCalendario()">
+                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia"
+                    @dragover="retornaDiaEIndice(dia)" @mouseenter="hover(dia)" @mouseleave="getCalendario()">
                     <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(new Date(dia.dia), 'd') }}</h1>
-                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
-                        Date(dia.dia), 'd')
-                    }}
-                    </h1>
+                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new Date(dia.dia),'d') }}</h1>
                     <div :style="dia.style">
-                        <div v-for="tarefa of dia.listaDeTarefas">
-                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max" @dragend="trocaDia(tarefa, diaNovo)">
+                        <div v-for="(tarefa,indice) of dia.listaDeTarefas">
+                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row"
+                                @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)" @dragover="retornaDiaEIndice(dia, indice)"> 
+                                {{ indice }}
                                 <cardTarefas :tarefa=tarefa.tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                             </div>
                         </div>
@@ -80,7 +79,7 @@
 </template>
 
 <script setup>
-import { ref,onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, getDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -89,6 +88,7 @@ import { conexaoBD } from '../stores/conexaoBD';
 
 let data = Date.now()
 let diaNovo = ref()
+let indiceNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
@@ -198,12 +198,12 @@ function hover(dia) {
                 overflow: "hidden",
                 flexDirection: "column",
                 gap: "8px",
-                position:"absolute",
+                position: "absolute",
                 paddingBottom: "1%",
                 backgroundColor: "lightgray",
                 borderBottomLeftRadius: "10%",
                 borderBottomRightRadius: "10%",
-                zIndex:"0",
+                zIndex: "0",
                 boxShadow: "0px 6px 6px rgb(145, 145, 145)",
             }
             dia.temTres = false
@@ -222,13 +222,20 @@ function setaDireita() {
     data = setMonth(data, getMonth(data) + 1)
     getCalendario()
 }
-function trocaDia(tarefa, dia) {
-    tarefa.propriedade.valor.valor = new Date(dia)
+function trocaDiaEIndice(tarefa, dia, indice) {
+    tarefa.propriedade.valor.valor = new Date(dia.dia)
+    dia.listaDeTarefas.splice(indice, 0, tarefa)
+    console.log(dia.listaDeTarefas)
+    
     getCalendario()
 
 }
-function retornaDia(dia) {
+function retornaDiaEIndice(dia, indice) {
     diaNovo = dia;
+    if(indice!=undefined){
+        indiceNovo = indice;
+    }
+    
 }
 function verificaQauntidadetarefa(dia) {
     if (dia.listaDeTarefas.length >= 3) {
@@ -329,4 +336,4 @@ function verificaQauntidadetarefa(dia) {
 
 
 }
-</style>
+</style>1

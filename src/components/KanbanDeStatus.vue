@@ -8,7 +8,7 @@
 
         <div class="divMaior">
             <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-                <div v-for="propriedade of lista" class="w-[20%]" @dragover="verificaListaVaziaBoolean()" @dragleave="listaVaziaBoolean=false">
+                <div v-for="propriedade of lista" class="w-[20%]" >
                     <div :style="propriedade.style">
 
                         <div
@@ -20,19 +20,16 @@
                                 <img src="../assets/image 3.png">
                             </div>
                         </div>
-                        <draggable v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
-                            @end="drag = false">
+                        <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center" v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
+                            @end="drag = false" >
                             <template #item="{ element: tarefa }">
-                                <div class="w-full h-full">
+                                <div class="w-full h-full flex items-center justify-center">
                                     <div class="w-[80%] pt-[2vh]" :key="tarefa.indice" v-if="tarefa != null">
                                         <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
-                                    </div>
-                                    <div v-if="listaVaziaBoolean" class="w-[20px] h-[20px]">
                                     </div>
                                 </div>
                             </template>
                         </draggable>
-
                         <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
                             <p>+ Nova</p>
                         </div>
