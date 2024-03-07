@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="w-[1400px] h-[877px] ">
-            <div>
+            <div class="flex flex-col justify-around">
                 <h1 :style="{ fontFamily: fonteTitulo }"
                     class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                     Nome Usuario
@@ -45,8 +45,12 @@
                     <div class="flex flex-col gap-y-10">
                         <div class="flex justify-between items-center gap-5">
                             <span class="text-xl">Sobrenome</span>
-                            <Input styleInput="input-transparente-claro-grande" conteudoInput="Sobrenome"
-                                v-model="perfil.sobrenome" tipo="obrigatorio" />
+                            <Input 
+                            styleInput="input-transparente-claro-grande" 
+                            conteudoInput="Sobrenome"
+                            v-model="perfil.sobrenome" 
+                            tipo="obrigatorio"
+                             />
                         </div>
                         <div class="flex justify-between items-center gap-5">
                             <span class="text-xl">Data de Nascimento</span>
@@ -56,10 +60,22 @@
 
                     </div>
                 </div>
-                <div class="">
-                    <Carousel :value="projetos" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
+                <div class=" ">
+                    <Carousel 
+                    :value="projetos" 
+                    :numVisible="3" 
+                    containerClass="" 
+                    contentClass="pt-9 " 
+                    indicatorsContentClass=" mx-auto  *:bg-gray-300 active:*:bg-roxo w-max gap-10"
+                    :showNavigators="true"
+                    :showIndicators="true"
+                    verticalViewPortHeight="500px"
+                    :numScroll="3"
+                    :responsiveOptions="projetos">
                         <template #item="slotProps">
-                            <cardProjetos></cardProjetos>
+                            <!-- {{ slotProps.index }} -->
+                            <cardProjetos class="my-4 mx-auto"></cardProjetos>
+                            <!-- {{ slotProps.index }} -->
                         </template>
                     </Carousel>
                 </div>
@@ -78,9 +94,21 @@ import cardProjetos from '../components/cardProjetos.vue'
 import Carousel from 'primevue/carousel';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
+import { conexaoBD } from '../stores/conexaoBD';
+import { onBeforeMount, onMounted } from 'vue';
+import {useRouter,useRoute} from 'vue-router';
+const router=useRouter()
+const route=useRoute()
+const conexao = conexaoBD()
 const perfil = perfilStore()
+onBeforeMount(()=>{
+    alert(route.params.id)
+    
+})
+
 const { fonteCorpo } = storeToRefs(perfil)
 const { fonteTitulo } = storeToRefs(perfil)
+
 let equipes = ['um', 'dois', 'tres', 'quatro', 'cinco']
 let projetos =['1','2','3','4','5','6','7','8','9','10']
 function temMaisDeQuatro(lista) {
@@ -107,6 +135,9 @@ function temMaisDeQuatro(lista) {
 
     .scroll::-webkit-scrollbar-thumb {
         @apply bg-[#D9D9D9]
+    }
+    .p-carousel-indicator{
+        @apply border-yellow-300;
     }
 }
 </style>
