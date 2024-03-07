@@ -7,4 +7,5 @@
     propriedades : [] ,
     status : [],
     equipes : {},
+    reponsaveis: [],
 }

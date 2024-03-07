@@ -8,7 +8,8 @@ import { Equipe } from "./Equipe";
     dataNascimento: Date,
     email: String,
     senha:String,
-    equipeAtual: {}
+    equipes: []
+    
 }
 
 

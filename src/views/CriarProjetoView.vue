@@ -5,9 +5,9 @@
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto" largura="30"
                     altura="6" fontSize="1.5rem" v-model="nomeProjeto"></Input>
             </div>
-            <div class="h-[15%] w-max flex items-center ">
+            <div class="h-[15%] w-max flex items-center">
                 <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="8vh" preset="transparente"
-                    tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
+                    tamanhoDaFonte="1.0rem" v-model="descricaoProjeto" ></TextAreaPadrao>
             </div>
             <div class="">
                 <div class="  flex flex-col gap-9">
@@ -38,7 +38,7 @@
                                         class="bg-roxo-claro rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
                                         <img src="../imagem-vetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
-                                        <img src="../imagem-vetores/X-preto.svg">
+                                        <img src="../imagem-vetores/X-preto.svg" @click="removeResponsavel(responsavel)">
                                     </div>
                                 </div>
 
@@ -49,7 +49,7 @@
             </div>
             <div class=" pt-8 w-[96%] ">
                 <ListaConvidados altura="30vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]">
+                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]" :caminho-da-imagem-icon=srcIconListaEquipes @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>
         </div>
@@ -229,16 +229,14 @@ import { Propriedade } from '../models/Propriedade';
 import { Projeto } from '../models/Projeto';
 import VueCookies from 'vue-cookies';
 import { ProjetoEquipe } from '../models/ProjetoEquipe'
-
+import Sair from "../imagem-vetores/Sair.svg"
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 var listaSelecao = ref([]);
 let nomeProjeto = ref("");
-let tipoProjeto = ref("");
 let nomePropriedade = ref("");
 let tipoPropriedade = ref("");
 let dataInicioProjeto = ref("");
-let equipesEscolhidaRelacionadaProjeto = ref("");
 let descricaoProjeto = ref("");
 let listaDeUsuariosParaBusca = ref([]);
 var listaPropriedades = ref([]);
@@ -249,14 +247,14 @@ let opcaoSelecionadaNaTabela = ref("");
 let listaStatus = ref([]);
 let equipesRelacionadasProjeto = ref([]);
 let AuxParaCriarPropriedades = [];
-let itemSelecionadoPesquisa = ref("")
 let listaAuxResponsaveisProjeto = []
 let responsaveisProjeto = ref([]);
 let listaEquipesConvidadas = ref([])
 let listaEquipesSelecionadas = ref([])
 let listaEquipeEnviaBack = []
-let i = 0;
+let srcIconListaEquipes = Sair
 funcaoPopUp.variavelModal = false
+
 onMounted(() => {
     defineSelect()
     buscandoPor();
@@ -290,10 +288,11 @@ function buscaPropriedadeCookies() {
 
 function buscaProjetoCookies() {
     if (VueCookies.get("projetoCookie") != null) {
+        console.log(VueCookies.get("projetoCookie"))
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
-        if (variavelCookieProjeto.equipes.length != null) {
+        if (variavelCookieProjeto.equipes.length != 0) {
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
                 const objetoEnviaBack = {
@@ -303,6 +302,10 @@ function buscaProjetoCookies() {
                 }
                 listaEquipeEnviaBack.push(objetoEnviaBack)
             })
+        }
+        if(variavelCookieProjeto.responsveis!=[]){
+            responsaveisProjeto.value=variavelCookieProjeto.reponsaveis
+            listaAuxResponsaveisProjeto=variavelCookieProjeto.reponsaveis
         }
     }
 
@@ -330,7 +333,10 @@ function criarProjetoCookies() {
     criaProjetoCookies.nome = nomeProjeto.value;
     if (listaEquipesSelecionadas.value != "") {
         criaProjetoCookies.equipes = listaEquipesSelecionadas.value.map((x) => x);
+    }else{
+        criaProjetoCookies.equipes= ""
     }
+    criaProjetoCookies.reponsaveis=responsaveisProjeto.value
     VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
 }
 
@@ -381,31 +387,55 @@ function criaPropriedadeCookies() {
     AuxParaCriarPropriedades.push(propriedadeCriada)
     VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 864000000)
     listaPropriedades = AuxParaCriarPropriedades
-    console.log(listaPropriedades)
     funcaoPopUp.fechaPopUp();
-}
-function criaPropriedade() {
-    const criaProjeto = criaPropriedadeStore()
-    if (tipoPropriedade.value == "Seleção") {
-        tipoPropriedade.value = "SELECAO"
-    }
-    criaProjeto.criaPropriedade(nomePropriedade.value, tipoPropriedade.value.toUpperCase())
-
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
-    let listaEquipes = await conexao.procurar('/equipe')
+    
+    let listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
+    if(equipeEscolhidaParaProjeto == ""){
+        equipeVinculada = listaEquipes[0]
+    }
+    if(listaEquipesSelecionadas.value.find( (equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined){
+            return;
+        }
+
     const objetoEnviaBack = {
         equipe: {
             id: equipeVinculada.id
         }
     }
     listaEquipeEnviaBack.push(objetoEnviaBack)
-    console.log(listaEquipeEnviaBack)
-
     listaEquipesSelecionadas.value.push(equipeVinculada)
     defineSelect();
+}
+
+async function removeListaEquipeConvidadas(equipeRemover){
+    
+    let listaEquipes = await conexao.procurar('/equipe');
+    let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeRemover.nome);
+    let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
+
+    if (indice !== -1) {
+        // Remover o objeto da lista usando splice
+        listaEquipesSelecionadas.value.splice(indice, 1);
+    }
+    criarProjetoCookies();
+    
+}
+
+async function removeResponsavel(responsavelRemover){
+    console.log(responsavelRemover)
+    let listaUsuarios = await conexao.procurar('/usuario');
+    let usuarioRemovido = listaUsuarios.find((objeto) => objeto.username == responsavelRemover.username);
+    let indice = responsaveisProjeto.value.findIndex((obj) => obj.username == responsavelRemover.username);
+
+    if (indice !== -1) {
+        // Remover o objeto da lista usando splice
+        responsaveisProjeto.value.splice(indice, 1);
+    }
+    criarProjetoCookies();
 }
 </script>
 

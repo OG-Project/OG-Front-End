@@ -8,19 +8,21 @@ import { funcaoPopUpStore } from './stores/funcaoPopUp'
 
 
 import Navbar from '@/components/Navbar.vue';
-import CriarEquipePopUp from './components/CriarEquipePopUp.vue';
+import criarEquipePopUp from './components/CriarEquipePopUp.vue';
 import ListaMembrosEquipe from './components/listaMembrosEquipe.vue'; 
 import FundoPopUp from './components/fundoPopUp.vue';
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 
-
+const url = window.location.href;
 
 </script>
 
 <template>
-  <Navbar></Navbar>
+
+  <Navbar v-if="url!='http://localhost:5173/login'"></Navbar>
   <RouterView></RouterView>
+
 </template>
 
 <style scoped>
