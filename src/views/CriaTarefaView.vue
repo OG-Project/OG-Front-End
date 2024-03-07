@@ -582,7 +582,7 @@
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
       <div
-        v-for="status of statusDaTarefa"
+        v-for="status of tarefa.statusDaTarefa"
         class="min-h-[4%] flex items-center justify-center gap-4"
       >
         <p
@@ -596,18 +596,18 @@
         <h1 class="text-xl font-semibold">Propriedades</h1>
       </div>
       <div
-        v-if="propriedades.length === 0"
+        v-if="tarefa.propriedadesDaTarefa.length === 0"
         class="h-[35%] flex flex-col items-center justify-center p-8"
       >
         <img :src="NotePad" class="h-[200px] w-[200px]" />
         <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
       </div>
       <div
-        v-if="propriedades.length != 0"
+        v-if="tarefa.propriedadesDaTarefa.length != 0"
         class="min-h-[35%] flex flex-col items-center"
       >
         <div
-          v-for="propriedade of propriedades"
+          v-for="propriedade of tarefa.propriedadesDaTarefa"
           class="flex flex-col justify-around py-4 w-[80%]"
         >
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
@@ -736,9 +736,9 @@ function deletaStatus(stat) {
       status.value.splice(status.value.indexOf(stat), 1);
     }
   });
-  statusDaTarefa.value.forEach((statParaDeletar) => {
+  tarefa.value.statusDaTarefa.value.forEach((statParaDeletar) => {
     if (stat === statParaDeletar) {
-      statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(stat), 1);
+      tarefa.value.statusDaTarefa.splice(tarefa.value.statusDaTarefa.value.indexOf(stat), 1);
     }
   });
 }
@@ -853,6 +853,7 @@ let tarefa = ref({
   arquivos: ref([]),
   comentarios: ref([]),
   propriedadesDaTarefa: ref([]),
+  statusDaTarefa: ref([]),
 });
 
 onUpdated(() => {
@@ -868,6 +869,7 @@ onMounted(() => {
     arquivos: ref([]),
     comentarios: ref([]),
     propriedadesDaTarefa: ref([]),
+    statusDaTarefa: ref([]),
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
@@ -902,20 +904,16 @@ function abreFechaCriaSubTarefas() {
   statusSendoCriado.value = false;
 }
 
-//Lista utilizada para armazenar os status que estão na tarefa, e não os status que ela pode adicionar
-
-let statusDaTarefa = ref([]);
-
 //Funções que removem e adicionam os status e propriedades da tarefa
 
 function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
-    statusDaTarefa.value.push(status);
+    tarefa.value.statusDaTarefa.push(status);
   } else {
-    statusDaTarefa.value.forEach((statusDeletar) => {
+    tarefa.value.statusDaTarefa.forEach((statusDeletar) => {
       if (statusDeletar === status) {
-        statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(statusDeletar), 1);
+        tarefa.value.statusDaTarefa.splice(tarefa.value.statusDaTarefa.indexOf(statusDeletar), 1);
       }
     });
   }
@@ -923,12 +921,12 @@ function adicionaExcluiStatusNaTarefa(status) {
 function adicionaExcluiPropriedadeNaTarefa(propriedade) {
   propriedade.estaNaTarefa = !propriedade.estaNaTarefa;
   if (propriedade.estaNaTarefa) {
-    tarefa.value.propriedadesDaTarefa.value.push(propriedade);
+    tarefa.value.propriedadesDaTarefa.push(propriedade);
   } else {
-    tarefa.value.propriedadesDaTarefa.value.forEach((propriedadeDeletar) => {
+    tarefa.propriedadesDaTarefa.forEach((propriedadeDeletar) => {
       if (propriedadeDeletar === propriedade) {
-        tarefa.value.propriedadesDaTarefa.value.splice(
-          tarefa.value.propriedadesDaTarefa.value.indexOf(propriedadeDeletar),
+        tarefa.value.propriedadesDaTarefa.splice(
+          tarefa.value.propriedadesDaTarefa.indexOf(propriedadeDeletar),
           1
         );
       }
