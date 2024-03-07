@@ -5,14 +5,15 @@
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
-                        <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
+                        <img class="imagem" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
+                        <img class="imagem" v-else src="">
                         <div class="styleH1Padrao">
-                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeSelecionada.equipe.nome"> {{ truncarNome(equipeSelecionada.equipe.nome , 20)  }}</h1>
+                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeEditar.nome" > {{ truncarNome(equipeEditar.nome, 20)  }}</h1>
                         </div>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
                     <div class="textArea">
-                        <p>{{ equipeSelecionada.equipe.descricao }}</p>
+                        <p>{{ equipeEditar.descricao }}</p>
                     </div>
                 </div> 
                 <div>
@@ -38,7 +39,10 @@
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
-                        <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
+                    <div class="relative">
+                            <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
+                            <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao" alt="Imagem Selecionada" >
+                        </div>
                     <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
@@ -55,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -64,16 +68,72 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import {useRouter} from 'vue-router'
 
+const imagemSelecionada = ref(null);
+
+// Função para lidar com o upload de arquivos
+function handleFileUpload(event) {
+const file = event.target.files[0];
+
+// Extrair o nome do arquivo
+const fileName = file.name;
+
+// Extrair o tipo do arquivo
+const fileType = file.type;
+
+// Criar um blob do arquivo
+const fileBlob = new Blob([file]);
+
+// Agora você pode usar o fileName, fileType e fileBlob conforme necessário
+console.log('Nome do arquivo:', fileName);
+console.log('Tipo do arquivo:', fileType);
+console.log('Blob do arquivo:', fileBlob);
+ // Armazena o arquivo na variável reativa
+ imagemSelecionada.value = file;
+}
+
+// Computed property para retornar a URL da imagem selecionada
+const imagemSelecionadaUrl = computed(() => {
+// Se não houver imagem selecionada, retorna null
+ if (!imagemSelecionada.value) return null;
+
+// Cria uma URL temporária para a imagem selecionada
+return URL.createObjectURL(imagemSelecionada.value);
+});
+
+// URL da imagem padrão
+const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+
+// Computed property para determinar qual URL de imagem exibir
+const imagemExibicao = computed(() => {
+// Se houver uma imagem selecionada, retorna sua URL
+if (imagemSelecionadaUrl.value) {
+    return imagemSelecionadaUrl.value;
+} else {
+    // Caso contrário, retorna a URL da imagem padrão
+    return imagemPadraoUrl;
+}
+});
+
 
 const banco = conexaoBD();
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
+let equipeEditar = ref({
+    nome: '',
+    descricao: ''
+});
 let nome = ref('');
 let descricao = ref('');
 let mensagemError = ref("");
-const usuarioLogado = VueCookies.get('usuarioCookie');
 let editando = ref(false);
 let equipes = banco.procurar("/equipe");
 const router = useRouter();
+
+async function filtrarEquipe(){
+    console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
+    equipeEditar.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
+}
+filtrarEquipe();
+
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -97,7 +157,7 @@ async function deletarEquipe(){
 
     let listaEquipes = await equipes;
     listaEquipes.forEach((equipe) =>{
-        if(equipeSelecionada.equipe.id == equipe.id){
+        if(equipeSelecionada == equipe.id){
         
             banco.deletarEquipe(equipe.id,'/equipe')
             if(router.currentRoute.value.path == '/equipe'){
@@ -127,7 +187,7 @@ async function deletarEquipe(){
 
         let listaEquipes = await equipes;
         listaEquipes.forEach((equipe)=>{
-        if(equipeSelecionada.equipe.id == equipe.id){
+        if(equipeSelecionada == equipe.id){
             
             equipeAtualizar.id = equipe.id
             equipeAtualizar.nome = nome.value
@@ -138,10 +198,11 @@ async function deletarEquipe(){
             console.log(equipeAtualizar.descricao)
 
             banco.atualizar(equipeAtualizar, "/equipe");
+            enviarFotoParaBackend(equipeSelecionada);
         }
         })
 
-        VueCookies.set('equipeSelecionada', { equipe: equipeAtualizar });
+        VueCookies.set('equipeSelecionada', { equipe: equipeAtualizar.id });
 
             nome.value = ""
             descricao.value = ""
@@ -150,6 +211,22 @@ async function deletarEquipe(){
 
             window.location.reload();
 }
+
+async function enviarFotoParaBackend(id) {
+    try {
+        if (!imagemSelecionada.value) {
+            // Verifica se uma imagem foi selecionada
+            console.error('Nenhuma imagem selecionada.');
+            return;
+        }
+        
+        const equipeId = id;
+        await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
+        console.log('Foto enviada com sucesso para o backend.');
+    } catch (error) {
+        console.error('Erro ao enviar a foto para o backend:', error);
+    }
+    }
 
 </script>
 <style scoped>

@@ -10,7 +10,7 @@
              <div class="criarEquipe " @click="abrePaginaEquipe(equipe)" href="#/equipe/telaInicial" :class="'mao-clique'" @mouseover="mostrarNomeCompleto(equipe.equipe.nome)" @mouseleave="limparNomeCompleto()" :title="nomeCompleto"  v-for="equipe in equipesUsuario">
                 <div class="flex justify-center"  >
                         <div class="corDiv">
-                         <img class="imagemEquipe" src="" alt="">
+                         <img class="imagemEquipe" :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
                          <p class=" text-2xl mt-5 ml-4 text-[#877E7E] " >{{ truncarNome(equipe.equipe.nome , larguraNomeEquipe()) }}</p>
                         </div>
                             <div  @click.stop="abrePopUp(equipe, 'engrenagem') ">
@@ -47,7 +47,8 @@
 
   let equipesUsuario = ref([]);
   const banco = conexaoBD();
-  const usuarioLogado = VueCookies.get('usuarioCookie')
+  const usuarioLogadoId = VueCookies.get('IdUsuarioCookie')
+
   let usuarios = banco.procurar("/usuario");
   const funcaoPopUp = funcaoPopUpStore();
   funcaoPopUp.variavelModal=false;
@@ -64,7 +65,7 @@
   async function listaUsuarios(){
         let listaUsuarios = await usuarios;
         listaUsuarios.forEach((usuario)=>{
-           if(usuarioLogado.id == usuario.id ){ 
+           if(usuarioLogadoId == usuario.id ){ 
             equipesUsuario.value = usuario.equipes;
            }
         })
@@ -73,24 +74,24 @@
   function abrePaginaEquipe(equipe){
     const equipeSelecionada = equipe;
     console.log(equipeSelecionada)
-    VueCookies.set("equipeSelecionada", equipeSelecionada, 30000)
+    VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
     router.push({name: 'telaInicial'})
 
   }
 
-  function abrePopUp(equipe, tipo){
+  async function abrePopUp(equipe, tipo){
 
     if (tipo == 'engrenagem') {
         variavelCria = false;
         variavelEngrenagem = true;
+        const equipeSelecionada = equipe;
+        VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
+        funcaoPopUp.abrePopUp()
     } else {
         variavelEngrenagem = false;
         variavelCria = true;
+        funcaoPopUp.abrePopUp()
     }
-    const equipeSelecionada = equipe;
-    console.log(equipeSelecionada)
-    VueCookies.set("equipeSelecionada", equipeSelecionada, 30000)
-    funcaoPopUp.abrePopUp()
 
   }
 

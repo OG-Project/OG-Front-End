@@ -9,8 +9,8 @@ export const conexaoBD = defineStore('conexaoBD', {
       return {api:axios.get("http://localhost:8085")}
     },
     actions: {
+    
       procurar(textoRequisicao){
-        
         // return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
         return axios.get("http://localhost:8085"+ textoRequisicao).then(response => response.data)
       },
@@ -34,11 +34,30 @@ export const conexaoBD = defineStore('conexaoBD', {
           return await ((await axios.get(`http://localhost:8085${textoRequisicao}/${equipeId}`)).data)
       },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
-        
           return axios.delete(`http://localhost:8085${textoRequisicao}/${equipeId}/${userId}`)
-
-  
-      
+      },
+      buscarUm(id,textoRequisicao){
+        return axios.get(`http://localhost:8085${textoRequisicao}/${id}`).then(response => response.data)
+      },
+      async cadastrarFoto(equipeId, foto) {
+        try {
+            // Crie um FormData e adicione a imagem a ele
+            const formData = new FormData();
+            formData.append('foto', foto);
+    
+            // Faça a requisição PATCH para enviar a imagem
+            const response = await axios.patch(`http://localhost:8085/equipe/${equipeId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            // Retorne os dados da resposta
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao cadastrar a foto:', error);
+            throw error;
+        }
     }
-  }
-})
+}})
+

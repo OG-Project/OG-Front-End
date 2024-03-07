@@ -2,18 +2,19 @@
       <fundoPopUp largura="" altura="95vh">
       <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
-            <img class="imagemEquipe" src="" alt="">
-             <h1 class="xl:mt-2 lg:mt-10 text-4xl 2xl:mr-5 ">{{ equipeSelecionada.equipe.nome }}</h1>
+            <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
+            <img class="imagemEquipe" v-else src="">
+             <h1 class="xl:mt-2 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 ">{{ equipeMembros.nome }}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
-             <div class="flex justify-center" v-for="membro in listaMembros" :key="membro.id">
-                    <img  v-if="membro.id !== usuarioLogado.id"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
+             <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
+                    <img  v-if="membro.id != usuarioLogado"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                       <img class="imgDePerfil" src="" alt="">
                       <h1 class="flex mt-5 text-xl md:text-lg">{{ membro.nome }}</h1>
                     </div>
-                    <SelectPadrao class="styleSelectPadraoBranco md:mr-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
+                    <SelectPadrao class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
              
             </div>
@@ -55,7 +56,7 @@ import VueCookies from "vue-cookies";
 onMounted(exibirMembrosNaLista)
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
-const usuarioLogado = VueCookies.get('usuarioCookie')
+const usuarioLogado = VueCookies.get('IdUsuarioCookie')
 const banco = conexaoBD();
 
 let listaMembros = ref([]);
@@ -66,13 +67,24 @@ const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
 let usuarios = banco.procurar('/usuario'); 
 
+let equipeMembros = ref({
+    nome: '',
+    descricao: ''
+});
+
+async function filtrarEquipe(){
+    console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
+    equipeMembros.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
+}
+filtrarEquipe();
+
 function removerMembro(membro){
     if (membro && membro.id) {
         if (membro.id === usuarioLogado.id) {
             console.error('Você não pode remover a si mesmo da equipe.');
             return; // Impede a remoção
         }
-        banco.removerUsuarioDaEquipe(equipeSelecionada.equipe.id,membro.id,"/usuario/removerUsuarioEquipe")
+        banco.removerUsuarioDaEquipe(equipeSelecionada,membro.id,"/usuario/removerUsuarioEquipe")
         
     } else {
         console.error('O membro ou sua propriedade id não estão definidos.');
@@ -80,8 +92,8 @@ function removerMembro(membro){
 }
 
  async function buscarMembrosEquipe(){
-    console.log(await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros")))
-   return await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros"));   
+    console.log(await (banco.buscarMembrosEquipe(equipeSelecionada,"/usuario/buscarMembros")))
+   return await (banco.buscarMembrosEquipe(equipeSelecionada,"/usuario/buscarMembros"));   
    
 }
 
@@ -119,7 +131,7 @@ function larguraInputConvidado(){
     } else if (screenWidth > 1024 && screenWidth < 1920) {
         return '19';
     } else if(screenWidth > 2560){
-        return '18';
+        return '21';
     }else if(screenWidth >= 2560){
         return '12';
     }
@@ -205,7 +217,7 @@ function larguraInputConvidado(){
   p-10 2xl:mt-[50vh] xl:mt-[8vh] 2xl:mx-[6vw] xl:mx-[8vw] lg:mx-[9vw] md:mx-[11vw] lg:mt-[8vh] md:mt-[8vh];
 }
 .adiciona-membro{
- @apply flex justify-center absolute bottom-[58vh] 2xl:ml-[4vw] xl:ml-[6vw] lg:ml-[5vw] md:ml-[7vw];
+ @apply flex justify-center absolute bottom-[58vh] 2xl:ml-[4vw] xl:ml-[4vw] lg:ml-[5vw] md:ml-[7vw];
 }
 
 .divGeral{
@@ -221,7 +233,7 @@ function larguraInputConvidado(){
 }
 
 .div-membros {
-    @apply w-[100%] h-[20vh];
+    @apply w-[90%] h-[20vh] ;
     overflow-y: scroll; /* Adicione overflow-y: scroll para sempre mostrar a barra de rolagem */
     scrollbar-width: none; /* Oculta a barra de rolagem padrão do navegador */
 }
@@ -234,7 +246,7 @@ function larguraInputConvidado(){
 
 
 .corDiv{
-    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[15vw] lg:w-[15vw] md:w-[20vw]
+    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[20vw] lg:w-[25vw] md:w-[30vw]
     border-transparent
     border-b-roxo    
     border-b-4
@@ -273,7 +285,7 @@ function larguraInputConvidado(){
             @apply 2xl:w-[53vw];
         }
         .adiciona-membro{
-            @apply 2xl:ml-[3.5vw];
+            @apply 2xl:ml-[2.5vw];
         }
         .botao{
             @apply 2xl:w-[52%] gap-8 2xl:mt-[2vh];

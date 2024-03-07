@@ -1,8 +1,9 @@
 <template>
     <div>
         <div class="corDiv">
-            <img class="imagemEquipe" src="" alt="">
-            <h1 class="tituloEquipe ">{{ equipeSelecionada.equipe.nome }}</h1>
+          <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
+          <img class="imagemEquipe" v-else src="">
+            <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
         </div>
         <div class="flex justify-end">
             <div class="flex mt-[-3vh] mr-[1vw]">
@@ -31,7 +32,7 @@
 <script setup>
   import navBar from "../components/navBar.vue"
   import Botao from '../components/Botao.vue';
-  import {ref, onMounted} from 'vue';
+  import {ref, onMounted, watch} from 'vue';
   import VueCookies from "vue-cookies";
   import editarEquipePopUp from "../components/editarEquipePopUp.vue";
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
@@ -49,12 +50,20 @@ funcaoPopUp.variavelModal=false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
 const banco = conexaoBD();
+let equipeEditar = ref({
+    nome: '',
+    descricao: ''
+});
 
-
+async function filtrarEquipe(){
+    console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
+    equipeEditar.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
+}
+filtrarEquipe();
 
 async function buscarMembrosEquipe() {
     // Chama a função do banco de dados para buscar os membros da equipe
-    membrosEquipe.value = await (banco.buscarMembrosEquipe(equipeSelecionada.equipe.id,"/usuario/buscarMembros"));
+    membrosEquipe.value = await (banco.buscarMembrosEquipe(equipeSelecionada,"/usuario/buscarMembros"));
    if (Array.isArray(membrosEquipe.value)) {
         // Filtrar espaços nulos (null) da lista de membros da equipe
         quantidadeMembros.value = membrosEquipe.value.filter(membro => membro != null);
@@ -67,6 +76,15 @@ async function buscarMembrosEquipe() {
   onMounted(() => {
     buscarMembrosEquipe();
   });
+
+
+   watch(() => VueCookies.get('equipeSelecionada'), async (newValue, oldValue) => {
+    if (newValue !== oldValue) {
+        await filtrarEquipe();
+        await buscarMembrosEquipe();
+    }
+  });
+
 
   function numeroMembrosLimitado() {
     return Math.min(quantidadeMembros.value.length, 99);
