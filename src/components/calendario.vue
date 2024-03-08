@@ -84,7 +84,7 @@ import cardTarefas from './cardTarefas.vue'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, getDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
-
+import sortBy from 'sort-by'
 
 let data = Date.now()
 let diaNovo = ref()
@@ -93,8 +93,7 @@ let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
 let cardDia
-let tarefasApi = api.procurar("/tarefa")
-let tarefas
+let tarefas = api.procurar("/tarefa")
 let border = "none"
 
 onMounted(() => {
@@ -117,6 +116,7 @@ function estilizaDia(dia) {
     }
     border = "none"
 }
+// Ta zerando o valor da lista de Tarefas por isso que não atualiza as tarefas do drag and drop 
 // Muda de acordo com o mes
 async function getCalendario() {
     calendario.value = []
@@ -126,6 +126,7 @@ async function getCalendario() {
     const primeiroDiaDoMes = startOfMonth(new Date(d));
     const ultimoDiaDoMes = endOfMonth(new Date(d));
     const todosOsDiasDoMes = eachDayOfInterval({ start: primeiroDiaDoMes, end: ultimoDiaDoMes });
+    
     let lista = []
 
     for (let i = primeiroDiaDoMes.getDay(); i > 0; i--) {
@@ -143,12 +144,18 @@ async function getCalendario() {
         }
     }
     dias = [...lista, ...todosOsDiasDoMes, ...lista2]
-    tarefas = await defineTarefas()
+    listaDeDias = await adicionaDiasALista(dias)
+    calendario.value = listaDeDias;
+    listaDeDias = null
+}
+
+async function adicionaDiasALista(dias){
+    let listaDeDiasTemporaria = [];
     for (const dia of dias) {
         let lista = await verificaTarefasDoDia(dia)
         let dia1 = {
             dia: dia,
-            listaDeTarefas: ref([]),
+            listaDeTarefas: ref([]),    
             temTres: false,
             style: dia.style = {
                 height: "45%",
@@ -159,20 +166,19 @@ async function getCalendario() {
                 border: border
             }
         }
+        if(dia1.listaDeTarefas!=[]){
+            dia1.listaDeTarefas.value.sort(sortBy('indice'))
+        }
         dia1.listaDeTarefas = lista
-        listaDeDias.push(dia1)
+        listaDeDiasTemporaria.push(dia1)
     }
-    console.log(calendario)
-    calendario.value = listaDeDias;
-    listaDeDias = null
+    return listaDeDiasTemporaria;
 }
-async function defineTarefas() {
-    return tarefas = await (tarefasApi)
 
-}
-function verificaTarefasDoDia(dia) {
+async function verificaTarefasDoDia(dia) {
     let lista = []
-    for (const tarefa of tarefas) {
+    let tarefas2 = await tarefas
+    for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {
             if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA") {
                 if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
@@ -222,11 +228,17 @@ function setaDireita() {
     data = setMonth(data, getMonth(data) + 1)
     getCalendario()
 }
-function trocaDiaEIndice(tarefa, dia, indice) {
+async function trocaDiaEIndice(tarefa, dia, indice) {
     tarefa.propriedade.valor.valor = new Date(dia.dia)
+    let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
+    dia.listaDeTarefas.splice(indiceDaTarefaAtual,1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
-    console.log(dia.listaDeTarefas)
-    
+    for(const tarefa of dia.listaDeTarefas){
+        let indiceTeste = dia.listaDeTarefas.indexOf(tarefa)
+        console.log(indiceTeste)
+        tarefa.indice = indiceTeste
+        console.log(dia.listaDeTarefas)
+    }
     getCalendario()
 
 }
