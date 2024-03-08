@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="corDiv">
-          <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
-          <img class="imagemEquipe" v-else src="">
+          <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="expandirImagem" @mouseleave="reduzirImagem">
+          <img class="imagemEquipe" v-else src="" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
             <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
         </div>
         <div class="flex justify-end">
@@ -13,9 +13,9 @@
             <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
                 <img src="../imagem-vetores/engrenagem.svg" alt="" :class="{ 'imagem-hover': hover }">
             </div>
-            <div class="botaoIcone flex mt-[-3vh] mr-[2.5vw] shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
-                <img class="w-5 "  src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
-                <p class="flex ml-2  text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
+            <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
+                <img src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
+                <p class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md" :class="{ 'imagem-hover-membros': hoverMembros }">20</p>
             </div>
                 <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
                 <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true">  </ListaMembrosEquipe>
@@ -115,7 +115,8 @@ console.log(equipeSelecionada)
 </script>
 <style scoped>
 .corDiv{
-    @apply flex  ml-[5vw] mt-[5vh] h-[10vh] w-[30vw]
+    @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh]  md:ml-[5vw] md:mt-[-5vh] 
+    2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw]
     border-transparent
     border-b-roxo    
     border-b-4
@@ -125,6 +126,7 @@ console.log(equipeSelecionada)
 
  .botaoIcone:hover {
   background-color:#620BA7;
+  
  }
 
 .imagem-hover {
@@ -138,7 +140,7 @@ console.log(equipeSelecionada)
 }
 
  .botaoIcone {
-    @apply w-[3vw] h-[4vh];
+  @apply 2xl:w-[3.5vw] 2xl:h-[4vh] xl:w-[5vw] xl:h-[4vh] lg:w-[7vw] lg:h-[4vh] md:w-[9vw] md:h-[4vh];
   border: 2px solid #620BA7;
   background-color: transparent;
   padding: 8px;
@@ -148,7 +150,9 @@ console.log(equipeSelecionada)
 
 
  .tituloEquipe {
-    @apply text-6xl ml-4 text-[#877E7E];
+    @apply text-4xl ml-4 text-[#877E7E]
+    2xl:mt-5 xl:mt-10 lg:mt-24 md:mt-[12vh]
+    ;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; 
@@ -160,7 +164,18 @@ console.log(equipeSelecionada)
  }
 
  .imagemEquipe{
-     @apply flex ml-5 mt-2 2xl:h-[6vh] 2xl:w-[3vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] rounded-full;
+     @apply flex ml-5 2xl:mt-2 xl:mt-5 lg:mt-20 md:mt-[12vh] 2xl:h-[80px] 2xl:w-[80px] xl:h-[80px] xl:w-[80px] lg:w-[80px] lg:h-[80px] md:h-[80px] md:w-[80px] rounded-full;
+     transition: transform 0.3s ease;
  }
+
+.imagemEquipe:hover, .imagemEquipe[data-expanded="true"] {
+    transform: scale(1.1);
+}
+
+ @media(min-width: 2560px){
+        .botaoIcone{
+          @apply w-[3vw] h-[4vh]
+        }
+    }
 
 </style>

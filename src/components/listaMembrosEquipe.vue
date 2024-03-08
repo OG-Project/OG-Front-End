@@ -4,7 +4,7 @@
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
             <img class="imagemEquipe" v-else src="">
-             <h1 class="xl:mt-2 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 ">{{ equipeMembros.nome }}</h1>
+             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 ">{{ equipeMembros.nome }}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
@@ -29,9 +29,6 @@
                 <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados" ></ListaConvidados>
             </div>
              <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
-                <div class="gap-2">
-                    <Botao preset="Sair" tamanhoPadrao="medio" tamanhoDaFonte="0.9rem"></Botao>
-                </div>
                 <div>
                     <div>
                     <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
@@ -60,6 +57,7 @@ const usuarioLogado = VueCookies.get('IdUsuarioCookie')
 const banco = conexaoBD();
 
 let listaMembros = ref([]);
+let usuariosRemover = ref([]);
 let membrosEquipe = ref ([]);
 let membrosConvidados = ref([]);
 let usuarioConvidado = ref('');
@@ -78,14 +76,15 @@ async function filtrarEquipe(){
 }
 filtrarEquipe();
 
-function removerMembro(membro){
-    if (membro && membro.id) {
+async function removerMembro(membro){
+     if (membro && membro.id) {
         if (membro.id === usuarioLogado.id) {
             console.error('Você não pode remover a si mesmo da equipe.');
             return; // Impede a remoção
         }
-        banco.removerUsuarioDaEquipe(equipeSelecionada,membro.id,"/usuario/removerUsuarioEquipe")
-        
+        // Adicione o usuário à lista de usuários a serem removidos
+        usuariosRemover.value.push(membro);
+        listaMembros.value = listaMembros.value.filter(m => m.id !== membro.id);
     } else {
         console.error('O membro ou sua propriedade id não estão definidos.');
     }
@@ -164,7 +163,15 @@ function larguraInputConvidado(){
     }
     }
 
-    function confirmarConvites(){
+    async function confirmarConvites(){
+
+        for (const membro of usuariosRemover.value) {
+        await banco.removerUsuarioDaEquipe(equipeSelecionada, membro.id, "/usuario/removerUsuarioEquipe");
+        }
+        // Limpe a lista de usuários a serem removidos após a remoção
+        usuariosRemover.value = [];
+
+
         const ids = membrosConvidados.value.map(m => {
                     return Number(m.id);
         })
@@ -177,14 +184,16 @@ function larguraInputConvidado(){
              console.log("Esse membro ja faz parte da equipe")
             }else{
         // Se o membro foi removido, adicione-o novamente à equipe
-            banco.adicionarUsuarios([membroRemovido.id], equipeSelecionada.equipe.id, "/usuario/add");
+            banco.adicionarUsuarios([membroRemovido.id], equipeSelecionada, "/usuario/add");
             console.log("Membro reconvidado com sucesso.");
             }
            
         } else {
             // Se o membro não foi removido anteriormente, convide-o normalmente
-            banco.adicionarUsuarios(ids, equipeSelecionada.equipe.id, "/usuario/add");
+            banco.adicionarUsuarios(ids, equipeSelecionada, "/usuario/add");
         }
+
+        window.location.reload()
     }
 
 </script>
@@ -204,7 +213,7 @@ function larguraInputConvidado(){
     }
 
 .imagemEquipe {
-   @apply  2xl:mr-5 xl:mt-2 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
+   @apply  2xl:mr-5 xl:mt-5 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
 }
 
 .div-lista{
@@ -213,8 +222,8 @@ function larguraInputConvidado(){
 }
 
 .botao{
- @apply flex justify-center 2xl:gap-20 xl:gap-16 lg:gap-12 md:gap-16 w-[60%] 
-  p-10 2xl:mt-[50vh] xl:mt-[8vh] 2xl:mx-[6vw] xl:mx-[8vw] lg:mx-[9vw] md:mx-[11vw] lg:mt-[8vh] md:mt-[8vh];
+ @apply flex justify-end  w-[60%] 
+  p-10 2xl:mt-[50vh] xl:mt-[8vh] 2xl:ml-[15vw] xl:ml-[8vw] lg:ml-[9vw] md:ml-[11vw] lg:mt-[8vh] md:mt-[8vh];
 }
 .adiciona-membro{
  @apply flex justify-center absolute bottom-[58vh] 2xl:ml-[4vw] xl:ml-[4vw] lg:ml-[5vw] md:ml-[7vw];

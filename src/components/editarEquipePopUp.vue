@@ -165,7 +165,6 @@ async function deletarEquipe(){
             }
             router.push({path:'/equipe'})
             VueCookies.remove('equipeSelecionada');
-         
         }
     })
 
@@ -178,13 +177,6 @@ async function deletarEquipe(){
         descricao: ''
     };
 
-            if (!nome.value.trim()) {
-                console.log("É obrigatorio o nome da equipe");
-                return ;
-                
-            }
-
-
         let listaEquipes = await equipes;
         listaEquipes.forEach((equipe)=>{
         if(equipeSelecionada == equipe.id){
@@ -193,23 +185,21 @@ async function deletarEquipe(){
             equipeAtualizar.nome = nome.value
             equipeAtualizar.descricao = descricao.value
             mensagemError.value = "";
-        
-            console.log(equipeAtualizar.nome)
-            console.log(equipeAtualizar.descricao)
 
             banco.atualizar(equipeAtualizar, "/equipe");
             enviarFotoParaBackend(equipeSelecionada);
         }
         })
 
-        VueCookies.set('equipeSelecionada', { equipe: equipeAtualizar.id });
+        equipeEditar.value.nome = equipeAtualizar.nome;
+        equipeEditar.value.descricao = equipeAtualizar.descricao;
 
             nome.value = ""
             descricao.value = ""
             editando.value = false;
+        
+            window.location.reload
 
-
-            window.location.reload();
 }
 
 async function enviarFotoParaBackend(id) {
