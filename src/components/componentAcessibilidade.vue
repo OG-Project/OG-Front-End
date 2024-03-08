@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[1400px] h-[877px] flex flex-col  ">
+    <div class="w-[75vw] h-[92vh] flex flex-col  ">
         <div>
             <h1 :style="{fontFamily:fonteTitulo}" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Acessibilidade

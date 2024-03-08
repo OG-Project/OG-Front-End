@@ -1,9 +1,9 @@
 <template>
-        <div class="w-[1400px] h-[877px] flex flex-col  ">
+        <div class="w-[75vw] h-[92vh] flex flex-col  ">
                 <div :style="{fontFamily:fonteTitulo}">
                         <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
                 </div>
-                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center gap-8">
+                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center md:flex-wrap  gap-8">
                         <div class="flex flex-col gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
                                         <span class="text-xl">Nome</span>
@@ -29,8 +29,6 @@
                                         v-model="PerfilStore.email" 
                                         tipo="obrigatorio" />
                                 </div>
-                                
-                               
                         </div>
                         
                         <div class="flex flex-col gap-y-10">

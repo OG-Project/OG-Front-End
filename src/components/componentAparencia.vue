@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[1400px] h-[877px] flex flex-col  ">
+    <div class="w-[75vw] h-[92vh] flex flex-col  ">
         <div>
             <h1 :style="{fontFamily:fonteTitulo}" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Aparência
@@ -19,13 +19,13 @@
                         <div class="pb-1 border-b-2 border-roxo w-max px-12">Titulo</div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao></selectPadrao>
-                        <selectPadrao @update:model-value="fontTituloEscolhida" placeholderSelect="Fonts" :opcaoSelecionada="perfil.fonteTitulo" :listaSelect="fonts"></selectPadrao>
+                        <selectPadrao @update:model-value="fontTituloEscolhida" :opcaoSelecionada="fonteTitulo" :listaSelect="fonts"></selectPadrao>
                     </div>
                     <div class="w-full flex flex-col items-center">
                         <div class="pb-1 border-b-2 border-roxo w-max px-12">Corpo de Texto</div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao></selectPadrao>
-                        <selectPadrao @update:model-value="fontCorpoEscolhida" placeholderSelect="Fonts" :opcaoSelecionada="perfil.fonteCorpo" :listaSelect="fonts"></selectPadrao>
+                        <selectPadrao @update:model-value="fontCorpoEscolhida" :opcaoSelecionada="fonteCorpo" :listaSelect="fonts"></selectPadrao>
                     </div>
                 </div>
 
@@ -65,7 +65,7 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 import selectPadrao from './selectPadrao.vue';
 import convert from 'color-convert';
 import Botao from './Botao.vue'
-import { VueCookies } from 'vue-cookies';
+import VueCookies from 'vue-cookies';
 
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore'
@@ -115,11 +115,11 @@ function corEscolhida(a){
 function fontCorpoEscolhida(f){
     perfil.fonteCorpo=f
     console.log(f)
-    VueCookies.set('fonteCorpo',perfil.fonteCorpo)
+    VueCookies.set('fonteCorpo',JSON.stringify(perfil.fonteCorpo))
 }
 function fontTituloEscolhida(f){
     perfil.fonteTitulo=f
-    VueCookies.set('fonteTitulo',perfil.fonteTitulo)
+    VueCookies.set('fonteTitulo',JSON.stringify(perfil.fonteTitulo))
 }
 
 function contraste(cor) {
@@ -130,9 +130,12 @@ function contraste(cor) {
     return luz > 128 ? '#000' : '#fff'
 }
 
-onBeforeMount(()=>{
-    // perfil.fonteCorpo=VueCookies.get('fonteCorpo')
-    // perfil.fonteTitulo=VueCookies.get('fonteTitulo')
+onBeforeMount(async ()=>{
+    console.log()
+    perfil.fonteCorpo= await JSON.parse(VueCookies.get('fonteCorpo'))
+    perfil.fonteTitulo= await JSON.parse(VueCookies.get('fonteTitulo'))
+    console.log(perfil.fonteCorpo)
+    console.log(perfil.fonteTitulo)
 })
 
 onMounted(() => {
