@@ -233,11 +233,13 @@ async function trocaDiaEIndice(tarefa, dia, indice) {
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual,1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
-    for(const tarefa of dia.listaDeTarefas){
-        let indiceTeste = dia.listaDeTarefas.indexOf(tarefa)
+    console.log(dia.listaDeTarefas)
+    console.log((dia.listaDeTarefas.sort(sortBy('nome'))))
+    for(const tarefa2 of dia.listaDeTarefas){
+        let indiceTeste = dia.listaDeTarefas.indexOf(tarefa2)
         console.log(indiceTeste)
-        tarefa.indice = indiceTeste
-        console.log(dia.listaDeTarefas)
+        tarefa2.tarefa.indice = indiceTeste
+        console.log(tarefa2.tarefa)
     }
     getCalendario()
 

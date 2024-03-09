@@ -8,7 +8,7 @@
 
         <div class="divMaior">
             <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-                <div v-for="propriedade of lista" class="w-[20%]" >
+                <div v-for="propriedade of lista" class="w-[20%]">
                     <div :style="propriedade.style">
 
                         <div
@@ -20,11 +20,12 @@
                                 <img src="../assets/image 3.png">
                             </div>
                         </div>
-                        <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center" v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
-                            @end="drag = false" >
+                        <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
+                            v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
+                            @end="drag = false" item-key="tarefa.indice">
                             <template #item="{ element: tarefa }">
                                 <div class="w-full h-full flex items-center justify-center">
-                                    <div class="w-[80%] pt-[2vh]" :key="tarefa.indice" v-if="tarefa != null">
+                                    <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
                                         <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                                     </div>
                                 </div>
@@ -126,24 +127,18 @@ async function defineListaDePropriedades() {
                     boxShadow: " 0px 5px 7px rgb(99, 99, 99)"
                 }
             }
-            tarefa2.tarefas.sort(sortBy('indice'))
+            tarefa2.tarefas.sort(sortBy('nome'))
             console.log(tarefa2.tarefas)
             listaDePropriedades.push(tarefa2)
 
         };
-    } else {
-        projetoTeste.propriedades.forEach(propriedade => {
-            if (propriedade.tipo == propriedadeAtual.value) {
-                lista.value.push(propriedade)
-            }
-        });
     }
     lista.value = []
     lista.value = listaDePropriedades
     listaDePropriedades = null;
 }
-function verificaListaVaziaBoolean(tarefas){
-    if(tarefas,length==0){
+function verificaListaVaziaBoolean(tarefas) {
+    if (tarefas, length == 0) {
         listaVaziaBoolean = true
     }
 }
