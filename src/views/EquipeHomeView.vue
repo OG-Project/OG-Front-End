@@ -21,7 +21,7 @@
                         <p>{{ equipe.equipe.descricao }}</p>
                     </div>
                 </div>
-                <div class="maisEquipes" @click="abrePopUp(equipe, 'criar')">
+                <div class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')" @mouseover="expandirCard" @mouseleave="reduzirCard">
                     <img class="flex w-[8vw] h-[6vh]" src="../imagem-vetores/maisIcon.svg" alt="">
                 </div>  
          </div>
@@ -103,29 +103,41 @@
         return 8;
     } else if (screenWidth > 1024 && screenWidth < 1920) {
         return 8;
-    } else {
-        return 14;
+    } else if (screenWidth >= 1920 && screenWidth < 2560) {
+        return 11;
+    }else if (screenWidth >= 2560){
+        return 16;
     }
     }
 
   function mostrarNomeCompleto(nome) {
     nomeCompleto.value = nome;
+    expandirCard
   }
 
   function limparNomeCompleto() {
     nomeCompleto.value = '';
+    reduzirCard
   }
  </script>
  
  <style scoped>
+
+.criarEquipe:hover, .criarEquipe[data-expanded="true"] {
+    transform: scale(1.1);
+}
+
+.maisEquipes:hover, .maisEquipes[data-expanded="true"] {
+    transform: scale(1.1);
+}
 
  .mao-clique{
     cursor: pointer;
  }
  .textArea{
      @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full  
-     bg-[#D7D7D7] text-black text-lg
-     border-transparent border-b-roxo border-b-4  focus-within:border-roxo focus-within:border-4;
+     bg-[#D7D7D7] text-black text-lg text-left
+     border-transparent border-b-roxo border-b-2  focus-within:border-roxo focus-within:border-4;
      border-bottom: 'solid 4px #620BA7' ;
  }
  
@@ -133,7 +145,7 @@
     @apply flex  ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[15vw] lg:w-[21vw] md:w-[25vw]
     border-transparent
     border-b-roxo    
-    border-b-4
+    border-b-2
     items-center focus-within:border-roxo 
     focus-within:border-4;
     
@@ -160,7 +172,7 @@
  }
  
  .imagemEquipe{
-     @apply flex ml-2 mt-5 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] rounded-full;
+     @apply flex ml-2 mt-5 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[5vw] md:h-[4vh] rounded-full;
  }
  
  .imgIcon{

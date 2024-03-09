@@ -8,7 +8,7 @@
                         <img class="imagem" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
                         <img class="imagem" v-else src="">
                         <div class="styleH1Padrao">
-                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeEditar.nome" > {{ truncarNome(equipeEditar.nome, 20)  }}</h1>
+                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeEditar.nome" > {{ truncarNome(equipeEditar.nome, larguraNomeEquipe())  }}</h1>
                         </div>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed} from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -67,6 +67,21 @@ import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import {useRouter} from 'vue-router'
+
+function larguraNomeEquipe(){
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+        return 15;
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return 24;
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return 22;
+    } else if (screenWidth >= 1920 && screenWidth < 2560) {
+        return 18;
+    }else if (screenWidth >= 2560){
+        return 20;
+    }
+    }
 
 const imagemSelecionada = ref(null);
 
@@ -119,7 +134,8 @@ const banco = conexaoBD();
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 let equipeEditar = ref({
     nome: '',
-    descricao: ''
+    descricao: '',
+    foto: null
 });
 let nome = ref('');
 let descricao = ref('');
@@ -170,37 +186,82 @@ async function deletarEquipe(){
 
 }
 
- async function atualizarEquipe() { 
+async function atualizarEquipe() { 
     const equipeAtualizar ={
         id: '',
         nome: '',
         descricao: ''
     };
 
-        let listaEquipes = await equipes;
-        listaEquipes.forEach((equipe)=>{
+    let listaEquipes = await equipes;
+    listaEquipes.forEach((equipe)=>{
         if(equipeSelecionada == equipe.id){
-            
-            equipeAtualizar.id = equipe.id
-            equipeAtualizar.nome = nome.value
-            equipeAtualizar.descricao = descricao.value
+            equipeAtualizar.id = equipe.id;
+
+            // Verificar se o nome foi alterado
+            if (nome.value.trim() !== '') {
+                equipeAtualizar.nome = nome.value;
+            } else {
+                equipeAtualizar.nome = equipe.nome; // Mantém o nome original se não foi alterado
+            }
+
+            // Verificar se a descrição foi alterada
+            if (descricao.value.trim() !== '') {
+                equipeAtualizar.descricao = descricao.value;
+            } else {
+                equipeAtualizar.descricao = equipe.descricao; // Mantém a descrição original se não foi alterada
+            }
+
             mensagemError.value = "";
 
-            banco.atualizar(equipeAtualizar, "/equipe");
-            enviarFotoParaBackend(equipeSelecionada);
+            // Verifica se houve alterações nos campos antes de atualizar
+            if (equipeAtualizar.nome !== equipe.nome || equipeAtualizar.descricao !== equipe.descricao) {
+                banco.atualizar(equipeAtualizar, "/equipe");
+            } else {
+                console.log('Nenhuma alteração detectada na equipe.');
+            }
+
+            // Verificar se houve uma nova foto selecionada
+            if (imagemSelecionada.value) {
+                equipeAtualizar.foto = {
+                    tipo: imagemSelecionada.value.type,
+                    dados: toBase64(imagemSelecionada.value)
+                };
+            } else {
+                // Caso contrário, manter a imagem da equipe anterior
+                equipeAtualizar.foto = equipe.foto;
+            }
         }
-        })
+    });
 
-        equipeEditar.value.nome = equipeAtualizar.nome;
-        equipeEditar.value.descricao = equipeAtualizar.descricao;
+    equipeEditar.value.nome = equipeAtualizar.nome;
+    equipeEditar.value.descricao = equipeAtualizar.descricao;
 
-            nome.value = ""
-            descricao.value = ""
-            editando.value = false;
-        
-            window.location.reload
+    nome.value = "";
+    descricao.value = "";
+    editando.value = false;
 
+    // Verificar se houve uma nova foto selecionada ou se a foto anterior foi mantida
+    if (equipeAtualizar.foto) {
+        // Envia a foto para o backend apenas se houver uma nova foto ou a foto anterior foi mantida
+        enviarFotoParaBackend(equipeSelecionada);
+    } else {
+        console.log('Nenhuma imagem selecionada. A equipe será atualizada sem uma nova imagem.');
+    }
+
+    window.location.reload()
 }
+
+// Função para converter o arquivo para base64
+async function toBase64(file) {
+    return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+    });
+}
+
 
 async function enviarFotoParaBackend(id) {
     try {
@@ -232,7 +293,7 @@ async function enviarFotoParaBackend(id) {
         px-2
         max-w-max
         w-min
-        border-b-4
+        border-b-2
         hover:rounded-[4px] hover:border-4
          focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px]  ;
@@ -241,12 +302,12 @@ async function enviarFotoParaBackend(id) {
 
     .textArea{
      @apply flex  2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg
-     border-transparent border-b-roxo border-b-4  focus-within:border-roxo focus-within:border-4;
+     border-transparent border-b-roxo border-b-2  focus-within:border-roxo focus-within:border-4;
      border-bottom: 'solid 4px #620BA7' ;
  }
     
     .imagem {
-        @apply xl:h-[6vh] xl:w-[3vw];
+        @apply xl:h-[6vh] xl:w-[3vw] rounded-full;
     }
 
     .mensagem-error {

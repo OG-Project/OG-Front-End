@@ -4,7 +4,7 @@
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
             <img class="imagemEquipe" v-else src="">
-             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 ">{{ equipeMembros.nome }}</h1>
+             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 ">{{ truncarNome(equipeMembros.nome, larguraNomeEquipe()) }}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
@@ -12,7 +12,7 @@
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                       <img class="imgDePerfil" src="" alt="">
-                      <h1 class="flex mt-5 text-xl md:text-lg">{{ membro.nome }}</h1>
+                      <h1 class="flex mt-5 text-xl md:text-lg">{{ truncarNome(membro.nome, 16) }}</h1>
                     </div>
                     <SelectPadrao class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
@@ -69,6 +69,23 @@ let equipeMembros = ref({
     nome: '',
     descricao: ''
 });
+
+function larguraNomeEquipe(){
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+        return 14;
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return 16;
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return 15;
+    } else if (screenWidth >= 1920 && screenWidth < 2560) {
+        return 15;
+    }else if (screenWidth >= 2560){
+        return 20;
+    }
+    }
+
+const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 async function filtrarEquipe(){
     console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
@@ -129,9 +146,9 @@ function larguraInputConvidado(){
         return '22';
     } else if (screenWidth > 1024 && screenWidth < 1920) {
         return '19';
-    } else if(screenWidth > 2560){
-        return '21';
-    }else if(screenWidth >= 2560){
+    } else if( screenWidth >= 1920 && screenWidth > 2560){
+        return '20';
+    } else if(screenWidth >= 2560){
         return '12';
     }
     }
@@ -205,7 +222,7 @@ function larguraInputConvidado(){
         flex justify-center
         border-transparent
         border-b-brancoNeve
-        border-b-4
+        border-b-2
         w-max
         items-center  focus-within:border-white
         focus-within:border-4 focus-within:rounded-md truncate;
@@ -213,7 +230,7 @@ function larguraInputConvidado(){
     }
 
 .imagemEquipe {
-   @apply  2xl:mr-5 xl:mt-5 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
+   @apply  2xl:mr-5 xl:mt-3 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[60px] 2xl:w-[60px] xl:h-[60px] xl:w-[60px] lg:w-[50px] lg:h-[50px] md:w-[50px] md:h-[50px] rounded-full;
 }
 
 .div-lista{
@@ -226,7 +243,7 @@ function larguraInputConvidado(){
   p-10 2xl:mt-[50vh] xl:mt-[8vh] 2xl:ml-[15vw] xl:ml-[8vw] lg:ml-[9vw] md:ml-[11vw] lg:mt-[8vh] md:mt-[8vh];
 }
 .adiciona-membro{
- @apply flex justify-center absolute bottom-[58vh] 2xl:ml-[4vw] xl:ml-[4vw] lg:ml-[5vw] md:ml-[7vw];
+ @apply flex justify-center absolute bottom-[58vh] 2xl:ml-[3vw] xl:ml-[4vw] lg:ml-[5vw] md:ml-[7vw];
 }
 
 .divGeral{
@@ -258,7 +275,7 @@ function larguraInputConvidado(){
     @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[20vw] lg:w-[25vw] md:w-[30vw]
     border-transparent
     border-b-roxo    
-    border-b-4
+    border-b-2
     items-center focus-within:border-roxo 
     focus-within:border-4;
     

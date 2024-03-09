@@ -16,7 +16,7 @@
             </div>
             <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
                 <img src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
-                <p class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md" :class="{ 'imagem-hover-membros': hoverMembros }">20</p>
+                <p class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
             </div>
                 <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
                 <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true">  </ListaMembrosEquipe>
@@ -120,7 +120,7 @@ console.log(equipeSelecionada)
     2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw]
     border-transparent
     border-b-roxo    
-    border-b-4
+    border-b-2
     items-center focus-within:border-roxo 
     focus-within:border-4;
  }
