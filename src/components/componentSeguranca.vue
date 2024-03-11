@@ -8,7 +8,7 @@
         <div :style="{fontFamily:fonteCorpo}" class="pl-32 items-center">
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
-                    <div class="flex items-center gap-8">
+                    <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="text-2xl w-[470px]">
                             Ao alterar a senha, a gente mantém você conectado
                             a este dispositivo, mas é possível que sua conta
@@ -21,7 +21,7 @@
                         texto="Alterar Senha">
                         </Botao>
                     </div>
-                    <div class="flex items-center gap-8">
+                    <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="gap-5">
                             <div class="text-2xl w-[470px]">
                                 Seu endereço de e-mail atual é <span class="text-roxo">{{usuario.email}}</span>

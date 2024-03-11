@@ -1,7 +1,7 @@
 <template>
-    <div class="flex justify-center">
+    <div class="flex justify-center flex-wrap">
         <div class="flex  flex-col items-center w-[443px] h-[877px] drop-shadow-md bg-[#FEFBFF]">
-            <div class="w-[329px] rounded-full h-[329px] mt-10 mb-16 bg-emerald-400"></div>
+            <div class="w-[75%] rounded-full  h-[45%] mt-[10%] mb-[19%] bg-emerald-400"></div>
             <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[362px] h-[496px] ">
                 <div class="flex flex-col items-center gap-9">
                     <div v-for="i in equipes"
@@ -17,7 +17,7 @@
 
             </div>
         </div>
-        <div class="w-[1400px] h-[877px] ">
+        <div class="w-[75vw] h-[92vh] flex flex-col  ">
             <div class="flex flex-col justify-around">
                 <h1 :style="{ fontFamily: fonteTitulo }"
                     class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">

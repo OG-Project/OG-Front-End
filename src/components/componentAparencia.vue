@@ -5,8 +5,8 @@
                 Aparência
             </h1>
         </div>
-        <div class="pl-24 items-center flex gap-4">
-            <div :style="{color:contraste(cor),backgroundColor:cor,fontFamily:fonteCorpo}" class="w-[740px] h-[420px]">
+        <div :style="{fontFamily:fonteCorpo}" class="pl-24 sm:flex-wrap sm:justify-center items-center flex gap-4">
+            <div :style="{color:contraste(cor),backgroundColor:cor,fontFamily:fonteCorpo}" class="sm:w-[370px] sm:h-[210px] xl:w-[740px] xl:h-[420px]">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                 Placeat reiciendis excepturi aspernatur fuga esse itaque.
                 Libero molestias, ipsum eaque inventore dolores veniam sed
@@ -53,7 +53,7 @@
             <Botao 
             :funcaoClick="salvarCor" 
             preset="PadraoRoxo" 
-            texto="Editar E-mail" 
+            texto="Confirmar" 
             tamanhoDaBorda="2px" 
             tamanhoDaFonte="2.0vh" />
         </div>
@@ -96,6 +96,10 @@ let font=ref('Arial')
 /* Quattrocento serif */
 /* Work+Sans */
 let fonts=['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
+
+const classesFonte=({
+    
+})
 
 let cor = ref('#80A4ED')
 const styleCor = ref({

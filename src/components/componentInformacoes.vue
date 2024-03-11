@@ -3,8 +3,8 @@
                 <div :style="{fontFamily:fonteTitulo}">
                         <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
                 </div>
-                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center md:flex-wrap  gap-8">
-                        <div class="flex flex-col gap-y-10">
+                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center w-full    sm:flex-wrap  gap-8">
+                        <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
                                         <span class="text-xl">Nome</span>
                                         <Input 
@@ -31,7 +31,7 @@
                                 </div>
                         </div>
                         
-                        <div class="flex flex-col gap-y-10">
+                        <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
                                 <div class="flex justify-between items-center gap-5">
                                         <span class="text-xl">Sobrenome</span>
                                         <Input 
