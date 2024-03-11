@@ -596,18 +596,18 @@
         <h1 class="text-xl font-semibold">Propriedades</h1>
       </div>
       <div
-        v-if="tarefa.propriedadesDaTarefa.length === 0"
+        v-if="tarefa.propriedades.length === 0"
         class="h-[35%] flex flex-col items-center justify-center p-8"
       >
         <img :src="NotePad" class="h-[200px] w-[200px]" />
         <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
       </div>
       <div
-        v-if="tarefa.propriedadesDaTarefa.length != 0"
+        v-if="tarefa.propriedades.length != 0"
         class="min-h-[35%] flex flex-col items-center"
       >
         <div
-          v-for="propriedade of tarefa.propriedadesDaTarefa"
+          v-for="propriedade of tarefa.propriedades"
           class="flex flex-col justify-around py-4 w-[80%]"
         >
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
@@ -736,9 +736,9 @@ function deletaStatus(stat) {
       status.value.splice(status.value.indexOf(stat), 1);
     }
   });
-  tarefa.value.statusDaTarefa.value.forEach((statParaDeletar) => {
+  tarefa.value.statusDaTarefa.forEach((statParaDeletar) => {
     if (stat === statParaDeletar) {
-      tarefa.value.statusDaTarefa.splice(tarefa.value.statusDaTarefa.value.indexOf(stat), 1);
+      tarefa.value.statusDaTarefa.splice(tarefa.value.statusDaTarefa.indexOf(stat), 1);
     }
   });
 }
@@ -834,14 +834,23 @@ function deletaPropriedade(propriedade) {
       propriedades.value.splice(propriedades.value.indexOf(propriedade), 1);
     }
   });
-  tarefa.value.propriedadesDaTarefa.value.forEach((propriedadeParaDeletar) => {
+  tarefa.value.propriedades.forEach((propriedadeParaDeletar) => {
     if (propriedadeParaDeletar === propriedade) {
-      tarefa.value.propriedadesDaTarefa.value.splice(
-        tarefa.value.propriedadesDaTarefa.value.indexOf(propriedade),
+      tarefa.value.propriedades.splice(
+        tarefa.value.propriedades.indexOf(propriedade),
         1
       );
     }
   });
+}
+
+async function procuraPropriedadesDoBanco(){
+  let projetos = banco.procurar("projeto")
+  for(projeto in projetos){
+    if(projeto.id == tarefa.projetoId){
+      propriedades.value = tarefa.propriedades
+    }
+  }
 }
 
 //Variavel utilizada para armazenar um comentario ainda nao enviado
@@ -850,10 +859,11 @@ let comentarioSendoEnviado = ref("");
 let tarefa = ref({
   nome: "",
   descricao: "",
-  arquivos: ref([]),
-  comentarios: ref([]),
-  propriedadesDaTarefa: ref([]),
-  statusDaTarefa: ref([]),
+  arquivos: [],
+  comentarios: [],
+  propriedades: [],
+  statusDaTarefa: [],
+  projetoId: VueCookies.get("IdProjetoAtual"),
 });
 
 onUpdated(() => {
@@ -863,17 +873,21 @@ onUpdated(() => {
 onMounted(() => {
   autenticaUsuarioCookies();
   autenticarUsuario();
+  procuraPropriedadesDoBanco();
+  VueCookies.set("IdProjetoAtual", 28, 100000000000)
   tarefa.value = {
     nome: "",
     descricao: "",
-    arquivos: ref([]),
-    comentarios: ref([]),
-    propriedadesDaTarefa: ref([]),
-    statusDaTarefa: ref([]),
+    arquivos: [],
+    comentarios: [],
+    propriedades: [],
+    statusDaTarefa: [],
+    projetoId: VueCookies.get("IdProjetoAtual"), 
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
   tarefa.value = JSON.parse(localStorageData);
+  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   }
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
@@ -921,12 +935,12 @@ function adicionaExcluiStatusNaTarefa(status) {
 function adicionaExcluiPropriedadeNaTarefa(propriedade) {
   propriedade.estaNaTarefa = !propriedade.estaNaTarefa;
   if (propriedade.estaNaTarefa) {
-    tarefa.value.propriedadesDaTarefa.push(propriedade);
+    tarefa.value.propriedades.push(propriedade);
   } else {
-    tarefa.propriedadesDaTarefa.forEach((propriedadeDeletar) => {
+    tarefa.propriedades.forEach((propriedadeDeletar) => {
       if (propriedadeDeletar === propriedade) {
-        tarefa.value.propriedadesDaTarefa.splice(
-          tarefa.value.propriedadesDaTarefa.indexOf(propriedadeDeletar),
+        tarefa.value.propriedades.splice(
+          tarefa.value.propriedades.indexOf(propriedadeDeletar),
           1
         );
       }
@@ -959,7 +973,7 @@ let abreFechaComentarioBoolean = ref(false);
 
 function abreFechaComentario() {
   console.log(usuarioCookies);
-  console.log(tarefa.propriedadesDaTarefa);
+  console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
