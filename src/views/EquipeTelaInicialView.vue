@@ -24,11 +24,32 @@
         </div>
        
     </div>  
-    <div class="flex justify-center ">
-          <div class="listaEquipes overflow-auto"  >
-                    <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
+    <div class="flex justify-center">
+      <div class="listaProjetos overflow-auto">
+        <div class="flex justify-center">
+          <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
+        </div>
+      <div class="projetos">
+        <div class="projeto">
+          <div>
+            <h1 class="text-xl font-semibold text-gray-800 mt-3 ml-5">LAVAR O JUNINHO</h1>
+            <div class="flex flex-col mt-3 ml-5">
+              <span class="pularLinhaTexto text-gray-600 font-semibold">Tipo: </span>
+            </div>
+            <div class="flex flex-col mt-3 ml-5">
+              <span class="pularLinhaTexto text-gray-600 font-semibold">Responsavel:</span>
+            </div>
+            <div class="flex flex-col mt-3 ml-5">
+              <span class="pularLinhaTexto text-gray-600 font-semibold">Descricao: </span>
+            </div>
+            <div class="barraFundoLoading  flex mt-20 bg-[#36213E] w-[18.8vw] h-[7vh]">
+                
+            </div>
           </div>
-    </div>
+        </div> 
+      </div>       
+      </div>
+</div>
 </template>
 <script setup>
   import navBar from "../components/navBar.vue"
@@ -115,6 +136,44 @@ console.log(equipeSelecionada)
     }
 </script>
 <style scoped>
+
+.barraFundoLoading{
+  clip-path: polygon(87% 0, 100% 23%, 100% 100%, 75% 100%, 0 100%, 0 23%, 13% 0);
+}
+.pularLinhaTexto {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.projetos{
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px; 
+  justify-content:flex-start;
+}
+
+.projeto {
+  @apply flex w-[20vw] h-[35vh] m-10 bg-white shadow-md;
+  transition: transform 0.3s ease;
+  max-width: calc(20% - 1px); 
+  
+}
+
+.projeto:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.projeto .imagemFundo {
+  @apply bg-gray-300;
+}
+
+.projeto h2 {
+  @apply text-xl font-semibold text-gray-800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .corDiv{
     @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh]  md:ml-[5vw] md:mt-[-5vh] 
     2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw]
@@ -159,8 +218,8 @@ console.log(equipeSelecionada)
     text-overflow: ellipsis; 
 }
 
-.listaEquipes{
-    @apply  flex flex-wrap justify-center mt-[11vh] w-[95vw] h-[65vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
+.listaProjetos{
+    @apply mt-[11vh] w-[95vw] h-[65vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
     flex: 1 1 px;
  }
 

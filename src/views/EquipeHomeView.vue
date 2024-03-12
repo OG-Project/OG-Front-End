@@ -18,7 +18,7 @@
                             </div>
                     </div>
                     <div class="textArea">
-                        <p>{{ equipe.equipe.descricao }}</p>
+                        <p class="descricao">{{ equipe.equipe.descricao }}</p>
                     </div>
                 </div>
                 <div class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')" @mouseover="expandirCard" @mouseleave="reduzirCard">
@@ -122,6 +122,11 @@
  </script>
  
  <style scoped>
+
+.descricao {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 
 .criarEquipe:hover, .criarEquipe[data-expanded="true"] {
     transform: scale(1.1);

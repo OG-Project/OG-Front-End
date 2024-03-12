@@ -13,7 +13,7 @@
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
                     <div class="textArea">
-                        <p>{{ equipeEditar.descricao }}</p>
+                        <p class="descricao">{{ equipeEditar.descricao }}</p>
                     </div>
                 </div> 
                 <div>
@@ -284,6 +284,11 @@ async function enviarFotoParaBackend(id) {
     @import url(../assets/main.css);
 
     @layer components {
+
+    .descricao {
+    white-space: pre-wrap;
+    word-break: break-word;
+    }
 
     .styleH1Padrao{
        @apply 
