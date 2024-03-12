@@ -5,8 +5,8 @@
                 Aparência
             </h1>
         </div>
-        <div :style="{fontFamily:fonteCorpo}" class="pl-24 sm:flex-wrap sm:justify-center items-center flex gap-4">
-            <div :style="{color:contraste(cor),backgroundColor:cor,fontFamily:fonteCorpo}" class="sm:w-[370px] sm:h-[210px] xl:w-[740px] xl:h-[420px]">
+        <div :style="{fontFamily:fonteCorpo}" class="xl:pl-24 sm:flex-wrap sm:justify-center items-center flex gap-4">
+            <div :style="{color:contraste(cor),backgroundColor:cor,fontFamily:fonteCorpo}" class="sm:w-[370px] sm:h-[210px] xl:w-[35vw] xl:h-[40vh]">
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                 Placeat reiciendis excepturi aspernatur fuga esse itaque.
                 Libero molestias, ipsum eaque inventore dolores veniam sed
@@ -98,7 +98,8 @@ let font=ref('Arial')
 let fonts=['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
 
 const classesFonte=({
-    
+    1:"font-poppins",
+    2:"font-sourceSans",
 })
 
 let cor = ref('#80A4ED')

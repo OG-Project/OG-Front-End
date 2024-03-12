@@ -1,11 +1,11 @@
 <template>
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
-    <div class="font-sourceSans">Titulo aleatorio</div>
-    <div class="font-poppins">Titulo aleatorio</div>
     <div class="flex justify-center flex-wrap ">
-        <div class="flex  flex-col items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
-            <div class="w-[95%] rounded-full  h-[100%] mt-[10%] mb-[19%] bg-emerald-400"></div>
+        <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+            <div class=" flex justify-center w-[329px] h-[329px]">
+                <div class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
+            </div>
             <div class=" flex flex-col gap-10">
                 <Botao :funcaoClick="informacao" preset="PadraoRoxo" texto="Informações" tamanhoDaBorda="2px"
                     tamanhoDaFonte="2.0vh" />
