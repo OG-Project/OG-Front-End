@@ -56,14 +56,16 @@
         </div>
         <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
             <div class="calendario">
-                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia"
-                    @dragover="retornaDiaEIndice(dia)" @mouseenter="hover(dia)" @mouseleave="getCalendario()">
+                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDiaEIndice(dia)"
+                    @mouseenter="hover(dia)" @mouseleave="getCalendario()">
                     <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(new Date(dia.dia), 'd') }}</h1>
-                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new Date(dia.dia),'d') }}</h1>
+                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
+                        Date(dia.dia), 'd') }}</h1>
                     <div :style="dia.style">
-                        <div v-for="(tarefa,indice) of dia.listaDeTarefas">
+                        <div v-for="(tarefa, indice) of dia.listaDeTarefas">
                             <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row"
-                                @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)" @dragover="retornaDiaEIndice(dia, indice)"> 
+                                @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
+                                @dragover="retornaDiaEIndice(dia, indice)">
                                 {{ indice }}
                                 <cardTarefas :tarefa=tarefa.tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                             </div>
@@ -126,7 +128,7 @@ async function getCalendario() {
     const primeiroDiaDoMes = startOfMonth(new Date(d));
     const ultimoDiaDoMes = endOfMonth(new Date(d));
     const todosOsDiasDoMes = eachDayOfInterval({ start: primeiroDiaDoMes, end: ultimoDiaDoMes });
-    
+
     let lista = []
 
     for (let i = primeiroDiaDoMes.getDay(); i > 0; i--) {
@@ -149,13 +151,13 @@ async function getCalendario() {
     listaDeDias = null
 }
 
-async function adicionaDiasALista(dias){
+async function adicionaDiasALista(dias) {
     let listaDeDiasTemporaria = [];
     for (const dia of dias) {
         let lista = await verificaTarefasDoDia(dia)
         let dia1 = {
             dia: dia,
-            listaDeTarefas: ref([]),    
+            listaDeTarefas: ref([]),
             temTres: false,
             style: dia.style = {
                 height: "45%",
@@ -166,9 +168,6 @@ async function adicionaDiasALista(dias){
                 border: border
             }
         }
-        if(dia1.listaDeTarefas!=[]){
-            dia1.listaDeTarefas.value.sort(sortBy('indice'))
-        }
         dia1.listaDeTarefas = lista
         listaDeDiasTemporaria.push(dia1)
     }
@@ -178,6 +177,7 @@ async function adicionaDiasALista(dias){
 async function verificaTarefasDoDia(dia) {
     let lista = []
     let tarefas2 = await tarefas
+    tarefas2 = tarefas2.sort(sortBy('indice'))
     for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {
             if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA") {
@@ -186,7 +186,10 @@ async function verificaTarefasDoDia(dia) {
                         tarefa: tarefa,
                         propriedade: propriedade
                     }
-                    lista.push(tarefaObjeto)
+                    const tarefaDuplicada = lista.find((objeto)=>objeto==tarefaObjeto)
+                    if(tarefaDuplicada==null){
+                        lista.push(tarefaObjeto)
+                    }
                 }
             }
         };
@@ -231,25 +234,21 @@ function setaDireita() {
 async function trocaDiaEIndice(tarefa, dia, indice) {
     tarefa.propriedade.valor.valor = new Date(dia.dia)
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
-    dia.listaDeTarefas.splice(indiceDaTarefaAtual,1)
+    dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
-    console.log(dia.listaDeTarefas)
-    console.log((dia.listaDeTarefas.sort(sortBy('nome'))))
-    for(const tarefa2 of dia.listaDeTarefas){
+    for (const tarefa2 of dia.listaDeTarefas) {
         let indiceTeste = dia.listaDeTarefas.indexOf(tarefa2)
-        console.log(indiceTeste)
         tarefa2.tarefa.indice = indiceTeste
-        console.log(tarefa2.tarefa)
     }
     getCalendario()
 
 }
 function retornaDiaEIndice(dia, indice) {
     diaNovo = dia;
-    if(indice!=undefined){
+    if (indice != undefined) {
         indiceNovo = indice;
     }
-    
+
 }
 function verificaQauntidadetarefa(dia) {
     if (dia.listaDeTarefas.length >= 3) {

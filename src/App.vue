@@ -16,7 +16,7 @@ const funcaoPopUp = funcaoPopUpStore();
 <template>
   <RouterView />
   <div class="w-[100%] h-screen flex justify-center items-center">
-    <KanbanDeStatus></KanbanDeStatus>
+    <calendario></calendario>
   </div>
 
 </template>
