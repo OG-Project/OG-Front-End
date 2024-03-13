@@ -62,11 +62,10 @@
                     <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
                         Date(dia.dia), 'd') }}</h1>
                     <div :style="dia.style">
-                        <div v-for="(tarefa, indice) of dia.listaDeTarefas">
+                        <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort((p, p1) => p.indice.indice - p1.indice.indice)">
                             <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row"
                                 @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
                                 @dragover="retornaDiaEIndice(dia, indice)">
-                                {{ indice }}
                                 <cardTarefas :tarefa=tarefa.tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
                             </div>
                         </div>
@@ -186,7 +185,7 @@ async function verificaTarefasDoDia(dia) {
                         tarefa: tarefa,
                         propriedade: propriedade
                     }
-                    const tarefaDuplicada = lista.find((objeto)=>objeto==tarefaObjeto)
+                    const tarefaDuplicada = lista.find((objeto)=>objeto.tarefa==tarefaObjeto.tarefa)
                     if(tarefaDuplicada==null){
                         lista.push(tarefaObjeto)
                     }
