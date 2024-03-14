@@ -40,7 +40,7 @@ async function fazerLogin() {
   let usuarios = banco.procurar("/usuario");
   let listaUsuarios = await usuarios;
   listaUsuarios.forEach((usuario) => {
-     console.log(usuario);
+    console.log(usuario);
     console.log(usuarioLogin);
     if (usuarioLogin.value === usuario.username) {
       if (senhaUsuarioLogin.value === usuario.senha) {
@@ -138,116 +138,54 @@ function mostraSenhaConfirmacao() {
       <Transition name="login">
         <div v-if="tipo === 'login'" :style="conteudoFormulario">
           <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="iconePessoaLogin"
-            conteudoInput="User"
-            v-model="usuarioLogin"
-          ></Input>
+          <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
+            v-model="usuarioLogin"></Input>
           <div class="flex flex-row justify-center items-center pl-10">
-            <Input
-              styleInput="input-transparente-escuro"
-              :icon="iconeSenhaLogin"
-              conteudoInput="Senha"
-              v-model="senhaUsuarioLogin"
-              :tipo="vizualizacaoDeSenha"
-            ></Input>
+            <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
+              v-model="senhaUsuarioLogin" :tipo="vizualizacaoDeSenha"></Input>
             <button class="h-[100%] w-[6%]" @click="mostraSenhas">
               <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
             </button>
           </div>
-          <Botao
-            :funcaoClick="fazerLogin"
-            preset="PadraoRoxo"
-            texto="Acessar"
-            tamanhoPadrao="grande"
-          ></Botao>
+          <Botao :funcaoClick="fazerLogin" preset="PadraoRoxo" texto="Acessar" tamanhoPadrao="grande"></Botao>
 
 
-        <Botao
-          :funcaoClick="trocaDeTela"
-          preset="PadraoBranco"
-          texto="Criar Conta"
-          tamanhoPadrao="medio"
-        ></Botao>
-        <div class="flex items-center justify-center w-[70%]">
-          <hr style="width: 20%; text-align: left; margin-left: 0" />
-          <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
-          <hr style="width: 20%; text-align: left; margin-left: 0" />
+          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Criar Conta" tamanhoPadrao="medio"></Botao>
+          <div class="flex items-center justify-center w-[70%]">
+            <hr style="width: 20%; text-align: left; margin-left: 0" />
+            <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
+            <hr style="width: 20%; text-align: left; margin-left: 0" />
+          </div>
         </div>
       </Transition>
       <Transition name="registro">
         <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
           <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="imgPessoaLogin"
-            conteudoInput="Usuario"
-            v-model="usuarioCadastro"
-          ></Input>
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="imgEmailRegistro"
-            conteudoInput="E-Mail"
-            v-model="emailCadastro"
-          ></Input>
+          <Input styleInput="input-transparente-escuro" :icon="imgPessoaLogin" conteudoInput="Usuario"
+            v-model="usuarioCadastro"></Input>
+          <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" conteudoInput="E-Mail"
+            v-model="emailCadastro"></Input>
           <div class="flex flex-row justify-center items-center pl-10">
-            <Input
-              styleInput="input-transparente-escuro"
-              :icon="iconeSenhaLogin"
-              conteudoInput="Senha"
-              v-model="senhaCadastro"
-              :tipo="vizualizacaoDeSenha"
-            ></Input>
-            <button
-              class="h-[100%] w-[6%] flex items-center justify-center"
-              @click="mostraSenhas"
-            >
+            <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
+              v-model="senhaCadastro" :tipo="vizualizacaoDeSenha"></Input>
+            <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhas">
               <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
             </button>
           </div>
           <div class="flex flex-row justify-center items-center pl-10">
-            <Input
-              styleInput="input-transparente-escuro"
-              :icon="iconeSenhaLogin"
-              conteudoInput="Confirmar Senha"
-              v-model="confirmarSenhaCadastro"
-              :tipo="vizualizacaoDeSenhaConfirmacao"
-            ></Input>
-            <button
-              class="h-[100%] w-[6%] flex items-center justify-center"
-              @click="mostraSenhaConfirmacao"
-            >
+            <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Confirmar Senha"
+              v-model="confirmarSenhaCadastro" :tipo="vizualizacaoDeSenhaConfirmacao"></Input>
+            <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
               <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
             </button>
           </div>
-          <Botao
-            :funcaoClick="cadastraUsuario"
-            preset="PadraoRoxo"
-            texto="Cadastrar"
-            tamanhoPadrao="grande"
-          ></Botao>
-          <Botao
-            :funcaoClick="trocaDeTela"
-            preset="PadraoBranco"
-            texto="Sair"
-            tamanhoPadrao="medio"
-          ></Botao>
+          <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="grande"></Botao>
+          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="medio"></Botao>
         </div>
-        <Botao
-          :funcaoClick="cadastraUsuario"
-          preset="PadraoRoxo"
-          texto="Cadastrar"
-          tamanhoPadrao="grande"
-        ></Botao>
-        <Botao
-          :funcaoClick="trocaDeTela"
-          preset="PadraoBranco"
-          texto="Sair"
-          tamanhoPadrao="medio"
-        ></Botao>
-      </div>
-    </Transition>
+        <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="grande"></Botao>
+        <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="medio"></Botao>
+      </Transition>
+    </div>
   </div>
 </template>
 <style scoped>
@@ -256,20 +194,24 @@ function mostraSenhaConfirmacao() {
   clip-path: polygon(28% 0, 100% 0, 100% 100%, 28% 100%, 0 80%, 0 20%);
   background-image: linear-gradient(#000000, #320461);
 }
+
 #imagemDeFundoLogin {
   background-image: url(../imagem-vetores/BG1.svg);
   background-color: #ffffff;
   height: 100vh;
   width: 100vw;
 }
+
 .tamanhoImagemFundoLogin {
   @apply w-full h-full;
 }
+
 .tamanhoDaLogoLogin {
-  @apply 2xl:w-[30vw] 2xl:h-[30vw]  xl:w-[35vw]  lg:w-[40vw]  md:w-[55vw];
+  @apply 2xl:w-[30vw] 2xl:h-[30vw] xl:w-[35vw] lg:w-[40vw] md:w-[55vw];
 }
+
 .tamanhoDoNomeLogin {
-  @apply 2xl:w-[16vw] 2xl:h-[6vw]   xl:w-[20vw]  lg:w-[24vw]  md:w-[28vw]  pr-12;
+  @apply 2xl:w-[16vw] 2xl:h-[6vw] xl:w-[20vw] lg:w-[24vw] md:w-[28vw] pr-12;
 }
 
 .login-enter-from,
@@ -277,7 +219,8 @@ function mostraSenhaConfirmacao() {
 .registro-enter-from,
 .registro-leave-to {
   opacity: 0;
-  transform: translateX(100vw); /* Mudança para fora da tela à esquerda */
+  transform: translateX(100vw);
+  /* Mudança para fora da tela à esquerda */
 }
 
 .registro-leave-from,

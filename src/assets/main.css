@@ -15,7 +15,7 @@
 
 
 html{
-    @apply fill-fontFamily-Poppins md:text-sm xl:text-lg  sm:text-xs;
+    @apply font-poppins md:text-sm xl:text-lg  sm:text-xs;
 
 }
 
