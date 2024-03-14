@@ -7,9 +7,9 @@
             <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] ">
                 <div class="flex flex-col items-center gap-9">
                     <div v-for="i in equipes"
-                        class="shadow-md flex sm:flex-wrap sm:justify-center xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
-                        <svgEquipe class="ml-6" />
-                        <div class="truncate w-[60%] border-b-2 border-roxo pb-1">
+                        class="shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
+                        <svgEquipe class="2xl:ml-6" />
+                        <div class="truncate w-[60%] flex xl:justify-start sm:justify-center border-b-2 border-roxo pb-1">
                             Nome Equipe
                         </div>
                     </div>
