@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[8vh] w-full flex">
+  <div class="h-[8vh] w-full flex ">
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral class="w-[45%]"></BarraLateral>
       <div class="h-[8vh]  w-[15%] flex items-center">

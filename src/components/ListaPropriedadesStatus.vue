@@ -159,8 +159,6 @@ function buscaPropriedadeCookies() {
 
 function criaPropriedadeCookies() {
 
-const teste= listaPropriedades.value.find((objeto) => objeto==objeto1)
-
     let propriedadeCriada = {
         nome: nomePropriedade.value,
         tipo: tipoPropriedade.value.toUpperCase()

@@ -1,6 +1,6 @@
 <template>
     <div class="gridTotal">
-        <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden">
+        <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto" largura="30"
                     altura="6" fontSize="1.5rem" v-model="nomeProjeto"></Input>
@@ -10,15 +10,11 @@
                     tamanhoDaFonte="1.0rem" v-model="descricaoProjeto" ></TextAreaPadrao>
             </div>
             <div class="">
-                <div class="  flex flex-col gap-9">
-                    <div class="h-[5%] flex items-start justify-start mt-2">
-                        <Input styleInput="input-transparente-claro-pequeno" largura="13" v-model="dataInicioProjeto"
-                            tipo="date" conteudoInput="Data Inicio" altura="2" fontSize="1rem"></Input>
-                    </div>
+                <div class="  flex flex-col gap-10">
                     <div>
                         <div class="w-[50%] grid grid-cols-2">
-                            <selectPadrao altura="5" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
-                                v-model="equipesRelacionadasProjeto" fonte-tamanho="1rem"></selectPadrao>
+                            <selectPadrao altura="4" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
+                                v-model="equipesRelacionadasProjeto" fonte-tamanho="0.9rem"></selectPadrao>
 
                             <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
                                 :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
@@ -53,7 +49,7 @@
                 </ListaConvidados>
             </div>
         </div>
-        <div class=" w-[83%] h-[90%] flex-row z-40 ">
+        <div class=" w-[83%] h-[90%] flex-row ">
             <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"></ListaPropiedadesStatus>
 
         </div>
@@ -308,6 +304,7 @@ async function removeResponsavel(responsavelRemover){
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
     height: 90%;
+    
 }
 
 .animation {
