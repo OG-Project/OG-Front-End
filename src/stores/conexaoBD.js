@@ -60,5 +60,5 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
       
     }
-}})
+})
 

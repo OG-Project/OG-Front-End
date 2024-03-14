@@ -244,18 +244,6 @@ function check(tipo) {
       emit('enviaValor',{valor:ativo.value})
     }
   }
-  else{
-    const animation = new mojs.Html({
-        el: "#toggle",
-        x: { 0: maximoMovimentoBola.value, easing: "sin.in" },
-        onComplete: () => {
-          estiloToggle.value = estiloBolaFinal.value;
-          corBolaToggle.value = "#F3F3F3";
-        },
-      });
-
-      animation.play();
-  }
 }
 function valorJaPassado(){
   if(props.modelValue === false){
