@@ -273,7 +273,6 @@ async function removeListaEquipeConvidadas(equipeRemover){
     let listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeRemover.nome);
     let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
-
     if (indice !== -1) {
         // Remover o objeto da lista usando splice
         listaEquipesSelecionadas.value.splice(indice, 1);
