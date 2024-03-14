@@ -1,6 +1,8 @@
 <script setup>
 
-import {RouterView} from 'vue-router'
+import { RouterLink, RouterView } from 'vue-router'
+import Tabelas from './components/Tabelas.vue';
+import LoginView from './views/LoginView.vue';
 import Input from './components/Input.vue'
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
 import VueCookies from "vue-cookies";
@@ -31,7 +33,7 @@ const {isVlibras}=storeToRefs(perfil)
 
 <template>
   
-  <Navbar></Navbar>
+ <Navbar v-if="url!='http://localhost:5173/login'"></Navbar>
     <RouterView />
     <!-- {{ VueCookies.get('isVlibras') }}
     {{ ativado }} -->
@@ -44,7 +46,6 @@ const {isVlibras}=storeToRefs(perfil)
       </div>
     </div>
 
-</template>
 
 <style scoped>
 

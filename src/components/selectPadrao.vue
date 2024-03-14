@@ -1,6 +1,6 @@
 <template>
     <div :class=styleSelect :style="estilizaDivSelect">
-        <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex items-center justify-center xl:text-xl sm:text-sm md:text-md">
+        <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex items-center justify-center xl:text-xl sm:text-sm md:text-md truncate w-full">
             <option class="options" value="" disabled selected  v-if="opcaoSelecionada==''">{{ placeholderSelect }}</option>
             <option v-for="opcao of listaSelect" class="options" :value="opcao">{{ opcao }}</option>
         </select>   
@@ -48,7 +48,8 @@ defineEmits(['update:modelValue'])
         backgroundColor: verificaCorBack(),
         color: verificaCorTexto(),
         height: props.altura+"vh",
-        width:props.largura+"vw"
+        width:props.largura+"vw",
+
     }
 
     const estilizaSelect={
@@ -78,7 +79,7 @@ defineEmits(['update:modelValue'])
         }
         else if (props.styleSelect=="select-branco" || props.styleSelect=="select-grande-cinza" ||
         props.styleSelect=="select-branco-grande"){
-            return "#FEFBFF"
+            return "#FBFBFB"
         }
     }
 
