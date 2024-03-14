@@ -6,5 +6,6 @@
     tarefas : [] ,
     propriedades : [] ,
     status : [],
-    equipes : []
+    equipes : {},
+    reponsaveis: [],
 }

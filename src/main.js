@@ -10,12 +10,17 @@ import Button from "primevue/button"
 import 'primevue/resources/themes/lara-light-teal/theme.css'
 import Calendar from 'primevue/calendar';
 import "primevue/resources/themes/lara-light-purple/theme.css";
-import  draggable  from 'vuedraggable'
+
+import draggable from "vuedraggable";
+import {ref } from 'vue';
 import VueDragscroll from "vue-dragscroll";
+import  VueColor  from '@ckpack/vue-color';
+
 
 const app = createApp(App)
 export const pinia = createPinia()
 setActivePinia(pinia)
+app.use(VueColor)
 app.use(pinia)
 app.use(router)
 app.use(PrimeVue);
