@@ -3,7 +3,6 @@
         <div class="corDiv">
           <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="expandirImagem" @mouseleave="reduzirImagem">
           <img class="imagemEquipe" v-else src="" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
-          
             <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
         </div>
         <div class="flex justify-end">
@@ -20,36 +19,29 @@
             </div>
                 <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
                 <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true">  </ListaMembrosEquipe>
-          
         </div>
-       
     </div>  
     <div class="flex justify-center">
       <div class="listaProjetos overflow-auto">
         <div class="flex justify-center">
           <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
         </div>
-      <div class="projetos">
-        <div class="projeto">
-          <div>
-            <h1 class="text-xl font-semibold text-gray-800 mt-3 ml-5">LAVAR O JUNINHO</h1>
-            <div class="flex flex-col mt-3 ml-5">
-              <span class="pularLinhaTexto text-gray-600 font-semibold">Tipo: </span>
-            </div>
-            <div class="flex flex-col mt-3 ml-5">
-              <span class="pularLinhaTexto text-gray-600 font-semibold">Responsavel:</span>
-            </div>
-            <div class="flex flex-col mt-3 ml-5">
-              <span class="pularLinhaTexto text-gray-600 font-semibold">Descricao: </span>
-            </div>
-            <div class="barraFundoLoading  flex mt-20 bg-[#36213E] w-[18.8vw] h-[7vh]">
-                
-            </div>
-          </div>
-        </div> 
-      </div>       
+      <div class="projetos" >
+        <CardProjetos class="cardProjeto">
+        </CardProjetos>
+        <CardProjetos class="cardProjeto">
+        </CardProjetos>
+        <CardProjetos class="cardProjeto">
+        </CardProjetos>
+        <CardProjetos class="cardProjeto">
+        </CardProjetos>
+        <CardProjetos class="cardProjeto">
+        </CardProjetos>
+        <CardProjetos class="cardProjeto">
+        </CardProjetos>
+          </div> 
+        </div>       
       </div>
-</div>
 </template>
 <script setup>
   import navBar from "../components/navBar.vue"
@@ -60,8 +52,7 @@
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
   import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
   import { conexaoBD } from "../stores/conexaoBD.js";
-
-   
+import CardProjetos from "../components/cardProjetos.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('usuarioCookie');
@@ -71,10 +62,21 @@ let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal=false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
+let porcentagemDeTarefasConcluidas = ref(50);
+
 const banco = conexaoBD();
 let equipeEditar = ref({
     nome: '',
     descricao: ''
+});
+
+let barraPorcentagem = ref({
+  width: porcentagemDeTarefasConcluidas.value + "%",
+  height: "100%",
+  borderRadius: "0px",
+  backgroundColor: "#8E00FF",
+  border: "none",
+  boxShadow: "none",
 });
 
 async function filtrarEquipe(){
@@ -99,14 +101,12 @@ async function buscarMembrosEquipe() {
     buscarMembrosEquipe();
   });
 
-
    watch(() => VueCookies.get('equipeSelecionada'), async (newValue, oldValue) => {
     if (newValue !== oldValue) {
         await filtrarEquipe();
         await buscarMembrosEquipe();
     }
   });
-
 
   function numeroMembrosLimitado() {
     return Math.min(quantidadeMembros.value.length, 99);
@@ -132,17 +132,22 @@ console.log(equipeSelecionada)
     console.log(equipeEditada)
     VueCookies.set("equipeEditada", equipeEditada, 30000)
     funcaoPopUp.abrePopUp()
-
     }
 </script>
 <style scoped>
 
-.barraFundoLoading{
-  clip-path: polygon(87% 0, 100% 23%, 100% 100%, 75% 100%, 0 100%, 0 23%, 13% 0);
-}
+::-webkit-scrollbar{
+    @apply hidden;
+ }
+
 .pularLinhaTexto {
     white-space: pre-wrap;
     word-break: break-word;
+}
+
+.cardProjeto{
+  @apply 2xl:m-[0.5vw] xl:m-[1.7vw] lg:m-[1.9vw] md:m-[1vw];
+  max-width: calc(25% - 1px); 
 }
 
 .projetos{
@@ -150,29 +155,6 @@ console.log(equipeSelecionada)
   flex-wrap: wrap;
   padding: 10px; 
   justify-content:flex-start;
-}
-
-.projeto {
-  @apply flex w-[20vw] h-[35vh] m-10 bg-white shadow-md;
-  transition: transform 0.3s ease;
-  max-width: calc(20% - 1px); 
-  
-}
-
-.projeto:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-}
-
-.projeto .imagemFundo {
-  @apply bg-gray-300;
-}
-
-.projeto h2 {
-  @apply text-xl font-semibold text-gray-800;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 .corDiv{
     @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh]  md:ml-[5vw] md:mt-[-5vh] 
@@ -232,9 +214,33 @@ console.log(equipeSelecionada)
     transform: scale(1.1);
 }
 
+ @media(min-width: 768px){
+   .cardProjeto{
+    @apply ml-[20vw] mt-10;
+    max-width: calc(55% - 1px);
+   }
+ }
+ @media(min-width:1024px){
+  .cardProjeto{
+    @apply ml-[4.5vw];
+    max-width: calc(45% - 1px);
+  }
+ }
+
+ @media (min-width: 1440px) {
+  .cardProjeto{
+    @apply ml-[2vw];
+    max-width: calc(30% - 1px);
+  }
+ }
+
  @media(min-width: 2560px){
         .botaoIcone{
           @apply w-[3vw] h-[4vh]
+        }
+        .cardProjeto{
+          @apply ml-[2.5vw];
+          max-width: calc(20% - 1px);
         }
     }
 

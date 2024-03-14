@@ -122,7 +122,18 @@ const grafico = {
     }
 
     .cardTotal {
-        @apply flex flex-col items-center justify-between relative w-[394px] h-[289px] bg-[#F6F6F6] overflow-hidden;
+        @apply flex flex-col items-center justify-between relative w-[394px] h-[289px] bg-white overflow-hidden;
+        transition: transform 0.3s ease;
+
+    }
+
+    .cardTotal:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .cardTotal.imagemFundo {
+    @apply bg-gray-300;
     }
 
 }</style>
