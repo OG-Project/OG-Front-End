@@ -171,11 +171,9 @@ switch (props.tamanho) {
 let estiloToggle = ref(estiloBolaInicio.value);
 
 function check(tipo) {
-  console.log(ativo)
-  console.log(ativo.value)
   if (ativo.value === false) {
     ativo.value = true;
-    console.log(ativo.value);
+  
     if (tipo === "toggle") {
       const animation = new mojs.Html({
         el: "#toggle",
@@ -190,7 +188,6 @@ function check(tipo) {
     }
   } else {
     ativo.value = false;
-    console.log(ativo.value);
     if (tipo === "toggle") {
       const animation = new mojs.Html({
         el: "#toggle",

@@ -18,6 +18,10 @@ const router = createRouter({
       path: '/CriarTarefa',
       name: 'CriarTarefa',
       component: () => import('../views/CriaTarefaView.vue')
+    },{
+      path:'/projeto',
+      name:'Projeto',
+      component: () => import('../views/ProjetoView.vue')
     },
     {
 
