@@ -265,8 +265,15 @@
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-
-            <img class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"/>
+            <img
+              class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full"
+              :src="
+                'data:' +
+                usuarioCookies.foto.tipo +
+                ';base64,' +
+                usuarioCookies.foto.dados
+              "
+            />
             <div class="pb-2 flex flex-col items-end">
               <TextAreaPadrao
                 width="25vw"
@@ -291,7 +298,7 @@
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
             <div
-              class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] items-end flex flex-col"
+              class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col"
             >
               <div class="w-[15%] gap-4 flex justify-center">
                 <div
@@ -316,7 +323,9 @@
               </div>
               <div class="flex w-[100%] mb-2">
                 <img
-                  :src="'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados"
+                  :src="
+                    'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados
+                  "
                   class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
                 />
                 <div class="w-[80%]">
@@ -568,11 +577,11 @@
       <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
         <div class="flex pl-8">
           <div class="w-[50%] justify-start flex-row">
-            <p>Nome do projeto</p>
+            <p>Nome do Projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
             <p class="w-[100%] text-[#620BA7] break-all">
-              asdasd asdasddasdasdasdasdasd asdasdas asdasdasdasd asdasd
+              <!-- {{ projetoDaTarefa.value.nome }} -->
             </p>
           </div>
         </div>
@@ -580,7 +589,7 @@
           <div class="w-[50%] justify-start flex-row">
             <p>Responsável</p>
           </div>
-          <div class="w-[40%] justify-end flex-row">
+          <div class="w-[40%] ml-2 justify-end flex-row">
             <p class="text-[#620BA7] break-all">Kanye West</p>
           </div>
         </div>
@@ -597,7 +606,7 @@
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
       <div
-        v-for="status of statusDaTarefa"
+        v-for="status of tarefa.statusDaTarefa"
         class="min-h-[4%] flex items-center justify-center gap-4"
       >
         <p
@@ -611,18 +620,18 @@
         <h1 class="text-xl font-semibold">Propriedades</h1>
       </div>
       <div
-        v-if="propriedadesDaTarefa.length == 0"
+        v-if="tarefa.propriedades.length === 0"
         class="h-[35%] flex flex-col items-center justify-center p-8"
       >
         <img :src="NotePad" class="h-[200px] w-[200px]" />
         <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
       </div>
       <div
-        v-if="propriedadesDaTarefa.length != 0"
+        v-if="tarefa.propriedades.length != 0"
         class="min-h-[35%] flex flex-col items-center"
       >
         <div
-          v-for="propriedade of propriedadesDaTarefa"
+          v-for="propriedade of tarefa.propriedades"
           class="flex flex-col justify-around py-4 w-[80%]"
         >
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
@@ -674,10 +683,6 @@ const parametroDoFiltroPropriedade = ref("Ordenar Por");
 //Variavel utilizada para armazenar os comentarios da tarefa
 
 const Comentarios = ref([]);
-
-//Variavel que armazena as propriedades atreladas a tarefa
-
-const propriedadesDaTarefa = ref([]);
 
 //Variavel que armazena as Subtarefas atreladas a tarefa
 
@@ -755,9 +760,9 @@ function deletaStatus(stat) {
       status.value.splice(status.value.indexOf(stat), 1);
     }
   });
-  statusDaTarefa.value.forEach((statParaDeletar) => {
+  tarefa.value.statusDaTarefa.forEach((statParaDeletar) => {
     if (stat === statParaDeletar) {
-      statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(stat), 1);
+      tarefa.value.statusDaTarefa.splice(tarefa.value.statusDaTarefa.indexOf(stat), 1);
     }
   });
 }
@@ -853,14 +858,24 @@ function deletaPropriedade(propriedade) {
       propriedades.value.splice(propriedades.value.indexOf(propriedade), 1);
     }
   });
-  propriedadesDaTarefa.value.forEach((propriedadeParaDeletar) => {
+  tarefa.value.propriedades.forEach((propriedadeParaDeletar) => {
     if (propriedadeParaDeletar === propriedade) {
-      propriedadesDaTarefa.value.splice(
-        propriedadesDaTarefa.value.indexOf(propriedade),
-        1
-      );
+      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
     }
   });
+}
+
+let projetoDaTarefa = ref();
+
+async function procuraPropriedadesDoBanco() {
+  let projetos = banco.procurar("/projeto");
+  for (projeto in projetos) {
+    console.log(projeto);
+    if (projeto.id == tarefa.projetoId) {
+      projetoDaTarefa.value = projeto;
+      // propriedades.value = tarefa.propriedades;
+    }
+  }
 }
 
 //Variavel utilizada para armazenar um comentario ainda nao enviado
@@ -869,25 +884,37 @@ let comentarioSendoEnviado = ref("");
 let tarefa = ref({
   nome: "",
   descricao: "",
-  arquivos: ref([]),
-  comentarios: ref([]),
+  arquivos: [],
+  comentarios: [],
+  propriedades: [],
+  statusDaTarefa: [],
+  projetoId: VueCookies.get("IdProjetoAtual"),
 });
 
 onUpdated(() => {
-  VueCookies.set("TarefaNaoFinalizada", tarefa.value, 1000000);
+  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
 });
 
 onMounted(() => {
+  autenticaUsuarioCookies();
   autenticarUsuario();
+  console.log("comeco");
+  procuraPropriedadesDoBanco();
+  console.log("fim");
+  VueCookies.set("IdProjetoAtual", 28, 100000000000);
   tarefa.value = {
     nome: "",
     descricao: "",
-    arquivos: ref([]),
-    comentarios: ref([]),
+    arquivos: [],
+    comentarios: [],
+    propriedades: [],
+    statusDaTarefa: [],
+    projetoId: VueCookies.get("IdProjetoAtual"),
   };
-  const cookieData = VueCookies.get("TarefaNaoFinalizada");
-  if (cookieData && cookieData.nome != "") {
-    tarefa.value = cookieData;
+  const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
+  if (localStorageData) {
+    tarefa.value = JSON.parse(localStorageData);
+    localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   }
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
@@ -918,22 +945,20 @@ function abreFechaCriaSubTarefas() {
   statusSendoCriado.value = false;
 }
 
-//Lista utilizada para armazenar os status que estão na tarefa, e não os status que ela pode adicionar
-
-let statusDaTarefa = ref([]);
-
 //Funções que removem e adicionam os status e propriedades da tarefa
 
 function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
-    statusDaTarefa.value.push(status);
 
-
+    tarefa.value.statusDaTarefa.push(status);
   } else {
-    statusDaTarefa.value.forEach((statusDeletar) => {
+    tarefa.value.statusDaTarefa.forEach((statusDeletar) => {
       if (statusDeletar === status) {
-        statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(statusDeletar), 1);
+        tarefa.value.statusDaTarefa.splice(
+          tarefa.value.statusDaTarefa.indexOf(statusDeletar),
+          1
+        );
       }
 
     });
@@ -942,12 +967,12 @@ function adicionaExcluiStatusNaTarefa(status) {
 function adicionaExcluiPropriedadeNaTarefa(propriedade) {
   propriedade.estaNaTarefa = !propriedade.estaNaTarefa;
   if (propriedade.estaNaTarefa) {
-    propriedadesDaTarefa.value.push(propriedade);
+    tarefa.value.propriedades.push(propriedade);
   } else {
-    propriedadesDaTarefa.value.forEach((propriedadeDeletar) => {
+    tarefa.propriedades.forEach((propriedadeDeletar) => {
       if (propriedadeDeletar === propriedade) {
-        propriedadesDaTarefa.value.splice(
-          propriedadesDaTarefa.value.indexOf(propriedadeDeletar),
+        tarefa.value.propriedades.splice(
+          tarefa.value.propriedades.indexOf(propriedadeDeletar),
           1
         );
       }
@@ -957,18 +982,18 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade) {
 
 //Usuario Logado
 
-let usuarioCookies = ref({});
+let usuarioId = VueCookies.get("IdUsuarioCookie");
 
-async function autenticarUsuario() {
-  let usuarioId = VueCookies.get("IdUsuarioCookie");
+let usuarioCookies;
+
+async function autenticaUsuarioCookies() {
+  usuarioCookies = await autenticarUsuario(usuarioId);
+}
+
+async function autenticarUsuario(id) {
   let usuarios = banco.procurar("/usuario");
   let listaUsuarios = await usuarios;
-  listaUsuarios.forEach((usuario) => {
-    if (usuario.id.toString() === usuarioId) {   
-      usuarioCookies.value = usuario;
-      console.log(usuarioCookies.value.foto)
-    }
-  });
+  return listaUsuarios.find((usuario) => usuario.id == id);
 }
 
 //Variavel utilizada para abrir e fechar os comentarios
@@ -978,6 +1003,8 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
+  console.log(usuarioCookies);
+  console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
