@@ -23,6 +23,22 @@ const router = createRouter({
       name:'Projeto',
       component: () => import('../views/ProjetoView.vue')
     },
+    {
+
+      path:'/criaprojeto',
+      name:'criaProjeto',
+      component: () => import('../views/CriarProjetoView.vue')
+    },
+    {
+      path: '/equipe',
+      name: 'Equipe',
+      component: () => import('../views/EquipeHomeView.vue')
+    },
+    {
+      path: '/equipe/telaInicial',
+      name: 'telaInicial',
+      component: () => import('../views/EquipeTelaInicialView.vue')
+    }
   ]
 })
 

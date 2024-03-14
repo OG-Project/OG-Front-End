@@ -44,11 +44,14 @@ async function fazerLogin() {
     console.log(usuarioLogin);
     if (usuarioLogin.value === usuario.username) {
       if (senhaUsuarioLogin.value === usuario.senha) {
+
+
         console.log("davi");
         console.log(usuario);
         usuarioLogin.value = "";
         senhaUsuarioLogin.value = "";
         VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000);
+
       }
     }
   });

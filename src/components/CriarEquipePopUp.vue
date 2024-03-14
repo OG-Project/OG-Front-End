@@ -6,14 +6,14 @@
                             <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                     </div>
                     <div class=" grid-template  flex w-full mt-[1vh] p-5">
-                            <img class="imagem" src=".../src/imagem-vetores/adicionarPessoa.svg" alt="">
-                        <Input class="computedClasses" styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
+                            <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
+                        <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
                     </div>
                         <div class=" grid-template  flex w-full">
-                            <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+                            <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInputConvidado()" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
                     </div>
                     <div class="grid-template flex w-full mt-[1vh]">
-                        <Botao class="flex justify-center " preset="PadraoVazado" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                        <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
                     </div>
                     <div class=" grid-template flex w-full mt-[1vh]">
                         <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
@@ -40,16 +40,24 @@
     import ListaConvidados from './ListaConvidados.vue';
     import { conexaoBD } from "../stores/conexaoBD.js";
     import { criaEquipeStore } from "../stores/criarEquipe";
-    import {  computed } from 'vue';
+    import VueCookies from "vue-cookies";
+    
 
     const banco = conexaoBD();
     let nome = ref('');
     let descricao = ref('');
     let usuarioConvidado = ref('');
     let mensagemError = ref("");
+    const usuarioLogado = VueCookies.get('usuarioCookie');
     let membrosEquipe = ref([]);
     let usuarios = banco.procurar("/usuario");
-
+    
+    const equipeCadastrada={
+        nome:"",
+        descricao:""
+    }
+    
+    console.log(usuarioLogado)
     function larguraInput(){
     const screenWidth = window.innerWidth;
     if (screenWidth <= 768) {
@@ -76,70 +84,64 @@
     }
     }
 
-    async function listaUsuarios(){
-        let listaUsuarios = await usuarios;
-        listaUsuarios.forEach((usuario)=>{
-        if(usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.nome 
-        || usuarioConvidado.value === usuario.email){
-            membrosEquipe.value.push(usuario);
+    async function listaUsuarios() {
+    let listaUsuarios = await usuarios;
+    listaUsuarios.forEach((usuario) => {
+        if (usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email) {
+            if (!membrosEquipe.value.some((membro) => membro.username === usuario.username || membro.email === usuario.email)) {
+                membrosEquipe.value.push(usuario);
+            } else {
+                console.log("Esse membro já foi adicionado à equipe.");
+            }
         }
-        })
-    }
-    
-    async function adicionarMembro(){
-        listaUsuarios();
-    }
-    
-    function cadastrarEquipe() { 
-    const cria = criaEquipeStore();
-                
-    if (!nome.value.trim()) {
-        console.log("O nome da equipe é obrigatório.");
-        return;
-    }
-
-    mensagemError.value = "";
-
-    cria.criaEquipe(
-            nome.value,
-            descricao.value,
-            membrosEquipe.value
-        
-    )
-
-    const equipeCriada={
-        nome : nome.value,
-        descricao : descricao.value,
-        membros: membrosEquipe.value
-
-    };
-
-    banco.cadastrar(equipeCriada, '/equipe');
-
-    membrosEquipe.value.forEach(membro =>{
-        if(!membro.equipes) {
-            membro.equipes = [];
-        }
-
-        const equipeUsuario={
-                nome: equipeCriada.nome,
-                descricao: equipeCriada.descricao
-        }
-
-        membro.equipes.push(equipeUsuario)
-
-        banco.atualizar(membro, '/usuario');
     });
+    }
 
-    console.log('Equipe cadastrada:', cria);
+    async function adicionarMembro() {
+        await listaUsuarios();
+    }
+    async function cadastrarEquipe() { 
+        const cria = criaEquipeStore();
+        
+                if (!nome.value.trim()) {
+                    console.log("É obrigatorio o nome da equipe");
+                    return ;
+                    
+                }
+            equipeCadastrada.nome = nome.value
+            equipeCadastrada.descricao = descricao.value
+                mensagemError.value = "";
+             console.log(equipeCadastrada)
+             console.log(membrosEquipe.value)
+                const equipePromise = cria.criaEquipe(
+                    equipeCadastrada
+                );    
 
-    nome.value = '';
-    descricao.value = '';
-    membrosEquipe.value = '';
+                const usuarioJaAdicionado = membrosEquipe.value.some(membro => membro.id === usuarioLogado.id);
+                 if (!usuarioJaAdicionado) {
+                 membrosEquipe.value.push(usuarioLogado);
+                 }
+                
+                const ids = membrosEquipe.value.map(m => {
+                    return Number(m.id);
+                })
+               
+                let equipe;
+                await equipePromise.then(e => {
+                    equipe = e.data
+                    console.log(e.data)
+                })
 
+                console.log(equipe)
 
+                banco.adicionarUsuarios(ids,equipe.id,"/usuario/add")
+
+                nome.value = ""
+                descricao.value = ""
+                membrosEquipe = ""
+
+              
     };
-
 
     </script>
     <style scoped>
