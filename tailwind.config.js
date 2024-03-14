@@ -27,15 +27,19 @@ export default {
         'cinza-claro': '#D7D7D7',
         'roxo-claro': '#DBB3FF',
 
-      width:{
+    },
+    width:{
         
-      },
-      fontFamily:{
-        'Poppins' : 'Poppins, sans-serif',
-        'Source Sans 3':'Source Sans 3, sans-serif'
-
-      },
-
+    },
+    /* Cormorant+Garamond serif */
+    /* Merriweather serif */
+    /* Proza+Libre */
+    /* Quattrocento+Sans */
+    /* Quattrocento serif */
+    /* Work+Sans */
+    fontFamily:{
+      poppins: ['"Poppins"', '"sans-serif"'],
+      sourceSans:['"Source Sans 3"', '"sans-serif"']
     },
   },
   plugins: [],

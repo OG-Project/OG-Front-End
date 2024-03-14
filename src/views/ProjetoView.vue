@@ -1,3 +1,4 @@
+
 <template>
     <div class="w-full h-full">
         <select v-model="opcao" class="w-[5%] h-[5%]">
@@ -33,3 +34,4 @@ import timeLine from '../components/timeLine.vue';
 let opcao = ref("")
 </script>
 <style></style>
+

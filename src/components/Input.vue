@@ -1,23 +1,19 @@
 
-<!-- <br>
-<Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg" width="38" height="10"></Input> -->
-<!-- PARA GERAR UM INPUT FLOAT PRECISA COLOCAR  "tipo==float" -->
 <template>
-    
-   <div class="styleInputPadraoIcon" 
+ <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
         <div class=" flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
             <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)" @click=" teste()"  :placeholder=conteudoInput > 
+        @input="$emit('update:modelValue', $event.target.value)"  :placeholder=conteudoInput > 
    </div>
 
    <div class="styleInputPadrao flex items-center" 
                     v-if="icon=='null' & tipo=='float'">
         <div class="estiloPlaceHolder">
             <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-                 @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" class="peer" placeholder=" "  > 
+                 @input="$emit('update:modelValue', $event.target.value)" class="peer" placeholder=" "  > 
             <label :style="estilizaDivPlaceHolder" for="inputStyle"  class=" absolute  text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">{{ conteudoInput }}</label>
         </div>
    </div>
@@ -25,7 +21,7 @@
    <div class="styleInputPadrao" 
         v-if="icon=='null' && tipo!='float'"  >
             <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)" @click=" teste()" :placeholder=conteudoInput  > 
+            @input="$emit('update:modelValue', $event.target.value)" :placeholder=conteudoInput  > 
       
    </div>
    <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
@@ -121,25 +117,23 @@ import {Equipe} from '../models/Equipe'
     function verificaHeigth(){
         let teste=heigthResponsivo()
         if(props.altura==undefined){
-            console.log(teste)
             return teste
         }
-        console.log(props.altura)
         return props.altura;
 
     }
+    
     function verificaWidth(){
         if(props.largura==undefined ){
             if(props.icon==undefined){
-                return widthResponsivo()
+                return (widthResponsivo()*0.80)
             }
-            return (widthResponsivo()*0.80)
+            return widthResponsivo();
         }else{
             if(props.icon==undefined){
-                return props.largura;
+                return (props.largura*0.80);
             }
-            console.log("ta vindo")
-            return (props.largura*0.80)
+            return (props.largura)
         }
         
     }

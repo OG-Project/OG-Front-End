@@ -96,6 +96,9 @@ let api = conexaoBD()
 let cardDia
 let tarefas = api.procurar("/tarefa")
 let border = "none"
+console.log(tarefas)
+
+getCalendario();
 
 onMounted(() => {
     getCalendario();

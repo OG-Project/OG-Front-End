@@ -1,9 +1,7 @@
 
 <template>
-
   <form>
     <textarea :placeholder="props.placeholder" :style="estilo" @input="$emit('update:modelValue', $event.target.value)" :value="modelValue"></textarea>
-
   </form>
 </template>
 
@@ -14,6 +12,10 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: "Digite aqui sua mensagem"
+  },
+  modelValue: {
+    type: String,
+    default: '',
   },
   width: {
     type: String,

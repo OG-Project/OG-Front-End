@@ -4,4 +4,5 @@ export const Equipe = {
     id: Number,
     nomeEquipe: String,
     usuarios: {}
+    
 }
