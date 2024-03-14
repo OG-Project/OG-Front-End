@@ -9,6 +9,7 @@
       />
     </div>
     <div v-if="props.tipo === 'toggle'">
+
       {{ console.log(props.checked) }}
       <div :style="estiloToggle" id="bordaToggle" @click="check('toggle')">
 
@@ -27,6 +28,7 @@
 </template>
 
 <script setup>
+
 
 import { onBeforeMount, ref } from 'vue';
 import mojs from '@mojs/core';
@@ -54,7 +56,6 @@ let idCircle=props.elId
 let posicaoBola = ref(14);
 let ativo = ref(props.checked)
 let corBolaToggle = ref('#620BA7');
-
 let estiloSVG = ref({
   width: "60px",
   height: "30px",
@@ -220,7 +221,6 @@ function check(tipo) {
       const animation = new mojs.Html({
         el: '#'+idCircle,
         x: { 0: maximoMovimentoBola.value, easing: 'sin.in' },
-
         onComplete: () => {
           estiloToggle.value = estiloBolaFinal.value;
           corBolaToggle.value = "#F3F3F3";
@@ -235,7 +235,6 @@ function check(tipo) {
       const animation = new mojs.Html({
         el: '#'+idCircle,
         x: { [maximoMovimentoBola.value]: 0, easing: 'sin.out' },
-
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
           corBolaToggle.value = "#620BA7";
@@ -244,6 +243,18 @@ function check(tipo) {
       animation.play();
       emit('enviaValor',{valor:ativo.value})
     }
+  }
+  else{
+    const animation = new mojs.Html({
+        el: "#toggle",
+        x: { 0: maximoMovimentoBola.value, easing: "sin.in" },
+        onComplete: () => {
+          estiloToggle.value = estiloBolaFinal.value;
+          corBolaToggle.value = "#F3F3F3";
+        },
+      });
+
+      animation.play();
   }
 }
 function valorJaPassado(){

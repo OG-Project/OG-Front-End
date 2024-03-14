@@ -46,6 +46,7 @@ async function fazerLogin() {
       if (senhaUsuarioLogin.value === usuario.senha) {
 
 
+
         console.log("davi");
         console.log(usuario);
         usuarioLogin.value = "";
@@ -94,6 +95,7 @@ async function cadastraUsuario() {
         usuarioCadastro.value = "";
         emailCadastro.value = "";
         senhaCadastro.value = "";
+
         confirmarSenhaCadastro.value = "";
       }
     }
@@ -161,29 +163,17 @@ function mostraSenhaConfirmacao() {
             tamanhoPadrao="grande"
           ></Botao>
 
-          <Botao
-            :funcaoClick="trocaDeTela"
-            preset="PadraoBranco"
-            texto="Criar Conta"
-            tamanhoPadrao="medio"
-          ></Botao>
-          <div class="flex items-center justify-center w-[70%]">
-            <hr style="width: 20%; text-align: left; margin-left: 0" />
-            <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
-            <hr style="width: 20%; text-align: left; margin-left: 0" />
-          </div>
-          <Botao
-            preset="PadraoBrancoIcon"
-            :icon="iconeGoogle"
-            texto="Google"
-            ladoDoIcon="row-reverse"
-          ></Botao>
-          <Botao
-            preset="PadraoBrancoIcon"
-            :icon="iconeLinkedin"
-            texto="Linkedin"
-            ladoDoIcon="row-reverse"
-          ></Botao>
+
+        <Botao
+          :funcaoClick="trocaDeTela"
+          preset="PadraoBranco"
+          texto="Criar Conta"
+          tamanhoPadrao="medio"
+        ></Botao>
+        <div class="flex items-center justify-center w-[70%]">
+          <hr style="width: 20%; text-align: left; margin-left: 0" />
+          <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
+          <hr style="width: 20%; text-align: left; margin-left: 0" />
         </div>
       </Transition>
       <Transition name="registro">
@@ -244,13 +234,25 @@ function mostraSenhaConfirmacao() {
             tamanhoPadrao="medio"
           ></Botao>
         </div>
-      </Transition>
-    </div>
+        <Botao
+          :funcaoClick="cadastraUsuario"
+          preset="PadraoRoxo"
+          texto="Cadastrar"
+          tamanhoPadrao="grande"
+        ></Botao>
+        <Botao
+          :funcaoClick="trocaDeTela"
+          preset="PadraoBranco"
+          texto="Sair"
+          tamanhoPadrao="medio"
+        ></Botao>
+      </div>
+    </Transition>
   </div>
 </template>
 <style scoped>
 #bordaCinza {
-  @apply flex justify-center items-center 2xl:h-[100%] 2xl:w-[30vw] xl:h-[100%] xl:w-[35vw] lg:h-[100%] lg:w-[45vw] md:h-[100%] md:w-[75vw] bg-[#C4C4C4];
+  @apply flex justify-center items-center 2xl:h-[100%] 2xl:w-[30vw] xl:h-[100%] xl:w-[30vw] lg:h-[100%] lg:w-[30vw] md:h-[100%] md:w-[75vw] bg-[#C4C4C4];
   clip-path: polygon(28% 0, 100% 0, 100% 100%, 28% 100%, 0 80%, 0 20%);
   background-image: linear-gradient(#000000, #320461);
 }

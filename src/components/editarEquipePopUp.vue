@@ -1,19 +1,19 @@
 <template>
-
-    <fundoPopUp v-if="!editando" largura="" altura="60%" >
+    <fundoPopUp v-if="!editando" largura="" altura="60vh" >
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
-                        <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
+                        <img class="imagem" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
+                        <img class="imagem" v-else src="">
                         <div class="styleH1Padrao">
-                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeSelecionada.equipe.nome"> {{ truncarNome(equipeSelecionada.equipe.nome , 20)  }}</h1>
+                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeEditar.nome" > {{ truncarNome(equipeEditar.nome, larguraNomeEquipe())  }}</h1>
                         </div>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
                     <div class="textArea">
-                        <p>{{ equipeSelecionada.equipe.descricao }}</p>
+                        <p class="descricao">{{ equipeEditar.descricao }}</p>
                     </div>
                 </div> 
                 <div>
@@ -33,13 +33,16 @@
                 
         </fundoPopUp>
 
-        <fundoPopUp v-if="editando" largura="" altura="60%">
+        <fundoPopUp  v-if="editando" largura="" altura="60vh">
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
-                        <img class="imagem" src="../imagem-vetores/adicionarPessoa.svg" alt="">
+                    <div class="relative">
+                            <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
+                            <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao" alt="Imagem Selecionada" >
+                        </div>
                     <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
@@ -56,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed} from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -65,16 +68,88 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import {useRouter} from 'vue-router'
 
+function larguraNomeEquipe(){
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 768) {
+        return 15;
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return 24;
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return 22;
+    } else if (screenWidth >= 1920 && screenWidth < 2560) {
+        return 18;
+    }else if (screenWidth >= 2560){
+        return 20;
+    }
+    }
+
+const imagemSelecionada = ref(null);
+
+// Função para lidar com o upload de arquivos
+function handleFileUpload(event) {
+const file = event.target.files[0];
+
+// Extrair o nome do arquivo
+const fileName = file.name;
+
+// Extrair o tipo do arquivo
+const fileType = file.type;
+
+// Criar um blob do arquivo
+const fileBlob = new Blob([file]);
+
+// Agora você pode usar o fileName, fileType e fileBlob conforme necessário
+console.log('Nome do arquivo:', fileName);
+console.log('Tipo do arquivo:', fileType);
+console.log('Blob do arquivo:', fileBlob);
+ // Armazena o arquivo na variável reativa
+ imagemSelecionada.value = file;
+}
+
+// Computed property para retornar a URL da imagem selecionada
+const imagemSelecionadaUrl = computed(() => {
+// Se não houver imagem selecionada, retorna null
+ if (!imagemSelecionada.value) return null;
+
+// Cria uma URL temporária para a imagem selecionada
+return URL.createObjectURL(imagemSelecionada.value);
+});
+
+// URL da imagem padrão
+const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+
+// Computed property para determinar qual URL de imagem exibir
+const imagemExibicao = computed(() => {
+// Se houver uma imagem selecionada, retorna sua URL
+if (imagemSelecionadaUrl.value) {
+    return imagemSelecionadaUrl.value;
+} else {
+    // Caso contrário, retorna a URL da imagem padrão
+    return imagemPadraoUrl;
+}
+});
+
 
 const banco = conexaoBD();
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
+let equipeEditar = ref({
+    nome: '',
+    descricao: '',
+    foto: null
+});
 let nome = ref('');
 let descricao = ref('');
 let mensagemError = ref("");
-const usuarioLogado = VueCookies.get('usuarioCookie');
 let editando = ref(false);
 let equipes = banco.procurar("/equipe");
 const router = useRouter();
+
+async function filtrarEquipe(){
+    console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
+    equipeEditar.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
+}
+filtrarEquipe();
+
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -98,7 +173,7 @@ async function deletarEquipe(){
 
     let listaEquipes = await equipes;
     listaEquipes.forEach((equipe) =>{
-        if(equipeSelecionada.equipe.id == equipe.id){
+        if(equipeSelecionada == equipe.id){
         
             banco.deletarEquipe(equipe.id,'/equipe')
             if(router.currentRoute.value.path == '/equipe'){
@@ -106,57 +181,114 @@ async function deletarEquipe(){
             }
             router.push({path:'/equipe'})
             VueCookies.remove('equipeSelecionada');
-         
         }
     })
 
 }
 
- async function atualizarEquipe() { 
+async function atualizarEquipe() { 
     const equipeAtualizar ={
         id: '',
         nome: '',
         descricao: ''
     };
 
-            if (!nome.value.trim()) {
-                console.log("É obrigatorio o nome da equipe");
-                return ;
-                
+    let listaEquipes = await equipes;
+    listaEquipes.forEach((equipe)=>{
+        if(equipeSelecionada == equipe.id){
+            equipeAtualizar.id = equipe.id;
+
+            // Verificar se o nome foi alterado
+            if (nome.value.trim() !== '') {
+                equipeAtualizar.nome = nome.value;
+            } else {
+                equipeAtualizar.nome = equipe.nome; // Mantém o nome original se não foi alterado
             }
 
+            // Verificar se a descrição foi alterada
+            if (descricao.value.trim() !== '') {
+                equipeAtualizar.descricao = descricao.value;
+            } else {
+                equipeAtualizar.descricao = equipe.descricao; // Mantém a descrição original se não foi alterada
+            }
 
-        let listaEquipes = await equipes;
-        listaEquipes.forEach((equipe)=>{
-        if(equipeSelecionada.equipe.id == equipe.id){
-            
-            equipeAtualizar.id = equipe.id
-            equipeAtualizar.nome = nome.value
-            equipeAtualizar.descricao = descricao.value
             mensagemError.value = "";
-        
-            console.log(equipeAtualizar.nome)
-            console.log(equipeAtualizar.descricao)
 
-            banco.atualizar(equipeAtualizar, "/equipe");
+            // Verifica se houve alterações nos campos antes de atualizar
+            if (equipeAtualizar.nome !== equipe.nome || equipeAtualizar.descricao !== equipe.descricao) {
+                banco.atualizar(equipeAtualizar, "/equipe");
+            } else {
+                console.log('Nenhuma alteração detectada na equipe.');
+            }
+
+            // Verificar se houve uma nova foto selecionada
+            if (imagemSelecionada.value) {
+                equipeAtualizar.foto = {
+                    tipo: imagemSelecionada.value.type,
+                    dados: toBase64(imagemSelecionada.value)
+                };
+            } else {
+                // Caso contrário, manter a imagem da equipe anterior
+                equipeAtualizar.foto = equipe.foto;
+            }
         }
-        })
+    });
 
-        VueCookies.set('equipeSelecionada', { equipe: equipeAtualizar });
+    equipeEditar.value.nome = equipeAtualizar.nome;
+    equipeEditar.value.descricao = equipeAtualizar.descricao;
 
-            nome.value = ""
-            descricao.value = ""
-            editando.value = false;
+    nome.value = "";
+    descricao.value = "";
+    editando.value = false;
 
+    // Verificar se houve uma nova foto selecionada ou se a foto anterior foi mantida
+    if (equipeAtualizar.foto) {
+        // Envia a foto para o backend apenas se houver uma nova foto ou a foto anterior foi mantida
+        enviarFotoParaBackend(equipeSelecionada);
+    } else {
+        console.log('Nenhuma imagem selecionada. A equipe será atualizada sem uma nova imagem.');
+    }
 
-            window.location.reload();
+    window.location.reload()
 }
+
+// Função para converter o arquivo para base64
+async function toBase64(file) {
+    return await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = error => reject(error);
+    });
+}
+
+
+async function enviarFotoParaBackend(id) {
+    try {
+        if (!imagemSelecionada.value) {
+            // Verifica se uma imagem foi selecionada
+            console.error('Nenhuma imagem selecionada.');
+            return;
+        }
+        
+        const equipeId = id;
+        await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
+        console.log('Foto enviada com sucesso para o backend.');
+    } catch (error) {
+        console.error('Erro ao enviar a foto para o backend:', error);
+    }
+    }
 
 </script>
 <style scoped>
     @import url(../assets/main.css);
 
     @layer components {
+
+    .descricao {
+    white-space: pre-wrap;
+    word-break: break-word;
+    }
 
     .styleH1Padrao{
        @apply 
@@ -166,7 +298,7 @@ async function deletarEquipe(){
         px-2
         max-w-max
         w-min
-        border-b-4
+        border-b-2
         hover:rounded-[4px] hover:border-4
          focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px]  ;
@@ -175,12 +307,12 @@ async function deletarEquipe(){
 
     .textArea{
      @apply flex  2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg
-     border-transparent border-b-roxo border-b-4  focus-within:border-roxo focus-within:border-4;
+     border-transparent border-b-roxo border-b-2  focus-within:border-roxo focus-within:border-4;
      border-bottom: 'solid 4px #620BA7' ;
  }
     
     .imagem {
-        @apply xl:h-[6vh] xl:w-[3vw];
+        @apply xl:h-[6vh] xl:w-[3vw] rounded-full;
     }
 
     .mensagem-error {

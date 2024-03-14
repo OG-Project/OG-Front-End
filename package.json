@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+
     "@ckpack/vue-color": "^1.5.0",
+
     "@coreui/vue": "^4.10.2",
     "@heroicons/vue": "^2.0.18",
     "@mojs/core": "^1.7.1",

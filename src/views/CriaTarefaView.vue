@@ -4,11 +4,13 @@
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input
+
           largura="32"
           altura="6"
           fontSize="2rem"
           conteudoInput="Nome da tarefa"
           styleInput="input-transparente-claro-grande"
+
           v-model="tarefa.nome"
         ></Input>
       </div>
@@ -19,6 +21,7 @@
           placeholder="Descrição da tarefa"
           tamanho-da-fonte="1rem"
           resize="none"
+
           v-model="tarefa.descricao"
         ></TextAreaPadrao>
       </div>
@@ -36,11 +39,13 @@
           <p>Status</p>
           <button
             class="flex flex-col justify-center break-keep h-[70%]"
+
             @click="abreFechaCriaStatus()"
           >
             + Criar
           </button>
         </div>
+
         <div class="flex flex-col justify-center w-[30%]">
           <p>SubTarefas</p>
           <button
@@ -58,7 +63,9 @@
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
+
             <div class="flex flex-row justify-between items-end">
+
               <div class="pl-2">
                 <Input
                   largura="10"
@@ -101,6 +108,7 @@
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
+
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
                 <Input
@@ -123,6 +131,7 @@
                 </selectPadrao>
               </div>
             </div>
+
             <div class="flex felx-row justify-between items-end">
               <div class="pl-2 pt-2 pb-2">
                 <Botao
@@ -149,7 +158,9 @@
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
+
             <div class="flex flex-row justify-between items-end">
+
               <div class="pl-2">
                 <Input
                   largura="10"
@@ -162,7 +173,9 @@
               <selectPadrao
                 placeholderSelect="Status"
                 :lista-select="['Em Progresso', 'Concluido']"
+
                 largura="8"
+
                 altura="3.8"
                 fonteTamanho="1rem"
                 v-model="statusSubtarefa"
@@ -252,6 +265,7 @@
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
+
             <img class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"/>
             <div class="pb-2 flex flex-col items-end">
               <TextAreaPadrao
@@ -269,6 +283,7 @@
                 tamanhoPadrao="pequeno"
                 :funcaoClick="enviaComentario"
                 :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"
+
               ></Botao>
             </div>
           </div>
@@ -305,6 +320,7 @@
                   class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
                 />
                 <div class="w-[80%]">
+
                   <p>
                     {{ comentario.autor }}
                   </p>
@@ -315,6 +331,7 @@
                       comentario.autor === usuarioCookies.username
                     "
                   >
+
                     <TextAreaPadrao
                       width="25vw"
                       height="15vh"
@@ -331,16 +348,19 @@
                       comentario.autor != usuarioCookies.username
                     "
                   >
+
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.comentario }}
                     </p>
                   </div>
+
                   <div
                     v-if="
                       comentarioSendoEditado &&
                       comentario.autor === usuarioCookies.username
                     "
                   >
+
                     <Botao
                       texto="Editar"
                       preset="PadraoRoxo"
@@ -475,7 +495,9 @@
                 <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
                   <Input
                     altura="2"
+
                     largura="27"
+
                     conteudoInput=" "
                     v-model="propriedade.valor[index]"
                     width="60%"
@@ -483,11 +505,14 @@
                   >
                   </Input>
                   <img
+
                     class="w-[100%] ml-2"
+
                     @click="deletaValorSelect(propriedade.valor, index)"
                     :src="BotaoX"
                   />
                 </div>
+
                 <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">
                   Adicionar +
                 </p>
@@ -702,11 +727,11 @@ let corStatus = ref("ff0000");
 let nomeSubtarefa = ref("");
 let statusSubtarefa = ref("Em Progresso");
 
+
 function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
   return isLight ? "#000" : "#fff";
 }
-
 //Função utilizada para criar um Status
 
 function criaStatus() {
@@ -903,11 +928,14 @@ function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
     statusDaTarefa.value.push(status);
+
+
   } else {
     statusDaTarefa.value.forEach((statusDeletar) => {
       if (statusDeletar === status) {
         statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(statusDeletar), 1);
       }
+
     });
   }
 }
@@ -971,6 +999,7 @@ function deletaComentario(comentario) {
   tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
       tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
+
     }
   });
 }
@@ -982,6 +1011,7 @@ function trocaComentarioSendoEditado() {
 }
 
 function editarComentario(comentario) {
+
   if (comentario.comentario === "") {
     deletaComentario(comentario);
   }
@@ -1133,6 +1163,7 @@ function clicouOpcaoStatus() {
 }
 
 #bgBranco {
+
   background-color: #ffffff;
 }
 
@@ -1254,4 +1285,6 @@ option {
   font-size: small;
   border: 1px solid #cbcbcb;
 }
+
 </style>
+

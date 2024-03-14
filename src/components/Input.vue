@@ -1,6 +1,5 @@
 
 <template>
-
  <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
         <div class=" flex items-center justify-center">

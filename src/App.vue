@@ -7,6 +7,7 @@ import Input from './components/Input.vue'
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
 import VueCookies from "vue-cookies";
 
+
 import Navbar from '@/components/Navbar.vue';
 import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
@@ -45,8 +46,7 @@ const {isVlibras}=storeToRefs(perfil)
         </div>
       </div>
     </div>
-
-
+</template>
 <style scoped>
 
 </style>
