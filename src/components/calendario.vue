@@ -62,7 +62,7 @@
                     <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
                         Date(dia.dia), 'd') }}</h1>
                     <div :style="dia.style">
-                        <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort((p, p1) => p.indice.indice - p1.indice.indice)">
+                        <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort(sortBy('indice'))">
                             <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row"
                                 @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
                                 @dragover="retornaDiaEIndice(dia, indice)">
@@ -232,6 +232,8 @@ function setaDireita() {
 }
 async function trocaDiaEIndice(tarefa, dia, indice) {
     tarefa.propriedade.valor.valor = new Date(dia.dia)
+    console.log(tarefa.propriedade)
+
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
