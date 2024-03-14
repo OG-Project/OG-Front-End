@@ -4,16 +4,35 @@
             <div class="h-full flex flex-col  items-center">
                 <div class="fixed top-[14%] w-[80%] h-[18%] flex flex-col items-center bg-[#FBFBFB]">
                     <div class="w-[89%] h-full ">
-                        <div class="w-[100%] h-[50%] flex flex-row text-[64px]">
-                            <div class="w-[70%]">
-                                <button class="flex flex-row" @click="abrePopUp()">
-                                    {{ format(data, "MMMM", {
-                                        locale: ptBR
-                                    }).charAt(0).toUpperCase() +
-                                        format(data, "MMMM", { locale: ptBR }).slice(1) }}
+                        <div class="w-[100%] h-[50%] flex flex-row">
+                            <div class="w-[70%] flex flex-row gap-4 text-[28px]">
+                                <button @click="setaEsquerda()" class="h-full w-[10%]">
+                                    <div
+                                        class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
+
+                                        <div class="setaEsquerda"></div>
+                                    </div>
+                                </button>
+                                <div class="flex flex-row h-full items-center w-[35%]">
+                                    <div>
+                                        {{ format(data, "MMMM", {
+                                            locale: ptBR
+                                        }).charAt(0).toUpperCase() +
+                                            format(data, "MMMM", { locale: ptBR }).slice(1) + " d" }}
+                                    </div>
+                                    <div>
+                                        {{ " e " + getYear(data) }}
+                                    </div>
+                                </div>
+
+                                <button @click="setaDireita()" class="h-full w-[10%]">
+                                    <div
+                                        class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                        <div class="setaDireita"></div>
+                                    </div>
                                 </button>
                             </div>
-                            <div class="w-[50%] flex justify-end">
+                            <div class="w-[50%] flex justify-end items-end text-[42px]">
                                 {{ horaAtual }}
                             </div>
                         </div>
@@ -26,7 +45,6 @@
                                     <p>HH:mm</p>
                                 </div>
                             </div>
-                            {{ console.log(gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))) }}
                             <Carousel :value="calendario"
                                 :page="gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))" :numVisible="20"
                                 circular class="w-[95%] h-[100%] flex justify-end">
@@ -34,73 +52,19 @@
                                 <template #item="dia">
                                     <div class="font-Poppins text-[24px]">
                                         <button v-if="getMonth(dia.data.dia) == getMonth(data)">
-                                            <button @click="diaSelecionado.dia.value = dia.data.dia">
-                                                <div v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')"
-                                                    class="riscoAbaixoDoDia">
+                                            <button @click="defineDiaSelecionado(dia.data.dia)">
+                                                <div class="h-full">
                                                     {{ format(dia.data.dia, 'dd') }}
                                                 </div>
-                                                <div
-                                                    v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') != format(dia.data.dia, 'yyyy/MM/dd')">
-                                                    {{ format(dia.data.dia, 'dd') }}
+                                                <div class="bg-roxo w-full h-[3px]"
+                                                    v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')">
+
                                                 </div>
                                             </button>
                                         </button>
                                     </div>
                                 </template>
                             </Carousel>
-                        </div>
-                    </div>
-                    <!-- Começo do Popup -->
-                    <div v-if="abrePopup == true" class="absolute w-full h-full flex justify-start">
-                        <div class="absolute w-full h-full z-0" @click="fecharPopUp()"></div>
-                        <div class="absolute w-[20%] flex justify-center h-[300px] mt-[9%] ml-[10%] bg-roxoEscuro">
-                            <div class="w-full flex justify-end absolute">
-                                <button @click="fechaPopUp()"
-                                    class="text-[2vw] flex text-white w-[15%] h-[100%] mr-[3%] items-start justify-end">X</button>
-                            </div>
-
-                            <div class="fundoPopup">
-                                <div class="w-[100%] h-[20%] flex flex-row bg-brancoNeve ">
-                                    <div class="w-full h-full flex justify-center items-center gap-[1%]">
-                                        <button @click="setaEsquerda()" class="h-[30%]">
-                                            <div
-                                                class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
-
-                                                <div class="setaEsquerda"></div>
-
-                                            </div>
-                                        </button>
-                                        <div class="w-[25%] h-[50%]">
-                                            <p class="text-3xl">{{ getYear(data) }}</p>
-                                        </div>
-                                        <button @click="setaDireita()" class="h-[30%]">
-                                            <div
-                                                class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                                <div class="setaDireita"></div>
-                                            </div>
-                                        </button>
-
-                                    </div>
-                                </div>
-                                <div class="popUp">
-                                    <div class="w-[50%] flex flex-col gap-[3px] justify-end items-center text-[20px]">
-                                        <button @click="escolheMes(0)" class="border-b-2 w-[70%]">Janeiro</button>
-                                        <button @click="escolheMes(1)" class="border-b-2 w-[70%]">Fevereiro</button>
-                                        <button @click="escolheMes(2)" class="border-b-2 w-[70%]">Março</button>
-                                        <button @click="escolheMes(3)" class="border-b-2 w-[70%]">Abril</button>
-                                        <button @click="escolheMes(4)" class="border-b-2 w-[70%]">Maio</button>
-                                        <button @click="escolheMes(5)" class="border-b-2 w-[70%]">Junho</button>
-                                    </div>
-                                    <div class="w-[50%] flex flex-col gap-[3px] justify-end items-center text-[20px]">
-                                        <button @click="escolheMes(6)" class="border-b-2 w-[70%]">Julho</button>
-                                        <button @click="escolheMes(7)" class="border-b-2 w-[70%]">Agosto</button>
-                                        <button @click="escolheMes(8)" class="border-b-2 w-[70%]">Setembro</button>
-                                        <button @click="escolheMes(9)" class="border-b-2 w-[70%]">Outubro</button>
-                                        <button @click="escolheMes(10)" class="border-b-2 w-[70%]">Novembro</button>
-                                        <button @click="escolheMes(11)" class="border-b-2 w-[70%]">Dezembro</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -115,13 +79,13 @@
                         </div>
 
 
-                        <div
-                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row" @dragover="retornaHora(hora)">
+                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
+                            @dragover="retornaHora(hora)">
                             <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class=" flex flex-row ">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
                                     <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
                                         class=" pl-[5%] pt-[5%]">
-                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade,horaNova)">
+                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
                                             <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
                                             </cardTarefas>
                                         </div>
@@ -131,21 +95,20 @@
                         </div>
                     </div>
 
-
                     <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras.value"
-                        class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)" >
+                        class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)">
 
                         <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                             (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
                             {{ hora }}
                         </div>
-                        <div
-                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
+                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
+                            @dragover="retornaHora(hora)">
                             <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
                                     <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
                                         class="pl-[5%] pt-[5%]">
-                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade)">
+                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
                                             <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
                                             </cardTarefas>
                                         </div>
@@ -161,7 +124,7 @@
 </template>aliza
 
 <script setup>
-import { ref, VueElement, watch } from 'vue';
+import { ref, VueElement, watch, onMounted } from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, setDate, getMinutes, setHours, parseISO } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -193,12 +156,14 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 let index = 0;
 api.procurar("/tarefa")
-getCalendario();
-adicionaNaLista();
-
-watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
+onMounted(() => {
+    getCalendario();
     adicionaNaLista();
-});
+})
+
+    watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
+        adicionaNaLista();
+    });
 
 function gerarDiaSelecionado(dia) {
     let ultimoDia = format(endOfMonth(diaSelecionado.dia.value), 'dd')
@@ -219,6 +184,7 @@ async function adicionaNaLista() {
     let hora
     listaDeTarefasTeste2.forEach(tarefa => {
         tarefa.valorPropriedadeTarefas.forEach(propriedade => {
+
             const dataFormatada = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd');
             if (format(diaSelecionado.dia.value, 'yyyy-MM-dd') == dataFormatada) {
                 if (!lista.includes(tarefa)) {
@@ -230,9 +196,46 @@ async function adicionaNaLista() {
     diaSelecionado.listaDeTarefas.value = lista;
 };
 
-function mudaHoraPropriedade(propriedade){
-    propriedade.valor.valor = format(new Date(propriedade.valor.valor),'yyyy-MM-dd') + "T"+horaNova+":00";
-    
+function defineDiaSelecionado(dia) {
+    diaSelecionado.dia.value = dia;
+    getCalendario();
+}
+async function mudaHoraPropriedade(propriedade, tarefa) {
+    let textoTipo = "";
+    let tarefaNova = {
+        id: tarefa.id,
+        nome: tarefa.nome,
+        descricao: tarefa.descricao,
+        dataCriacao: tarefa.dataCriacao,
+        cor: tarefa.cor,
+        valorPropriedadeTarefas: [],
+        status: tarefa.status,
+        comentarios: tarefa.comentarios
+
+    }
+    propriedade.valor.valor = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') + "T" + horaNova + ":00";
+
+    if (propriedade.propriedade.tipo == "DATA") {
+        tarefa.valorPropriedadeTarefas.forEach(propriedade => {
+
+            let propriedadeNova = {
+                id: propriedade.id,
+                propriedade: {
+                    nome: propriedade.propriedade.nome,
+                    tipo: propriedade.propriedade.tipo
+                },
+                valor: {
+                    id: propriedade.valor.id,
+                    data: propriedade.valor.valor
+                }
+            }
+            tarefaNova.valorPropriedadeTarefas.push(propriedadeNova)
+        });
+    }
+
+    console.log(tarefa)
+    console.log(await tarefaNova)
+    api.atualizar(tarefaNova, "/tarefa")
 }
 
 function defineHora() {
@@ -246,7 +249,7 @@ function defineVizualizacao() {
         visualizacao.value = "00:30"
     }
 }
-function retornaHora(hora){
+function retornaHora(hora) {
     horaNova = hora;
 }
 // Muda de acordo com o mes
@@ -278,30 +281,20 @@ function getCalendario() {
     calendario.value = listaDeDias;
 
 }
-function escolheMes(numero) {
-    data = setMonth(data, numero)
-    data = setDate(data, 1)
-    diaSelecionado.dia.value = data
-    fechaPopUp()
-    getCalendario()
-}
 
-function abrePopUp() {
-    abrePopup.value = true
-
-}
-function fechaPopUp(e) {
-    abrePopup.value = false
-}
 
 function setaEsquerda() {
-    data = setYear(data, getYear(data) - 1)
+    data = setMonth(data, getMonth(data) - 1)
+    data = setDate(data, 1)
+    diaSelecionado.dia.value = data
     getCalendario()
 
 }
 
 function setaDireita() {
-    data = setYear(data, getYear(data) + 1)
+    data = setMonth(data, getMonth(data) + 1)
+    data = setDate(data, 1)
+    diaSelecionado.dia.value = data
     getCalendario()
 }
 
@@ -402,7 +395,6 @@ function mudaIntervalo() {
 
     .fundoPopup {
         width: 95%;
-        clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 100%, 0 100%, 0 25%);
         display: flex;
         flex-direction: column;
         align-items: center;

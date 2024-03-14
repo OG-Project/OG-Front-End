@@ -1,3 +1,4 @@
+
 <template>
     <div class="gridTotal">
         <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden gap-10">
@@ -37,7 +38,6 @@
                                         <img src="../imagem-vetores/X-preto.svg" @click="removeResponsavel(responsavel)">
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
