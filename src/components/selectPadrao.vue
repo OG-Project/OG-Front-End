@@ -2,7 +2,7 @@
     <div :class=styleSelect :style="estilizaDivSelect">
         <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex items-center justify-center xl:text-xl sm:text-sm md:text-md truncate w-full">
             <option class="options" value="" disabled selected  v-if="opcaoSelecionada==''">{{ placeholderSelect }}</option>
-            <option v-for="opcao of listaSelect" class="options" :value="opcaoSelecionada">{{ opcao }}</option>
+            <option v-for="opcao of listaSelect" class="options" :value="opcao">{{ opcao }}</option>
         </select>   
     </div>
 
