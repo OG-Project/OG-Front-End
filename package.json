@@ -12,6 +12,7 @@
     "@coreui/vue": "^4.10.2",
     "@heroicons/vue": "^2.0.18",
     "@mojs/core": "^1.7.1",
+    "@vueuse/core": "^10.9.0",
     "axios": "^1.6.2",
     "chart.js": "^4.4.0",
     "color-convert": "^2.0.1",

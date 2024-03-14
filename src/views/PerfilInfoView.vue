@@ -1,15 +1,15 @@
 <template>
     <div class="flex justify-center flex-wrap">
-        <div class="flex  flex-col items-center w-[443px] h-[877px] drop-shadow-md bg-[#FEFBFF]">
+        <div class="flex  flex-col items-center w-[20%] h-[877px] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center w-[329px] h-[329px]">
                 <div class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
             </div>
-            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[50%] ">
+            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] ">
                 <div class="flex flex-col items-center gap-9">
                     <div v-for="i in equipes"
-                        class="shadow-md flex justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
+                        class="shadow-md flex sm:flex-wrap sm:justify-center xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
                         <svgEquipe class="ml-6" />
-                        <div class="w-[170px] border-b-2 border-roxo pb-1">
+                        <div class="truncate w-[60%] border-b-2 border-roxo pb-1">
                             Nome Equipe
                         </div>
                     </div>
@@ -22,7 +22,7 @@
         <div class="w-[75vw] h-[92vh] flex flex-col  ">
             <div class="flex flex-col justify-around">
                 <h1 :style="{ fontFamily: fonteTitulo.value }"
-                    class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+                    class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
                     Nome Usuario
                 </h1>
                 <div :style="{ fontFamily: fonteCorpo.value }" class="flex sm:flex-wrap justify-center gap-8">
@@ -61,17 +61,36 @@
                         </div>
                     </div>
                 </div>
-                <div class=" ">
-                    <Carousel 
+                <div  class=" ">
+                    <Carousel
+                    v-if="width>958" 
                     :value="projetos" 
                     :numVisible="3" 
                     containerClass="" 
-                    contentClass="pt-9 " 
-                    indicatorsContentClass=" mx-auto  *:bg-gray-300 active:*:bg-roxo w-max gap-10"
+                    contentClass="sm:pt-1 xl:pt-9 " 
+                    indicatorsContentClass=" mx-auto *:bg-gray-300 active:*:bg-roxo w-max"
                     :showNavigators="true"
                     :showIndicators="true"
                     verticalViewPortHeight="500px"
-                    :numScroll="3"
+                    :numScroll=" 3"
+                    :responsiveOptions="projetos">
+                        <template #item="slotProps">
+                            <!-- {{ slotProps.index }} -->
+                            <cardProjetos class="my-4 mx-auto"></cardProjetos>
+                            <!-- {{ slotProps.index }} -->
+                        </template>
+                    </Carousel>
+                    <Carousel 
+                    v-else
+                    :value="projetos" 
+                    :numVisible="1" 
+                    containerClass="" 
+                    contentClass="sm:pt-1 xl:pt-9 " 
+                    indicatorsContentClass=" mx-auto *:bg-gray-300 active:*:bg-roxo w-max"
+                    :showNavigators="true"
+                    :showIndicators="true"
+                    verticalViewPortHeight="500px"
+                    :numScroll="1"
                     :responsiveOptions="projetos">
                         <template #item="slotProps">
                             <!-- {{ slotProps.index }} -->
@@ -96,45 +115,41 @@ import Carousel from 'primevue/carousel';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
-import { onBeforeMount, onMounted, watch,ref, onUpdated } from 'vue';
+import { onBeforeMount, onMounted, watch,ref, onUpdated, onBeforeUnmount } from 'vue';
 import {useRouter,useRoute} from 'vue-router';
+import { useWindowSize } from '@vueuse/core'
+
 const router=useRouter()
 const route=useRoute()
 const conexao = conexaoBD()
 const perfil = perfilStore()
+const windowSize=useWindowSize()
+const { width, height } = storeToRefs(windowSize)
 const { fonteCorpo } = storeToRefs(perfil)
 const { fonteTitulo } = storeToRefs(perfil)
-
-let height=ref(window.screen.height)
-let width=ref(window.screen.width)
 
 let equipes = ['um', 'dois', 'tres', 'quatro', 'cinco']
 let projetos =['1','2','3','4','5','6','7','8','9','10']
 
-// watch(height,(newValue,oldValue)=>{
-//     console.log(newValue)
-// }, { immediate: true })
 
-watch(width,(newValue,oldValue)=>{
-    console.log(newValue)
-}, { immediate: true })
-
-onBeforeMount(()=>{
+onMounted(() => {
     // alert(route.params.id)
     console.log(fonteTitulo.value)
     console.log(fonteCorpo.value)
-        console.log(height.value)
-        console.log(width.value)
-    
-})
+
+    // alert(height.value)
+    // alert(width.value)
+});
+
 
 onUpdated(()=>{
-    console.log(height.value)
-    console.log(width.value)
+    // alert(height)
+    // alert(width)
+
 })
 
 function temMaisDeQuatro(lista) {
-    return lista.length > 4 ? true : false
+    return lista.length >= 4 ? true : false
 }
 
 </script>
