@@ -1,3 +1,4 @@
+
 <template>
  <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
@@ -132,7 +133,6 @@ import {Equipe} from '../models/Equipe'
             if(props.icon==undefined){
                 return (props.largura*0.80);
             }
-            console.log("ta vindo")
             return (props.largura)
         }
         

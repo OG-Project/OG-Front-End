@@ -12,7 +12,6 @@
             </div>
 
         </div>
-
 </template>
 <script setup>
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'

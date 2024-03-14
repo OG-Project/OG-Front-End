@@ -134,6 +134,7 @@ const grafico = {
 
     .cardTotal.imagemFundo {
     @apply bg-gray-300;
+
     }
 
 }</style>

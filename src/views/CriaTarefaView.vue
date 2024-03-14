@@ -4,11 +4,14 @@
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input
-          largura="40"
+
+          largura="32"
           altura="6"
           fontSize="2rem"
           conteudoInput="Nome da tarefa"
           styleInput="input-transparente-claro-grande"
+
+          v-model="tarefa.nome"
         ></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
@@ -18,31 +21,35 @@
           placeholder="Descrição da tarefa"
           tamanho-da-fonte="1rem"
           resize="none"
+
+          v-model="tarefa.descricao"
         ></TextAreaPadrao>
       </div>
-      <div class="flex pl-12 items-center gap-16 mt-4 h-[5%] w-[100%]">
-        <div class="flex flex-col justify-center w-[18%]">
+      <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
+        <div class="flex flex-col justify-center w-[38%]">
           <p>Propriedades</p>
           <button
-            class="flex flex-col justify-center h-[70%] w-[100%]"
+            class="flex flex-col justify-center h-[70%]"
             @click="abreFechaCriaPropriedades()"
           >
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center w-[11%]">
+        <div class="flex flex-col justify-center w-[30%]">
           <p>Status</p>
           <button
-            class="flex flex-col justify-center h-[70%] w-[100%]"
+            class="flex flex-col justify-center break-keep h-[70%]"
+
             @click="abreFechaCriaStatus()"
           >
             + Criar
           </button>
         </div>
-        <div class="flex flex-col justify-center w-[18%]">
+
+        <div class="flex flex-col justify-center w-[30%]">
           <p>SubTarefas</p>
           <button
-            class="flex flex-col justify-center h-[70%] w-[100%]"
+            class="flex flex-col justify-center h-[70%]"
             @click="abreFechaCriaSubTarefas()"
           >
             + Criar
@@ -56,7 +63,9 @@
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
-            <div class="flex flex-row justify-between">
+
+            <div class="flex flex-row justify-between items-end">
+
               <div class="pl-2">
                 <Input
                   largura="10"
@@ -99,7 +108,8 @@
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
-            <div class="flex flex-row justify-between">
+
+            <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
                 <Input
                   largura="10"
@@ -121,7 +131,8 @@
                 </selectPadrao>
               </div>
             </div>
-            <div class="flex felx-row justify-between">
+
+            <div class="flex felx-row justify-between items-end">
               <div class="pl-2 pt-2 pb-2">
                 <Botao
                   preset="Sair"
@@ -147,7 +158,9 @@
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
-            <div class="flex flex-row justify-between">
+
+            <div class="flex flex-row justify-between items-end">
+
               <div class="pl-2">
                 <Input
                   largura="10"
@@ -160,7 +173,9 @@
               <selectPadrao
                 placeholderSelect="Status"
                 :lista-select="['Em Progresso', 'Concluido']"
-                largura="5"
+
+                largura="8"
+
                 altura="3.8"
                 fonteTamanho="1rem"
                 v-model="statusSubtarefa"
@@ -250,10 +265,8 @@
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-            <img
-              :src="usuario.fotoDoAutor"
-              class="shadow-2xl h-[65px] mr-4 ml-4 pt-4 rounded-full"
-            />
+
+            <img class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"/>
             <div class="pb-2 flex flex-col items-end">
               <TextAreaPadrao
                 width="25vw"
@@ -269,43 +282,56 @@
                 preset="PadraoRoxo"
                 tamanhoPadrao="pequeno"
                 :funcaoClick="enviaComentario"
-                :parametrosFuncao="[
-                  comentarioSendoEnviado,
-                  usuario.nome,
-                  usuario.fotoDoAutor,
-                ]"
+                :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"
+
               ></Botao>
             </div>
           </div>
         </div>
         <div class="w-[85%] flex flex-col">
-          <div v-for="comentario of Comentarios">
+          <div v-for="comentario of tarefa.comentarios">
             <div
               class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] items-end flex flex-col"
             >
-              <div class="w-[15%] gap-4 flex justify-center pt-2">
-                <img
-                  class="w-[25%]"
-                  :src="iconeLapisPreto"
-                  @click="trocaComentarioSendoEditado"
-                />
-                <img
-                  @click="deletaComentario(comentario)"
-                  class="w-[25%]"
-                  :src="BotaoX"
-                />
+              <div class="w-[15%] gap-4 flex justify-center">
+                <div
+                  v-if="comentario.autor === usuarioCookies.username"
+                  class="w-[80%] mt-2 gap-4 flex justify-center"
+                >
+                  <img
+                    class="w-[25%]"
+                    :src="iconeLapisPreto"
+                    @click="trocaComentarioSendoEditado"
+                  />
+                  <img
+                    @click="deletaComentario(comentario)"
+                    class="w-[25%]"
+                    :src="BotaoX"
+                  />
+                </div>
+                <div
+                  v-if="comentario.autor != usuarioCookies.username"
+                  class="w-[80%] mt-6 gap-4 flex justify-center"
+                ></div>
               </div>
               <div class="flex w-[100%] mb-2">
                 <img
-                  :src="comentario.fotoDoAutor"
-                  class="shadow-2xl h-[65px] mr-4 ml-4 pt-4 rounded-full"
+                  :src="'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados"
+                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
                 />
-                <div class="w-[100%]">
+                <div class="w-[80%]">
+
                   <p>
                     {{ comentario.autor }}
                   </p>
 
-                  <div v-if="comentarioSendoEditado">
+                  <div
+                    v-if="
+                      comentarioSendoEditado &&
+                      comentario.autor === usuarioCookies.username
+                    "
+                  >
+
                     <TextAreaPadrao
                       width="25vw"
                       height="15vh"
@@ -316,12 +342,25 @@
                       v-model="comentario.comentario"
                     ></TextAreaPadrao>
                   </div>
-                  <div v-if="!comentarioSendoEditado">
+                  <div
+                    v-if="
+                      !comentarioSendoEditado ||
+                      comentario.autor != usuarioCookies.username
+                    "
+                  >
+
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.comentario }}
                     </p>
                   </div>
-                  <div v-if="comentarioSendoEditado">
+
+                  <div
+                    v-if="
+                      comentarioSendoEditado &&
+                      comentario.autor === usuarioCookies.username
+                    "
+                  >
+
                     <Botao
                       texto="Editar"
                       preset="PadraoRoxo"
@@ -423,7 +462,7 @@
               <div v-if="propriedade.tipo === 'Texto'">
                 <Input
                   altura="2"
-                  largura="35"
+                  largura="28"
                   conteudoInput=" "
                   v-model="propriedade.valor"
                   width="80%"
@@ -456,7 +495,9 @@
                 <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
                   <Input
                     altura="2"
-                    largura="35"
+
+                    largura="27"
+
                     conteudoInput=" "
                     v-model="propriedade.valor[index]"
                     width="60%"
@@ -464,12 +505,17 @@
                   >
                   </Input>
                   <img
-                    class="w-[100%] mr-4"
+
+                    class="w-[100%] ml-2"
+
                     @click="deletaValorSelect(propriedade.valor, index)"
                     :src="BotaoX"
                   />
                 </div>
-                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">Adicionar +</p>
+
+                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">
+                  Adicionar +
+                </p>
               </div>
             </div>
           </div>
@@ -555,8 +601,8 @@
         class="min-h-[4%] flex items-center justify-center gap-4"
       >
         <p
-          :style="{ 'background-color': '#' + status.cor }"
-          class="flex items-center justify-center px-4"
+          :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
+          class="flex items-center border-2 shadow-md justify-center px-4"
         >
           {{ status.nome }}
         </p>
@@ -604,19 +650,22 @@ import NotePad from "../imagem-vetores/NotePad.svg";
 import Botao from "../components/Botao.vue";
 import CheckBox from "../components/checkBox.vue";
 import iconAnexo from "../imagem-vetores/anexoIcon.svg";
-import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import TextAreaPadrao from "../components/textAreaPadrao.vue";
-import ProgressBar from "primevue/progressbar";
-import SelectPadrao from "../components/selectPadrao.vue";
 import { ref, watch } from "vue";
+import selectPadrao from "../components/selectPadrao.vue";
 import navBar from "../components/navBar.vue";
 import ColorPicker from "primevue/colorpicker";
 import BotaoX from "../imagem-vetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
 import Calendar from "primevue/calendar";
 import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
-import TreeSelect from "primevue/treeselect";
 import { computed } from "vue";
+import { onUpdated, onMounted } from "vue";
+import VueCookies from "vue-cookies";
+import tinycolor from "tinycolor2";
+import { conexaoBD } from "../stores/conexaoBD.js";
+
+const banco = conexaoBD();
 
 const parametroDoFiltroStatus = ref("Ordenar Por");
 
@@ -678,6 +727,11 @@ let corStatus = ref("ff0000");
 let nomeSubtarefa = ref("");
 let statusSubtarefa = ref("Em Progresso");
 
+
+function corDaFonte(backgroundColor) {
+  const isLight = tinycolor(backgroundColor).isLight();
+  return isLight ? "#000" : "#fff";
+}
 //Função utilizada para criar um Status
 
 function criaStatus() {
@@ -719,10 +773,9 @@ function deletaValorSelect(listaSelect, index) {
 //Função utilizada para criar uma Subtarefa
 
 function criaSubtarefa() {
-  console.log(statusSubtarefa.value)
   if (nomeSubtarefa.value != "") {
     if (statusSubtarefa.value === "") {
-      nomeSubtarefa.value = '';
+      nomeSubtarefa.value = "";
     }
     let booleanDaSubtarefa = ref();
     if (statusSubtarefa.value == "Em Progresso") {
@@ -775,7 +828,6 @@ function criaPropriedade() {
     tipoPropriedade.value != " "
   ) {
     if (nomePropriedade.value != "") {
-      console.log(tipoPropriedade.value);
       let propriedade = {
         nome: nomePropriedade.value,
         tipo: tipoPropriedade.value,
@@ -814,6 +866,30 @@ function deletaPropriedade(propriedade) {
 //Variavel utilizada para armazenar um comentario ainda nao enviado
 let comentarioSendoEnviado = ref("");
 
+let tarefa = ref({
+  nome: "",
+  descricao: "",
+  arquivos: ref([]),
+  comentarios: ref([]),
+});
+
+onUpdated(() => {
+  VueCookies.set("TarefaNaoFinalizada", tarefa.value, 1000000);
+});
+
+onMounted(() => {
+  autenticarUsuario();
+  tarefa.value = {
+    nome: "",
+    descricao: "",
+    arquivos: ref([]),
+    comentarios: ref([]),
+  };
+  const cookieData = VueCookies.get("TarefaNaoFinalizada");
+  if (cookieData && cookieData.nome != "") {
+    tarefa.value = cookieData;
+  }
+});
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
 let propriedadeSendoCriada = ref(false);
@@ -852,13 +928,14 @@ function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
     statusDaTarefa.value.push(status);
-    console.log(statusDaTarefa.value);
+
+
   } else {
     statusDaTarefa.value.forEach((statusDeletar) => {
       if (statusDeletar === status) {
         statusDaTarefa.value.splice(statusDaTarefa.value.indexOf(statusDeletar), 1);
       }
-      console.log(statusDaTarefa.value);
+
     });
   }
 }
@@ -878,13 +955,21 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade) {
   }
 }
 
-//Usuario de teste excluir depois
+//Usuario Logado
 
-let usuario = {
-  nome: "Kanye West",
-  fotoDoAutor:
-    "data:image/jpeg;base64,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",
-};
+let usuarioCookies = ref({});
+
+async function autenticarUsuario() {
+  let usuarioId = VueCookies.get("IdUsuarioCookie");
+  let usuarios = banco.procurar("/usuario");
+  let listaUsuarios = await usuarios;
+  listaUsuarios.forEach((usuario) => {
+    if (usuario.id.toString() === usuarioId) {   
+      usuarioCookies.value = usuario;
+      console.log(usuarioCookies.value.foto)
+    }
+  });
+}
 
 //Variavel utilizada para abrir e fechar os comentarios
 
@@ -899,10 +984,10 @@ function abreFechaComentario() {
 //Função que publica o comentario na tarefa
 
 function enviaComentario(comentario) {
-  Comentarios.value.push({
-    autor: comentario[1],
+  tarefa.value.comentarios.push({
+    autor: comentario[1].username,
     comentario: comentario[0],
-    fotoDoAutor: comentario[2],
+    foto: comentario[1].foto,
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
@@ -911,9 +996,10 @@ function enviaComentario(comentario) {
 //
 
 function deletaComentario(comentario) {
-  Comentarios.value.forEach((comentarioParaDeletar) => {
+  tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
-      Comentarios.value.splice(Comentarios.value.indexOf(comentario), 1);
+      tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
+
     }
   });
 }
@@ -925,7 +1011,7 @@ function trocaComentarioSendoEditado() {
 }
 
 function editarComentario(comentario) {
-  console.log(comentario);
+
   if (comentario.comentario === "") {
     deletaComentario(comentario);
   }
@@ -1067,10 +1153,6 @@ function clicouOpcaoStatus() {
     };
   }
 }
-watch(() => {
-  clicouOpcaoStatus();
-  clicouOpcaoPropriedades();
-});
 </script>
 <style scoped>
 #fundoPopUp {
@@ -1081,7 +1163,7 @@ watch(() => {
 }
 
 #bgBranco {
-  height: 96%;
+
   background-color: #ffffff;
 }
 
@@ -1203,4 +1285,6 @@ option {
   font-size: small;
   border: 1px solid #cbcbcb;
 }
+
 </style>
+
