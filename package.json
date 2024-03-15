@@ -8,14 +8,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
+
+    "@ckpack/vue-color": "^1.5.0",
+
     "@coreui/vue": "^4.10.2",
     "@heroicons/vue": "^2.0.18",
     "@mojs/core": "^1.7.1",
+    "@vueuse/core": "^10.9.0",
     "axios": "^1.6.2",
     "chart.js": "^4.4.0",
+    "color-convert": "^2.0.1",
     "date-fns": "^2.30.0",
     "pinia": "^2.1.7",
     "primevue": "^3.40.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "sort-by": "^1.2.0",
     "tailwind": "^4.0.0",
     "tinycolor2": "^1.6.0",
     "vue": "^3.3.4",
@@ -26,9 +33,9 @@
     "vue-slick-carousel": "^1.0.6",
     "vue3-carousel": "^0.3.1",
     "vue3-click-outside": "^0.0.1",
-    "vuedraggable": "^2.24.3",
+    "vue3-dnd": "^2.1.0",
+    "vuedraggable": "^4.1.0",
     "vueperslides": "^3.5.1"
-
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
