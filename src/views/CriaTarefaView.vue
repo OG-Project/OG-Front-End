@@ -1,5 +1,4 @@
 <template>
-  <navBar></navBar>
   <div id="bgBranco" class="flex flex-row min-h-[96%] w-full">
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">

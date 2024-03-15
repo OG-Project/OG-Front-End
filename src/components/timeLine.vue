@@ -2,9 +2,9 @@
     <div class="divMaior">
         <div class="h-[95%] w-[80%] flex flex-col justify-start">
             <div class="h-full flex flex-col  items-center">
-                <div class="fixed top-[14%] w-[80%] h-[18%] flex flex-col items-center bg-[#FBFBFB]">
-                    <div class="w-[89%] h-full ">
-                        <div class="w-[100%] h-[50%] flex flex-row">
+                <div class="sticky w-full h-[18%] flex flex-col items-center bg-[#FBFBFB]">
+                    <div class="w-full h-full ">
+                        <div class="w-[100%] h-[100%] flex flex-row">
                             <div class="w-[70%] flex flex-row gap-4 text-[28px]">
                                 <button @click="setaEsquerda()" class="h-full w-[10%]">
                                     <div
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-full max-h-min mt-[11%]">
+                <div class="linhaDoTempo ">
 
                     <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras.value"
                         class=" h-[4%] flex gap-2">
@@ -369,9 +369,7 @@ function mudaIntervalo() {
         justify-content: center;
         background-color: #FBFBFB;
         clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
-        overflow-y: scroll;
-        overflow-x: hidden;
-        position: relative;
+
 
     }
 
@@ -408,6 +406,15 @@ function mudaIntervalo() {
         border-bottom: 2px solid black;
         border-radius: 10%;
         transform: rotate(45deg);
+    }
+
+    .linhaDoTempo{
+        width: 100%;
+        max-height: min-content;
+        margin-top: 11%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        position: relative;
     }
 
     .setaDireita {

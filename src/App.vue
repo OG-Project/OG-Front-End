@@ -17,7 +17,8 @@ import { perfilStore } from './stores/perfilStore';
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
-const {isVlibras}=storeToRefs(perfil)
+const {isVlibras}=storeToRefs(perfil);
+let url= window.location.href;
 // let ativado='';
 
 // watch(ativado,async (newValue,oldValue)=>{
@@ -34,8 +35,10 @@ const {isVlibras}=storeToRefs(perfil)
 </script>
 
 <template>
-  
- <Navbar v-if="url!='http://localhost:5173/login'"></Navbar>
+  <div v-if="url!='http://localhost:5173/login'">
+    <Navbar ></Navbar>
+  </div>
+
     <RouterView />
     <!-- {{ VueCookies.get('isVlibras') }}
     {{ ativado }} -->
