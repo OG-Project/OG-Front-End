@@ -1,5 +1,4 @@
 <template>
-    <NavBar></NavBar>
     <div class="w-full h-full">
         <div class="flex items-center justify-center w-full h-[8%]">
             <p class="text-4xl">Lista De Tarefas</p>
@@ -19,7 +18,6 @@
     </div>
 </template>
 <script setup>
-import NavBar from '../components/navBar.vue';
 
 
 </script>
