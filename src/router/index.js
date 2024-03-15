@@ -28,6 +28,16 @@ const router = createRouter({
           name: 'telaInicial',
           component: () => import('../views/EquipeTelaInicialView.vue')
      },
+     {
+      path: '/criaProjeto',
+      name: 'criaProjeto',
+      component: () => import('../views/CriarProjetoView.vue')
+    },
+    {
+      path: '/criaTarefa',
+      name: 'criaTarefa',
+      component: () => import('../views/CriaTarefaView.vue')
+    },
     {
       path:'/perfil',
       name:'Perfil',
@@ -62,8 +72,7 @@ const router = createRouter({
     },
     {
       path:'/perfil/:id',
-      component: () => import('../views/PerfilInfoView.vue'),
-      
+      component: () => import('../views/PerfilInfoView.vue')
     }
     // {
     //   path:'/perfil/:user',

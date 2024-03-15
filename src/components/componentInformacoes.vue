@@ -97,15 +97,15 @@ function alterarEmail(){
 }
 onBeforeMount(()=>{
         // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE   
-        // let user=Usuario
-        // user.dataNascimento="12/12/2012"
-        // user.email="teste@gmail"
-        // user.nome="teste"
-        // user.sobrenome="testedando"
-        // user.senha="123"
-        // user.username="LoucoDaXJ6"
-        // VueCookies.config('30d')
-        // VueCookies.set("usuarioCookie",JSON.stringify(user))
+        let user=Usuario
+        user.dataNascimento="12/12/2012"
+        user.email="teste@gmail"
+        user.nome="teste"
+        user.sobrenome="testedando"
+        user.senha="123"
+        user.username="LoucoDaXJ6"
+        VueCookies.config('30d')
+        VueCookies.set("usuarioCookie",JSON.stringify(user))
         let usuario= VueCookies.get("usuarioCookie")
         // erros pelo fato do cookie
         PerfilStore.nome=usuario.nome
