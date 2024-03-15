@@ -14,7 +14,6 @@
                         </div>
                     </div>
 
-
                 </div>
 
             </div>
@@ -54,15 +53,15 @@
                             tipo="obrigatorio"
                              />
                         </div>
-                        <div class="flex justify-between items-center gap-5">
+                        <div class="flex  justify-between items-center gap-5">
                             <span class="text-xl">Data de Nascimento</span>
                             <Input styleInput="input-transparente-claro-grande" conteudoInput="Data de Nascimento"
                                 v-model="perfil.dataDeNascimento" tipo="obrigatorio" />
                         </div>
                     </div>
                 </div>
-                <div  class=" ">
-                    <Carousel
+                <div >
+                    <Carousel 
                     v-if="width>958" 
                     :value="projetos" 
                     :numVisible="3" 
@@ -80,6 +79,7 @@
                             <!-- {{ slotProps.index }} -->
                         </template>
                     </Carousel>
+
                     <Carousel 
                     v-else
                     :value="projetos" 

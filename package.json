@@ -8,9 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-
     "@ckpack/vue-color": "^1.5.0",
-
     "@coreui/vue": "^4.10.2",
     "@heroicons/vue": "^2.0.18",
     "@mojs/core": "^1.7.1",
@@ -20,7 +18,7 @@
     "color-convert": "^2.0.1",
     "date-fns": "^2.30.0",
     "pinia": "^2.1.7",
-    "primevue": "^3.40.1",
+    "primevue": "^3.50.0",
     "react-dnd-html5-backend": "^16.0.1",
     "sort-by": "^1.2.0",
     "tailwind": "^4.0.0",
@@ -28,8 +26,8 @@
     "vue": "^3.3.4",
     "vue-cookies": "^1.8.3",
     "vue-date-fns": "^2.0.2",
-    "vue-router": "^4.2.5",
     "vue-dragscroll": "^4.0.5",
+    "vue-router": "^4.2.5",
     "vue-slick-carousel": "^1.0.6",
     "vue3-carousel": "^0.3.1",
     "vue3-click-outside": "^0.0.1",
@@ -42,7 +40,7 @@
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.31",
     "sass": "^1.69.5",
-    "tailwindcss": "^3.3.5",
+    "tailwindcss": "^3.4.1",
     "vite": "^4.4.11"
   }
 }
