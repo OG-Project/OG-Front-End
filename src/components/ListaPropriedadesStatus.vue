@@ -1,102 +1,131 @@
 <template>
     <div class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
-                <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
-                    <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                        <p @click="navegaPelaTabela('propriedade')" class="bg-roxo-claro p-2">Propriedades</p>
-                        <p @click="navegaPelaTabela('status')">Status</p>
-                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                            styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
-                            
+        <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
+            <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
+                <p @click="navegaPelaTabela('propriedade')" class="bg-roxo-claro p-2">Propriedades</p>
+                <p @click="navegaPelaTabela('status')">Status</p>
+                <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                    styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+
+            </div>
+        </div>
+
+        <div v-if="opcaoSelecionadaNaTabela == 'status'">
+            <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
+                <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
+                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2">Status</p>
+                <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                    styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+            </div>
+        </div>
+
+        <div class="scrollBar">
+            <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
+                    v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
+
+                    <p class="w-[33%]">{{ propriedade.nome }}</p>
+                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                        Tarefas Atribuidas
                     </div>
                 </div>
-
-                <div v-if="opcaoSelecionadaNaTabela == 'status'">
-                    <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                        <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
-                        <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2">Status</p>
-                        <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                            styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
-                    </div>
-                </div>
-
-                <div class="scrollBar">
-                    <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
-                            v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
-                            
-                            <p class="w-[33%]">{{ propriedade.nome }}</p>
-                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                Tarefas Atribuidas
-                            </div>
-                        </div>
-                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
-                            v-if="listaSelecionada != []">
-                            <p class="w-[33%]">{{ propriedade.nome }}</p>
-                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                Tarefas Atribuidas
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if="opcaoSelecionadaNaTabela == 'status'">
-                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus">
-                            <p class="w-[33%]">{{ status.nome }}</p>
-                            <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
-                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                Tarefas Atribuidas
-                            </div>
-                        </div>
-                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
-                            v-if="listaSelecionada != []">
-                            <p class="w-[33%]">{{ status.nome }}</p>
-                            <p class="w-[33%]">Tipo: {{ status.tipo }}</p>
-                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                Tarefas Atribuidas
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
-                    v-if="funcaoPopUp.variavelModal == false">
-                    <p>Nova</p>
-                    <img src="../imagem-vetores/sinalDeMaisIcon.svg">
-                </div>
-
-                <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
-                   
-                    <div class="animation">
-                        <div class="flex justify-end">
-                            <img src="../imagem-vetores/triangulo.svg">
-                        </div>
-                        <div class="flex flex-row justify-between">
-                            <div class="pl-2">
-                                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                                    v-model="nomePropriedade"></Input>
-                            </div>
-                            <div class="pr-2">
-                                <selectPadrao placeholderSelect="Tipo"
-                                    :lista-select="['Texto', 'Data', 'Numero', 'Seleção']" largura="5" altura="3.8"
-                                    fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
-                            </div>
-
-                        </div>
-                        <div class="flex felx-row justify-between">
-                            <div class="pl-2 pt-2 pb-2">
-                                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
-                            </div>
-                            <div class="pr-2 pt-2 pb-2">
-                              
-                                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
-                                </Botao>
-                            </div>
-                        </div>
-
+                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
+                    v-if="listaSelecionada != []">
+                    <p class="w-[33%]">{{ propriedade.nome }}</p>
+                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                        Tarefas Atribuidas
                     </div>
                 </div>
             </div>
+            <div v-if="opcaoSelecionadaNaTabela == 'status'">
+                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus">
+                    <p class="w-[33%]">{{ status.nome }}</p>
+                    <ColorPicker v-model="status.cor"></ColorPicker>
+                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                        Tarefas Atribuidas
+                    </div>
+                </div>
+                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="status of listaStatus"
+                    v-if="listaSelecionada != []">
+                    <p class="w-[33%]">{{ status.nome }}</p>
+                    <ColorPicker v-model="status.cor"></ColorPicker>
+                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                        Tarefas Atribuidas
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
+            v-if="funcaoPopUp.variavelModal == false">
+            <p>Nova</p>
+            <img src="../imagem-vetores/sinalDeMaisIcon.svg">
+        </div>
+
+        <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
+
+            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                <div class="flex justify-end">
+                    <img src="../imagem-vetores/triangulo.svg">
+                </div>
+                <div class="flex flex-row justify-between">
+                    <div class="pl-2">
+                        <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                            v-model="nomePropriedade"></Input>
+                    </div>
+                    <div class="pr-2">
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                            largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
+                    </div>
+
+                </div>
+                <div class="flex felx-row justify-between">
+                    <div class="pl-2 pt-2 pb-2">
+                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                    </div>
+                    <div class="pr-2 pt-2 pb-2">
+
+                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
+                        </Botao>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
+                <div class="flex justify-end">
+                    <img src="../imagem-vetores/triangulo.svg">
+                </div>
+                <div class="flex flex-row justify-between">
+                    <div class="pl-2">
+                        <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                            v-model="nomePropriedade"></Input>
+                    </div>
+                    <div class="pr-2">
+
+                        <ColorPicker v-model="corStatus" class="rounded-sm" />
+
+                    </div>
+
+                </div>
+                <div class="flex felx-row justify-between">
+                    <div class="pl-2 pt-2 pb-2">
+                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                    </div>
+                    <div class="pr-2 pt-2 pb-2">
+
+                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusCookies">
+                        </Botao>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -106,23 +135,28 @@ import Botao from "../components/Botao.vue"
 import Input from "../components/Input.vue"
 import VueCookies from 'vue-cookies';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp';
-import {Propriedade} from '../models/Propriedade'
+import { Propriedade } from '../models/Propriedade'
 import { getCurrentInstance } from 'vue';
+import ColorPicker from 'primevue/colorpicker';
 const instance = getCurrentInstance();
 let opcoesSelect = ["Todos", "Data", "Numero", "Seleção", "Texto"];
 let opcaoSelecionadaNaTabela = ref("");
 let buscarPor = ref("");
 var listaPropriedades = ref([]);
+var listaStatus = ref([]);
 let listaSelecionada = ref([]);
 let nomePropriedade = ref("");
+let nomeStatus = ref("");
 let tipoPropriedade = ref("");
 let AuxParaCriarPropriedades = [];
-const funcaoPopUp =funcaoPopUpStore()
+let AuxParaCriarStatus = [];
+let corStatus=ref("")
+const funcaoPopUp = funcaoPopUpStore()
 
 
 onMounted(() => {
     buscaPropriedadeCookies();
-    funcaoPopUp.variavelModal=false
+    funcaoPopUp.variavelModal = false
 }
 )
 
@@ -150,11 +184,11 @@ function navegaPelaTabela(opcaoSelecionada) {
 
 function buscaPropriedadeCookies() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
-    if(propriedadeArmazenada==null){
+    if (propriedadeArmazenada == null) {
         return;
     }
     listaPropriedades.value = propriedadeArmazenada
-    AuxParaCriarPropriedades= propriedadeArmazenada
+    AuxParaCriarPropriedades = propriedadeArmazenada
 }
 
 function criaPropriedadeCookies() {
@@ -168,14 +202,27 @@ function criaPropriedadeCookies() {
     listaPropriedades = AuxParaCriarPropriedades
     funcaoPopUp.fechaPopUp();
 
-    instance.emit('mandaListaPropriedade',listaPropriedades)
+    instance.emit('mandaListaPropriedade', listaPropriedades)
+}
+
+function criaStatusCookies() {
+
+let statusCriado = {
+    nome: nomeStatus.value,
+    cor: corStatus.value
+}
+AuxParaCriarStatus.push(statusCriado)
+VueCookies.set("statusCookie", AuxParaCriarStatus, 864000000)
+listaStatus = AuxParaCriarStatus
+funcaoPopUp.fechaPopUp();
+
+instance.emit('mandaListaStatus', listaPropriedades)
 }
 
 
 </script>
 
 <style lang="scss">
-
 .scrollBar::-webkit-scrollbar {
     width: 0.7vw;
 }

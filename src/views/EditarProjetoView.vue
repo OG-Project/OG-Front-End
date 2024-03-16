@@ -51,6 +51,7 @@
         </div>
         <div class=" w-[83%] h-[90%] flex-row ">
             <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"></ListaPropiedadesStatus>
+
         </div>
         <div class="flex justify-end items-end ">
             <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
@@ -102,7 +103,10 @@
                 </div>
             </div>
         </div>
+
     </div>
+
+
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
@@ -140,6 +144,7 @@ let listaEquipesConvidadas = ref([]);
 let listaEquipesSelecionadas = ref([]);
 let listaEquipeEnviaBack = []
 let srcIconListaEquipes = Sair
+let projeto=
 funcaoPopUp.variavelModal = false
 
 onMounted(() => {
@@ -153,7 +158,6 @@ onMounted(() => {
 onUpdated(() => {
     criarProjetoCookies();
 })
-
 
 async function defineSelect() {
     let listaAux = (await conexao.procurar('/equipe'))
@@ -171,9 +175,9 @@ function colocaListaPropriedades(propriedades){
 }
 
 function buscaProjetoCookies() {
-    if (VueCookies.get("projetoCookie") != null) {
-        console.log(VueCookies.get("projetoCookie"))
-        const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
+    if (VueCookies.get("projetoEditar") != null) {
+        console.log(VueCookies.get("projetoEditar"))
+        const variavelCookieProjeto = (VueCookies.get('projetoEditar'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         if (variavelCookieProjeto.equipes.length != 0) {
@@ -221,7 +225,7 @@ function criarProjetoCookies() {
         criaProjetoCookies.equipes= ""
     }
     criaProjetoCookies.reponsaveis=responsaveisProjeto.value
-    VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
+    VueCookies.set('projetoEditar', criaProjetoCookies, 86400000)
 }
 
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
@@ -237,12 +241,10 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 
 }
 
-async function criaProjeto() {
+function criaProjeto() {
     const criaProjeto = criaProjetoStore()
     criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades)
-   let projeto= await  conexao.buscarUm(1,"projeto")
-    console.log(projeto)
-    VueCookies.set("projetoEditar",projeto,8640000)
+
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {

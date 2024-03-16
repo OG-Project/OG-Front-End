@@ -35,7 +35,7 @@ export const conexaoBD = defineStore('conexaoBD', {
           return axios.delete(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}/${userId}`)
       },
       buscarUm(id,textoRequisicao){
-        return axios.get(`http://10.4.96.35:8082${textoRequisicao}/${id}`).then(response => response.data)
+        return axios.get(`http://10.4.96.35:8082/`+textoRequisicao+'/'+id).then(response => response.data)
       },
       async cadastrarFoto(equipeId, foto) {
         try {
