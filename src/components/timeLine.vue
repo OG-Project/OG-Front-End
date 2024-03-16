@@ -1,116 +1,120 @@
 <template>
     <div class="divMaior">
-        <div class="h-[95%] w-[80%] flex flex-col justify-start">
-            <div class="h-full flex flex-col  items-center">
-                <div class="sticky w-full h-[18%] flex flex-col items-center bg-[#FBFBFB]">
-                    <div class="w-full h-full ">
-                        <div class="w-[100%] h-[100%] flex flex-row">
-                            <div class="w-[70%] flex flex-row gap-4 text-[28px]">
-                                <button @click="setaEsquerda()" class="h-full w-[10%]">
-                                    <div
-                                        class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
-
-                                        <div class="setaEsquerda"></div>
-                                    </div>
-                                </button>
-                                <div class="flex flex-row h-full items-center w-[35%]">
-                                    <div>
-                                        {{ format(data, "MMMM", {
-                                            locale: ptBR
-                                        }).charAt(0).toUpperCase() +
-                                            format(data, "MMMM", { locale: ptBR }).slice(1) + " d" }}
-                                    </div>
-                                    <div>
-                                        {{ " e " + getYear(data) }}
-                                    </div>
-                                </div>
-
-                                <button @click="setaDireita()" class="h-full w-[10%]">
-                                    <div
-                                        class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
-                                        <div class="setaDireita"></div>
-                                    </div>
-                                </button>
-                            </div>
-                            <div class="w-[50%] flex justify-end items-end text-[42px]">
-                                {{ horaAtual }}
-                            </div>
-                        </div>
-                        <div class="flex justify-center w-full h-[50%]">
-                            <div class="w-[20%] flex flex-col justify-end items-center">
-                                <button @click="mudaIntervalo()" class=" bg-gray-300 w-[90%] h-[60%] rounded-xl">
-                                    {{ visualizacao }}
-                                </button>
-                                <div>
-                                    <p>HH:mm</p>
-                                </div>
-                            </div>
-                            <Carousel :value="calendario"
-                                :page="gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))" :numVisible="20"
-                                circular class="w-[95%] h-[100%] flex justify-end">
-
-                                <template #item="dia">
-                                    <div class="font-Poppins text-[24px]">
-                                        <button v-if="getMonth(dia.data.dia) == getMonth(data)">
-                                            <button @click="defineDiaSelecionado(dia.data.dia)">
-                                                <div class="h-full">
-                                                    {{ format(dia.data.dia, 'dd') }}
-                                                </div>
-                                                <div class="bg-roxo w-full h-[3px]"
-                                                    v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')">
-
-                                                </div>
-                                            </button>
+        <span class="overflow-y-scroll overflow-x-hidden items-center flex flex-col w-full h-full">
+            <div class="h-[95%] w-[80%]  flex flex-col justify-start">
+                <div class="h-full flex flex-col w-full items-center">
+                    <span class="absolute flex items-start justify-center h-[30%] w-full left-0 top-0">
+                        <div class=" w-[80%] h-[70%] flex flex-col items-center bg-[#FBFBFB]">
+                            <div class="w-full h-full ">
+                                <div class="w-[100%] h-[100%] flex flex-row">
+                                    <div class="w-[70%] flex flex-row gap-4 text-[28px]">
+                                        <button @click="setaEsquerda()" class="h-full w-[10%]">
+                                            <div
+                                                class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
+    
+                                                <div class="setaEsquerda"></div>
+                                            </div>
+                                        </button>
+                                        <div class="flex flex-row h-full items-center w-[35%]">
+                                            <div>
+                                                {{ format(data, "MMMM", {
+                                                    locale: ptBR
+                                                }).charAt(0).toUpperCase() +
+                                                    format(data, "MMMM", { locale: ptBR }).slice(1) + " d" }}
+                                            </div>
+                                            <div>
+                                                {{ " e " + getYear(data) }}
+                                            </div>
+                                        </div>
+    
+                                        <button @click="setaDireita()" class="h-full w-[10%]">
+                                            <div
+                                                class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                                <div class="setaDireita"></div>
+                                            </div>
                                         </button>
                                     </div>
-                                </template>
-                            </Carousel>
+                                    <div class="w-[50%] flex justify-end items-end text-[42px]">
+                                        {{ horaAtual }}
+                                    </div>
+                                </div>
+                                <div class="flex justify-center w-full h-[50%]">
+                                    <div class="w-[20%] flex flex-col justify-end items-center">
+                                        <button @click="mudaIntervalo()" class=" bg-gray-300 w-[90%] h-[60%] rounded-xl">
+                                            {{ visualizacao }}
+                                        </button>
+                                        <div>
+                                            <p>HH:mm</p>
+                                        </div>
+                                    </div>
+                                    <Carousel :value="calendario"
+                                        :page="gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))"
+                                        :numVisible="20" circular class="w-[95%] h-[100%] flex justify-end">
+    
+                                        <template #item="dia">
+                                            <div class="font-Poppins text-[24px]">
+                                                <button v-if="getMonth(dia.data.dia) == getMonth(data)">
+                                                    <button @click="defineDiaSelecionado(dia.data.dia)">
+                                                        <div class="h-full">
+                                                            {{ format(dia.data.dia, 'dd') }}
+                                                        </div>
+                                                        <div class="bg-roxo w-full h-[3px]"
+                                                            v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')">
+    
+                                                        </div>
+                                                    </button>
+                                                </button>
+                                            </div>
+                                        </template>
+                                    </Carousel>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="linhaDoTempo ">
+                    </span>
+                    <div class="linhaDoTempo ">
 
-                    <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras.value"
-                        class=" h-[4%] flex gap-2">
+                        <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras.value"
+                            class=" h-[4%] flex gap-2">
 
-                        <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
-                            (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
-                            {{ hora }}
-                        </div>
+                            <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
+                                (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
+                                {{ hora }}
+                            </div>
 
 
-                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
-                            @dragover="retornaHora(hora)">
-                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class=" flex flex-row ">
-                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
-                                        class=" pl-[5%] pt-[5%]">
-                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
-                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
-                                            </cardTarefas>
+                            <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
+                                @dragover="retornaHora(hora)">
+                                <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class=" flex flex-row ">
+                                    <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                        <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
+                                            class=" pl-[5%] pt-[5%]">
+                                            <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
+                                                <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
+                                                </cardTarefas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras.value"
-                        class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)">
+                        <div v-if="tipoDeIntervalo == 2" v-for="hora of diaSelecionado.listaDeHoras.value"
+                            class=" h-[2%] flex gap-2" @mouseover="retornaHora(hora)">
 
-                        <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
-                            (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
-                            {{ hora }}
-                        </div>
-                        <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
-                            @dragover="retornaHora(hora)">
-                            <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row">
-                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
-                                        class="pl-[5%] pt-[5%]">
-                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
-                                            <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
-                                            </cardTarefas>
+                            <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
+                                (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:30' ? 'rounded-b-2xl' : '')">
+                                {{ hora }}
+                            </div>
+                            <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
+                                @dragover="retornaHora(hora)">
+                                <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row">
+                                    <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                        <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
+                                            class="pl-[5%] pt-[5%]">
+                                            <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
+                                                <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
+                                                </cardTarefas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -119,7 +123,8 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </span>
+
     </div>
 </template>aliza
 
@@ -161,9 +166,9 @@ onMounted(() => {
     adicionaNaLista();
 })
 
-    watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
-        adicionaNaLista();
-    });
+watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
+    adicionaNaLista();
+});
 
 function gerarDiaSelecionado(dia) {
     let ultimoDia = format(endOfMonth(diaSelecionado.dia.value), 'dd')
@@ -369,6 +374,9 @@ function mudaIntervalo() {
         justify-content: center;
         background-color: #FBFBFB;
         clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
+        /* overflow-y: scroll; */
+        /* overflow-x: hidden; */
+        position: relative;
 
 
     }
@@ -408,13 +416,10 @@ function mudaIntervalo() {
         transform: rotate(45deg);
     }
 
-    .linhaDoTempo{
+    .linhaDoTempo {
         width: 100%;
         max-height: min-content;
         margin-top: 11%;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        position: relative;
     }
 
     .setaDireita {
