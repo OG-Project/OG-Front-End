@@ -10,6 +10,13 @@
                 <div class="flex justify-center items-center">
                     <div class="flex flex-col gap-16">
                         <div class="flex justify-between items-center gap-5">
+                            <span class="text-xl font-semibold">Insira a senha antiga</span>
+                            <Input styleInput="input-transparente-claro-grande" 
+                            conteudoInput="Senha Antiga" 
+                            v-model="senhaAntiga" 
+                            tipo="obrigatorio" />
+                        </div>
+                        <div class="flex justify-between items-center gap-5">
                             <span class="text-xl font-semibold">Insira uma senha nova</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Nova" 

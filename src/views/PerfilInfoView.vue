@@ -1,13 +1,13 @@
-<template>
-    <div class="flex justify-center flex-wrap">
+<template class="">
+    <div class=" flex justify-center flex-wrap">
         <div class="flex  flex-col items-center w-[20%] h-[877px] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center w-[329px] h-[329px]">
                 <div class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
             </div>
-            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] ">
+            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
                 <div class="flex flex-col items-center gap-9">
                     <div v-for="i in equipes"
-                        class="shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
+                        class="cardEquipe cursor-pointer shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
                         <svgEquipe class="2xl:ml-6" />
                         <div class="truncate w-[60%] flex xl:justify-start sm:justify-center border-b-2 border-roxo pb-1">
                             Nome Equipe
@@ -175,6 +175,13 @@ function temMaisDeQuatro(lista) {
     }
     .p-carousel-indicator{
         @apply border-yellow-300;
+    }
+    .cardEquipe:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    body{
+        @apply overflow-y-hidden;
     }
 }
 </style>
