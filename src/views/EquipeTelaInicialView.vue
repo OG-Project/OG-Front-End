@@ -26,18 +26,8 @@
         <div class="flex justify-center">
           <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
         </div>
-      <div class="projetos" >
-        <CardProjetos class="cardProjeto">
-        </CardProjetos>
-        <CardProjetos class="cardProjeto">
-        </CardProjetos>
-        <CardProjetos class="cardProjeto">
-        </CardProjetos>
-        <CardProjetos class="cardProjeto">
-        </CardProjetos>
-        <CardProjetos class="cardProjeto">
-        </CardProjetos>
-        <CardProjetos class="cardProjeto">
+      <div class="projetos" v-for="projeto of projetosEquipe" :key="projeto.id" >
+        <CardProjetos class="cardProjeto" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" tipo="lavar" :reponsavel="projeto.responsavel">
         </CardProjetos>
           </div> 
         </div>       
@@ -58,26 +48,39 @@ const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('usuarioCookie');
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
+const quantidadeProjetos = ref([]);
 let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal=false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
-let porcentagemDeTarefasConcluidas = ref(50);
-
 const banco = conexaoBD();
 let equipeEditar = ref({
     nome: '',
     descricao: ''
 });
+let projetosEquipe = ref([]);
 
-let barraPorcentagem = ref({
-  width: porcentagemDeTarefasConcluidas.value + "%",
-  height: "100%",
-  borderRadius: "0px",
-  backgroundColor: "#8E00FF",
-  border: "none",
-  boxShadow: "none",
-});
+  function formatarData(data){
+        // Extrair dia, mês e ano
+        const dia = data.slice(8, 10);
+        const mes = data.slice(5, 7);
+        const ano = data.slice(0, 4);
+        // Retornar data formatada como "dd/mm/yyyy"
+        return `${dia}/${mes}/${ano}`;
+  }
+
+async function buscarProjetosEquipe(){
+  // Chama a função do banco de dados para buscar os membros da equipe
+  console.log(await(await banco.buscarProjetosEquipe(equipeSelecionada, "/projeto/buscarProjetos")));
+  projetosEquipe.value = await (banco.buscarProjetosEquipe(equipeSelecionada,"/projeto/buscarProjetos"));
+   if (Array.isArray(projetosEquipe.value)) {
+        // Filtrar espaços nulos (null) da lista de membros da equipe
+        quantidadeProjetos.value = projetosEquipe.value.filter(projeto => projeto != null);
+    } else {
+        console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
+    }
+  
+}
 
 async function filtrarEquipe(){
     console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
@@ -99,6 +102,7 @@ async function buscarMembrosEquipe() {
   // Chamada da função para buscar membros da equipe assim que o componente for montado
   onMounted(() => {
     buscarMembrosEquipe();
+    buscarProjetosEquipe();
   });
 
    watch(() => VueCookies.get('equipeSelecionada'), async (newValue, oldValue) => {
@@ -111,9 +115,6 @@ async function buscarMembrosEquipe() {
   function numeroMembrosLimitado() {
     return Math.min(quantidadeMembros.value.length, 99);
   }
-
-console.log(usuarioLogado)
-console.log(equipeSelecionada)
 
   const hover = ref(false);
   const hoverMembros = ref(false);
