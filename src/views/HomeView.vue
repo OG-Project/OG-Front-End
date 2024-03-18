@@ -1,6 +1,6 @@
 <template>
   <div class="h-full w-full flex items-center">
-    <div class="flex items-center relative justify-center w-full h-[80%]">
+    <div class="flex items-center relative justify-center w-full h-[35vw]">
       <div
         id="poligono"
         class="h-[92%] w-[38%] shadow-2xl flex justify-center flex-col left-10 absolute overflow-visible"
@@ -9,7 +9,7 @@
         <div class="flex justify-center items-end text-white text-4xl h-[10%]">
           <p>Dashboard</p>
         </div>
-        <div class="flex items-center justify-center mt-8 h-[80%] text-white">
+        <div class="flex items-center justify-center mt-8 h-[70%] text-white">
           <canvas id="tabela"></canvas>
         </div>
       </div>
@@ -17,7 +17,18 @@
         class="bg-[#FBFBFB] w-[76%] h-[90%] flex items-center justify-end"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
       >
-        <div class="overflow-y-auto h-[80%] w-[75%]"></div>
+        <div class="overflow-y-auto h-[90%] w-[75%] flex items-center flex-col">
+          <div class="flex justify-center w-full text-4xl">
+            <p>Tarefas</p>
+          </div>
+          <div class="flex gap-8 mt-4 flex-wrap justify-center w-[65%] text-4xl">
+            <topicosHome nomeDoTopico="Principais Tarefas"> </topicosHome>
+            <topicosHome nomeDoTopico="Tarefas do Dia"> </topicosHome>
+            <topicosHome nomeDoTopico="Tarefas da Semana"> </topicosHome>
+            <topicosHome nomeDoTopico="Tarefas da Mês"> </topicosHome>
+            <topicosHome nomeDoTopico="Tarefas à aprovar"> </topicosHome>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -28,6 +39,7 @@ import { ref } from "vue";
 import Tabelas from "../components/Tabelas.vue";
 import Chart from "chart.js/auto";
 import { onMounted } from "vue";
+import topicosHome from "../components/topicosHome.vue";
 
 let x = ["Feito", "Não Feito"];
 
@@ -53,6 +65,7 @@ const config = {
   type: "doughnut",
   data: data,
   options: {
+    borderWidth: 0,
     responsive: true,
     plugins: {
       legend: {
