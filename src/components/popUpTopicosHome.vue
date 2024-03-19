@@ -1,37 +1,70 @@
 <template>
-    <p>{{console.log("aaa")}}</p>
-  <!-- <div
-    class="w-full h-full flex justify-center items-center absolute"
-    v-if="props.ativo == true"
-  >
-    <div
-      class="blur-background"
-      v-if="props.ativo == true"
-      @click="ativaPopUp()"
-    ></div>
-    <div
-      id="fundoPopUp"
-      class="relative h-[60%] w-[100%] lg:h-[60%] lg:w-[45%] 2xl:h-[80%] 2xl:w-[55%] xl:h-[60%] xl:w-[45%] md:h-[60%] md:w-[55%] sm:h-[60%] sm:w-[80%]"
-    >
-      <img
-        src="../imagem-vetores/botao-x.svg"
-        id="botao-sair"
-        class="absolute top-1 right-1"
-        @click="ativaPopUp()"
-      />
+  <fundoPopUp largura="" altura="95vh">
+    <div class="h-[80vh] w-[45vw] flex flex-col items-center">
+      <h1 class="text-4xl">{{ props.nomeDoTopico }}</h1>
+      <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
+        <div
+          class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
+          style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)"
+        >
+          <div
+            class="m-4 flex w-[70%] justify-between"
+            style="border-bottom: 2px solid #620ba7"
+          >
+            <p>Nome da Tarefa</p>
+            <p>Kaio Teicheira</p>
+          </div>
+          <!-- <CheckBox></CheckBox> -->
+        </div>
+        <div
+          class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
+          style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)"
+        >
+          <div
+            class="m-4 flex w-[70%] justify-between"
+            style="border-bottom: 2px solid #620ba7"
+          >
+            <p>Nome da Tarefa</p>
+            <p>Kaio Teicheira</p>
+          </div>
+          <!-- <CheckBox></CheckBox> -->
+        </div>
+        <div
+          class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
+          style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)"
+        >
+          <div
+            class="m-4 flex w-[70%] justify-between"
+            style="border-bottom: 2px solid #620ba7"
+          >
+            <p>Nome da Tarefa</p>
+            <p>Kaio Teicheira</p>
+          </div>
+          <!-- <CheckBox></CheckBox> -->
+        </div>
+        <div
+          class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
+          style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)"
+        >
+          <div
+            class="m-4 flex w-[70%] justify-between"
+            style="border-bottom: 2px solid #620ba7"
+          >
+            <p>Nome da Tarefa</p>
+            <p>Kaio Teicheira</p>
+          </div>
+          <!-- <CheckBox></CheckBox> -->
+        </div>
+      </div>
     </div>
-  </div> -->
+  </fundoPopUp>
 </template>
 <script setup>
+import CheckBox from "./checkBox.vue";
+import fundoPopUp from "./fundoPopUp.vue";
 const props = defineProps({
-  ativo: Boolean
+  nomeDoTopico: String
 });
-
-function ativaPopUp(){
-    props.ativo = !props.ativo
-    console.log(aaaaaa)
-}
-
 </script>
 <style scoped>
 #fundoPopUp {

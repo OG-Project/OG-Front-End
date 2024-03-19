@@ -22,18 +22,56 @@
             <p>Tarefas</p>
           </div>
           <div class="flex gap-12 mt-4 flex-wrap justify-center w-[70%] text-4xl">
-            <topicosHome @click="enviaParaTarefasPrincipais()" nomeDoTopico="Principais Tarefas">
-              <PopUpTopicosHome :ativo="mostraTarefasPrincipais.value"></PopUpTopicosHome>
+            <topicosHome
+              @click="enviaParaTarefasPrincipais()"
+              nomeDoTopico="Principais Tarefas"
+            >
             </topicosHome>
-            <topicosHome nomeDoTopico="Tarefas do Dia"> </topicosHome>
-            <topicosHome nomeDoTopico="Tarefas da Semana"> </topicosHome>
-            <topicosHome nomeDoTopico="Tarefas da Mês"> </topicosHome>
-            <topicosHome nomeDoTopico="Tarefas à aprovar"> </topicosHome>
+            <topicosHome
+              nomeDoTopico="Tarefas do Dia"
+              @click="enviaParaTarefasDoDia()"
+            >
+            </topicosHome>
+            <topicosHome
+              nomeDoTopico="Tarefas da Semana"
+              @click="enviaParaTarefasDaSemana()"
+            >
+            </topicosHome>
+            <topicosHome
+              nomeDoTopico="Tarefas do Mês"
+              @click="enviaParaTarefasDoMes()"
+            >
+            </topicosHome>
+            <topicosHome
+              nomeDoTopico="Tarefas à aprovar"
+              @click="enviaParaTarefasAprovar()"
+            >
+            </topicosHome>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <PopUpTopicosHome
+    v-if="funcaoPopUp.variavelModal && mostraTarefasPrincipais == true"
+    nomeDoTopico="Principais Tarefas"
+  ></PopUpTopicosHome>
+  <PopUpTopicosHome
+    v-if="funcaoPopUp.variavelModal && mostraTarefasDoDia == true"
+    nomeDoTopico="Principais Do Dia"
+  ></PopUpTopicosHome>
+  <PopUpTopicosHome
+    v-if="funcaoPopUp.variavelModal && mostraTarefasDaSemana == true"
+    nomeDoTopico="Principais Da Semana"
+  ></PopUpTopicosHome>
+  <PopUpTopicosHome
+    v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true"
+    nomeDoTopico="Principais do Mês"
+  ></PopUpTopicosHome>
+  <PopUpTopicosHome
+    v-if="funcaoPopUp.variavelModal && mostraTarefasAprovar == true"
+    nomeDoTopico="Principais à Aprovar"
+  ></PopUpTopicosHome>
 </template>
 
 <script setup>
@@ -43,9 +81,10 @@ import Chart from "chart.js/auto";
 import { onMounted } from "vue";
 import topicosHome from "../components/topicosHome.vue";
 import PopUpTopicosHome from "../components/popUpTopicosHome.vue";
+import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 
 let x = ["Feito", "Não Feito"];
-
+const funcaoPopUp = funcaoPopUpStore();
 let quantidadeTarefasFeitas = ref(70);
 let quantidadeNaoTarefasFeitas = ref(30);
 
@@ -54,10 +93,39 @@ const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
 
 let mostraTarefasPrincipais = ref(false);
 
-function enviaParaTarefasPrincipais(){
-  mostraTarefasPrincipais.value = !mostraTarefasPrincipais.value
-  console.log(mostraTarefasPrincipais.value);
+function enviaParaTarefasPrincipais() {
+  mostraTarefasPrincipais.value = !mostraTarefasPrincipais.value;
+  funcaoPopUp.abrePopUp();
 }
+
+let mostraTarefasDoDia = ref(false);
+
+function enviaParaTarefasDoDia() {
+  mostraTarefasDoDia.value = !mostraTarefasDoDia.value;
+  funcaoPopUp.abrePopUp();
+}
+
+let mostraTarefasDaSemana = ref(false);
+
+function enviaParaTarefasDaSemana() {
+  mostraTarefasDaSemana.value = !mostraTarefasDaSemana.value;
+  funcaoPopUp.abrePopUp();
+}
+
+let mostraTarefasDoMes = ref(false);
+
+function enviaParaTarefasDoMes() {
+  mostraTarefasDoMes.value = !mostraTarefasDoMes.value;
+  funcaoPopUp.abrePopUp();
+}
+
+let mostraTarefasAprovar = ref(false);
+
+function enviaParaTarefasAprovar() {
+  mostraTarefasAprovar.value = !mostraTarefasAprovar.value;
+  funcaoPopUp.abrePopUp();
+}
+
 
 const data = {
   labels: [
