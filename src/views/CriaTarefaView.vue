@@ -949,6 +949,7 @@ function abreFechaCriaSubTarefas() {
 function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
+
     tarefa.value.status.push(status);
   } else {
     tarefa.value.status.forEach((statusDeletar) => {
