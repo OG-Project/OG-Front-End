@@ -77,11 +77,12 @@ import {perfilStore} from '../stores/perfilStore'
 import { ref, onMounted, onBeforeMount } from 'vue';
 import { Usuario } from '../models/usuario';
 import { storeToRefs } from 'pinia';
+import {conexaoBD} from '../stores/conexaoBD.js'
 const PerfilStore=perfilStore()
 const {fonteTitulo} = storeToRefs(PerfilStore)
 const {fonteCorpo} = storeToRefs(PerfilStore)
-
-
+const conexao=conexaoBD()
+// console.log(conexao)
 
 PerfilStore.nome
 let editar=ref(false)
@@ -95,18 +96,14 @@ function alterarEmail(){
         // }
         // console.log("altera")
 }
-onBeforeMount(()=>{
-        // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE   
-        let user=Usuario
-        user.dataNascimento="12/12/2012"
-        user.email="teste@gmail"
-        user.nome="teste"
-        user.sobrenome="testedando"
-        user.senha="123"
-        user.username="LoucoDaXJ6"
-        VueCookies.config('30d')
-        VueCookies.set("usuarioCookie",JSON.stringify(user))
-        let usuario= VueCookies.get("usuarioCookie")
+onBeforeMount(async ()=>{
+        // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE
+
+        VueCookies.set("IdUsuarioCookie",JSON.stringify(2))
+        let id=JSON.parse(VueCookies.get("IdUsuarioCookie"))
+        console.log(id)
+        let usuario = await conexao.buscarUm(id,'/usuario')
+        console.log(usuario)
         // erros pelo fato do cookie
         PerfilStore.nome=usuario.nome
         PerfilStore.sobrenome=usuario.sobrenome
