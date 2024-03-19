@@ -136,7 +136,6 @@ onMounted(() => {
     // alert(route.params.id)
     console.log(fonteTitulo.value)
     console.log(fonteCorpo.value)
-
     // alert(height.value)
     // alert(width.value)
 });
