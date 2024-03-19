@@ -26,8 +26,8 @@
         <div class="flex justify-center">
           <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
         </div>
-      <div class="projetos" v-for="projeto of projetosEquipe" :key="projeto.id" >
-        <CardProjetos class="cardProjeto" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" tipo="lavar" :reponsavel="projeto.responsavel">
+      <div class="projetos" v-for="projeto of listaProjetos" :key="projeto.id" >
+        <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
         </CardProjetos>
           </div> 
         </div>       
@@ -36,19 +36,19 @@
 <script setup>
   import navBar from "../components/navBar.vue"
   import Botao from '../components/Botao.vue';
-  import {ref, onMounted, watch} from 'vue';
+  import {ref, onMounted, watch, computed} from 'vue';
   import VueCookies from "vue-cookies";
   import editarEquipePopUp from "../components/editarEquipePopUp.vue";
   import { funcaoPopUpStore } from "../stores/funcaoPopUp";
   import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
   import { conexaoBD } from "../stores/conexaoBD.js";
-import CardProjetos from "../components/cardProjetos.vue";
+  import CardProjetos from "../components/cardProjetos.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('usuarioCookie');
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
-const quantidadeProjetos = ref([]);
+const listaProjetos = ref([]);
 let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal=false;
 let variavelEngrenagem = false;
@@ -59,6 +59,23 @@ let equipeEditar = ref({
     descricao: ''
 });
 let projetosEquipe = ref([]);
+
+async function entrarNoProjeto(projeto){
+  console.log(projeto)
+  VueCookies.set("projetoId", projeto.id, 30000)
+}
+
+function calcularResponsaveis(projeto) {
+    const nomes = [];
+    if (projeto.responsaveis && Array.isArray(projeto.responsaveis)) {
+        projeto.responsaveis.forEach(responsavel => {
+            if (responsavel && responsavel.nome) {
+                nomes.push(responsavel.nome);
+            }
+        });
+    }
+    return nomes.join(', ');
+}
 
   function formatarData(data){
         // Extrair dia, mês e ano
@@ -75,7 +92,7 @@ async function buscarProjetosEquipe(){
   projetosEquipe.value = await (banco.buscarProjetosEquipe(equipeSelecionada,"/projeto/buscarProjetos"));
    if (Array.isArray(projetosEquipe.value)) {
         // Filtrar espaços nulos (null) da lista de membros da equipe
-        quantidadeProjetos.value = projetosEquipe.value.filter(projeto => projeto != null);
+        listaProjetos.value = projetosEquipe.value.filter(projeto => projeto != null);
     } else {
         console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
     }

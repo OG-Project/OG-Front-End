@@ -13,6 +13,8 @@ import Navbar from '@/components/Navbar.vue';
 import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
+import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
+import listaProjetos from './components/listaProjetos.vue';
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
@@ -38,7 +40,7 @@ let url= window.location.href;
   <div v-if="url!='http://localhost:5173/login'">
     <Navbar ></Navbar>
   </div>
-
+    <listaProjetos></listaProjetos>
     <RouterView />
     <!-- {{ VueCookies.get('isVlibras') }}
     {{ ativado }} -->

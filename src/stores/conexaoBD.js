@@ -34,8 +34,8 @@ export const conexaoBD = defineStore('conexaoBD', {
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://localhost:8085${textoRequisicao}/${equipeId}/${userId}`)
       },
-      buscarUm(id,textoRequisicao){
-        return axios.get(`http://localhost:8085${textoRequisicao}/${id}`).then(response => response.data)
+      async buscarUm(id,textoRequisicao){
+        return await axios.get(`http://localhost:8085${textoRequisicao}/${id}`).then(response => response.data)
       },
       async buscarProjetosEquipe(equipeId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8085${textoRequisicao}/${equipeId}`)).data)
@@ -47,7 +47,7 @@ export const conexaoBD = defineStore('conexaoBD', {
             formData.append('foto', foto);
     
             // Faça a requisição PATCH para enviar a imagem
-            const response = await axios.patch(`http://localhost:8085 /equipe/${equipeId}`, formData, {
+            const response = await axios.patch(`http://localhost:8085/equipe/${equipeId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
