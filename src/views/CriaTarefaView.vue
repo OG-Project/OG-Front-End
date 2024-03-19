@@ -68,7 +68,7 @@
               <div class="pl-2">
                 <Input
                   largura="10"
-                  conteudoInput="Nome Subtarefa"
+                  conteudoInput="Nome Status"
                   fontSize="1rem"
                   altura="3.8"
                   v-model="nomeStatus"
@@ -163,7 +163,7 @@
               <div class="pl-2">
                 <Input
                   largura="10"
-                  conteudoInput="Nome Status"
+                  conteudoInput="Nome SubTarefa"
                   fontSize="1rem"
                   altura="3.8"
                   v-model="nomeSubtarefa"
@@ -605,7 +605,7 @@
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
       <div
-        v-for="status of tarefa.statusDaTarefa"
+        v-for="status of tarefa.status"
         class="min-h-[4%] flex items-center justify-center gap-4"
       >
         <p
@@ -759,9 +759,9 @@ function deletaStatus(stat) {
       status.value.splice(status.value.indexOf(stat), 1);
     }
   });
-  tarefa.value.statusDaTarefa.forEach((statParaDeletar) => {
+  tarefa.value.status.forEach((statParaDeletar) => {
     if (stat === statParaDeletar) {
-      tarefa.value.statusDaTarefa.splice(tarefa.value.statusDaTarefa.indexOf(stat), 1);
+      tarefa.value.status.splice(tarefa.value.status.indexOf(stat), 1);
     }
   });
 }
@@ -886,7 +886,7 @@ let tarefa = ref({
   arquivos: [],
   comentarios: [],
   propriedades: [],
-  statusDaTarefa: [],
+  status: [],
   projetoId: VueCookies.get("IdProjetoAtual"),
 });
 
@@ -907,7 +907,7 @@ onMounted(() => {
     arquivos: [],
     comentarios: [],
     propriedades: [],
-    statusDaTarefa: [],
+    status: [],
     projetoId: VueCookies.get("IdProjetoAtual"),
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
@@ -950,12 +950,12 @@ function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
 
-    tarefa.value.statusDaTarefa.push(status);
+    tarefa.value.status.push(status);
   } else {
-    tarefa.value.statusDaTarefa.forEach((statusDeletar) => {
+    tarefa.value.status.forEach((statusDeletar) => {
       if (statusDeletar === status) {
-        tarefa.value.statusDaTarefa.splice(
-          tarefa.value.statusDaTarefa.indexOf(statusDeletar),
+        tarefa.value.status.splice(
+          tarefa.value.status.indexOf(statusDeletar),
           1
         );
       }
