@@ -3,11 +3,11 @@
         <span class="overflow-y-scroll overflow-x-hidden items-center flex flex-col w-full h-full">
             <div class="h-[95%] w-[80%]  flex flex-col justify-start">
                 <div class="h-full flex flex-col w-full items-center">
-                    <span class="absolute flex items-start justify-center h-[30%] w-full left-0 top-0">
+                    <span class="absolute flex items-start justify-center h-[30%] w-full top-0">
                         <div class=" w-[80%] h-[70%] flex flex-col items-center bg-[#FBFBFB]">
-                            <div class="w-full h-full ">
-                                <div class="w-[100%] h-[100%] flex flex-row">
-                                    <div class="w-[70%] flex flex-row gap-4 text-[28px]">
+                            <div class="w-full h-full">
+                                <div class="w-[100%] h-[50%] flex flex-row">
+                                    <div class="w-[70%] flex flex-row gap-4 text-[28px] items-start">
                                         <button @click="setaEsquerda()" class="h-full w-[10%]">
                                             <div
                                                 class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
@@ -20,10 +20,10 @@
                                                 {{ format(data, "MMMM", {
                                                     locale: ptBR
                                                 }).charAt(0).toUpperCase() +
-                                                    format(data, "MMMM", { locale: ptBR }).slice(1) + " d" }}
+                                                    format(data, "MMMM", { locale: ptBR }).slice(1)+' ‎ '}}
                                             </div>
                                             <div>
-                                                {{ " e " + getYear(data) }}
+                                                {{ " de " + getYear(data) }}
                                             </div>
                                         </div>
     
@@ -34,7 +34,7 @@
                                             </div>
                                         </button>
                                     </div>
-                                    <div class="w-[50%] flex justify-end items-end text-[42px]">
+                                    <div class="w-[50%] flex justify-end items-center text-[42px]">
                                         {{ horaAtual }}
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                         :numVisible="20" circular class="w-[95%] h-[100%] flex justify-end">
     
                                         <template #item="dia">
-                                            <div class="font-Poppins text-[24px]">
+                                            <div class="text-[24px]">
                                                 <button v-if="getMonth(dia.data.dia) == getMonth(data)">
                                                     <button @click="defineDiaSelecionado(dia.data.dia)">
                                                         <div class="h-full">

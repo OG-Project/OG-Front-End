@@ -23,7 +23,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.patch("http://10.4.96.35:8082"+textoRequisicao,userId,equipeId)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`, ids)
+        return axios.patch('http://10.4.96.35:8082'+ textoRequisicao +"/"+ equipeId, ids)
       },
       deletarEquipe(id,textoRequisicao){
         return axios.delete(`http://10.4.96.35:8082${textoRequisicao}/${id}`)
