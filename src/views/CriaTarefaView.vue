@@ -3,13 +3,11 @@
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input
-
           largura="32"
           altura="6"
           fontSize="2rem"
           conteudoInput="Nome da tarefa"
           styleInput="input-transparente-claro-grande"
-
           v-model="tarefa.nome"
         ></Input>
       </div>
@@ -20,7 +18,6 @@
           placeholder="Descrição da tarefa"
           tamanho-da-fonte="1rem"
           resize="none"
-
           v-model="tarefa.descricao"
         ></TextAreaPadrao>
       </div>
@@ -38,7 +35,6 @@
           <p>Status</p>
           <button
             class="flex flex-col justify-center break-keep h-[70%]"
-
             @click="abreFechaCriaStatus()"
           >
             + Criar
@@ -64,7 +60,6 @@
             </div>
 
             <div class="flex flex-row justify-between items-end">
-
               <div class="pl-2">
                 <Input
                   largura="10"
@@ -159,7 +154,6 @@
             </div>
 
             <div class="flex flex-row justify-between items-end">
-
               <div class="pl-2">
                 <Input
                   largura="10"
@@ -172,9 +166,7 @@
               <selectPadrao
                 placeholderSelect="Status"
                 :lista-select="['Em Progresso', 'Concluido']"
-
                 largura="8"
-
                 altura="3.8"
                 fonteTamanho="1rem"
                 v-model="statusSubtarefa"
@@ -289,7 +281,6 @@
                 tamanhoPadrao="pequeno"
                 :funcaoClick="enviaComentario"
                 :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"
-
               ></Botao>
             </div>
           </div>
@@ -328,7 +319,6 @@
                   class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
                 />
                 <div class="w-[80%]">
-
                   <p>
                     {{ comentario.autor }}
                   </p>
@@ -339,7 +329,6 @@
                       comentario.autor === usuarioCookies.username
                     "
                   >
-
                     <TextAreaPadrao
                       width="25vw"
                       height="15vh"
@@ -356,7 +345,6 @@
                       comentario.autor != usuarioCookies.username
                     "
                   >
-
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.comentario }}
                     </p>
@@ -368,7 +356,6 @@
                       comentario.autor === usuarioCookies.username
                     "
                   >
-
                     <Botao
                       texto="Editar"
                       preset="PadraoRoxo"
@@ -503,9 +490,7 @@
                 <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
                   <Input
                     altura="2"
-
                     largura="27"
-
                     conteudoInput=" "
                     v-model="propriedade.valor[index]"
                     width="60%"
@@ -513,9 +498,7 @@
                   >
                   </Input>
                   <img
-
                     class="w-[100%] ml-2"
-
                     @click="deletaValorSelect(propriedade.valor, index)"
                     :src="BotaoX"
                   />
@@ -731,7 +714,6 @@ let corStatus = ref("ff0000");
 let nomeSubtarefa = ref("");
 let statusSubtarefa = ref("Em Progresso");
 
-
 function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
   return isLight ? "#000" : "#fff";
@@ -890,6 +872,24 @@ let tarefa = ref({
   projetoId: VueCookies.get("IdProjetoAtual"),
 });
 
+
+
+function puxaTarefaDaEdicao() {
+  let tarefas = banco.procurar("/tarefa");
+  let IdTarefaCookies = VueCookies.get("IdTarefaCookies")
+  for (tarefaEdicao in tarefas) {
+    if(IdTarefaCookies.value == tarefa.id){
+      tarefa.value.nome = tarefaEdicao.nome
+      tarefa.value.descricao = tarefaEdicao.descricao
+      tarefa.value.arquivos = tarefaEdicao.arquivos
+      tarefa.value.comentarios = tarefaEdicao.comentarios
+      tarefa.value.propriedades = tarefaEdicao.valorPropriedadeTarefas
+      tarefa.value.status = tarefaEdicao.status
+      tarefa.value.projetoId = VueCookies.get("IdProjetoAtual")
+    }
+  }
+}
+
 onUpdated(() => {
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
 });
@@ -897,6 +897,7 @@ onUpdated(() => {
 onMounted(() => {
   autenticaUsuarioCookies();
   autenticarUsuario();
+  puxaTarefaDaEdicao();
   console.log("comeco");
   procuraPropriedadesDoBanco();
   console.log("fim");
@@ -949,17 +950,12 @@ function abreFechaCriaSubTarefas() {
 function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
-
     tarefa.value.status.push(status);
   } else {
     tarefa.value.status.forEach((statusDeletar) => {
       if (statusDeletar === status) {
-        tarefa.value.status.splice(
-          tarefa.value.status.indexOf(statusDeletar),
-          1
-        );
+        tarefa.value.status.splice(tarefa.value.status.indexOf(statusDeletar), 1);
       }
-
     });
   }
 }
@@ -1025,7 +1021,6 @@ function deletaComentario(comentario) {
   tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
       tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
-
     }
   });
 }
@@ -1037,7 +1032,6 @@ function trocaComentarioSendoEditado() {
 }
 
 function editarComentario(comentario) {
-
   if (comentario.comentario === "") {
     deletaComentario(comentario);
   }
@@ -1189,7 +1183,6 @@ function clicouOpcaoStatus() {
 }
 
 #bgBranco {
-
   background-color: #ffffff;
 }
 
@@ -1311,6 +1304,4 @@ option {
   font-size: small;
   border: 1px solid #cbcbcb;
 }
-
 </style>
-
