@@ -50,7 +50,7 @@
             </div>
         </div>
         <div class=" w-[83%] h-[90%] flex-row ">
-            <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"></ListaPropiedadesStatus>
+            <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades" @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
         </div>
         <div class="flex justify-end items-end ">
             <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
@@ -167,7 +167,12 @@ async function defineSelect() {
 
 function colocaListaPropriedades(propriedades){
     listaPropriedades.value=propriedades
-    console.log(propriedades)
+}
+
+function colocaListaStatus(status){
+    listaStatus.value=[]
+    listaStatus.value= status
+    console.log(status)
 }
 
 function buscaProjetoCookies() {
