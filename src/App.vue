@@ -7,20 +7,19 @@ import Input from './components/Input.vue'
 import fundoPopUp from './components/fundoPopUp.vue';
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
 import VueCookies from "vue-cookies";
-
-
 import Navbar from '@/components/Navbar.vue';
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
-
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
 const {isVlibras}=storeToRefs(perfil);
 let url= window.location.href;
-// let ativado='';
 
+const route = useRoute();
+// let ativado='';
 // watch(ativado,async (newValue,oldValue)=>{
 //   ativado.value=newValue
 //   console.log(ativado)
@@ -30,19 +29,27 @@ let url= window.location.href;
 // })
 // onMounted(()=>{
 // ativado=ref(VueCookies.get('isVlibras'))
-
 // })
+var estaNoLogin = ref(true)
+watch(() => route.path, (newPath, oldPath) => {
+  // Aqui você pode executar sua lógica quando a rota muda
+  console.log('Rota mudou de', oldPath, 'para', newPath);
+  if(route.path == '/login'){
+    estaNoLogin.value = true
+    console.log(estaNoLogin.value)
+  }else{
+    estaNoLogin.value = false
+    console.log(estaNoLogin.value)
+  }
+});
+
 </script>
 
 <template>
-  <div v-if="url!='http://localhost:5173/login'">
-    <Navbar ></Navbar>
-  </div>
-
+  <div>
+    <Navbar v-show="!estaNoLogin" />
     <RouterView />
-    <!-- {{ VueCookies.get('isVlibras') }}
-    {{ ativado }} -->
-    <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
+    <div v-show="isVlibras || VueCookies.get('isVlibras') === 'true'">
       <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper>
@@ -50,6 +57,7 @@ let url= window.location.href;
         </div>
       </div>
     </div>
+  </div>
 </template>
 <style scoped>
 

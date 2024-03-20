@@ -7,8 +7,8 @@
     >
       <img class="h-[50px] w-[50px]" src="../imagem-vetores/haburguer.svg" />
     </div>
-    <div v-if="aberto" class="sidebar slide-in flex fixed">
-      <div class="transition h-[100vh] w-[10vw] bg-roxoEscuro">
+    <div v-if="aberto" class="sidebar slide-in flex fixed" style="z-index:999999;">
+      <div class="transition h-[100vh] w-[15vw] bg-roxoEscuro">
         <div class="flex-col h-full flex justify-between gap-6">
           <div class="ml-4 mt-6">
             <img
@@ -20,7 +20,7 @@
 
           <div class="flex-col h-full flex gap-6 ml-4 mt-10 items-start">
             <!-- home -->
-            <div class="flex gap-6 justify-center items-center text-white text-lg">
+            <div class="flex gap-6 justify-center items-center text-white text-lg" @click="redirecionamento('/')">
               <svg
                 width="44"
                 height="44"
@@ -37,7 +37,7 @@
             </div>
 
             <!-- equipes -->
-            <div class="gap-6 flex justify-center items-center text-white text-lg">
+            <div class="gap-6 flex justify-center items-center text-white text-lg" @click="redirecionamento('/equipe')">
               <svg
                 width="44"
                 height="44"
@@ -53,7 +53,7 @@
               <div>Equipe</div>
             </div>
             <!-- pronetos -->
-            <div class="flex gap-6 justify-center items-center text-white text-lg">
+            <div class="flex gap-6 justify-center items-center text-white text-lg" @click="redirecionamento('/projetos')">
               <svg
                 width="44"
                 height="41"
@@ -72,7 +72,7 @@
               <div>Projetos</div>
             </div>
           </div>
-          <div class="w-full flex-col flex gap-6 ml-4 mb-4 justify-end items-start">
+          <div class="w-full flex-col flex gap-6 ml-4 mb-4 justify-end items-start" @click="redirecionamento('/login')">
             <div class="flex gap-6 justify-center items-center text-white text-lg">
               <svg
                 width="44"
@@ -98,14 +98,18 @@
 </template>
 
 <script setup>
+import router from '@/router';
 import { ref } from "vue";
+
 const aberto = ref(false);
+
 function openClose() {
-  if (aberto.value) {
-    aberto.value = false;
-  } else {
-    aberto.value = true;
-  }
+  aberto.value = !aberto.value;
+}
+
+function redirecionamento(local){
+  router.push(local); 
+  openClose();
 }
 </script>
 
