@@ -1,58 +1,58 @@
 <script setup>
 
 import { RouterLink, RouterView } from 'vue-router'
-import {ref,onMounted,onBeforeMount} from 'vue'
-import CardList from './components/CardTarefaList.vue'
-
+import Tabelas from './components/Tabelas.vue';
+import LoginView from './views/LoginView.vue';
 import Input from './components/Input.vue'
-
-import PopUpCriaPropriedade from './components/popUpCriaPropriedade.vue';
-import {conexaoBD} from './stores/conexaoBD.js'
-
-let api =conexaoBD()
-const tarefas=ref([])
-let tarefasDois=ref([])
+import fundoPopUp from './components/fundoPopUp.vue';
+import { funcaoPopUpStore } from './stores/funcaoPopUp'
+import VueCookies from "vue-cookies";
 
 
-onBeforeMount(async()=>{
-  const res= api.procurar('/tarefa')
-  .then((result) => {
-    console.log(result)
-    tarefas.value=result
-    console.log(tarefas.value)
-  }).catch((error)=>{
-    console.log(error);
-  })
-})
-let array=['nome','descricao','status','data de termino','data do meu jogo']
+import Navbar from '@/components/Navbar.vue';
+import { onMounted, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { perfilStore } from './stores/perfilStore';
+
+const funcaoPopUpPropriedade = funcaoPopUpStore();
+const funcaoPopUpProjeto= funcaoPopUpStore();
+const perfil=perfilStore()
+const {isVlibras}=storeToRefs(perfil);
+let url= window.location.href;
+// let ativado='';
+
+// watch(ativado,async (newValue,oldValue)=>{
+//   ativado.value=newValue
+//   console.log(ativado)
+//   console.log(newValue)
+//   console.log(oldValue)
+  
+// })
+// onMounted(()=>{
+// ativado=ref(VueCookies.get('isVlibras'))
+
+// })
 </script>
+
 <template>
-  
-  <CardList :tarefas="tarefas" :arrayDePropriedadesEcolhidas="array" />
-  <div>oi</div>
-  <RouterView />
-  
+  <div v-if="url!='http://localhost:5173/login'">
+    <Navbar ></Navbar>
+  </div>
+
+    <RouterView />
+    <!-- {{ VueCookies.get('isVlibras') }}
+    {{ ativado }} -->
+    <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
+      <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
+    </div>
 </template>
-<style>
+<style scoped>
 
 </style>
-// {
-//   "id": 2,
-//   "nome": "Bart Sergio",
-//   "descricao": "Filho",
-//   "cor": "blue",
-//   "valorPropriedadeTarefas": [
-//       {
-//           "propriedade": {
-//               "id": 1
-//           },
-//           "valor": {
-//               "data": "2023-11-30"
-//           }
-//       }
-//   ],
-//   "status": {
-//       "id": 1
-//   }
-// }
+
 

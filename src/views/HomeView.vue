@@ -1,9 +1,9 @@
 <template>
-        <Tabelas tipo="bar"></Tabelas>
 </template>
 
 
 <script setup>
+import {ref} from 'vue'
 
 </script>
 

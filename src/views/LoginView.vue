@@ -40,9 +40,15 @@ async function fazerLogin() {
   let usuarios = banco.procurar("/usuario");
   let listaUsuarios = await usuarios;
   listaUsuarios.forEach((usuario) => {
+     console.log(usuario);
+    console.log(usuarioLogin);
     if (usuarioLogin.value === usuario.username) {
       if (senhaUsuarioLogin.value === usuario.senha) {
-        VueCookies.set("usuarioCookie", usuario, 1);
+        console.log("davi");
+        console.log(usuario);
+        usuarioLogin.value = "";
+        senhaUsuarioLogin.value = "";
+        VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000);
       }
     }
   });
@@ -71,44 +77,46 @@ async function cadastraUsuario() {
     }
   });
   if (usuarioUnico) {
-    if (emailCadastro.value.indexOf('@') > 0 && emailCadastro.value.indexOf('@') < emailCadastro.value.length - 1 && emailCadastro.value.includes(".")) {
+    if (
+      emailCadastro.value.indexOf("@") > 0 &&
+      emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
+      emailCadastro.value.includes(".")
+    ) {
       if (senhaCadastro.value === confirmarSenhaCadastro.value) {
         criarUsuario.criaUsuario(
           usuarioCadastro.value,
           emailCadastro.value,
           senhaCadastro.value
         );
-        usuarioCadastro.value = ""
-        emailCadastro.value  = ""
-        senhaCadastro.value  = ""
+        usuarioCadastro.value = "";
+        emailCadastro.value = "";
+        senhaCadastro.value = "";
+        confirmarSenhaCadastro.value = "";
       }
     }
   }
 }
 
-
 let vizualizacaoDeSenha = ref("password");
 let vizualizacaoDeSenhaConfirmacao = ref("password");
 let iconeDaSenha = ref(olho);
 let iconeDaSenhaConfirmacao = ref(olho);
-function mostraSenhas(){
-  if(vizualizacaoDeSenha.value === ""){
-    vizualizacaoDeSenha.value = "password"
-    iconeDaSenha.value = olho
-  }
-  else{
-    vizualizacaoDeSenha.value = ""
-    iconeDaSenha.value = olhoOculto
+function mostraSenhas() {
+  if (vizualizacaoDeSenha.value === "") {
+    vizualizacaoDeSenha.value = "password";
+    iconeDaSenha.value = olho;
+  } else {
+    vizualizacaoDeSenha.value = "";
+    iconeDaSenha.value = olhoOculto;
   }
 }
-function mostraSenhaConfirmacao(){
-  if(vizualizacaoDeSenhaConfirmacao.value === ""){
-    vizualizacaoDeSenhaConfirmacao.value = "password"
-    iconeDaSenhaConfirmacao.value = olho
-  }
-  else{
-    vizualizacaoDeSenhaConfirmacao.value = ""
-    iconeDaSenhaConfirmacao.value = olhoOculto
+function mostraSenhaConfirmacao() {
+  if (vizualizacaoDeSenhaConfirmacao.value === "") {
+    vizualizacaoDeSenhaConfirmacao.value = "password";
+    iconeDaSenhaConfirmacao.value = olho;
+  } else {
+    vizualizacaoDeSenhaConfirmacao.value = "";
+    iconeDaSenhaConfirmacao.value = olhoOculto;
   }
 }
 </script>
@@ -132,16 +140,16 @@ function mostraSenhaConfirmacao(){
             v-model="usuarioLogin"
           ></Input>
           <div class="flex flex-row justify-center items-center pl-10">
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="iconeSenhaLogin"
-            conteudoInput="Senha"
-            v-model="senhaUsuarioLogin"
-            :tipo="vizualizacaoDeSenha"
-          ></Input>
-          <button class="h-[100%] w-[8%]" @click="mostraSenhas">
-            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4">
-          </button>
+            <Input
+              styleInput="input-transparente-escuro"
+              :icon="iconeSenhaLogin"
+              conteudoInput="Senha"
+              v-model="senhaUsuarioLogin"
+              :tipo="vizualizacaoDeSenha"
+            ></Input>
+            <button class="h-[100%] w-[6%]" @click="mostraSenhas">
+              <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
+            </button>
           </div>
           <Botao
             :funcaoClick="fazerLogin"
@@ -191,28 +199,34 @@ function mostraSenhaConfirmacao(){
             v-model="emailCadastro"
           ></Input>
           <div class="flex flex-row justify-center items-center pl-10">
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="iconeSenhaLogin"
-            conteudoInput="Senha"
-            v-model="senhaCadastro"
-            :tipo="vizualizacaoDeSenha"
-          ></Input>
-          <button class="h-[100%] w-[8%] flex items-center justify-center" @click="mostraSenhas">
-            <img :src="iconeDaSenha" class="h-[100%] w-[100%] invert ml-4">
-          </button>
+            <Input
+              styleInput="input-transparente-escuro"
+              :icon="iconeSenhaLogin"
+              conteudoInput="Senha"
+              v-model="senhaCadastro"
+              :tipo="vizualizacaoDeSenha"
+            ></Input>
+            <button
+              class="h-[100%] w-[6%] flex items-center justify-center"
+              @click="mostraSenhas"
+            >
+              <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
+            </button>
           </div>
           <div class="flex flex-row justify-center items-center pl-10">
-          <Input
-            styleInput="input-transparente-escuro"
-            :icon="iconeSenhaLogin"
-            conteudoInput="Confirmar Senha"
-            v-model="confirmarSenhaCadastro"
-            :tipo="vizualizacaoDeSenhaConfirmacao"
-          ></Input>
-          <button class="h-[100%] w-[8%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
-            <img :src="iconeDaSenhaConfirmacao" class="h-[100%] w-[100%] invert ml-4">
-          </button>
+            <Input
+              styleInput="input-transparente-escuro"
+              :icon="iconeSenhaLogin"
+              conteudoInput="Confirmar Senha"
+              v-model="confirmarSenhaCadastro"
+              :tipo="vizualizacaoDeSenhaConfirmacao"
+            ></Input>
+            <button
+              class="h-[100%] w-[6%] flex items-center justify-center"
+              @click="mostraSenhaConfirmacao"
+            >
+              <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
+            </button>
           </div>
           <Botao
             :funcaoClick="cadastraUsuario"
@@ -275,7 +289,7 @@ function mostraSenhaConfirmacao(){
 .login-enter-to,
 .login-leave-from {
   opacity: 1;
-  transform: translateX(10.0vw);
+  transform: translateX(10vw);
 }
 
 .login-leave-active,

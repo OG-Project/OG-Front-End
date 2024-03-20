@@ -1,8 +1,11 @@
-import { Tarefa } from "./Tarefa"
-import { Propriedade } from "./Propriedade"
 
  export const Projeto={
     id: Number,
-    tarefas : {} ,
-    propiedades : Propriedade
+    nome: String,
+    descricao: String,
+    tarefas : [] ,
+    propriedades : [] ,
+    status : [],
+    equipes : {},
+    reponsaveis: [],
 }
