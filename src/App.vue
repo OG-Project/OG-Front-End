@@ -46,7 +46,6 @@ watch(() => route.path, (newPath, oldPath) => {
 </script>
 
 <template>
-  <div>
     <Navbar v-show="!estaNoLogin" />
     <RouterView />
     <div v-show="isVlibras || VueCookies.get('isVlibras') === 'true'">
