@@ -37,6 +37,7 @@
                             <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
                                 Tarefas Atribuidas
                             </div>
+                            IdTarefaCookie
                         </div>
                     </div>
                     <div v-if="opcaoSelecionadaNaTabela == 'status'">

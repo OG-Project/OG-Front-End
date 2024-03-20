@@ -1,5 +1,4 @@
 <template>
-    <div class="divMaior">
         <span class="overflow-y-scroll overflow-x-hidden items-center flex flex-col w-full h-full">
             <div class="h-[95%] w-[80%]  flex flex-col justify-start">
                 <div class="h-full flex flex-col w-full items-center">
@@ -11,7 +10,7 @@
                                         <button @click="setaEsquerda()" class="h-full w-[10%]">
                                             <div
                                                 class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
-    
+
                                                 <div class="setaEsquerda"></div>
                                             </div>
                                         </button>
@@ -20,13 +19,13 @@
                                                 {{ format(data, "MMMM", {
                                                     locale: ptBR
                                                 }).charAt(0).toUpperCase() +
-                                                    format(data, "MMMM", { locale: ptBR }).slice(1)+' ‎ '}}
+                                                    format(data, "MMMM", { locale: ptBR }).slice(1) + ' ‎ ' }}
                                             </div>
                                             <div>
                                                 {{ " de " + getYear(data) }}
                                             </div>
                                         </div>
-    
+
                                         <button @click="setaDireita()" class="h-full w-[10%]">
                                             <div
                                                 class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
@@ -50,7 +49,7 @@
                                     <Carousel :value="calendario"
                                         :page="gerarDiaSelecionado((format(diaSelecionado.dia.value, 'dd') - 1))"
                                         :numVisible="20" circular class="w-[95%] h-[100%] flex justify-end">
-    
+
                                         <template #item="dia">
                                             <div class="text-[24px]">
                                                 <button v-if="getMonth(dia.data.dia) == getMonth(data)">
@@ -60,7 +59,7 @@
                                                         </div>
                                                         <div class="bg-roxo w-full h-[3px]"
                                                             v-if="format(diaSelecionado.dia.value, 'yyyy/MM/dd') == format(dia.data.dia, 'yyyy/MM/dd')">
-    
+
                                                         </div>
                                                     </button>
                                                 </button>
@@ -124,9 +123,7 @@
                 </div>
             </div>
         </span>
-
-    </div>
-</template>aliza
+</template>
 
 <script setup>
 import { ref, VueElement, watch, onMounted } from 'vue';
@@ -153,7 +150,6 @@ let diaSelecionado =
     listaDeHoras: ref([]),
     listaDeTarefas: ref([])
 }
-defineListaDeHoras()
 let data = Date.now()
 let diaNovo = ref()
 let calendario = ref();
@@ -164,6 +160,8 @@ api.procurar("/tarefa")
 onMounted(() => {
     getCalendario();
     adicionaNaLista();
+    defineListaDeHoras()
+
 })
 
 watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
@@ -189,15 +187,19 @@ async function adicionaNaLista() {
     let hora
     listaDeTarefasTeste2.forEach(tarefa => {
         tarefa.valorPropriedadeTarefas.forEach(propriedade => {
-
-            const dataFormatada = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd');
-            if (format(diaSelecionado.dia.value, 'yyyy-MM-dd') == dataFormatada) {
-                if (!lista.includes(tarefa)) {
-                    lista.push(tarefa)
+            if (propriedade.propriedade.tipo == "DATA") {
+                if (propriedade.valor.valor != "") {
+                    const dataFormatada = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd');
+                    if (format(diaSelecionado.dia.value, 'yyyy-MM-dd') == dataFormatada) {
+                        if (!lista.includes(tarefa)) {
+                            lista.push(tarefa)
+                        }
+                    }
                 }
             }
         });
     });
+
     diaSelecionado.listaDeTarefas.value = lista;
 };
 
@@ -219,7 +221,6 @@ async function mudaHoraPropriedade(propriedade, tarefa) {
 
     }
     propriedade.valor.valor = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') + "T" + horaNova + ":00";
-
     if (propriedade.propriedade.tipo == "DATA") {
         tarefa.valorPropriedadeTarefas.forEach(propriedade => {
 
@@ -240,7 +241,6 @@ async function mudaHoraPropriedade(propriedade, tarefa) {
 
     console.log(tarefa)
     console.log(await tarefaNova)
-    api.atualizar(tarefaNova, "/tarefa")
 }
 
 function defineHora() {
@@ -365,21 +365,6 @@ function mudaIntervalo() {
 @import url(../assets/main.css);
 
 @layer components {
-    .divMaior {
-        display: flex;
-        flex-direction: column;
-        width: 90%;
-        height: 72%;
-        align-items: center;
-        justify-content: center;
-        background-color: #FBFBFB;
-        clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
-        /* overflow-y: scroll; */
-        /* overflow-x: hidden; */
-        position: relative;
-
-
-    }
 
     .colunaDeHoras {
         @apply rounded-[1.7vh] w-[5%] max-h-min bg-gray-300 flex gap-[8vh]
