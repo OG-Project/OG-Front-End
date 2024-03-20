@@ -3,7 +3,7 @@
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral class="w-[45%]"></BarraLateral>
       <div class="h-[8vh]  w-[15%] flex items-center">
-        <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px"> </Botao>
+        <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px" :funcaoClick="redireciona"> </Botao>
     </div>
     </div>
     <div class="h-[8vh] w-[35%] flex gap-8">
@@ -21,6 +21,12 @@ import Botao from "../components/Botao.vue";
 import notificacao from "../imagem-vetores/Notificacao.svg"
 import UserIcon from "../imagem-vetores/UserIcon.svg"
 import Input from "./Input.vue";
+import router from '@/router';
+
+function redireciona(){
+  router.push('criaTarefa')
+}
+
 </script>
 <style scoped>
   
