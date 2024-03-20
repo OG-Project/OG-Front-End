@@ -1,35 +1,81 @@
 
 <template>
     <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
-        <div class=" flex items-center justify-center">
-            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+        v-if="icon!='null' && direcao!='direita' && tipo!='float'" 
+        :style="estilizaDivInput">
+        <div 
+        class=" flex items-center justify-center">
+            
+            <img 
+            :src=icon 
+            :style="tamanhoIcon" 
+            class="flex items-center justify-center">
         </div>
-            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"  :placeholder=conteudoInput > 
+            
+            <input 
+            :type="tipo" 
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado 
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)" 
+            :placeholder=conteudoInput > 
    </div>
 
    <div class="styleInputPadrao flex items-center" 
-                    v-if="icon=='null' & tipo=='float'">
-        <div class="estiloPlaceHolder">
-            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-                 @input="$emit('update:modelValue', $event.target.value)" class="peer" placeholder=" "  > 
-            <label :style="estilizaDivPlaceHolder" for="inputStyle"  class=" absolute  text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">{{ conteudoInput }}</label>
+        v-if="icon=='null' & tipo=='float'">
+        <div 
+        class="estiloPlaceHolder">
+            
+            <input 
+            :type="tipo" 
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado 
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)" 
+            class="peer" 
+            placeholder=" "  > 
+            
+            <label 
+            :style="estilizaDivPlaceHolder" 
+            for="inputStyle"  
+            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            {{ conteudoInput }}
+            </label>
         </div>
    </div>
 
-   <div class="styleInputPadrao" 
-        v-if="icon=='null' && tipo!='float'"  >
-            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)" :placeholder=conteudoInput  > 
+   <div 
+   class="styleInputPadrao" 
+    v-if="icon=='null' && tipo!='float'"  >
+            <input 
+            :type="tipo" 
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado 
+            :value="modelValue"
+            @input="$emit('update:modelValue', $event.target.value)" 
+            :placeholder=conteudoInput  > 
       
    </div>
-   <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
-        v-if="direcao=='direita' && tipo!='float'" :style="estilizaDivInput">
-        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
+   <div 
+   class="styleInputPadraoIconDireita " 
+   :class="styleInputPadraoDireita" 
+    v-if="direcao=='direita' && tipo!='float'" 
+    :style="estilizaDivInput">
+    
+        <input 
+        :type="tipo" 
+        :placeholder=conteudoInput
+        :style="estilizaInput" 
+        class="inputStyle" 
+        :disabled=desabilitado
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)">
-        <div class="flex tems-center justify-center">
+        
+        <div 
+        class="flex tems-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
    </div>
@@ -39,6 +85,13 @@
 import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 import {Usuario} from '../models/usuario'
 import {Equipe} from '../models/Equipe'
+import { perfilStore } from '../stores/perfilStore';
+import { storeToRefs } from 'pinia';
+const perfil=perfilStore()
+
+const {isTecladoVirtual} = storeToRefs(perfil)
+const {isVoiceMaker} = storeToRefs(perfil)
+
 //funcao de passar para o pai 
     defineEmits(['update:modelValue'])
   const props=defineProps({

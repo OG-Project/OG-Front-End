@@ -79,7 +79,8 @@ const {fonteCorpo} = storeToRefs(PerfilStore)
 const {tamanhoTitulo} = storeToRefs(PerfilStore)
 const {tamanhoCorpo} = storeToRefs(PerfilStore)
 
-
+// FAZER A INTEGRAÇÃO COM BANCO E 
+// ATUALIZAR EMAIL E SENHA DO USUARIO DO COOKIE
 
 let funcaoPopUp=funcaoPopUpStore()
 let usuario;
