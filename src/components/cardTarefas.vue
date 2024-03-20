@@ -67,6 +67,7 @@ function verificaCorTexto(tarefa) {
 
 <template>
     <!-- Preset 1 Kanban -->
+
     <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1">
         <div :style="tarefa1"> </div>
         <div class="w-[60%] m-[5%] font-Poppins font-medium text-[1vw]">

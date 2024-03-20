@@ -47,6 +47,7 @@
                 <div>{{ final }}</div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -83,6 +84,11 @@ const props = defineProps({
     }
 
 })
+let alinhamento=ref(43)
+onMounted(() => {
+
+})
+
 
 const grafico = {
     display: "flex",
@@ -90,6 +96,7 @@ const grafico = {
     alignItems: "center",
     width: props.feito + "%",
 }
+
 
 </script>
 
