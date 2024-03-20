@@ -40,7 +40,6 @@ let url= window.location.href;
   <div v-if="url!='http://localhost:5173/login'">
     <Navbar ></Navbar>
   </div>
-    <listaProjetos></listaProjetos>
     <RouterView />
     <!-- {{ VueCookies.get('isVlibras') }}
     {{ ativado }} -->

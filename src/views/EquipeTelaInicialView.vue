@@ -27,7 +27,7 @@
           <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
         </div>
       <div class="projetos" v-for="projeto of listaProjetos" :key="projeto.id" >
-        <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
+        <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
         </CardProjetos>
           </div> 
         </div>       
@@ -98,6 +98,17 @@ async function buscarProjetosEquipe(){
     }
   
 }
+
+function calcularProgresso(projeto) {
+    if (!projeto.tarefas || projeto.tarefas.length == 0) {
+      return 0; // se não houver tarefas, o progresso é 0%
+    }
+
+    const totalTarefas = projeto.tarefas.length;
+    const tarefasConcluidas = projeto.tarefas.filter(tarefa => tarefa.concluida).length;
+
+    return Math.round((tarefasConcluidas / totalTarefas) * 100);
+  }
 
 async function filtrarEquipe(){
     console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
