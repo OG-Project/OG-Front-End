@@ -26,7 +26,7 @@
                 <KanbanDeStatus></KanbanDeStatus>
             </div>
             <div v-if="opcao == 'Lista'" class="w-[100%] h-screen flex justify-center items-center">
-                <KanbanDeStatus></KanbanDeStatus>
+                <cardList></cardList>
             </div>
         </div>
     </div>
@@ -36,7 +36,7 @@ import { ref } from 'vue';
 import calendario from '../components/calendario.vue';
 import KanbanDeStatus from '../components/KanbanDeStatus.vue';
 import timeLine from '../components/timeLine.vue';
-import lis
+import cardList from '../components/CardTarefasList.vue'
 
 let opcao = ref("")
 </script>
