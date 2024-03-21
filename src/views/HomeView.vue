@@ -18,10 +18,10 @@
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
       >
         <div class="overflow-y-auto h-[100%] w-[75%] flex items-center flex-col">
-          <div class="flex justify-center w-full text-4xl mt-4">
+          <div class="flex justify-center w-full text-4xl mt-8">
             <p>Tarefas</p>
           </div>
-          <div class="flex gap-12 mt-4 flex-wrap justify-center w-[70%] text-4xl">
+          <div class="flex gap-12 mt-16 flex-wrap justify-center w-[70%] text-4xl">
             <topicosHome
               @click="enviaParaTarefasPrincipais()"
               nomeDoTopico="Principais Tarefas"
@@ -40,11 +40,6 @@
             <topicosHome
               nomeDoTopico="Tarefas do Mês"
               @click="enviaParaTarefasDoMes()"
-            >
-            </topicosHome>
-            <topicosHome
-              nomeDoTopico="Tarefas à aprovar"
-              @click="enviaParaTarefasAprovar()"
             >
             </topicosHome>
           </div>
@@ -67,10 +62,6 @@
   <PopUpTopicosHome
     v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true"
     nomeDoTopico="Principais do Mês"
-  ></PopUpTopicosHome>
-  <PopUpTopicosHome
-    v-if="funcaoPopUp.variavelModal && mostraTarefasAprovar == true"
-    nomeDoTopico="Principais à Aprovar"
   ></PopUpTopicosHome>
 </template>
 
@@ -116,13 +107,6 @@ let mostraTarefasDoMes = ref(false);
 
 function enviaParaTarefasDoMes() {
   mostraTarefasDoMes.value = !mostraTarefasDoMes.value;
-  funcaoPopUp.abrePopUp();
-}
-
-let mostraTarefasAprovar = ref(false);
-
-function enviaParaTarefasAprovar() {
-  mostraTarefasAprovar.value = !mostraTarefasAprovar.value;
   funcaoPopUp.abrePopUp();
 }
 

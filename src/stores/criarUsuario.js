@@ -9,12 +9,13 @@ export const criaUsuarioStore = defineStore('criaUsuario', {
       }
     },
     actions: {
-        criaUsuario(username,email,senha){
+        criaUsuario(username,email,senha,foto){
         let usuarioCriado = Usuario
         let api = conexaoBD();
         usuarioCriado.username=username;
         usuarioCriado.email=email;
         usuarioCriado.senha=senha;
+        usuarioCriado.foto=foto;
         console.log(usuarioCriado)
         api.cadastrar(usuarioCriado,'/usuario')
       },

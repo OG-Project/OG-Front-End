@@ -87,7 +87,8 @@ async function cadastraUsuario() {
         criarUsuario.criaUsuario(
           usuarioCadastro.value,
           emailCadastro.value,
-          senhaCadastro.value
+          senhaCadastro.value,
+          fotoDePerfilPadrao
         );
         usuarioCadastro.value = "";
         emailCadastro.value = "";
@@ -97,6 +98,8 @@ async function cadastraUsuario() {
     }
   }
 }
+
+
 
 let vizualizacaoDeSenha = ref("password");
 let vizualizacaoDeSenhaConfirmacao = ref("password");
