@@ -32,6 +32,7 @@
   </div>
 </template>
 <script setup>
+//aaaaa
 import BarraLateral from "../components/BarraLateral.vue";
 import Botao from "../components/Botao.vue";
 import notificacao from "../imagem-vetores/Notificacao.svg";
