@@ -40,23 +40,23 @@
                 </div>
             </div>
             <div v-if="opcaoSelecionadaNaTabela == 'status'">
-                <div  v-for="status of listaSelecionada">
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]"   @mouseenter="startTimer(status)" @mouseleave="clearTimer(status)" 
-                    v-if="status.verNomeCompleto == false">
+                <div v-for="status of listaSelecionada">
+                    <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(status)"
+                        @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == false">
 
                         <p class="w-[33%] truncate ">{{ status.status.nome }}</p>
-                        <ColorPicker v-model="status.status.cor" @change="criaStatusBack()"></ColorPicker>
+                        <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
                             Tarefas Atribuidas
                         </div>
 
                     </div>
 
-                    <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)" @mouseleave="clearTimer(status)" 
-                    v-if="status.verNomeCompleto == true">
-                        <p class="w-[33%]  bg-brancoNeve break-words "
-                            v-if="status.verNomeCompleto == true">{{ status.status.nome }}</p>
-                        <ColorPicker v-model="status.status.cor" @hide="criaStatusBack()"></ColorPicker>
+                    <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
+                        @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
+                        <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
+                            status.status.nome }}</p>
+                        <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class=" w-[50%] h-full ">
                             <p class="bg-roxo-claro rounded-md p-1 w-full h-[33%]">Tarefas Atribuidas</p>
                         </div>
@@ -151,15 +151,15 @@ let opcoesSelect = ref([]);
 let opcaoSelecionadaNaTabela = ref("");
 let buscarPor = ref("");
 var listaPropriedades = ref([]);
-var listaStatusBack = ref([]);
+var listaStatusBack = [];
 let listaStatus = ref([])
 let listaSelecionada = ref([]);
 let nomePropriedade = ref("");
 let nomeStatus = ref("");
 let tipoPropriedade = ref("");
-let AuxParaCriarPropriedades = [];
-let AuxParaCriarStatus = [];
-let AuxRenderizaStatusTela = [];
+let auxParaCriarPropriedades = [];
+let auxParaCriarStatus = [];
+let auxRenderizaStatusTela = [];
 let corStatus = ref("")
 const funcaoPopUp = funcaoPopUpStore()
 let timeoutId = null;
@@ -191,12 +191,13 @@ async function buscandoPor() {
 function filtroStatus(ordem) {
 
     let listaOrdenadaPorNome = []
-    AuxRenderizaStatusTela.forEach((statusAtual) => {
+    console.log(auxRenderizaStatusTela)
+    auxRenderizaStatusTela.forEach((statusAtual) => {
         listaOrdenadaPorNome.push(statusAtual.status.nome)
     });
 
     if (ordem == "Z-A") {
-        return AuxRenderizaStatusTela.sort((a, b) => {
+        return auxRenderizaStatusTela.sort((a, b) => {
             let itemA = a.status.nome.toLowerCase();
             let itemB = b.status.nome.toLowerCase();
 
@@ -210,7 +211,7 @@ function filtroStatus(ordem) {
         });
 
     }
-    return AuxRenderizaStatusTela.sort(sortBy('nome'));
+    return auxRenderizaStatusTela.sort(sortBy('nome'));
 }
 
 function filtroPropriedades(listaRecebida, buscarPor) {
@@ -234,7 +235,7 @@ function navegaPelaTabela(opcaoSelecionada) {
             this.opcaoSelecionadaNaTabela = 'propriedade';
         }
         opcoesSelect.value = ["Todos", "Data", "Numero", "Seleção", "Texto"];
-        console.log("Eita: " + opcoesSelect.value)
+       
     } else if (opcaoSelecionada == 'status') {
         this.opcaoSelecionadaNaTabela = 'status';
         opcoesSelect.value = ["A-Z", "Z-A"]
@@ -247,7 +248,7 @@ function buscaPropriedadeCookies() {
         return;
     }
     listaPropriedades.value = propriedadeArmazenada
-    AuxParaCriarPropriedades = propriedadeArmazenada
+    auxParaCriarPropriedades = propriedadeArmazenada
 }
 
 function criaPropriedadeCookies() {
@@ -256,41 +257,62 @@ function criaPropriedadeCookies() {
         nome: nomePropriedade.value,
         tipo: tipoPropriedade.value.toUpperCase()
     }
-    AuxParaCriarPropriedades.push(propriedadeCriada)
-    VueCookies.set("propriedadeCookie", AuxParaCriarPropriedades, 864000000)
-    listaPropriedades = AuxParaCriarPropriedades
+    auxParaCriarPropriedades.push(propriedadeCriada)
+    VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
+    listaPropriedades = auxParaCriarPropriedades
     funcaoPopUp.fechaPopUp();
 
     instance.emit('mandaListaPropriedade', listaPropriedades)
 }
 
 function criaStatusBack() {
-    
+
     let statusCriado = {
         nome: nomeStatus.value,
         cor: corStatus.value
     }
+   
+    auxParaCriarStatus.push(statusCriado);
+    criaStatusCookies(statusCriado)
+    mandaStatusBack();
+}
 
-    const verificaIgual = AuxParaCriarStatus.find((objetoAtual) => objetoAtual.nome == ""  && objetoAtual.nome == statusCriado.nome)
-    console.log(verificaIgual)
-    if (verificaIgual.nome=='' && statusCriado.nome != null) {
-        AuxRenderizaStatusTela.map((objeto) => AuxParaCriarStatus.push(objeto.status))
-        AuxParaCriarStatus.push(statusCriado);
-        criaStatusCookies(statusCriado)
-        listaStatusBack = AuxParaCriarStatus;
-    }
+function atualizaStatus(statusRecebido) {   
     
+    const statusAtulizados = listaStatus.value.map(objeto => {
+        if (objeto.status == statusRecebido.status ) {
+          
+            return statusRecebido;
+        }
+        return objeto;
+    });
+
+    auxRenderizaStatusTela = statusAtulizados;
+    console.log(statusAtulizados)
+    criaStatusCookies();
+    mandaStatusBack();
+}
+
+function mandaStatusBack(){
+    auxParaCriarStatus=[]
+    auxRenderizaStatusTela.map((objeto) => auxParaCriarStatus.push(objeto.status))
+    listaStatusBack = auxParaCriarStatus;
+    console.log(listaStatusBack)
     instance.emit('mandaListaStatusBack', listaStatusBack)
 }
 
 function criaStatusCookies(statusBack) {
-    let statusFront = {
-        status: statusBack,
-        verNomeCompleto: false
+    if (statusBack != null) {
+        let statusFront = {
+            status: statusBack,
+            verNomeCompleto: false
+        }
+        auxRenderizaStatusTela.push(statusFront)
+        
     }
-    AuxRenderizaStatusTela.push(statusFront)
-    listaStatus = AuxRenderizaStatusTela;
-    VueCookies.set("statusCookie", AuxRenderizaStatusTela, 864000000)
+    listaStatus.value = auxRenderizaStatusTela;
+    console.log(listaStatus.value)
+    VueCookies.set("statusCookie", auxRenderizaStatusTela, 864000000)
     funcaoPopUp.fechaPopUp();
 }
 
@@ -298,8 +320,9 @@ function criaStatusCookies(statusBack) {
 function buscarStatusCookies() {
     if (VueCookies.get("statusCookie") != null) {
         listaStatus.value = VueCookies.get("statusCookie");
-        AuxRenderizaStatusTela = listaStatus.value;
-        console.log("status: " + AuxRenderizaStatusTela)
+        console.log(VueCookies.get("statusCookie"))
+        auxRenderizaStatusTela = listaStatus.value;
+        console.log("status: " + auxRenderizaStatusTela)
     }
 }
 

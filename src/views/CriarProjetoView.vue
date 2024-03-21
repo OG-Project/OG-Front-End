@@ -132,7 +132,7 @@ let dataInicioProjeto = ref("");
 let descricaoProjeto = ref("");
 let listaDeUsuariosParaBusca = ref([]);
 var listaPropriedades = ref([]);
-let listaStatus = ref([]);
+let listaStatus = [];
 let equipesRelacionadasProjeto = ref([]);
 let listaAuxResponsaveisProjeto = [];
 let responsaveisProjeto = ref([]);
@@ -145,7 +145,7 @@ funcaoPopUp.variavelModal = false
 onMounted(() => {
     defineSelect()
     pesquisaBancoUserName();
-    statusDoProjeto();
+
     buscaProjetoCookies();
     listaEquipesConvidadas.value = []
 })
@@ -170,14 +170,15 @@ function colocaListaPropriedades(propriedades){
 }
 
 function colocaListaStatus(status){
-    listaStatus.value=[]
-    listaStatus.value= status
-    console.log(status)
+    console.log(status);
+    listaStatus = []
+    listaStatus= status
+    
+    
 }
 
 function buscaProjetoCookies() {
     if (VueCookies.get("projetoCookie") != null) {
-        console.log(VueCookies.get("projetoCookie"))
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
@@ -186,7 +187,8 @@ function buscaProjetoCookies() {
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
                 const objetoEnviaBack = {
                     equipe: {
-                        id: EquipeAtual.id
+                        id: EquipeAtual.id,
+                    
                     }
                 }
                 listaEquipeEnviaBack.push(objetoEnviaBack)
@@ -208,13 +210,7 @@ async function pesquisaBancoUserName() {
     return listaDeUsuariosParaBusca;
 }
 
-async function statusDoProjeto() {
-    var listaAux = (await conexao.procurar('/status'))
-    listaAux.forEach(statusAtual => {
-        listaStatus.value.push(statusAtual)
-    });
-    return listaStatus;
-}
+
 
 function criarProjetoCookies() {
     const criaProjetoCookies = Projeto
@@ -244,9 +240,10 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 
 async function criaProjeto() {
     const criaProjeto = criaProjetoStore()
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades)
+    console.log(listaStatus)
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus)
    let projeto= await  conexao.buscarUm(1,"projeto")
-    console.log(projeto)
+    
     VueCookies.set("projetoEditar",projeto,8640000)
 }
 
@@ -260,7 +257,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     if(listaEquipesSelecionadas.value.find( (equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined){
             return;
         }
-        console.log("ele não retornou")
+       
     const objetoEnviaBack = {
         equipe: {
             id: equipeVinculada.id
@@ -285,7 +282,6 @@ async function removeListaEquipeConvidadas(equipeRemover){
 }
 
 async function removeResponsavel(responsavelRemover){
-    console.log(responsavelRemover)
     let listaUsuarios = await conexao.procurar('/usuario');
     let usuarioRemovido = listaUsuarios.find((objeto) => objeto.username == responsavelRemover.username);
     let indice = responsaveisProjeto.value.findIndex((obj) => obj.username == responsavelRemover.username);
