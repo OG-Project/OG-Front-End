@@ -15,6 +15,7 @@ import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
 import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
 import listaProjetos from './components/listaProjetos.vue';
+import kanbanProjetos from './components/kanbanProjetos.vue'
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();

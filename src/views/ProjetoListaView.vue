@@ -22,11 +22,12 @@ import listaProjetos from '../components/listaProjetos.vue';
 </script>
 <style scoped>
 .bordaTitulo{
-    @apply  absolute border-transparent justify-center mt-16
+    @apply absolute z-50 border-transparent justify-center mt-16
     border-b-gray-300   
     border-b-4
     items-center
     focus-within:border-4 w-[45vw];
+  
    ;
 }
 .tituloProjeto{

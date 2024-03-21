@@ -11,7 +11,7 @@
                 </div>
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>Responsavel:</b> {{ reponsavel }}
+                    <b>Responsavel:</b> {{ reponsavel,18 }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -25,7 +25,7 @@
             <!-- colocando a barra de progreço -->
             <div class="barraCinzaGrafico">
                 <div :style="{width: feito + '%'}" class="barraRoxaGrafico">
-                    <div class='absolute mt-[-0.6vh] right-[44%]'> {{ feito }}% </div>
+                    <div class='absolute mt-[-0.6vh] right-[44%] z-10'> {{ feito }}% </div>
                 </div>
 
             </div>
@@ -80,6 +80,8 @@ const props = defineProps({
     }
 
 })
+
+// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 const grafico = {
     display: "flex",
