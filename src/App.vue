@@ -7,18 +7,25 @@ import Input from './components/Input.vue'
 import fundoPopUp from './components/fundoPopUp.vue';
 import { funcaoPopUpStore } from './stores/funcaoPopUp'
 import VueCookies from "vue-cookies";
-
+import {perfilStore} from './stores/perfilStore.js'
+import KeyBoard from './components/Keyboard.vue'
+import svgIconMove from './assets/svgIconMove.vue'
+import svgIconX from './assets/svgIconX.vue'
 
 import Navbar from '@/components/Navbar.vue';
 import { onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
-import { perfilStore } from './stores/perfilStore';
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
 const {isVlibras}=storeToRefs(perfil);
-let url= window.location.href;
+const cordenadas=ref(
+{
+  top:64,
+  left:1300
+} 
+)
 // let ativado='';
 
 // watch(ativado,async (newValue,oldValue)=>{
@@ -28,16 +35,67 @@ let url= window.location.href;
 //   console.log(oldValue)
   
 // })
-// onMounted(()=>{
-// ativado=ref(VueCookies.get('isVlibras'))
+  onMounted(()=>{
+  perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
+  console.log(perfil.isVoiceMaker)
+  perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
+  console.log(perfil.isTecladoVirtual)
+  perfil.fonteCorpo=(VueCookies.get('fonteCorpo'))
+  perfil.fonteTitulo=(VueCookies.get('fonteTitulo'))
+  perfil.isVlibras=(VueCookies.get('isVlibras'))
+  })
+  
+  // const draggableElement = event.target;
+  //     const offsetX = event.clientX - draggableElement.getBoundingClientRect().left;
+  //     const offsetY = event.clientY - draggableElement.getBoundingClientRect().top;
 
-// })
+  //     draggableElement.style.position = 'absolute';
+  //     draggableElement.style.left = event.clientX - offsetX + 'px';
+  //     draggableElement.style.top = event.clientY - offsetY + 'px';
+
+
+  function testeDois(event){
+    console.log(event.clientX)
+    let element =event.target
+
+    const setX= event.clientX - element.getBoundingClientRect().left
+    const setY= event.clientY - element.getBoundingClientRect().top
+    cordenadas.top= event.clientY - setY
+    cordenadas.left= event.clientX - setX
+    console.log('drag '+element)
+  }
+  function press(b){
+    console.log('press '+b)
+  }
+  function change(a){
+    console.log('change '+a)
+  }
+  function close(){
+    perfil.isTecladoAtivado=!perfil.isTecladoAtivado
+  }
+
 </script>
 
-<template>
+<template draggable="true" >
   <div v-if="url!='http://localhost:5173/login'">
     <Navbar ></Navbar>
   </div>
+  <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
+  <div draggable="true" 
+  @dragstart="testeDois($event)" 
+  @dragenter=""
+  @dragover="(event)=> event.preventDefault()"  
+  class="bg-[#ececec] top-16 left-[67.8vw] absolute w-max" 
+  v-if="perfil.isTecladoAtivado">
+    <div class=" flex flex-col items-center">
+      <div class="flex w-full justify-between px-4 ">
+        <svgIconMove class="w-[1vw] h-[3vh]" />
+        <svgIconX @click="close" class="w-[1vw] h-[3vh]" ></svgIconX>
+      </div>
+      <KeyBoard @onChange="change" @onKeyPress="press"  ></KeyBoard>
+    </div>
+  </div>
+
 
     <RouterView />
     <!-- {{ VueCookies.get('isVlibras') }}
@@ -50,6 +108,7 @@ let url= window.location.href;
         </div>
       </div>
     </div>
+
 </template>
 <style scoped>
 

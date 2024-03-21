@@ -1,6 +1,6 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col  ">
-        <Input :icon="IconMic" direcao="direita" disabled ></Input>
+        <Input conteudoInput="oi"  ></Input>
         <div>
             <h1 :style="{fontFamily:fonteTitulo,fontSize:tamanhoTitulo+'vh'}" class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Aparência
@@ -68,7 +68,6 @@ import convert from 'color-convert';
 import Botao from './Botao.vue'
 import Input from './Input.vue';
 import VueCookies from 'vue-cookies';
-import IconMic from '../imagem-vetores/iconMic.svg'
 
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore'

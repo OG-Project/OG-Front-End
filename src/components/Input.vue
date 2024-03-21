@@ -4,8 +4,7 @@
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" 
         :style="estilizaDivInput">
         <div 
-        class=" flex items-center justify-center">
-            
+        class=" cursor-pointer flex items-center justify-center">
             <img 
             :src=icon 
             :style="tamanhoIcon" 
@@ -21,6 +20,9 @@
             @input="$emit('update:modelValue', $event.target.value)" 
             :placeholder=conteudoInput > 
    </div>
+
+   <!-- fazer input com botão com um ou dois -->
+
 
    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null' & tipo=='float'">
@@ -47,8 +49,14 @@
    </div>
 
    <div 
-   class="styleInputPadrao" 
+   class="styleInputPadrao flex flex-row-reverse items-center" 
     v-if="icon=='null' && tipo!='float'"  >
+    <div 
+    class="flex items-center justify-center">
+    <svgIconMic @click="mic" v-show="isVoiceMaker" class=" active:*:fill-roxo  cursor-pointer w-[2.5vw] h-[2.5vh] flex items-center justify-center" ></svgIconMic>
+    <svgIconKeyboard @click="teclado" v-show="isTecladoVirtual " class=" active:*:fill-roxo cursor-pointer w-[2.5vw] h-[2.5vh] flex items-center justify-center" ></svgIconKeyboard>
+    <!-- <img :src="IconMic" :style="tamanhoIcon" class="flex items-center justify-center"> -->
+    </div>
             <input 
             :type="tipo" 
             :style="estilizaInput" 
@@ -69,13 +77,13 @@
         :type="tipo" 
         :placeholder=conteudoInput
         :style="estilizaInput" 
-        class="inputStyle" 
+        id="inputStyle" 
         :disabled=desabilitado
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)">
         
         <div 
-        class="flex tems-center justify-center">
+        class="flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
         </div>
    </div>
@@ -85,12 +93,36 @@
 import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 import {Usuario} from '../models/usuario'
 import {Equipe} from '../models/Equipe'
+import svgIconMic from '../assets/svgIconMic.vue';
+import svgIconKeyboard from '../assets/svgIconKeyboard.vue';
+import VueCookies from 'vue-cookies';
+
+import KeyBoard from '../components/Keyboard.vue'
+
 import { perfilStore } from '../stores/perfilStore';
 import { storeToRefs } from 'pinia';
 const perfil=perfilStore()
 
 const {isTecladoVirtual} = storeToRefs(perfil)
 const {isVoiceMaker} = storeToRefs(perfil)
+let cookieVoice
+let cookieTeclado
+
+onBeforeMount(()=>{
+    cookieVoice=VueCookies.get('isVoiceMaker')
+    cookieTeclado=VueCookies.get('isTecladovirtual')
+})
+
+function mic(){
+
+}
+
+function teclado(){
+   
+    perfil.isTecladoAtivado=!perfil.isTecladoAtivado
+    
+}
+
 
 //funcao de passar para o pai 
     defineEmits(['update:modelValue'])
@@ -113,9 +145,6 @@ const {isVoiceMaker} = storeToRefs(perfil)
         tamanhoMinimoAltura:String,
       })
 
-      onMounted(() => {
-
-      })
     const hoverPadrao = {
         color : verificaCorHover()
     }
@@ -144,8 +173,8 @@ const {isVoiceMaker} = storeToRefs(perfil)
         return "6vh"   
     }
    const tamanhoIcon={
-        width:"60%",
-        height:"60%",
+        width:"50%",
+        height:"50%",
     }
 
    const estilizaInput={

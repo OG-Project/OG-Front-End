@@ -15,6 +15,7 @@ export const perfilStore = defineStore('perfilStore', {
          isVlibras:false,
          isVoiceMaker:false,
          isTecladoVirtual:false,
+         isTecladoAtivado:false,
          isVisualizacaoEmail:false,
          isVisualizacaoEquipe:false,
          isVisualizacaoProjeto:false,
