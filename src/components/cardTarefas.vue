@@ -42,7 +42,7 @@ kanban = {
 }
 
 hoverCard = {
-    width: "13.5vw",
+    width: "12.7vw",
     height: "8vh",
     backgroundColor: "#D9D9D9",
     display: "flex",

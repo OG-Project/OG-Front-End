@@ -36,9 +36,9 @@ import { ref } from 'vue';
 import calendario from '../components/calendario.vue';
 import KanbanDeStatus from '../components/KanbanDeStatus.vue';
 import timeLine from '../components/timeLine.vue';
-import cardList from '../components/CardTarefasList.vue'
+import cardList from '../components/CardTarefaList.vue';
 
-let opcao = ref("")
+let opcao = ref("Lista")
 </script>
 <style>
 .divMaior {

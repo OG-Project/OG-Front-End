@@ -1,9 +1,9 @@
 <template>
         <span class="overflow-y-scroll overflow-x-hidden items-center flex flex-col w-full h-full">
-            <div class="h-[95%] w-[80%]  flex flex-col justify-start">
+            <div class="h-full w-[80%] flex flex-col justify-start">
                 <div class="h-full flex flex-col w-full items-center">
                     <span class="absolute flex items-start justify-center h-[30%] w-full top-0">
-                        <div class=" w-[80%] h-[70%] flex flex-col items-center bg-[#FBFBFB]">
+                        <div class=" w-[80%] h-[100%] flex flex-col items-center bg-[#FBFBFB]">
                             <div class="w-full h-full">
                                 <div class="w-[100%] h-[50%] flex flex-row">
                                     <div class="w-[70%] flex flex-row gap-4 text-[28px] items-start">
@@ -73,7 +73,7 @@
                     <div class="linhaDoTempo ">
 
                         <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras.value"
-                            class=" h-[4%] flex gap-2">
+                            class=" h-[3.8%] flex gap-2">
 
                             <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                                 (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
@@ -404,7 +404,7 @@ function mudaIntervalo() {
     .linhaDoTempo {
         width: 100%;
         max-height: min-content;
-        margin-top: 11%;
+        margin-top: 26%;
     }
 
     .setaDireita {

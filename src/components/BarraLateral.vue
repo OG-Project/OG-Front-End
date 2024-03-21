@@ -1,3 +1,4 @@
+<template>
 <div class="bg-opacity-40">
     <div
       v-if="!aberto"
