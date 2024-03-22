@@ -9,7 +9,6 @@ import { Equipe } from "./Equipe";
     email: String,
     senha:String,
     equipes: [],
-    foto: []
     
 }
 

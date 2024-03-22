@@ -853,12 +853,14 @@ function deletaPropriedade(propriedade) {
 }
 
 let projetoDaTarefa = ref();
-
+let projetoId = VueCookies.get("IdProjetoAtual");
 async function procuraPropriedadesDoBanco() {
   const projetos = await banco.procurar("/projeto");
   for (const projeto of projetos) {
-    console.log(projetoDaTarefa.value);
-    if (projeto.id == tarefa.projetoId) {
+    console.log("a");
+    console.log(projetoId);
+    console.log(projeto.id);
+    if (projeto.id == projetoId) {
       console.log("foi porra");
       projetoDaTarefa.value = projeto;
       console.log(projeto);
@@ -877,7 +879,6 @@ let tarefa = ref({
   propriedades: [],
   status: [],
   subtarefas: [],
-  projetoId: VueCookies.get("IdProjetoAtual"),
 });
 
 function puxaTarefaDaEdicao() {
@@ -891,19 +892,18 @@ function puxaTarefaDaEdicao() {
       tarefa.value.comentarios = tarefaEdicao.comentarios;
       tarefa.value.propriedades = tarefaEdicao.valorPropriedadeTarefas;
       tarefa.value.status = tarefaEdicao.status;
-      tarefa.value.projetoId = VueCookies.get("IdProjetoAtual");
     }
   }
 }
 
 onUpdated(() => {
+  reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
 });
 
 onMounted(() => {
   reloadSubTarefas();
-
   autenticarUsuario();
   puxaTarefaDaEdicao();
   procuraPropriedadesDoBanco();
@@ -916,7 +916,6 @@ onMounted(() => {
     propriedades: [],
     status: [],
     subtarefas: [],
-    projetoId: VueCookies.get("IdProjetoAtual"),
   };
   console.log(tarefa.projetoId);
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");

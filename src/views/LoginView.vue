@@ -87,8 +87,7 @@ async function cadastraUsuario() {
         criarUsuario.criaUsuario(
           usuarioCadastro.value,
           emailCadastro.value,
-          senhaCadastro.value,
-          fotoDePerfilPadrao
+          senhaCadastro.value
         );
         usuarioCadastro.value = "";
         emailCadastro.value = "";
