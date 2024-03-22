@@ -178,7 +178,7 @@ async function buscandoPor() {
         if (this.buscarPor == "") {
             return;
         }
-        return listaSelecionada.value = filtroPropriedades(listaPropriedades, this.buscarPor);
+        return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
     }
     if (opcaoSelecionadaNaTabela.value == "status") {
         if (this.buscarPor == "A-Z" || this.buscarPor == "") {
@@ -249,20 +249,33 @@ function buscaPropriedadeCookies() {
     }
     listaPropriedades.value = propriedadeArmazenada
     auxParaCriarPropriedades = propriedadeArmazenada
+    mandaProrpiedadesBack(listaPropriedades)
+}
+
+function mandaProrpiedadesBack(listaPropriedades){
+    const propriedadesParaback = listaPropriedades.value.map(objeto => {
+        if (objeto.tipo == "SELEÇÃO" ) {
+            objeto.tipo= "SELECAO"
+            return objeto;
+        }
+        return objeto;
+    });
+    instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
 function criaPropriedadeCookies() {
-
     let propriedadeCriada = {
         nome: nomePropriedade.value,
         tipo: tipoPropriedade.value.toUpperCase()
     }
     auxParaCriarPropriedades.push(propriedadeCriada)
     VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
-    listaPropriedades = auxParaCriarPropriedades
+    listaPropriedades.value = auxParaCriarPropriedades
+    nomePropriedade.value="";
+    tipoPropriedade.value="";
     funcaoPopUp.fechaPopUp();
-
-    instance.emit('mandaListaPropriedade', listaPropriedades)
+    mandaProrpiedadesBack(listaPropriedades)
+    
 }
 
 function criaStatusBack() {
@@ -299,6 +312,8 @@ function mandaStatusBack(){
     listaStatusBack = auxParaCriarStatus;
     console.log(listaStatusBack)
     instance.emit('mandaListaStatusBack', listaStatusBack)
+    nomeStatus.value="";
+    corStatus.value="";
 }
 
 function criaStatusCookies(statusBack) {
@@ -323,6 +338,7 @@ function buscarStatusCookies() {
         console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
         console.log("status: " + auxRenderizaStatusTela)
+        mandaStatusBack();
     }
 }
 
