@@ -562,7 +562,7 @@
             <p>Nome do Projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="w-[100%] text-[#620BA7] break-all">
+            <p class="w-[100%] text-[#620BA7] break-all" v-if="projetoDaTarefa">
               {{ projetoDaTarefa.nome }}
             </p>
           </div>
@@ -572,7 +572,9 @@
             <p>Responsável</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row">
-            <p class="text-[#620BA7] break-all">{{ projetoDaTarefa.responsaveis }}</p>
+            <p class="text-[#620BA7] break-all" v-if="projetoDaTarefa">
+              {{ projetoDaTarefa.responsaveis }}
+            </p>
           </div>
         </div>
         <div class="flex pl-8">
@@ -626,7 +628,10 @@
               <option v-for="valor in propriedade.valor">{{ valor }}</option>
             </select>
           </div>
-          <div v-else>
+          <div v-if="propriedade.tipo === 'Numero'">
+            <p>Valor: {{ propriedade.valor }}</p>
+          </div>
+          <div v-if="propriedade.tipo === 'Texto'">
             <p>Valor: {{ propriedade.valor }}</p>
           </div>
         </div>
@@ -676,6 +681,9 @@ const propriedades = ref([]);
 //Variavel que armazena os status que podem ser atreladas a tarefa
 
 const status = ref([]);
+
+let projetoDaTarefa = ref();
+let projetoId = VueCookies.get("Id");
 
 //Estilização usando Java Script
 
@@ -829,6 +837,7 @@ function criaPropriedade() {
       if (tipoPropriedade.value === "Seleção") {
         propriedade.valor = ref([]);
       }
+      console.log(propriedade.tipo);
       nomePropriedade.value = "";
       tipoPropriedade.value = "";
       propriedades.value.push(propriedade);
@@ -854,6 +863,7 @@ function deletaPropriedade(propriedade) {
 
 async function procuraProjetosDoBanco() {
   const projetos = await banco.procurar("/projeto");
+  let projetoId = VueCookies.get("IdProjetoAtual");
   for (const projeto of projetos) {
     console.log("a");
     console.log(projetoId);
@@ -861,7 +871,8 @@ async function procuraProjetosDoBanco() {
     if (projeto.id == projetoId) {
       console.log("foi porra");
       projetoDaTarefa.value = projeto;
-      console.log(projeto);
+      status.value = projetoDaTarefa.value.statusList;
+      propriedades.value = projetoDaTarefa.value.propriedades;
     }
   }
 }
@@ -893,10 +904,6 @@ function puxaTarefaDaEdicao() {
     }
   }
 }
-
-let projetoDaTarefa = ref();
-let projetoId = VueCookies.get("IdProjetoAtual");
-
 onUpdated(() => {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
@@ -904,15 +911,14 @@ onUpdated(() => {
 });
 
 onMounted(() => {
+  VueCookies.set("IdProjetoAtual", 1, 100000000000);
   projetoDaTarefa.value = ref();
-  projetoId = VueCookies.get("IdProjetoAtual");
   console.log(projetoDaTarefa.value);
   procuraProjetosDoBanco();
   console.log(projetoDaTarefa.value);
   reloadSubTarefas();
   autenticarUsuario();
   puxaTarefaDaEdicao();
-  VueCookies.set("IdProjetoAtual", 1, 100000000000);
   tarefa.value = {
     nome: "",
     descricao: "",
@@ -922,7 +928,6 @@ onMounted(() => {
     status: [],
     subtarefas: [],
   };
-  console.log(tarefa.projetoId);
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
     tarefa.value = JSON.parse(localStorageData);

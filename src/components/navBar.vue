@@ -23,7 +23,7 @@
       ></Input>
       <img :src="notificacao" />
       <img
-        @click="redireciona('/perfil')"
+        @click="redireciona('/perfil/informacoes')"
         v-if="usuarioCookies && usuarioCookies.foto"
         class="shadow-2xl max-h-[60px] min-w-[50px] rounded-full"
         :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
