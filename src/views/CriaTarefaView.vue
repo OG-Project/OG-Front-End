@@ -563,7 +563,7 @@
           </div>
           <div class="w-[40%] justify-end flex-row">
             <p class="w-[100%] text-[#620BA7] break-all">
-              <!-- {{ projetoDaTarefa.value.nome }} -->
+              {{ projetoDaTarefa.nome }}
             </p>
           </div>
         </div>
@@ -572,7 +572,7 @@
             <p>Responsável</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row">
-            <p class="text-[#620BA7] break-all">Kanye West</p>
+            <p class="text-[#620BA7] break-all">{{ projetoDaTarefa.responsaveis }}</p>
           </div>
         </div>
         <div class="flex pl-8">
@@ -852,9 +852,7 @@ function deletaPropriedade(propriedade) {
   });
 }
 
-let projetoDaTarefa = ref();
-let projetoId = VueCookies.get("IdProjetoAtual");
-async function procuraPropriedadesDoBanco() {
+async function procuraProjetosDoBanco() {
   const projetos = await banco.procurar("/projeto");
   for (const projeto of projetos) {
     console.log("a");
@@ -896,6 +894,9 @@ function puxaTarefaDaEdicao() {
   }
 }
 
+let projetoDaTarefa = ref();
+let projetoId = VueCookies.get("IdProjetoAtual");
+
 onUpdated(() => {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
@@ -903,10 +904,14 @@ onUpdated(() => {
 });
 
 onMounted(() => {
+  projetoDaTarefa.value = ref();
+  projetoId = VueCookies.get("IdProjetoAtual");
+  console.log(projetoDaTarefa.value);
+  procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
   reloadSubTarefas();
   autenticarUsuario();
   puxaTarefaDaEdicao();
-  procuraPropriedadesDoBanco();
   VueCookies.set("IdProjetoAtual", 1, 100000000000);
   tarefa.value = {
     nome: "",
