@@ -17,8 +17,12 @@
                         <CheckBox :checked="gerarBooleano(VueCookies.get('isVisualizacaoEmail'))" tipo="toggle" el-id="visualizacaoEmail" @envia-valor="visualizacaoEmail($event)"></CheckBox>
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Permitir que visualizem suas Equipes</span>
+                        <span class="text-xl">Permitir que visualizem suas equipes</span>
                         <CheckBox :checked="gerarBooleano(VueCookies.get('isVisualizacaoEquipe'))" tipo="toggle" el-id="visualizacaoEquipes" @envia-valor="visualizacaoEquipes($event)"></CheckBox>
+                    </div>
+                    <div class="flex justify-between items-center gap-5">
+                        <span class="text-xl">Permitir que visualizem seu perfil</span>
+                        <CheckBox :checked="gerarBooleano(VueCookies.get('isVisualizacaoPerfil'))" tipo="toggle" el-id="visualizacaoPerfil" @envia-valor="visualizacaoPerfil($event)"></CheckBox>
                     </div>
                     
                 </div>
@@ -51,7 +55,10 @@ function visualizacaoEmail(valor){
     perfil.isVisualizacaoEmail=valor.valor
     VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
 }
-
+function visualizacaoPerfil(valor){
+    
+    VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
+}
 
 function gerarBooleano(boolean){
     if(boolean=="true"){

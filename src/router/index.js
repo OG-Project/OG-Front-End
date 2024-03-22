@@ -46,6 +46,7 @@ const router = createRouter({
     {
       path:'/perfil',
       name:'Perfil',
+      redirect:'/perfil/informacoes',
       component: () => import('../views/PerfilView.vue'),
       children:[
         {
