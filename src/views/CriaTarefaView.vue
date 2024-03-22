@@ -228,11 +228,7 @@
         <div v-for="(subtarefa, index) of subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
             <div class="flex gap-2">
-              <CheckBox
-                class="flex justify-center"
-                @click="trocaStatusDaSubTarefa(subtarefa, index)"
-                :model-value="subtarefa.concluida"
-              ></CheckBox>
+              <Checkbox v-model="subtarefa.concluido" :binary="true" @click="trocaStatusDaSubTarefa(subtarefa, index)"/>
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
@@ -655,6 +651,7 @@ import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
 import { conexaoBD } from "../stores/conexaoBD.js";
+import Checkbox from 'primevue/checkbox';
 
 const banco = conexaoBD();
 

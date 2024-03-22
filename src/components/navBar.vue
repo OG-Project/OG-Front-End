@@ -8,7 +8,7 @@
           texto="Nova Tarefa"
           tamanhoDaBorda="2px"
           :funcaoClick="redireciona"
-          :parametrosFuncao="'criaTarefa'"
+          :parametrosFuncao="'/criaTarefa'"
         >
         </Botao>
       </div>
@@ -23,7 +23,7 @@
       ></Input>
       <img :src="notificacao" />
       <img
-        @click="redireciona('/perfil/:'+usuarioId)"
+        @click="redireciona('/perfil')"
         v-if="usuarioCookies && usuarioCookies.foto"
         class="shadow-2xl max-h-[60px] min-w-[50px] rounded-full"
         :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
@@ -32,7 +32,6 @@
   </div>
 </template>
 <script setup>
-//aaaaa
 import BarraLateral from "../components/BarraLateral.vue";
 import Botao from "../components/Botao.vue";
 import notificacao from "../imagem-vetores/Notificacao.svg";
