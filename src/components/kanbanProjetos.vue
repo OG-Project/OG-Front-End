@@ -13,7 +13,8 @@
      const props = defineProps({
     cor: String,
     nome: String,
-    imagem: String
+    imagem: String,
+    categoria: String
     });
 
     function editarProjeto(projeto){
