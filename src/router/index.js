@@ -39,6 +39,11 @@ const router = createRouter({
       component: () => import('../views/CriaTarefaView.vue')
     },
     {
+     path: '/projetos',
+     name: 'projetos',
+     component: () => import('../views/ProjetoListaView.vue')
+    },
+    {
       path:'/perfil',
       name:'Perfil',
       redirect:'/perfil/informacoes',

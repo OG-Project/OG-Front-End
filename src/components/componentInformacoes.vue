@@ -51,7 +51,7 @@
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Data de Nascimento" 
                                         v-model="PerfilStore.dataDeNascimento" 
-                                        tipo="obrigatorio" />
+                                        tipo="date" />
                                 </div>
                                 
                         </div>

@@ -162,7 +162,7 @@
  }
  
  .listaEquipes{
-    @apply  flex flex-wrap justify-start w-[88vw] h-[75vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
+    @apply  flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
     flex: 1 1 px;
    
  }

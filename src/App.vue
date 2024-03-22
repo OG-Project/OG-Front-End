@@ -11,11 +11,11 @@ import {perfilStore} from './stores/perfilStore.js'
 import KeyBoard from './components/Keyboard.vue'
 import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
-
 import Navbar from '@/components/Navbar.vue';
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
-
+import { perfilStore } from './stores/perfilStore';
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
@@ -28,14 +28,12 @@ const { x, y, style } = useDraggable(el, {
 })
 
 // let ativado='';
+let url= window.location.href;
 
-// watch(ativado,async (newValue,oldValue)=>{
-//   ativado.value=newValue
-//   console.log(ativado)
-//   console.log(newValue)
-//   console.log(oldValue)
-  
-// })
+
+const route = useRoute();
+
+
   onMounted(()=>{
   perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
   console.log(perfil.isVoiceMaker)
@@ -61,20 +59,7 @@ const { x, y, style } = useDraggable(el, {
     }
   }
   function change(a){
-    // let valor=''
-    // valor=a[a.length-1]
-    // if(perfil.el==el){
-    //   console.log('igual')
-    //   if(el.value!=''){
-    //     el.value+=valor
-    //   }
-    // }else{
-    //   console.log('diferente')
-    //     perfil.el.value+=valor
-    // }
-    // valor=''
-    // // perfil.el.value=a
-    // // console.log('change '+a)
+)
   }
   function close(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
@@ -83,12 +68,19 @@ const { x, y, style } = useDraggable(el, {
   function oi(a){
     console.log(a)
   }
+  var estaNoLogin = ref(true)
+watch(() => route.path, (newPath, oldPath) => {
+  if(route.path == '/login'){
+    estaNoLogin.value = true
+  }else{
+    estaNoLogin.value = false
+  }
+});
 </script>
 
 <template draggable="true" >
-  <div v-if=" $route.fullPath!='http://localhost:5173/login'">
-    <Navbar ></Navbar>
-  </div>
+  
+  <Navbar v-show="!estaNoLogin" />
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
   
@@ -102,12 +94,8 @@ const { x, y, style } = useDraggable(el, {
       <KeyBoard @onChange="change" @onKeyPress="press" :input="oi" ></KeyBoard>
     </div>
   </div>
-
-
     <RouterView />
-    <!-- {{ VueCookies.get('isVlibras') }}
-    {{ ativado }} -->
-    <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
+    <div v-show="isVlibras || VueCookies.get('isVlibras') === 'true'">
       <div vw class="enabled">
         <div vw-access-button class="active"></div>
         <div vw-plugin-wrapper>
@@ -115,7 +103,6 @@ const { x, y, style } = useDraggable(el, {
         </div>
       </div>
     </div>
-
 </template>
 <style scoped>
 
