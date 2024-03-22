@@ -1,11 +1,10 @@
 <script setup>
-
-import { RouterLink, RouterView } from 'vue-router'
-import Tabelas from './components/Tabelas.vue';
-import LoginView from './views/LoginView.vue';
-import Input from './components/Input.vue'
-import fundoPopUp from './components/fundoPopUp.vue';
-import { funcaoPopUpStore } from './stores/funcaoPopUp'
+import { RouterLink, RouterView } from "vue-router";
+import Tabelas from "./components/Tabelas.vue";
+import LoginView from "./views/LoginView.vue";
+import Input from "./components/Input.vue";
+import fundoPopUp from "./components/fundoPopUp.vue";
+import { funcaoPopUpStore } from "./stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
 import {perfilStore} from './stores/perfilStore.js'
 import KeyBoard from './components/Keyboard.vue'
@@ -104,8 +103,4 @@ watch(() => route.path, (newPath, oldPath) => {
       </div>
     </div>
 </template>
-<style scoped>
-
-</style>
-
-
+<style scoped></style>
