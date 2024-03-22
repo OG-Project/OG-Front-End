@@ -27,8 +27,8 @@
             v-show="isVoiceMaker" 
             :class="{'*:fill-black':verificaCorFill(props.styleInput),
             '*:fill-white':verificaCorFill(props.styleInput),
-            '*:fill-roxo':perfil.is}"
-            class="   
+            '*:fill-roxo':perfil.isTecladoAtivado}"
+            class="  
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -40,7 +40,7 @@
             v-show="isTecladoVirtual "
             :class="{'*:fill-black':verificaCorFill(props.styleInput),
             '*:fill-white':verificaCorFill(props.styleInput),
-            '*:fill-roxo':perfil.is}"
+            '*:fill-roxo':perfil.isTecladoAtivado}"
             class=" 
             cursor-pointer 
             w-[2.5vw] 
@@ -75,7 +75,7 @@
                 v-show="isVoiceMaker" 
                 :class="{'*:fill-black':verificaCorFill(props.styleInput),
                 '*:fill-white':verificaCorFill(props.styleInput),
-                '*:fill-roxo':perfil.is}"
+                '*:fill-roxo':perfil.isTecladoAtivado}"
                 class="  
                 cursor-pointer 
                 w-[2.5vw] 
@@ -88,7 +88,7 @@
                 v-show="isTecladoVirtual "
                 :class="{'*:fill-black':verificaCorFill(props.styleInput),
                 '*:fill-white':verificaCorFill(props.styleInput),
-                '*:fill-roxo':perfil.is}"
+                '*:fill-roxo':perfil.isTecladoAtivado}"
                 class=" 
                 cursor-pointer 
                 w-[2.5vw] 
@@ -115,7 +115,7 @@
             v-show="isVoiceMaker" 
             :class="{'*:fill-black':verificaCorFill(props.styleInput),
             '*:fill-white':verificaCorFill(props.styleInput),
-            '*:fill-roxo':perfil.is}"
+            '*:fill-roxo':perfil.isTecladoAtivado}"
             class="  
             cursor-pointer 
             w-[2.5vw] 
@@ -128,7 +128,7 @@
             v-show="isTecladoVirtual " 
             :class="{'*:fill-black':verificaCorFill(props.styleInput),
             '*:fill-white':verificaCorFill(props.styleInput),
-            '*:fill-roxo':perfil.is}"
+            '*:fill-roxo':perfil.isTecladoAtivado}"
             class=" 
             cursor-pointer 
             w-[2.5vw] 
@@ -172,7 +172,7 @@
             v-show="isVoiceMaker" 
             :class="{'*:fill-black':verificaCorFill(props.styleInput),
             '*:fill-white':verificaCorFill(props.styleInput),
-            '*:fill-roxo':perfil.is}"
+            '*:fill-roxo':perfil.isTecladoAtivado}"
             class="  
             cursor-pointer 
             w-[2.5vw] 
@@ -185,7 +185,7 @@
             v-show="isTecladoVirtual "
             :class="{'*:fill-black':verificaCorFill(props.styleInput),
             '*:fill-white':verificaCorFill(props.styleInput),
-            '*:fill-roxo':perfil.is}"
+            '*:fill-roxo':perfil.isTecladoAtivado}"
             class=" 
             cursor-pointer 
             w-[2.5vw] 
