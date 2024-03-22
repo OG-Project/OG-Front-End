@@ -24,8 +24,8 @@
               </div>
               
             </div>
-            <div class="flex p-5">
-              <KanbanProjetos></KanbanProjetos>
+            <div class="flex p-5" v-for="projeto of projetos" :key="projeto.id">
+              <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
             </div>
             <div class="iconeCard" @click="toggleKanban()">
             <img  class="icone" src="../imagem-vetores/membrosEquipe.svg">
@@ -35,17 +35,19 @@
             <img  class="icone" src="../imagem-vetores/membrosEquipe.svg">
           </div>
         </div>
-        <div v-if="!kanbanAtivo" class="cardProjetos">
-          <cardProjetos></cardProjetos>
+        <div v-if="!kanbanAtivo" class="cardProjetos" v-for="projeto of projetosFiltrados" :key="projeto.id">
+          <cardProjetos :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)"></cardProjetos>
          </div>
       </div>       
     </div>
   </template>
   
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { conexaoBD } from '../stores/conexaoBD';
 import cardProjetos from './cardProjetos.vue';
 import KanbanProjetos from './kanbanProjetos.vue';
+import VueCookies from "vue-cookies";
 
 const props = defineProps({
   height: { type: String, required: true },
@@ -54,20 +56,109 @@ const props = defineProps({
 
 const statusBotao = ref(null);
 const kanbanAtivo = ref(false);
+const banco = conexaoBD();
+let projetos = ref([]);
+const idUsuarioLogado = VueCookies.get('IdUsuarioCookie');
+let projetosUsuario = ref([]);
+let projetosFiltrados = ref([]);
 
 const ativarBotao = (botao) => {
   if (statusBotao.value === botao) {
     statusBotao.value = null; // Desativa o botão se ele estiver ativado
   } else {
     statusBotao.value = botao; // Ativa o botão clicado
+    filtrarProjetos(botao); // Filtra os projetos com base na categoria do botão clicado
   }
 }
 
 const toggleKanban = () => {
   kanbanAtivo.value = !kanbanAtivo.value;
 }
+async function buscarProjetos(){
+  console.log(await banco.buscarProjetosUsuario(idUsuarioLogado, "/projeto/buscarProjetosUsuario"));
+  projetosUsuario.value = await (banco.buscarProjetosUsuario(idUsuarioLogado,"/projeto/buscarProjetosUsuario"));
+   if (Array.isArray(projetosUsuario.value)) {
+        // Filtrar espaços nulos (null) da lista de membros da equipe
+        projetos.value = projetosUsuario.value.filter(projeto => projeto != null);
 
-const projetos = ref([]);
+        const dataAtual = new Date();
+        projetos.value.forEach(projeto => {
+            projeto.dataFinal = new Date(projeto.dataFinal); // Convertendo a data final do projeto para um objeto Date
+            projeto.porcentagemConcluida = projeto.porcentagemConcluida || 0; // Definindo a porcentagem concluída como 0 se não estiver definida
+
+            if (projeto.dataFinal.getTime() < dataAtual.getTime()) {
+                projeto.categoria = "urgentes"; // Projetos com prazo de entrega vencido são considerados urgentes
+                projeto.corTopico = "#D27200";
+            } else if (projeto.porcentagemConcluida === 0) {
+                projeto.categoria = "nao-iniciados"; // Projetos com 0% concluídos são considerados não iniciados
+                projeto.corTopico = "#0034BA";
+            } else if (projeto.porcentagemConcluida === 100) {
+                projeto.categoria = "prontos"; // Projetos com 100% concluídos são considerados prontos
+                projeto.corTopico = "#389300";
+            } else {
+                projeto.categoria = "meus-projetos"; // Projetos restantes são considerados "meus projetos"
+                projeto.corTopico = "#8E00FF";
+            }
+        });
+    } else {
+        console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
+    }
+}
+
+function filtrarProjetos(categoria) {
+    if (!categoria) {
+        // Se nenhum tópico for selecionado, exibe todos os projetos
+        projetosFiltrados.value = projetos.value;
+    } else {
+        // Se um tópico for selecionado, filtra os projetos com base na categoria
+        projetosFiltrados.value = projetos.value.filter(projeto => projeto.categoria == categoria);
+    }
+
+    if (projetosFiltrados.value.length === 0 && categoria) {
+        // Adiciona uma mensagem informando que não há projetos na categoria selecionada
+        console.log("Nenhum projeto encontrado na categoria selecionada.");
+    } else if (projetosFiltrados.value.length === 0) {
+        // Nenhum tópico selecionado, exibe todos os projetos
+        projetosFiltrados.value = projetos.value;
+    }
+}
+function formatarData(data){
+    if (typeof data === 'string' && data.length >= 10) {
+        // Extrair dia, mês e ano
+        const dia = data.slice(8, 10);
+        const mes = data.slice(5, 7);
+        const ano = data.slice(0, 4);
+        // Retornar data formatada como "dd/mm/yyyy"
+        return `${dia}/${mes}/${ano}`;
+    } else {
+        // Se `data` for indefinida, retornar "Indefinido"
+        return "Indefinido";
+    } 
+}
+
+function calcularResponsaveis(projeto) {
+  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
+        const responsaveisComFoto = projeto.responsaveis
+            .filter(responsavel => responsavel && responsavel.nome && responsavel.foto)
+            .map(responsavel => ({ nome: responsavel.nome, foto: responsavel.foto }));
+        
+        if (responsaveisComFoto.length > 0) {
+            return responsaveisComFoto;
+        } else {
+            return "Responsáveis encontrados, mas nenhum deles possui foto.";
+        }
+    } else {
+        return "Não há responsáveis";
+    }
+}
+
+function encontrarFotoResponsaveis(){
+  
+}
+
+onMounted(() => {
+    buscarProjetos();
+  });
 
 </script>
   

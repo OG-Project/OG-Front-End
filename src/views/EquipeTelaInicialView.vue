@@ -45,7 +45,6 @@
   import CardProjetos from "../components/cardProjetos.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
-const usuarioLogado = VueCookies.get('usuarioCookie');
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
 const listaProjetos = ref([]);

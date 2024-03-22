@@ -1,7 +1,7 @@
 <template> 
     <div class="card ml-10">
       <div class="divCor" :style="{ backgroundColor: cor }"></div>   
-      <h2 class="card-titulo">{{ titulo }}</h2>
+      <h2 class="card-titulo">{{ nome }}</h2>
       <img @click="editarProjeto(projeto)" class="icone" src="../imagem-vetores/tresPontos.svg" alt="">
       <img class="imagem" :src="imagem" alt="">
     </div>
@@ -12,7 +12,7 @@
 
      const props = defineProps({
     cor: String,
-    titulo: String,
+    nome: String,
     imagem: String
     });
 
