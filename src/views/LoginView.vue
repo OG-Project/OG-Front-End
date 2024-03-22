@@ -98,6 +98,8 @@ async function cadastraUsuario() {
   }
 }
 
+
+
 let vizualizacaoDeSenha = ref("password");
 let vizualizacaoDeSenhaConfirmacao = ref("password");
 let iconeDaSenha = ref(olho);

@@ -225,14 +225,14 @@
         class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-2 overflow-auto"
         id="subtarefaOverflow"
       >
-        <div v-for="(subtarefa, index) of subtarefas" :key="subtarefa.id">
+        <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
-            <div class="flex gap-2">
+            <div class="flex gap-2 items-center">
               <CheckBox
-                class="flex justify-center"
+                :checked="subtarefa.concluida"
+                tipo="checkbox"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)"
-                :model-value="subtarefa.concluida"
-              ></CheckBox>
+              />
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
@@ -249,7 +249,7 @@
         </div>
       </div>
       <!-- Fazer um v-for de propriedades -->
-      <div class="pl-12 mt-4">
+      <div class="pl-12 mt-8">
         <div class="flex text-xl">
           <p>Comentarios</p>
           <button class="ml-2" @click="abreFechaComentario()">+</button>
@@ -563,7 +563,7 @@
           </div>
           <div class="w-[40%] justify-end flex-row">
             <p class="w-[100%] text-[#620BA7] break-all">
-              <!-- {{ projetoDaTarefa.value.nome }} -->
+              {{ projetoDaTarefa.nome }}
             </p>
           </div>
         </div>
@@ -572,7 +572,7 @@
             <p>Responsável</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row">
-            <p class="text-[#620BA7] break-all">Kanye West</p>
+            <p class="text-[#620BA7] break-all">{{ projetoDaTarefa.responsaveis }}</p>
           </div>
         </div>
         <div class="flex pl-8">
@@ -655,6 +655,7 @@ import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
 import { conexaoBD } from "../stores/conexaoBD.js";
+import Checkbox from "primevue/checkbox";
 
 const banco = conexaoBD();
 
@@ -667,8 +668,6 @@ const parametroDoFiltroPropriedade = ref("Ordenar Por");
 const Comentarios = ref([]);
 
 //Variavel que armazena as Subtarefas atreladas a tarefa
-
-const subtarefas = ref([]);
 
 //Variavel que armazena as propriedades que podem ser atreladas a tarefa
 
@@ -774,24 +773,31 @@ function criaSubtarefa() {
       concluida: booleanDaSubtarefa.value,
       status: statusSubtarefa.value,
     };
-    subtarefas.value.push(subtarefaNova);
+    tarefa.value.subtarefas.push(subtarefaNova);
     subtarefaSendoCriada.value = false;
-    numeroDeTarefas.value = subtarefas.value.length;
+    numeroDeTarefas.value = tarefa.value.subtarefas.length;
     numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
     porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
     barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
   }
 }
 
+function reloadSubTarefas() {
+  numeroDeTarefas.value = tarefa.value.subtarefas.length;
+  numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
+  porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
+  barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+}
+
 //Função utilizada para deletar uma Subtarefa
 
 function deletaSubtarefa(subtarefa) {
-  subtarefas.value.forEach((subtarefaParaDeletar) => {
+  tarefa.value.subtarefas.forEach((subtarefaParaDeletar) => {
     if (subtarefaParaDeletar === subtarefa) {
-      subtarefas.value.splice(subtarefas.value.indexOf(subtarefa), 1);
+      tarefa.value.subtarefas.splice(tarefa.value.subtarefas.indexOf(subtarefa), 1);
     }
   });
-  numeroDeTarefas.value = subtarefas.value.length;
+  numeroDeTarefas.value = tarefa.value.subtarefas.length;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
@@ -846,15 +852,16 @@ function deletaPropriedade(propriedade) {
   });
 }
 
-let projetoDaTarefa = ref();
-
-async function procuraPropriedadesDoBanco() {
-  let projetos = banco.procurar("/projeto");
-  for (projeto in projetos) {
-    console.log(projeto);
-    if (projeto.id == tarefa.projetoId) {
+async function procuraProjetosDoBanco() {
+  const projetos = await banco.procurar("/projeto");
+  for (const projeto of projetos) {
+    console.log("a");
+    console.log(projetoId);
+    console.log(projeto.id);
+    if (projeto.id == projetoId) {
+      console.log("foi porra");
       projetoDaTarefa.value = projeto;
-      // propriedades.value = tarefa.propriedades;
+      console.log(projeto);
     }
   }
 }
@@ -869,39 +876,43 @@ let tarefa = ref({
   comentarios: [],
   propriedades: [],
   status: [],
-  projetoId: VueCookies.get("IdProjetoAtual"),
+  subtarefas: [],
 });
-
-
 
 function puxaTarefaDaEdicao() {
   let tarefas = banco.procurar("/tarefa");
-  let IdTarefaCookies = VueCookies.get("IdTarefaCookies")
+  let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   for (tarefaEdicao in tarefas) {
-    if(IdTarefaCookies.value == tarefa.id){
-      tarefa.value.nome = tarefaEdicao.nome
-      tarefa.value.descricao = tarefaEdicao.descricao
-      tarefa.value.arquivos = tarefaEdicao.arquivos
-      tarefa.value.comentarios = tarefaEdicao.comentarios
-      tarefa.value.propriedades = tarefaEdicao.valorPropriedadeTarefas
-      tarefa.value.status = tarefaEdicao.status
-      tarefa.value.projetoId = VueCookies.get("IdProjetoAtual")
+    if (IdTarefaCookies.value == tarefa.id) {
+      tarefa.value.nome = tarefaEdicao.nome;
+      tarefa.value.descricao = tarefaEdicao.descricao;
+      tarefa.value.arquivos = tarefaEdicao.arquivos;
+      tarefa.value.comentarios = tarefaEdicao.comentarios;
+      tarefa.value.propriedades = tarefaEdicao.valorPropriedadeTarefas;
+      tarefa.value.status = tarefaEdicao.status;
     }
   }
 }
 
+let projetoDaTarefa = ref();
+let projetoId = VueCookies.get("IdProjetoAtual");
+
 onUpdated(() => {
+  reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
+  autenticaUsuarioCookies();
 });
 
 onMounted(() => {
-  autenticaUsuarioCookies();
+  projetoDaTarefa.value = ref();
+  projetoId = VueCookies.get("IdProjetoAtual");
+  console.log(projetoDaTarefa.value);
+  procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
+  reloadSubTarefas();
   autenticarUsuario();
   puxaTarefaDaEdicao();
-  console.log("comeco");
-  procuraPropriedadesDoBanco();
-  console.log("fim");
-  VueCookies.set("IdProjetoAtual", 28, 100000000000);
+  VueCookies.set("IdProjetoAtual", 1, 100000000000);
   tarefa.value = {
     nome: "",
     descricao: "",
@@ -909,15 +920,23 @@ onMounted(() => {
     comentarios: [],
     propriedades: [],
     status: [],
-    projetoId: VueCookies.get("IdProjetoAtual"),
+    subtarefas: [],
   };
+  console.log(tarefa.projetoId);
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
     tarefa.value = JSON.parse(localStorageData);
     localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   }
+  exibirComentarios();
+  autenticaUsuarioCookies();
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
+
+// Supondo que você tenha um array chamado comentarios no seu componente
+function exibirComentarios() {
+  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
+}
 
 let propriedadeSendoCriada = ref(false);
 
@@ -979,10 +998,10 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade) {
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
 
-let usuarioCookies;
+let usuarioCookies = ref();
 
 async function autenticaUsuarioCookies() {
-  usuarioCookies = await autenticarUsuario(usuarioId);
+  usuarioCookies.value = await autenticarUsuario(usuarioId);
 }
 
 async function autenticarUsuario(id) {
@@ -998,7 +1017,6 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
-  console.log(usuarioCookies);
   console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
@@ -1072,7 +1090,7 @@ const listaFiltradaPropriedades = computed(() => {
 
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
-  subtarefas.value.forEach((subtarefa) => {
+  tarefa.value.subtarefas.forEach((subtarefa) => {
     if (subtarefa.concluida) {
       numeroDeSubTarefasC.value++;
     }
@@ -1096,7 +1114,7 @@ let numeroDeTarefasConcluidas = ref(numeroDeSubTarefasConcluidas());
 
 //Armazena o tamanho da lista de subtarefas para que a conta de porcentagem possa ser feita
 
-let numeroDeTarefas = ref(subtarefas.value.length);
+let numeroDeTarefas = ref(tarefa.value.subtarefas.length);
 
 //Armazena as informações da conta de porcentagem de quantas tarefas foram concluidas
 
@@ -1109,7 +1127,7 @@ let comentarioSendoEditado = ref(false);
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
 function trocaStatusDaSubTarefa(subtarefa, index) {
-  subtarefas.value[index].concluida = !subtarefas.value[index].concluida;
+  tarefa.value.subtarefas[index].concluida = !tarefa.value.subtarefas[index].concluida;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
