@@ -21,7 +21,7 @@ const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
 const {isVlibras}=storeToRefs(perfil);
 import { useDraggable } from '@vueuse/core'
-const el = ref(null)
+const el = ref(perfil.el)
 
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70},
@@ -49,15 +49,38 @@ const { x, y, style } = useDraggable(el, {
   
   function press(b){
     console.log('press '+b)
+    let valorElemento=perfil.el.value
+    console.log(valorElemento)
+    let valor=b
+    if(b=='{bksp}'){
+      perfil.el.value=valorElemento.substring(0,valorElemento.length-1)
+    }else if(b!='{enter}' & b!='{shift}' & b!='{lock}' & b!='{tab}'){
+      perfil.el.value+=valor
+    }
   }
   function change(a){
-    perfil.el.value=a
-    console.log('change '+a)
+    // let valor=''
+    // valor=a[a.length-1]
+    // if(perfil.el==el){
+    //   console.log('igual')
+    //   if(el.value!=''){
+    //     el.value+=valor
+    //   }
+    // }else{
+    //   console.log('diferente')
+    //     perfil.el.value+=valor
+    // }
+    // valor=''
+    // // perfil.el.value=a
+    // // console.log('change '+a)
   }
   function close(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
   }
 
+  function oi(a){
+    console.log(a)
+  }
 </script>
 
 <template draggable="true" >
@@ -74,7 +97,7 @@ const { x, y, style } = useDraggable(el, {
         <svgIconMove class="w-[1vw] h-[3vh]" />
         <svgIconX @click="close" class="w-[1vw] h-[3vh]" ></svgIconX>
       </div>
-      <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
+      <KeyBoard @onChange="change" @onKeyPress="press" :input="oi" ></KeyBoard>
     </div>
   </div>
 

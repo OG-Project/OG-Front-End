@@ -1,6 +1,6 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col  ">
-        <Input conteudoInput="oi"  ></Input>
+        <!-- <Input conteudoInput="oi" direcao="direita" styleInput="input-claro" ></Input> -->
         <div>
             <h1 :style="{fontFamily:fonteTitulo,fontSize:tamanhoTitulo+'vh'}" class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Aparência

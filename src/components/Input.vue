@@ -10,15 +10,45 @@
             :style="tamanhoIcon" 
             class="flex items-center justify-center">
         </div>
-            
             <input 
             :type="tipo" 
             :style="estilizaInput" 
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('update:modelValue', $event.target.value)" 
             :placeholder=conteudoInput > 
+            
+        <div class="flex items-center justify-center">
+
+            <svgIconMic 
+            @click="mic" 
+            v-show="isVoiceMaker" 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            '*:fill-roxo':perfil.is}"
+            class="   
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            <svgIconKeyboard 
+            @click="teclado" 
+            v-show="isTecladoVirtual "
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            '*:fill-roxo':perfil.is}"
+            class=" 
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+        </div>
    </div>
 
    <!-- fazer input com botão com um ou dois -->
@@ -26,8 +56,8 @@
 
    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null' & tipo=='float'">
-        <div 
-        class="estiloPlaceHolder">
+        
+        <div class="estiloPlaceHolder">
             
             <input 
             :type="tipo" 
@@ -35,10 +65,38 @@
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('update:modelValue', $event.target.value)" 
             class="peer" 
             placeholder=" "  > 
-            
+            <div class="flex items-center justify-center">
+                <svgIconMic 
+                @click="mic" 
+                v-show="isVoiceMaker" 
+                :class="{'*:fill-black':verificaCorFill(props.styleInput),
+                '*:fill-white':verificaCorFill(props.styleInput),
+                '*:fill-roxo':perfil.is}"
+                class="  
+                cursor-pointer 
+                w-[2.5vw] 
+                h-[2.5vh] 
+                flex 
+                items-center 
+                justify-center" />
+                <svgIconKeyboard 
+                @click="teclado" 
+                v-show="isTecladoVirtual "
+                :class="{'*:fill-black':verificaCorFill(props.styleInput),
+                '*:fill-white':verificaCorFill(props.styleInput),
+                '*:fill-roxo':perfil.is}"
+                class=" 
+                cursor-pointer 
+                w-[2.5vw] 
+                h-[2.5vh] 
+                flex 
+                items-center 
+                justify-center" />
+            </div>
             <label 
             :style="estilizaDivPlaceHolder" 
             for="inputStyle"  
@@ -50,13 +108,35 @@
 
    <div 
    class="styleInputPadrao flex flex-row-reverse items-center" 
-    v-if="icon=='null' && tipo!='float'"  >
-    <div 
-    class="flex items-center justify-center">
-    <svgIconMic @click="mic" v-show="isVoiceMaker" class=" active:*:fill-roxo  cursor-pointer w-[2.5vw] h-[2.5vh] flex items-center justify-center" ></svgIconMic>
-    <svgIconKeyboard @click="teclado" v-show="isTecladoVirtual " class=" active:*:fill-roxo cursor-pointer w-[2.5vw] h-[2.5vh] flex items-center justify-center" ></svgIconKeyboard>
-    <!-- <img :src="IconMic" :style="tamanhoIcon" class="flex items-center justify-center"> -->
-    </div>
+    v-if="icon=='null' && tipo!='float'" >
+        <div class="flex items-center justify-center">
+            <svgIconMic 
+            @click="mic" 
+            v-show="isVoiceMaker" 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            '*:fill-roxo':perfil.is}"
+            class="  
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            <svgIconKeyboard 
+            @click="teclado" 
+            v-show="isTecladoVirtual " 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            '*:fill-roxo':perfil.is}"
+            class=" 
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+        </div>
             <input 
             :type="tipo" 
             :style="estilizaInput" 
@@ -73,7 +153,7 @@
    :class="styleInputPadraoDireita" 
     v-if="direcao=='direita' && tipo!='float'" 
     :style="estilizaDivInput">
-    
+        
         <input 
         :type="tipo" 
         :placeholder=conteudoInput
@@ -81,11 +161,39 @@
         id="inputStyle" 
         :disabled=desabilitado
         :value="modelValue"
+        @focus="$emit('clickInput',perfil.el=$event.target)"
         @input="$emit('update:modelValue', $event.target.value)">
         
         <div 
         class="flex items-center justify-center">
-            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">   
+            <svgIconMic 
+            @click="mic" 
+            v-show="isVoiceMaker" 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            '*:fill-roxo':perfil.is}"
+            class="  
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            <svgIconKeyboard 
+            @click="teclado" 
+            v-show="isTecladoVirtual "
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            '*:fill-roxo':perfil.is}"
+            class=" 
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+
         </div>
    </div>
 </template>
@@ -259,12 +367,17 @@ function teclado(){
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-transparente-escuro" || props.styleInput=="input-transparente-escuro-grande" ){
-            return"white"
+            return "white"
         }else if(props.styleInput="input-transparente-claro"){
             return 'black';
         }
     }
-
+    function verificaCorFill(a){
+        if(a=="input-escuro" || a=="input-transparente-escuro" || a=="input-transparente-escuro-grande" ){
+            return true
+        }
+        return false
+    }
     function hoverStyle(){
             if(props.corHover=="escuro"){
                 return props.corHover=="#484848"
@@ -308,7 +421,7 @@ function teclado(){
          focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px] ;
         display: grid;
-        grid-template-columns: 80% 20%;
+        grid-template-columns: 80% 10% 10%;
         align-content: center;
     }
     .styleInputPadraoIconDireita:hover{
@@ -329,7 +442,7 @@ function teclado(){
          focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px];
         display: grid;
-        grid-template-columns: 10% 70%;
+        grid-template-columns: 10% 70% 10%;
         align-content: center;
     }
     .styleInputPadraoIcon:hover{
