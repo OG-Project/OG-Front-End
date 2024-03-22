@@ -9,10 +9,8 @@
       />
     </div>
     <div v-if="props.tipo === 'toggle'">
-
       {{ console.log(props.checked) }}
       <div :style="estiloToggle" id="bordaToggle" @click="check('toggle')">
-
         <svg :style="estiloSVG">
           <circle
             :id="idCircle"
@@ -28,13 +26,11 @@
 </template>
 
 <script setup>
+import { onBeforeMount, ref } from "vue";
+import mojs from "@mojs/core";
+import { defineProps, onMounted } from "vue";
 
-
-import { onBeforeMount, ref } from 'vue';
-import mojs from '@mojs/core';
-import { defineProps, onMounted } from 'vue';
-
-const emit = defineEmits(['modelValue'])
+const emit = defineEmits(["modelValue"]);
 
 const props = defineProps({
   tipo: {
@@ -43,19 +39,19 @@ const props = defineProps({
   },
   tamanho: {
     type: String,
-    default: 'medio',
+    default: "medio",
   },
-  elId:{
-    type: String
+  elId: {
+    type: String,
   },
-  checked:{
-    type: Boolean
-  }
+  checked: {
+    type: Boolean,
+  },
 });
-let idCircle=props.elId
+let idCircle = props.elId;
 let posicaoBola = ref(14);
-let ativo = ref(props.checked)
-let corBolaToggle = ref('#620BA7');
+let ativo = ref(props.checked);
+let corBolaToggle = ref("#620BA7");
 let estiloSVG = ref({
   width: "60px",
   height: "30px",
@@ -172,81 +168,80 @@ switch (props.tamanho) {
 }
 
 let estiloToggle;
-// onBeforeMount(()=>{
+onBeforeMount(() => {
+  if (props.tipo == "toggle") {
+    console.log(ativo.value);
+    if (ativo.value) {
+      corBolaToggle.value = "#F3F3F3";
+      estiloToggle = ref(estiloBolaFinal.value);
+      console.log(estiloToggle);
+    } else if (!ativo.value) {
+      corBolaToggle.value = "#620BA7";
+      estiloToggle = ref(estiloBolaInicio.value);
+      console.log(estiloToggle);
+    }
+  }
+});
 
-//   console.log(ativo.value)
-//   if(ativo.value){
-//     corBolaToggle.value = '#F3F3F3';
-//     estiloToggle = ref(estiloBolaFinal.value);
-//     console.log(estiloToggle)
-//   }else if(!ativo.value){
-//     corBolaToggle.value = '#620BA7'
-//     estiloToggle = ref(estiloBolaInicio.value);
-//     console.log(estiloToggle)
-//   }
-
-// })
-
-// onMounted(()=>{
-//   if(ativo.value){
-//     const animation = new mojs.Html({
-//       el: '#'+idCircle,
-//       x: { 0: maximoMovimentoBola.value, easing: 'sin.in' },
-//       onComplete: () => {
-//         estiloToggle.value = estiloBolaFinal.value;
-//         corBolaToggle.value = '#F3F3F3';
-//       },
-//     });
-//     animation.play();
-//   }else if(!ativo.value){
-//     const animation = new mojs.Html({
-//       el: '#'+idCircle,
-//       x: { [maximoMovimentoBola.value]: 0, easing: 'sin.out' },
-//       onComplete: () => {
-//         estiloToggle.value = estiloBolaInicio.value;
-//         corBolaToggle.value = '#620BA7';
-//       },
-//     });
-//     animation.play();
-//   }
-
-// })
-
-
-function check(tipo) {
-
-  if (!ativo.value) {
-    ativo.value = true;
-    if (tipo === 'toggle') {
+onMounted(() => {
+  if (props.tipo == "toggle") {
+    if (ativo.value) {
       const animation = new mojs.Html({
-        el: '#'+idCircle,
-        x: { 0: maximoMovimentoBola.value, easing: 'sin.in' },
+        el: "#" + idCircle,
+        x: { 0: maximoMovimentoBola.value, easing: "sin.in" },
         onComplete: () => {
           estiloToggle.value = estiloBolaFinal.value;
           corBolaToggle.value = "#F3F3F3";
         },
       });
       animation.play();
-      emit('enviaValor',{valor:ativo.value})
-    }
-  } else {
-    ativo.value = false;
-    if (tipo === 'toggle') {
+    } else if (!ativo.value) {
       const animation = new mojs.Html({
-        el: '#'+idCircle,
-        x: { [maximoMovimentoBola.value]: 0, easing: 'sin.out' },
+        el: "#" + idCircle,
+        x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
           corBolaToggle.value = "#620BA7";
         },
       });
       animation.play();
-      emit('enviaValor',{valor:ativo.value})
+    }
+  }
+});
+
+function check(tipo) {
+  if (!ativo.value) {
+    ativo.value = true;
+    if (tipo === "toggle") {
+      const animation = new mojs.Html({
+        el: "#" + idCircle,
+        x: { 0: maximoMovimentoBola.value, easing: "sin.in" },
+        onComplete: () => {
+          estiloToggle.value = estiloBolaFinal.value;
+          corBolaToggle.value = "#F3F3F3";
+        },
+      });
+      animation.play();
+      emit("enviaValor", { valor: ativo.value });
+    }
+  } else {
+    ativo.value = false;
+    if (tipo === "toggle") {
+      const animation = new mojs.Html({
+        el: "#" + idCircle,
+        x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
+        onComplete: () => {
+          estiloToggle.value = estiloBolaInicio.value;
+          corBolaToggle.value = "#620BA7";
+        },
+      });
+      animation.play();
+      emit("enviaValor", { valor: ativo.value });
     }
   }
 }
-function valorJaPassado(){
-  if(props.modelValue === false){
+function valorJaPassado() {
+  if (props.modelValue === false) {
     if (tipo === "toggle") {
       const animation = new mojs.Html({
         el: "#toggle",
@@ -258,18 +253,17 @@ function valorJaPassado(){
       });
       animation.play();
     }
-  }
-  else{
+  } else {
     const animation = new mojs.Html({
-        el: "#toggle",
-        x: { 0: maximoMovimentoBola.value, easing: "sin.in" },
-        onComplete: () => {
-          estiloToggle.value = estiloBolaFinal.value;
-          corBolaToggle.value = "#F3F3F3";
-        },
-      });
+      el: "#toggle",
+      x: { 0: maximoMovimentoBola.value, easing: "sin.in" },
+      onComplete: () => {
+        estiloToggle.value = estiloBolaFinal.value;
+        corBolaToggle.value = "#F3F3F3";
+      },
+    });
 
-      animation.play();
+    animation.play();
   }
 }
 </script>
@@ -285,5 +279,4 @@ input[type="checkbox"] {
   width: 20px;
   height: 20px;
 }
-
 </style>

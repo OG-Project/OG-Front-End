@@ -32,14 +32,10 @@ const route = useRoute();
 // })
 var estaNoLogin = ref(true)
 watch(() => route.path, (newPath, oldPath) => {
-  // Aqui você pode executar sua lógica quando a rota muda
-  console.log('Rota mudou de', oldPath, 'para', newPath);
   if(route.path == '/login'){
     estaNoLogin.value = true
-    console.log(estaNoLogin.value)
   }else{
     estaNoLogin.value = false
-    console.log(estaNoLogin.value)
   }
 });
 

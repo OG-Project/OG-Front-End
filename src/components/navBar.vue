@@ -47,7 +47,6 @@ const banco = conexaoBD();
 onMounted(async () => {
   usuarioCookies = await autenticarUsuario(usuarioId);
   autenticaUsuarioCookies();
-  console.log("Retrieved user data:", usuarioCookies);
 });
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
@@ -57,7 +56,6 @@ async function autenticarUsuario(id) {
   let usuarios = banco.procurar("/usuario");
   let listaUsuarios = await usuarios;
   let usuario = listaUsuarios.find((usuario) => usuario.id == id);
-  console.log("Retrieved user data:", usuario);
   return usuario;
 }
 
