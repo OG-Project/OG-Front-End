@@ -10,6 +10,13 @@
                 <div class="flex justify-center items-center">
                     <div class="flex flex-col gap-16">
                         <div class="flex justify-between items-center gap-5">
+                            <span class="text-xl font-semibold">Insira a senha antiga</span>
+                            <Input styleInput="input-transparente-claro-grande" 
+                            conteudoInput="Senha Antiga" 
+                            v-model="senhaAntiga" 
+                            tipo="obrigatorio" />
+                        </div>
+                        <div class="flex justify-between items-center gap-5">
                             <span class="text-xl font-semibold">Insira uma senha nova</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Nova" 
@@ -43,14 +50,28 @@
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import Botao from './Botao.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { perfilStore } from '../stores/perfilStore';
+import { conexaoBD } from '../stores/conexaoBD';
+import  VueCookies  from 'vue-cookies';
 let perfil=perfilStore()
+let conexao=conexaoBD()
 
+let usuario
+let senhaAntiga=ref('')
 let senhaNova=ref('')
 let senhaConfirmada=ref('')
 
+onMounted(async ()=>{
+    usuario=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    console.log(usuario.senha)
+
+})
+
 function alteraSenha(){
+    if(senhaAntiga.value==usuario.senha){
+        alert('vamo que hj é sexta')
+    }
     if(senhaNova.value==senhaConfirmada.value){
         alert('igual')
     }else{
