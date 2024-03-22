@@ -63,6 +63,7 @@
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('update:modelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
       
@@ -90,9 +91,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
-import {Usuario} from '../models/usuario'
-import {Equipe} from '../models/Equipe'
+import { onBeforeMount, ref } from 'vue';
 import svgIconMic from '../assets/svgIconMic.vue';
 import svgIconKeyboard from '../assets/svgIconKeyboard.vue';
 import VueCookies from 'vue-cookies';
@@ -125,7 +124,7 @@ function teclado(){
 
 
 //funcao de passar para o pai 
-    defineEmits(['update:modelValue'])
+    defineEmits(['update:modelValue','clickInput'])
   const props=defineProps({
         styleInput: String, // pode passar input-escuro, input-claro, input-transparente-escuro, input-transparente-claro
         icon: {

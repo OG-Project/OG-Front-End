@@ -19,6 +19,7 @@ export const perfilStore = defineStore('perfilStore', {
          isVisualizacaoEmail:false,
          isVisualizacaoEquipe:false,
          isVisualizacaoProjeto:false,
+         el:null,
          tamanhoTitulo:6,
          tamanhoCorpo:2,
          fonteTitulo: 'Source Sans 3',

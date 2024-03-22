@@ -2,17 +2,20 @@
     <div class=" flex justify-center flex-wrap">
         <div class="flex  flex-col items-center w-[20%] h-[877px] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center w-[329px] h-[329px]">
-                <div class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400">
-                    
-                
-                </div>
+                <img v-if="foto!=null"
+                  :src="'data:' + foto.tipo + ';base64,' + foto.dados" 
+                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
+                />
+                <div v-else class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
             </div>
             <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
                 <div class="flex flex-col items-center gap-9">
                     <div v-for="i in equipes"
                         class="cardEquipe cursor-pointer shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
-                        <svgEquipe class="2xl:ml-6" />
-                        <!-- <img :src="geraArquivo(i.equipe.foto.dados)" alt=""> -->
+                        <img v-if="i.equipe.foto!=null"
+                        class="w-[2vw] h-[50%] 2xl:ml-6 " 
+                        :src="'data:' + i.equipe.foto.tipo + ';base64,' + i.equipe.foto.dados" alt="">
+                        <svgEquipe v-else class="2xl:ml-6" />
                         <div class="truncate w-[60%] flex xl:justify-start sm:justify-center border-b-2 border-roxo pb-1">
                             {{ i.equipe.nome }}
                         </div>
@@ -36,6 +39,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Nome" 
                             v-model="perfil.nome"
+                            desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                         <div class="flex items-center justify-between gap-5">
@@ -44,6 +48,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Username"
                             v-model="perfil.username" 
+                            desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                         <div class="flex items-center justify-between gap-5">
@@ -52,6 +57,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="E-mail"
                             v-model="perfil.email" 
+                            desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                     </div>
@@ -62,14 +68,20 @@
                             <Input 
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Sobrenome"
-                            v-model="perfil.sobrenome" 
+                            v-model="perfil.sobrenome"
+                         
+                            desabilitado="true"
                             tipo="obrigatorio"
                              />
                         </div>
                         <div class="flex  justify-between items-center gap-5">
                             <span class="text-xl">Data de Nascimento</span>
-                            <Input styleInput="input-transparente-claro-grande" conteudoInput="Data de Nascimento"
-                                v-model="perfil.dataDeNascimento" tipo="obrigatorio" />
+                            <Input 
+                            styleInput="input-transparente-claro-grande" 
+                            conteudoInput="Data de Nascimento"
+                            v-model="perfil.dataDeNascimento"
+                            desabilitado="true" 
+                            tipo="obrigatorio" />
                         </div>
                     </div>
                 </div>
@@ -128,7 +140,7 @@ import Carousel from 'primevue/carousel';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
-import { onBeforeMount, onMounted, watch,ref, onUpdated, onBeforeUnmount } from 'vue';
+import { onMounted, ref, onUpdated, onBeforeUnmount } from 'vue';
 import {useRoute} from 'vue-router';
 import { useWindowSize } from '@vueuse/core'
 
@@ -163,10 +175,7 @@ onMounted(async () => {
     // alert(height.value)
     // alert(width.value)
 });
-function geraArquivo(blob){
-    const reader=FileReader()
-    return reader.readAsDataURL(blob)
-}
+
 
 onUpdated(()=>{
     // alert(height)

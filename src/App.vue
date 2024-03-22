@@ -20,12 +20,14 @@ const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
 const {isVlibras}=storeToRefs(perfil);
-const cordenadas=ref(
-{
-  top:64,
-  left:1300
-} 
-)
+import { useDraggable } from '@vueuse/core'
+const el = ref(null)
+
+const { x, y, style } = useDraggable(el, {
+  initialValue: { x: 1300, y: 70},
+})
+
+
 // let ativado='';
 
 // watch(ativado,async (newValue,oldValue)=>{
@@ -45,29 +47,11 @@ const cordenadas=ref(
   perfil.isVlibras=(VueCookies.get('isVlibras'))
   })
   
-  // const draggableElement = event.target;
-  //     const offsetX = event.clientX - draggableElement.getBoundingClientRect().left;
-  //     const offsetY = event.clientY - draggableElement.getBoundingClientRect().top;
-
-  //     draggableElement.style.position = 'absolute';
-  //     draggableElement.style.left = event.clientX - offsetX + 'px';
-  //     draggableElement.style.top = event.clientY - offsetY + 'px';
-
-
-  function testeDois(event){
-    console.log(event.clientX)
-    let element =event.target
-
-    const setX= event.clientX - element.getBoundingClientRect().left
-    const setY= event.clientY - element.getBoundingClientRect().top
-    cordenadas.top= event.clientY - setY
-    cordenadas.left= event.clientX - setX
-    console.log('drag '+element)
-  }
   function press(b){
     console.log('press '+b)
   }
   function change(a){
+    perfil.el.value=a
     console.log('change '+a)
   }
   function close(){
@@ -81,10 +65,8 @@ const cordenadas=ref(
     <Navbar ></Navbar>
   </div>
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
-  <div draggable="true" 
-  @dragstart="testeDois($event)" 
-  @dragenter=""
-  @dragover="(event)=> event.preventDefault()"  
+  <div ref="el" :style="style" style="position: fixed"
+  
   class="bg-[#ececec] top-16 left-[67.8vw] absolute w-max" 
   v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
@@ -92,7 +74,7 @@ const cordenadas=ref(
         <svgIconMove class="w-[1vw] h-[3vh]" />
         <svgIconX @click="close" class="w-[1vw] h-[3vh]" ></svgIconX>
       </div>
-      <KeyBoard @onChange="change" @onKeyPress="press"  ></KeyBoard>
+      <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
     </div>
   </div>
 

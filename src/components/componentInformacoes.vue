@@ -11,16 +11,19 @@
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Nome" 
                                         v-model="PerfilStore.nome" 
-                                        tipo="obrigatorio" />
+                                        tipo="obrigatorio"
+                                        @clickInput="foi"
+                                        />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
                                         <span class="text-xl">Username</span>
                                         <Input 
+
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Username" 
                                         v-model="PerfilStore.username" 
                                         tipo="obrigatorio" 
-                                        @click="()=>console.log('da certo')" />
+                                         />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
                                         <span class="text-xl">E-mail</span>
@@ -37,7 +40,8 @@
                                         <span class="text-xl">Sobrenome</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Sobrenome" 
+                                        conteudoInput="Sobrenome"
+                                        modelValue="" 
                                         v-model="PerfilStore.sobrenome" 
                                         tipo="obrigatorio" />
                                 </div>
@@ -84,10 +88,15 @@ const {fonteTitulo} = storeToRefs(PerfilStore)
 const {fonteCorpo} = storeToRefs(PerfilStore)
 const conexao=conexaoBD()
 // console.log(conexao)
+let el
 
-PerfilStore.nome
 let editar=ref(false)
 
+// function foi(el){
+//         console.log('oi')
+//         console.log(el)
+//         PerfilStore.el=el
+// }
 function alterarEmail(){
         // Revisar 
 
