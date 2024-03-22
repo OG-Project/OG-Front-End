@@ -143,6 +143,7 @@
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
+            @change="modelValue=modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('update:modelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
@@ -225,9 +226,7 @@ function mic(){
 }
 
 function teclado(){
-   
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
-    
 }
 
 

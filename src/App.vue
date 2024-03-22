@@ -27,7 +27,6 @@ const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70},
 })
 
-
 // let ativado='';
 
 // watch(ativado,async (newValue,oldValue)=>{
@@ -54,8 +53,11 @@ const { x, y, style } = useDraggable(el, {
     let valor=b
     if(b=='{bksp}'){
       perfil.el.value=valorElemento.substring(0,valorElemento.length-1)
+    }else if(b=='{space}'){
+      perfil.el.value+=' '
     }else if(b!='{enter}' & b!='{shift}' & b!='{lock}' & b!='{tab}'){
       perfil.el.value+=valor
+      
     }
   }
   function change(a){
@@ -84,13 +86,13 @@ const { x, y, style } = useDraggable(el, {
 </script>
 
 <template draggable="true" >
-  <div v-if="url!='http://localhost:5173/login'">
+  <div v-if=" $route.fullPath!='http://localhost:5173/login'">
     <Navbar ></Navbar>
   </div>
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
   
-  class="bg-[#ececec] top-16 left-[67.8vw] absolute w-max" 
+  class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" 
   v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">

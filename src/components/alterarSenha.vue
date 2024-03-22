@@ -50,14 +50,28 @@
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import Botao from './Botao.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { perfilStore } from '../stores/perfilStore';
+import { conexaoBD } from '../stores/conexaoBD';
+import  VueCookies  from 'vue-cookies';
 let perfil=perfilStore()
+let conexao=conexaoBD()
 
+let usuario
+let senhaAntiga=ref('')
 let senhaNova=ref('')
 let senhaConfirmada=ref('')
 
+onMounted(async ()=>{
+    usuario=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    console.log(usuario.senha)
+
+})
+
 function alteraSenha(){
+    if(senhaAntiga.value==usuario.senha){
+        alert('vamo que hj é sexta')
+    }
     if(senhaNova.value==senhaConfirmada.value){
         alert('igual')
     }else{
