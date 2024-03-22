@@ -10,14 +10,15 @@ export const criaProjetoStore = defineStore('criaProjeto', {
     },
 
     actions: {
-        criaProjeto(nome,descricao,equipes, propriedades,status){
+        criaProjeto(nome,descricao,equipes, propriedades,status,reponsaveis){
         let projetoCriado= Projeto
         let api= conexaoBD();
         projetoCriado.nome=nome;
         projetoCriado.descricao=descricao;
-        projetoCriado.projetosEquipes=null
-        projetoCriado.propriedades=propriedades.value
-        projetoCriado.statusList=status
+        projetoCriado.projetosEquipes=equipes
+        projetoCriado.propriedades=propriedades.value;
+        projetoCriado.statusList=status;
+        projetoCriado.reponsaveis=reponsaveis;
         console.log(projetoCriado)   
         api.cadastrar(projetoCriado,'/projeto')
         

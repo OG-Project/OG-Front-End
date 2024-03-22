@@ -139,6 +139,7 @@ let responsaveisProjeto = ref([]);
 let listaEquipesConvidadas = ref([]);
 let listaEquipesSelecionadas = ref([]);
 let listaEquipeEnviaBack = []
+let listaResponsaveisBack = []
 let srcIconListaEquipes = Sair
 funcaoPopUp.variavelModal = false
 
@@ -232,16 +233,25 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
             listaAuxResponsaveisProjeto.push(usuarioAtual.username)
             responsaveisProjeto.value = null;
             responsaveisProjeto.value = listaAuxResponsaveisProjeto;
-            
+            adcionaResponsaveisProjeto(usuarioAtual)
         }
     });
 
 }
 
+function adcionaResponsaveisProjeto(usuario){
+    let responsavelBanco={
+        responsavel:{
+            id:usuario.id
+        }
+    }
+    listaResponsaveisBack.push(responsavelBanco);
+}
+
 async function criaProjeto() {
     const criaProjeto = criaProjetoStore()
     console.log(listaStatus)
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus)
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus,listaEquipeEnviaBack)
    let projeto= await  conexao.buscarUm(1,"projeto")
     
     VueCookies.set("projetoEditar",projeto,8640000)
