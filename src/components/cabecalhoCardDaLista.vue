@@ -6,7 +6,7 @@
         <div>
             {{ "Descrição" }}
         </div>
-        <div v-for="propriedade in visualizacao2.propriedadeVisiveis">
+        <div v-for="propriedade of propriedadeVisiveis">
             <div>
                 {{ console.log(propriedade) }}
                 {{ propriedade.nome.charAt(0).toUpperCase() + propriedade.nome.slice(1)  }}
@@ -16,21 +16,21 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
 let api = conexaoBD()
-let projeto = api.procurar("/projeto/59")
-let visualizacao = ""
-let visualizacao2 = ""
+let projeto = api.procurar("/projeto/2")
+let propriedadeVisiveis = ref([])
 onMounted(() => {
     teste()
 })
 
 async function teste() {
     let projeto2 = await projeto
-    visualizacao = api.procurar("/visualizacaoEmLista/" + await projeto2.id)
-    visualizacao2 = await visualizacao
-    console.log(visualizacao2)
+    let visualizacao = api.procurar("/visualizacaoEmLista/" + await projeto2.id)
+    let visualizacao2 = await visualizacao
+    propriedadeVisiveis.value = visualizacao2.propriedadeVisiveis
+    console.log(propriedadeVisiveis)
 }
 
 </script>

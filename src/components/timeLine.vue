@@ -1,5 +1,5 @@
 <template>
-        <span class="overflow-y-scroll overflow-x-hidden items-center flex flex-col w-full h-full">
+        <span class="overflow-y-scroll overflow-x-hidden items-center flex flex-col w-full h-[72%]">
             <div class="h-full w-[80%] flex flex-col justify-start">
                 <div class="h-full flex flex-col w-full items-center">
                     <span class="absolute flex items-start justify-center h-[30%] w-full top-0">
@@ -404,7 +404,7 @@ function mudaIntervalo() {
     .linhaDoTempo {
         width: 100%;
         max-height: min-content;
-        margin-top: 26%;
+        margin-top: 17%;
     }
 
     .setaDireita {

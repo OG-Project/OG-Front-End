@@ -42,14 +42,14 @@ import draggable from "vuedraggable";
 import sortBy from 'sort-by'
 
 let api = conexaoBD()
-let projetoApi = api.procurar("/projeto?id=1")
-let projeto = projetoObjeto()
+let projetoApi = api.procurar("/projeto/3")
 let lista = ref([]);
 let listaStyle = ''
 const propriedadeAtual = ref("STATUS");
 
 
 onMounted(() => {
+    console.log(projetoApi)
     cookies()
     defineListaDePropriedades()
 })
@@ -63,15 +63,12 @@ async function cookies() {
     $cookies.set("usuarioCookie", usuario, 1000000000)
     $cookies.get("projetoCookie", projeto)
 }
-async function projetoObjeto() {
 
-    const resultado = await projetoApi;
-    return projeto = resultado[0]
-}
 async function defineListaDePropriedades() {
     let listaDePropriedades = []
-    let projetoTeste = (await (projeto))
+    let projetoTeste = (await (projetoApi))
     if (propriedadeAtual.value == "STATUS") {
+        console.log(projetoTeste)
         for (const status of projetoTeste.statusList) {
             let listaDeTarefas = []
             for (const tarefa of projetoTeste.tarefas) {
@@ -88,7 +85,7 @@ async function defineListaDePropriedades() {
                     display: "flex",
                     alignItems: "center",
                     flexDirection: "column",
-                    backgroundColor: status.cor,
+                    backgroundColor: ("#"+status.cor),
                     paddingTop: "5px",
                     boxShadow: " 0px 5px 7px rgb(99, 99, 99)"
                 }

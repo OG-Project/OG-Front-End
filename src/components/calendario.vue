@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-[85%] gap-[2.5%]  flex row justify-between text-[20px]">
+        <div class="w-[85%] gap-[2.5%]  flex row justify-between ">
             <div class="w-[14%] flex justify-start">
                 <h1>Domingo</h1>
             </div>
@@ -339,4 +339,4 @@ function verificaQauntidadetarefa(dia) {
 
 
 }
-</style>1
+</style>
