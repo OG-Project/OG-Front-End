@@ -13,7 +13,7 @@
                 <div v-if="opcao == 'TimeLine'" class="w-[100%] h-screen flex justify-center items-center">
                     <timeLine></timeLine>
                 </div>
-                <div v-if="opcao == 'Kanbam'" class="w-[100%] h-screen flex justify-center items-center">
+                <div v-if="opcao == 'Kanban'" class="w-[100%] h-screen flex justify-center items-center">
                     <KanbanDeStatus></KanbanDeStatus>
                 </div>
                 <div v-if="opcao == 'Lista'" class="w-[100%] h-screen flex justify-center items-center">

@@ -1,8 +1,8 @@
 <template>
     <div class="w-[80%] flex flex-row justify-around">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
-            <button @click="$emit('trocaValor','Kanbam')" class="bg-[#CECCCE] px-[1%]">
-                Kanbam
+            <button @click="$emit('trocaValor','Kanban')" class="bg-[#CECCCE] px-[1%]">
+                Kanban
             </button>
             <button @click="$emit('trocaValor','Lista')" class="bg-[#CECCCE] px-[1%]">
                 Lista

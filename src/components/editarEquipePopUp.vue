@@ -178,12 +178,13 @@ async function deletarEquipe(){
             banco.deletarEquipe(equipe.id,'/equipe')
             if(router.currentRoute.value.path == '/equipe'){
                 window.location.reload();
+            }else{
+            window.location.reload();
+            window.history.back(router.push({path:'/equipe'}));
             }
-            router.push({path:'/equipe'})
-            VueCookies.remove('equipeSelecionada');
         }
+        VueCookies.remove('equipeSelecionada');
     })
-
 }
 
 async function atualizarEquipe() { 
