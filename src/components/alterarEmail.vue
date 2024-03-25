@@ -9,10 +9,10 @@
             <div class="flex justify-center items-center">
                 <div class="flex flex-col gap-16">
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl font-semibold">Alterar E-mail</span>
+                        <span class="text-xl font-semibold">Novo E-mail</span>
                         <Input 
                         styleInput="input-transparente-claro-grande" 
-                        conteudoInput="Altera E-mail" 
+                        conteudoInput="Novo E-mail" 
                         v-model="emailNovo"
                         tipo="obrigatorio" />
                     </div>

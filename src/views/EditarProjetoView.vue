@@ -50,7 +50,8 @@
             </div>
         </div>
         <div class=" w-[83%] h-[90%] flex-row ">
-            <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades" @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
+            <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"></ListaPropiedadesStatus>
+
         </div>
         <div class="flex justify-end items-end ">
             <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
@@ -102,7 +103,10 @@
                 </div>
             </div>
         </div>
+
     </div>
+
+
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
@@ -132,21 +136,21 @@ let dataInicioProjeto = ref("");
 let descricaoProjeto = ref("");
 let listaDeUsuariosParaBusca = ref([]);
 var listaPropriedades = ref([]);
-let listaStatus = [];
+let listaStatus = ref([]);
 let equipesRelacionadasProjeto = ref([]);
 let listaAuxResponsaveisProjeto = [];
 let responsaveisProjeto = ref([]);
 let listaEquipesConvidadas = ref([]);
 let listaEquipesSelecionadas = ref([]);
 let listaEquipeEnviaBack = []
-let listaResponsaveisBack = []
 let srcIconListaEquipes = Sair
+let projeto=
 funcaoPopUp.variavelModal = false
 
 onMounted(() => {
     defineSelect()
     pesquisaBancoUserName();
-
+    statusDoProjeto();
     buscaProjetoCookies();
     listaEquipesConvidadas.value = []
 })
@@ -154,7 +158,6 @@ onMounted(() => {
 onUpdated(() => {
     criarProjetoCookies();
 })
-
 
 async function defineSelect() {
     let listaAux = (await conexao.procurar('/equipe'))
@@ -168,19 +171,13 @@ async function defineSelect() {
 
 function colocaListaPropriedades(propriedades){
     listaPropriedades.value=propriedades
-}
-
-function colocaListaStatus(status){
-    console.log(status);
-    listaStatus = []
-    listaStatus= status
-    
-    
+    console.log(propriedades)
 }
 
 function buscaProjetoCookies() {
-    if (VueCookies.get("projetoCookie") != null) {
-        const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
+    if (VueCookies.get("projetoEditar") != null) {
+        console.log(VueCookies.get("projetoEditar"))
+        const variavelCookieProjeto = (VueCookies.get('projetoEditar'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         if (variavelCookieProjeto.equipes.length != 0) {
@@ -188,8 +185,7 @@ function buscaProjetoCookies() {
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
                 const objetoEnviaBack = {
                     equipe: {
-                        id: EquipeAtual.id,
-                    
+                        id: EquipeAtual.id
                     }
                 }
                 listaEquipeEnviaBack.push(objetoEnviaBack)
@@ -211,7 +207,13 @@ async function pesquisaBancoUserName() {
     return listaDeUsuariosParaBusca;
 }
 
-
+async function statusDoProjeto() {
+    var listaAux = (await conexao.procurar('/status'))
+    listaAux.forEach(statusAtual => {
+        listaStatus.value.push(statusAtual)
+    });
+    return listaStatus;
+}
 
 function criarProjetoCookies() {
     const criaProjetoCookies = Projeto
@@ -223,7 +225,7 @@ function criarProjetoCookies() {
         criaProjetoCookies.equipes= ""
     }
     criaProjetoCookies.reponsaveis=responsaveisProjeto.value
-    VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
+    VueCookies.set('projetoEditar', criaProjetoCookies, 86400000)
 }
 
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
@@ -233,28 +235,16 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
             listaAuxResponsaveisProjeto.push(usuarioAtual.username)
             responsaveisProjeto.value = null;
             responsaveisProjeto.value = listaAuxResponsaveisProjeto;
-            adcionaResponsaveisProjeto(usuarioAtual)
+            
         }
     });
 
 }
 
-function adcionaResponsaveisProjeto(usuario){
-    let responsavelBanco={
-        responsavel:{
-            id:usuario.id
-        }
-    }
-    listaResponsaveisBack.push(responsavelBanco);
-}
-
-async function criaProjeto() {
+function criaProjeto() {
     const criaProjeto = criaProjetoStore()
-    console.log(listaStatus)
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus,listaEquipeEnviaBack)
-   let projeto= await  conexao.buscarUm(1,"projeto")
-    
-    VueCookies.set("projetoEditar",projeto,8640000)
+    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades)
+
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
@@ -267,7 +257,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     if(listaEquipesSelecionadas.value.find( (equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined){
             return;
         }
-       
+        console.log("ele não retornou")
     const objetoEnviaBack = {
         equipe: {
             id: equipeVinculada.id
@@ -292,6 +282,7 @@ async function removeListaEquipeConvidadas(equipeRemover){
 }
 
 async function removeResponsavel(responsavelRemover){
+    console.log(responsavelRemover)
     let listaUsuarios = await conexao.procurar('/usuario');
     let usuarioRemovido = listaUsuarios.find((objeto) => objeto.username == responsavelRemover.username);
     let indice = responsaveisProjeto.value.findIndex((obj) => obj.username == responsavelRemover.username);
