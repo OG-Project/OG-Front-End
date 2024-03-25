@@ -1,45 +1,34 @@
 <template>
-    <div class="w-[95%] h-full flex flex-col items-center">
-        <select v-model="propriedadeAtual" class="w-[95%] h-[5%]">
-            <option v-for="tipo of listaDeTipos" :value="tipo.valor">
-                {{ tipo.nome }}
-            </option>
-        </select>
+    <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
+        <div v-for="propriedade of lista" class="w-[20%]">
+            <div :style="propriedade.style">
 
-        <div class="divMaior">
-            <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-                <div v-for="propriedade of lista" class="w-[20%]">
-                    <div :style="propriedade.style">
-
-                        <div
-                            class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
-                            <div class="w-[90%] flex justify-center">
-                                {{ propriedade.propriedade.nome }}
-                            </div>
-                            <div class="w-[10%]">
-                                <img src="../assets/image 3.png">
-                            </div>
-                        </div>
-                        <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
-                            v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
-                            @end="drag = false" item-key="tarefa.indice">
-                            <template #item="{ element: tarefa }">
-                                <div class="w-full h-full flex items-center justify-center">
-                                    <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
-                                        <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
-                                    </div>
-                                </div>
-                            </template>
-                        </draggable>
-                        <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
-                            <p>+ Nova</p>
-                        </div>
+                <div class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
+                    <div class="w-[90%] flex justify-center">
+                        {{ propriedade.propriedade.nome }}
+                    </div>
+                    <div class="w-[10%]">
+                        <img src="../assets/image 3.png">
                     </div>
                 </div>
-                <div class="novaPropriedade">
-                    <h1>+Nova</h1>
+                <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
+                    v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true" @end="drag = false"
+                    item-key="tarefa.indice">
+                    <template #item="{ element: tarefa }">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
+                                <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
+                            </div>
+                        </div>
+                    </template>
+                </draggable>
+                <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
+                    <p>+ Nova</p>
                 </div>
             </div>
+        </div>
+        <div class="novaPropriedade">
+            <h1>+Nova</h1>
         </div>
     </div>
 </template>
@@ -53,37 +42,14 @@ import draggable from "vuedraggable";
 import sortBy from 'sort-by'
 
 let api = conexaoBD()
-let projetoApi = api.procurar("/projeto?id=1")
-let projeto = projetoObjeto()
-let listaDeTarefas = [];
+let projetoApi = api.procurar("/projeto/3")
 let lista = ref([]);
 let listaStyle = ''
-let listaVaziaBoolean = false
 const propriedadeAtual = ref("STATUS");
-const listaDeTipos = ref([
-    {
-        nome: "Status",
-        valor: "STATUS"
-    },
-    {
-        nome: "Texto",
-        valor: "TEXTO"
-    },
-    {
-        nome: "Numero",
-        valor: "NUMERO"
-    },
-    {
-        nome: "Status",
-        valor: "STATUS"
-    },
-    {
-        nome: "Data",
-        valor: "DATA"
-    },
-])
+
 
 onMounted(() => {
+    console.log(projetoApi)
     cookies()
     defineListaDePropriedades()
 })
@@ -97,15 +63,12 @@ async function cookies() {
     $cookies.set("usuarioCookie", usuario, 1000000000)
     $cookies.get("projetoCookie", projeto)
 }
-async function projetoObjeto() {
 
-    const resultado = await projetoApi;
-    return projeto = resultado[0]
-}
 async function defineListaDePropriedades() {
     let listaDePropriedades = []
-    let projetoTeste = (await (projeto))
+    let projetoTeste = (await (projetoApi))
     if (propriedadeAtual.value == "STATUS") {
+        console.log(projetoTeste)
         for (const status of projetoTeste.statusList) {
             let listaDeTarefas = []
             for (const tarefa of projetoTeste.tarefas) {
@@ -122,7 +85,7 @@ async function defineListaDePropriedades() {
                     display: "flex",
                     alignItems: "center",
                     flexDirection: "column",
-                    backgroundColor: status.cor,
+                    backgroundColor: ("#"+status.cor),
                     paddingTop: "5px",
                     boxShadow: " 0px 5px 7px rgb(99, 99, 99)"
                 }

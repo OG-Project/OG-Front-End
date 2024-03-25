@@ -44,10 +44,25 @@
                     <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == false">
 
-                        <p class="w-[33%] truncate ">{{ status.status.nome }}</p>
-                        <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
-                        <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                            Tarefas Atribuidas
+                <div class="scrollBar">
+                    <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
+                            v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
+                            
+                            <p class="w-[33%]">{{ propriedade.nome }}</p>
+                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                Tarefas Atribuidas
+                            </div>
+                        </div>
+                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
+                            v-if="listaSelecionada != []">
+                            <p class="w-[33%]">{{ propriedade.nome }}</p>
+                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                Tarefas Atribuidas
+                            </div>
+                            IdTarefaCookie
                         </div>
 
                     </div>
