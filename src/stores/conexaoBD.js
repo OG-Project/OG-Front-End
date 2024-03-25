@@ -34,8 +34,16 @@ export const conexaoBD = defineStore('conexaoBD', {
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}/${userId}`)
       },
-      buscarUm(id,textoRequisicao){
-        return axios.get(`http://10.4.96.35:8082/`+textoRequisicao+'/'+id).then(response => response.data)
+      
+      async buscarUm(id,textoRequisicao){
+        return await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${id}`).then(response => response.data)
+      },
+
+      async buscarUm(id,textoRequisicao){
+        return (await axios.get('http://10.4.96.35:8082'+textoRequisicao+'/'+id).then(response => response.data))
+      },
+      async buscarProjetosEquipe(equipeId, textoRequisicao){
+        return await ((await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`)).data)
       },
       async cadastrarFoto(equipeId, foto) {
         try {

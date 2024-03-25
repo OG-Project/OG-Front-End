@@ -49,6 +49,7 @@ async function fazerLogin() {
         usuarioLogin.value = "";
         senhaUsuarioLogin.value = "";
         VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000);
+        router.push('/')
       }
     }
   });
@@ -96,6 +97,8 @@ async function cadastraUsuario() {
     }
   }
 }
+
+
 
 let vizualizacaoDeSenha = ref("password");
 let vizualizacaoDeSenhaConfirmacao = ref("password");

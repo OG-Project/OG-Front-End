@@ -3,23 +3,27 @@
                 <div :style="{fontFamily:fonteTitulo}">
                         <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
                 </div>
-                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center w-full    sm:flex-wrap  gap-8">
-                        <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
+                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center w-full  sm:flex-wrap  gap-8">
+                        <div class="flex flex-col 2xl:w-max md:w-[493px] sm:w-[493px] gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
                                         <span class="text-xl">Nome</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Nome" 
                                         v-model="PerfilStore.nome" 
-                                        tipo="obrigatorio" />
+                                        tipo="obrigatorio"
+                                        @clickInput="foi"
+                                        />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
                                         <span class="text-xl">Username</span>
                                         <Input 
+
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Username" 
                                         v-model="PerfilStore.username" 
-                                        tipo="obrigatorio" />
+                                        tipo="obrigatorio" 
+                                         />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
                                         <span class="text-xl">E-mail</span>
@@ -31,12 +35,13 @@
                                 </div>
                         </div>
                         
-                        <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
+                        <div class="flex flex-col 2xl:w-max sm:w-[493px] gap-y-10">
                                 <div class="flex justify-between items-center gap-5">
                                         <span class="text-xl">Sobrenome</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Sobrenome" 
+                                        conteudoInput="Sobrenome"
+                                        modelValue="" 
                                         v-model="PerfilStore.sobrenome" 
                                         tipo="obrigatorio" />
                                 </div>
@@ -77,15 +82,21 @@ import {perfilStore} from '../stores/perfilStore'
 import { ref, onMounted, onBeforeMount } from 'vue';
 import { Usuario } from '../models/usuario';
 import { storeToRefs } from 'pinia';
+import {conexaoBD} from '../stores/conexaoBD.js'
 const PerfilStore=perfilStore()
 const {fonteTitulo} = storeToRefs(PerfilStore)
 const {fonteCorpo} = storeToRefs(PerfilStore)
+const conexao=conexaoBD()
+// console.log(conexao)
+let el
 
-
-
-PerfilStore.nome
 let editar=ref(false)
 
+// function foi(el){
+//         console.log('oi')
+//         console.log(el)
+//         PerfilStore.el=el
+// }
 function alterarEmail(){
         // Revisar 
 
@@ -95,18 +106,14 @@ function alterarEmail(){
         // }
         // console.log("altera")
 }
-onBeforeMount(()=>{
-        // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE   
-        let user=Usuario
-        user.dataNascimento="12/12/2012"
-        user.email="teste@gmail"
-        user.nome="teste"
-        user.sobrenome="testedando"
-        user.senha="123"
-        user.username="LoucoDaXJ6"
-        VueCookies.config('30d')
-        VueCookies.set("usuarioCookie",JSON.stringify(user))
-        let usuario= VueCookies.get("usuarioCookie")
+onBeforeMount(async ()=>{
+        // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE
+
+        VueCookies.set("IdUsuarioCookie",JSON.stringify(2))
+        let id=JSON.parse(VueCookies.get("IdUsuarioCookie"))
+        console.log(id)
+        let usuario = await conexao.buscarUm(id,'/usuario')
+        console.log(usuario)
         // erros pelo fato do cookie
         PerfilStore.nome=usuario.nome
         PerfilStore.sobrenome=usuario.sobrenome
