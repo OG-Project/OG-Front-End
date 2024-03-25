@@ -45,6 +45,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       async buscarProjetosEquipe(equipeId, textoRequisicao){
         return await ((await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`)).data)
       },
+      async buscarProjetosUsuario(userId, textoRequisicao){
+        return await ((await axios.get(`http://localhost:8085${textoRequisicao}/${userId}`)).data)
+      },
       async cadastrarFoto(equipeId, foto) {
         try {
             // Crie um FormData e adicione a imagem a ele
