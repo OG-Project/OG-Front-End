@@ -48,6 +48,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -80,6 +81,11 @@ const props = defineProps({
     }
 
 })
+let alinhamento=ref(43)
+onMounted(() => {
+
+})
+
 
 const grafico = {
     display: "flex",
@@ -87,6 +93,7 @@ const grafico = {
     alignItems: "center",
     width: props.feito + "%",
 }
+
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 </script>
