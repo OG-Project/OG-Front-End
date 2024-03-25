@@ -47,6 +47,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -80,6 +81,11 @@ const props = defineProps({
     }
 
 })
+let alinhamento=ref(43)
+onMounted(() => {
+
+})
+
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -100,6 +106,7 @@ let barraPorcentagem = ref({
 });
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
 </script>
 
 <style  scoped>

@@ -4,6 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+
       path: '/',
       name: 'Home',
       component: () => import('../views/HomeView.vue')
@@ -12,6 +13,7 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: () => import('../views/LoginView.vue')
+
     },
     {
           path:'/projeto',
@@ -34,6 +36,11 @@ const router = createRouter({
       component: () => import('../views/CriarProjetoView.vue')
     },
     {
+      path: '/editaProjeto',
+      name: 'editaProjeto',
+      component: () => import('../views/EditarProjetoView.vue')
+    },
+    {
       path: '/criaTarefa',
       name: 'criaTarefa',
       component: () => import('../views/CriaTarefaView.vue')
@@ -46,6 +53,7 @@ const router = createRouter({
     {
       path:'/perfil',
       name:'Perfil',
+      redirect:'/perfil/informacoes',
       component: () => import('../views/PerfilView.vue'),
       children:[
         {

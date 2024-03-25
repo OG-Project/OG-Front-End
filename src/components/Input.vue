@@ -1,46 +1,237 @@
 
 <template>
- <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita' && tipo!='float'" :style="estilizaDivInput">
-        <div class=" flex items-center justify-center">
-            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+    <div class="styleInputPadraoIcon" 
+        v-if="icon!='null' && direcao!='direita' && tipo!='float'" 
+        :style="estilizaDivInput">
+        <div 
+        class=" cursor-pointer flex items-center justify-center">
+            <img 
+            :src=icon 
+            :style="tamanhoIcon" 
+            class="flex items-center justify-center">
         </div>
-            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-        @input="$emit('update:modelValue', $event.target.value)"  :placeholder=conteudoInput > 
+            <input 
+            :type="tipo" 
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado 
+            :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
+            @input="$emit('update:modelValue', $event.target.value)" 
+            :placeholder=conteudoInput > 
+            
+        <div class="flex items-center justify-center">
+
+            <svgIconMic 
+            @click="mic" 
+            v-show="isVoiceMaker" 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            }"
+            class="  
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            <svgIconKeyboard 
+            @click="teclado" 
+            v-show="isTecladoVirtual "
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            }"
+            class=" 
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+        </div>
    </div>
+
+   <!-- fazer input com botão com um ou dois -->
+
 
    <div class="styleInputPadrao flex items-center" 
-                    v-if="icon=='null' & tipo=='float'">
+        v-if="icon=='null' & tipo=='float'">
+        
         <div class="estiloPlaceHolder">
-            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-                 @input="$emit('update:modelValue', $event.target.value)" class="peer" placeholder=" "  > 
-            <label :style="estilizaDivPlaceHolder" for="inputStyle"  class=" absolute  text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">{{ conteudoInput }}</label>
+            
+            <input 
+            :type="tipo" 
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado 
+            :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
+            @input="$emit('update:modelValue', $event.target.value)" 
+            class="peer" 
+            placeholder=" "  > 
+            <div class="flex items-center justify-center">
+                <svgIconMic 
+                @click="mic" 
+                v-show="isVoiceMaker" 
+                :class="{'*:fill-black':verificaCorFill(props.styleInput),
+                '*:fill-white':verificaCorFill(props.styleInput),
+                }"
+                class="  
+                cursor-pointer 
+                w-[2.5vw] 
+                h-[2.5vh] 
+                flex 
+                items-center 
+                justify-center" />
+                <svgIconKeyboard 
+                @click="teclado" 
+                v-show="isTecladoVirtual "
+                :class="{'*:fill-black':verificaCorFill(props.styleInput),
+                '*:fill-white':verificaCorFill(props.styleInput),
+                }"
+                class=" 
+                cursor-pointer 
+                w-[2.5vw] 
+                h-[2.5vh] 
+                flex 
+                items-center 
+                justify-center" />
+            </div>
+            <label 
+            :style="estilizaDivPlaceHolder" 
+            for="inputStyle"  
+            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            {{ conteudoInput }}
+            </label>
         </div>
    </div>
 
-   <div class="styleInputPadrao" 
-        v-if="icon=='null' && tipo!='float'"  >
-            <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)" :placeholder=conteudoInput  > 
+   <div 
+   class="styleInputPadrao flex flex-row-reverse items-center" 
+    v-if="icon=='null' && tipo!='float'" >
+        <div class="flex items-center justify-center">
+            <svgIconMic 
+            @click="mic" 
+            v-show="isVoiceMaker" 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            }"
+            class="  
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            <svgIconKeyboard 
+            @click="teclado" 
+            v-show="isTecladoVirtual " 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            }"
+            class=" 
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+        </div>
+            <input 
+            :type="tipo" 
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado 
+            :value="modelValue"
+            @change="modelValue=modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
+            @input="$emit('update:modelValue', $event.target.value)" 
+            :placeholder=conteudoInput  > 
       
    </div>
-   <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita" 
-        v-if="direcao=='direita' && tipo!='float'" :style="estilizaDivInput">
-        <input :type="tipo" :placeholder=conteudoInput  :style="estilizaInput" class="inputStyle" :disabled=desabilitado 
+   <div 
+   class="styleInputPadraoIconDireita " 
+   :class="styleInputPadraoDireita" 
+    v-if="direcao=='direita' && tipo!='float'" 
+    :style="estilizaDivInput">
+        
+        <input 
+        :type="tipo" 
+        :placeholder=conteudoInput
+        :style="estilizaInput" 
+        id="inputStyle" 
+        :disabled=desabilitado
         :value="modelValue"
+        @focus="$emit('clickInput',perfil.el=$event.target)"
         @input="$emit('update:modelValue', $event.target.value)">
-        <div class="flex tems-center justify-center">
-            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+        
+        <div 
+        class="flex items-center justify-center">
+            <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">   
+            <svgIconMic 
+            @click="mic" 
+            v-show="isVoiceMaker" 
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            }"
+            class="  
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            <svgIconKeyboard 
+            @click="teclado" 
+            v-show="isTecladoVirtual "
+            :class="{'*:fill-black':verificaCorFill(props.styleInput),
+            '*:fill-white':verificaCorFill(props.styleInput),
+            }"
+            class=" 
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+
         </div>
    </div>
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
-import {Usuario} from '../models/usuario'
-import {Equipe} from '../models/Equipe'
+import { onBeforeMount, ref } from 'vue';
+import svgIconMic from '../assets/svgIconMic.vue';
+import svgIconKeyboard from '../assets/svgIconKeyboard.vue';
+import VueCookies from 'vue-cookies';
+
+import KeyBoard from '../components/Keyboard.vue'
+
+import { perfilStore } from '../stores/perfilStore';
+import { storeToRefs } from 'pinia';
+const perfil=perfilStore()
+
+const {isTecladoVirtual} = storeToRefs(perfil)
+const {isVoiceMaker} = storeToRefs(perfil)
+let cookieVoice
+let cookieTeclado
+
+onBeforeMount(()=>{
+    cookieVoice=VueCookies.get('isVoiceMaker')
+    cookieTeclado=VueCookies.get('isTecladovirtual')
+})
+
+function mic(){
+
+}
+
+function teclado(){
+    perfil.isTecladoAtivado=!perfil.isTecladoAtivado
+}
+
+
 //funcao de passar para o pai 
-    defineEmits(['update:modelValue'])
+    defineEmits(['update:modelValue','clickInput'])
   const props=defineProps({
         styleInput: String, // pode passar input-escuro, input-claro, input-transparente-escuro, input-transparente-claro
         icon: {
@@ -60,9 +251,6 @@ import {Equipe} from '../models/Equipe'
         tamanhoMinimoAltura:String,
       })
 
-      onMounted(() => {
-
-      })
     const hoverPadrao = {
         color : verificaCorHover()
     }
@@ -91,11 +279,13 @@ import {Equipe} from '../models/Equipe'
         return "6vh"   
     }
    const tamanhoIcon={
-        width:"60%",
-        height:"60%",
+        width:"50%",
+        height:"50%",
     }
 
-   const estilizaInput={
+
+    const estilizaInput={
+        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanhoFont(),
@@ -178,12 +368,17 @@ import {Equipe} from '../models/Equipe'
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-transparente-escuro" || props.styleInput=="input-transparente-escuro-grande" ){
-            return"white"
+            return "white"
         }else if(props.styleInput="input-transparente-claro"){
             return 'black';
         }
     }
-
+    function verificaCorFill(a){
+        if(a=="input-escuro" || a=="input-transparente-escuro" || a=="input-transparente-escuro-grande" ){
+            return true
+        }
+        return false
+    }
     function hoverStyle(){
             if(props.corHover=="escuro"){
                 return props.corHover=="#484848"
@@ -194,6 +389,37 @@ import {Equipe} from '../models/Equipe'
 </script>
 <style lang="scss" scoped>
 @import url(../assets/main.css);
+
+@layer components{
+    .styleInputPadraoIcon{
+       @apply bg-transparent
+        border-b-roxo
+        max-w-max
+        w-min
+        border-b-2 border-transparent 
+        items-center focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
+        display: grid;
+        grid-template-columns: 20% 80%;  
+    }
+
+    .styleInputPadrao{
+       @apply bg-transparent
+        border-b-roxo
+        border-b-2 border-transparent 
+        max-w-max
+        items-center  focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm; 
+    }
+
+    .styleInputPadraoDireita{
+        @apply bg-transparent
+        border-b-roxo
+        border-b-4 border-transparent 
+        max-w-max
+        items-center  focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
+    }
 
     .styleInputPadrao{
        @apply 
@@ -227,7 +453,7 @@ import {Equipe} from '../models/Equipe'
          focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px] ;
         display: grid;
-        grid-template-columns: 80% 20%;
+        grid-template-columns: 80% 10% 10%;
         align-content: center;
     }
     .styleInputPadraoIconDireita:hover{
@@ -248,7 +474,7 @@ import {Equipe} from '../models/Equipe'
          focus-within:border-roxo 
         focus-within:border-4 focus-within:rounded-[4px];
         display: grid;
-        grid-template-columns: 10% 70%;
+        grid-template-columns: 10% 70% 10%;
         align-content: center;
     }
     .styleInputPadraoIcon:hover{
@@ -269,7 +495,7 @@ import {Equipe} from '../models/Equipe'
         @apply absolute;
     }
 
-
+}
 
     // <div class="relative">
 //     <input type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
