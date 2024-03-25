@@ -15,6 +15,7 @@
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.2",
     "chart.js": "^4.4.0",
+    "collect.js": "^4.36.1",
     "color-convert": "^2.0.1",
     "date-fns": "^2.30.0",
     "pinia": "^2.1.7",

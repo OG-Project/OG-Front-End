@@ -5,7 +5,7 @@
     descricao: String,
     tarefas : [] ,
     propriedades : [] ,
-    status : [],
-    equipes : {},
+    statusList : [],
+    projetosEquipes : [],
     reponsaveis: [],
 }
