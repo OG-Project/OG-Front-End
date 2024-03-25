@@ -661,6 +661,7 @@ import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import Checkbox from "primevue/checkbox";
+import { criaPropriedadeStore } from '../stores/criaPropriedade';
 
 const banco = conexaoBD();
 
@@ -828,15 +829,8 @@ function criaPropriedade() {
     tipoPropriedade.value != " "
   ) {
     if (nomePropriedade.value != "") {
-      let propriedade = {
-        nome: nomePropriedade.value,
-        tipo: tipoPropriedade.value,
-        valor: "",
-        estaNaTarefa: ref(),
-      };
-      if (tipoPropriedade.value === "Seleção") {
-        propriedade.valor = ref([]);
-      }
+      const cria = criaPropriedadeStore()
+      cria.criaPropriedade(nomePropriedade.value, tipoPropriedade.value)
       console.log(propriedade.tipo);
       nomePropriedade.value = "";
       tipoPropriedade.value = "";
