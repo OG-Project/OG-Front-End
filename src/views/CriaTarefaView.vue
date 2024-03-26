@@ -22,7 +22,7 @@
         ></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
-        <div class="flex flex-col justify-center w-[38%]">
+        <div class="flex flex-col justify-center w-[30%]">
           <p>Propriedades</p>
           <button
             class="flex flex-col justify-center h-[70%]"
@@ -32,10 +32,10 @@
           </button>
         </div>
         <div class="flex flex-col justify-center w-[30%]">
-          <p>Status</p>
+          <p>Cor da Tarefa</p>
           <button
             class="flex flex-col justify-center break-keep h-[70%]"
-            @click="abreFechaCriaStatus()"
+            @click="abreFechaMudaCor()"
           >
             + Criar
           </button>
@@ -52,8 +52,8 @@
         </div>
       </div>
       <!-- Pop-Up utilizado para criar status -->
-      <div v-if="statusSendoCriado">
-        <div v-if="statusSendoCriado" class="h-full flex flex-row pl-12 pt-6 pb-6">
+      <div v-if="corSendoMudada">
+        <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
@@ -61,31 +61,18 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input
-                  largura="10"
-                  conteudoInput="Nome Status"
-                  fontSize="1rem"
-                  altura="3.8"
-                  v-model="nomeStatus"
-                ></Input>
+                <p> Qual a cor da sua Tarefa? </p>
               </div>
               <div class="pr-2">
-                <ColorPicker v-model="corStatus" class="border-2 rounded-lg" />
+                <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
               </div>
             </div>
-            <div class="flex felx-row justify-between">
-              <div class="pl-2 pt-2 pb-2">
-                <Botao
-                  preset="Sair"
-                  tamanhoPadrao="pequeno"
-                  :funcaoClick="abreFechaCriaStatus"
-                ></Botao>
-              </div>
+            <div class="flex felx-row justify-end">
               <div class="pr-2 pt-2 pb-2">
                 <Botao
                   preset="Confirmar"
                   tamanhoPadrao="pequeno"
-                  :funcaoClick="criaStatus"
+                  :funcaoClick="abreFechaMudaCor"
                 ></Botao>
               </div>
             </div>
@@ -93,7 +80,7 @@
         </div>
       </div>
 
-      <!-- Pop-Up para criar uma propriedade -->
+      <!-- Pop-araaaaa criar uma propriedade -->
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
@@ -661,6 +648,7 @@ import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import Checkbox from "primevue/checkbox";
+import { criaPropriedadeTarefaStore } from "../stores/criaPropriedadeTarefa";
 
 const banco = conexaoBD();
 
@@ -736,7 +724,7 @@ function criaStatus() {
     };
     nomeStatus.value = "";
     status.value.push(statusNovo);
-    statusSendoCriado.value = false;
+    corSendoMudada.value = false;
   }
 }
 
@@ -828,20 +816,19 @@ function criaPropriedade() {
     tipoPropriedade.value != " "
   ) {
     if (nomePropriedade.value != "") {
-      let propriedade = {
-        nome: nomePropriedade.value,
-        tipo: tipoPropriedade.value,
-        valor: "",
-        estaNaTarefa: ref(),
-      };
-      if (tipoPropriedade.value === "Seleção") {
-        propriedade.valor = ref([]);
-      }
-      console.log(propriedade.tipo);
+      const cria = criaPropriedadeTarefaStore();
+      tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
+
+      cria.criaPropriedade(
+        nomePropriedade.value,
+        tipoPropriedade.value,
+        VueCookies.get("IdProjetoAtual")
+      );
       nomePropriedade.value = "";
       tipoPropriedade.value = "";
-      propriedades.value.push(propriedade);
       propriedadeSendoCriada.value = false;
+      console.log(projetoDaTarefa.value.propriedades);
+      console.log(propriedades.value);
     }
   }
 }
@@ -866,13 +853,17 @@ async function procuraProjetosDoBanco() {
   let projetoId = VueCookies.get("IdProjetoAtual");
   for (const projeto of projetos) {
     console.log("a");
-    console.log(projetoId);
-    console.log(projeto.id);
     if (projeto.id == projetoId) {
       console.log("foi porra");
       projetoDaTarefa.value = projeto;
+      console.log(projetoDaTarefa.value);
+      console.log(projeto);
       status.value = projetoDaTarefa.value.statusList;
       propriedades.value = projetoDaTarefa.value.propriedades;
+      console.log(status.value);
+      console.log(projetoDaTarefa.value.statusList);
+      console.log(projetoDaTarefa.value.propriedades);
+      console.log(propriedades.value);
     }
   }
 }
@@ -888,6 +879,7 @@ let tarefa = ref({
   propriedades: [],
   status: [],
   subtarefas: [],
+  corDaTarefa: "",
 });
 
 function puxaTarefaDaEdicao() {
@@ -905,6 +897,8 @@ function puxaTarefaDaEdicao() {
   }
 }
 onUpdated(() => {
+  status.value = projetoDaTarefa.value.statusList;
+  propriedades.value = projetoDaTarefa.value.propriedades;
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
@@ -927,6 +921,7 @@ onMounted(() => {
     propriedades: [],
     status: [],
     subtarefas: [],
+    corDaTarefa: "",
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
@@ -945,28 +940,28 @@ function exibirComentarios() {
 
 let propriedadeSendoCriada = ref(false);
 
-let statusSendoCriado = ref(false);
+let corSendoMudada = ref(false);
 
 let subtarefaSendoCriada = ref(false);
 
 //Funções que trocam os valores das variaveis instanciadas acima
 
-function abreFechaCriaStatus() {
-  statusSendoCriado.value = !statusSendoCriado.value;
+function abreFechaMudaCor() {
+  corSendoMudada.value = !corSendoMudada.value;
   propriedadeSendoCriada.value = false;
   subtarefaSendoCriada.value = false;
 }
 
 function abreFechaCriaPropriedades() {
   propriedadeSendoCriada.value = !propriedadeSendoCriada.value;
-  statusSendoCriado.value = false;
+  corSendoMudada.value = false;
   subtarefaSendoCriada.value = false;
 }
 
 function abreFechaCriaSubTarefas() {
   subtarefaSendoCriada.value = !subtarefaSendoCriada.value;
   propriedadeSendoCriada.value = false;
-  statusSendoCriado.value = false;
+  corSendoMudada.value = false;
 }
 
 //Funções que removem e adicionam os status e propriedades da tarefa
