@@ -11,7 +11,7 @@
                 </div>
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>Responsavel:</b> {{ truncarNome(reponsavel,18) }}
+                    <b>Responsavel:</b> {{ reponsavel,18 }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -24,9 +24,8 @@
         <div class="parteDeBaixoCard">
             <!-- colocando a barra de progreço -->
             <div class="barraCinzaGrafico">
-
-                <div :style="grafico" class="barraRoxaGrafico">
-                    <div class='absolute right-[45%]'> {{ feito }}% </div>
+                <div :style="{width: feito + '%'}" class="barraRoxaGrafico">
+                    <div class='absolute mt-[-0.6vh] right-[44%] z-10'> {{ feito }}% </div>
                 </div>
 
             </div>
@@ -44,7 +43,6 @@
             </div>
             <div class="text-white items-center w-3/5 flex justify-evenly" v-else>
                 <div class="w-[5vw] h-[3.4vh]">
-
                 </div>
             </div>
         </div>
@@ -53,6 +51,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 
 const props = defineProps({
     name: {
@@ -87,6 +86,8 @@ onMounted(() => {
 })
 
 
+// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
 const grafico = {
     display: "flex",
     justifyContent: "center",
@@ -94,11 +95,20 @@ const grafico = {
     width: props.feito + "%",
 }
 
-<<<<<<< HEAD
 
-=======
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
->>>>>>> 9246ac623be103f1a73d3bba508cc7519fd56acc
+
+let barraPorcentagem = ref({
+  width: props.feito + "%",
+  height: "100%",
+  borderRadius: "0px",
+  backgroundColor: "#620BA7",
+  border: "none",
+  boxShadow: "none",
+});
+
+// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
 </script>
 
 <style  scoped>
@@ -122,7 +132,7 @@ const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaxim
     }
 
     .barraRoxaGrafico {
-        @apply h-5 bg-purple-600;
+        @apply h-4 bg-purple-600;
     }
 
     .parteDeBaixoCard {

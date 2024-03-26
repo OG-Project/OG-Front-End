@@ -11,13 +11,13 @@ export const conexaoBD = defineStore('conexaoBD', {
     
       procurar(textoRequisicao){
         // return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
-        return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
+        return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
-        return axios.post("http://10.4.96.35:8082"+textoRequisicao,objeto)
+        return axios.post("http://localhost:8082"+textoRequisicao,objeto)
       },
       atualizar(objeto,textoRequisicao){
-        return axios.put("http://10.4.96.35:8082"+textoRequisicao,objeto)
+        return axios.put("http://localhost:8082"+textoRequisicao,objeto)
       },
       adicionaUsuarioAEquipe(userId, equipeId, textoRequisicao){
         return axios.patch("http://10.4.96.35:8082"+textoRequisicao,userId,equipeId)
@@ -36,14 +36,17 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       
       async buscarUm(id,textoRequisicao){
-        return await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${id}`).then(response => response.data)
+        return await axios.get(`http://localhost:8082${textoRequisicao}/${id}`).then(response => response.data)
       },
 
       async buscarUm(id,textoRequisicao){
-        return (await axios.get('http://10.4.96.35:8082'+textoRequisicao+'/'+id).then(response => response.data))
+        return (await axios.get('http://localhost:8082'+textoRequisicao+'/'+id).then(response => response.data))
       },
       async buscarProjetosEquipe(equipeId, textoRequisicao){
         return await ((await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`)).data)
+      },
+      async buscarProjetosUsuario(userId, textoRequisicao){
+        return await ((await axios.get(`http://localhost:8085${textoRequisicao}/${userId}`)).data)
       },
       async cadastrarFoto(equipeId, foto) {
         try {

@@ -7,5 +7,5 @@
     propriedades : [] ,
     statusList : [],
     projetosEquipes : [],
-    reponsaveis: [],
+    responsaveis: [],
 }

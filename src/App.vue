@@ -6,15 +6,18 @@ import Input from "./components/Input.vue";
 import fundoPopUp from "./components/fundoPopUp.vue";
 import { funcaoPopUpStore } from "./stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
-import {perfilStore} from './stores/perfilStore.js'
 import KeyBoard from './components/Keyboard.vue'
 import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
 import Navbar from '@/components/Navbar.vue';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
+import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
+import listaProjetos from './components/listaProjetos.vue';
+import kanbanProjetos from './components/kanbanProjetos.vue'
+
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
@@ -58,7 +61,6 @@ const route = useRoute();
     }
   }
   function change(a){
-)
   }
   function close(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
@@ -79,6 +81,7 @@ watch(() => route.path, (newPath, oldPath) => {
 
 <template draggable="true" >
   
+  
   <Navbar v-show="!estaNoLogin" />
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
@@ -93,7 +96,7 @@ watch(() => route.path, (newPath, oldPath) => {
       <KeyBoard @onChange="change" @onKeyPress="press" :input="oi" ></KeyBoard>
     </div>
   </div>
-    <RouterView />
+  <RouterView />
     <div v-show="isVlibras || VueCookies.get('isVlibras') === 'true'">
       <div vw class="enabled">
         <div vw-access-button class="active"></div>

@@ -96,6 +96,9 @@ function enviaParaTarefasDoDia() {
   mostraTarefasDoDia.value = !mostraTarefasDoDia.value;
   funcaoPopUp.abrePopUp();
 }
+
+let mostraTarefasDaSemana = ref(false);
+
 function enviaParaTarefasDaSemana() {
   mostraTarefasDaSemana.value = !mostraTarefasDaSemana.value;
   funcaoPopUp.abrePopUp();

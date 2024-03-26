@@ -1,11 +1,11 @@
 
 <template>
     <div>
-        
+
     </div>
     <div class="w-full h-full flex flex-col items-center justify-end overflow-hidden">
-        <hubDeProjeto @trocaValor="(event)=>opcao=event"></hubDeProjeto>
-        <div class="w-full h-[72%] flex justify-center items-end" >
+        <hubDeProjeto @trocaValor="(event) => opcao = event"></hubDeProjeto>
+        <div class="w-full h-[72%] flex justify-center items-end">
             <div class="divMaior">
                 <div v-if="opcao == 'Calendario'" class="w-[100%] h-screen flex justify-center items-center">
                     <calendario></calendario>
@@ -30,7 +30,10 @@ import KanbanDeStatus from '../components/KanbanDeStatus.vue';
 import timeLine from '../components/timeLine.vue';
 import cardList from '../components/CardTarefaList.vue';
 import hubDeProjeto from '../components/hubDeProjeto.vue'
-
+let projeto2 = await projeto
+let visualizacao = api.procurar("/visualizacaoEmLista/" + await projeto2.id)
+let visualizacao2 = await visualizacao
+let projeto = api.procurar("/projeto/2")
 let opcao = ref("Lista")
 </script>
 <style>
