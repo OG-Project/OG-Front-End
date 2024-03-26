@@ -61,7 +61,7 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <p>Qual a cor da sua Tarefa?</p>
+                <p> Qual a cor da sua Tarefa? </p>
               </div>
               <div class="pr-2">
                 <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
@@ -670,6 +670,7 @@ const propriedades = ref([]);
 
 const status = ref([]);
 
+let projetoDaTarefa = ref();
 let projetoId = VueCookies.get("Id");
 
 //Estilização usando Java Script
@@ -712,7 +713,20 @@ function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
   return isLight ? "#000" : "#fff";
 }
-//Função utilizada para criar um StatusatualizaStatusEPropriedade();
+//Função utilizada para criar um Status
+
+function criaStatus() {
+  if (nomeStatus.value != "") {
+    let statusNovo = {
+      nome: nomeStatus.value,
+      cor: corStatus.value,
+      estaNaTarefa: ref(false),
+    };
+    nomeStatus.value = "";
+    status.value.push(statusNovo);
+    corSendoMudada.value = false;
+  }
+}
 
 //Função que deleta status
 
@@ -813,7 +827,9 @@ function criaPropriedade() {
       nomePropriedade.value = "";
       tipoPropriedade.value = "";
       propriedadeSendoCriada.value = false;
-      atualizaStatusEPropriedade();
+      console.log(projetoDaTarefa.value.propriedades);
+      console.log(propriedades.value);
+      atualizaPropriedadesEStatus();
     }
   }
 }
@@ -837,14 +853,12 @@ async function procuraProjetosDoBanco() {
   const projetos = await banco.procurar("/projeto");
   let projetoId = VueCookies.get("IdProjetoAtual");
   for (const projeto of projetos) {
+    console.log("a");
     if (projeto.id == projetoId) {
+      console.log(projeto.propriedades);
       return projeto;
     }
   }
-}
-
-async function getProjeto() {
-  projetoDaTarefa.value = await procuraProjetosDoBanco();
 }
 
 //Variavel utilizada para armazenar um comentario ainda nao enviado
@@ -875,25 +889,28 @@ function puxaTarefaDaEdicao() {
     }
   }
 }
-async function atualizaStatusEPropriedade() {
-  await getProjeto();
+
+async function atualizaPropriedadesEStatus(){
+  projetoDaTarefa.value = await procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
   status.value = projetoDaTarefa.value.statusList;
   propriedades.value = projetoDaTarefa.value.propriedades;
 }
-onUpdated(async() => {
+
+onUpdated(() => {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
 });
 
-let projetoDaTarefa = ref();
-
 onMounted(async () => {
   VueCookies.set("IdProjetoAtual", 1, 100000000000);
-  await getProjeto();
-  atualizaStatusEPropriedade();
+  projetoDaTarefa.value = await procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
+  procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
   reloadSubTarefas();
-  await autenticarUsuario();
+  autenticarUsuario();
   puxaTarefaDaEdicao();
   tarefa.value = {
     nome: "",
@@ -906,10 +923,13 @@ onMounted(async () => {
     corDaTarefa: "",
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
-  tarefa.value = JSON.parse(localStorageData);
-  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
+  if (localStorageData) {
+    tarefa.value = JSON.parse(localStorageData);
+    localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
+  }
   exibirComentarios();
-  await autenticaUsuarioCookies();
+  autenticaUsuarioCookies();
+  atualizaPropriedadesEStatus();
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
@@ -997,6 +1017,7 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
+  console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
