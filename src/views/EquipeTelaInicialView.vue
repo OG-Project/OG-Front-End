@@ -26,10 +26,15 @@
         <div class="flex justify-center">
           <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
         </div>
-      <div class="projetos" v-for="projeto of listaProjetos" :key="projeto.id" >
-        <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
-        </CardProjetos>
+        <div  class="projetos ">
+          <div  v-for="projeto of listaProjetos" :key="projeto.id" >
+            <div class="flex w-[100%]">
+              <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
+            </CardProjetos>
+            </div>
+            
           </div> 
+        </div>
         </div>       
       </div>
 </template>
@@ -45,7 +50,6 @@
   import CardProjetos from "../components/cardProjetos.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
-const usuarioLogado = VueCookies.get('usuarioCookie');
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
 const listaProjetos = ref([]);
@@ -98,6 +102,17 @@ async function buscarProjetosEquipe(){
     }
   
 }
+
+function calcularProgresso(projeto) {
+    if (!projeto.tarefas || projeto.tarefas.length == 0) {
+      return 0; // se não houver tarefas, o progresso é 0%
+    }
+
+    const totalTarefas = projeto.tarefas.length;
+    const tarefasConcluidas = projeto.tarefas.filter(tarefa => tarefa.concluida).length;
+
+    return Math.round((tarefasConcluidas / totalTarefas) * 100);
+  }
 
 async function filtrarEquipe(){
     console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
@@ -164,7 +179,7 @@ async function buscarMembrosEquipe() {
 }
 
 .cardProjeto{
-  @apply 2xl:m-[0.5vw] xl:m-[1.7vw] lg:m-[1.9vw] md:m-[1vw];
+  @apply 2xl:w-[20vw] 2xl:m-[0.5vw] xl:m-[1.7vw] lg:m-[1.9vw] md:m-[1vw];
   max-width: calc(25% - 1px); 
 }
 
@@ -235,20 +250,20 @@ async function buscarMembrosEquipe() {
  @media(min-width: 768px){
    .cardProjeto{
     @apply ml-[20vw] mt-10;
-    max-width: calc(55% - 1px);
+    max-width: calc(100% - 1px);
    }
  }
  @media(min-width:1024px){
   .cardProjeto{
     @apply ml-[4.5vw];
-    max-width: calc(45% - 1px);
+    max-width: calc(100% - 1px);
   }
  }
 
  @media (min-width: 1440px) {
   .cardProjeto{
     @apply ml-[2vw];
-    max-width: calc(30% - 1px);
+    max-width: calc(100% - 1px);
   }
  }
 
@@ -258,7 +273,7 @@ async function buscarMembrosEquipe() {
         }
         .cardProjeto{
           @apply ml-[2.5vw];
-          max-width: calc(20% - 1px);
+          max-width: calc(67% - 1px);
         }
     }
 

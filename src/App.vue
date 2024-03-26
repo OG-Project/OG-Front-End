@@ -6,20 +6,20 @@ import Input from "./components/Input.vue";
 import fundoPopUp from "./components/fundoPopUp.vue";
 import { funcaoPopUpStore } from "./stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
-import {perfilStore} from './stores/perfilStore.js'
 import KeyBoard from './components/Keyboard.vue'
 import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
 import Navbar from '@/components/Navbar.vue';
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
+import { useDraggable } from '@vueuse/core'
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
 const {isVlibras}=storeToRefs(perfil);
-import { useDraggable } from '@vueuse/core'
+
 const el = ref(perfil.el)
 
 const { x, y, style } = useDraggable(el, {
@@ -58,7 +58,7 @@ const route = useRoute();
     }
   }
   function change(a){
-)
+
   }
   function close(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
