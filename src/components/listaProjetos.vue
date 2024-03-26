@@ -20,15 +20,15 @@
                 <div class="urgentes">
                      <h1 class="text-xl text-white"> URGENTES</h1>
                 </div>
-                <div class="flex items-center mt-10" v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full h-full flex justify-start flex-col">
+              <div class="kanban-board w-full h-full flex justify-center flex-col">
                 <div class="naoIniciado">
                   <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
                </div>
-               <div class="flex items-center mt-10" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+               <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
@@ -36,7 +36,7 @@
                 <div class="prontos">
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
-                <div class="flex items-center mt-10" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
@@ -44,7 +44,7 @@
                 <div class="meusProjetos">
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
-                <div class="flex items-center  mt-10" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>

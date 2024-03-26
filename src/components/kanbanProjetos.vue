@@ -1,5 +1,5 @@
 <template> 
-    <div class="card ml-10">
+    <div class="card justify-center">
       <div class="divCor" :style="{ backgroundColor: cor }"></div>   
       <h2 class="card-titulo">{{ nome }}</h2>
       <img @click="editarProjeto(projeto)" class="icone" src="../imagem-vetores/tresPontos.svg" alt="">
@@ -25,7 +25,7 @@
     </script>
     <style scoped>
     .card {
-      @apply flex flex-wrap justify-start w-[15vw] h-[6vh] bg-[#f2f2f2] shadow-md;
+      @apply flex flex-wrap justify-start 2xl:w-[15vw] 2xl:h-[6vh] xl:w-[17vw] xl:h-[6vh] lg:w-[18vw] lg:h-[6vh] md:w-[20vw] md:h-[6vh] bg-[#f2f2f2] shadow-md;
     }
     .divCor {
       @apply w-[1vw] h-[6vh] bg-orange-500;
@@ -33,10 +33,10 @@
     }
     
     .imagem {
-      @apply absolute mt-5 ml-[13vw] w-[30px] h-[30px] rounded-full;
+      @apply absolute 2xl:mt-5 2xl:ml-[13vw] xl:ml-[14vw] xl:mt-6 lg:ml-[14vw] lg:mt-8 md:ml-[15vw] md:mt-9 w-[30px] h-[30px] rounded-full;
     }
     .icone {
-      @apply flex fixed justify-end mt-[0.8vh] ml-[13.1vw];
+      @apply flex fixed justify-end 2xl:mt-[0.8vh] 2xl:ml-[13.1vw] xl:mt-[0.8vh] xl:ml-[14.1vw] lg:mt-[0.8vh] lg:ml-[14.1vw] md:mt-[0.8vh] md:ml-[15vw];
     }
     .card-titulo {
       @apply flex text-base font-semibold items-center justify-start ml-3 mr-[3vw];
