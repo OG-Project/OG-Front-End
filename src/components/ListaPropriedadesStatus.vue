@@ -55,7 +55,7 @@
                     <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
                         <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-                            status.status.nome }}</p>
+            status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class=" w-[50%] h-full ">
                             <p class="bg-roxo-claro rounded-md p-1 w-full h-[33%]">Tarefas Atribuidas</p>
@@ -145,8 +145,13 @@ import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 import { Propriedade } from '../models/Propriedade'
 import { getCurrentInstance } from 'vue';
 import ColorPicker from 'primevue/colorpicker';
-import sortBy from 'sort-by'
+import sortBy from 'sort-by';
+import { useRoute } from 'vue-router';
+import { conexaoBD } from '../stores/conexaoBD';
 const instance = getCurrentInstance();
+const route = useRoute();
+const conexao = conexaoBD();
+const funcaoPopUp = funcaoPopUpStore();
 let opcoesSelect = ref([]);
 let opcaoSelecionadaNaTabela = ref("");
 let buscarPor = ref("");
@@ -161,16 +166,28 @@ let auxParaCriarPropriedades = [];
 let auxParaCriarStatus = [];
 let auxRenderizaStatusTela = [];
 let corStatus = ref("")
-const funcaoPopUp = funcaoPopUpStore()
+let projetoEdita = ref(false);
 let timeoutId = null;
+let idProjeto;
 
 onMounted(() => {
+    verificaEdicaoProjeto();
     buscaPropriedadeCookies();
     buscarStatusCookies();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
 }
 )
+
+function verificaEdicaoProjeto() {
+    if (route.path == '/editaProjeto') {
+        projetoEdita.value = true
+    } else {
+        projetoEdita.value = false
+    }
+
+}
+
 
 async function buscandoPor() {
     listaSelecionada.value = []
@@ -235,7 +252,7 @@ function navegaPelaTabela(opcaoSelecionada) {
             this.opcaoSelecionadaNaTabela = 'propriedade';
         }
         opcoesSelect.value = ["Todos", "Data", "Numero", "Seleção", "Texto"];
-       
+
     } else if (opcaoSelecionada == 'status') {
         this.opcaoSelecionadaNaTabela = 'status';
         opcoesSelect.value = ["A-Z", "Z-A"]
@@ -243,19 +260,38 @@ function navegaPelaTabela(opcaoSelecionada) {
 }
 
 function buscaPropriedadeCookies() {
+    if (!projetoEdita.value) {
+        buscaRascunhoPropiedade()
+    } else {
+        buscaPropriedadeBanco();
+    }
+    mandaProrpiedadesBack(listaPropriedades)
+}
+
+async function buscaPropriedadeBanco() {
+    idProjeto = VueCookies.get("projetoEditarId");
+    let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+    if (projeto != null) {
+        console.log(projeto)
+       listaPropriedades.value=projeto.propriedades;
+       auxParaCriarPropriedades= listaPropriedades.value;
+       mandaProrpiedadesBack(auxParaCriarPropriedades)
+    }
+}
+
+function buscaRascunhoPropiedade() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
     if (propriedadeArmazenada == null) {
         return;
     }
     listaPropriedades.value = propriedadeArmazenada
     auxParaCriarPropriedades = propriedadeArmazenada
-    mandaProrpiedadesBack(listaPropriedades)
 }
 
-function mandaProrpiedadesBack(listaPropriedades){
+function mandaProrpiedadesBack(listaPropriedades) {
     const propriedadesParaback = listaPropriedades.value.map(objeto => {
-        if (objeto.tipo == "SELEÇÃO" ) {
-            objeto.tipo= "SELECAO"
+        if (objeto.tipo == "SELEÇÃO") {
+            objeto.tipo = "SELECAO"
             return objeto;
         }
         return objeto;
@@ -269,13 +305,15 @@ function criaPropriedadeCookies() {
         tipo: tipoPropriedade.value.toUpperCase()
     }
     auxParaCriarPropriedades.push(propriedadeCriada)
-    VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
     listaPropriedades.value = auxParaCriarPropriedades
-    nomePropriedade.value="";
-    tipoPropriedade.value="";
+    nomePropriedade.value = "";
+    tipoPropriedade.value = "";
+    if (!projetoEdita.value) {
+        VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
+    }
     funcaoPopUp.fechaPopUp();
     mandaProrpiedadesBack(listaPropriedades)
-    
+
 }
 
 function criaStatusBack() {
@@ -284,17 +322,17 @@ function criaStatusBack() {
         nome: nomeStatus.value,
         cor: corStatus.value
     }
-   
+
     auxParaCriarStatus.push(statusCriado);
     criaStatusCookies(statusCriado)
     mandaStatusBack();
 }
 
-function atualizaStatus(statusRecebido) {   
-    
+function atualizaStatus(statusRecebido) {
+
     const statusAtulizados = listaStatus.value.map(objeto => {
-        if (objeto.status == statusRecebido.status ) {
-          
+        if (objeto.status == statusRecebido.status) {
+
             return statusRecebido;
         }
         return objeto;
@@ -306,14 +344,14 @@ function atualizaStatus(statusRecebido) {
     mandaStatusBack();
 }
 
-function mandaStatusBack(){
-    auxParaCriarStatus=[]
+function mandaStatusBack() {
+    auxParaCriarStatus = []
     auxRenderizaStatusTela.map((objeto) => auxParaCriarStatus.push(objeto.status))
     listaStatusBack = auxParaCriarStatus;
     console.log(listaStatusBack)
     instance.emit('mandaListaStatusBack', listaStatusBack)
-    nomeStatus.value="";
-    corStatus.value="";
+    nomeStatus.value = "";
+    corStatus.value = "";
 }
 
 function criaStatusCookies(statusBack) {
@@ -323,22 +361,41 @@ function criaStatusCookies(statusBack) {
             verNomeCompleto: false
         }
         auxRenderizaStatusTela.push(statusFront)
-        
+
     }
     listaStatus.value = auxRenderizaStatusTela;
-    console.log(listaStatus.value)
-    VueCookies.set("statusCookie", auxRenderizaStatusTela, 864000000)
+    if(!projetoEdita.value){
+        VueCookies.set("statusCookie", auxRenderizaStatusTela, 864000000)
+    }
     funcaoPopUp.fechaPopUp();
 }
 
 
 function buscarStatusCookies() {
+    if(!projetoEdita.value){
+        buscaRascunhoStatus();
+    }else {
+        buscaStatusBanco();
+    }
+}
+
+function buscaRascunhoStatus(){
     if (VueCookies.get("statusCookie") != null) {
         listaStatus.value = VueCookies.get("statusCookie");
         console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
         console.log("status: " + auxRenderizaStatusTela)
         mandaStatusBack();
+    }
+}
+
+async function buscaStatusBanco(){
+    idProjeto = VueCookies.get("projetoEditarId");
+    let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+    if (projeto != null) {
+       projeto.statusList.forEach((status) =>{
+        criaStatusCookies(status)
+       })
     }
 }
 

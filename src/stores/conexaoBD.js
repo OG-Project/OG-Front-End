@@ -5,7 +5,7 @@ import axios from "axios";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
-      return {api:axios.get("http://10.4.96.35:8082")}
+      return {api:axios.get("http://localhost:8082")}
     },
     actions: {
     
@@ -20,10 +20,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.put("http://localhost:8082"+textoRequisicao,objeto)
       },
       adicionaUsuarioAEquipe(userId, equipeId, textoRequisicao){
-        return axios.patch("http://10.4.96.35:8082"+textoRequisicao,userId,equipeId)
+        return axios.patch("http://localhost:8082"+textoRequisicao,userId,equipeId)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch('http://10.4.96.35:8082'+ textoRequisicao +"/"+ equipeId, ids)
+        return axios.patch("http://localhost:8082"+ textoRequisicao +"/"+ equipeId, ids)
       },
       deletarEquipe(id,textoRequisicao){
         return axios.delete(`http://10.4.96.35:8082${textoRequisicao}/${id}`)
@@ -33,10 +33,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}/${userId}`)
-      },
-      
-      async buscarUm(id,textoRequisicao){
-        return await axios.get("http://localhost:8082"+{textoRequisicao}+"/"+{id}).then(response => response.data)
       },
 
       async buscarUm(id,textoRequisicao){
