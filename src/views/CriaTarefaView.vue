@@ -80,7 +80,7 @@
         </div>
       </div>
 
-      <!-- Pop-ara criar uma propriedade -->
+      <!-- Pop-araaaaa criar uma propriedade -->
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
