@@ -27,15 +27,8 @@ const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70},
 })
 
-// let ativado='';
 
-// watch(ativado,async (newValue,oldValue)=>{
-//   ativado.value=newValue
-//   console.log(ativado)
-//   console.log(newValue)
-//   console.log(oldValue)
-  
-// })
+
   onMounted(()=>{
   perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
   console.log(perfil.isVoiceMaker)
@@ -47,6 +40,7 @@ const { x, y, style } = useDraggable(el, {
   })
   
   function press(b){
+  
     console.log('press '+b)
     let valorElemento=perfil.el.value
     console.log(valorElemento)
@@ -55,32 +49,21 @@ const { x, y, style } = useDraggable(el, {
       perfil.el.value=valorElemento.substring(0,valorElemento.length-1)
     }else if(b=='{space}'){
       perfil.el.value+=' '
+      perfil.el.dispatchEvent(new Event('input'))
     }else if(b!='{enter}' & b!='{shift}' & b!='{lock}' & b!='{tab}'){
-      perfil.el.value+=valor
-      
+      perfil.el.value+=valor  
+      perfil.el.dispatchEvent(new Event('input'))
     }
+
   }
-  function change(a){
-    // let valor=''
-    // valor=a[a.length-1]
-    // if(perfil.el==el){
-    //   console.log('igual')
-    //   if(el.value!=''){
-    //     el.value+=valor
-    //   }
-    // }else{
-    //   console.log('diferente')
-    //     perfil.el.value+=valor
-    // }
-    // valor=''
-    // // perfil.el.value=a
-    // // console.log('change '+a)
+  function change(a){ 
+    console.log(a)
   }
   function close(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
   }
 
-  function oi(a){
+  function teste(a){
     console.log(a)
   }
 </script>
@@ -89,9 +72,9 @@ const { x, y, style } = useDraggable(el, {
   <div v-if=" $route.fullPath!='http://localhost:5173/login'">
     <Navbar ></Navbar>
   </div>
+  <RouterView />
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
-  
   class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" 
   v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
@@ -99,14 +82,10 @@ const { x, y, style } = useDraggable(el, {
         <svgIconMove class="w-[1vw] h-[3vh]" />
         <svgIconX @click="close" class="w-[1vw] h-[3vh]" ></svgIconX>
       </div>
-      <KeyBoard @onChange="change" @onKeyPress="press" :input="oi" ></KeyBoard>
+      <KeyBoard @onChange="change" @onKeyPress="press" :input="teste" ></KeyBoard>
     </div>
   </div>
 
-
-    <RouterView />
-    <!-- {{ VueCookies.get('isVlibras') }}
-    {{ ativado }} -->
     <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
       <div vw class="enabled">
         <div vw-access-button class="active"></div>

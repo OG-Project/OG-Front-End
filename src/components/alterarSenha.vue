@@ -14,21 +14,36 @@
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Antiga" 
                             v-model="senhaAntiga" 
-                            tipo="obrigatorio" />
+                            tipo="obrigatorio"
+                            @updateModelValue="(e)=> {
+                                    console.log(e)
+                                    senhaAntiga=e
+                            }"
+                            />
                         </div>
                         <div class="flex justify-between items-center gap-5">
                             <span class="text-xl font-semibold">Insira uma senha nova</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Nova" 
                             v-model="senhaNova" 
-                            tipo="obrigatorio" />
+                            tipo="obrigatorio"
+                            @updateModelValue="(e)=> {
+                                    console.log(e)
+                                    senhaNova=e
+                            }"
+                            />
                         </div>
                         <div class="flex justify-between items-center gap-5">
                             <span class="text-xl font-semibold">Confirme a nova senha</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Confirmar Senha" 
                             v-model="senhaConfirmada" 
-                            tipo="obrigatorio" />
+                            tipo="obrigatorio"
+                            @updateModelValue="(e)=> {
+                                    console.log(e)
+                                    senhaConfirmada=e
+                            }"
+                            />
                         </div>
                     </div>
                 </div>

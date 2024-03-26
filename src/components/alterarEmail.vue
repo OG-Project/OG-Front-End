@@ -14,7 +14,12 @@
                         styleInput="input-transparente-claro-grande" 
                         conteudoInput="Novo E-mail" 
                         v-model="emailNovo"
-                        tipo="obrigatorio" />
+                        tipo="obrigatorio"
+                        @updateModelValue="(e)=> {
+                                    console.log(e)
+                                    emailNovo=e
+                        }"
+                        />
                     </div>
                 </div>
             </div>

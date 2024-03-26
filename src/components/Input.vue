@@ -17,7 +17,7 @@
             :disabled=desabilitado 
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput > 
             
         <div class="flex items-center justify-center">
@@ -66,7 +66,7 @@
             :disabled=desabilitado 
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             class="peer" 
             placeholder=" "  > 
             <div class="flex items-center justify-center">
@@ -143,9 +143,9 @@
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
-            @change="modelValue=modelValue"
+            
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
       
    </div>
@@ -163,7 +163,7 @@
         :disabled=desabilitado
         :value="modelValue"
         @focus="$emit('clickInput',perfil.el=$event.target)"
-        @input="$emit('update:modelValue', $event.target.value)">
+        @input="$emit('updateModelValue', $event.target.value)">
         
         <div 
         class="flex items-center justify-center">
@@ -225,13 +225,14 @@ function mic(){
 
 }
 
+
 function teclado(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
 }
 
 
 //funcao de passar para o pai 
-    defineEmits(['update:modelValue','clickInput'])
+    defineEmits(['updateModelValue','clickInput'])
   const props=defineProps({
         styleInput: String, // pode passar input-escuro, input-claro, input-transparente-escuro, input-transparente-claro
         icon: {
