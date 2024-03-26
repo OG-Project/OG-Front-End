@@ -61,7 +61,7 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <p> Qual a cor da sua Tarefa? </p>
+                <p>Qual a cor da sua Tarefa?</p>
               </div>
               <div class="pr-2">
                 <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
@@ -670,7 +670,6 @@ const propriedades = ref([]);
 
 const status = ref([]);
 
-let projetoDaTarefa = ref();
 let projetoId = VueCookies.get("Id");
 
 //Estilização usando Java Script
@@ -713,20 +712,7 @@ function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
   return isLight ? "#000" : "#fff";
 }
-//Função utilizada para criar um Status
-
-function criaStatus() {
-  if (nomeStatus.value != "") {
-    let statusNovo = {
-      nome: nomeStatus.value,
-      cor: corStatus.value,
-      estaNaTarefa: ref(false),
-    };
-    nomeStatus.value = "";
-    status.value.push(statusNovo);
-    corSendoMudada.value = false;
-  }
-}
+//Função utilizada para criar um StatusatualizaStatusEPropriedade();
 
 //Função que deleta status
 
@@ -827,8 +813,7 @@ function criaPropriedade() {
       nomePropriedade.value = "";
       tipoPropriedade.value = "";
       propriedadeSendoCriada.value = false;
-      console.log(projetoDaTarefa.value.propriedades);
-      console.log(propriedades.value);
+      atualizaStatusEPropriedade();
     }
   }
 }
@@ -852,20 +837,14 @@ async function procuraProjetosDoBanco() {
   const projetos = await banco.procurar("/projeto");
   let projetoId = VueCookies.get("IdProjetoAtual");
   for (const projeto of projetos) {
-    console.log("a");
     if (projeto.id == projetoId) {
-      console.log("foi porra");
-      projetoDaTarefa.value = projeto;
-      console.log(projetoDaTarefa.value);
-      console.log(projeto);
-      status.value = projetoDaTarefa.value.statusList;
-      propriedades.value = projetoDaTarefa.value.propriedades;
-      console.log(status.value);
-      console.log(projetoDaTarefa.value.statusList);
-      console.log(projetoDaTarefa.value.propriedades);
-      console.log(propriedades.value);
+      return projeto;
     }
   }
+}
+
+async function getProjeto() {
+  projetoDaTarefa.value = await procuraProjetosDoBanco();
 }
 
 //Variavel utilizada para armazenar um comentario ainda nao enviado
@@ -896,22 +875,25 @@ function puxaTarefaDaEdicao() {
     }
   }
 }
-onUpdated(() => {
+async function atualizaStatusEPropriedade() {
+  await getProjeto();
   status.value = projetoDaTarefa.value.statusList;
   propriedades.value = projetoDaTarefa.value.propriedades;
+}
+onUpdated(async() => {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
 });
 
-onMounted(() => {
+let projetoDaTarefa = ref();
+
+onMounted(async () => {
   VueCookies.set("IdProjetoAtual", 1, 100000000000);
-  projetoDaTarefa.value = ref();
-  console.log(projetoDaTarefa.value);
-  procuraProjetosDoBanco();
-  console.log(projetoDaTarefa.value);
+  await getProjeto();
+  atualizaStatusEPropriedade();
   reloadSubTarefas();
-  autenticarUsuario();
+  await autenticarUsuario();
   puxaTarefaDaEdicao();
   tarefa.value = {
     nome: "",
@@ -924,12 +906,10 @@ onMounted(() => {
     corDaTarefa: "",
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
-  if (localStorageData) {
-    tarefa.value = JSON.parse(localStorageData);
-    localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
-  }
+  tarefa.value = JSON.parse(localStorageData);
+  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   exibirComentarios();
-  autenticaUsuarioCookies();
+  await autenticaUsuarioCookies();
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
@@ -1017,7 +997,6 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
-  console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
