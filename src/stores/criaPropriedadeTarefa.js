@@ -11,13 +11,20 @@ export const criaPropriedadeTarefaStore = defineStore('criaPropriedadeTarefa', {
 
     actions: {
         criaPropriedade(nome,tipo,projetoId){
-        let propriedadeCriada= Propriedade
+        let propriedadeCriada = Propriedade
         let api= conexaoBD();
         propriedadeCriada.nome=nome;
         propriedadeCriada.tipo=tipo;
-        console.log(propriedadeCriada)
-        console.log("Stassun");
+        console.log(propriedadeCriada.nome);
+        console.log( propriedadeCriada.tipo);
+        console.log(projetoId);
+        console.log("aaaaa");
         api.cadastrar(propriedadeCriada,'/propriedade/'+projetoId)
+        console.log("foi");
       },
+      deletaPropriedade(id,projetoId){
+        let api = conexaoBD();
+        api.deletarPropriedade('/projeto/deletarPropriedade/'+id+'/'+projetoId)
+      }
     },
   })

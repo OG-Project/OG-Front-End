@@ -61,7 +61,7 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <p> Qual a cor da sua Tarefa? </p>
+                <p>Qual a cor da sua Tarefa?</p>
               </div>
               <div class="pr-2">
                 <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
@@ -441,7 +441,7 @@
               class="w-[100%] min-h-[5vh] flex items-center justify-center"
               v-if="propriedade.sendoEditado"
             >
-              <div v-if="propriedade.tipo === 'Texto'">
+              <div v-if="propriedade.tipo === 'TEXTO'">
                 <Input
                   altura="2"
                   largura="28"
@@ -452,7 +452,7 @@
                 >
                 </Input>
               </div>
-              <div v-if="propriedade.tipo === 'Data'">
+              <div v-if="propriedade.tipo === 'DATA'">
                 <Calendar
                   class="border-2 rounded-lg border-[#620BA7]"
                   border
@@ -462,7 +462,7 @@
                   iconDisplay="input"
                 />
               </div>
-              <div v-if="propriedade.tipo === 'Numero'">
+              <div v-if="propriedade.tipo === 'NUMERO'">
                 <InputNumber
                   class="border-2 rounded-lg border-[#620BA7]"
                   showIcon
@@ -473,7 +473,7 @@
                   maxFractionDigits="2"
                 />
               </div>
-              <div v-if="propriedade.tipo === 'Seleção'">
+              <div v-if="propriedade.tipo === 'SELEÇÃO'">
                 <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
                   <Input
                     altura="2"
@@ -606,19 +606,19 @@
           class="flex flex-col justify-around py-4 w-[80%]"
         >
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
-          <div v-if="propriedade.tipo === 'Data'">
+          <div v-if="propriedade.tipo === 'DATA'">
             <p>Valor: {{ format(new Date(propriedade.valor), "dd/MM/yyyy") }}</p>
           </div>
-          <div v-if="propriedade.tipo === 'Seleção'" class="flex">
+          <div v-if="propriedade.tipo === 'SELEÇÃO'" class="flex">
             <p>Valor:</p>
             <select class="flex text-center w-[80%]">
               <option v-for="valor in propriedade.valor">{{ valor }}</option>
             </select>
           </div>
-          <div v-if="propriedade.tipo === 'Numero'">
+          <div v-if="propriedade.tipo === 'NUMERO'">
             <p>Valor: {{ propriedade.valor }}</p>
           </div>
-          <div v-if="propriedade.tipo === 'Texto'">
+          <div v-if="propriedade.tipo === 'TEXTO'">
             <p>Valor: {{ propriedade.valor }}</p>
           </div>
         </div>
@@ -801,7 +801,7 @@ function deletaSubtarefa(subtarefa) {
 
 //Função utilizada para criar uma Propriedade
 
-function criaPropriedade() {
+async function criaPropriedade() {
   if (
     tipoPropriedade.value != "Data" &&
     tipoPropriedade.value != "Numero" &&
@@ -824,27 +824,29 @@ function criaPropriedade() {
         tipoPropriedade.value,
         VueCookies.get("IdProjetoAtual")
       );
-      nomePropriedade.value = "";
-      tipoPropriedade.value = "";
-      propriedadeSendoCriada.value = false;
-      console.log(projetoDaTarefa.value.propriedades);
-      console.log(propriedades.value);
-      atualizaPropriedadesEStatus();
     }
   }
+  await procuraProjetosDoBanco();
+  projetoDaTarefa.value = await procuraProjetosDoBanco();
+  nomePropriedade.value = "";
+  tipoPropriedade.value = "";
+  propriedades.value = projetoDaTarefa.value.propriedades;
+  propriedadeSendoCriada.value = false;
 }
 
 //Função que deleta uma propriedade
 
 function deletaPropriedade(propriedade) {
-  propriedades.value.forEach((propriedadeParaDeletar) => {
+  const deleta = criaPropriedadeTarefaStore();
+  propriedades.value.forEach(async (propriedadeParaDeletar) => {
     if (propriedadeParaDeletar === propriedade) {
-      propriedades.value.splice(propriedades.value.indexOf(propriedade), 1);
-    }
-  });
-  tarefa.value.propriedades.forEach((propriedadeParaDeletar) => {
-    if (propriedadeParaDeletar === propriedade) {
-      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
+      console.log(propriedadeParaDeletar.id);
+      console.log(propriedade.id);
+      console.log(VueCookies.get("IdProjetoAtual"));
+      deleta.deletaPropriedade(propriedade.id,parseInt(VueCookies.get("IdProjetoAtual")))
+      await procuraProjetosDoBanco();
+      projetoDaTarefa.value = await procuraProjetosDoBanco();
+      propriedades.value = projetoDaTarefa.value.propriedades;
     }
   });
 }
@@ -890,7 +892,7 @@ function puxaTarefaDaEdicao() {
   }
 }
 
-async function atualizaPropriedadesEStatus(){
+async function atualizaPropriedadesEStatus() {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   console.log(projetoDaTarefa.value);
   status.value = projetoDaTarefa.value.statusList;
@@ -1083,7 +1085,8 @@ const listaFiltradaPropriedades = computed(() => {
   }
 
   return propriedades.value.filter(
-    (propriedade) => propriedade.tipo === parametroDoFiltroPropriedade.value
+    (propriedade) =>
+      propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
   );
 });
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
