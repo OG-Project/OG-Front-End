@@ -2,8 +2,8 @@
     <div class="gridTotal">
         <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
-                    largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"></Input>
+                <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto" largura="30"
+                    altura="6" fontSize="1.5rem" v-model="nomeProjeto"></Input>
             </div>
             <div class="h-[15%] w-max flex items-center">
                 <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="8vh" preset="transparente"
@@ -13,9 +13,8 @@
                 <div class="  flex flex-col gap-10">
                     <div>
                         <div class="w-[50%] grid grid-cols-2">
-                            <selectPadrao altura="4" largura="8" :listaSelect="listaSelecao"
-                                placeholder-select="Equipes" v-model="equipesRelacionadasProjeto"
-                                fonte-tamanho="0.9rem"></selectPadrao>
+                            <selectPadrao altura="4" largura="8" :listaSelect="listaSelecao" placeholder-select="Equipes"
+                                v-model="equipesRelacionadasProjeto" fonte-tamanho="0.9rem"></selectPadrao>
 
                             <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
                                 :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
@@ -36,8 +35,7 @@
                                         class="bg-roxo-claro rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
                                         <img src="../imagem-vetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
-                                        <img src="../imagem-vetores/X-preto.svg"
-                                            @click="removeResponsavel(responsavel)">
+                                        <img src="../imagem-vetores/X-preto.svg" @click="removeResponsavel(responsavel)">
                                     </div>
                                 </div>
                             </div>
@@ -200,9 +198,9 @@ function buscaProjetoCookies() {
             })
         }
         if (variavelCookieProjeto.responsaveis != []) {
-            responsaveisProjeto.value = variavelCookieProjeto.reponsaveis
-            listaAuxResponsaveisProjeto = variavelCookieProjeto.reponsaveis
-            variavelCookieProjeto.reponsaveis.forEach(responsavel => {
+            responsaveisProjeto.value = variavelCookieProjeto.responsaveis
+            listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
+            variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
         }
@@ -218,8 +216,6 @@ async function pesquisaBancoUserName() {
     return listaDeUsuariosParaBusca;
 }
 
-
-
 function criarProjetoCookies() {
     const criaProjetoCookies = Projeto
     criaProjetoCookies.descricao = descricaoProjeto.value;
@@ -229,7 +225,7 @@ function criarProjetoCookies() {
     } else {
         criaProjetoCookies.equipes = ""
     }
-    criaProjetoCookies.reponsaveis = responsaveisProjeto.value
+    criaProjetoCookies.responsaveis = responsaveisProjeto.value
     VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
 }
 
@@ -246,30 +242,35 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 
 }
 
-async function adicionaResponsaveisProjeto(usuario) {
-    if (usuario.id == undefined) {
+async function adicionaResponsaveisProjeto(usuarioRecebe) {
+    if (usuarioRecebe.id == undefined) {
         let listaAux = (await conexao.procurar('/usuario'))
         listaAux.forEach(usuario => {
-            let responsavelBanco = {
-                responsavel: [{
-                    id: usuario.id
-                }]
+            if (usuario.username == usuarioRecebe) {
+                let responsavelBanco = {
+                    responsavel: {
+                        id: usuario.id
+                    }
+                }
+                listaResponsaveisBack.push(responsavelBanco);
+                return;
             }
-            listaResponsaveisBack.push(responsavelBanco);
         })
-        return;
+
+    } else {
+        let responsavelBanco = {
+            responsavel: {
+                id: usuarioRecebe.id
+            }
+        }
+        listaResponsaveisBack.push(responsavelBanco);
     }
-    let responsavelBanco = {
-        responsavel: [{
-            id: usuario.id
-        }]
-    }
-    listaResponsaveisBack.push(responsavelBanco);
+
 }
 
 async function criaProjeto() {
     const criaProjeto = criaProjetoStore()
-    console.log(listaStatus)
+
     criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus, listaResponsaveisBack)
     let projeto = await conexao.buscarUm(1, "projeto")
 
