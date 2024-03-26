@@ -1,46 +1,50 @@
 <template>
     <div :style="{ height: height, width: width }" class="flex justify-center">
-      <div class="listaProjetos overflow-auto">
-        <div class="flex justify-start w-full">
-          <div v-if="!kanbanAtivo">
-            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }" @click="ativarBotao('urgentes')">URGENTES</button>
-            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }" @click="ativarBotao('prontos')">PRONTOS</button>
-            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'nao-iniciados' }" @click="ativarBotao('nao-iniciados')">NÃO INICIADOS</button>
-            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }" @click="ativarBotao('meus-projetos')">MEUS PROJETOS</button>
+      <div class="listaProjetos overflow-auto ">
+        <div class="flex  w-[100%]">
+          <div v-if="!kanbanAtivo" class="flex w-full">
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
+             @click="ativarBotao('urgentes')">URGENTES</button>
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
+             @click="ativarBotao('prontos')">PRONTOS</button>
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'nao-iniciados' }"
+             @click="ativarBotao('nao-iniciados')">NÃO INICIADOS</button>
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }"
+             @click="ativarBotao('meus-projetos')">MEUS PROJETOS</button>
 
             
           </div>
           <div v-if="kanbanAtivo">
-            <div class="kanban-board w-full pl-2 mt-10 flex justify-start">
+            <div class="kanban-board w-full pl-2 2xl:mt-10 xl:mt-10 lg:mt-12 md:mt-14  flex justify-start">
               <div class="kanban-board w-full h-full flex justify-start flex-col">
                 <div class="urgentes">
                      <h1 class="text-xl text-white"> URGENTES</h1>
                 </div>
-                <div class="pt-10 " v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex items-center mt-10" v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full h-full  flex justify-star flex-col">
+              <div class="kanban-board w-full h-full flex justify-start flex-col">
                 <div class="naoIniciado">
                   <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
                </div>
-               <div class="p-10 " v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+               <div class="flex items-center mt-10" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full h-full  flex justify-start flex-col">
+              <div class="kanban-board w-full h-full flex justify-start flex-col">
                 <div class="prontos">
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
-                <div class="p-10 " v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex items-center mt-10" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full h-full  flex justify-start flex-col">
+              <div class="kanban-board w-full h-full flex justify-start flex-col">
                 <div class="meusProjetos">
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
-                <div class="p-10 " v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex items-center  mt-10" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
@@ -64,7 +68,12 @@
         </div>
         <div v-else-if="!mostrarMensagem">
           <div v-if="!kanbanAtivo" class="projetos" v-for="projeto of projetosFiltrados" :key="projeto.id">
-            <cardProjetos class="cardProjetos" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)"></cardProjetos>
+            <cardProjetos class="cardProjetos" 
+            :name="projeto.nome" 
+            :descricao="projeto.descricao" 
+            :comeco="formatarData(projeto.dataCriacao)" 
+            :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
+            :reponsavel="calcularResponsaveis(projeto)"></cardProjetos>
           </div>
         </div>
       </div>       
@@ -210,37 +219,37 @@ kanban-board {
 }
 
 .urgentes {
-  @apply flex w-[22.5vw] h-[7vh] bg-[#D27200] justify-center items-center mx-2 shadow-md  shadow-gray-400;
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-gray-400;
 }
 
 .naoIniciado{
-  @apply flex w-[22.5vw] h-[7vh] bg-[#0034BA] justify-center items-center mx-2 shadow-md  shadow-gray-400;
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#0034BA] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-gray-400;
 }
 .prontos{
-  @apply flex w-[22.5vw] h-[7vh] bg-[#389300] justify-center items-center mx-2 shadow-md  shadow-gray-400; 
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#389300] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-gray-400; 
 }
 
 .meusProjetos{
-  @apply flex w-[22.5vw] h-[7vh] bg-[#8E00FF] justify-center items-center mx-2 shadow-md  shadow-gray-400;
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#8E00FF] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-gray-400;
 }
 
 .cardProjetos{
-  @apply flex  2xl:m-[0.5vw] xl:m-[1.7vw] lg:m-[1.9vw] md:m-[1vw];
-  max-width: calc(25% - 1px); 
+  @apply flex  2xl:m-[1.2vw] xl:m-[1.5vw] xl:ml-[1.2vw] lg:ml-[3.5vw] lg:m-[1.5vw] md:ml-[17vw] md:mt-[3vh];
+  max-width: calc(100% - 1px); 
 }
 
 .projetos{
   display: flex;
   flex-wrap: wrap;
-  padding: 10px; 
+  padding: 30px; 
   justify-content:flex-start;
 }
 .iconeKanban{
-  @apply flex justify-end ml-[51.05vw] mt-[1.2vh];
+  @apply w-[30px] h-[30px] flex justify-end xl:mr-[0.8vw] xl:mt-[1.2vh] lg:mr-[1.5vw] lg:mt-[1vh]  md:mr-[1.5vw] md:mt-[1vh];
 }
 
 .iconeCard{
-  @apply absolute justify-end ml-[93.2vw] mt-[-25.9vh];
+  @apply  w-[30px] h-[30px] absolute justify-end 2xl:ml-[93.2vw] 2xl:mt-[-21.2vh] xl:ml-[92.8vw] xl:mt-[-20.2vh] lg:ml-[91.55vw] lg:mt-[-19.15vh] md:ml-[90.8vw] md:mt-[-19.8vh];
 }
 
 .icone{
@@ -267,11 +276,29 @@ kanban-board {
 
 @media(min-width: 2560px){
   .iconeKanban{
-  @apply flex justify-end ml-[61.8vw] mt-[1.2vh];
+  @apply flex justify-end ml-[1vw] mt-[1.2vh];
 }
 
 .iconeCard{
-  @apply absolute justify-end ml-[93.39vw] mt-[-24.3vh];
+  @apply absolute justify-end ml-[93.45vw] mt-[-20.2vh];
+}
+
+.urgentes {
+  @apply flex 2xl:w-[22.8vw];
+}
+
+.naoIniciado{
+  @apply flex 2xl:w-[22.8vw];
+}
+.prontos{
+  @apply flex 2xl:w-[22.8vw];
+}
+
+.meusProjetos{
+  @apply flex 2xl:w-[22.8vw];
+}
+.cardProjetos{
+  @apply flex  2xl:m-[1.5vw];
 }
     }
   </style>
