@@ -27,11 +27,12 @@
                     <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
                     <div class=" w-[50%] ">
                         <div v-if="tarefasAtribuidas"
-                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
-                            
+                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                            @click="mudaPaginaParaKanban()">
+
                             Tarefas Atribuidas
                         </div>
-                        <div v-if=" !tarefasAtribuidas"
+                        <div v-if="!tarefasAtribuidas"
                             class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
                             <p>Não há tarefas</p>
                         </div>
@@ -44,10 +45,11 @@
                     <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
                     <div class=" w-[50%] ">
                         <div v-if="tarefasAtribuidas"
-                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
+                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                            @click="mudaPaginaParaKanban()">
                             Tarefas Atribuidas
                         </div>
-                        <div v-if=" !tarefasAtribuidas"
+                        <div v-if="!tarefasAtribuidas"
                             class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
                             <p>Não há tarefas</p>
                         </div>
@@ -62,11 +64,12 @@
                         <p class="w-[33%] truncate ">{{ status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class=" w-[50%] ml-20 ">
-                            <div v-if=" tarefasAtribuidas"
-                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
+                            <div v-if="tarefasAtribuidas"
+                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                                @click="mudaPaginaParaKanban()">
                                 Tarefas Atribuidas
                             </div>
-                            <div v-if=" !tarefasAtribuidas"
+                            <div v-if="!tarefasAtribuidas"
                                 class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
                                 <p>Não há tarefas</p>
                             </div>
@@ -77,11 +80,12 @@
                     <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
                         <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-                            status.status.nome }}</p>
+            status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class=" w-[50%] ml-20 ">
                             <div v-if="tarefasAtribuidas"
-                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
+                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                                @click="mudaPaginaParaKanban()">
                                 Tarefas Atribuidas
                             </div>
                             <div v-if="!tarefasAtribuidas"
@@ -199,7 +203,7 @@ let corStatus = ref("")
 let projetoEdita = ref(false);
 let timeoutId = null;
 let idProjeto;
-let tarefasAtribuidas =false
+let tarefasAtribuidas = false
 
 onMounted(() => {
     verificaEdicaoProjeto();
@@ -207,7 +211,7 @@ onMounted(() => {
     buscarStatusCookies();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
-    tarefasAtribuidas=false
+    tarefasAtribuidas = false
 }
 )
 
@@ -221,7 +225,7 @@ function verificaEdicaoProjeto() {
 }
 
 
-function mudaPaginaParaKanban(){
+function mudaPaginaParaKanban() {
     router.push('/projeto')
 }
 
@@ -320,9 +324,9 @@ async function buscaPropriedadeBanco() {
     }
 }
 
-function colocaListaTarefasDoProjeto(tarefas){
-    if(tarefas!=""){
-        tarefasAtribuidas=true;
+function colocaListaTarefasDoProjeto(tarefas) {
+    if (tarefas != "") {
+        tarefasAtribuidas = true;
     }
 }
 function buscaRascunhoPropiedade() {
@@ -442,8 +446,8 @@ async function buscaStatusBanco() {
     idProjeto = VueCookies.get("projetoEditarId");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     if (projeto != null) {
-        projeto.statusList.forEach((statusAtual) =>{
-            if(statusAtual.nome!=''){
+        projeto.statusList.forEach((statusAtual) => {
+            if (statusAtual.nome != '') {
                 criaStatusCookies(statusAtual);
             }
         })
@@ -494,4 +498,5 @@ function clearTimer(status) {
     overflow: hidden;
     transition: overflow-y 0.3s ease;
     @apply p-2 overflow-y-auto w-full;
-}</style>
+}
+</style>
