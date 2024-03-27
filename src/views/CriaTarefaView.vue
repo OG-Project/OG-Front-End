@@ -836,7 +836,6 @@ async function criaPropriedade() {
   propriedadeSendoCriada.value = false;
 }
 
-//Função que deleta uma propriedade
 
 function deletaPropriedade(propriedade) {
   const deleta = criaPropriedadeTarefaStore();
