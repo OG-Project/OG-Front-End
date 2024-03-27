@@ -558,9 +558,9 @@
           <div class="w-[50%] justify-start flex-row">
             <p>Responsável</p>
           </div>
-          <div class="w-[40%] ml-2 justify-end flex-row">
-            <p class="text-[#620BA7] break-all" v-if="projetoDaTarefa">
-              {{ projetoDaTarefa.responsaveis }}
+          <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
+            <p class="text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
+              {{ responsavel }}
             </p>
           </div>
         </div>
@@ -826,6 +826,8 @@ async function criaPropriedade() {
       );
     }
   }
+
+  await new Promise(r => setTimeout(r, 60));
   await procuraProjetosDoBanco();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   nomePropriedade.value = "";
@@ -844,6 +846,8 @@ function deletaPropriedade(propriedade) {
       console.log(propriedade.id);
       console.log(VueCookies.get("IdProjetoAtual"));
       deleta.deletaPropriedade(propriedade.id,parseInt(VueCookies.get("IdProjetoAtual")))
+
+      await new Promise(r => setTimeout(r, 60));
       await procuraProjetosDoBanco();
       projetoDaTarefa.value = await procuraProjetosDoBanco();
       propriedades.value = projetoDaTarefa.value.propriedades;
