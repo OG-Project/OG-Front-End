@@ -1,22 +1,23 @@
 
 <template>
-    <div>
-
-    </div>
     <div class="w-full h-full flex flex-col items-center justify-end overflow-hidden">
-        <hubDeProjeto @trocaValor="(event) => opcao = event"></hubDeProjeto>
-        <div class="w-full h-[72%] flex justify-center items-end">
+        <hubDeProjeto @trocaValor="(event) => opcao = event" :projeto="projeto"></hubDeProjeto>
+        <div class="w-full h-[72%] flex justify-center items-end"> 
             <div class="divMaior">
-                <div v-if="opcao == 'Calendario'" class="w-[100%] h-screen flex justify-center items-center">
+                <div v-if="defineOpcao(route.path, '/projeto/calendario')"
+                    class="w-[100%] h-screen flex justify-center items-center">
                     <calendario></calendario>
                 </div>
-                <div v-if="opcao == 'TimeLine'" class="w-[100%] h-screen flex justify-center items-center">
+                <div v-if="defineOpcao(route.path, '/projeto/timeline')"
+                    class="w-[100%] h-screen flex justify-center items-center">
                     <timeLine></timeLine>
                 </div>
-                <div v-if="opcao == 'Kanban'" class="w-[100%] h-screen flex justify-center items-center">
+                <div v-if="defineOpcao(route.path, '/projeto/kanban')"
+                    class="w-[100%] h-screen flex justify-center items-center">
                     <KanbanDeStatus></KanbanDeStatus>
                 </div>
-                <div v-if="opcao == 'Lista'" class="w-[100%] h-screen flex justify-center items-center">
+                <div v-if="defineOpcao(route.path, '/projeto/lista')"
+                    class="w-[100%] h-screen flex justify-center items-center">
                     <cardList></cardList>
                 </div>
             </div>
@@ -24,17 +25,28 @@
     </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import calendario from '../components/calendario.vue';
 import KanbanDeStatus from '../components/KanbanDeStatus.vue';
 import timeLine from '../components/timeLine.vue';
 import cardList from '../components/CardTarefaList.vue';
 import hubDeProjeto from '../components/hubDeProjeto.vue'
-let projeto2 = await projeto
-let visualizacao = api.procurar("/visualizacaoEmLista/" + await projeto2.id)
-let visualizacao2 = await visualizacao
-let projeto = api.procurar("/projeto/2")
-let opcao = ref("Lista")
+import { conexaoBD } from '../stores/conexaoBD';
+import { useRoute } from 'vue-router';
+import VueCookies from 'vue-cookies';
+
+const route = useRoute()
+let api = conexaoBD()
+let projeto = VueCookies.get('IdProjetoAtual')
+
+onMounted(async () => {
+    projeto = await api.buscarUm(projeto, '/projeto')
+})
+function defineOpcao(rotaAtual, rota) {
+    if (rotaAtual == rota) {
+        return true
+    }
+}
 </script>
 <style>
 .divMaior {
@@ -49,6 +61,5 @@ let opcao = ref("Lista")
     position: relative;
 
 
-}
-</style>
+}</style>
 

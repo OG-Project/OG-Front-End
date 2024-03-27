@@ -1,16 +1,26 @@
 <template>
+    <div class="w-full h-[30%] flex  items-center">
+        <div class="w-[60%] flex justify-center">
+            <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end pb-[3%]">
+                {{ props.projeto.nome }}
+            </div>    
+        </div>
+        <div class="w-[40%]">
+
+        </div>
+    </div>
     <div class="w-[80%] flex flex-row justify-around">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
-            <button @click="$emit('trocaValor','Kanban')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/kanban')" class="bg-[#CECCCE] px-[1%]">
                 Kanban
             </button>
-            <button @click="$emit('trocaValor','Lista')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/lista')" class="bg-[#CECCCE] px-[1%]">
                 Lista
             </button>
-            <button @click="$emit('trocaValor','TimeLine')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/timeline')" class="bg-[#CECCCE] px-[1%]">
                 Linha Do Tempo
             </button>
-            <button @click="$emit('trocaValor','Calendario')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/calendario')" class="bg-[#CECCCE] px-[1%]">
                 Calendário
             </button>
         </div>
@@ -28,7 +38,13 @@
 </template>
 
 <script setup>
-let emit = defineEmits("opcao")
+import router from '@/router'
+
+
+const props = defineProps({
+    projeto:{}
+})
+
 </script>
 
 <style lang="scss"></style>

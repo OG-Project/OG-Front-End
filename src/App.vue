@@ -38,18 +38,14 @@ const route = useRoute();
 
   onMounted(()=>{
   perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
-  console.log(perfil.isVoiceMaker)
   perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
-  console.log(perfil.isTecladoVirtual)
   perfil.fonteCorpo=(VueCookies.get('fonteCorpo'))
   perfil.fonteTitulo=(VueCookies.get('fonteTitulo'))
   perfil.isVlibras=(VueCookies.get('isVlibras'))
   })
   
   function press(b){
-    console.log('press '+b)
     let valorElemento=perfil.el.value
-    console.log(valorElemento)
     let valor=b
     if(b=='{bksp}'){
       perfil.el.value=valorElemento.substring(0,valorElemento.length-1)
@@ -66,9 +62,6 @@ const route = useRoute();
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
   }
 
-  function oi(a){
-    console.log(a)
-  }
   var estaNoLogin = ref(true)
 watch(() => route.path, (newPath, oldPath) => {
   if(route.path == '/login'){

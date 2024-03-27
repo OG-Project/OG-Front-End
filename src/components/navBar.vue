@@ -46,7 +46,6 @@ const banco = conexaoBD();
 
 onMounted(async () => {
   usuarioCookies = await autenticarUsuario(usuarioId);
-  autenticaUsuarioCookies();
 });
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
