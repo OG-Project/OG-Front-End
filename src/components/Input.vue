@@ -1,5 +1,6 @@
 
 <template>
+<div class="">
     <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" 
         :style="estilizaDivInput">
@@ -49,12 +50,12 @@
             items-center 
             justify-center" />
         </div>
-   </div>
+    </div>
 
-   <!-- fazer input com botão com um ou dois -->
+    <!-- fazer input com botão com um ou dois -->
 
 
-   <div class="styleInputPadrao flex items-center" 
+    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null' & tipo=='float'">
         
         <div class="estiloPlaceHolder">
@@ -104,11 +105,13 @@
             {{ conteudoInput }}
             </label>
         </div>
-   </div>
+    </div> 
 
-   <div 
-   class="styleInputPadrao flex flex-row-reverse items-center" 
-    v-if="icon=='null' && tipo!='float'" >
+    <div 
+    class="styleInputPadrao flex flex-row-reverse items-center"
+    :class="{'Invalido':props.isInvalido}" 
+    v-if="icon=='null' && tipo!='float'"
+    >
         <div class="flex items-center justify-center">
             <svgIconMic 
             @click="mic" 
@@ -137,6 +140,7 @@
             items-center 
             justify-center" />
         </div>
+        <div>
             <input 
             :type="tipo" 
             :style="estilizaInput" 
@@ -147,23 +151,24 @@
             @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
-      
-   </div>
-   <div 
-   class="styleInputPadraoIconDireita " 
-   :class="styleInputPadraoDireita" 
+        </div>
+    </div>
+    
+    <div 
+    class="styleInputPadraoIconDireita " 
+    :class="styleInputPadraoDireita" 
     v-if="direcao=='direita' && tipo!='float'" 
     :style="estilizaDivInput">
         
-        <input 
-        :type="tipo" 
-        :placeholder=conteudoInput
-        :style="estilizaInput" 
-        id="inputStyle" 
-        :disabled=desabilitado
-        :value="modelValue"
-        @focus="$emit('clickInput',perfil.el=$event.target)"
-        @input="$emit('updateModelValue', $event.target.value)">
+            <input 
+            :type="tipo" 
+            :placeholder=conteudoInput
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado
+            :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
+            @input="$emit('updateModelValue', $event.target.value)">
         
         <div 
         class="flex items-center justify-center">
@@ -196,7 +201,9 @@
             justify-center" />
 
         </div>
-   </div>
+    </div>
+    <label v-if="props.isInvalido" class="text-red-600 absolute">{{ props.textoInvalido }}</label>
+</div>
 </template>
 
 <script setup>
@@ -239,6 +246,11 @@ function teclado(){
             type:String,
             default:"null"
         },
+        isInvalido:{
+            type:Boolean,
+            default:false
+        },
+        textoInvalido:String,
         direcao: String,
         conteudoInput:String,
         desabilitado:ref(false),
@@ -388,6 +400,21 @@ function teclado(){
 </script>
 <style lang="scss" scoped>
 @import url(../assets/main.css);
+
+    .Invalido{
+        @apply
+         border-4 
+        border-transparent
+        *:*:text-red-600
+        border-b-red-600    
+        px-2
+        max-w-max
+        w-min
+        border-b-4
+        hover:rounded-[4px] hover:border-4
+         focus-within:border-red-600 
+        focus-within:border-4 focus-within:rounded-[4px]  #{!important} ;
+    }
 
     .styleInputPadrao{
        @apply 

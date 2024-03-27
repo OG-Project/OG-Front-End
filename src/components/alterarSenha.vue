@@ -1,7 +1,7 @@
 <template>
     <div>
         <fundoPopUp largura="77vh" altura="68vh">
-            <div class="flex flex-col justify-between  w-[740px] h-[655px]">
+            <div class="flex flex-col justify-between  w-[77vh] h-[68vh]">
                 <div class="flex pl-12 pt-12">
                     <div class="text-3xl text-roxo">
                         Alterar Senha
@@ -15,6 +15,7 @@
                             conteudoInput="Senha Antiga" 
                             v-model="senhaAntiga" 
                             tipo="obrigatorio"
+                            
                             @updateModelValue="(e)=> {
                                     console.log(e)
                                     senhaAntiga=e
@@ -26,7 +27,9 @@
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Nova" 
                             v-model="senhaNova" 
-                            tipo="obrigatorio"
+                            tipo="password"
+                            :isInvalido="isInvalido"
+                            textoInvalido="Senha não é igual"
                             @updateModelValue="(e)=> {
                                     console.log(e)
                                     senhaNova=e
@@ -38,7 +41,9 @@
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Confirmar Senha" 
                             v-model="senhaConfirmada" 
-                            tipo="obrigatorio"
+                            tipo="password"
+                            :isInvalido="isInvalido"
+                            textoInvalido="Senha não é igual"
                             @updateModelValue="(e)=> {
                                     console.log(e)
                                     senhaConfirmada=e
@@ -72,6 +77,8 @@ import  VueCookies  from 'vue-cookies';
 let perfil=perfilStore()
 let conexao=conexaoBD()
 
+let isInvalido=ref(false)
+
 let usuario
 let senhaAntiga=ref('')
 let senhaNova=ref('')
@@ -79,18 +86,22 @@ let senhaConfirmada=ref('')
 
 onMounted(async ()=>{
     usuario=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
-    console.log(usuario.senha)
+    
 
 })
 
 function alteraSenha(){
-    if(senhaAntiga.value==usuario.senha){
-        alert('vamo que hj é sexta')
+
+    if(senhaAntiga.value!=usuario.senha){
+        // alert('vamo que hj é sexta')
     }
-    if(senhaNova.value==senhaConfirmada.value){
-        alert('igual')
+    if(senhaNova.value!=senhaConfirmada.value){
+        isInvalido.value=true
     }else{
-        alert('insira de novo')
+        usuario.senha=senhaNova.value
+        alert(usuario.senha)
+        isInvalido.value=false
+        // conexao.atulizar(usuario,'/usuario')
     }
     console.log('oi')
 }
