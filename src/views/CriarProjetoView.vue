@@ -149,6 +149,7 @@ let listaEquipeEnviaBack = []
 let listaResponsaveisBack = []
 var projetoEdita = ref(true)
 let srcIconListaEquipes = Sair
+let naoEntraFuncao = false
 funcaoPopUp.variavelModal = false
 let idProjeto;
 
@@ -207,7 +208,7 @@ function buscaProjetoCookies() {
 }
 
 function buscaRascunhoCriacaoProjeto() {
-    if (VueCookies.get("projetoCookie") != null) {
+    if (VueCookies.get("projetoCookie") != null && !projetoEdita) {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
@@ -234,7 +235,7 @@ function buscaRascunhoCriacaoProjeto() {
 }
 
 async function buscaProjetoEditar() {
-    idProjeto=VueCookies.get("projetoEditarId");
+    idProjeto = VueCookies.get("projetoEditarId");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     if (projeto != null) {
         nomeProjeto.value = projeto.nome;
@@ -243,10 +244,23 @@ async function buscaProjetoEditar() {
     }
 }
 
-function buscaListaResponsaveisBack(projeto){
-    projeto.responsaveis.forEach((responsavel) =>{
-        responsaveisProjeto.value.push(responsavel.username)
+async function buscaListaResponsaveisBack(projeto) {
+
+    listaAuxResponsaveisProjeto = []
+    responsaveisProjeto.value = []
+    projeto.responsaveis.forEach((responsavelAtual) => {
+        let username = responsavelAtual.responsavel.username
+        if (!responsaveisProjeto.value.includes(username)
+            && !listaAuxResponsaveisProjeto.includes(username)) {
+
+
+            responsaveisProjeto.value.push(username)
+            listaAuxResponsaveisProjeto.push(username)
+            console.log(responsaveisProjeto.value)
+            adicionaResponsaveisProjeto(responsavelAtual.responsavel)
+        }
     })
+
 }
 
 async function pesquisaBancoUserName() {
@@ -260,7 +274,6 @@ async function pesquisaBancoUserName() {
 function criarProjetoCookies() {
 
     if (!projetoEdita.value) {
-
         const criaProjetoCookies = Projeto
         criaProjetoCookies.descricao = descricaoProjeto.value;
         criaProjetoCookies.nome = nomeProjeto.value;
@@ -309,6 +322,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
             }
         }
         listaResponsaveisBack.push(responsavelBanco);
+
     }
 
 }
@@ -319,11 +333,11 @@ async function criaProjeto() {
         console.log(listaResponsaveisBack)
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus, listaResponsaveisBack)
         VueCookies.set("projetoEditarId", 1, 8640000)
-    }else{
-        const editaProjeto= editaProjetoStore()
-        editaProjeto.editaProjeto(idProjeto,nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus, listaResponsaveisBack)
+    } else {
+        const editaProjeto = editaProjetoStore()
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus, listaResponsaveisBack)
     }
-    
+
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
@@ -366,11 +380,15 @@ async function removeResponsavel(responsavelRemover) {
     let indice = responsaveisProjeto.value.findIndex((obj) => obj.username == responsavelRemover.username);
 
     if (indice !== -1) {
+        
         // Remover o objeto da lista usando splice
         responsaveisProjeto.value.splice(indice, 1);
         listaResponsaveisBack.splice(usuarioRemovido, 1);
+        
     }
-    criarProjetoCookies();
+    if (!projetoEdita) {
+        criarProjetoCookies();
+    }
 }
 </script>
 
