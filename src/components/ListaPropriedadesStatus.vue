@@ -23,19 +23,34 @@
             <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
                 <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
                     v-if="listaSelecionada == '' || listaSelecionada == [] && buscarPor == 'Todos' || buscarPor == ''">
-
                     <p class="w-[33%]">{{ propriedade.nome }}</p>
                     <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                        Tarefas Atribuidas
+                    <div class=" w-[50%] ">
+                        <div v-if="tarefasAtribuidas"
+                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
+                            
+                            Tarefas Atribuidas
+                        </div>
+                        <div v-if=" !tarefasAtribuidas"
+                            class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                            <p>Não há tarefas</p>
+                        </div>
                     </div>
+
                 </div>
                 <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
                     v-if="listaSelecionada != []">
                     <p class="w-[33%]">{{ propriedade.nome }}</p>
                     <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                        Tarefas Atribuidas
+                    <div class=" w-[50%] ">
+                        <div v-if="tarefasAtribuidas"
+                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
+                            Tarefas Atribuidas
+                        </div>
+                        <div v-if=" !tarefasAtribuidas"
+                            class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                            <p>Não há tarefas</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,8 +61,15 @@
 
                         <p class="w-[33%] truncate ">{{ status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
-                        <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                            Tarefas Atribuidas
+                        <div class=" w-[50%] ml-20 ">
+                            <div v-if=" tarefasAtribuidas"
+                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
+                                Tarefas Atribuidas
+                            </div>
+                            <div v-if=" !tarefasAtribuidas"
+                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                <p>Não há tarefas</p>
+                            </div>
                         </div>
 
                     </div>
@@ -55,10 +77,17 @@
                     <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
                         <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-            status.status.nome }}</p>
+                            status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
-                        <div class=" w-[50%] h-full ">
-                            <p class="bg-roxo-claro rounded-md p-1 w-full h-[33%]">Tarefas Atribuidas</p>
+                        <div class=" w-[50%] ml-20 ">
+                            <div v-if="tarefasAtribuidas"
+                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center " @click="mudaPaginaParaKanban()">
+                                Tarefas Atribuidas
+                            </div>
+                            <div v-if="!tarefasAtribuidas"
+                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                <p>Não há tarefas</p>
+                            </div>
                         </div>
 
                     </div>
@@ -148,6 +177,7 @@ import ColorPicker from 'primevue/colorpicker';
 import sortBy from 'sort-by';
 import { useRoute } from 'vue-router';
 import { conexaoBD } from '../stores/conexaoBD';
+import router from '../router/index'
 const instance = getCurrentInstance();
 const route = useRoute();
 const conexao = conexaoBD();
@@ -169,6 +199,7 @@ let corStatus = ref("")
 let projetoEdita = ref(false);
 let timeoutId = null;
 let idProjeto;
+let tarefasAtribuidas =false
 
 onMounted(() => {
     verificaEdicaoProjeto();
@@ -176,6 +207,7 @@ onMounted(() => {
     buscarStatusCookies();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
+    tarefasAtribuidas=false
 }
 )
 
@@ -188,6 +220,10 @@ function verificaEdicaoProjeto() {
 
 }
 
+
+function mudaPaginaParaKanban(){
+    router.push('/projeto')
+}
 
 async function buscandoPor() {
     listaSelecionada.value = []
@@ -271,14 +307,24 @@ function buscaPropriedadeCookies() {
 async function buscaPropriedadeBanco() {
     idProjeto = VueCookies.get("projetoEditarId");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
-    if (projeto != null) {
-        console.log(projeto)
-       listaPropriedades.value=projeto.propriedades;
-       auxParaCriarPropriedades= listaPropriedades.value;
-       mandaProrpiedadesBack(auxParaCriarPropriedades)
+    colocaListaTarefasDoProjeto(projeto.tarefas)
+    if (projeto.propriedades != []) {
+        projeto.propriedades.forEach((propriedade) => {
+            if (propriedade.nome != '') {
+                listaPropriedades.value.push(propriedade);
+
+            }
+        })
+        auxParaCriarPropriedades = listaPropriedades.value;
+        criaPropriedadeCookies();
     }
 }
 
+function colocaListaTarefasDoProjeto(tarefas){
+    if(tarefas!=""){
+        tarefasAtribuidas=true;
+    }
+}
 function buscaRascunhoPropiedade() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
     if (propriedadeArmazenada == null) {
@@ -296,6 +342,7 @@ function mandaProrpiedadesBack(listaPropriedades) {
         }
         return objeto;
     });
+    console.log(propriedadesParaback)
     instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
@@ -304,7 +351,10 @@ function criaPropriedadeCookies() {
         nome: nomePropriedade.value,
         tipo: tipoPropriedade.value.toUpperCase()
     }
-    auxParaCriarPropriedades.push(propriedadeCriada)
+    if (propriedadeCriada.nome != '') {
+        auxParaCriarPropriedades.push(propriedadeCriada)
+    }
+
     listaPropriedades.value = auxParaCriarPropriedades
     nomePropriedade.value = "";
     tipoPropriedade.value = "";
@@ -364,7 +414,7 @@ function criaStatusCookies(statusBack) {
 
     }
     listaStatus.value = auxRenderizaStatusTela;
-    if(!projetoEdita.value){
+    if (!projetoEdita.value) {
         VueCookies.set("statusCookie", auxRenderizaStatusTela, 864000000)
     }
     funcaoPopUp.fechaPopUp();
@@ -372,30 +422,32 @@ function criaStatusCookies(statusBack) {
 
 
 function buscarStatusCookies() {
-    if(!projetoEdita.value){
+    if (!projetoEdita.value) {
         buscaRascunhoStatus();
-    }else {
+    } else {
         buscaStatusBanco();
     }
 }
 
-function buscaRascunhoStatus(){
+function buscaRascunhoStatus() {
     if (VueCookies.get("statusCookie") != null) {
         listaStatus.value = VueCookies.get("statusCookie");
         console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
-        console.log("status: " + auxRenderizaStatusTela)
         mandaStatusBack();
     }
 }
 
-async function buscaStatusBanco(){
+async function buscaStatusBanco() {
     idProjeto = VueCookies.get("projetoEditarId");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     if (projeto != null) {
-       projeto.statusList.forEach((status) =>{
-        criaStatusCookies(status)
-       })
+        projeto.statusList.forEach((statusAtual) =>{
+            if(statusAtual.nome!=''){
+                criaStatusCookies(statusAtual);
+            }
+        })
+        mandaStatusBack();
     }
 }
 
@@ -442,5 +494,4 @@ function clearTimer(status) {
     overflow: hidden;
     transition: overflow-y 0.3s ease;
     @apply p-2 overflow-y-auto w-full;
-}
-</style>
+}</style>

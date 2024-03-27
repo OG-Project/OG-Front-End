@@ -152,9 +152,6 @@ let srcIconListaEquipes = Sair
 funcaoPopUp.variavelModal = false
 let idProjeto;
 
-
-
-
 onMounted(() => {
     verificaEdicaoProjeto();
     defineSelect()
@@ -242,8 +239,16 @@ async function buscaProjetoEditar() {
     if (projeto != null) {
         nomeProjeto.value = projeto.nome;
         descricaoProjeto.value = projeto.descricao;
+        buscaListaResponsaveisBack(projeto)
     }
 }
+
+function buscaListaResponsaveisBack(projeto){
+    projeto.responsaveis.forEach((responsavel) =>{
+        responsaveisProjeto.value.push(responsavel.username)
+    })
+}
+
 async function pesquisaBancoUserName() {
     let listaAux = (await conexao.procurar('/usuario'))
     listaAux.forEach(usuarioAtual => {
