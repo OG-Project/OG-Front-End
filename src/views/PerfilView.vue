@@ -4,13 +4,13 @@
     <div class="flex justify-center flex-wrap ">
         <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center w-[329px] h-[329px]">
-                <img v-if="foto!=null"
-                  :src="
-                    'data:' + foto.tipo + ';base64,' + foto.dados
-                  " 
-                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
-                />
-                <div v-else class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
+                <div  class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] ">
+                    <img 
+                      :src="'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.dados" 
+                      class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
+                    />
+                    
+                </div>
             </div>
             <div class=" flex flex-col gap-10">
                 <div @click="informacao()"
@@ -94,9 +94,9 @@ import router from '../router';
 
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
-import { onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref } from 'vue';
 import {useRoute} from 'vue-router';
-import { VueCookies } from 'vue-cookies';
+import  VueCookies  from 'vue-cookies';
 import { conexaoBD } from '../stores/conexaoBD';
 const route=useRoute()
 const conexao=conexaoBD()
@@ -106,13 +106,22 @@ let isSeguActive=ref(false)
 const perfil = perfilStore()
 const { popUpSenha, popUpEmail } = storeToRefs(perfil)
 let usuario
-let foto
+let foto=ref({})
+
+onBeforeMount(async ()=>{
+    
+})
 
 onMounted(async ()=>{
     console.log(route.path)
-    usuario= await conexao.buscarUm(VueCookies.get('IdUsuarioCookies'),'/usuario')
+    usuario= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
     console.log(usuario)
-    foto=usuario.foto
+    foto.value=usuario.foto
+    if(foto.value==undefined){
+        foto.value=usuario.foto
+        console.log(foto.value);
+    }
+    console.log(foto.value);
 })
 
 function informacao() {

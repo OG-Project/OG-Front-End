@@ -4,7 +4,7 @@
             <div class="flex flex-col justify-between  w-[77vh] h-[68vh]">
                 <div class="flex pl-12 pt-12">
                     <div class="text-3xl text-roxo">
-                        Alterar Senha
+                        Alterar Senha {{ usuario.senha }}
                     </div>    
                 </div>
                 <div class="flex justify-center items-center">
@@ -91,19 +91,27 @@ onMounted(async ()=>{
 })
 
 function alteraSenha(){
-
-    if(senhaAntiga.value!=usuario.senha){
-        // alert('vamo que hj é sexta')
-    }
-    if(senhaNova.value!=senhaConfirmada.value){
-        isInvalido.value=true
-    }else{
+    if(senhaAntiga.value==usuario.senha && senhaNova.value==senhaConfirmada.value){
+        isInvalido.value=false
         usuario.senha=senhaNova.value
         alert(usuario.senha)
-        isInvalido.value=false
-        // conexao.atulizar(usuario,'/usuario')
+        conexao.atulizar(usuario,'/usuario')
+    }else{
+        isInvalido.value=true
     }
-    console.log('oi')
+
+    // if(senhaAntiga.value!=usuario.senha){
+    //     // alert('vamo que hj é sexta')
+    // }
+    // if(senhaNova.value!=senhaConfirmada.value){
+    //     isInvalido.value=true
+    // }else{
+    //     usuario.senha=senhaNova.value
+    //     alert(usuario.senha)
+    //     isInvalido.value=false
+    //     // conexao.atulizar(usuario,'/usuario')
+    // }
+    // console.log('oi')
 }
 
 </script>
