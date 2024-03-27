@@ -16,6 +16,14 @@
           </div>
           <div v-if="kanbanAtivo">
             <div class="kanban-board w-full pl-2 2xl:mt-10 xl:mt-10 lg:mt-12 md:mt-14  flex justify-start">
+              <div v-if="projetosFiltrados.length === 0">
+                <div class="mensagemKanban">
+                  NÃO HÁ NENHUM PROJETO
+                </div>
+                <div class="nenhumProjeto" >
+                  <img src="../imagem-vetores/pasta.svg" alt="">
+                </div>
+              </div>
               <div class="kanban-board w-full h-full flex justify-start flex-col">
                 <div class="urgentes">
                      <h1 class="text-xl text-white"> URGENTES</h1>
@@ -48,14 +56,13 @@
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
                 </div>
               </div>
-              
             </div>
             <div class="iconeCard" @click="toggleKanban()">
-              <img  class="icone" src="../imagem-vetores/membrosEquipe.svg">
+              <img  class="icone" src="../imagem-vetores/iconCard.svg">
             </div>
           </div>
           <div  v-if="!kanbanAtivo" class="iconeKanban" @click="toggleKanban()">
-            <img  class="icone" src="../imagem-vetores/membrosEquipe.svg">
+            <img  class="icone" src="../imagem-vetores/iconKanban.svg">
           </div>
         </div>
         <div v-if="mostrarMensagem || projetosFiltrados.length === 0">
@@ -217,7 +224,12 @@ kanban-board {
 .mensagem{
   @apply flex justify-center mt-[15vh] font-semibold text-xl;
 }
-
+.mensagemKanban{
+  @apply  absolute 2xl:ml-[39%] xl:ml-[37%] lg:ml-[35%] md:ml-[31%] mt-[15vh] font-semibold text-xl;
+}
+.nenhumProjeto{
+  @apply  absolute justify-center 2xl:ml-[39%] xl:ml-[37%] lg:ml-[30%] md:ml-[25%] 2xl:mt-[22vh] xl:mt-[21vh] lg:mt-[20vh] md:mt-[19vh];
+}
 .urgentes {
   @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-gray-400;
 }
@@ -245,15 +257,15 @@ kanban-board {
   justify-content:flex-start;
 }
 .iconeKanban{
-  @apply w-[30px] h-[30px] flex justify-end xl:mr-[0.8vw] xl:mt-[1.2vh] lg:mr-[1.5vw] lg:mt-[1vh]  md:mr-[1.5vw] md:mt-[1vh];
+  @apply w-[25px] h-[25px] flex justify-end xl:mr-[0.8vw] xl:mt-[1.2vh] lg:mr-[1.5vw] lg:mt-[1vh]  md:mr-[1.5vw] md:mt-[1vh];
 }
 
 .iconeCard{
-  @apply  w-[30px] h-[30px] absolute justify-end 2xl:ml-[93.2vw] 2xl:mt-[-21.2vh] xl:ml-[92.8vw] xl:mt-[-20.2vh] lg:ml-[91.55vw] lg:mt-[-19.15vh] md:ml-[90.8vw] md:mt-[-19.8vh];
+  @apply  w-[25px] h-[25px] absolute justify-end 2xl:ml-[92.9vw] 2xl:mt-[-21.4vh] xl:ml-[92.5vw] xl:mt-[-20.5vh] lg:ml-[91vw] lg:mt-[-19vh] md:ml-[90.4vw] md:mt-[-19.4vh];
 }
 
 .icone{
-  @apply w-[20px] h-[20px]
+  @apply w-[25px] h-[25px]
 }
 
 ::-webkit-scrollbar {
@@ -280,7 +292,7 @@ kanban-board {
 }
 
 .iconeCard{
-  @apply absolute justify-end ml-[93.45vw] mt-[-20.2vh];
+  @apply absolute justify-end ml-[93.2vw] mt-[-10.2vh];
 }
 
 .urgentes {
@@ -299,6 +311,12 @@ kanban-board {
 }
 .cardProjetos{
   @apply flex  2xl:m-[1.5vw];
+}
+.mensagemKanban{
+  @apply ml-[42%];
+}
+.nenhumProjeto{
+  @apply ml-[42%] mt-[22vh];
 }
     }
   </style>
