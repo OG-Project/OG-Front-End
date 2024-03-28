@@ -79,8 +79,8 @@
 
                     <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
-                        <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-            status.status.nome }}</p>
+                        <p class="w-[33%] min-h-min h-[4vh] bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
+                        status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class=" w-[50%] ml-20 ">
                             <div v-if="tarefasAtribuidas"

@@ -198,7 +198,7 @@ function colocaListaStatus(status) {
 }
 
 function buscaProjetoCookies() {
-    console.log(projetoEdita.value)
+
     if (!projetoEdita.value) {
         buscaRascunhoCriacaoProjeto();
         return;
@@ -208,7 +208,7 @@ function buscaProjetoCookies() {
 }
 
 function buscaRascunhoCriacaoProjeto() {
-    if (VueCookies.get("projetoCookie") != null && !projetoEdita) {
+    if (VueCookies.get("projetoCookie") != null && !projetoEdita.value) {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
@@ -218,7 +218,6 @@ function buscaRascunhoCriacaoProjeto() {
                 const objetoEnviaBack = {
                     equipe: {
                         id: EquipeAtual.id,
-
                     }
                 }
                 listaEquipeEnviaBack.push(objetoEnviaBack)
@@ -240,27 +239,31 @@ async function buscaProjetoEditar() {
     if (projeto != null) {
         nomeProjeto.value = projeto.nome;
         descricaoProjeto.value = projeto.descricao;
-        buscaListaResponsaveisBack(projeto)
+        buscaListaResponsaveisBack(projeto);
+        buscaListaEquipesRelacionadas(projeto);
     }
 }
 
 async function buscaListaResponsaveisBack(projeto) {
-
-    listaAuxResponsaveisProjeto = []
-    responsaveisProjeto.value = []
     projeto.responsaveis.forEach((responsavelAtual) => {
         let username = responsavelAtual.responsavel.username
-        if (!responsaveisProjeto.value.includes(username)
-            && !listaAuxResponsaveisProjeto.includes(username)) {
-
-
+        if (verificaTemEsseResponsavelProjeto(username)) {
             responsaveisProjeto.value.push(username)
             listaAuxResponsaveisProjeto.push(username)
-            console.log(responsaveisProjeto.value)
             adicionaResponsaveisProjeto(responsavelAtual.responsavel)
         }
     })
 
+}
+
+function verificaTemEsseResponsavelProjeto(username){ 
+    return (!responsaveisProjeto.value.includes(username) && !listaAuxResponsaveisProjeto.includes(username));
+}
+
+function buscaListaEquipesRelacionadas(projeto) {
+    projeto.projetoEquipes.forEach((equipe) => {
+        colocaListaEquipes(equipe.equipe)
+    })
 }
 
 async function pesquisaBancoUserName() {
@@ -288,9 +291,9 @@ function criarProjetoCookies() {
 }
 
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
-    let listaAux = (await conexao.procurar('/usuario'))
-    listaAux.forEach(usuarioAtual => {
-        if (valorPesquisa == usuarioAtual.username && !responsaveisProjeto.value.includes(valorPesquisa)) {
+    const listaUsuarios = (await conexao.procurar('/usuario'))
+    listaUsuarios.forEach(usuarioAtual => {
+        if (valorPesquisa == usuarioAtual.username && verificaTemEsseResponsavelProjeto(usuarioAtual.username)) {
             listaAuxResponsaveisProjeto.push(usuarioAtual.username)
             responsaveisProjeto.value = null;
             responsaveisProjeto.value = listaAuxResponsaveisProjeto;
@@ -301,6 +304,7 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 }
 
 async function adicionaResponsaveisProjeto(usuarioRecebe) {
+    console.log(usuarioRecebe)
     if (usuarioRecebe.id == undefined) {
         let listaAux = (await conexao.procurar('/usuario'))
         listaAux.forEach(usuario => {
@@ -322,7 +326,6 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
             }
         }
         listaResponsaveisBack.push(responsavelBanco);
-
     }
 
 }
@@ -341,9 +344,14 @@ async function criaProjeto() {
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
-
-    let listaEquipes = await conexao.procurar('/equipe');
-    let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
+    console.log(equipeEscolhidaParaProjeto)
+    const listaEquipes = await conexao.procurar('/equipe');
+    let equipeVinculada;
+    if (equipeEscolhidaParaProjeto.nome==null) {
+        equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
+    }else{
+        equipeVinculada=equipeEscolhidaParaProjeto;
+    }
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
     }
@@ -357,6 +365,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
         }
     }
     listaEquipeEnviaBack.push(objetoEnviaBack)
+    console.log(listaEquipeEnviaBack)
     listaEquipesSelecionadas.value.push(equipeVinculada)
     defineSelect();
 }
@@ -376,16 +385,18 @@ async function removeListaEquipeConvidadas(equipeRemover) {
 
 async function removeResponsavel(responsavelRemover) {
     let listaUsuarios = await conexao.procurar('/usuario');
-    let usuarioRemovido = listaUsuarios.find((objeto) => objeto.username == responsavelRemover.username);
-    let indice = responsaveisProjeto.value.findIndex((obj) => obj.username == responsavelRemover.username);
-
-    if (indice !== -1) {
-
-        // Remover o objeto da lista usando splice
-        responsaveisProjeto.value.splice(indice, 1);
-        listaResponsaveisBack.splice(usuarioRemovido, 1);
-
+    responsaveisProjeto.value.forEach((objetoAtual) => {
+        if (objetoAtual.username == responsavelRemover.username) {
+            let index = responsaveisProjeto.value.indexOf(responsavelRemover)
+            responsaveisProjeto.value.splice(index, 1);
+            listaAuxResponsaveisProjeto.splice(index,1)
+            listaResponsaveisBack.splice(index, 1);
+        }
     }
+
+    )
+
+
     if (!projetoEdita) {
         criarProjetoCookies();
     }
