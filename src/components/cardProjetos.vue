@@ -24,10 +24,9 @@
         <div class="parteDeBaixoCard">
             <!-- colocando a barra de progreço -->
             <div class="barraCinzaGrafico">
-                <div :style="{width: feito + '%'}" class="barraRoxaGrafico">
-                    <div class='absolute 2xl:mt-[-0.6vh] xl:mt-[-0.6vh] lg:mt-[-0.2vh] md:mt-[-0.2vh] right-[44%] z-10'> {{ feito }}% </div>
+                <div class="barraRoxaGrafico" :style="{width: feito + '%'}">
+                    <div class='flex items-center justify-center text-white absolute inset-y-0 left-0 right-0'> {{ feito }}% </div>
                 </div>
-
             </div>
             <!-- Informações de começo e fim do projeto -->
             <div class="text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null">
@@ -81,25 +80,6 @@ const props = defineProps({
 
 })
 
-// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-
-const grafico = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: props.feito + "%",
-}
-
-let barraPorcentagem = ref({
-  width: props.feito + "%",
-  height: "100%",
-  borderRadius: "0px",
-  backgroundColor: "#620BA7",
-  border: "none",
-  boxShadow: "none",
-});
-
-// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 </script>
 
 <style  scoped>
@@ -107,6 +87,8 @@ let barraPorcentagem = ref({
 
 /* @aply usa o tailwind para para de usar colocar ";" */
 @layer components {
+
+    
 
     /* css para criar um paragrafo com quebra de texto 
         com tres pontos/reticências */
@@ -123,7 +105,7 @@ let barraPorcentagem = ref({
     }
 
     .barraRoxaGrafico {
-        @apply h-4 bg-purple-600;
+        @apply h-4 bg-purple-600 justify-start;
     }
 
     .parteDeBaixoCard {

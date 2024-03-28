@@ -14,22 +14,19 @@
 
             
           </div>
-          <div v-if="kanbanAtivo">
-            <div class="kanban-board w-full pl-2 2xl:mt-10 xl:mt-10 lg:mt-12 md:mt-14  flex justify-start">
-              <div v-if="projetosFiltrados.length === 0">
-                <div class="mensagemKanban">
-                  NÃO HÁ NENHUM PROJETO
-                </div>
-                <div class="nenhumProjeto" >
-                  <img src="../imagem-vetores/pasta.svg" alt="">
-                </div>
-              </div>
+          <div v-if="kanbanAtivo" >
+            <div class="w-full">
+              <div class="iconeCard" @click="toggleKanban()">
+              <img  class="icone" src="../imagem-vetores/iconCard.svg">
+            </div>
+            </div>
+            <div class="kanban-board w-full pl-2 2xl:mt-2 xl:mt-3 lg:mt-4 md:mt-5  flex justify-start">
               <div class="kanban-board w-full h-full flex justify-start flex-col">
                 <div class="urgentes">
                      <h1 class="text-xl text-white"> URGENTES</h1>
                 </div>
                 <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)"  ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full h-full flex justify-center flex-col">
@@ -37,7 +34,7 @@
                   <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
                </div>
                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full h-full flex justify-start flex-col">
@@ -45,7 +42,7 @@
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
                 <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full h-full flex justify-start flex-col">
@@ -53,13 +50,18 @@
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
                 <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
             </div>
-            <div class="iconeCard" @click="toggleKanban()">
-              <img  class="icone" src="../imagem-vetores/iconCard.svg">
+            <div v-if=" projetos.length === 0">
+            <div v-if="kanbanAtivo"  class="mensagem">
+              NÃO HÁ NENHUM PROJETO
             </div>
+            <div  v-if="kanbanAtivo" class="flex justify-center mt-10" >
+              <img src="../imagem-vetores/pasta.svg" alt="">
+            </div>
+          </div>
           </div>
           <div  v-if="!kanbanAtivo" class="iconeKanban" @click="toggleKanban()">
             <img  class="icone" src="../imagem-vetores/iconKanban.svg">
@@ -74,13 +76,16 @@
           </div>
         </div>
         <div v-else-if="!mostrarMensagem">
-          <div v-if="!kanbanAtivo" class="projetos" v-for="projeto of projetosFiltrados" :key="projeto.id">
-            <cardProjetos class="cardProjetos" 
-            :name="projeto.nome" 
-            :descricao="projeto.descricao" 
-            :comeco="formatarData(projeto.dataCriacao)" 
-            :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-            :reponsavel="calcularResponsaveis(projeto)"></cardProjetos>
+          <div v-if="!kanbanAtivo" class="projetos" >
+            <div v-for="projeto of projetosFiltrados" :key="projeto.id">
+              <cardProjetos class="cardProjetos" 
+              :name="projeto.nome" 
+              :descricao="projeto.descricao" 
+              :comeco="formatarData(projeto.dataCriacao)" 
+              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
+              :reponsavel="obterNomesResponsaveis(projeto)"
+              :feito="calcularProgressoProjeto(projeto)"></cardProjetos>
+            </div>
           </div>
         </div>
       </div>       
@@ -108,7 +113,6 @@
   const projetosFiltrados = ref([]);
   let mostrarMensagem = ref(false);
   
-  
   filtrarProjetos();
   
   const ativarBotao = (botao) => {
@@ -133,15 +137,14 @@
       const dataAtual = new Date();
       projetos.value.forEach(projeto => {
         projeto.dataFinal = new Date(projeto.dataFinal);
-        projeto.porcentagemConcluida = projeto.porcentagemConcluida || 0;
   
         if (projeto.dataFinal.getTime() < dataAtual.getTime()) {
           projeto.categoria = "urgentes";
           projeto.corTopico = "#D27200";
-        } else if (projeto.porcentagemConcluida === 0) {
+        } else if (calcularProgressoProjeto(projeto) === 0) {
           projeto.categoria = "nao-iniciados";
           projeto.corTopico = "#0034BA";
-        } else if (projeto.porcentagemConcluida === 100) {
+        } else if (calcularProgressoProjeto(projeto) === 100) {
           projeto.categoria = "prontos";
           projeto.corTopico = "#389300";
         } else {
@@ -187,22 +190,64 @@
     } 
   }
 
-  
-  function calcularResponsaveis(projeto) {
-    if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-      const responsaveisComFoto = projeto.responsaveis
-        .filter(responsavel => responsavel && responsavel.nome && responsavel.foto)
-        .map(responsavel => ({ nome: responsavel.nome, foto: responsavel.foto }));
-      
-      if (responsaveisComFoto.length > 0) {
-        return responsaveisComFoto;
-      } else {
-        return "Responsáveis encontrados, mas nenhum deles possui foto.";
-      }
+  function calcularProgressoProjeto(projeto) {
+    let totalTarefas = 0;
+    let tarefasConcluidas = 0;
+
+    projeto.tarefas.forEach(tarefa => {
+        totalTarefas++;
+        let todasConcluidas = true;
+        tarefa.subTarefas.forEach(subtarefa => {
+            if (!subtarefa.concluido) {
+                todasConcluidas = false;
+            }
+        });
+        if (todasConcluidas) {
+            tarefasConcluidas++;
+        }
+    });
+
+    if (totalTarefas === 0) {
+        return 0; // Retorna 0 se não houver tarefas no projeto
     } else {
-      return "Não há responsáveis";
+        return Math.floor((tarefasConcluidas / totalTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
     }
-  }
+}
+
+  function obterNomesResponsaveis(projeto) {
+    if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
+        const responsaveisComNome = projeto.responsaveis
+            .filter(responsavel => responsavel && responsavel.nome)
+            .map(responsavel => responsavel.nome);
+
+        if (responsaveisComNome.length > 0) {
+            return responsaveisComNome;
+        } else {
+            return "Responsáveis encontrados, mas nenhum deles possui nome.";
+        }
+    } else {
+        return "Não há responsáveis";
+    }
+}
+
+
+function obterFotosResponsaveis(projeto) {
+    if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
+        const responsaveisComFoto = projeto.responsaveis
+            .filter(responsavel => responsavel && responsavel.foto)
+            .map(responsavel => responsavel.foto);
+
+        if (responsaveisComFoto.length > 0) {
+            return responsaveisComFoto;
+        } else {
+          console.log("Responsáveis encontrados, mas nenhum deles possui foto.")
+            return "Responsáveis encontrados, mas nenhum deles possui foto.";
+        }
+    } else {
+        console.log("Não há responsáveis")
+        return "Não há responsáveis";
+    }
+}
   
   onMounted(() => {
     buscarProjetos();
@@ -224,12 +269,7 @@ kanban-board {
 .mensagem{
   @apply flex justify-center mt-[15vh] font-semibold text-xl;
 }
-.mensagemKanban{
-  @apply  absolute 2xl:ml-[39%] xl:ml-[37%] lg:ml-[35%] md:ml-[31%] mt-[15vh] font-semibold text-xl;
-}
-.nenhumProjeto{
-  @apply  absolute justify-center 2xl:ml-[39%] xl:ml-[37%] lg:ml-[30%] md:ml-[25%] 2xl:mt-[22vh] xl:mt-[21vh] lg:mt-[20vh] md:mt-[19vh];
-}
+
 .urgentes {
   @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-gray-400;
 }
@@ -261,11 +301,11 @@ kanban-board {
 }
 
 .iconeCard{
-  @apply  w-[25px] h-[25px] absolute justify-end 2xl:ml-[92.9vw] 2xl:mt-[-21.4vh] xl:ml-[92.5vw] xl:mt-[-20.5vh] lg:ml-[91vw] lg:mt-[-19vh] md:ml-[90.4vw] md:mt-[-19.4vh];
+  @apply  flex justify-end  2xl:mr-[0.5vw] xl:mr-[-0.5vw] xl:mt-[1.2vh] lg:mr-[0.0vw] lg:mt-[1vh] md:mr-[1vw] md:mt-[1vh];
 }
 
 .icone{
-  @apply w-[25px] h-[25px]
+  @apply w-[25px] h-[25px];
 }
 
 ::-webkit-scrollbar {
@@ -292,7 +332,7 @@ kanban-board {
 }
 
 .iconeCard{
-  @apply absolute justify-end ml-[93.2vw] mt-[-10.2vh];
+  @apply flex justify-end mr-[0.2vw] mt-[1.2vh];
 }
 
 .urgentes {
