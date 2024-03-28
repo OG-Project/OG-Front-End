@@ -43,7 +43,6 @@
             </div>
             <div class="text-white items-center w-3/5 flex justify-evenly" v-else>
                 <div class="w-[5vw] h-[3.4vh]">
-
                 </div>
             </div>
         </div>
@@ -95,6 +94,9 @@ const grafico = {
     alignItems: "center",
     width: props.feito + "%",
 }
+
+
+const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 let barraPorcentagem = ref({
   width: props.feito + "%",

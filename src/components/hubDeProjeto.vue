@@ -1,16 +1,34 @@
 <template>
+    <div class="w-full h-[30%] flex  items-center">
+        <div class="w-[60%] h-full flex flex-col items-center">
+            <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
+                <div class="h-[45%]">
+                    {{ projeto.nome }}
+                </div>
+                <div class="flex items-end">
+                    <Dashboard></Dashboard>
+                </div>
+            </div>
+            <div class="w-[45%]  flex justify-end">
+                 {{ porcentagemDeConclusao }}
+            </div>
+        </div>
+        <div class="w-[40%]">
+
+        </div>
+    </div>
     <div class="w-[80%] flex flex-row justify-around">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
-            <button @click="$emit('trocaValor','Kanbam')" class="bg-[#CECCCE] px-[1%]">
-                Kanbam
+            <button @click="router.push('/projeto/kanban')" class="bg-[#CECCCE] px-[1%]">
+                Kanban
             </button>
-            <button @click="$emit('trocaValor','Lista')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/lista')" class="bg-[#CECCCE] px-[1%]">
                 Lista
             </button>
-            <button @click="$emit('trocaValor','TimeLine')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/timeline')" class="bg-[#CECCCE] px-[1%]">
                 Linha Do Tempo
             </button>
-            <button @click="$emit('trocaValor','Calendario')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/calendario')" class="bg-[#CECCCE] px-[1%]">
                 Calendário
             </button>
         </div>
@@ -28,7 +46,61 @@
 </template>
 
 <script setup>
-let emit = defineEmits("opcao")
+import router from '@/router'
+import Dashboard from '../assets/dashboard.vue';
+import { conexaoBD } from '../stores/conexaoBD';
+import VueCookies from 'vue-cookies';
+import { onMounted } from 'vue';
+
+
+const props = defineProps({
+    projeto: {}
+})
+
+
+
+let tarefas = []
+let projeto = props.projeto
+let porcentagemDeConclusao = definePorcentagem()
+let tarefasConcluidas = []
+
+onMounted(async () => {
+    console.log(definePorcentagem)
+})
+
+async function definePorcentagem(){
+    projeto = props.projeto
+    tarefas = projeto.tarefas
+    let string = ""
+    let porcentagem = 0
+    let tarefasAuxiliares = defineTarefasConcluida(tarefas) 
+    porcentagem = 100/(tarefasAuxiliares.length+1)
+    string = "Progressão "+ porcentagem + "%"
+    console.log(string)
+    return string
+}
+function defineTarefasConcluida(tarefas){
+    for(const tarefa of tarefas){
+        if(defineSubtarefasConcluidas(tarefa.subTarefas)){
+            tarefasConcluidas.push(tarefa)
+        }
+    }
+    return tarefasConcluidas;
+}
+function defineSubtarefasConcluidas(subtarefas){
+    let subtarefasAuxiliar = []
+    for(let subtarefa of subtarefas){
+        console.log(subtarefa)
+        if(subtarefa.concluido == true){
+            subtarefasAuxiliar.push(subtarefa)
+        }
+    }
+    if(subtarefasAuxiliar.length == subtarefas.length){
+        return true
+    }
+    return false
+}
+
 </script>
 
 <style lang="scss"></style>

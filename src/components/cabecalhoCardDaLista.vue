@@ -1,15 +1,8 @@
 <template>
-    <div class="gap-[10%] flex flex-row w-max">
-        <div>
-            {{ "Nome" }}
-        </div>
-        <div>
-            {{ "Descrição" }}
-        </div>
-        <div v-for="propriedade of propriedadeVisiveis">
-            <div>
-                {{ console.log(propriedade) }}
-                {{ propriedade.nome.charAt(0).toUpperCase() + propriedade.nome.slice(1)  }}
+    <div class="flex flex-row w-max h-[10%] justify-center items-center">
+        <div v-for="nome of listaDeNomesVisiveis" class=" truncate ">
+            <div class="border-r-2 flex items-center justify-center w-[10vw]">
+                {{ nome.charAt(0).toUpperCase() + nome.slice(1) }}
             </div>
         </div>
     </div>
@@ -19,18 +12,25 @@
 import { onMounted, ref } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
 let api = conexaoBD()
-let projeto = api.procurar("/projeto/2")
 let propriedadeVisiveis = ref([])
+let listaDeNomesVisiveis = ref([])
+const props = defineProps({
+    projeto: {}
+})
 onMounted(() => {
-    teste()
+    DefineListaDeNomes()
 })
 
-async function teste() {
-    let projeto2 = await projeto
-    let visualizacao = api.procurar("/visualizacaoEmLista/" + await projeto2.id)
-    let visualizacao2 = await visualizacao
-    propriedadeVisiveis.value = visualizacao2.propriedadeVisiveis
-    console.log(propriedadeVisiveis)
+async function DefineListaDeNomes() {
+    let projeto2 = await props.projeto
+    let visualizacao = await api.procurar("/visualizacaoEmLista/" + projeto2.id)
+    propriedadeVisiveis.value = visualizacao.propriedadeVisiveis
+    listaDeNomesVisiveis.value.push("nome")
+    listaDeNomesVisiveis.value.push("Descrição")
+    for(const propriedade of propriedadeVisiveis.value){
+        listaDeNomesVisiveis.value.push(propriedade.nome)
+    }
+    console.log(listaDeNomesVisiveis)
 }
 
 </script>
