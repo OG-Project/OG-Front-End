@@ -2,78 +2,64 @@
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
-        <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+        <div
+            class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center w-[329px] h-[329px]">
-                <img v-if="foto!=null"
-                  :src="
-                    'data:' + foto.tipo + ';base64,' + foto.dados
-                  " 
-                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
-                />
-                <div v-else class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
+                <img :src="fotoReal"
+                    class="shadow-2xl max-h-[120px] min-h-[60px] min-w-[60px] max-w-[120px] mr-4 ml-4 rounded-full" />
             </div>
             <div class=" flex flex-col gap-10">
-                <div @click="informacao()"
-                    class="bg-roxo medioId 
+                <div @click="informacao()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/informacoes')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
                     Informações
                 </div>
-                <div @click="seguranca()"
-                    class="bg-roxo medioId 
+                <div @click="seguranca()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/seguranca')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
                     Segurança
                 </div>
-                <div @click="acessibilidade()"
-                    class="bg-roxo medioId 
+                <div @click="acessibilidade()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/acessibilidade')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
                     Acessibilidade
                 </div>
-                <div @click="privacidade()"
-                    class="bg-roxo medioId 
+                <div @click="privacidade()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/privacidade')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
                     Privacidade
                 </div>
-                <div @click="aparencia()"
-                    class="bg-roxo medioId 
+                <div @click="aparencia()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/aparencia')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
                     Aparência
                 </div>
-                
+
             </div>
         </div>
 
@@ -95,24 +81,27 @@ import router from '../router';
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
 import { onMounted, ref } from 'vue';
-import {useRoute} from 'vue-router';
+import { useRoute } from 'vue-router';
 import { VueCookies } from 'vue-cookies';
 import { conexaoBD } from '../stores/conexaoBD';
-const route=useRoute()
-const conexao=conexaoBD()
+const route = useRoute()
+const conexao = conexaoBD()
 // import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 // let funcaoPopUp=funcaoPopUpStore()
-let isSeguActive=ref(false)
+let isSeguActive = ref(false)
 const perfil = perfilStore()
 const { popUpSenha, popUpEmail } = storeToRefs(perfil)
 let usuario
 let foto
+let fotoReal = ref("")
 
-onMounted(async ()=>{
+onMounted(async () => {
     console.log(route.path)
-    usuario= await conexao.buscarUm(VueCookies.get('IdUsuarioCookies'),'/usuario')
+    usuario = await conexao.buscarUm('1', '/usuario')
     console.log(usuario)
-    foto=usuario.foto
+    foto = usuario.fotoAws
+    fotoReal.value = await conexao.procurar("/tarefa/imagem/" + usuario.fotoAws.chaveAws)
+    console.log(fotoReal)
 })
 
 function informacao() {
@@ -132,7 +121,7 @@ function acessibilidade() {
 function seguranca() {
     router.push({ name: 'Seguranca' })
 
-    isSeguActive.value=!isSeguActive.value
+    isSeguActive.value = !isSeguActive.value
 
 }
 function privacidade() {
@@ -144,23 +133,24 @@ function aparencia() {
 
 }
 
-function identificarRota(rotaAtual,rota){
-    if(rotaAtual==rota){
+function identificarRota(rotaAtual, rota) {
+    if (rotaAtual == rota) {
         return true
     }
-    
+
     return false
 }
 
-    
+
 
 </script>
 
 <style scoped>
-.medioId{
-    @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh] 
-  }
-.active{
+.medioId {
+    @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh]
+}
+
+.active {
     @apply bg-roxoAtencao !important;
 }
 
@@ -176,4 +166,5 @@ function identificarRota(rotaAtual,rota){
 .slide-fade-leave-to {
     transform: translateX(20px);
     opacity: 0;
-}</style>
+}
+</style>

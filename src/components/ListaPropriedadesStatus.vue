@@ -44,108 +44,109 @@
                     <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == false">
 
-                <div class="scrollBar">
-                    <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
-                            v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
-                            
-                            <p class="w-[33%]">{{ propriedade.nome }}</p>
-                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                Tarefas Atribuidas
+                        <div class="scrollBar">
+                            <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                                <div class="flex  flex-row items-center gap-4 h-[8vh]"
+                                    v-for="propriedade of listaPropriedades"
+                                    v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
+
+                                    <p class="w-[33%]">{{ propriedade.nome }}</p>
+                                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                        Tarefas Atribuidas
+                                    </div>
+                                </div>
+                                <div class="flex  flex-row items-center gap-4 h-[8vh]"
+                                    v-for="propriedade of listaSelecionada" v-if="listaSelecionada != []">
+                                    <p class="w-[33%]">{{ propriedade.nome }}</p>
+                                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
+                                        Tarefas Atribuidas
+                                    </div>
+                                    IdTarefaCookie
+                                </div>
+
                             </div>
-                        </div>
-                        <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
-                            v-if="listaSelecionada != []">
-                            <p class="w-[33%]">{{ propriedade.nome }}</p>
-                            <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                            <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                Tarefas Atribuidas
+
+                            <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
+                                @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
+                                <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
+                                    status.status.nome }}</p>
+                                <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
+                                <div class=" w-[50%] h-full ">
+                                    <p class="bg-roxo-claro rounded-md p-1 w-full h-[33%]">Tarefas Atribuidas</p>
+                                </div>
+
                             </div>
-                            IdTarefaCookie
+
                         </div>
 
                     </div>
+                </div>
+            </div>
+            <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
+                v-if="funcaoPopUp.variavelModal == false">
+                <p>Nova</p>
+                <img src="../imagem-vetores/sinalDeMaisIcon.svg">
+            </div>
 
-                    <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
-                        @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
-                        <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-                            status.status.nome }}</p>
-                        <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
-                        <div class=" w-[50%] h-full ">
-                            <p class="bg-roxo-claro rounded-md p-1 w-full h-[33%]">Tarefas Atribuidas</p>
+            <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
+
+                <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                    <div class="flex justify-end">
+                        <img src="../imagem-vetores/triangulo.svg">
+                    </div>
+                    <div class="flex flex-row justify-between">
+                        <div class="pl-2">
+                            <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                                v-model="nomePropriedade"></Input>
+                        </div>
+                        <div class="pr-2">
+                            <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                                largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
                         </div>
 
                     </div>
+                    <div class="flex felx-row justify-between">
+                        <div class="pl-2 pt-2 pb-2">
+                            <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                        </div>
+                        <div class="pr-2 pt-2 pb-2">
+
+                            <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
+                            </Botao>
+                        </div>
+                    </div>
 
                 </div>
 
+                <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
+                    <div class="flex justify-end">
+                        <img src="../imagem-vetores/triangulo.svg">
+                    </div>
+                    <div class="flex flex-row justify-between">
+                        <div class="pl-2">
+                            <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                                v-model="nomeStatus"></Input>
+                        </div>
+                        <div class="pr-2">
+                            <ColorPicker v-model="corStatus" class="rounded-sm" />
+                        </div>
+
+                    </div>
+                    <div class="flex felx-row justify-between">
+                        <div class="pl-2 pt-2 pb-2">
+                            <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                        </div>
+                        <div class="pr-2 pt-2 pb-2">
+
+                            <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
+                            </Botao>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-
-        </div>
-        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
-            v-if="funcaoPopUp.variavelModal == false">
-            <p>Nova</p>
-            <img src="../imagem-vetores/sinalDeMaisIcon.svg">
-        </div>
-
-        <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
-
-            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
-                </div>
-                <div class="flex flex-row justify-between">
-                    <div class="pl-2">
-                        <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                            v-model="nomePropriedade"></Input>
-                    </div>
-                    <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                            largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
-                    </div>
-
-                </div>
-                <div class="flex felx-row justify-between">
-                    <div class="pl-2 pt-2 pb-2">
-                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
-                    </div>
-                    <div class="pr-2 pt-2 pb-2">
-
-                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
-                        </Botao>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
-                <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
-                </div>
-                <div class="flex flex-row justify-between">
-                    <div class="pl-2">
-                        <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                            v-model="nomeStatus"></Input>
-                    </div>
-                    <div class="pr-2">
-                        <ColorPicker v-model="corStatus" class="rounded-sm" />
-                    </div>
-
-                </div>
-                <div class="flex felx-row justify-between">
-                    <div class="pl-2 pt-2 pb-2">
-                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
-                    </div>
-                    <div class="pr-2 pt-2 pb-2">
-
-                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
-                        </Botao>
-                    </div>
-                </div>
-
-            </div>
-
         </div>
     </div>
     </div>
@@ -253,7 +254,7 @@ function navegaPelaTabela(opcaoSelecionada) {
             this.opcaoSelecionadaNaTabela = 'propriedade';
         }
         opcoesSelect.value = ["Todos", "Data", "Numero", "Seleção", "Texto"];
-       
+
     } else if (opcaoSelecionada == 'status') {
         this.opcaoSelecionadaNaTabela = 'status';
         opcoesSelect.value = ["A-Z", "Z-A"]
@@ -270,10 +271,10 @@ function buscaPropriedadeCookies() {
     mandaProrpiedadesBack(listaPropriedades)
 }
 
-function mandaProrpiedadesBack(listaPropriedades){
+function mandaProrpiedadesBack(listaPropriedades) {
     const propriedadesParaback = listaPropriedades.value.map(objeto => {
-        if (objeto.tipo == "SELEÇÃO" ) {
-            objeto.tipo= "SELECAO"
+        if (objeto.tipo == "SELEÇÃO") {
+            objeto.tipo = "SELECAO"
             return objeto;
         }
         return objeto;
@@ -289,11 +290,11 @@ function criaPropriedadeCookies() {
     auxParaCriarPropriedades.push(propriedadeCriada)
     VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
     listaPropriedades.value = auxParaCriarPropriedades
-    nomePropriedade.value="";
-    tipoPropriedade.value="";
+    nomePropriedade.value = "";
+    tipoPropriedade.value = "";
     funcaoPopUp.fechaPopUp();
     mandaProrpiedadesBack(listaPropriedades)
-    
+
 }
 
 function criaStatusBack() {
@@ -302,17 +303,17 @@ function criaStatusBack() {
         nome: nomeStatus.value,
         cor: corStatus.value
     }
-   
+
     auxParaCriarStatus.push(statusCriado);
     criaStatusCookies(statusCriado)
     mandaStatusBack();
 }
 
-function atualizaStatus(statusRecebido) {   
-    
+function atualizaStatus(statusRecebido) {
+
     const statusAtulizados = listaStatus.value.map(objeto => {
-        if (objeto.status == statusRecebido.status ) {
-          
+        if (objeto.status == statusRecebido.status) {
+
             return statusRecebido;
         }
         return objeto;
@@ -324,14 +325,14 @@ function atualizaStatus(statusRecebido) {
     mandaStatusBack();
 }
 
-function mandaStatusBack(){
-    auxParaCriarStatus=[]
+function mandaStatusBack() {
+    auxParaCriarStatus = []
     auxRenderizaStatusTela.map((objeto) => auxParaCriarStatus.push(objeto.status))
     listaStatusBack = auxParaCriarStatus;
     console.log(listaStatusBack)
     instance.emit('mandaListaStatusBack', listaStatusBack)
-    nomeStatus.value="";
-    corStatus.value="";
+    nomeStatus.value = "";
+    corStatus.value = "";
 }
 
 function criaStatusCookies(statusBack) {
@@ -341,7 +342,7 @@ function criaStatusCookies(statusBack) {
             verNomeCompleto: false
         }
         auxRenderizaStatusTela.push(statusFront)
-        
+
     }
     listaStatus.value = auxRenderizaStatusTela;
     console.log(listaStatus.value)

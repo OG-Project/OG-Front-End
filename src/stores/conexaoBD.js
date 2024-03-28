@@ -39,7 +39,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       
       async buscarUm(id,textoRequisicao){
-        return await axios.get(`http://localhost:8082${textoRequisicao}/${id}`).then(response => response.data)
+        return await axios.get('http://localhost:8082'+textoRequisicao+'/'+id).then(response => response.data)
       },
 
       async buscarUm(id,textoRequisicao){
