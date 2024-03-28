@@ -1,9 +1,17 @@
 <template>
     <div class="w-full h-[30%] flex  items-center">
-        <div class="w-[60%] flex justify-center">
-            <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end pb-[3%]">
-                {{ props.projeto.nome }}
-            </div>    
+        <div class="w-[60%] h-full flex flex-col items-center">
+            <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
+                <div class="h-[45%]">
+                    {{ projeto.nome }}
+                </div>
+                <div class="flex items-end">
+                    <Dashboard></Dashboard>
+                </div>
+            </div>
+            <div class="w-[45%]  flex justify-end">
+                 {{ porcentagemDeConclusao }}
+            </div>
         </div>
         <div class="w-[40%]">
 
@@ -39,11 +47,59 @@
 
 <script setup>
 import router from '@/router'
+import Dashboard from '../assets/dashboard.vue';
+import { conexaoBD } from '../stores/conexaoBD';
+import VueCookies from 'vue-cookies';
+import { onMounted } from 'vue';
 
 
 const props = defineProps({
-    projeto:{}
+    projeto: {}
 })
+
+
+
+let tarefas = []
+let projeto = props.projeto
+let porcentagemDeConclusao = definePorcentagem()
+let tarefasConcluidas = []
+
+onMounted(async () => {
+    console.log(definePorcentagem)
+})
+
+async function definePorcentagem(){
+    projeto = props.projeto
+    tarefas = projeto.tarefas
+    let string = ""
+    let porcentagem = 0
+    let tarefasAuxiliares = defineTarefasConcluida(tarefas) 
+    porcentagem = 100/(tarefasAuxiliares.length+1)
+    string = "Progressão "+ porcentagem + "%"
+    console.log(string)
+    return string
+}
+function defineTarefasConcluida(tarefas){
+    for(const tarefa of tarefas){
+        if(defineSubtarefasConcluidas(tarefa.subTarefas)){
+            tarefasConcluidas.push(tarefa)
+        }
+    }
+    return tarefasConcluidas;
+}
+function defineSubtarefasConcluidas(subtarefas){
+    let subtarefasAuxiliar = []
+    for(let subtarefa of subtarefas){
+        console.log(subtarefa)
+        if(subtarefa.concluido == true){
+            subtarefasAuxiliar.push(subtarefa)
+        }
+    }
+    if(subtarefasAuxiliar.length == subtarefas.length){
+        return true
+    }
+    return false
+}
 
 </script>
 

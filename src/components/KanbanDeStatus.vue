@@ -59,9 +59,8 @@ watch(propriedadeAtual, async () => {
 })
 
 async function cookies() {
-    let usuario = await api.procurar("/usuario/id?id=21")
+    let usuario = await api.procurar("/usuario/2")
     $cookies.set("usuarioCookie", usuario, 1000000000)
-    $cookies.get("projetoCookie", projeto)
 }
 
 async function defineListaDePropriedades() {
