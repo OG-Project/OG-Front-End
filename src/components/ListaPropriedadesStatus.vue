@@ -21,8 +21,7 @@
 
         <div class="scrollBar">
             <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
-                    v-if="listaSelecionada == '' || listaSelecionada == [] && buscarPor == 'Todos' || buscarPor == ''">
+                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada">
                     <p class="w-[33%]">{{ propriedade.nome }}</p>
                     <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
                     <div class=" w-[50%] ">
@@ -39,7 +38,7 @@
                     </div>
 
                 </div>
-                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
+                <!-- <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
                     v-if="listaSelecionada != []">
                     <p class="w-[33%]">{{ propriedade.nome }}</p>
                     <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
@@ -54,7 +53,7 @@
                             <p>Não há tarefas</p>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div v-if="opcaoSelecionadaNaTabela == 'status'">
                 <div v-for="status of listaSelecionada">
@@ -79,8 +78,9 @@
 
                     <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
-                        <p class="w-[33%] min-h-min h-[4vh] bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-                        status.status.nome }}</p>
+                        <p class="w-[33%] min-h-min h-[4vh] bg-brancoNeve break-words "
+                            v-if="status.verNomeCompleto == true">{{
+            status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class=" w-[50%] ml-20 ">
                             <div v-if="tarefasAtribuidas"
@@ -130,7 +130,7 @@
                     </div>
                     <div class="pr-2 pt-2 pb-2">
 
-                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
+                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeBack">
                         </Botao>
                     </div>
                 </div>
@@ -209,6 +209,7 @@ onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
     buscarStatusCookies();
+    buscandoPor();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
     tarefasAtribuidas = false
@@ -232,13 +233,16 @@ function mudaPaginaParaKanban() {
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        if (this.buscarPor == "") {
+        console.log(buscarPor.value)
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A") {
+            listaSelecionada.value = listaPropriedades.value
+            console.log(listaSelecionada.value)
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
     }
     if (opcaoSelecionadaNaTabela.value == "status") {
-        if (this.buscarPor == "A-Z" || this.buscarPor == "") {
+        if (buscarPor.value == "A-Z" || buscarPor.value == "") {
             return listaSelecionada.value = filtroStatus("A-Z");
         }
         return listaSelecionada.value = filtroStatus("Z-A");
@@ -248,7 +252,6 @@ async function buscandoPor() {
 function filtroStatus(ordem) {
 
     let listaOrdenadaPorNome = []
-    console.log(auxRenderizaStatusTela)
     auxRenderizaStatusTela.forEach((statusAtual) => {
         listaOrdenadaPorNome.push(statusAtual.status.nome)
     });
@@ -268,13 +271,13 @@ function filtroStatus(ordem) {
         });
 
     }
-    return auxRenderizaStatusTela.sort(sortBy('nome'));
+        return auxRenderizaStatusTela.sort(sortBy('status.nome'));
 }
 
 function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux = []
     var listaAux1 = []
-    listaAux = listaRecebida.value
+    listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
         if (opcaoAtual.tipo != "") {
             if (opcaoAtual.tipo.toLowerCase() == buscarPor.toLowerCase()) {
@@ -282,19 +285,16 @@ function filtroPropriedades(listaRecebida, buscarPor) {
             }
         }
     });
-    console.log(listaAux1)
     return listaAux1;
 }
 
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
-        if (opcaoSelecionada == 'propriedade') {
-            this.opcaoSelecionadaNaTabela = 'propriedade';
-        }
+        opcaoSelecionadaNaTabela.value = 'propriedade';
         opcoesSelect.value = ["Todos", "Data", "Numero", "Seleção", "Texto"];
 
     } else if (opcaoSelecionada == 'status') {
-        this.opcaoSelecionadaNaTabela = 'status';
+        opcaoSelecionadaNaTabela.value = 'status';
         opcoesSelect.value = ["A-Z", "Z-A"]
     }
 }
@@ -340,34 +340,34 @@ function buscaRascunhoPropiedade() {
 
 function mandaProrpiedadesBack(listaPropriedades) {
     const propriedadesParaback = listaPropriedades.value.map(objeto => {
-        if (objeto.tipo == "SELEÇÃO") {
-            objeto.tipo = "SELECAO"
-            return objeto;
+        const objetoModificado = { ...objeto };
+        if (objetoModificado.tipo == "Seleção") {
+            objetoModificado.tipo = "SELECAO";
         }
-        return objeto;
+        return objetoModificado;
     });
-    console.log(propriedadesParaback)
     instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
-function criaPropriedadeCookies() {
-    let propriedadeCriada = {
-        nome: nomePropriedade.value,
-        tipo: tipoPropriedade.value.toUpperCase()
-    }
-    if (propriedadeCriada.nome != '') {
-        auxParaCriarPropriedades.push(propriedadeCriada)
-    }
+function criaPropriedadeCookies(propriedadeBack) {
+    if (propriedadeBack != null) {
+        let propriedadeFront = {
+            propriedade: propriedadeBack,
+            verNomeCompleto: false
+        }
+        if (propriedadeFront.propriedade.nome != '') {
+            auxParaCriarPropriedades.push(propriedadeFront.propriedade)
+        }
 
-    listaPropriedades.value = auxParaCriarPropriedades
-    nomePropriedade.value = "";
-    tipoPropriedade.value = "";
-    if (!projetoEdita.value) {
-        VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
+        listaPropriedades.value = auxParaCriarPropriedades
+        nomePropriedade.value = "";
+        tipoPropriedade.value = "";
+        if (!projetoEdita.value) {
+            VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
+        }
+        funcaoPopUp.fechaPopUp();
+        mandaProrpiedadesBack(listaPropriedades)
     }
-    funcaoPopUp.fechaPopUp();
-    mandaProrpiedadesBack(listaPropriedades)
-
 }
 
 function criaStatusBack() {
@@ -380,6 +380,16 @@ function criaStatusBack() {
     auxParaCriarStatus.push(statusCriado);
     criaStatusCookies(statusCriado)
     mandaStatusBack();
+}
+
+function criaPropriedadeBack() {
+
+    let statusCriado = {
+        nome: nomePropriedade.value,
+        tipo: tipoPropriedade.value
+    }
+    criaPropriedadeCookies(statusCriado)
+
 }
 
 function atualizaStatus(statusRecebido) {
@@ -455,17 +465,25 @@ async function buscaStatusBanco() {
     }
 }
 
-function startTimer(status) {
+function startTimer(objeto) {
     timeoutId = setTimeout(() => {
-        console.log('Hover ativado por 2 segundos');
-        status.verNomeCompleto = true;
+        if (listaStatus.value.includes(objeto)) {
+            if (objeto.status.nome.length > 10) {
+                console.log('Hover ativado por 2 segundos');
+                objeto.verNomeCompleto = true;
+            }
+            return;
+        }
+        if (objeto.propriedade.nome > 10) {
+            objeto.verNomeCompleto = true;
+        }
 
     }, 2000);
 }
 
-function clearTimer(status) {
+function clearTimer(objeto) {
     clearTimeout(timeoutId);
-    status.verNomeCompleto = false;
+    objeto.verNomeCompleto = false;
 
 }
 </script>
