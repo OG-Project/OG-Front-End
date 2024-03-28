@@ -204,7 +204,7 @@
           <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
             <div :style="barraPorcentagem"></div>
           </div>
-          <p class="pl-4">Tarefas Concluidas {{ porcentagemDeTarefasConcluidas }}%</p>
+          <p class="pl-4">Tarefas Concluidas {{ porcentagemDeTarefasConcluidas.toFixed(2) }}%</p>
         </div>
       </div>
       <!-- Sub Tarefa -->
@@ -243,7 +243,9 @@
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
+            
             <img
+            v-if="usuarioCookies.foto.tipo != null"
               class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full"
               :src="
                 'data:' +
@@ -559,9 +561,10 @@
             <p>Responsável</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
-            <p class="text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-              {{ responsavel }}
+            <p class="truncate text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
+              {{ responsavel.responsavel.username }}
             </p>
+            
           </div>
         </div>
         <div class="flex pl-8">
@@ -836,7 +839,6 @@ async function criaPropriedade() {
   propriedadeSendoCriada.value = false;
 }
 
-//Função que deleta uma propriedade
 
 function deletaPropriedade(propriedade) {
   const deleta = criaPropriedadeTarefaStore();
@@ -907,6 +909,7 @@ onUpdated(() => {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
+  adicionaExcluiPropriedadeNaTarefa()
 });
 
 onMounted(async () => {
@@ -936,6 +939,7 @@ onMounted(async () => {
   exibirComentarios();
   autenticaUsuarioCookies();
   atualizaPropriedadesEStatus();
+  adicionaExcluiPropriedadeNaTarefa()
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
@@ -984,21 +988,18 @@ function adicionaExcluiStatusNaTarefa(status) {
     });
   }
 }
-function adicionaExcluiPropriedadeNaTarefa(propriedade) {
-  propriedade.estaNaTarefa = !propriedade.estaNaTarefa;
-  if (propriedade.estaNaTarefa) {
-    tarefa.value.propriedades.push(propriedade);
-  } else {
-    tarefa.propriedades.forEach((propriedadeDeletar) => {
-      if (propriedadeDeletar === propriedade) {
-        tarefa.value.propriedades.splice(
-          tarefa.value.propriedades.indexOf(propriedadeDeletar),
-          1
-        );
-      }
-    });
-  }
+
+function adicionaExcluiPropriedadeNaTarefa() {
+  propriedades.value.forEach((propriedade) => {
+    console.log(propriedades.value);
+    if (propriedade.valor === "" || propriedade.valor === null || propriedade.valor === " " || propriedade.valor === undefined) {
+      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
+    } else {
+      tarefa.value.propriedades.push(propriedade);
+    }
+  });
 }
+
 
 //Usuario Logado
 

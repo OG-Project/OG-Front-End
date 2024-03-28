@@ -20,7 +20,7 @@
 
           <div class="flex-col h-full flex gap-6 ml-4 mt-10 items-start">
             <!-- home -->
-            <div class="flex gap-6 justify-center items-center text-white text-lg" @click="redirecionamento('/')">
+            <div class="flex gap-6 justify-center items-center text-white text-lg" @click="redirecionamento('/home')">
               <svg
                 width="44"
                 height="44"

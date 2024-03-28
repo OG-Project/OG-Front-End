@@ -70,7 +70,7 @@ const route = useRoute();
     console.log(a)
   }
   var estaNoLogin = ref(true)
-watch(() => route.path, (newPath, oldPath) => {
+watch(() => route.path, () => {
   if(route.path == '/login'){
     estaNoLogin.value = true
   }else{
