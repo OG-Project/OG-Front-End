@@ -26,7 +26,7 @@
                </div>
             </div>
             <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
-                <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados" ></ListaConvidados>
+                <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados" ></ListaConvidados>
             </div>
              <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
                 <div>
@@ -138,6 +138,22 @@ function marginLeftConvidado(){
     }
 }
 
+function marginRightConvidado(){
+    if (screenWidth <= 768) {
+        return '6vw';
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return '4vw';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '4vw';
+    } else if( screenWidth > 1920 && screenWidth < 2560){
+        return '6vw';
+    }else if(screenWidth == 1920){
+        return '2vw';
+    }
+    else if(screenWidth >= 2560){
+        return '4.5vw';
+    }
+}
 
 function larguraInputConvidado(){
     if (screenWidth <= 768) {
@@ -251,7 +267,7 @@ function larguraInputConvidado(){
     }
 
 .listaConvidados{
-        @apply w-full
+        @apply w-full;
     }
 
 .div-membros::-webkit-scrollbar {

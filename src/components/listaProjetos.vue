@@ -21,7 +21,7 @@
             </div>
             </div>
             <div class="kanban-board w-full pl-2 2xl:mt-2 xl:mt-3 lg:mt-4 md:mt-5  flex justify-start">
-              <div class="kanban-board w-full h-full flex justify-start flex-col">
+              <div class="kanban-board w-full h-full flex justify-center flex-col">
                 <div class="urgentes">
                      <h1 class="text-xl text-white"> URGENTES</h1>
                 </div>
@@ -37,7 +37,7 @@
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full h-full flex justify-start flex-col">
+              <div class="kanban-board w-full h-full flex justify-center flex-col">
                 <div class="prontos">
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
@@ -45,7 +45,7 @@
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full h-full flex justify-start flex-col">
+              <div class="kanban-board w-full h-full flex justify-center flex-col">
                 <div class="meusProjetos">
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
