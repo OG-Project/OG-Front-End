@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="w-[45%]  flex justify-end">
-                 {{ porcentagemDeConclusao }}
+                {{ porcentagemDeConclusao }}
             </div>
         </div>
         <div class="w-[40%]">
@@ -50,56 +50,46 @@ import router from '@/router'
 import Dashboard from '../assets/dashboard.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import VueCookies from 'vue-cookies';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
-
-const props = defineProps({
-    projeto: {}
-})
-
-
-
+let api = conexaoBD()
+let projetoId = VueCookies.get('IdProjetoAtual')
+let projeto = ref({})
 let tarefas = []
-let projeto = props.projeto
-let porcentagemDeConclusao = definePorcentagem()
+let porcentagemDeConclusao = ref("")
 let tarefasConcluidas = []
+let subtarefasConcluidas = ref([])
+let subtarefas = ref([])
 
 onMounted(async () => {
-    console.log(definePorcentagem)
+    projeto.value = await api.buscarUm("1", '/projeto')
+    definePorcentagem()
 })
 
-async function definePorcentagem(){
-    projeto = props.projeto
-    tarefas = projeto.tarefas
+
+
+function definePorcentagem() {
+    tarefas = projeto.value.tarefas
     let string = ""
     let porcentagem = 0
-    let tarefasAuxiliares = defineTarefasConcluida(tarefas) 
-    porcentagem = 100/(tarefasAuxiliares.length+1)
-    string = "Progressão "+ porcentagem + "%"
+    defineSubTarefasConcluida(tarefas)
+    
+    if (tarefas.length > 0) {
+        porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
+    }
+    string = "Progressão " + porcentagem + "%"
     console.log(string)
-    return string
+    porcentagemDeConclusao = string
 }
-function defineTarefasConcluida(tarefas){
+function defineSubTarefasConcluida(tarefas) {
     for(const tarefa of tarefas){
-        if(defineSubtarefasConcluidas(tarefa.subTarefas)){
-            tarefasConcluidas.push(tarefa)
+        for(const subtarefa of tarefa.subTarefas){
+            subtarefas.value.push(subtarefa)
         }
     }
-    return tarefasConcluidas;
+    subtarefasConcluidas.value = subtarefas.value.filter(subtarefa => subtarefa.concluido)
 }
-function defineSubtarefasConcluidas(subtarefas){
-    let subtarefasAuxiliar = []
-    for(let subtarefa of subtarefas){
-        console.log(subtarefa)
-        if(subtarefa.concluido == true){
-            subtarefasAuxiliar.push(subtarefa)
-        }
-    }
-    if(subtarefasAuxiliar.length == subtarefas.length){
-        return true
-    }
-    return false
-}
+
 
 </script>
 

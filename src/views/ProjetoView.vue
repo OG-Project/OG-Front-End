@@ -1,7 +1,7 @@
 
 <template>
     <div class="w-full h-full flex flex-col items-center justify-end overflow-hidden">
-        <hubDeProjeto @trocaValor="(event) => opcao = event" :projeto="projeto"></hubDeProjeto>
+        <hubDeProjeto @trocaValor="(event) => opcao = event"></hubDeProjeto>
         <div class="w-full h-[72%] flex justify-center items-end"> 
             <div class="divMaior ">
                 <div v-if="defineOpcao(route.path, '/projeto/calendario')"
@@ -36,19 +36,6 @@ import { useRoute } from 'vue-router';
 import VueCookies from 'vue-cookies';
 
 const route = useRoute()
-let api = conexaoBD()
-let projetoId = VueCookies.get('IdProjetoAtual')
-let projeto = defineProjeto()
-
-onMounted(()=>{
-
-})
-
-async function defineProjeto(){
-    let projeto2 = await api.buscarUm(projetoId, '/projeto')
-    console.log(projeto2)
-    return projeto2
-} 
 
 function defineOpcao(rotaAtual, rota) {
     if (rotaAtual == rota) {

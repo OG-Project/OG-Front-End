@@ -42,7 +42,7 @@ import draggable from "vuedraggable";
 import sortBy from 'sort-by'
 
 let api = conexaoBD()
-let projetoApi = api.procurar("/projeto/3")
+let projetoApi = api.procurar("/projeto/1")
 let lista = ref([]);
 let listaStyle = ''
 const propriedadeAtual = ref("STATUS");
@@ -59,7 +59,7 @@ watch(propriedadeAtual, async () => {
 })
 
 async function cookies() {
-    let usuario = await api.procurar("/usuario/2")
+    let usuario = await api.procurar("/usuario/1")
     $cookies.set("usuarioCookie", usuario, 1000000000)
 }
 
