@@ -57,54 +57,8 @@
                 @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
         </div>
         <div class="flex justify-end items-end ">
-            <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
-                <div class="h-[6%] pt-8 flex items-end justify-center">
-                    <h1 class="text-3xl font-semibold">Informações</h1>
-                </div>
-                <div class="pt-8 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
-                    <div class="flex pl-8">
-                        <div class="w-[50%] justify-start flex-row">
-                            <p>Nome do projeto</p>
-                        </div>
-                        <div class="w-[40%] justify-end flex-row">
-                            <p class="w-[100%] text-[#620BA7]">asdasd asdasd asdasdasdasd asdasd</p>
-                        </div>
-                    </div>
-                    <div class="flex pl-8">
-                        <div class="w-[50%] justify-start flex-row">
-                            <p>Data Inicial</p>
-                        </div>
-                        <div class="w-[40%] justify-end flex-row">
-                            <p class="text-[#620BA7]">13/02/2006</p>
-                        </div>
-                    </div>
-                    <div class="flex pl-8">
-                        <div class="w-[50%] justify-start flex-row">
-                            <p>Data Inicial</p>
-                        </div>
-                        <div class="w-[40%] justify-end flex-row">
-                            <p class="text-[#620BA7]">13/02/2006</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="h-[4%] flex items-center justify-center p-8">
-                    <h1 class="text-xl font-semibold">Status</h1>
-                </div>
-                <div class="h-[4%] flex items-center justify-center">
-                    <div class="flex items-center justify-center h-[80%] w-[100%]">
-                        <p class="h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
-                            Status aleatório
-                        </p>
-                    </div>
-                </div>
-                <div class="h-[4%] flex items-center justify-center p-8">
-                    <h1 class="text-xl font-semibold">Propriedades</h1>
-                </div>
-                <div class="h-[35%] flex flex-col items-center justify-center p-8">
-                    <img :src="NotePad" class="h-[200px] w-[200px]" />
-                    <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
-                </div>
-            </div>
+            <informacoesProjeto :nome-projeto="nomeProjeto" :lista-status="listaStatus"
+                :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada"></informacoesProjeto>
         </div>
     </div>
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
@@ -129,6 +83,7 @@ import { Projeto } from '../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Sair from "../imagem-vetores/Sair.svg";
 import ListaPropiedadesStatus from "../components/ListaPropriedadesStatus.vue";
+import informacoesProjeto from '../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
@@ -139,7 +94,7 @@ let dataInicioProjeto = ref("");
 let descricaoProjeto = ref("");
 let listaDeUsuariosParaBusca = ref([]);
 var listaPropriedades = ref([]);
-let listaStatus = [];
+let listaStatus = ref([]);
 let equipesRelacionadasProjeto = ref([]);
 let listaAuxResponsaveisProjeto = [];
 let responsaveisProjeto = ref([]);
@@ -149,7 +104,7 @@ let listaEquipeEnviaBack = []
 let listaResponsaveisBack = []
 var projetoEdita = ref(true)
 let srcIconListaEquipes = Sair
-let naoEntraFuncao = false
+let dataFormatada = ref("")
 funcaoPopUp.variavelModal = false
 let idProjeto;
 
@@ -158,6 +113,7 @@ onMounted(() => {
     defineSelect()
     pesquisaBancoUserName();
     buscaProjetoCookies();
+    mandaDataInformacoes();
     listaEquipesConvidadas.value = []
 })
 
@@ -165,6 +121,17 @@ onUpdated(() => {
     criarProjetoCookies();
 })
 
+
+async function mandaDataInformacoes() {
+    if (projetoEdita.value) {
+        idProjeto = VueCookies.get("projetoEditarId");
+        let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+        const dataBack= projeto.dataCriacao;
+        const [data, hora] = dataBack.split("T");
+        const [ano, mes, dia] = data.split("-");
+         dataFormatada.value = `${dia}/${mes}/${ano}`;
+    }
+}
 
 function verificaEdicaoProjeto() {
     if (route.path == '/editaProjeto') {
@@ -190,11 +157,7 @@ function colocaListaPropriedades(propriedades) {
 }
 
 function colocaListaStatus(status) {
-    console.log(status);
-    listaStatus = []
-    listaStatus = status
-
-
+    listaStatus.value = status
 }
 
 function buscaProjetoCookies() {
@@ -256,7 +219,7 @@ async function buscaListaResponsaveisBack(projeto) {
 
 }
 
-function verificaTemEsseResponsavelProjeto(username){ 
+function verificaTemEsseResponsavelProjeto(username) {
     return (!responsaveisProjeto.value.includes(username) && !listaAuxResponsaveisProjeto.includes(username));
 }
 
@@ -347,10 +310,10 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     console.log(equipeEscolhidaParaProjeto)
     const listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada;
-    if (equipeEscolhidaParaProjeto.nome==null) {
+    if (equipeEscolhidaParaProjeto.nome == null) {
         equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
-    }else{
-        equipeVinculada=equipeEscolhidaParaProjeto;
+    } else {
+        equipeVinculada = equipeEscolhidaParaProjeto;
     }
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
@@ -389,14 +352,11 @@ async function removeResponsavel(responsavelRemover) {
         if (objetoAtual.username == responsavelRemover.username) {
             let index = responsaveisProjeto.value.indexOf(responsavelRemover)
             responsaveisProjeto.value.splice(index, 1);
-            listaAuxResponsaveisProjeto.splice(index,1)
+            listaAuxResponsaveisProjeto.splice(index, 1)
             listaResponsaveisBack.splice(index, 1);
         }
     }
-
     )
-
-
     if (!projetoEdita) {
         criarProjetoCookies();
     }

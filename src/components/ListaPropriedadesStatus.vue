@@ -21,39 +21,27 @@
 
         <div class="scrollBar">
             <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada">
-                    <p class="w-[33%]">{{ propriedade.nome }}</p>
-                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                    <div class=" w-[50%] ">
-                        <div v-if="tarefasAtribuidas"
-                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
-                            @click="mudaPaginaParaKanban()">
+                <div  v-for="propriedade of listaSelecionada">
+                    <div class="flex  flex-row items-center gap-4 h-[8vh]" v-if="propriedade.verNomeCompleto ==false" @mouseenter="startTimer(propriedade)"
+                        @mouseleave="clearTimer(propriedade)">
+                        <p class="w-[33%]">{{ propriedade.nome }}</p>
+                        <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+                        <div class=" w-[50%] ">
+                            <div v-if="tarefasAtribuidas"
+                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                                @click="mudaPaginaParaKanban()">
 
-                            Tarefas Atribuidas
+                                Tarefas Atribuidas
+                            </div>
+                            <div v-if="!tarefasAtribuidas"
+                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                <p>Não há tarefas</p>
+                            </div>
                         </div>
-                        <div v-if="!tarefasAtribuidas"
-                            class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
-                            <p>Não há tarefas</p>
-                        </div>
+                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removePropriedade(propriedade)">
                     </div>
-
                 </div>
-                <!-- <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
-                    v-if="listaSelecionada != []">
-                    <p class="w-[33%]">{{ propriedade.nome }}</p>
-                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                    <div class=" w-[50%] ">
-                        <div v-if="tarefasAtribuidas"
-                            class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
-                            @click="mudaPaginaParaKanban()">
-                            Tarefas Atribuidas
-                        </div>
-                        <div v-if="!tarefasAtribuidas"
-                            class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
-                            <p>Não há tarefas</p>
-                        </div>
-                    </div>
-                </div> -->
+
             </div>
             <div v-if="opcaoSelecionadaNaTabela == 'status'">
                 <div v-for="status of listaSelecionada">
@@ -62,6 +50,7 @@
 
                         <p class="w-[33%] truncate ">{{ status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
+
                         <div class=" w-[50%] ml-20 ">
                             <div v-if="tarefasAtribuidas"
                                 class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
@@ -73,14 +62,14 @@
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
+                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removeStatus(status)">
 
                     </div>
 
                     <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
                         <p class="w-[33%] min-h-min h-[4vh] bg-brancoNeve break-words "
-                            v-if="status.verNomeCompleto == true">{{
-            status.status.nome }}</p>
+                            v-if="status.verNomeCompleto == true">{{ status.status.nome }}</p>
                         <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         <div class=" w-[50%] ml-20 ">
                             <div v-if="tarefasAtribuidas"
@@ -93,7 +82,7 @@
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
-
+                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removeStatus(status)">
                     </div>
 
                 </div>
@@ -182,6 +171,8 @@ import sortBy from 'sort-by';
 import { useRoute } from 'vue-router';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router/index'
+import sair from '../imagem-vetores/botao-x.svg'
+const botaoSair = sair;
 const instance = getCurrentInstance();
 const route = useRoute();
 const conexao = conexaoBD();
@@ -271,7 +262,7 @@ function filtroStatus(ordem) {
         });
 
     }
-        return auxRenderizaStatusTela.sort(sortBy('status.nome'));
+    return auxRenderizaStatusTela.sort(sortBy('status.nome'));
 }
 
 function filtroPropriedades(listaRecebida, buscarPor) {
@@ -344,8 +335,11 @@ function mandaProrpiedadesBack(listaPropriedades) {
         if (objetoModificado.tipo == "Seleção") {
             objetoModificado.tipo = "SELECAO";
         }
+        objetoModificado.tipo = objetoModificado.tipo.toUpperCase()
         return objetoModificado;
     });
+    buscandoPor();
+    console.log(propriedadesParaback)
     instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
@@ -358,16 +352,17 @@ function criaPropriedadeCookies(propriedadeBack) {
         if (propriedadeFront.propriedade.nome != '') {
             auxParaCriarPropriedades.push(propriedadeFront.propriedade)
         }
-
         listaPropriedades.value = auxParaCriarPropriedades
         nomePropriedade.value = "";
         tipoPropriedade.value = "";
-        if (!projetoEdita.value) {
-            VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
-        }
+
         funcaoPopUp.fechaPopUp();
-        mandaProrpiedadesBack(listaPropriedades)
     }
+    auxParaCriarPropriedades = listaPropriedades.value
+    if (!projetoEdita.value) {
+        VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
+    }
+    mandaProrpiedadesBack(listaPropriedades)
 }
 
 function criaStatusBack() {
@@ -485,6 +480,27 @@ function clearTimer(objeto) {
     clearTimeout(timeoutId);
     objeto.verNomeCompleto = false;
 
+}
+
+async function removeStatus(statusRecebe) {
+    let indice = listaStatus.value.findIndex((obj) => obj.nome === statusRecebe.nome);
+    if (indice !== -1) {
+        listaStatus.value.splice(indice, 1);
+    }
+    if (!projetoEdita.value) {
+        criaStatusCookies()
+    }
+    mandaStatusBack();
+}
+
+async function removePropriedade(propriedadeRecebida) {
+    let indice = listaPropriedades.value.findIndex((obj) => obj.nome === propriedadeRecebida.nome);
+    if (indice !== -1) {
+        listaPropriedades.value.splice(indice, 1);
+    }
+    if (!projetoEdita.value) {
+        criaPropriedadeCookies()
+    }
 }
 </script>
 
