@@ -25,7 +25,7 @@
       <img
         @click="redireciona('/perfil/informacoes')"
         v-if="usuarioCookies && usuarioCookies.foto"
-        class="shadow-2xl max-h-[60px] min-w-[50px] rounded-full"
+        class="shadow-2xl h-[60px] w-[60px] rounded-full"
         :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
       />
     </div>
