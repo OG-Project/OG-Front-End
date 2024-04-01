@@ -9,7 +9,7 @@
         <div class="flex justify-center items-end text-white text-4xl h-[10%]">
           <p>Dashboard</p>
         </div>
-        <div class="flex items-center justify-center mt-8 h-[72%] text-white">
+        <div class="flex items-center justify-center mt-8 h-[62%] text-white">
           <canvas id="tabela"></canvas>
         </div>
       </div>

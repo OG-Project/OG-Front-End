@@ -179,24 +179,35 @@
         </div>
       </div>
 
-      <p class="pl-12 mt-4">Arquivos({{ numeroDeArquivos }})...</p>
+      <p class="pl-12 mt-4">Arquivos({{ tarefa.arquivos.length }})...</p>
       <div
         id="exploradorDeArquivos"
-        v-if="numeroDeArquivos != 0"
-        class="flex gap-4 h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto"
+        v-if="tarefa.arquivos.length != 0"
+        class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto"
       >
-        <p></p>
-        <!-- v-for com os arquivos -->
+        <div class="relative w-[25%] mx-4 h-[100%] flex items-center justify-center flex-col" v-for="arquivo in tarefa.arquivos">
+          <img v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'" class="h-[65%] w-[100%] mr-4 ml-4" :src="arquivo.dados">
+          <div v-if="arquivo.tipo == 'application/pdf'" class="h-[65%] w-[100%] flex items-center justify-center">
+            <img class="h-[65%]" src='https://cdn-icons-png.flaticon.com/512/337/337946.png' />
+          </div>
+          <div class="bg-[#F6F6F6] w-[100%] h-[15%] items-center flex justify-around">
+            <p class="truncate w-[100px] text-xs">{{ arquivo.nome }}</p>
+            <img @click="deletaArquivo(arquivo)" :src="BotaoX">
+          </div>
+        </div>
       </div>
       <div class="pl-12 mt-4">
-        <Botao
-          preset="PadraoVazadoIcon"
-          :icon="iconAnexo"
-          tamanhoDaBorda="2px"
-          texto="Anexar"
-          tamanhoPadrao="pequeno"
-          inverterCorIcon="sim"
-        ></Botao>
+        <div class="w-min h-min relative">
+          <Botao
+            preset="PadraoVazadoIcon"
+            :icon="iconAnexo"
+            tamanhoDaBorda="2px"
+            texto="Anexar"
+            tamanhoPadrao="pequeno"
+            inverterCorIcon="sim"
+          ></Botao>
+          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
+        </div>
       </div>
       <div class="pl-12 mt-4">
         <h1>SubTarefas</h1>
@@ -246,7 +257,7 @@
             
             <img
             v-if="usuarioCookies.foto.tipo != null"
-              class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full"
+              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full"
               :src="
                 'data:' +
                 usuarioCookies.foto.tipo +
@@ -579,9 +590,13 @@
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
+      <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
+        <p>Sua tarefa não possui status</p>
+      </div>
       <div
         v-for="status of tarefa.status"
         class="min-h-[4%] flex items-center justify-center gap-4"
+        v-if="tarefa.status.length != 0"
       >
         <p
           :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
@@ -906,11 +921,15 @@ async function atualizaPropriedadesEStatus() {
 }
 
 onUpdated(() => {
+  update();
+});
+
+function update(){
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
   adicionaExcluiPropriedadeNaTarefa()
-});
+}
 
 onMounted(async () => {
   VueCookies.set("IdProjetoAtual", 1, 100000000000);
@@ -947,6 +966,37 @@ onMounted(async () => {
 function exibirComentarios() {
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
 }
+
+function gerarArquivo(e){
+  console.log("Está executando");
+  console.log(tarefa.value.arquivos);
+  let arquivo = e.target.files[0];
+  console.log(arquivo);
+  let reader = new FileReader();
+  reader.readAsDataURL(arquivo);
+  reader.onload = function(){
+    let arquivoBase64 = reader.result;
+    let arquivoParaOBanco = {
+      nome: arquivo.name,
+      tipo: arquivo.type,
+      dados: arquivoBase64,
+    };
+    tarefa.value.arquivos.push(arquivoParaOBanco);
+    console.log(tarefa.value.arquivos);
+    update()
+  }
+
+}
+
+function deletaArquivo(arquivo){
+  tarefa.value.arquivos.forEach((arquivoParaDeletar) => {
+    if (arquivoParaDeletar === arquivo) {
+      tarefa.value.arquivos.splice(tarefa.value.arquivos.indexOf(arquivo), 1);
+    }
+  });
+  update()
+}
+
 
 let propriedadeSendoCriada = ref(false);
 
