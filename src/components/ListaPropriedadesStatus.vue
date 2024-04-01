@@ -21,16 +21,24 @@
 
         <div class="scrollBar">
             <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                <div  v-for="propriedade of listaSelecionada">
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" v-if="propriedade.verNomeCompleto ==false" @mouseenter="startTimer(propriedade)"
+                <div v-for="propriedade of listaSelecionada">
+                    <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(propriedade)"
                         @mouseleave="clearTimer(propriedade)">
-                        <p class="w-[33%]">{{ propriedade.nome }}</p>
-                        <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
+
+                        <div class="w-[50%] flex flex-row " v-if="propriedade.verNomeCompleto == true">
+                            <p class="w-full min-h-min h-[4vh]  break-words bg-brancoNeve ">
+                                {{ propriedade.propriedade.nome }}</p>
+                            <p class="w-full">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                        </div>
+                        <div class="w-[50%] flex flex-row" v-if="propriedade.verNomeCompleto == false">
+                            <p class="w-full truncate">{{ propriedade.propriedade.nome }}</p>
+                            <p class="w-full">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                        </div>
+
                         <div class=" w-[50%] ">
                             <div v-if="tarefasAtribuidas"
                                 class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
-
                                 Tarefas Atribuidas
                             </div>
                             <div v-if="!tarefasAtribuidas"
@@ -46,10 +54,16 @@
             <div v-if="opcaoSelecionadaNaTabela == 'status'">
                 <div v-for="status of listaSelecionada">
                     <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(status)"
-                        @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == false">
+                        @mouseleave="clearTimer(status)">
 
-                        <p class="w-[33%] truncate ">{{ status.status.nome }}</p>
-                        <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
+                        <div v-if="status.verNomeCompleto == false" class="w-[50%] flex flex-row">
+                            <p class="w-full truncate">{{ status.status.nome }}</p>
+                            <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
+                        </div>
+                        <div v-if="status.verNomeCompleto == true" class="w-[50%] flex flex-row">
+                            <p class="w-full min-h-min h-[4vh]  break-words bg-brancoNeve">{{ status.status.nome }}</p>
+                            <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
+                        </div>
 
                         <div class=" w-[50%] ml-20 ">
                             <div v-if="tarefasAtribuidas"
@@ -65,26 +79,6 @@
                         <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removeStatus(status)">
 
                     </div>
-
-                    <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
-                        @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
-                        <p class="w-[33%] min-h-min h-[4vh] bg-brancoNeve break-words "
-                            v-if="status.verNomeCompleto == true">{{ status.status.nome }}</p>
-                        <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
-                        <div class=" w-[50%] ml-20 ">
-                            <div v-if="tarefasAtribuidas"
-                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
-                                @click="mudaPaginaParaKanban()">
-                                Tarefas Atribuidas
-                            </div>
-                            <div v-if="!tarefasAtribuidas"
-                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
-                                <p>Não há tarefas</p>
-                            </div>
-                        </div>
-                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removeStatus(status)">
-                    </div>
-
                 </div>
 
             </div>
@@ -195,7 +189,7 @@ let projetoEdita = ref(false);
 let timeoutId = null;
 let idProjeto;
 let tarefasAtribuidas = false
-
+let listaPropriedadesBackEnd = []
 onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
@@ -296,7 +290,6 @@ function buscaPropriedadeCookies() {
     } else {
         buscaPropriedadeBanco();
     }
-    mandaProrpiedadesBack(listaPropriedades)
 }
 
 async function buscaPropriedadeBanco() {
@@ -320,6 +313,7 @@ function colocaListaTarefasDoProjeto(tarefas) {
         tarefasAtribuidas = true;
     }
 }
+
 function buscaRascunhoPropiedade() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
     if (propriedadeArmazenada == null) {
@@ -329,8 +323,8 @@ function buscaRascunhoPropiedade() {
     auxParaCriarPropriedades = propriedadeArmazenada
 }
 
-function mandaProrpiedadesBack(listaPropriedades) {
-    const propriedadesParaback = listaPropriedades.value.map(objeto => {
+function mandaProrpiedadesBack(listaPropriedadesRecebida) {
+    const propriedadesParaback = listaPropriedadesRecebida.map(objeto => {
         const objetoModificado = { ...objeto };
         if (objetoModificado.tipo == "Seleção") {
             objetoModificado.tipo = "SELECAO";
@@ -350,7 +344,8 @@ function criaPropriedadeCookies(propriedadeBack) {
             verNomeCompleto: false
         }
         if (propriedadeFront.propriedade.nome != '') {
-            auxParaCriarPropriedades.push(propriedadeFront.propriedade)
+            auxParaCriarPropriedades.push(propriedadeFront)
+            listaPropriedadesBackEnd.push(propriedadeFront.propriedade)
         }
         listaPropriedades.value = auxParaCriarPropriedades
         nomePropriedade.value = "";
@@ -362,7 +357,7 @@ function criaPropriedadeCookies(propriedadeBack) {
     if (!projetoEdita.value) {
         VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
     }
-    mandaProrpiedadesBack(listaPropriedades)
+    mandaProrpiedadesBack(listaPropriedadesBackEnd)
 }
 
 function criaStatusBack() {
@@ -469,7 +464,7 @@ function startTimer(objeto) {
             }
             return;
         }
-        if (objeto.propriedade.nome > 10) {
+        if (objeto.propriedade.nome.length > 10) {
             objeto.verNomeCompleto = true;
         }
 
