@@ -57,5 +57,6 @@ function defineOpcao(rotaAtual, rota) {
     border: 2px solid rgb(235, 235, 235);
     border-top: none;
 
-}</style>
+}
+</style>
 

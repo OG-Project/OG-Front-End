@@ -84,7 +84,7 @@
                             <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
                                 @dragover="retornaHora(hora)">
                                 <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class=" flex flex-row ">
-                                    <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                    <div v-for="propriedade of listaDePropriedades">           
                                         <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
                                             class=" pl-[5%] pt-[5%]">
                                             <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
@@ -107,7 +107,7 @@
                             <div class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row"
                                 @dragover="retornaHora(hora)">
                                 <div v-for="tarefa of diaSelecionado.listaDeTarefas.value" class="flex flex-row">
-                                    <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                    <div v-for="propriedade of listaDePropriedades">
                                         <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
                                             class="pl-[5%] pt-[5%]">
                                             <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
@@ -156,6 +156,7 @@ let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
 let index = 0;
+let listaDePropriedades = ref([])
 api.procurar("/tarefa")
 onMounted(() => {
     getCalendario();
@@ -194,6 +195,7 @@ async function adicionaNaLista() {
                         if (!lista.includes(tarefa)) {
                             lista.push(tarefa)
                         }
+                        listaDePropriedades.value.push(propriedade)
                     }
                 }
             }

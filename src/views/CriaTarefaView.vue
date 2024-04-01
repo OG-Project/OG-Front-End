@@ -2,51 +2,30 @@
   <div id="bgBranco" class="flex flex-row min-h-[96%] w-full">
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
-        <Input
-          largura="32"
-          altura="6"
-          fontSize="2rem"
-          conteudoInput="Nome da tarefa"
-          styleInput="input-transparente-claro-grande"
-          v-model="tarefa.nome"
-        ></Input>
+        <Input largura="32" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
+          styleInput="input-transparente-claro-grande" v-model="tarefa.nome"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
-        <TextAreaPadrao
-          width="80%"
-          height="16vh"
-          placeholder="Descrição da tarefa"
-          tamanho-da-fonte="1rem"
-          resize="none"
-          v-model="tarefa.descricao"
-        ></TextAreaPadrao>
+        <TextAreaPadrao width="80%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
+          resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
         <div class="flex flex-col justify-center w-[30%]">
           <p>Propriedades</p>
-          <button
-            class="flex flex-col justify-center h-[70%]"
-            @click="abreFechaCriaPropriedades()"
-          >
+          <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
             + Criar
           </button>
         </div>
         <div class="flex flex-col justify-center w-[30%]">
           <p>Cor da Tarefa</p>
-          <button
-            class="flex flex-col justify-center break-keep h-[70%]"
-            @click="abreFechaMudaCor()"
-          >
+          <button class="flex flex-col justify-center break-keep h-[70%]" @click="abreFechaMudaCor()">
             + Criar
           </button>
         </div>
 
         <div class="flex flex-col justify-center w-[30%]">
           <p>SubTarefas</p>
-          <button
-            class="flex flex-col justify-center h-[70%]"
-            @click="abreFechaCriaSubTarefas()"
-          >
+          <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaSubTarefas()">
             + Criar
           </button>
         </div>
@@ -69,11 +48,7 @@
             </div>
             <div class="flex felx-row justify-end">
               <div class="pr-2 pt-2 pb-2">
-                <Botao
-                  preset="Confirmar"
-                  tamanhoPadrao="pequeno"
-                  :funcaoClick="abreFechaMudaCor"
-                ></Botao>
+                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="abreFechaMudaCor"></Botao>
               </div>
             </div>
           </div>
@@ -92,41 +67,22 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input
-                  largura="10"
-                  conteudoInput="Nome Propriedade"
-                  fontSize="1rem"
-                  altura="3.8"
-                  v-model="nomePropriedade"
-                ></Input>
+                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="3.8"
+                  v-model="nomePropriedade"></Input>
               </div>
               <div class="pr-2">
-                <selectPadrao
-                  placeholderSelect="Tipo"
-                  :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                  largura="5"
-                  altura="3.8"
-                  fonteTamanho="1rem"
-                  v-model="tipoPropriedade"
-                >
+                <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                  largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade">
                 </selectPadrao>
               </div>
             </div>
 
             <div class="flex felx-row justify-between items-end">
               <div class="pl-2 pt-2 pb-2">
-                <Botao
-                  preset="Sair"
-                  tamanhoPadrao="pequeno"
-                  :funcaoClick="abreFechaCriaPropriedades"
-                ></Botao>
+                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="abreFechaCriaPropriedades"></Botao>
               </div>
               <div class="pr-2 pt-2 pb-2">
-                <Botao
-                  preset="Confirmar"
-                  tamanhoPadrao="pequeno"
-                  :funcaoClick="criaPropriedade"
-                ></Botao>
+                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedade"></Botao>
               </div>
             </div>
           </div>
@@ -142,37 +98,18 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input
-                  largura="10"
-                  conteudoInput="Nome SubTarefa"
-                  fontSize="1rem"
-                  altura="3.8"
-                  v-model="nomeSubtarefa"
-                ></Input>
+                <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8"
+                  v-model="nomeSubtarefa"></Input>
               </div>
-              <selectPadrao
-                placeholderSelect="Status"
-                :lista-select="['Em Progresso', 'Concluido']"
-                largura="8"
-                altura="3.8"
-                fonteTamanho="1rem"
-                v-model="statusSubtarefa"
-              />
+              <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
+                altura="3.8" fonteTamanho="1rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
-                <Botao
-                  preset="Sair"
-                  tamanhoPadrao="pequeno"
-                  :funcaoClick="abreFechaCriaSubTarefas"
-                ></Botao>
+                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="abreFechaCriaSubTarefas"></Botao>
               </div>
               <div class="pr-2 pt-2 pb-2">
-                <Botao
-                  preset="Confirmar"
-                  tamanhoPadrao="pequeno"
-                  :funcaoClick="criaSubtarefa"
-                ></Botao>
+                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaSubtarefa"></Botao>
               </div>
             </div>
           </div>
@@ -180,23 +117,14 @@
       </div>
 
       <p class="pl-12 mt-4">Arquivos({{ numeroDeArquivos }})...</p>
-      <div
-        id="exploradorDeArquivos"
-        v-if="numeroDeArquivos != 0"
-        class="flex gap-4 h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto"
-      >
+      <div id="exploradorDeArquivos" v-if="numeroDeArquivos != 0"
+        class="flex gap-4 h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
         <p></p>
         <!-- v-for com os arquivos -->
       </div>
       <div class="pl-12 mt-4">
-        <Botao
-          preset="PadraoVazadoIcon"
-          :icon="iconAnexo"
-          tamanhoDaBorda="2px"
-          texto="Anexar"
-          tamanhoPadrao="pequeno"
-          inverterCorIcon="sim"
-        ></Botao>
+        <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
+          inverterCorIcon="sim"></Botao>
       </div>
       <div class="pl-12 mt-4">
         <h1>SubTarefas</h1>
@@ -208,18 +136,12 @@
         </div>
       </div>
       <!-- Sub Tarefa -->
-      <div
-        class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-2 overflow-auto"
-        id="subtarefaOverflow"
-      >
+      <div class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-2 overflow-auto" id="subtarefaOverflow">
         <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
             <div class="flex gap-2 items-center">
-              <CheckBox
-                :checked="subtarefa.concluida"
-                tipo="checkbox"
-                @click="trocaStatusDaSubTarefa(subtarefa, index)"
-              />
+              <CheckBox :checked="subtarefa.concluida" tipo="checkbox"
+                @click="trocaStatusDaSubTarefa(subtarefa, index)" />
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
@@ -243,115 +165,59 @@
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-            
-            <img
-            v-if="usuarioCookies.foto.tipo != null"
-              class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full"
-              :src="
-                'data:' +
-                usuarioCookies.foto.tipo +
-                ';base64,' +
-                usuarioCookies.foto.dados
-              "
-            />
+
+            <img v-if="usuarioCookies.foto.tipo != null"
+              class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
+            usuarioCookies.foto.tipo +
+            ';base64,' +
+            usuarioCookies.foto.dados
+            " />
             <div class="pb-2 flex flex-col items-end">
-              <TextAreaPadrao
-                width="25vw"
-                height="15vh"
-                class="pt-6 pb-4"
-                placeholder="Descrição da tarefa"
-                tamanho-da-fonte="1rem"
-                resize="vertical"
-                v-model="comentarioSendoEnviado"
-              ></TextAreaPadrao>
-              <Botao
-                texto="Enviar"
-                preset="PadraoRoxo"
-                tamanhoPadrao="pequeno"
-                :funcaoClick="enviaComentario"
-                :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"
-              ></Botao>
+              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4" placeholder="Descrição da tarefa"
+                tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
+              <Botao texto="Enviar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
+                :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
           </div>
         </div>
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
-            <div
-              class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col"
-            >
+            <div class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
-                <div
-                  v-if="comentario.autor === usuarioCookies.username"
-                  class="w-[80%] mt-2 gap-4 flex justify-center"
-                >
-                  <img
-                    class="w-[25%]"
-                    :src="iconeLapisPreto"
-                    @click="trocaComentarioSendoEditado"
-                  />
-                  <img
-                    @click="deletaComentario(comentario)"
-                    class="w-[25%]"
-                    :src="BotaoX"
-                  />
+                <div v-if="comentario.autor === usuarioCookies.username" class="w-[80%] mt-2 gap-4 flex justify-center">
+                  <img class="w-[25%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
+                  <img @click="deletaComentario(comentario)" class="w-[25%]" :src="BotaoX" />
                 </div>
-                <div
-                  v-if="comentario.autor != usuarioCookies.username"
-                  class="w-[80%] mt-6 gap-4 flex justify-center"
-                ></div>
+                <div v-if="comentario.autor != usuarioCookies.username" class="w-[80%] mt-6 gap-4 flex justify-center">
+                </div>
               </div>
               <div class="flex w-[100%] mb-2">
-                <img
-                  :src="
-                    'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados
-                  "
-                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
-                />
+                <img :src="'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados
+            " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor }}
                   </p>
 
-                  <div
-                    v-if="
-                      comentarioSendoEditado &&
-                      comentario.autor === usuarioCookies.username
-                    "
-                  >
-                    <TextAreaPadrao
-                      width="25vw"
-                      height="15vh"
-                      class="pt-4 pb-4"
-                      placeholder="Descrição da tarefa"
-                      tamanho-da-fonte="1rem"
-                      resize="vertical"
-                      v-model="comentario.comentario"
-                    ></TextAreaPadrao>
+                  <div v-if="comentarioSendoEditado &&
+            comentario.autor === usuarioCookies.username
+            ">
+                    <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" placeholder="Descrição da tarefa"
+                      tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.comentario"></TextAreaPadrao>
                   </div>
-                  <div
-                    v-if="
-                      !comentarioSendoEditado ||
-                      comentario.autor != usuarioCookies.username
-                    "
-                  >
+                  <div v-if="!comentarioSendoEditado ||
+            comentario.autor != usuarioCookies.username
+            ">
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.comentario }}
                     </p>
                   </div>
 
-                  <div
-                    v-if="
-                      comentarioSendoEditado &&
-                      comentario.autor === usuarioCookies.username
-                    "
-                  >
-                    <Botao
-                      texto="Editar"
-                      preset="PadraoRoxo"
-                      tamanhoPadrao="pequeno"
-                      :funcaoClick="editarComentario"
-                      :parametrosFuncao="comentario"
-                    ></Botao>
+                  <div v-if="comentarioSendoEditado &&
+            comentario.autor === usuarioCookies.username
+            ">
+                    <Botao texto="Editar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
+                      :parametrosFuncao="comentario"></Botao>
                   </div>
                 </div>
               </div>
@@ -364,24 +230,14 @@
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
       <div class="w-[80%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
-          <button
-            class="w-[33%]"
-            @click="clicouOpcaoPropriedades()"
-            :style="estiloBotaoPropriedades"
-          >
+          <button class="w-[33%]" @click="clicouOpcaoPropriedades()" :style="estiloBotaoPropriedades">
             Propriedades
           </button>
           <button class="w-[33%]" @click="clicouOpcaoStatus()" :style="estiloBotaoStatus">
             Status
           </button>
-          <div
-            v-if="opcaoEstaClicadaPropriedades"
-            class="w-[33%] flex items-center justify-center"
-          >
-            <select
-              class="flex text-center w-[100%]"
-              v-model="parametroDoFiltroPropriedade"
-            >
+          <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
+            <select class="flex text-center w-[100%]" v-model="parametroDoFiltroPropriedade">
               <option selected="selected">Ordenar Por</option>
               <option>Texto</option>
               <option>Data</option>
@@ -389,10 +245,7 @@
               <option>Seleção</option>
             </select>
           </div>
-          <div
-            v-if="opcaoEstaClicadaStatus"
-            class="w-[33%] flex items-center justify-center"
-          >
+          <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
               <option value="Ordenar Por">Ordenar Por</option>
               <option value="az">A - Z</option>
@@ -401,96 +254,48 @@
           </div>
         </div>
 
-        <div
-          v-if="opcaoEstaClicadaPropriedades"
-          class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto"
-        >
-          <div
-            v-for="(propriedade, index) in listaFiltradaPropriedades"
-            :key="index"
-            class="w-[100%] min-h-[3vh] gap-2 flex flex-col items-center justify-center"
-          >
-            <div
-              class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center"
-            >
+        <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
+          <div v-for="(propriedade, index) in listaFiltradaPropriedades" :key="index"
+            class="w-[100%] min-h-[3vh] gap-2 flex flex-col items-center justify-center">
+            <div class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center">
               <div class="flex gap-2 items-center w-[40%]">
-                <CheckBox
-                  @click="adicionaExcluiPropriedadeNaTarefa(propriedade, index)"
-                  :ativoProps="propriedade.estaNaTarefa"
-                ></CheckBox>
+                <CheckBox @click="adicionaExcluiPropriedadeNaTarefa(propriedade, index)"
+                  :ativoProps="propriedade.estaNaTarefa"></CheckBox>
                 <p class="break-all">{{ propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
                 <p>Tipo: {{ propriedade.tipo }}</p>
               </div>
               <div class="w-[30%]">
-                <button
-                  @click="editarPropriedade(index, propriedade.valor)"
-                  class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md"
-                >
+                <button @click="editarPropriedade(index, propriedade.valor)"
+                  class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md">
                   Valor
                 </button>
               </div>
               <div class="flex justify-center">
-                <img
-                  class="w-[100%] mr-4"
-                  @click="deletaPropriedade(propriedade)"
-                  :src="BotaoX"
-                />
+                <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
               </div>
             </div>
-            <div
-              class="w-[100%] min-h-[5vh] flex items-center justify-center"
-              v-if="propriedade.sendoEditado"
-            >
+            <div class="w-[100%] min-h-[5vh] flex items-center justify-center" v-if="propriedade.sendoEditado">
               <div v-if="propriedade.tipo === 'TEXTO'">
-                <Input
-                  altura="2"
-                  largura="28"
-                  conteudoInput=" "
-                  v-model="propriedade.valor"
-                  width="80%"
-                  @input="editarPropriedade(index, propriedade.valor)"
-                >
+                <Input altura="2" largura="28" conteudoInput=" " v-model="propriedade.valor" width="80%"
+                  @input="editarPropriedade(index, propriedade.valor)">
                 </Input>
               </div>
               <div v-if="propriedade.tipo === 'DATA'">
-                <Calendar
-                  class="border-2 rounded-lg border-[#620BA7]"
-                  border
-                  v-model="propriedade.valor"
-                  dateFormat="dd/mm/yy"
-                  showIcon
-                  iconDisplay="input"
-                />
+                <Calendar class="border-2 rounded-lg border-[#620BA7]" border v-model="propriedade.valor"
+                  dateFormat="dd/mm/yy" showIcon iconDisplay="input" />
               </div>
               <div v-if="propriedade.tipo === 'NUMERO'">
-                <InputNumber
-                  class="border-2 rounded-lg border-[#620BA7]"
-                  showIcon
-                  iconDisplay="input"
-                  v-model="propriedade.valor"
-                  inputId="minmaxfraction"
-                  minFractionDigits="0"
-                  maxFractionDigits="2"
-                />
+                <InputNumber class="border-2 rounded-lg border-[#620BA7]" showIcon iconDisplay="input"
+                  v-model="propriedade.valor" inputId="minmaxfraction" minFractionDigits="0" maxFractionDigits="2" />
               </div>
               <div v-if="propriedade.tipo === 'SELEÇÃO'">
                 <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
-                  <Input
-                    altura="2"
-                    largura="27"
-                    conteudoInput=" "
-                    v-model="propriedade.valor[index]"
-                    width="60%"
-                    @input="editarPropriedade(index, valor)"
-                  >
+                  <Input altura="2" largura="27" conteudoInput=" " v-model="propriedade.valor[index]" width="60%"
+                    @input="editarPropriedade(index, valor)">
                   </Input>
-                  <img
-                    class="w-[100%] ml-2"
-                    @click="deletaValorSelect(propriedade.valor, index)"
-                    :src="BotaoX"
-                  />
+                  <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor, index)" :src="BotaoX" />
                 </div>
 
                 <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">
@@ -500,18 +305,10 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="opcaoEstaClicadaStatus"
-          class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto"
-        >
-          <div
-            v-for="(statsAdd, index) in listaFiltradaStatus"
-            :key="index"
-            class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center"
-          >
-            <div
-              class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center"
-            >
+        <div v-if="opcaoEstaClicadaStatus" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
+          <div v-for="(statsAdd, index) in listaFiltradaStatus" :key="index"
+            class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
+            <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
               <div class="w-[35%] flex gap-2 items-center pl-4">
                 <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)"></CheckBox>
                 <p class="break-all">{{ statsAdd.nome }}</p>
@@ -520,11 +317,7 @@
               <div class="w-[40%] flex justify-between">
                 <ColorPicker v-model="statsAdd.cor" class="border-2 rounded-lg ml-16" />
                 <div class="flex justify-center">
-                  <img
-                    class="w-[100%] mr-4"
-                    @click="deletaStatus(statsAdd)"
-                    :src="BotaoX"
-                  />
+                  <img class="w-[100%] mr-4" @click="deletaStatus(statsAdd)" :src="BotaoX" />
                 </div>
               </div>
             </div>
@@ -532,12 +325,7 @@
         </div>
       </div>
       <div class="w-[80%] flex justify-end pt-8">
-        <Botao
-          preset="PadraoVazado"
-          texto="Concluído"
-          tamanhoDaBorda="2px"
-          tamanhoDaFonte="1.5rem"
-        ></Botao>
+        <Botao preset="PadraoVazado" texto="Concluído" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
 
@@ -564,7 +352,7 @@
             <p class="truncate text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
               {{ responsavel.responsavel.username }}
             </p>
-            
+
           </div>
         </div>
         <div class="flex pl-8">
@@ -579,35 +367,21 @@
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
-      <div
-        v-for="status of tarefa.status"
-        class="min-h-[4%] flex items-center justify-center gap-4"
-      >
-        <p
-          :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
-          class="flex items-center border-2 shadow-md justify-center px-4"
-        >
+      <div v-for="status of tarefa.status" class="min-h-[4%] flex items-center justify-center gap-4">
+        <p :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
+          class="flex items-center border-2 shadow-md justify-center px-4">
           {{ status.nome }}
         </p>
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Propriedades</h1>
       </div>
-      <div
-        v-if="tarefa.propriedades.length === 0"
-        class="h-[35%] flex flex-col items-center justify-center p-8"
-      >
+      <div v-if="tarefa.propriedades.length === 0" class="h-[35%] flex flex-col items-center justify-center p-8">
         <img :src="NotePad" class="h-[200px] w-[200px]" />
         <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
       </div>
-      <div
-        v-if="tarefa.propriedades.length != 0"
-        class="min-h-[35%] flex flex-col items-center"
-      >
-        <div
-          v-for="propriedade of tarefa.propriedades"
-          class="flex flex-col justify-around py-4 w-[80%]"
-        >
+      <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
+        <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
           <div v-if="propriedade.tipo === 'DATA'">
             <p>Valor: {{ format(new Date(propriedade.valor), "dd/MM/yyyy") }}</p>
@@ -847,7 +621,7 @@ function deletaPropriedade(propriedade) {
       console.log(propriedadeParaDeletar.id);
       console.log(propriedade.id);
       console.log(VueCookies.get("IdProjetoAtual"));
-      deleta.deletaPropriedade(propriedade.id,parseInt(VueCookies.get("IdProjetoAtual")))
+      deleta.deletaPropriedade(propriedade.id, parseInt(VueCookies.get("IdProjetoAtual")))
 
       await new Promise(r => setTimeout(r, 60));
       await procuraProjetosDoBanco();
@@ -883,19 +657,30 @@ let tarefa = ref({
   corDaTarefa: "",
 });
 
-function puxaTarefaDaEdicao() {
-  let tarefas = banco.procurar("/tarefa");
+async function puxaTarefaDaEdicao() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
-  for (tarefaEdicao in tarefas) {
-    if (IdTarefaCookies.value == tarefa.id) {
-      tarefa.value.nome = tarefaEdicao.nome;
-      tarefa.value.descricao = tarefaEdicao.descricao;
-      tarefa.value.arquivos = tarefaEdicao.arquivos;
-      tarefa.value.comentarios = tarefaEdicao.comentarios;
-      tarefa.value.propriedades = tarefaEdicao.valorPropriedadeTarefas;
-      tarefa.value.status = tarefaEdicao.status;
-    }
+  if (IdTarefaCookies == 0) {
+    tarefa.value.nome = "";
+    tarefa.value.descricao = "";
+    tarefa.value.arquivos = [];
+    tarefa.value.comentarios = [];
+    tarefa.value.propriedades = [];
+    tarefa.value.status = [];
+    tarefa.value.subtarefas = [];
+    return;
   }
+  let tarefa2 = banco.buscarUm(IdTarefaCookies, "/tarefa");
+  let tarefaAux = await tarefa2
+  console.log(
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  )
+  tarefa.value.nome = tarefaAux.nome;
+  tarefa.value.descricao = tarefaAux.descricao;
+  tarefa.value.arquivos = tarefaAux.arquivos;
+  tarefa.value.comentarios = tarefaAux.comentarios;
+  tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
+  tarefa.value.status = tarefaAux.status;
+  tarefa.value.subtarefas = tarefaAux.subTarefas;
 }
 
 async function atualizaPropriedadesEStatus() {
@@ -1218,6 +1003,7 @@ function clicouOpcaoStatus() {
   background-color: #c4c4c4;
   clip-path: polygon(60% 0, 0 0, 0 100%, 58% 100%, 100% 82%, 100% 18%);
 }
+
 #propriedadesOverflow {
   width: 20vw;
   gap: 8px;
@@ -1227,12 +1013,15 @@ function clicouOpcaoStatus() {
   overflow-x: hidden;
   min-height: 88vh;
   max-height: 88vh;
-  height: auto; /* Allow automatic height adjustment */
+  height: auto;
+  /* Allow automatic height adjustment */
 }
+
 #botao-sair {
   width: 4%;
   height: 4%;
 }
+
 .blur-background {
   @apply fixed inset-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg absolute;
 }
@@ -1326,6 +1115,7 @@ function clicouOpcaoStatus() {
 #filtroDeSubTarefa {
   font-size: small;
 }
+
 option {
   font-size: small;
   border: 1px solid #cbcbcb;

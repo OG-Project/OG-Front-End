@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-[30%] flex  items-center">
+    <div class="w-full h-[30%] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
             <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
                 <div class="h-[45%]">
@@ -13,8 +13,16 @@
                 {{ porcentagemDeConclusao }}
             </div>
         </div>
-        <div class="w-[40%]">
-
+        <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
+            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookie()">
+                +Tarefa
+            </button>
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center">
+                <IconEngrenagem1></IconEngrenagem1>
+            </button>
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center">
+                <ImagemPessoasProjeto></ImagemPessoasProjeto>
+            </button>
         </div>
     </div>
     <div class="w-[80%] flex flex-row justify-around">
@@ -51,6 +59,8 @@ import Dashboard from '../assets/dashboard.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import VueCookies from 'vue-cookies';
 import { onMounted, ref } from 'vue';
+import IconEngrenagem1 from '../assets/iconEngrenagem 1.vue';
+import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
 
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
@@ -67,13 +77,17 @@ onMounted(async () => {
 })
 
 
+function enviaCookie(){
+    $cookies.set("IdTarefaCookies",0)
+    router.push('/criaTarefa') 
+}
 
 function definePorcentagem() {
     tarefas = projeto.value.tarefas
     let string = ""
     let porcentagem = 0
     defineSubTarefasConcluida(tarefas)
-    
+
     if (tarefas.length > 0) {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
     }
@@ -82,8 +96,8 @@ function definePorcentagem() {
     porcentagemDeConclusao = string
 }
 function defineSubTarefasConcluida(tarefas) {
-    for(const tarefa of tarefas){
-        for(const subtarefa of tarefa.subTarefas){
+    for (const tarefa of tarefas) {
+        for (const subtarefa of tarefa.subTarefas) {
             subtarefas.value.push(subtarefa)
         }
     }

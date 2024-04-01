@@ -1,5 +1,5 @@
 <template>
-    <div @click="router.push('/criaTarefa')">
+    <div @click="enviaCookie(tarefa)">
         <!-- Preset 1 Kanban -->
         <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1" >
             <div :style="tarefa1"> </div>
@@ -20,6 +20,7 @@
     
             </div>
             <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
+                {{ console.log(tarefa) }}
                 <div v-if="tarefa.tarefa.id == props.tarefa.id" class="flex justify-end pl-[20%]">
                     <svg width="2vh" height="2vh" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M14.6252 14.3234L0.464865 14.3233L14.6257 0.610178L14.6252 14.3234Z" fill="#620BA7" />
@@ -106,6 +107,10 @@ function verificaCorTexto(tarefa) {
     } else {
         return "black"
     }
+}
+function enviaCookie(tarefa){
+    $cookies.set("IdTarefaCookies",tarefa.id)
+    router.push('/criaTarefa') 
 }
 
 </script>
