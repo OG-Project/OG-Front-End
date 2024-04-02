@@ -10,7 +10,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     actions: {
     
       procurar(textoRequisicao){
-        // return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
+        // return axios.get("http://10.2.96.35:8082"+ textoRequisicao).then(response => response.data)
         return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){

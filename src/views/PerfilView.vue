@@ -97,9 +97,10 @@ let fotoReal = ref("")
 
 onMounted(async () => {
     console.log(route.path)
-    usuario = await conexao.buscarUm('1', '/usuario')
+    usuario = await conexao.buscarUm(1, '/usuario')
     console.log(usuario)
     foto = usuario.fotoAws
+    console.log(foto)
     fotoReal.value = await conexao.procurar("/tarefa/imagem/" + usuario.fotoAws.chaveAws)
     console.log(fotoReal)
 })

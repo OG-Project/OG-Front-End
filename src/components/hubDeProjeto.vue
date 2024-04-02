@@ -1,4 +1,7 @@
 <template>
+    <div v-if="listaDeEquipes==true" class="flex justify-center">
+        <ListaDeEquipesProjeto></ListaDeEquipesProjeto>
+    </div>
     <div class="w-full h-[30%] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
             <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
@@ -14,13 +17,13 @@
             </div>
         </div>
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
-            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookie()">
+            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieTarefaNova()">
                 +Tarefa
             </button>
-            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center">
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieProjeto()">
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
-            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center">
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
         </div>
@@ -61,6 +64,8 @@ import VueCookies from 'vue-cookies';
 import { onMounted, ref } from 'vue';
 import IconEngrenagem1 from '../assets/iconEngrenagem 1.vue';
 import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
+import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
+import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
 
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
@@ -70,16 +75,25 @@ let porcentagemDeConclusao = ref("")
 let tarefasConcluidas = []
 let subtarefasConcluidas = ref([])
 let subtarefas = ref([])
+let listaDeEquipes = ref(false)
 
 onMounted(async () => {
-    projeto.value = await api.buscarUm("1", '/projeto')
+
+    projeto.value = await api.buscarUm(projetoId, '/projeto')
     definePorcentagem()
 })
 
 
-function enviaCookie(){
-    $cookies.set("IdTarefaCookies",0)
+function enviaCookieTarefaNova(){
+    VueCookies.set("IdTarefaCookies",0,new Date())
+    localStorage.setItem("TarefaNaoFinalizada","",new Date())
     router.push('/criaTarefa') 
+}
+function enviaCookieProjeto(){
+    router.push('/criaProjeto') 
+}
+function mudaVariavelBooleana(){
+    listaDeEquipes.value = true;
 }
 
 function definePorcentagem() {

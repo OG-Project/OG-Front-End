@@ -112,7 +112,7 @@ onBeforeMount(async ()=>{
         VueCookies.set("IdUsuarioCookie",JSON.stringify(2))
         let id=JSON.parse(VueCookies.get("IdUsuarioCookie"))
         console.log(id)
-        let usuario = await conexao.buscarUm(id,'/usuario')
+        let usuario = await conexao.buscarUm(1,'/usuario')
         console.log(usuario)
         // erros pelo fato do cookie
         PerfilStore.nome=usuario.nome
