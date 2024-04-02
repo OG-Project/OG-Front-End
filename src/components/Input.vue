@@ -56,7 +56,6 @@
 
    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null' & tipo=='float'">
-        
         <div class="estiloPlaceHolder">
             
             <input 
@@ -100,7 +99,7 @@
             <label 
             :style="estilizaDivPlaceHolder" 
             for="inputStyle"  
-            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
             {{ conteudoInput }}
             </label>
         </div>
@@ -109,6 +108,7 @@
    <div 
    class="styleInputPadrao flex flex-row-reverse items-center" 
     v-if="icon=='null' && tipo!='float'" >
+
         <div class="flex items-center justify-center">
             <svgIconMic 
             @click="mic" 
@@ -403,14 +403,7 @@ function teclado(){
         grid-template-columns: 20% 80%;  
     }
 
-    .styleInputPadrao{
-       @apply bg-transparent
-        border-b-roxo
-        border-b-2 border-transparent 
-        max-w-max
-        items-center  focus-within:outline-roxo 
-        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm; 
-    }
+   
 
     .styleInputPadraoDireita{
         @apply bg-transparent

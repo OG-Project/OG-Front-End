@@ -22,20 +22,20 @@
         <div class="scrollBar">
             <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
                 <div v-for="propriedade of listaSelecionada">
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(propriedade)"
+                    <div class="flex  flex-row items-center gap-4 h-max" @mouseenter="startTimer(propriedade)"
                         @mouseleave="clearTimer(propriedade)">
 
-                        <div class="w-[50%] flex flex-row " v-if="propriedade.verNomeCompleto == true">
-                            <p class="w-full min-h-min h-[4vh]  break-words bg-brancoNeve ">
+                        <div class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4" v-if="propriedade.verNomeCompleto == true">
+                            <p class="w-[50%]  h-max break-words  bg-brancoNeve ">
                                 {{ propriedade.propriedade.nome }}</p>
-                            <p class="w-full">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                            <p class="w-[50%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
                         </div>
-                        <div class="w-[50%] flex flex-row" v-if="propriedade.verNomeCompleto == false">
-                            <p class="w-full truncate">{{ propriedade.propriedade.nome }}</p>
-                            <p class="w-full">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                        <div class="w-[50%] flex flex-row pb-4 pt-4" v-if="propriedade.verNomeCompleto == false">
+                            <p class="w-[50%] truncate">{{ propriedade.propriedade.nome }}</p>
+                            <p class="w-[70%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
                         </div>
 
-                        <div class=" w-[50%] ">
+                        <div class=" w-[36%] ">
                             <div v-if="tarefasAtribuidas"
                                 class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
@@ -53,19 +53,19 @@
             </div>
             <div v-if="opcaoSelecionadaNaTabela == 'status'">
                 <div v-for="status of listaSelecionada">
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(status)"
+                    <div class="flex  flex-row items-center gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)">
 
-                        <div v-if="status.verNomeCompleto == false" class="w-[50%] flex flex-row">
-                            <p class="w-full truncate">{{ status.status.nome }}</p>
+                        <div v-if="status.verNomeCompleto == true" class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4">
+                            <p class="w-[50%] h-max break-words bg-brancoNeve">{{ status.status.nome }}</p>
                             <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         </div>
-                        <div v-if="status.verNomeCompleto == true" class="w-[50%] flex flex-row">
-                            <p class="w-full min-h-min h-[4vh]  break-words bg-brancoNeve">{{ status.status.nome }}</p>
+                        <div v-if="status.verNomeCompleto == false" class="w-[50%] flex flex-row pb-4 pt-4 gap-8">
+                            <p class="w-[50%] truncate">{{ status.status.nome }}</p>
                             <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         </div>
-
-                        <div class=" w-[50%] ml-20 ">
+                       
+                        <div class=" w-[50%]  ">
                             <div v-if="tarefasAtribuidas"
                                 class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
