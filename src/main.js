@@ -12,7 +12,6 @@ import Calendar from 'primevue/calendar';
 import "primevue/resources/themes/lara-light-purple/theme.css";
 
 import draggable from "vuedraggable";
-import {ref } from 'vue';
 import VueDragscroll from "vue-dragscroll";
 import  VueColor  from '@ckpack/vue-color';
 

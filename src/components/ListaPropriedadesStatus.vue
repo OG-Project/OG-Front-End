@@ -82,75 +82,71 @@
 
                     </div>
                 </div>
-
+            </div>
+            <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
+                v-if="funcaoPopUp.variavelModal == false">
+                <p>Nova</p>
+                <img src="../imagem-vetores/sinalDeMaisIcon.svg">
             </div>
 
-        </div>
-        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
-            v-if="funcaoPopUp.variavelModal == false">
-            <p>Nova</p>
-            <img src="../imagem-vetores/sinalDeMaisIcon.svg">
-        </div>
+            <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
 
-        <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
-
-            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
-                </div>
-                <div class="flex flex-row justify-between">
-                    <div class="pl-2">
-                        <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                            v-model="nomePropriedade"></Input>
+                <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                    <div class="flex justify-end">
+                        <img src="../imagem-vetores/triangulo.svg">
                     </div>
-                    <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                            largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
-                    </div>
+                    <div class="flex flex-row justify-between">
+                        <div class="pl-2">
+                            <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                                v-model="nomePropriedade"></Input>
+                        </div>
+                        <div class="pr-2">
+                            <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                                largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
+                        </div>
 
-                </div>
-                <div class="flex felx-row justify-between">
-                    <div class="pl-2 pt-2 pb-2">
-                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
                     </div>
-                    <div class="pr-2 pt-2 pb-2">
-
+                    <div class="flex felx-row justify-between">
+                        <div class="pl-2 pt-2 pb-2">
+                            <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                        </div>
+                        <div class="pr-2 pt-2 pb-2">
                         <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeBack">
                         </Botao>
                     </div>
+
                 </div>
 
+                <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
+                    <div class="flex justify-end">
+                        <img src="../imagem-vetores/triangulo.svg">
+                    </div>
+                    <div class="flex flex-row justify-between">
+                        <div class="pl-2">
+                            <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                                v-model="nomeStatus"></Input>
+                        </div>
+                        <div class="pr-2">
+                            <ColorPicker v-model="corStatus" class="rounded-sm" />
+                        </div>
+
+                    </div>
+                    <div class="flex felx-row justify-between">
+                        <div class="pl-2 pt-2 pb-2">
+                            <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                        </div>
+                        <div class="pr-2 pt-2 pb-2">
+
+                            <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
+                            </Botao>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-
-            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
-                <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
-                </div>
-                <div class="flex flex-row justify-between">
-                    <div class="pl-2">
-                        <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                            v-model="nomeStatus"></Input>
-                    </div>
-                    <div class="pr-2">
-                        <ColorPicker v-model="corStatus" class="rounded-sm" />
-                    </div>
-
-                </div>
-                <div class="flex felx-row justify-between">
-                    <div class="pl-2 pt-2 pb-2">
-                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
-                    </div>
-                    <div class="pr-2 pt-2 pb-2">
-
-                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
-                        </Botao>
-                    </div>
-                </div>
-
-            </div>
-
         </div>
     </div>
+
 </template>
 
 <script setup>
@@ -325,12 +321,12 @@ function buscaRascunhoPropiedade() {
     auxParaCriarPropriedades = propriedadeArmazenada
     criaPropriedadeCookies();
 }
-
 function mandaProrpiedadesBack(listaPropriedadesRecebida) {
     const propriedadesParaback = listaPropriedadesRecebida.map(objeto => {
         const objetoModificado = { ...objeto };
         if (objetoModificado.tipo == "Seleção") {
             objetoModificado.tipo = "SELECAO";
+
         }
         objetoModificado.tipo = objetoModificado.tipo.toUpperCase()
         return objetoModificado;
@@ -355,7 +351,6 @@ function criaListaPropriedadesRenderizaFront(propriedadeBack) {
     listaPropriedades.value = auxParaCriarPropriedades
     nomePropriedade.value = "";
     tipoPropriedade.value = "";
-
     funcaoPopUp.fechaPopUp();
 }
 
@@ -377,6 +372,7 @@ function criaPropriedadeCookies(propriedadeBack) {
         VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
     }
     mandaProrpiedadesBack(listaPropriedadesBackEnd)
+
 }
 
 function criaStatusBack() {

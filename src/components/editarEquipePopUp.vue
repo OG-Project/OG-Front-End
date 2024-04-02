@@ -4,6 +4,7 @@
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
                 </div>
+                
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                         <img class="imagem" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
                         <img class="imagem" v-else src="">

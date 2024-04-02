@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[8vh] w-full flex z-[999]">
+  <div class="h-[8vh] w-full flex">
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral class="w-[45%]"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
@@ -25,7 +25,7 @@
       <img
         @click="redireciona('/perfil/informacoes')"
         v-if="usuarioCookies && usuarioCookies.foto"
-        class="shadow-2xl max-h-[60px] min-w-[50px] rounded-full"
+        class="shadow-2xl h-[60px] w-[60px] rounded-full"
         :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
       />
     </div>
@@ -46,7 +46,6 @@ const banco = conexaoBD();
 
 onMounted(async () => {
   usuarioCookies = await autenticarUsuario(usuarioId);
-  autenticaUsuarioCookies();
 });
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
