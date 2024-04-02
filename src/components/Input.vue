@@ -1,5 +1,6 @@
 
 <template>
+<div class="">
     <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" 
         :style="estilizaDivInput">
@@ -17,7 +18,7 @@
             :disabled=desabilitado 
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput > 
             
         <div class="flex items-center justify-center">
@@ -49,12 +50,12 @@
             items-center 
             justify-center" />
         </div>
-   </div>
+    </div>
 
-   <!-- fazer input com botão com um ou dois -->
+    <!-- fazer input com botão com um ou dois -->
 
 
-   <div class="styleInputPadrao flex items-center" 
+    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null' & tipo=='float'">
         
         <div class="estiloPlaceHolder">
@@ -66,7 +67,7 @@
             :disabled=desabilitado 
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             class="peer" 
             placeholder=" "  > 
             <div class="flex items-center justify-center">
@@ -104,11 +105,13 @@
             {{ conteudoInput }}
             </label>
         </div>
-   </div>
+    </div> 
 
-   <div 
-   class="styleInputPadrao flex flex-row-reverse items-center" 
-    v-if="icon=='null' && tipo!='float'" >
+    <div 
+    class="styleInputPadrao flex flex-row-reverse items-center"
+    :class="{'Invalido':props.isInvalido}" 
+    v-if="icon=='null' && tipo!='float'"
+    >
         <div class="flex items-center justify-center">
             <svgIconMic 
             @click="mic" 
@@ -137,33 +140,35 @@
             items-center 
             justify-center" />
         </div>
+        <div>
             <input 
             :type="tipo" 
             :style="estilizaInput" 
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
-            @change="modelValue=modelValue"
+            
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
-      
-   </div>
-   <div 
-   class="styleInputPadraoIconDireita " 
-   :class="styleInputPadraoDireita" 
+        </div>
+    </div>
+    
+    <div 
+    class="styleInputPadraoIconDireita " 
+    :class="styleInputPadraoDireita" 
     v-if="direcao=='direita' && tipo!='float'" 
     :style="estilizaDivInput">
         
-        <input 
-        :type="tipo" 
-        :placeholder=conteudoInput
-        :style="estilizaInput" 
-        id="inputStyle" 
-        :disabled=desabilitado
-        :value="modelValue"
-        @focus="$emit('clickInput',perfil.el=$event.target)"
-        @input="$emit('update:modelValue', $event.target.value)">
+            <input 
+            :type="tipo" 
+            :placeholder=conteudoInput
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado
+            :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
+            @input="$emit('updateModelValue', $event.target.value)">
         
         <div 
         class="flex items-center justify-center">
@@ -196,7 +201,9 @@
             justify-center" />
 
         </div>
-   </div>
+    </div>
+    <label v-if="props.isInvalido" class="text-red-600 absolute">{{ props.textoInvalido }}</label>
+</div>
 </template>
 
 <script setup>
@@ -225,19 +232,25 @@ function mic(){
 
 }
 
+
 function teclado(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
 }
 
 
 //funcao de passar para o pai 
-    defineEmits(['update:modelValue','clickInput'])
+    defineEmits(['updateModelValue','clickInput'])
   const props=defineProps({
         styleInput: String, // pode passar input-escuro, input-claro, input-transparente-escuro, input-transparente-claro
         icon: {
             type:String,
             default:"null"
         },
+        isInvalido:{
+            type:Boolean,
+            default:false
+        },
+        textoInvalido:String,
         direcao: String,
         conteudoInput:String,
         desabilitado:ref(false),
@@ -390,35 +403,20 @@ function teclado(){
 <style lang="scss" scoped>
 @import url(../assets/main.css);
 
-@layer components{
-    .styleInputPadraoIcon{
-       @apply bg-transparent
-        border-b-roxo
+
+    .Invalido{
+        @apply
+         border-4 
+        border-transparent
+        *:*:text-red-600
+        border-b-red-600    
+        px-2
         max-w-max
         w-min
-        border-b-2 border-transparent 
-        items-center focus-within:outline-roxo 
-        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
-        display: grid;
-        grid-template-columns: 20% 80%;  
-    }
-
-    .styleInputPadrao{
-       @apply bg-transparent
-        border-b-roxo
-        border-b-2 border-transparent 
-        max-w-max
-        items-center  focus-within:outline-roxo 
-        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm; 
-    }
-
-    .styleInputPadraoDireita{
-        @apply bg-transparent
-        border-b-roxo
-        border-b-4 border-transparent 
-        max-w-max
-        items-center  focus-within:outline-roxo 
-        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
+        border-b-4
+        hover:rounded-[4px] hover:border-4
+         focus-within:border-red-600 
+        focus-within:border-4 focus-within:rounded-[4px]  #{!important} ;
     }
 
     .styleInputPadrao{

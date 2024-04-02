@@ -2,11 +2,18 @@
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
-        <div
-            class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
-            <div class=" flex justify-center w-[329px] h-[329px]">
-                <img :src="fotoReal"
-                    class="shadow-2xl max-h-[120px] min-h-[60px] min-w-[60px] max-w-[120px] mr-4 ml-4 rounded-full" />
+        <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+            <div class=" flex justify-center items-center w-[329px] h-[329px]">
+                <img v-if="foto!=null"
+                  :src="'data:' + foto.tipo + ';base64,' + foto.dados" 
+                  class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                />
+                <div v-else 
+                class="xl:w-[95%] text-center flex justify-center items-center hover:bg-slate-500 hover:opacity-70 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                >
+                    <div class="w-full h-full bg-[url(../imagem-vetores/UserIcon.svg)] bg-no-repeat bg-contain" ></div>
+                  <!-- <img src="../imagem-vetores/UserIcon.svg" class=" w-full" >   -->
+                </div>
             </div>
             <div class=" flex flex-col gap-10">
                 <div @click="informacao()" class="bg-roxo medioId 
@@ -80,9 +87,9 @@ import router from '../router';
 
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { VueCookies } from 'vue-cookies';
+import { onBeforeMount, onMounted, ref } from 'vue';
+import {useRoute} from 'vue-router';
+import  VueCookies  from 'vue-cookies';
 import { conexaoBD } from '../stores/conexaoBD';
 const route = useRoute()
 const conexao = conexaoBD()
@@ -91,17 +98,23 @@ const conexao = conexaoBD()
 let isSeguActive = ref(false)
 const perfil = perfilStore()
 const { popUpSenha, popUpEmail } = storeToRefs(perfil)
-let usuario
-let foto
-let fotoReal = ref("")
+
+let usuario=ref({})
+let foto=ref(null)
+let imagemUsuario=ref('../imagem-vetores/user.png')
+onBeforeMount(async ()=>{
+    
+}),
 
 onMounted(async () => {
     console.log(route.path)
-    usuario = await conexao.buscarUm('1', '/usuario')
-    console.log(usuario)
-    foto = usuario.fotoAws
-    fotoReal.value = await conexao.procurar("/tarefa/imagem/" + usuario.fotoAws.chaveAws)
-    console.log(fotoReal)
+    usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    console.log(usuario.value)
+    foto.value=usuario.value.foto
+    // if(foto.value==undefined){
+    //     foto.value=usuario.value.foto
+    // }
+    console.log(foto.value);
 })
 
 function informacao() {

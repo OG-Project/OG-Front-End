@@ -27,11 +27,11 @@
         </div>
         <div class="w-[75vw] h-[92vh] flex flex-col  ">
             <div class="flex flex-col justify-around">
-                <h1 :style="{ fontFamily: fonteTitulo.value }"
+                <h1 :style="{ fontFamily: fonteTitulo }"
                     class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
                     {{perfil.username}}
                 </h1>
-                <div :style="{ fontFamily: fonteCorpo.value }" class="flex sm:flex-wrap justify-center gap-8">
+                <div :style="{ fontFamily: fonteCorpo }" class="flex sm:flex-wrap justify-center gap-8">
                     <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
                         <div class="flex items-center justify-between gap-5 ">
                             <span class="text-xl">Nome</span>
@@ -86,8 +86,9 @@
                     </div>
                 </div>
                 <div >
+                    {{ console.log(projetos.value)}}
                     <Carousel 
-                    v-if="width>958 && projetos.length!=0" 
+                    v-if="width>958 " 
                     :value="projetos" 
                     :numVisible="3" 
                     containerClass="" 
@@ -106,7 +107,7 @@
                     </Carousel>
 
                     <Carousel 
-                    v-if="width<958 && projetos.length!=0"
+                    v-if="width<958 && projetos.value.length!=0"
                     :value="projetos" 
                     :numVisible="1" 
                     containerClass="" 
@@ -163,6 +164,7 @@ onMounted(async () => {
     console.log(id)
     let usuario=await conexao.buscarUm(id,'/usuario')
     console.log(usuario)
+    projetos.value=usuario.projetos
     equipes.value=usuario.equipes
     console.log(fonteTitulo.value)
     console.log(fonteCorpo.value)
