@@ -185,11 +185,13 @@
         v-if="tarefa.arquivos.length != 0"
         class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto"
       >
-        <div class="relative w-[25%] mx-4 h-[100%] flex items-center justify-center flex-col" v-for="arquivo in tarefa.arquivos">
-          <img v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'" class="h-[65%] w-[100%] mr-4 ml-4" :src="arquivo.dados">
-          <div v-if="arquivo.tipo == 'application/pdf'" class="h-[65%] w-[100%] flex items-center justify-center">
-            <img class="h-[65%]" src='https://cdn-icons-png.flaticon.com/512/337/337946.png' />
-          </div>
+        <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col" v-for="arquivo in tarefa.arquivos">
+          <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
+            <img v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'" class="h-[100%] w-[100%]" :src="arquivo.dados">
+            <div v-else>
+              <img class="h-[65%]" :src='getIconSrc(arquivo)' />
+            </div>
+          </a>
           <div class="bg-[#F6F6F6] w-[100%] h-[15%] items-center flex justify-around">
             <p class="truncate w-[100px] text-xs">{{ arquivo.nome }}</p>
             <img @click="deletaArquivo(arquivo)" :src="BotaoX">
@@ -732,6 +734,21 @@ function corDaFonte(backgroundColor) {
   return isLight ? "#000" : "#fff";
 }
 //Função utilizada para criar um Status
+
+function getIconSrc(arquivo) {
+      const fileTypeIcons = {
+        'application/pdf': 'https://cdn-icons-png.flaticon.com/512/337/337946.png',
+        'text/plain': 'https://cdn-icons-png.freepik.com/512/8243/8243060.png',
+        'video/mp4': 'https://cdn-icons-png.freepik.com/512/8243/8243015.png',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'https://cdn-icons-png.freepik.com/512/8361/8361467.png',
+        'application/vnd.ms-excel': 'https://cdn-icons-png.freepik.com/512/8361/8361467.png',
+        'text/csv': 'https://cdn-icons-png.freepik.com/512/8242/8242984.png'
+        // Adicione mais tipos de arquivo conforme necessário
+      };
+      const iconSrc = fileTypeIcons[arquivo.tipo];
+      if (iconSrc) return iconSrc;
+      return `data:image/jpg;base64, ${arquivo.dados}`;
+  }
 
 function criaStatus() {
   if (nomeStatus.value != "") {
