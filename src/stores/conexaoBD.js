@@ -34,9 +34,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://10.4.96.17:8084${textoRequisicao}/${equipeId}/${userId}`)
       },
-      
       async buscarUm(id,textoRequisicao){
-
         return (await axios.get('http://10.4.96.17:8084'+textoRequisicao+'/'+id).then(response => response.data))
 
       },

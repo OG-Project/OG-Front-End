@@ -57,7 +57,6 @@
 
     <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null' & tipo=='float'">
-        
         <div class="estiloPlaceHolder">
             
             <input 
@@ -101,12 +100,11 @@
             <label 
             :style="estilizaDivPlaceHolder" 
             for="inputStyle"  
-            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
             {{ conteudoInput }}
             </label>
         </div>
     </div> 
-
     <div 
     class="styleInputPadrao flex flex-row-reverse items-center"
     :class="{'Invalido':props.isInvalido}" 
@@ -402,6 +400,22 @@ function teclado(){
 </script>
 <style lang="scss" scoped>
 @import url(../assets/main.css);
+
+
+@layer components{
+    .styleInputPadraoIcon{
+       @apply bg-transparent
+        border-b-roxo
+        max-w-max
+        w-min
+        border-b-2 border-transparent 
+        items-center focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
+        display: grid;
+        grid-template-columns: 20% 80%;  
+    }
+
+   
 
 
     .Invalido{

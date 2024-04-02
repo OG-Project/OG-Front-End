@@ -13,7 +13,7 @@
         <div v-if="opcaoSelecionadaNaTabela == 'status'">
             <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
-                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2">Status</p>
+                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2 mr-6">Status</p>
                 <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
                     styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
             </div>
@@ -21,65 +21,64 @@
 
         <div class="scrollBar">
             <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaPropriedades"
-                    v-if="listaSelecionada == '' || listaSelecionada == [] && buscarPor == 'Todos' || buscarPor == ''">
+                <div v-for="propriedade of listaSelecionada">
+                    <div class="flex  flex-row items-center gap-4 h-max" @mouseenter="startTimer(propriedade)"
+                        @mouseleave="clearTimer(propriedade)">
 
-                    <p class="w-[33%]">{{ propriedade.nome }}</p>
-                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                        Tarefas Atribuidas
+                        <div class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4"
+                            v-if="propriedade.verNomeCompleto == true">
+                            <p class="w-[50%]  h-max break-words  bg-brancoNeve ">
+                                {{ propriedade.propriedade.nome }}</p>
+                            <p class="w-[50%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                        </div>
+                        <div class="w-[50%] flex flex-row pb-4 pt-4" v-if="propriedade.verNomeCompleto == false">
+                            <p class="w-[50%] truncate">{{ propriedade.propriedade.nome }}</p>
+                            <p class="w-[70%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                        </div>
+
+                        <div class=" w-[36%] ">
+                            <div v-if="tarefasAtribuidas"
+                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                                @click="mudaPaginaParaKanban()">
+                                Tarefas Atribuidas
+                            </div>
+                            <div v-if="!tarefasAtribuidas"
+                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                <p>Não há tarefas</p>
+                            </div>
+                        </div>
+                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removePropriedade(propriedade)">
                     </div>
                 </div>
-                <div class="flex  flex-row items-center gap-4 h-[8vh]" v-for="propriedade of listaSelecionada"
-                    v-if="listaSelecionada != []">
-                    <p class="w-[33%]">{{ propriedade.nome }}</p>
-                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                        Tarefas Atribuidas
-                    </div>
-                </div>
+
             </div>
             <div v-if="opcaoSelecionadaNaTabela == 'status'">
                 <div v-for="status of listaSelecionada">
-                    <div class="flex  flex-row items-center gap-4 h-[8vh]" @mouseenter="startTimer(status)"
-                        @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == false">
+                    <div class="flex  flex-row items-center gap-4 h-max" @mouseenter="startTimer(status)"
+                        @mouseleave="clearTimer(status)">
 
-                        <div class="scrollBar">
-                            <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                                <div class="flex  flex-row items-center gap-4 h-[8vh]"
-                                    v-for="propriedade of listaPropriedades"
-                                    v-if="listaSelecionada == '' && buscarPor == 'Todos' || buscarPor == ''">
-
-                                    <p class="w-[33%]">{{ propriedade.nome }}</p>
-                                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                        Tarefas Atribuidas
-                                    </div>
-                                </div>
-                                <div class="flex  flex-row items-center gap-4 h-[8vh]"
-                                    v-for="propriedade of listaSelecionada" v-if="listaSelecionada != []">
-                                    <p class="w-[33%]">{{ propriedade.nome }}</p>
-                                    <p class="w-[33%]">Tipo: {{ propriedade.tipo }}</p>
-                                    <div class="bg-roxo-claro rounded-md p-1 w-[50%]">
-                                        Tarefas Atribuidas
-                                    </div>
-                                    IdTarefaCookie
-                                </div>
-
-                            </div>
-
-                            <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
-                                @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
-                                <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-                                    status.status.nome }}</p>
-                                <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
-                                <div class=" w-[50%] h-full ">
-                                    <p class="bg-roxo-claro rounded-md p-1 w-full h-[33%]">Tarefas Atribuidas</p>
-                                </div>
-
-                            </div>
-
+                        <div v-if="status.verNomeCompleto == true"
+                            class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4">
+                            <p class="w-[50%] h-max break-words bg-brancoNeve">{{ status.status.nome }}</p>
+                            <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         </div>
+                        <div v-if="status.verNomeCompleto == false" class="w-[50%] flex flex-row pb-4 pt-4 gap-8">
+                            <p class="w-[50%] truncate">{{ status.status.nome }}</p>
+                            <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
+                        </div>
+
+                        <div class=" w-[36%]  ">
+                            <div v-if="tarefasAtribuidas"
+                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                                @click="mudaPaginaParaKanban()">
+                                Tarefas Atribuidas
+                            </div>
+                            <div v-if="!tarefasAtribuidas"
+                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                <p>Não há tarefas</p>
+                            </div>
+                        </div>
+                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removeStatus(status)">
 
                     </div>
                 </div>
@@ -112,10 +111,8 @@
                             <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
                         </div>
                         <div class="pr-2 pt-2 pb-2">
-
-                            <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeCookies">
-                            </Botao>
-                        </div>
+                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeBack">
+                        </Botao>
                     </div>
 
                 </div>
@@ -162,8 +159,16 @@ import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 import { Propriedade } from '../models/Propriedade'
 import { getCurrentInstance } from 'vue';
 import ColorPicker from 'primevue/colorpicker';
-import sortBy from 'sort-by'
+import sortBy from 'sort-by';
+import { useRoute } from 'vue-router';
+import { conexaoBD } from '../stores/conexaoBD';
+import router from '../router/index'
+import sair from '../imagem-vetores/botao-x.svg'
+const botaoSair = sair;
 const instance = getCurrentInstance();
+const route = useRoute();
+const conexao = conexaoBD();
+const funcaoPopUp = funcaoPopUpStore();
 let opcoesSelect = ref([]);
 let opcaoSelecionadaNaTabela = ref("");
 let buscarPor = ref("");
@@ -178,27 +183,49 @@ let auxParaCriarPropriedades = [];
 let auxParaCriarStatus = [];
 let auxRenderizaStatusTela = [];
 let corStatus = ref("")
-const funcaoPopUp = funcaoPopUpStore()
+let projetoEdita = ref(false);
 let timeoutId = null;
-
+let idProjeto;
+let tarefasAtribuidas = false
+let listaPropriedadesBackEnd = []
 onMounted(() => {
+    verificaEdicaoProjeto();
     buscaPropriedadeCookies();
     buscarStatusCookies();
+    buscandoPor();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
+    tarefasAtribuidas = false
 }
 )
+
+function verificaEdicaoProjeto() {
+    if (route.path == '/editaProjeto') {
+        projetoEdita.value = true
+    } else {
+        projetoEdita.value = false
+    }
+
+}
+
+
+function mudaPaginaParaKanban() {
+    router.push('/projeto')
+}
 
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        if (this.buscarPor == "") {
+        console.log(buscarPor.value)
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A") {
+            listaSelecionada.value = listaPropriedades.value
+            console.log(listaSelecionada.value)
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
     }
     if (opcaoSelecionadaNaTabela.value == "status") {
-        if (this.buscarPor == "A-Z" || this.buscarPor == "") {
+        if (buscarPor.value == "A-Z" || buscarPor.value == "") {
             return listaSelecionada.value = filtroStatus("A-Z");
         }
         return listaSelecionada.value = filtroStatus("Z-A");
@@ -208,7 +235,6 @@ async function buscandoPor() {
 function filtroStatus(ordem) {
 
     let listaOrdenadaPorNome = []
-    console.log(auxRenderizaStatusTela)
     auxRenderizaStatusTela.forEach((statusAtual) => {
         listaOrdenadaPorNome.push(statusAtual.status.nome)
     });
@@ -228,13 +254,13 @@ function filtroStatus(ordem) {
         });
 
     }
-    return auxRenderizaStatusTela.sort(sortBy('nome'));
+    return auxRenderizaStatusTela.sort(sortBy('status.nome'));
 }
 
 function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux = []
     var listaAux1 = []
-    listaAux = listaRecebida.value
+    listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
         if (opcaoAtual.tipo != "") {
             if (opcaoAtual.tipo.toLowerCase() == buscarPor.toLowerCase()) {
@@ -242,56 +268,110 @@ function filtroPropriedades(listaRecebida, buscarPor) {
             }
         }
     });
-    console.log(listaAux1)
     return listaAux1;
 }
 
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
-        if (opcaoSelecionada == 'propriedade') {
-            this.opcaoSelecionadaNaTabela = 'propriedade';
-        }
+        opcaoSelecionadaNaTabela.value = 'propriedade';
         opcoesSelect.value = ["Todos", "Data", "Numero", "Seleção", "Texto"];
 
     } else if (opcaoSelecionada == 'status') {
-        this.opcaoSelecionadaNaTabela = 'status';
+        opcaoSelecionadaNaTabela.value = 'status';
         opcoesSelect.value = ["A-Z", "Z-A"]
     }
 }
 
 function buscaPropriedadeCookies() {
+    if (!projetoEdita.value) {
+        buscaRascunhoPropiedade()
+    } else {
+        buscaPropriedadeBanco();
+    }
+}
+
+async function buscaPropriedadeBanco() {
+    idProjeto = VueCookies.get("projetoEditarId");
+    let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+    colocaListaTarefasDoProjeto(projeto.tarefas)
+    if (projeto.propriedades != []) {
+        projeto.propriedades.forEach((propriedade) => {
+            if (propriedade.nome != '') {
+                listaPropriedades.value.push(propriedade);
+
+            }
+        })
+        auxParaCriarPropriedades = listaPropriedades.value;
+        criaPropriedadeCookies();
+    }
+}
+
+function colocaListaTarefasDoProjeto(tarefas) {
+    if (tarefas != "") {
+        tarefasAtribuidas = true;
+    }
+}
+
+function buscaRascunhoPropiedade() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
     if (propriedadeArmazenada == null) {
         return;
     }
     listaPropriedades.value = propriedadeArmazenada
     auxParaCriarPropriedades = propriedadeArmazenada
-    mandaProrpiedadesBack(listaPropriedades)
+    criaPropriedadeCookies();
 }
+function mandaProrpiedadesBack(listaPropriedadesRecebida) {
+    const propriedadesParaback = listaPropriedadesRecebida.map(objeto => {
+        const objetoModificado = { ...objeto };
+        if (objetoModificado.tipo == "Seleção") {
+            objetoModificado.tipo = "SELECAO";
 
-function mandaProrpiedadesBack(listaPropriedades) {
-    const propriedadesParaback = listaPropriedades.value.map(objeto => {
-        if (objeto.tipo == "SELEÇÃO") {
-            objeto.tipo = "SELECAO"
-            return objeto;
         }
-        return objeto;
+        objetoModificado.tipo = objetoModificado.tipo.toUpperCase()
+        return objetoModificado;
     });
+    buscandoPor();
+    console.log(propriedadesParaback)
     instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
-function criaPropriedadeCookies() {
-    let propriedadeCriada = {
-        nome: nomePropriedade.value,
-        tipo: tipoPropriedade.value.toUpperCase()
+function criaListaPropriedadesRenderizaFront(propriedadeBack) {
+    if(propriedadeBack.tipo == ""){
+        propriedadeBack.tipo="Texto"
     }
-    auxParaCriarPropriedades.push(propriedadeCriada)
-    VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
+    let propriedadeFront = {
+        propriedade: propriedadeBack,
+        verNomeCompleto: false
+    }
+    if (propriedadeFront.propriedade.nome != '') {
+        auxParaCriarPropriedades.push(propriedadeFront)
+        listaPropriedadesBackEnd.push(propriedadeFront.propriedade)
+    }
     listaPropriedades.value = auxParaCriarPropriedades
     nomePropriedade.value = "";
     tipoPropriedade.value = "";
     funcaoPopUp.fechaPopUp();
-    mandaProrpiedadesBack(listaPropriedades)
+}
+
+function transformaListaFrontEmListaBack() {
+    listaPropriedadesBackEnd = listaPropriedades.value.map((objetoFront) => {
+        return objetoFront.propriedade
+    })
+
+}
+
+function criaPropriedadeCookies(propriedadeBack) {
+    if (propriedadeBack != null) {
+        criaListaPropriedadesRenderizaFront(propriedadeBack)
+    } else {
+        transformaListaFrontEmListaBack()
+    }
+    auxParaCriarPropriedades = listaPropriedades.value
+    if (!projetoEdita.value) {
+        VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
+    }
+    mandaProrpiedadesBack(listaPropriedadesBackEnd)
 
 }
 
@@ -305,6 +385,16 @@ function criaStatusBack() {
     auxParaCriarStatus.push(statusCriado);
     criaStatusCookies(statusCriado)
     mandaStatusBack();
+}
+
+function criaPropriedadeBack() {
+
+    let statusCriado = {
+        nome: nomePropriedade.value,
+        tipo: tipoPropriedade.value
+    }
+    criaPropriedadeCookies(statusCriado)
+
 }
 
 function atualizaStatus(statusRecebido) {
@@ -327,8 +417,10 @@ function mandaStatusBack() {
     auxParaCriarStatus = []
     auxRenderizaStatusTela.map((objeto) => auxParaCriarStatus.push(objeto.status))
     listaStatusBack = auxParaCriarStatus;
-    console.log(listaStatusBack)
-    instance.emit('mandaListaStatusBack', listaStatusBack)
+    if(listaStatusBack!=null){
+        instance.emit('mandaListaStatusBack', listaStatusBack)
+    }
+    
     nomeStatus.value = "";
     corStatus.value = "";
 }
@@ -343,34 +435,84 @@ function criaStatusCookies(statusBack) {
 
     }
     listaStatus.value = auxRenderizaStatusTela;
-    console.log(listaStatus.value)
-    VueCookies.set("statusCookie", auxRenderizaStatusTela, 864000000)
+    if (!projetoEdita.value) {
+        VueCookies.set("statusCookie", auxRenderizaStatusTela, 864000000)
+    }
     funcaoPopUp.fechaPopUp();
 }
 
 
 function buscarStatusCookies() {
+    if (!projetoEdita.value) {
+        buscaRascunhoStatus();
+    } else {
+        buscaStatusBanco();
+    }
+}
+
+function buscaRascunhoStatus() {
     if (VueCookies.get("statusCookie") != null) {
         listaStatus.value = VueCookies.get("statusCookie");
         console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
-        console.log("status: " + auxRenderizaStatusTela)
         mandaStatusBack();
     }
 }
 
-function startTimer(status) {
+async function buscaStatusBanco() {
+    idProjeto = VueCookies.get("projetoEditarId");
+    let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+    if (projeto != null) {
+        projeto.statusList.forEach((statusAtual) => {
+            if (statusAtual.nome != '') {
+                criaStatusCookies(statusAtual);
+            }
+        })
+        mandaStatusBack();
+    }
+}
+
+function startTimer(objeto) {
     timeoutId = setTimeout(() => {
-        console.log('Hover ativado por 2 segundos');
-        status.verNomeCompleto = true;
+        if (listaStatus.value.includes(objeto)) {
+            if (objeto.status.nome.length > 10) {
+                console.log('Hover ativado por 2 segundos');
+                objeto.verNomeCompleto = true;
+            }
+            return;
+        }
+        if (objeto.propriedade.nome.length > 10) {
+            objeto.verNomeCompleto = true;
+        }
 
     }, 2000);
 }
 
-function clearTimer(status) {
+function clearTimer(objeto) {
     clearTimeout(timeoutId);
-    status.verNomeCompleto = false;
+    objeto.verNomeCompleto = false;
 
+}
+
+async function removeStatus(statusRecebe) {
+    let indice = listaStatus.value.findIndex((obj) => obj.status.nome === statusRecebe.status.nome);
+    if (indice !== -1) {
+        listaStatus.value.splice(indice, 1);
+    }
+    if (!projetoEdita.value) {
+        criaStatusCookies()
+    }
+    mandaStatusBack();
+}
+
+async function removePropriedade(propriedadeRecebida) {
+    let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome);
+    if (indice !== -1) {
+        listaPropriedades.value.splice(indice, 1);
+    }
+    if (!projetoEdita.value) {
+        criaPropriedadeCookies()
+    }
 }
 </script>
 

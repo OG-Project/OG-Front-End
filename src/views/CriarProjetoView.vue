@@ -57,54 +57,8 @@
                 @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
         </div>
         <div class="flex justify-end items-end ">
-            <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
-                <div class="h-[6%] pt-8 flex items-end justify-center">
-                    <h1 class="text-3xl font-semibold">Informações</h1>
-                </div>
-                <div class="pt-8 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
-                    <div class="flex pl-8">
-                        <div class="w-[50%] justify-start flex-row">
-                            <p>Nome do projeto</p>
-                        </div>
-                        <div class="w-[40%] justify-end flex-row">
-                            <p class="w-[100%] text-[#620BA7]">asdasd asdasd asdasdasdasd asdasd</p>
-                        </div>
-                    </div>
-                    <div class="flex pl-8">
-                        <div class="w-[50%] justify-start flex-row">
-                            <p>Data Inicial</p>
-                        </div>
-                        <div class="w-[40%] justify-end flex-row">
-                            <p class="text-[#620BA7]">13/02/2006</p>
-                        </div>
-                    </div>
-                    <div class="flex pl-8">
-                        <div class="w-[50%] justify-start flex-row">
-                            <p>Data Inicial</p>
-                        </div>
-                        <div class="w-[40%] justify-end flex-row">
-                            <p class="text-[#620BA7]">13/02/2006</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="h-[4%] flex items-center justify-center p-8">
-                    <h1 class="text-xl font-semibold">Status</h1>
-                </div>
-                <div class="h-[4%] flex items-center justify-center">
-                    <div class="flex items-center justify-center h-[80%] w-[100%]">
-                        <p class="h-[100%] w-[50%] flex items-center justify-center bg-[#7CC0E5]">
-                            Status aleatório
-                        </p>
-                    </div>
-                </div>
-                <div class="h-[4%] flex items-center justify-center p-8">
-                    <h1 class="text-xl font-semibold">Propriedades</h1>
-                </div>
-                <div class="h-[35%] flex flex-col items-center justify-center p-8">
-                    <img :src="NotePad" class="h-[200px] w-[200px]" />
-                    <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
-                </div>
-            </div>
+            <informacoesProjeto :nome-projeto="nomeProjeto" :lista-status="listaStatus"
+                :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada"></informacoesProjeto>
         </div>
     </div>
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
@@ -123,20 +77,24 @@ import { onMounted, onUpdated, ref, watch } from 'vue';
 import TextAreaPadrao from '../components/textAreaPadrao.vue';
 import ListaConvidados from '../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../stores/criaProjeto'
+import { editaProjetoStore } from '../stores/editaProjeto'
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 import { Projeto } from '../models/Projeto';
 import VueCookies from 'vue-cookies';
-import Sair from "../imagem-vetores/Sair.svg"
-import ListaPropiedadesStatus from "../components/ListaPropriedadesStatus.vue"
+import Sair from "../imagem-vetores/Sair.svg";
+import ListaPropiedadesStatus from "../components/ListaPropriedadesStatus.vue";
+import informacoesProjeto from '../components/informacoesProjeto.vue';
+import { useRoute } from 'vue-router';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
+const route = useRoute();
 var listaSelecao = ref([]);
 let nomeProjeto = ref("");
 let dataInicioProjeto = ref("");
 let descricaoProjeto = ref("");
 let listaDeUsuariosParaBusca = ref([]);
 var listaPropriedades = ref([]);
-let listaStatus = [];
+let listaStatus = ref([]);
 let equipesRelacionadasProjeto = ref([]);
 let listaAuxResponsaveisProjeto = [];
 let responsaveisProjeto = ref([]);
@@ -144,14 +102,18 @@ let listaEquipesConvidadas = ref([]);
 let listaEquipesSelecionadas = ref([]);
 let listaEquipeEnviaBack = []
 let listaResponsaveisBack = []
+var projetoEdita = ref(true)
 let srcIconListaEquipes = Sair
+let dataFormatada = ref("")
 funcaoPopUp.variavelModal = false
+let idProjeto;
 
 onMounted(() => {
+    verificaEdicaoProjeto();
     defineSelect()
     pesquisaBancoUserName();
-
     buscaProjetoCookies();
+    mandaDataInformacoes();
     listaEquipesConvidadas.value = []
 })
 
@@ -159,6 +121,26 @@ onUpdated(() => {
     criarProjetoCookies();
 })
 
+
+async function mandaDataInformacoes() {
+    if (projetoEdita.value) {
+        idProjeto = VueCookies.get("projetoEditarId");
+        let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+        const dataBack= projeto.dataCriacao;
+        const [data, hora] = dataBack.split("T");
+        const [ano, mes, dia] = data.split("-");
+         dataFormatada.value = `${dia}/${mes}/${ano}`;
+    }
+}
+
+function verificaEdicaoProjeto() {
+    if (route.path == '/editaProjeto') {
+        projetoEdita.value = true
+    } else {
+        projetoEdita.value = false
+    }
+
+}
 
 async function defineSelect() {
     let listaAux = (await conexao.procurar('/equipe'))
@@ -175,15 +157,21 @@ function colocaListaPropriedades(propriedades) {
 }
 
 function colocaListaStatus(status) {
-    console.log(status);
-    listaStatus = []
-    listaStatus = status
-
-
+    listaStatus.value = status
 }
 
 function buscaProjetoCookies() {
-    if (VueCookies.get("projetoCookie") != null) {
+
+    if (!projetoEdita.value) {
+        buscaRascunhoCriacaoProjeto();
+        return;
+    } else {
+        buscaProjetoEditar();
+    }
+}
+
+function buscaRascunhoCriacaoProjeto() {
+    if (VueCookies.get("projetoCookie") != null && !projetoEdita.value) {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
@@ -193,21 +181,52 @@ function buscaProjetoCookies() {
                 const objetoEnviaBack = {
                     equipe: {
                         id: EquipeAtual.id,
-
                     }
                 }
                 listaEquipeEnviaBack.push(objetoEnviaBack)
             })
         }
         if (variavelCookieProjeto.responsaveis != []) {
-            responsaveisProjeto.value = variavelCookieProjeto.reponsaveis
-            listaAuxResponsaveisProjeto = variavelCookieProjeto.reponsaveis
-            variavelCookieProjeto.reponsaveis.forEach(responsavel => {
+            responsaveisProjeto.value = variavelCookieProjeto.responsaveis
+            listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
+            variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
         }
     }
+}
 
+async function buscaProjetoEditar() {
+    idProjeto = VueCookies.get("projetoEditarId");
+    let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+    if (projeto != null) {
+        nomeProjeto.value = projeto.nome;
+        descricaoProjeto.value = projeto.descricao;
+        buscaListaResponsaveisBack(projeto);
+        buscaListaEquipesRelacionadas(projeto);
+    }
+}
+
+async function buscaListaResponsaveisBack(projeto) {
+    projeto.responsaveis.forEach((responsavelAtual) => {
+        let username = responsavelAtual.responsavel.username
+        if (verificaTemEsseResponsavelProjeto(username)) {
+            responsaveisProjeto.value.push(username)
+            listaAuxResponsaveisProjeto.push(username)
+            adicionaResponsaveisProjeto(responsavelAtual.responsavel)
+        }
+    })
+
+}
+
+function verificaTemEsseResponsavelProjeto(username) {
+    return (!responsaveisProjeto.value.includes(username) && !listaAuxResponsaveisProjeto.includes(username));
+}
+
+function buscaListaEquipesRelacionadas(projeto) {
+    projeto.projetoEquipes.forEach((equipe) => {
+        colocaListaEquipes(equipe.equipe)
+    })
 }
 
 async function pesquisaBancoUserName() {
@@ -218,25 +237,26 @@ async function pesquisaBancoUserName() {
     return listaDeUsuariosParaBusca;
 }
 
-
-
 function criarProjetoCookies() {
-    const criaProjetoCookies = Projeto
-    criaProjetoCookies.descricao = descricaoProjeto.value;
-    criaProjetoCookies.nome = nomeProjeto.value;
-    if (listaEquipesSelecionadas.value != "") {
-        criaProjetoCookies.equipes = listaEquipesSelecionadas.value.map((x) => x);
-    } else {
-        criaProjetoCookies.equipes = ""
+
+    if (!projetoEdita.value) {
+        const criaProjetoCookies = Projeto
+        criaProjetoCookies.descricao = descricaoProjeto.value;
+        criaProjetoCookies.nome = nomeProjeto.value;
+        if (listaEquipesSelecionadas.value != "") {
+            criaProjetoCookies.equipes = listaEquipesSelecionadas.value.map((x) => x);
+        } else {
+            criaProjetoCookies.equipes = ""
+        }
+        criaProjetoCookies.responsaveis = responsaveisProjeto.value
+        VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
     }
-    criaProjetoCookies.reponsaveis = responsaveisProjeto.value
-    VueCookies.set('projetoCookie', criaProjetoCookies, 86400000)
 }
 
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
-    let listaAux = (await conexao.procurar('/usuario'))
-    listaAux.forEach(usuarioAtual => {
-        if (valorPesquisa == usuarioAtual.username && !responsaveisProjeto.value.includes(valorPesquisa)) {
+    const listaUsuarios = (await conexao.procurar('/usuario'))
+    listaUsuarios.forEach(usuarioAtual => {
+        if (valorPesquisa == usuarioAtual.username && verificaTemEsseResponsavelProjeto(usuarioAtual.username)) {
             listaAuxResponsaveisProjeto.push(usuarioAtual.username)
             responsaveisProjeto.value = null;
             responsaveisProjeto.value = listaAuxResponsaveisProjeto;
@@ -246,40 +266,54 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 
 }
 
-async function adicionaResponsaveisProjeto(usuario) {
-    if (usuario.id == undefined) {
+async function adicionaResponsaveisProjeto(usuarioRecebe) {
+    console.log(usuarioRecebe)
+    if (usuarioRecebe.id == undefined) {
         let listaAux = (await conexao.procurar('/usuario'))
         listaAux.forEach(usuario => {
-            let responsavelBanco = {
-                responsavel: [{
-                    id: usuario.id
-                }]
+            if (usuario.username == usuarioRecebe) {
+                let responsavelBanco = {
+                    responsavel: {
+                        id: usuario.id
+                    }
+                }
+                listaResponsaveisBack.push(responsavelBanco);
+                return;
             }
-            listaResponsaveisBack.push(responsavelBanco);
         })
-        return;
+
+    } else {
+        let responsavelBanco = {
+            responsavel: {
+                id: usuarioRecebe.id
+            }
+        }
+        listaResponsaveisBack.push(responsavelBanco);
     }
-    let responsavelBanco = {
-        responsavel: [{
-            id: usuario.id
-        }]
-    }
-    listaResponsaveisBack.push(responsavelBanco);
+
 }
 
 async function criaProjeto() {
-    const criaProjeto = criaProjetoStore()
-    console.log(listaStatus)
-    criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus, listaResponsaveisBack)
-    let projeto = await conexao.buscarUm(1, "projeto")
+    if (!projetoEdita.value) {
+        const criaProjeto = criaProjetoStore()
+        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack)
+        VueCookies.set("projetoEditarId", 1, 8640000)
+    } else {
+        const editaProjeto = editaProjetoStore()
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack)
+    }
 
-    VueCookies.set("projetoEditar", projeto, 8640000)
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
-
-    let listaEquipes = await conexao.procurar('/equipe');
-    let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
+    console.log(equipeEscolhidaParaProjeto)
+    const listaEquipes = await conexao.procurar('/equipe');
+    let equipeVinculada;
+    if (equipeEscolhidaParaProjeto.nome == null) {
+        equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
+    } else {
+        equipeVinculada = equipeEscolhidaParaProjeto;
+    }
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
     }
@@ -293,6 +327,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
         }
     }
     listaEquipeEnviaBack.push(objetoEnviaBack)
+    console.log(listaEquipeEnviaBack)
     listaEquipesSelecionadas.value.push(equipeVinculada)
     defineSelect();
 }
@@ -312,15 +347,18 @@ async function removeListaEquipeConvidadas(equipeRemover) {
 
 async function removeResponsavel(responsavelRemover) {
     let listaUsuarios = await conexao.procurar('/usuario');
-    let usuarioRemovido = listaUsuarios.find((objeto) => objeto.username == responsavelRemover.username);
-    let indice = responsaveisProjeto.value.findIndex((obj) => obj.username == responsavelRemover.username);
-
-    if (indice !== -1) {
-        // Remover o objeto da lista usando splice
-        responsaveisProjeto.value.splice(indice, 1);
-        listaResponsaveisBack.splice(usuarioRemovido, 1);
+    responsaveisProjeto.value.forEach((objetoAtual) => {
+        if (objetoAtual.username == responsavelRemover.username) {
+            let index = responsaveisProjeto.value.indexOf(responsavelRemover)
+            responsaveisProjeto.value.splice(index, 1);
+            listaAuxResponsaveisProjeto.splice(index, 1)
+            listaResponsaveisBack.splice(index, 1);
+        }
     }
-    criarProjetoCookies();
+    )
+    if (!projetoEdita) {
+        criarProjetoCookies();
+    }
 }
 </script>
 
@@ -330,6 +368,7 @@ async function removeResponsavel(responsavelRemover) {
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
     height: 90%;
+   
 
 }
 

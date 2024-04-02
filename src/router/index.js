@@ -67,7 +67,7 @@ const router = createRouter({
     {
       path: '/editaProjeto',
       name: 'editaProjeto',
-      component: () => import('../views/EditarProjetoView.vue')
+      component: () => import('../views/CriarProjetoView.vue')
     },
     {
       path: '/criaTarefa',
