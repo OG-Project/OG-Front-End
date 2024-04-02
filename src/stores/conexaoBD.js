@@ -5,7 +5,7 @@ import axios from "axios";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
-      // return {api:axios.get("http://10.4.96.35:8082")}
+      return {api:axios.get("http://10.4.96.35:8082/projeto")}
     },
     actions: {
     
@@ -34,8 +34,11 @@ export const conexaoBD = defineStore('conexaoBD', {
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://10.4.96.17:8084${textoRequisicao}/${equipeId}/${userId}`)
       },
+      
       async buscarUm(id,textoRequisicao){
+
         return (await axios.get('http://10.4.96.17:8084'+textoRequisicao+'/'+id).then(response => response.data))
+
       },
       async cadastrarFoto(equipeId, foto) {
         try {
@@ -45,6 +48,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     
             // Faça a requisição PATCH para enviar a imagem
             const response = await axios.patch(`http://10.4.96.17:8084/equipe/${equipeId}`, formData, {
+
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

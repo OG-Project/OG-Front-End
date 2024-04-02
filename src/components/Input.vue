@@ -296,7 +296,9 @@ function teclado(){
         height:"50%",
     }
 
-   const estilizaInput={
+
+    const estilizaInput={
+        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanhoFont(),
@@ -401,6 +403,7 @@ function teclado(){
 <style lang="scss" scoped>
 @import url(../assets/main.css);
 
+
     .Invalido{
         @apply
          border-4 
@@ -414,7 +417,6 @@ function teclado(){
         hover:rounded-[4px] hover:border-4
          focus-within:border-red-600 
         focus-within:border-4 focus-within:rounded-[4px]  #{!important} ;
-        
     }
 
     .styleInputPadrao{
@@ -491,7 +493,7 @@ function teclado(){
         @apply absolute;
     }
 
-
+}
 
     // <div class="relative">
 //     <input type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />

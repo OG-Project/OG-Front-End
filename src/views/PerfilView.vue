@@ -16,67 +16,57 @@
                 </div>
             </div>
             <div class=" flex flex-col gap-10">
-                <div @click="informacao()"
-                    class="bg-roxo medioId 
+                <div @click="informacao()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/informacoes')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
                     Informações
                 </div>
-                <div @click="seguranca()"
-                    class="bg-roxo medioId 
+                <div @click="seguranca()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/seguranca')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
                     Segurança
                 </div>
-                <div @click="acessibilidade()"
-                    class="bg-roxo medioId 
+                <div @click="acessibilidade()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/acessibilidade')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
                     Acessibilidade
                 </div>
-                <div @click="privacidade()"
-                    class="bg-roxo medioId 
+                <div @click="privacidade()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/privacidade')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
                     Privacidade
                 </div>
-                <div @click="aparencia()"
-                    class="bg-roxo medioId 
+                <div @click="aparencia()" class="bg-roxo medioId 
                     text-white 
                     justify-center 
                     active:border-2 
                     active:border-clickBorder 
                     flex 
                     items-center
-                    cursor-pointer" 
-                    :class="{'active':identificarRota(route.path,'/perfil/aparencia')}">
+                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
                     Aparência
                 </div>
-                
+
             </div>
         </div>
 
@@ -101,21 +91,22 @@ import { onBeforeMount, onMounted, ref } from 'vue';
 import {useRoute} from 'vue-router';
 import  VueCookies  from 'vue-cookies';
 import { conexaoBD } from '../stores/conexaoBD';
-const route=useRoute()
-const conexao=conexaoBD()
+const route = useRoute()
+const conexao = conexaoBD()
 // import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 // let funcaoPopUp=funcaoPopUpStore()
-let isSeguActive=ref(false)
+let isSeguActive = ref(false)
 const perfil = perfilStore()
 const { popUpSenha, popUpEmail } = storeToRefs(perfil)
+
 let usuario=ref({})
 let foto=ref(null)
 let imagemUsuario=ref('../imagem-vetores/user.png')
 onBeforeMount(async ()=>{
     
-})
+}),
 
-onMounted(async ()=>{
+onMounted(async () => {
     console.log(route.path)
     usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
     console.log(usuario.value)
@@ -143,7 +134,7 @@ function acessibilidade() {
 function seguranca() {
     router.push({ name: 'Seguranca' })
 
-    isSeguActive.value=!isSeguActive.value
+    isSeguActive.value = !isSeguActive.value
 
 }
 function privacidade() {
@@ -155,23 +146,24 @@ function aparencia() {
 
 }
 
-function identificarRota(rotaAtual,rota){
-    if(rotaAtual==rota){
+function identificarRota(rotaAtual, rota) {
+    if (rotaAtual == rota) {
         return true
     }
-    
+
     return false
 }
 
-    
+
 
 </script>
 
 <style scoped>
-.medioId{
-    @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh] 
-  }
-.active{
+.medioId {
+    @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh]
+}
+
+.active {
     @apply bg-roxoAtencao !important;
 }
 
@@ -187,4 +179,5 @@ function identificarRota(rotaAtual,rota){
 .slide-fade-leave-to {
     transform: translateX(20px);
     opacity: 0;
-}</style>
+}
+</style>

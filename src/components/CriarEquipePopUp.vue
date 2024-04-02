@@ -1,5 +1,4 @@
     <template>
-        
             <fundoPopUp  largura="" altura="95vh">
                 <div class="divGeral">
                     <div class=" grid-template flex w-full">
@@ -28,12 +27,9 @@
                             <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
                             </Botao>
                     </div>
-                </div>
-                    
+                </div>    
             </fundoPopUp>
-            
     </template>
-
     <script setup>
     import { ref, computed} from 'vue';
     import fundoPopUp from './fundoPopUp.vue';
