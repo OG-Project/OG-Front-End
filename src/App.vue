@@ -34,8 +34,8 @@ const { x, y, style } = useDraggable(el, {
   console.log(perfil.isVoiceMaker)
   perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
   console.log(perfil.isTecladoVirtual)
+  perfil.fonteTitulo= (VueCookies.get('fonteTitulo'))
   perfil.fonteCorpo=(VueCookies.get('fonteCorpo'))
-  perfil.fonteTitulo=(VueCookies.get('fonteTitulo'))
   perfil.isVlibras=(VueCookies.get('isVlibras'))
   })
   
@@ -63,38 +63,38 @@ const { x, y, style } = useDraggable(el, {
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
   }
 
-  function teste(a){
-    console.log(a)
-  }
 </script>
 
 <template draggable="true" >
-  <div v-if=" $route.fullPath!='http://localhost:5173/login'">
-    <Navbar ></Navbar>
-  </div>
-  <RouterView />
-  <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
-  <div ref="el" :style="style" style="position: fixed"
-  class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" 
-  v-if="perfil.isTecladoAtivado">
+  <div class="">
+
+    <div v-if=" $route.fullPath!='http://localhost:5173/login'">
+      <Navbar ></Navbar>
+    </div>
+    <RouterView />
+    <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
+    <div ref="el" :style="style" style="position: fixed"
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" 
+    v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">
         <svgIconMove class="w-[1vw] h-[3vh]" />
         <svgIconX @click="close" class="w-[1vw] h-[3vh]" ></svgIconX>
       </div>
-      <KeyBoard @onChange="change" @onKeyPress="press" :input="teste" ></KeyBoard>
+      <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
     </div>
   </div>
-
-    <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
-      <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-          <div class="vw-plugin-top-wrapper"></div>
-        </div>
+  
+  <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
       </div>
     </div>
-
+  </div>
+  
+</div>
 </template>
 <style scoped>
 

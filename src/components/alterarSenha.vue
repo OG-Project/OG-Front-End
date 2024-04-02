@@ -4,7 +4,8 @@
             <div class="flex flex-col justify-between  w-[77vh] h-[68vh]">
                 <div class="flex pl-12 pt-12">
                     <div class="text-3xl text-roxo">
-                        Alterar Senha {{ usuario.senha }}
+                        Alterar Senha 
+                        <!-- {{ senhaUsuario }} -->
                     </div>    
                 </div>
                 <div class="flex justify-center items-center">
@@ -70,7 +71,7 @@
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import Botao from './Botao.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted,onUpdated ,ref,watch } from 'vue';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
 import  VueCookies  from 'vue-cookies';
@@ -79,23 +80,35 @@ let conexao=conexaoBD()
 
 let isInvalido=ref(false)
 
-let usuario
+let usuario=ref({})
+let senhaUsuario=ref('')
 let senhaAntiga=ref('')
 let senhaNova=ref('')
 let senhaConfirmada=ref('')
 
-onMounted(async ()=>{
-    usuario=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
-    
-
+watch(usuario,(a)=>{
+    console.log(a)
+    console.log(usuario.value)
 })
 
+onUpdated(()=>{
+    console.log(usuario.value)
+})
+
+onMounted(async ()=>{
+    usuario.value=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    console.log(usuario.value.senha)
+    senhaUsuario.value=usuario.value.senha
+    console.log(senhaUsuario.value);
+})
+
+
 function alteraSenha(){
-    if(senhaAntiga.value==usuario.senha && senhaNova.value==senhaConfirmada.value){
+    if(senhaAntiga.value==senhaUsuario.value && senhaNova.value==senhaConfirmada.value){
         isInvalido.value=false
-        usuario.senha=senhaNova.value
+        usuario.value.senha=senhaNova.value
         alert(usuario.senha)
-        conexao.atulizar(usuario,'/usuario')
+        conexao.atualizar(usuario.value,'/usuario')
     }else{
         isInvalido.value=true
     }

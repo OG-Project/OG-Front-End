@@ -113,7 +113,7 @@ const {fonteCorpo} = storeToRefs(PerfilStore)
 const conexao=conexaoBD()
 // console.log(conexao
 
-let nome=ref('Vai tomar ')
+let nome=ref('')
 
 let editar=ref(false)
 
@@ -134,13 +134,14 @@ function alterarEmail(){
 onBeforeMount(async ()=>{
         // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE
 
-        VueCookies.set("IdUsuarioCookie",JSON.stringify(2))
+        // VueCookies.set("IdUsuarioCookie",JSON.stringify(2))
         let id=JSON.parse(VueCookies.get("IdUsuarioCookie"))
         console.log(id)
         let usuario = await conexao.buscarUm(id,'/usuario')
         console.log(usuario)
         // erros pelo fato do cookie
         PerfilStore.nome=usuario.nome
+        nome.value=PerfilStore.nome
         PerfilStore.sobrenome=usuario.sobrenome
         PerfilStore.email=usuario.email
         PerfilStore.username=usuario.username

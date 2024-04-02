@@ -15,6 +15,8 @@
                         conteudoInput="Novo E-mail" 
                         v-model="emailNovo"
                         tipo="obrigatorio"
+                        :isInvalido="isEmailInvalido"
+                        textoInvalido='Deve conter "@" e "."'
                         @updateModelValue="(e)=> {
                                     console.log(e)
                                     emailNovo=e
@@ -36,16 +38,38 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref,onMounted } from 'vue';
 import { perfilStore } from '../stores/perfilStore';
 import Botao from './Botao.vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
+import { conexaoBD } from '../stores/conexaoBD';
+import  VueCookies  from 'vue-cookies';
+
+const conexao=conexaoBD()
 const perfil=perfilStore()
 
+let isEmailInvalido=ref(false)
+let usuario=ref({})
 let emailNovo=ref('')
+onMounted(async ()=>{
+    usuario.value=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+})
 function alteraEmail(){
-    
+    if(emailNovo.value.includes('@')){
+        // alert('tem @')
+        emailNovo.value=emailNovo.value.split('@')
+        if(emailNovo.value[1].includes('.')){
+            // alert('.')
+            emailNovo.value=emailNovo.value[0].concat('@'+emailNovo.value[1])
+            console.log(emailNovo.value);
+            usuario.value.email=emailNovo.value
+            conexao.atualizar(usuario.value,'/usuario')
+            isEmailInvalido.value=false
+        }
+    }else{
+        isEmailInvalido.value=true
+    }
 }
 </script>
 

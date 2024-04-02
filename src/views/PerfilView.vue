@@ -3,13 +3,16 @@
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
         <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
-            <div class=" flex justify-center w-[329px] h-[329px]">
-                <div  class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] ">
-                    <img 
-                      :src="'data:' + usuario.foto.tipo + ';base64,' + usuario.foto.dados" 
-                      class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
-                    />
-                    
+            <div class=" flex justify-center items-center w-[329px] h-[329px]">
+                <img v-if="foto!=null"
+                  :src="'data:' + foto.tipo + ';base64,' + foto.dados" 
+                  class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                />
+                <div v-else 
+                class="xl:w-[95%] text-center flex justify-center items-center hover:bg-slate-500 hover:opacity-70 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                >
+                    <div class="w-full h-full bg-[url(../imagem-vetores/UserIcon.svg)] bg-no-repeat bg-contain" ></div>
+                  <!-- <img src="../imagem-vetores/UserIcon.svg" class=" w-full" >   -->
                 </div>
             </div>
             <div class=" flex flex-col gap-10">
@@ -105,22 +108,21 @@ const conexao=conexaoBD()
 let isSeguActive=ref(false)
 const perfil = perfilStore()
 const { popUpSenha, popUpEmail } = storeToRefs(perfil)
-let usuario
-let foto=ref({})
-
+let usuario=ref({})
+let foto=ref(null)
+let imagemUsuario=ref('../imagem-vetores/user.png')
 onBeforeMount(async ()=>{
     
 })
 
 onMounted(async ()=>{
     console.log(route.path)
-    usuario= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
-    console.log(usuario)
-    foto.value=usuario.foto
-    if(foto.value==undefined){
-        foto.value=usuario.foto
-        console.log(foto.value);
-    }
+    usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    console.log(usuario.value)
+    foto.value=usuario.value.foto
+    // if(foto.value==undefined){
+    //     foto.value=usuario.value.foto
+    // }
     console.log(foto.value);
 })
 
