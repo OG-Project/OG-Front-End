@@ -16,7 +16,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
         projetoCriado.nome=nome;
         projetoCriado.descricao=descricao;
         projetoCriado.projetoEquipes=equipes
-        projetoCriado.propriedades=propriedades.value;
+        projetoCriado.propriedades=propriedades;
         projetoCriado.statusList=status;
         projetoCriado.responsaveis=responsaveis;
         console.log(projetoCriado)   

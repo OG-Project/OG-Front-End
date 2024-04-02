@@ -13,7 +13,7 @@
         <div v-if="opcaoSelecionadaNaTabela == 'status'">
             <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
-                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2">Status</p>
+                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2 mr-6">Status</p>
                 <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
                     styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
             </div>
@@ -25,7 +25,8 @@
                     <div class="flex  flex-row items-center gap-4 h-max" @mouseenter="startTimer(propriedade)"
                         @mouseleave="clearTimer(propriedade)">
 
-                        <div class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4" v-if="propriedade.verNomeCompleto == true">
+                        <div class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4"
+                            v-if="propriedade.verNomeCompleto == true">
                             <p class="w-[50%]  h-max break-words  bg-brancoNeve ">
                                 {{ propriedade.propriedade.nome }}</p>
                             <p class="w-[50%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
@@ -56,7 +57,8 @@
                     <div class="flex  flex-row items-center gap-4 h-max" @mouseenter="startTimer(status)"
                         @mouseleave="clearTimer(status)">
 
-                        <div v-if="status.verNomeCompleto == true" class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4">
+                        <div v-if="status.verNomeCompleto == true"
+                            class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4">
                             <p class="w-[50%] h-max break-words bg-brancoNeve">{{ status.status.nome }}</p>
                             <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         </div>
@@ -64,8 +66,8 @@
                             <p class="w-[50%] truncate">{{ status.status.nome }}</p>
                             <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         </div>
-                       
-                        <div class=" w-[50%]  ">
+
+                        <div class=" w-[36%]  ">
                             <div v-if="tarefasAtribuidas"
                                 class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
@@ -321,6 +323,7 @@ function buscaRascunhoPropiedade() {
     }
     listaPropriedades.value = propriedadeArmazenada
     auxParaCriarPropriedades = propriedadeArmazenada
+    criaPropriedadeCookies();
 }
 
 function mandaProrpiedadesBack(listaPropriedadesRecebida) {
@@ -337,21 +340,37 @@ function mandaProrpiedadesBack(listaPropriedadesRecebida) {
     instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
+function criaListaPropriedadesRenderizaFront(propriedadeBack) {
+    if(propriedadeBack.tipo == ""){
+        propriedadeBack.tipo="Texto"
+    }
+    let propriedadeFront = {
+        propriedade: propriedadeBack,
+        verNomeCompleto: false
+    }
+    if (propriedadeFront.propriedade.nome != '') {
+        auxParaCriarPropriedades.push(propriedadeFront)
+        listaPropriedadesBackEnd.push(propriedadeFront.propriedade)
+    }
+    listaPropriedades.value = auxParaCriarPropriedades
+    nomePropriedade.value = "";
+    tipoPropriedade.value = "";
+
+    funcaoPopUp.fechaPopUp();
+}
+
+function transformaListaFrontEmListaBack() {
+    listaPropriedadesBackEnd = listaPropriedades.value.map((objetoFront) => {
+        return objetoFront.propriedade
+    })
+
+}
+
 function criaPropriedadeCookies(propriedadeBack) {
     if (propriedadeBack != null) {
-        let propriedadeFront = {
-            propriedade: propriedadeBack,
-            verNomeCompleto: false
-        }
-        if (propriedadeFront.propriedade.nome != '') {
-            auxParaCriarPropriedades.push(propriedadeFront)
-            listaPropriedadesBackEnd.push(propriedadeFront.propriedade)
-        }
-        listaPropriedades.value = auxParaCriarPropriedades
-        nomePropriedade.value = "";
-        tipoPropriedade.value = "";
-
-        funcaoPopUp.fechaPopUp();
+        criaListaPropriedadesRenderizaFront(propriedadeBack)
+    } else {
+        transformaListaFrontEmListaBack()
     }
     auxParaCriarPropriedades = listaPropriedades.value
     if (!projetoEdita.value) {
@@ -402,8 +421,10 @@ function mandaStatusBack() {
     auxParaCriarStatus = []
     auxRenderizaStatusTela.map((objeto) => auxParaCriarStatus.push(objeto.status))
     listaStatusBack = auxParaCriarStatus;
-    console.log(listaStatusBack)
-    instance.emit('mandaListaStatusBack', listaStatusBack)
+    if(listaStatusBack!=null){
+        instance.emit('mandaListaStatusBack', listaStatusBack)
+    }
+    
     nomeStatus.value = "";
     corStatus.value = "";
 }
@@ -478,7 +499,7 @@ function clearTimer(objeto) {
 }
 
 async function removeStatus(statusRecebe) {
-    let indice = listaStatus.value.findIndex((obj) => obj.nome === statusRecebe.nome);
+    let indice = listaStatus.value.findIndex((obj) => obj.status.nome === statusRecebe.status.nome);
     if (indice !== -1) {
         listaStatus.value.splice(indice, 1);
     }
@@ -489,7 +510,7 @@ async function removeStatus(statusRecebe) {
 }
 
 async function removePropriedade(propriedadeRecebida) {
-    let indice = listaPropriedades.value.findIndex((obj) => obj.nome === propriedadeRecebida.nome);
+    let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome);
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
     }

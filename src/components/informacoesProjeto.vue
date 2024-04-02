@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[20vw] h-[92vh] flex flex-col border-2 gap-8 overflow-y-auto border-black border-b-0 ">
+    <div class="w-[20vw] max-h-max h-[96vh] flex flex-col border-2 gap-8 border-black border-b-0 overflow-y: auto">
         <div class="h-[6%] pt-8 flex items-end justify-center">
             <h1 class="text-3xl font-semibold">Informações</h1>
         </div>
@@ -25,9 +25,9 @@
             <h1 class="text-xl font-semibold">Status</h1>
         </div>
         <div class="h-[4%] flex items-center justify-center">
-            <div class="flex items-center justify-center h-[80%] w-[100%]" v-if="temLista(listaStatus)">
+            <div class="flex flex-col items-center justify-center h-[80%] w-[100%] gap-3" v-if="temLista(listaStatus)">
                 <div v-for="status of listaStatus">
-                    <p :style="styleStatus(status)">
+                    <p  :style="styleStatus(status)">
                         {{ status.nome }}
                     </p>
                 </div>
@@ -82,6 +82,7 @@ function styleStatus(statusRecebido) {
         height: '100%',
         width: '100%',
         display: 'flex',
+        padding:'0.5vh',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: corBackgroundStatus(statusRecebido)

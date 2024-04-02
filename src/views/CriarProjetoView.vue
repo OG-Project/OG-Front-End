@@ -296,12 +296,11 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-        console.log(listaResponsaveisBack)
-        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus, listaResponsaveisBack)
+        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack)
         VueCookies.set("projetoEditarId", 1, 8640000)
     } else {
         const editaProjeto = editaProjetoStore()
-        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades, listaStatus, listaResponsaveisBack)
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack)
     }
 
 }
@@ -369,6 +368,7 @@ async function removeResponsavel(responsavelRemover) {
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
     height: 90%;
+   
 
 }
 
