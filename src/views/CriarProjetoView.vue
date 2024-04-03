@@ -3,7 +3,11 @@
         <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
-                    largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"></Input>
+                    largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"
+                    :modelValue="nomeProjeto"
+                            @updateModelValue="(e)=> {
+                                nomeProjeto=e
+                            }"></Input>
             </div>
             <div class="h-[15%] w-max flex items-center">
                 <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="8vh" preset="transparente"
@@ -198,7 +202,7 @@ function buscaRascunhoCriacaoProjeto() {
 
 async function buscaProjetoEditar() {
     idProjeto = VueCookies.get("projetoEditarId");
-    let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+    let projeto = await conexao.buscarUm(4, "/projeto")
     if (projeto != null) {
         nomeProjeto.value = projeto.nome;
         descricaoProjeto.value = projeto.descricao;
@@ -368,26 +372,9 @@ async function removeResponsavel(responsavelRemover) {
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
     height: 90%;
-   
-
 }
 
-.animation {
-    @apply w-[65%] bg-brancoNeve shadow-md flex justify-around flex-col;
-    animation: myAnim 0.15s ease 0s 1 normal none;
-}
 
-@keyframes myAnim {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 .scrollListaResponsaveis::-webkit-scrollbar {
     height: 0.3vw;

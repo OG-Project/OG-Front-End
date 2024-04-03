@@ -80,7 +80,6 @@ watch(() => route.path, () => {
 </script>
 
 <template draggable="true" >
-  <div class="">
 
       <Navbar v-show="!estaNoLogin" />
     <RouterView />
@@ -95,8 +94,6 @@ watch(() => route.path, () => {
       </div>
       <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
     </div>
-  </div>
-  
   <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
     <div vw class="enabled">
       <div vw-access-button class="active"></div>
