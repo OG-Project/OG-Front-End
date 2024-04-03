@@ -141,6 +141,7 @@
             inverterCorIcon="sim"></Botao>
           <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
         </div>
+
       </div>
       <div class="pl-12 mt-4">
         <h1>SubTarefas</h1>
@@ -285,6 +286,7 @@
               </div>
               <div class="w-[30%]">
                 <button @click="editarPropriedade(propriedade)" class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md">
+
                   Valor
                 </button>
               </div>
@@ -314,6 +316,7 @@
                     @input="editarPropriedade(index, valor)">
                   </Input>
                   <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor.valor, index)" :src="BotaoX" />
+
                 </div>
 
                 <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
@@ -396,6 +399,7 @@
             {{ status.nome }}
           </p>
         </div>
+
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Propriedades</h1>
@@ -729,7 +733,6 @@ async function puxaTarefaDaEdicao() {
       veSeAPropriedadeTaNaTarefa(propriedade.propriedade)
     }
   }
-
 }
 
 async function atualizaPropriedadesEStatus() {

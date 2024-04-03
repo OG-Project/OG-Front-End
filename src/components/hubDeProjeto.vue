@@ -1,5 +1,8 @@
 <template>
-    <div class="w-full h-[30%] flex  items-center">
+    <div v-if="listaDeEquipes==true" class="flex justify-center">
+        <ListaDeEquipesProjeto></ListaDeEquipesProjeto>
+    </div>
+    <div class="w-full h-[30%] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
             <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
                 <div class="h-[45%]">
@@ -10,11 +13,19 @@
                 </div>
             </div>
             <div class="w-[45%]  flex justify-end">
-                 {{ porcentagemDeConclusao }}
+                {{ porcentagemDeConclusao }}
             </div>
         </div>
-        <div class="w-[40%]">
-
+        <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
+            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieTarefaNova()">
+                +Tarefa
+            </button>
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieProjeto()">
+                <IconEngrenagem1></IconEngrenagem1>
+            </button>
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="mudaVariavelBooleana()">
+                <ImagemPessoasProjeto></ImagemPessoasProjeto>
+            </button>
         </div>
     </div>
     <div class="w-[80%] flex flex-row justify-around">
@@ -50,56 +61,63 @@ import router from '@/router'
 import Dashboard from '../assets/dashboard.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import VueCookies from 'vue-cookies';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import IconEngrenagem1 from '../assets/iconEngrenagem 1.vue';
+import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
+import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
+import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
 
-
-const props = defineProps({
-    projeto: {}
-})
-
-
-
+let api = conexaoBD()
+let projetoId = VueCookies.get('IdProjetoAtual')
+let projeto = ref({})
 let tarefas = []
-let projeto = props.projeto
-let porcentagemDeConclusao = definePorcentagem()
+let porcentagemDeConclusao = ref("")
 let tarefasConcluidas = []
+let subtarefasConcluidas = ref([])
+let subtarefas = ref([])
+let listaDeEquipes = ref(false)
 
 onMounted(async () => {
-    console.log(definePorcentagem)
+
+    projeto.value = await api.buscarUm('3', '/projeto')
+    definePorcentagem()
 })
 
-async function definePorcentagem(){
-    projeto = props.projeto
-    tarefas = projeto.tarefas
+
+function enviaCookieTarefaNova(){
+    VueCookies.set("IdTarefaCookies",0,new Date())
+    localStorage.setItem("TarefaNaoFinalizada","",new Date())
+    router.push('/criaTarefa') 
+}
+function enviaCookieProjeto(){
+    router.push('/criaProjeto') 
+}
+function mudaVariavelBooleana(){
+    listaDeEquipes.value = true;
+}
+
+function definePorcentagem() {
+    tarefas = projeto.value.tarefas
     let string = ""
     let porcentagem = 0
-    let tarefasAuxiliares = defineTarefasConcluida(tarefas) 
-    porcentagem = 100/(tarefasAuxiliares.length+1)
-    string = "Progressão "+ porcentagem + "%"
+    defineSubTarefasConcluida(tarefas)
+
+    if (tarefas.length > 0) {
+        porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
+    }
+    string = "Progressão " + porcentagem + "%"
     console.log(string)
-    return string
+    porcentagemDeConclusao = string
 }
-function defineTarefasConcluida(tarefas){
-    for(const tarefa of tarefas){
-        if(defineSubtarefasConcluidas(tarefa.subTarefas)){
-            tarefasConcluidas.push(tarefa)
+function defineSubTarefasConcluida(tarefas) {
+    for (const tarefa of tarefas) {
+        for (const subtarefa of tarefa.subTarefas) {
+            subtarefas.value.push(subtarefa)
         }
     }
-    return tarefasConcluidas;
+    subtarefasConcluidas.value = subtarefas.value.filter(subtarefa => subtarefa.concluido)
 }
-function defineSubtarefasConcluidas(subtarefas){
-    let subtarefasAuxiliar = []
-    for(let subtarefa of subtarefas){
-        console.log(subtarefa)
-        if(subtarefa.concluido == true){
-            subtarefasAuxiliar.push(subtarefa)
-        }
-    }
-    if(subtarefasAuxiliar.length == subtarefas.length){
-        return true
-    }
-    return false
-}
+
 
 </script>
 
