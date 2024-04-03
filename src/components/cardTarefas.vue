@@ -65,18 +65,18 @@ let hoverCard
 let tira
 let usuarioLogado = $cookies.get("usuarioCookie");
 tarefa1 = {
-    backgroundColor: props.tarefa.cor,
+    backgroundColor:("#"+ props.tarefa.cor),
     width: "6%",
     height: "100%"
 }
 tira = {
     width: "7vw",
-    height: "2vh",
-    backgroundColor: props.tarefa.cor,
+    height: "1vh",
+    backgroundColor:("#"+ props.tarefa.cor),
     color: verificaCorTexto(props.tarefa),
     display: "flex",
     alignItems: "center",
-    padding: "1.5vh",
+    padding: "1.4vh",
     fontSize: "0.7vw"
 }
 kanban = {
@@ -103,8 +103,10 @@ function unhover() {
 }
 function verificaCorTexto(tarefa) {
     if (tinycolor(tarefa.cor).isDark()) {
+        console.log("gay")
         return "white"
     } else {
+        console.log("gay2")
         return "black"
     }
 }

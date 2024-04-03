@@ -79,7 +79,7 @@ let listaDeEquipes = ref(false)
 
 onMounted(async () => {
 
-    projeto.value = await api.buscarUm(projetoId, '/projeto')
+    projeto.value = await api.buscarUm('3', '/projeto')
     definePorcentagem()
 })
 
