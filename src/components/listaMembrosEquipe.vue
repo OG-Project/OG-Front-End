@@ -4,7 +4,7 @@
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
             <img class="imagemEquipe" v-else src="">
-             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 ">{{ truncarNome(equipeMembros.nome, larguraNomeEquipe()) }}</h1>
+             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
@@ -12,7 +12,7 @@
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                       <img class="imgDePerfil" src="" alt="">
-                      <h1 class="flex mt-5 text-xl md:text-lg">{{ truncarNome(membro.nome, 16) }}</h1>
+                      <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.nome }}</h1>
                     </div>
                     <SelectPadrao class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
@@ -85,7 +85,7 @@ function larguraNomeEquipe(){
     }
     }
 
-const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
 
 async function filtrarEquipe(){
     console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))

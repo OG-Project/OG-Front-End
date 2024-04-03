@@ -22,34 +22,38 @@
             </div>
             <div class="kanban-board w-full pl-2 2xl:mt-2 xl:mt-3 lg:mt-4 md:mt-5  flex justify-start">
               <div class="kanban-board w-full h-full flex justify-center flex-col">
-                <div class="urgentes">
+                <div class="urgentes" @dragover.prevent @drop.prevent="event => onDrop(event, 'urgentes','#D27200')">
                      <h1 class="text-xl text-white"> URGENTES</h1>
                 </div>
-                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id"
+                draggable="true" @dragstart="onDragStart($event, projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)"  ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full h-full flex justify-center flex-col">
-                <div class="naoIniciado">
+                <div class="naoIniciado" @dragover.prevent @drop.prevent="event => onDrop(event, 'nao-iniciados', '#0034BA')">
                   <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
                </div>
-               <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+               <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" 
+               draggable="true" @dragstart="onDragStart($event, projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full h-full flex justify-center flex-col">
-                <div class="prontos">
+                <div class="prontos" @dragover.prevent @drop.prevent="event => onDrop(event, 'prontos', '#389300')">
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
-                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" 
+                draggable="true" @dragstart="onDragStart($event, projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full h-full flex justify-center flex-col">
-                <div class="meusProjetos">
+                <div class="meusProjetos" @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
-                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" draggable @dragstart="onDragStart(projeto)">
+                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" 
+                draggable="true" @dragstart="onDragStart($event, projeto)">
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
@@ -93,7 +97,7 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted} from 'vue';
   import { conexaoBD } from '../stores/conexaoBD';
   import cardProjetos from './cardProjetos.vue';
   import KanbanProjetos from './kanbanProjetos.vue';
@@ -110,8 +114,13 @@
   let projetos = ref([]);
   const idUsuarioLogado = VueCookies.get('IdUsuarioCookie');
   let projetosUsuario = ref([]);
+  let projetosEquipe = ref([]);
   const projetosFiltrados = ref([]);
   let mostrarMensagem = ref(false);
+  let equipesUsuario = ref ([]);
+  let usuarioLogado = ref();
+
+  
   
   filtrarProjetos();
   
@@ -129,11 +138,25 @@
   const toggleKanban = () => {
     kanbanAtivo.value = !kanbanAtivo.value;
   }
-  
+
   async function buscarProjetos(){
-    projetosUsuario.value = await banco.buscarProjetosUsuario(idUsuarioLogado, "/projeto/buscarProjetosUsuario");
-    if (Array.isArray(projetosUsuario.value)) {
-      projetos.value = projetosUsuario.value.filter(projeto => projeto != null);
+    usuarioLogado.value = await banco.buscarUm(idUsuarioLogado, "/usuario");
+    equipesUsuario.value = await usuarioLogado.value.equipes;
+
+    let projetosEquipe = []; // Inicialize como um array vazio
+
+    for (const equipeUsuario of equipesUsuario.value) {
+        const projetosDaEquipe = await banco.buscarProjetosEquipe(equipeUsuario.equipe.id, "/projeto/buscarProjetos");
+        projetosEquipe = projetosEquipe.concat(projetosDaEquipe);
+    }
+
+    console.log(projetosEquipe);
+
+    projetosUsuario = projetosEquipe;
+    console.log(projetosUsuario);
+
+    if (Array.isArray(projetosUsuario)) {
+      projetos.value =  projetosUsuario.filter(projeto => projeto != null);
       const dataAtual = new Date();
       projetos.value.forEach(projeto => {
         projeto.dataFinal = new Date(projeto.dataFinal);
@@ -158,13 +181,13 @@
     filtrarProjetos();
   }
   
-  function filtrarProjetos(categoria) {
+  async function filtrarProjetos(categoria) {
     const projetosDaCategoria = projetos.value.filter(projeto => projeto.categoria === categoria);
   
     if (!statusBotao.value && !categoria) {
       projetosFiltrados.value = projetos.value;
     } else if (!categoria) {
-      projetosFiltrados.value = projetos.value.filter(projeto => projeto.categoria === statusBotao.value);
+      projetosFiltrados.value =  projetos.value.filter(projeto => projeto.categoria === statusBotao.value);
     } else {
       projetosFiltrados.value = projetosDaCategoria;
       if (projetosDaCategoria.length === 0) {
@@ -248,6 +271,41 @@ function obterFotosResponsaveis(projeto) {
         return "Não há responsáveis";
     }
 }
+
+const onDragStart = (event, projeto) => {
+    event.dataTransfer.setData('projetoId', projeto.id);
+};
+
+const onDrop = (event, categoria, cor) => {
+    console.log('onDrop acionado');
+    // Verificar se event e event.dataTransfer estão definidos
+    if (event && event.dataTransfer) {
+        // Evitar comportamento padrão apenas se necessário
+        event.preventDefault();
+
+        // Obter o ID do projeto a partir dos dados de transferência
+        const projetoId = event.dataTransfer.getData('projetoId');
+        console.log('Projeto ID:', projetoId);
+
+        // Encontrar o projeto na lista de projetos pelo ID
+        const projeto = projetos.value.find(projeto => projeto.id == projetoId);
+        console.log('Projeto:', projeto);
+
+        // Verificar se o projeto foi encontrado
+        if (projeto) {
+            // Atualizar a categoria do projeto para a nova categoria
+            projeto.categoria = categoria;
+            projeto.corTopico = cor;
+
+            // Atualizar os projetos filtrados após a mudança
+            filtrarProjetos();
+        } else {
+            console.error('Projeto não encontrado! ID:', projetoId);
+        }
+    } else {
+        console.error('Evento ou event.dataTransfer não definidos.');
+    }
+};
   
   onMounted(() => {
     buscarProjetos();
