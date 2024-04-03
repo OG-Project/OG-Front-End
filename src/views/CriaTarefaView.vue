@@ -294,13 +294,13 @@
             </div>
             <div class="w-[100%] min-h-[5vh] flex items-center justify-center">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-                <p>{{ console.log(propriedade)
-                  }}</p>
-                <Input altura="2" largura="28" conteudoInput=" " v-model="propriedade.valor.valor" @input="souGay(listaFiltradaPropriedades)" width="80%">
-                </Input>
+                <div v-for="propriedadeForTarefa of tarefa.propriedades">
+                  <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor"
+                   width="80%">
+                </div>
               </div>
               <div v-if="propriedade.propriedade.tipo === 'DATA'">
-                <Calendar class="border-2 rounded-lg border-[#620BA7]" border v-model="propriedade.valor.valor"
+                <Calendar class="border-2 rounded-lg border-[#620BA7]" v-model="propriedade.valor.valor"
                   dateFormat="dd/mm/yy" showIcon iconDisplay="input" />
               </div>
               <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
@@ -435,7 +435,7 @@ import Botao from "../components/Botao.vue";
 import CheckBox from "../components/checkBox.vue";
 import iconAnexo from "../imagem-vetores/anexoIcon.svg";
 import TextAreaPadrao from "../components/textAreaPadrao.vue";
-import { ref, watch } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import selectPadrao from "../components/selectPadrao.vue";
 import navBar from "../components/navBar.vue";
 import ColorPicker from "primevue/colorpicker";
@@ -458,7 +458,6 @@ const parametroDoFiltroStatus = ref("Ordenar Por");
 const parametroDoFiltroPropriedade = ref("Ordenar Por");
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
-  console.log(tarefa.value.propriedades);
   for (const propriedadeFor of tarefa.value.propriedades) {
     if (propriedadeFor.id == propriedade.id) {
       return true
@@ -555,8 +554,19 @@ function criaStatus() {
   }
 }
 
-function souGay(listaFiltradaPropriedades){
-  
+async function patchDaListaDePropriedades() {
+  let IdTarefaCookie = VueCookies.get("IdTarefaCookies");
+  console.log(listaFiltradaPropriedades.value);
+  for(let propriedadeQuePrecisaReceberOValor of listaFiltradaPropriedades.value){
+    for(let propriedadeComOValor of tarefa.value.propriedades){
+      if(propriedadeQuePrecisaReceberOValor.id == propriedadeComOValor.id){
+        propriedadeQuePrecisaReceberOValor.valor.valor = propriedadeComOValor.valor.valor;
+      }
+    }
+  }
+  console.log(listaFiltradaPropriedades.value);
+  console.log(banco.atualizaListaDeValorPropriedade(IdTarefaCookie, listaFiltradaPropriedades.value));
+  banco.atualizaListaDeValorPropriedade(IdTarefaCookie, listaFiltradaPropriedades.value)
 }
 
 //Função que deleta status
@@ -672,9 +682,6 @@ function deletaPropriedade(propriedade) {
   const deleta = criaPropriedadeTarefaStore();
   propriedades.value.forEach(async (propriedadeParaDeletar) => {
     if (propriedadeParaDeletar === propriedade) {
-      console.log(propriedadeParaDeletar.id);
-      console.log(propriedade.id);
-      console.log(VueCookies.get("IdProjetoAtual"));
       deleta.deletaPropriedade(propriedade.id, parseInt(VueCookies.get("IdProjetoAtual")))
 
       await new Promise(r => setTimeout(r, 60));
@@ -689,9 +696,7 @@ async function procuraProjetosDoBanco() {
   const projetos = await banco.procurar("/projeto");
   let projetoId = VueCookies.get("IdProjetoAtual");
   for (const projeto of projetos) {
-    console.log("a");
     if (projeto.id == projetoId) {
-      console.log(projeto.propriedades);
       return projeto;
     }
   }
@@ -714,7 +719,6 @@ let tarefa = ref({
 async function puxaTarefaDaEdicao() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
-  console.log(tarefaAux)
   if (tarefaAux.nome == null) {
     tarefa.value.nome = tarefaAux.nome;
     tarefa.value.descricao = tarefaAux.descricao;
@@ -731,7 +735,6 @@ async function puxaTarefaDaEdicao() {
 async function atualizaPropriedadesEStatus() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
-  console.log(projetoDaTarefa.value);
   status.value = projetoDaTarefa.value.statusList;
   propriedades.value = tarefaAux.valorPropriedadeTarefas;
 }
@@ -749,9 +752,7 @@ function update() {
 onMounted(async () => {
   VueCookies.set("IdProjetoAtual", 1, 100000000000);
   projetoDaTarefa.value = await procuraProjetosDoBanco();
-  console.log(projetoDaTarefa.value);
   procuraProjetosDoBanco();
-  console.log(projetoDaTarefa.value);
   reloadSubTarefas();
   autenticarUsuario();
   puxaTarefaDaEdicao();
@@ -782,10 +783,7 @@ function exibirComentarios() {
 }
 
 function gerarArquivo(e) {
-  console.log("Está executando");
-  console.log(tarefa.value.arquivos);
   let arquivo = e.target.files[0];
-  console.log(arquivo);
   let reader = new FileReader();
   reader.readAsDataURL(arquivo);
   reader.onload = function () {
@@ -796,7 +794,6 @@ function gerarArquivo(e) {
       dados: arquivoBase64,
     };
     tarefa.value.arquivos.push(arquivoParaOBanco);
-    console.log(tarefa.value.arquivos);
     update()
   }
 
@@ -854,14 +851,16 @@ function adicionaExcluiStatusNaTarefa(status) {
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
-  console.log(propriedade);
-  console.log(estaNaTarefa);
   if (propriedade.valor.valor.valor != '') {
     if (!estaNaTarefa) {
       tarefa.value.propriedades.push(propriedade)
-      console.log(tarefa.value.propriedades);
     }
     else {
+      for(let propriedadeForTarefa of tarefa.value.propriedades){
+        if(propriedadeForTarefa.propriedade.id == propriedade.propriedade.id){
+          propriedade.valor.valor = propriedadeForTarefa.valor.valor
+        }
+      }
       tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
     }
 
@@ -892,7 +891,6 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
-  console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
