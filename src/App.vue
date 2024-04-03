@@ -1,9 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import Tabelas from "./components/Tabelas.vue";
-import LoginView from "./views/LoginView.vue";
-import Input from "./components/Input.vue";
-import fundoPopUp from "./components/fundoPopUp.vue";
+import { RouterView } from "vue-router";
 import { funcaoPopUpStore } from "./stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
 import KeyBoard from './components/Keyboard.vue'
@@ -14,9 +10,7 @@ import { ref, watch, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
-import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
-import listaProjetos from './components/listaProjetos.vue';
-import kanbanProjetos from './components/kanbanProjetos.vue'
+import router from "@/router";
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
@@ -29,7 +23,6 @@ const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70},
 })
 
-// let ativado='';
 let url= window.location.href;
 
 
@@ -64,6 +57,9 @@ const route = useRoute();
 
   var estaNoLogin = ref(true)
 watch(() => route.path, () => {
+  if(route.path == '/'){
+    router.push('/login')
+  }
   if(route.path == '/login'){
     estaNoLogin.value = true
   }else{
