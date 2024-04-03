@@ -5,13 +5,11 @@
                 <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate">{{ projetoAtual.nome }}</h1>
             </div>
             <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin">
-                <div class="flex justify-center w-full" v-for="membro in projetoAtual.equipes" :key="membro.id">
-                    <img v-if="membro.id != usuarioLogado" class="imgIcon" src="../imagem-vetores/Sair.svg" alt=""
-                        @click="removerMembro(membro)" />
-                    <div v-else class="imgIcon"></div>
+                <div class="flex justify-center w-full" v-for="equipe in projetoAtual.projetoEquipes">
+                    <div class="imgIcon"></div>
                     <div class="corDiv">
                         <img class="imgDePerfil" src="" alt="">
-                        <h1 class="flex mt-5 text-xl md:text-lg">{{ truncarNome(membro.nome, 16) }}</h1>
+                        <h1 class="flex mt-5 text-xl md:text-lg">{{ equipe.equipe.nome }}</h1>
                     </div>
                 </div>
 

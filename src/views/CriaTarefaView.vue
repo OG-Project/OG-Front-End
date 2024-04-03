@@ -671,9 +671,6 @@ async function puxaTarefaDaEdicao() {
   }
   let tarefa2 = banco.buscarUm(IdTarefaCookies, "/tarefa");
   let tarefaAux = await tarefa2
-  console.log(
-    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-  )
   tarefa.value.nome = tarefaAux.nome;
   tarefa.value.descricao = tarefaAux.descricao;
   tarefa.value.arquivos = tarefaAux.arquivos;
