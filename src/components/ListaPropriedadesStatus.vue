@@ -304,12 +304,11 @@ async function buscaPropriedadeBanco() {
     if (projeto.propriedades != []) {
         projeto.propriedades.forEach((propriedade) => {
             if (propriedade.nome != '') {
-                listaPropriedades.value.push(propriedade);
-
+                criaPropriedadeCookies(propriedade);
             }
         })
         auxParaCriarPropriedades = listaPropriedades.value;
-        criaPropriedadeCookies();
+        
     }
 }
 
@@ -518,9 +517,8 @@ async function removePropriedade(propriedadeRecebida) {
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
     }
-    if (!projetoEdita.value) {
         criaPropriedadeCookies()
-    }
+  
 }
 </script>
 

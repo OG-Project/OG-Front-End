@@ -202,7 +202,7 @@ function buscaRascunhoCriacaoProjeto() {
 
 async function buscaProjetoEditar() {
     idProjeto = VueCookies.get("projetoEditarId");
-    let projeto = await conexao.buscarUm(4, "/projeto")
+    let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     if (projeto != null) {
         nomeProjeto.value = projeto.nome;
         descricaoProjeto.value = projeto.descricao;
@@ -228,9 +228,7 @@ function verificaTemEsseResponsavelProjeto(username) {
 }
 
 function buscaListaEquipesRelacionadas(projeto) {
-    projeto.projetoEquipes.forEach((equipe) => {
-        colocaListaEquipes(equipe.equipe)
-    })
+   projeto.projetoEquipes.forEach((projetoEquipe) => colocaListaEquipes(projetoEquipe.equipe))
 }
 
 async function pesquisaBancoUserName() {
@@ -310,30 +308,35 @@ async function criaProjeto() {
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
-    console.log(equipeEscolhidaParaProjeto)
     const listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada;
-    if (equipeEscolhidaParaProjeto.nome == null) {
-        equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
-    } else {
-        equipeVinculada = equipeEscolhidaParaProjeto;
-    }
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
+
+    }else if (equipeEscolhidaParaProjeto.nome == null) {
+        equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeEscolhidaParaProjeto[0]);
+
+    } else {
+        equipeVinculada = equipeEscolhidaParaProjeto;
     }
     if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
         return;
     }
-
-    const objetoEnviaBack = {
-        equipe: {
-            id: equipeVinculada.id
-        }
-    }
-    listaEquipeEnviaBack.push(objetoEnviaBack)
-    console.log(listaEquipeEnviaBack)
     listaEquipesSelecionadas.value.push(equipeVinculada)
+    transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
+}
+
+function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront){
+   let equipeBack;
+    let listaBackEquipe= listaEquipeFront.map((equipeFront) =>{
+       return  equipeBack= {
+            equipe:{
+                id: equipeFront.id
+            }
+        }
+    })
+    listaEquipeEnviaBack = listaBackEquipe;
 }
 
 async function removeListaEquipeConvidadas(equipeRemover) {
@@ -345,6 +348,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         // Remover o objeto da lista usando splice
         listaEquipesSelecionadas.value.splice(indice, 1);
     }
+    transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     criarProjetoCookies();
 
 }
