@@ -17,10 +17,9 @@ export const editaProjetoStore = defineStore('editaProjeto', {
         projetoCriado.nome=nome;
         projetoCriado.descricao=descricao;
         projetoCriado.projetoEquipes=equipes
-        projetoCriado.propriedades=propriedades.value;
+        projetoCriado.propriedades=propriedades;
         projetoCriado.statusList=status;
-        projetoCriado.responsaveis=responsaveis;
-        console.log(projetoCriado)   
+        projetoCriado.responsaveis=responsaveis; 
         api.atualizar(projetoCriado,'/projeto')
         
       },

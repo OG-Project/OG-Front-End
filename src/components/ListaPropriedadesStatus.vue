@@ -13,7 +13,7 @@
         <div v-if="opcaoSelecionadaNaTabela == 'status'">
             <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
-                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2 mr-6">Status</p>
+                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2 mr-8">Status</p>
                 <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
                     styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
             </div>
@@ -82,71 +82,78 @@
 
                     </div>
                 </div>
-            </div>
-            <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
-                v-if="funcaoPopUp.variavelModal == false">
-                <p>Nova</p>
-                <img src="../imagem-vetores/sinalDeMaisIcon.svg">
+
             </div>
 
-            <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
+        </div>
+        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
+            v-if="funcaoPopUp.variavelModal == false">
+            <p>Nova</p>
+            <img src="../imagem-vetores/sinalDeMaisIcon.svg">
+        </div>
 
-                <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
-                    <div class="flex justify-end">
-                        <img src="../imagem-vetores/triangulo.svg">
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <div class="pl-2">
-                            <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                                v-model="nomePropriedade"></Input>
-                        </div>
-                        <div class="pr-2">
-                            <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                                largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
-                        </div>
+        <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
 
+            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                <div class="flex justify-end">
+                    <img src="../imagem-vetores/triangulo.svg">
+                </div>
+                <div class="flex flex-row justify-between">
+                    <div class="pl-2">
+                        <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
+                            :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
+            nomePropriedade = e
+        }"></Input>
                     </div>
-                    <div class="flex felx-row justify-between">
-                        <div class="pl-2 pt-2 pb-2">
-                            <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
-                        </div>
-                        <div class="pr-2 pt-2 pb-2">
+                    <div class="pr-2">
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                            largura="8" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
+                    </div>
+
+                </div>
+                <div class="flex felx-row justify-between">
+                    <div class="pl-2 pt-2 pb-2">
+                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                    </div>
+                    <div class="pr-2 pt-2 pb-2">
+
                         <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeBack">
                         </Botao>
                     </div>
-
                 </div>
 
-                <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
-                    <div class="flex justify-end">
-                        <img src="../imagem-vetores/triangulo.svg">
-                    </div>
-                    <div class="flex flex-row justify-between">
-                        <div class="pl-2">
-                            <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                                v-model="nomeStatus"></Input>
-                        </div>
-                        <div class="pr-2">
-                            <ColorPicker v-model="corStatus" class="rounded-sm" />
-                        </div>
-
-                    </div>
-                    <div class="flex felx-row justify-between">
-                        <div class="pl-2 pt-2 pb-2">
-                            <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
-                        </div>
-                        <div class="pr-2 pt-2 pb-2">
-
-                            <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
-                            </Botao>
-                        </div>
-                    </div>
-
-                </div>
             </div>
+
+            <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
+                <div class="flex justify-end">
+                    <img src="../imagem-vetores/triangulo.svg">
+                </div>
+                <div class="flex flex-row justify-between">
+                    <div class="pl-2">
+                        <Input largura="13" conteudoInput="Nome Status" fontSize="1rem" altura="2"
+                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
+            nomeStatus = e
+        }"></Input>
+                    </div>
+                    <div class="pr-8">
+                        <ColorPicker v-model="corStatus" class="rounded-md" />
+                    </div>
+
+                </div>
+                <div class="flex felx-row justify-between">
+                    <div class="pl-2 pt-2 pb-2">
+                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                    </div>
+                    <div class="pr-2 pt-2 pb-2">
+                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
+                        </Botao>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
-
 </template>
 
 <script setup>
@@ -297,12 +304,11 @@ async function buscaPropriedadeBanco() {
     if (projeto.propriedades != []) {
         projeto.propriedades.forEach((propriedade) => {
             if (propriedade.nome != '') {
-                listaPropriedades.value.push(propriedade);
-
+                criaPropriedadeCookies(propriedade);
             }
         })
         auxParaCriarPropriedades = listaPropriedades.value;
-        criaPropriedadeCookies();
+        
     }
 }
 
@@ -321,12 +327,12 @@ function buscaRascunhoPropiedade() {
     auxParaCriarPropriedades = propriedadeArmazenada
     criaPropriedadeCookies();
 }
+
 function mandaProrpiedadesBack(listaPropriedadesRecebida) {
     const propriedadesParaback = listaPropriedadesRecebida.map(objeto => {
         const objetoModificado = { ...objeto };
         if (objetoModificado.tipo == "Seleção") {
             objetoModificado.tipo = "SELECAO";
-
         }
         objetoModificado.tipo = objetoModificado.tipo.toUpperCase()
         return objetoModificado;
@@ -337,8 +343,8 @@ function mandaProrpiedadesBack(listaPropriedadesRecebida) {
 }
 
 function criaListaPropriedadesRenderizaFront(propriedadeBack) {
-    if(propriedadeBack.tipo == ""){
-        propriedadeBack.tipo="Texto"
+    if (propriedadeBack.tipo == "") {
+        propriedadeBack.tipo = "Texto"
     }
     let propriedadeFront = {
         propriedade: propriedadeBack,
@@ -351,6 +357,7 @@ function criaListaPropriedadesRenderizaFront(propriedadeBack) {
     listaPropriedades.value = auxParaCriarPropriedades
     nomePropriedade.value = "";
     tipoPropriedade.value = "";
+
     funcaoPopUp.fechaPopUp();
 }
 
@@ -372,28 +379,28 @@ function criaPropriedadeCookies(propriedadeBack) {
         VueCookies.set("propriedadeCookie", auxParaCriarPropriedades, 864000000)
     }
     mandaProrpiedadesBack(listaPropriedadesBackEnd)
-
 }
 
 function criaStatusBack() {
-
-    let statusCriado = {
-        nome: nomeStatus.value,
-        cor: corStatus.value
+    if (nomeStatus.value != "") {
+        let statusCriado = {
+            nome: nomeStatus.value,
+            cor: corStatus.value
+        }
+        auxParaCriarStatus.push(statusCriado);
+        criaStatusCookies(statusCriado)
+        mandaStatusBack();
     }
-
-    auxParaCriarStatus.push(statusCriado);
-    criaStatusCookies(statusCriado)
-    mandaStatusBack();
 }
 
 function criaPropriedadeBack() {
-
-    let statusCriado = {
-        nome: nomePropriedade.value,
-        tipo: tipoPropriedade.value
+    if (nomePropriedade.value != "") {
+        let propriedadeCriada = {
+            nome: nomePropriedade.value,
+            tipo: tipoPropriedade.value
+        }
+        criaPropriedadeCookies(propriedadeCriada)
     }
-    criaPropriedadeCookies(statusCriado)
 
 }
 
@@ -417,10 +424,10 @@ function mandaStatusBack() {
     auxParaCriarStatus = []
     auxRenderizaStatusTela.map((objeto) => auxParaCriarStatus.push(objeto.status))
     listaStatusBack = auxParaCriarStatus;
-    if(listaStatusBack!=null){
+    if (listaStatusBack != null) {
         instance.emit('mandaListaStatusBack', listaStatusBack)
     }
-    
+
     nomeStatus.value = "";
     corStatus.value = "";
 }
@@ -510,9 +517,8 @@ async function removePropriedade(propriedadeRecebida) {
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
     }
-    if (!projetoEdita.value) {
         criaPropriedadeCookies()
-    }
+  
 }
 </script>
 
@@ -544,5 +550,21 @@ async function removePropriedade(propriedadeRecebida) {
     overflow: hidden;
     transition: overflow-y 0.3s ease;
     @apply p-2 overflow-y-auto w-full;
+}
+.animation {
+    @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>

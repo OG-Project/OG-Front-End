@@ -3,7 +3,11 @@
         <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
-                    largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"></Input>
+                    largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"
+                    :modelValue="nomeProjeto"
+                            @updateModelValue="(e)=> {
+                                nomeProjeto=e
+                            }"></Input>
             </div>
             <div class="h-[15%] w-max flex items-center">
                 <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="8vh" preset="transparente"
@@ -224,9 +228,7 @@ function verificaTemEsseResponsavelProjeto(username) {
 }
 
 function buscaListaEquipesRelacionadas(projeto) {
-    projeto.projetoEquipes.forEach((equipe) => {
-        colocaListaEquipes(equipe.equipe)
-    })
+   projeto.projetoEquipes.forEach((projetoEquipe) => colocaListaEquipes(projetoEquipe.equipe))
 }
 
 async function pesquisaBancoUserName() {
@@ -306,30 +308,35 @@ async function criaProjeto() {
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
-    console.log(equipeEscolhidaParaProjeto)
     const listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada;
-    if (equipeEscolhidaParaProjeto.nome == null) {
-        equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeEscolhidaParaProjeto[0]);
-    } else {
-        equipeVinculada = equipeEscolhidaParaProjeto;
-    }
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
+
+    }else if (equipeEscolhidaParaProjeto.nome == null) {
+        equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeEscolhidaParaProjeto[0]);
+
+    } else {
+        equipeVinculada = equipeEscolhidaParaProjeto;
     }
     if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
         return;
     }
-
-    const objetoEnviaBack = {
-        equipe: {
-            id: equipeVinculada.id
-        }
-    }
-    listaEquipeEnviaBack.push(objetoEnviaBack)
-    console.log(listaEquipeEnviaBack)
     listaEquipesSelecionadas.value.push(equipeVinculada)
+    transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
+}
+
+function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront){
+   let equipeBack;
+    let listaBackEquipe= listaEquipeFront.map((equipeFront) =>{
+       return  equipeBack= {
+            equipe:{
+                id: equipeFront.id
+            }
+        }
+    })
+    listaEquipeEnviaBack = listaBackEquipe;
 }
 
 async function removeListaEquipeConvidadas(equipeRemover) {
@@ -341,6 +348,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         // Remover o objeto da lista usando splice
         listaEquipesSelecionadas.value.splice(indice, 1);
     }
+    transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     criarProjetoCookies();
 
 }
@@ -368,26 +376,9 @@ async function removeResponsavel(responsavelRemover) {
     grid-template-columns: 41.175% 41.175% 17.65%;
     width: 100%;
     height: 90%;
-   
-
 }
 
-.animation {
-    @apply w-[65%] bg-brancoNeve shadow-md flex justify-around flex-col;
-    animation: myAnim 0.15s ease 0s 1 normal none;
-}
 
-@keyframes myAnim {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 .scrollListaResponsaveis::-webkit-scrollbar {
     height: 0.3vw;

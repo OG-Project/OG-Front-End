@@ -1,18 +1,26 @@
 <template>
   <div :style="tamanhoPesquisa">
     <div v-if="temIcon">
-      <Input :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa"
-        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :fontSize="fontSize"></Input>
+      <Input :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa":fontSize="fontSize"
+        :conteudoInput="placeHolderPesquisa"
+         v-model="conteudoDaPesquisa" 
+        :modelValue="conteudoDaPesquisa" tipo="obrigatorio" @updateModelValue="(e) => {
+        conteudoDaPesquisa = e
+       }"></Input>
     </div>
-    <div v-if="!temIcon" @="$emit('itemSelecionado', conteudoDaPesquisa)" >
-      <Input :largura="props.largura" styleInput="input-transparente-claro" 
-        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :fontSize="fontSize"></Input>
+    <div v-if="!temIcon" @="$emit('itemSelecionado', conteudoDaPesquisa)">
+      <Input :largura="props.largura" styleInput="input-transparente-claro" :conteudoInput="placeHolderPesquisa" :fontSize="fontSize"
+        v-model="conteudoDaPesquisa"  
+        :modelValue="conteudoDaPesquisa"
+        @updateModelValue="(e) => {
+        conteudoDaPesquisa = e
+     }"></Input>
     </div>
 
     <div v-if="conteudoDaPesquisa != '' && !itemsIguais"
       style="overflow-y: auto; overflow-x: hidden; max-height: 16vh; border-radius: 5px" id="barraDePesquisa">
       <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
-        @click="passaValorProInput(itemPesquisado)" >
+        @click="passaValorProInput(itemPesquisado)">
         <div :style="respostaPesquisa">
           <p>{{ itemPesquisado }}</p>
         </div>
@@ -37,13 +45,13 @@ const props = defineProps({
   },
   temIcon: Boolean,
   placeHolderPesquisa: {
-    type:String,
-    default:'Pesquisa'
+    type: String,
+    default: 'Pesquisa'
   },
-  fontSize:String
+  fontSize: String
 
 });
- 
+
 let itemsIguais = ref(false);
 
 let listaRenderizada = ref([]);
@@ -103,7 +111,7 @@ if (props.modoEscuro === "nao") {
   };
 
   espacoRespostasPesquisa.value = {
-    width: props.largura+"vw",
+    width: props.largura + "vw",
     backgroundColor: "#FEFBFF",
   };
 
@@ -125,7 +133,7 @@ if (props.modoEscuro === "nao") {
     color: "#FEFBFF",
   };
   espacoRespostasPesquisa.value = {
-    width: props.largura+"vw",
+    width: props.largura + "vw",
     backgroundColor: "#620BA7",
   };
   //   corLinha.value = {

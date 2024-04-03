@@ -9,7 +9,11 @@
                             <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
                             <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao" alt="Imagem Selecionada" >
                         </div>
-                        <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
+                        <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" 
+                        v-model="nome"  
+                        :modelValue="nome"  @updateModelValue="(e) => {
+                            nome = e
+                        }">></Input> 
                     </div>
                         <div class=" grid-template  flex w-full">
                             <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInputConvidado()" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
