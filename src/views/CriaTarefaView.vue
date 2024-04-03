@@ -116,15 +116,32 @@
         </div>
       </div>
 
-      <p class="pl-12 mt-4">Arquivos({{ numeroDeArquivos }})...</p>
-      <div id="exploradorDeArquivos" v-if="numeroDeArquivos != 0"
-        class="flex gap-4 h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
-        <p></p>
-        <!-- v-for com os arquivos -->
+      <p class="pl-12 mt-4">Arquivos({{ tarefa.arquivos.length }})...</p>
+      <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
+        class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
+        <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
+          v-for="arquivo in tarefa.arquivos">
+          <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
+            <img
+              v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
+              class="h-[100%] w-[100%]" :src="arquivo.dados">
+            <div v-else>
+              <img class="h-[65%]" :src='getIconSrc(arquivo)' />
+            </div>
+          </a>
+          <div class="bg-[#F6F6F6] w-[100%] h-[15%] items-center flex justify-around">
+            <p class="truncate w-[100px] text-xs">{{ arquivo.nome }}</p>
+            <img @click="deletaArquivo(arquivo)" :src="BotaoX">
+          </div>
+        </div>
       </div>
       <div class="pl-12 mt-4">
-        <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
-          inverterCorIcon="sim"></Botao>
+        <div class="w-min h-min relative">
+          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
+            inverterCorIcon="sim"></Botao>
+          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
+        </div>
+
       </div>
       <div class="pl-12 mt-4">
         <h1>SubTarefas</h1>
@@ -167,7 +184,7 @@
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
 
             <img v-if="usuarioCookies.foto.tipo != null"
-              class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
+              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
             usuarioCookies.foto.tipo +
             ';base64,' +
             usuarioCookies.foto.dados
@@ -259,16 +276,17 @@
             class="w-[100%] min-h-[3vh] gap-2 flex flex-col items-center justify-center">
             <div class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center">
               <div class="flex gap-2 items-center w-[40%]">
-                <CheckBox @click="adicionaExcluiPropriedadeNaTarefa(propriedade, index)"
-                  :ativoProps="propriedade.estaNaTarefa"></CheckBox>
-                <p class="break-all">{{ propriedade.nome }}</p>
+                <CheckBox
+                  @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
+                  :checked="veSeAPropriedadeTaNaTarefa(propriedade)"></CheckBox>
+                <p class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
-                <p>Tipo: {{ propriedade.tipo }}</p>
+                <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
               </div>
               <div class="w-[30%]">
-                <button @click="editarPropriedade(index, propriedade.valor)"
-                  class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md">
+                <button @click="editarPropriedade(propriedade)" class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md">
+
                   Valor
                 </button>
               </div>
@@ -276,29 +294,32 @@
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
               </div>
             </div>
-            <div class="w-[100%] min-h-[5vh] flex items-center justify-center" v-if="propriedade.sendoEditado">
-              <div v-if="propriedade.tipo === 'TEXTO'">
-                <Input altura="2" largura="28" conteudoInput=" " v-model="propriedade.valor" width="80%"
-                  @input="editarPropriedade(index, propriedade.valor)">
-                </Input>
+            <div class="w-[100%] min-h-[5vh] flex items-center justify-center">
+              <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
+                <div v-for="propriedadeForTarefa of tarefa.propriedades">
+                  <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor"
+                   width="80%">
+                </div>
               </div>
-              <div v-if="propriedade.tipo === 'DATA'">
-                <Calendar class="border-2 rounded-lg border-[#620BA7]" border v-model="propriedade.valor"
+              <div v-if="propriedade.propriedade.tipo === 'DATA'">
+                <Calendar class="border-2 rounded-lg border-[#620BA7]" v-model="propriedade.valor.valor"
                   dateFormat="dd/mm/yy" showIcon iconDisplay="input" />
               </div>
-              <div v-if="propriedade.tipo === 'NUMERO'">
+              <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
                 <InputNumber class="border-2 rounded-lg border-[#620BA7]" showIcon iconDisplay="input"
-                  v-model="propriedade.valor" inputId="minmaxfraction" minFractionDigits="0" maxFractionDigits="2" />
+                  v-model="propriedade.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
+                  maxFractionDigits="2" />
               </div>
-              <div v-if="propriedade.tipo === 'SELEÇÃO'">
-                <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
-                  <Input altura="2" largura="27" conteudoInput=" " v-model="propriedade.valor[index]" width="60%"
+              <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'">
+                <div v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
+                  <Input altura="2" largura="27" conteudoInput=" " v-model="propriedade.valor.valor[index]" width="60%"
                     @input="editarPropriedade(index, valor)">
                   </Input>
-                  <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor, index)" :src="BotaoX" />
+                  <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor.valor, index)" :src="BotaoX" />
+
                 </div>
 
-                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor)">
+                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
                   Adicionar +
                 </p>
               </div>
@@ -367,11 +388,18 @@
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
-      <div v-for="status of tarefa.status" class="min-h-[4%] flex items-center justify-center gap-4">
-        <p :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
-          class="flex items-center border-2 shadow-md justify-center px-4">
-          {{ status.nome }}
-        </p>
+      <div v-if="tarefa.status != null">
+        <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
+          <p>Sua tarefa não possui status</p>
+        </div>
+        <div v-for="status of tarefa.status" class="min-h-[4%] flex items-center justify-center gap-4"
+          v-if="tarefa.status.length != 0">
+          <p :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
+            class="flex items-center border-2 shadow-md justify-center px-4">
+            {{ status.nome }}
+          </p>
+        </div>
+
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Propriedades</h1>
@@ -382,21 +410,21 @@
       </div>
       <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
         <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
-          <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
+          <p class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
           <div v-if="propriedade.tipo === 'DATA'">
-            <p>Valor: {{ format(new Date(propriedade.valor), "dd/MM/yyyy") }}</p>
+            <p>Valor: {{ format(new Date(propriedade.valor.valor), "dd/MM/yyyy") }}</p>
           </div>
           <div v-if="propriedade.tipo === 'SELEÇÃO'" class="flex">
             <p>Valor:</p>
             <select class="flex text-center w-[80%]">
-              <option v-for="valor in propriedade.valor">{{ valor }}</option>
+              <option v-for="valor of propriedade.valor.valor">{{ valor }}</option>
             </select>
           </div>
-          <div v-if="propriedade.tipo === 'NUMERO'">
-            <p>Valor: {{ propriedade.valor }}</p>
+          <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
+            <p>Valor: {{ propriedade.valor.valor }}</p>
           </div>
-          <div v-if="propriedade.tipo === 'TEXTO'">
-            <p>Valor: {{ propriedade.valor }}</p>
+          <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
+            <p>Valor: {{ propriedade.valor.valor }}</p>
           </div>
         </div>
       </div>
@@ -411,7 +439,7 @@ import Botao from "../components/Botao.vue";
 import CheckBox from "../components/checkBox.vue";
 import iconAnexo from "../imagem-vetores/anexoIcon.svg";
 import TextAreaPadrao from "../components/textAreaPadrao.vue";
-import { ref, watch } from "vue";
+import { onUnmounted, ref, watch } from "vue";
 import selectPadrao from "../components/selectPadrao.vue";
 import navBar from "../components/navBar.vue";
 import ColorPicker from "primevue/colorpicker";
@@ -432,6 +460,16 @@ const banco = conexaoBD();
 const parametroDoFiltroStatus = ref("Ordenar Por");
 
 const parametroDoFiltroPropriedade = ref("Ordenar Por");
+
+function veSeAPropriedadeTaNaTarefa(propriedade) {
+  for (const propriedadeFor of tarefa.value.propriedades) {
+    if (propriedadeFor.id == propriedade.id) {
+      return true
+    }
+  }
+  return false
+
+}
 
 //Variavel utilizada para armazenar os comentarios da tarefa
 
@@ -492,6 +530,21 @@ function corDaFonte(backgroundColor) {
 }
 //Função utilizada para criar um Status
 
+function getIconSrc(arquivo) {
+  const fileTypeIcons = {
+    'application/pdf': 'https://cdn-icons-png.flaticon.com/512/337/337946.png',
+    'text/plain': 'https://cdn-icons-png.freepik.com/512/8243/8243060.png',
+    'video/mp4': 'https://cdn-icons-png.freepik.com/512/8243/8243015.png',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'https://cdn-icons-png.freepik.com/512/8361/8361467.png',
+    'application/vnd.ms-excel': 'https://cdn-icons-png.freepik.com/512/8361/8361467.png',
+    'text/csv': 'https://cdn-icons-png.freepik.com/512/8242/8242984.png'
+    // Adicione mais tipos de arquivo conforme necessário
+  };
+  const iconSrc = fileTypeIcons[arquivo.tipo];
+  if (iconSrc) return iconSrc;
+  return `data:image/jpg;base64, ${arquivo.dados}`;
+}
+
 function criaStatus() {
   if (nomeStatus.value != "") {
     let statusNovo = {
@@ -503,6 +556,21 @@ function criaStatus() {
     status.value.push(statusNovo);
     corSendoMudada.value = false;
   }
+}
+
+async function patchDaListaDePropriedades() {
+  let IdTarefaCookie = VueCookies.get("IdTarefaCookies");
+  console.log(listaFiltradaPropriedades.value);
+  for(let propriedadeQuePrecisaReceberOValor of listaFiltradaPropriedades.value){
+    for(let propriedadeComOValor of tarefa.value.propriedades){
+      if(propriedadeQuePrecisaReceberOValor.id == propriedadeComOValor.id){
+        propriedadeQuePrecisaReceberOValor.valor.valor = propriedadeComOValor.valor.valor;
+      }
+    }
+  }
+  console.log(listaFiltradaPropriedades.value);
+  console.log(banco.atualizaListaDeValorPropriedade(IdTarefaCookie, listaFiltradaPropriedades.value));
+  banco.atualizaListaDeValorPropriedade(IdTarefaCookie, listaFiltradaPropriedades.value)
 }
 
 //Função que deleta status
@@ -618,9 +686,6 @@ function deletaPropriedade(propriedade) {
   const deleta = criaPropriedadeTarefaStore();
   propriedades.value.forEach(async (propriedadeParaDeletar) => {
     if (propriedadeParaDeletar === propriedade) {
-      console.log(propriedadeParaDeletar.id);
-      console.log(propriedade.id);
-      console.log(VueCookies.get("IdProjetoAtual"));
       deleta.deletaPropriedade(propriedade.id, parseInt(VueCookies.get("IdProjetoAtual")))
 
       await new Promise(r => setTimeout(r, 60));
@@ -635,9 +700,7 @@ async function procuraProjetosDoBanco() {
   const projetos = await banco.procurar("/projeto");
   let projetoId = VueCookies.get("IdProjetoAtual");
   for (const projeto of projetos) {
-    console.log("a");
     if (projeto.id == projetoId) {
-      console.log(projeto.propriedades);
       return projeto;
     }
   }
@@ -659,47 +722,40 @@ let tarefa = ref({
 
 async function puxaTarefaDaEdicao() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
-  if (IdTarefaCookies == 0) {
-    tarefa.value.nome = "";
-    tarefa.value.descricao = "";
-    tarefa.value.arquivos = [];
-    tarefa.value.comentarios = [];
-    tarefa.value.propriedades = [];
-    tarefa.value.status = [];
-    tarefa.value.subtarefas = [];
-    return;
+  let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
+  if (tarefaAux.nome == null) {
+    tarefa.value.nome = tarefaAux.nome;
+    tarefa.value.descricao = tarefaAux.descricao;
+    tarefa.value.arquivos = tarefaAux.arquivos;
+    tarefa.value.comentarios = tarefaAux.comentarios;
+    tarefa.value.status = tarefaAux.status;
+    for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
+      veSeAPropriedadeTaNaTarefa(propriedade.propriedade)
+    }
   }
-  let tarefa2 = banco.buscarUm(IdTarefaCookies, "/tarefa");
-  let tarefaAux = await tarefa2
-  tarefa.value.nome = tarefaAux.nome;
-  tarefa.value.descricao = tarefaAux.descricao;
-  tarefa.value.arquivos = tarefaAux.arquivos;
-  tarefa.value.comentarios = tarefaAux.comentarios;
-  tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
-  tarefa.value.status = tarefaAux.status;
-  tarefa.value.subtarefas = tarefaAux.subTarefas;
 }
 
 async function atualizaPropriedadesEStatus() {
-  projetoDaTarefa.value = await procuraProjetosDoBanco();
-  console.log(projetoDaTarefa.value);
+  let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
+  let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   status.value = projetoDaTarefa.value.statusList;
-  propriedades.value = projetoDaTarefa.value.propriedades;
+  propriedades.value = tarefaAux.valorPropriedadeTarefas;
 }
 
 onUpdated(() => {
+  update();
+});
+
+function update() {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
-  adicionaExcluiPropriedadeNaTarefa()
-});
+}
 
 onMounted(async () => {
   VueCookies.set("IdProjetoAtual", 1, 100000000000);
   projetoDaTarefa.value = await procuraProjetosDoBanco();
-  console.log(projetoDaTarefa.value);
   procuraProjetosDoBanco();
-  console.log(projetoDaTarefa.value);
   reloadSubTarefas();
   autenticarUsuario();
   puxaTarefaDaEdicao();
@@ -721,7 +777,6 @@ onMounted(async () => {
   exibirComentarios();
   autenticaUsuarioCookies();
   atualizaPropriedadesEStatus();
-  adicionaExcluiPropriedadeNaTarefa()
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
@@ -729,6 +784,33 @@ onMounted(async () => {
 function exibirComentarios() {
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
 }
+
+function gerarArquivo(e) {
+  let arquivo = e.target.files[0];
+  let reader = new FileReader();
+  reader.readAsDataURL(arquivo);
+  reader.onload = function () {
+    let arquivoBase64 = reader.result;
+    let arquivoParaOBanco = {
+      nome: arquivo.name,
+      tipo: arquivo.type,
+      dados: arquivoBase64,
+    };
+    tarefa.value.arquivos.push(arquivoParaOBanco);
+    update()
+  }
+
+}
+
+function deletaArquivo(arquivo) {
+  tarefa.value.arquivos.forEach((arquivoParaDeletar) => {
+    if (arquivoParaDeletar === arquivo) {
+      tarefa.value.arquivos.splice(tarefa.value.arquivos.indexOf(arquivo), 1);
+    }
+  });
+  update()
+}
+
 
 let propriedadeSendoCriada = ref(false);
 
@@ -771,15 +853,21 @@ function adicionaExcluiStatusNaTarefa(status) {
   }
 }
 
-function adicionaExcluiPropriedadeNaTarefa() {
-  propriedades.value.forEach((propriedade) => {
-    console.log(propriedades.value);
-    if (propriedade.valor === "" || propriedade.valor === null || propriedade.valor === " " || propriedade.valor === undefined) {
-      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
-    } else {
-      tarefa.value.propriedades.push(propriedade);
+function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
+  if (propriedade.valor.valor.valor != '') {
+    if (!estaNaTarefa) {
+      tarefa.value.propriedades.push(propriedade)
     }
-  });
+    else {
+      for(let propriedadeForTarefa of tarefa.value.propriedades){
+        if(propriedadeForTarefa.propriedade.id == propriedade.propriedade.id){
+          propriedade.valor.valor = propriedadeForTarefa.valor.valor
+        }
+      }
+      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
+    }
+
+  }
 }
 
 
@@ -806,7 +894,6 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
-  console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
 
@@ -935,9 +1022,12 @@ let barraPorcentagem = ref({
 });
 
 //Edita o valor ja presenta na proriedade
-function editarPropriedade(index, valor) {
-  propriedades.value[index].sendoEditado = !propriedades.value[index].sendoEditado;
-  propriedades.value[index].valor = valor;
+function editarPropriedade(propriedade) {
+  for (const propriedade of tarefa.value.propriedades) {
+    if (propriedade == propriedade) {
+
+    }
+  }
 }
 
 //Variavel utilizada para mostrar o display onde mostra os status e as propriedades que pode adicionar na tarefa
