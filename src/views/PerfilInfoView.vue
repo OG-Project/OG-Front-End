@@ -8,7 +8,7 @@
                 />
                 <div v-else class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
             </div>
-            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
+            <div v-if="equipes.value!=null" :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
                 <div class="flex flex-col items-center gap-9">
                     <div v-for="i in equipes"
                         class="cardEquipe cursor-pointer shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
@@ -23,6 +23,9 @@
 
                 </div>
 
+            </div>
+            <div v-else class="scroll w-[80%] h-[45%] py-2 " >
+                Sem Equipes
             </div>
         </div>
         <div class="w-[75vw] h-[92vh] flex flex-col  ">
@@ -39,7 +42,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Nome" 
                             v-model="perfil.nome"
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                         <div class="flex items-center justify-between gap-5">
@@ -48,7 +51,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Username"
                             v-model="perfil.username" 
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                         <div class="flex items-center justify-between gap-5">
@@ -57,7 +60,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="E-mail"
                             v-model="perfil.email" 
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                     </div>
@@ -69,24 +72,25 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Sobrenome"
                             v-model="perfil.sobrenome"
-                         
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio"
                              />
                         </div>
                         <div class="flex  justify-between items-center gap-5">
+                            
                             <span class="text-xl">Data de Nascimento</span>
                             <Input 
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Data de Nascimento"
-                            v-model="perfil.dataDeNascimento"
-                            desabilitado="true" 
-                            tipo="obrigatorio" />
+                            v-model="dataNascimento"
+                            :modelValue="dataNascimento.value"
+                            :desabilitado="true" 
+                            tipo="date" />
                         </div>
                     </div>
                 </div>
                 <div >
-                    {{ console.log(projetos.value)}}
+                    
                     <Carousel 
                     v-if="width>958 " 
                     :value="projetos" 
@@ -107,7 +111,7 @@
                     </Carousel>
 
                     <Carousel 
-                    v-if="width<958 && projetos.value.length!=0"
+                    v-if="width<958"
                     :value="projetos" 
                     :numVisible="1" 
                     containerClass="" 
@@ -119,11 +123,15 @@
                     :numScroll="1"
                     :responsiveOptions="projetos">
                         <template #item="slotProps">
+                            
                             <!-- {{ slotProps.index }} -->
                             <cardProjetos class="my-4 mx-auto"></cardProjetos>
                             <!-- {{ slotProps.index }} -->
                         </template>
                     </Carousel>
+                    <div v-else>
+                        oi
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,7 +151,7 @@ import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
 import { onMounted, ref, onUpdated, onBeforeUnmount } from 'vue';
 import {useRoute} from 'vue-router';
-import { useWindowSize } from '@vueuse/core'
+import { useMouseInElement, useWindowSize } from '@vueuse/core'
 
 const route=useRoute()
 
@@ -156,24 +164,34 @@ const { fonteCorpo } = storeToRefs(perfil)
 const { fonteTitulo } = storeToRefs(perfil)
 let equipes = ref([])
 let projetos =ref([])
-
+let dataNascimento=ref('')
+let usuario=ref({})
 
 onMounted(async () => {
     
     let id=route.params.id
     console.log(id)
-    let usuario=await conexao.buscarUm(id,'/usuario')
+    usuario.value=await conexao.buscarUm(id,'/usuario')
     console.log(usuario)
-    projetos.value=usuario.projetos
-    equipes.value=usuario.equipes
-    console.log(fonteTitulo.value)
-    console.log(fonteCorpo.value)
-    perfil.nome=usuario.nome
-    perfil.sobrenome=usuario.sobrenome
-    perfil.email=usuario.email
-    perfil.username=usuario.username
-    perfil.dataDeNascimento=usuario.dataNascimento
-    projetos.value=usuario.projetos
+    projetos.value=usuario.value.projetos
+    equipes.value=usuario.value.equipes
+    if(projetos.value==undefined){
+        projetos.value=[]
+    }
+    if(equipes.value==undefined){
+        equipes.value=[]
+    }
+    console.log(projetos.value)
+    console.log(equipes.value)
+    dataNascimento.value = new Date(usuario.value.dataNascimento).toLocaleDateString() 
+    dataNascimento.value=dataNascimento.value.split('/').reverse().join('-')
+    console.log(dataNascimento.value);
+    perfil.nome=usuario.value.nome
+    perfil.sobrenome=usuario.value.sobrenome
+    perfil.email=usuario.value.email
+    perfil.username=usuario.value.username
+    perfil.dataDeNascimento=usuario.value.dataNascimento
+    projetos.value=usuario.value.projetos
     // alert(height.value)
     // alert(width.value)
 });
@@ -184,6 +202,13 @@ onUpdated(()=>{
     // alert(width)
 
 })
+
+// function verificaProjetos(projetos){
+//     if(projetos.length!=0){
+//         return true
+//     }
+//     return false
+// }
 
 function temMaisDeQuatro(lista) {
     return lista.length >= 4 ? true : false

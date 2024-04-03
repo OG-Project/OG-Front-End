@@ -10,7 +10,7 @@
                                         <Input 
                                         styleInput="input-transparente-claro" 
                                         conteudoInput="Nome" 
-                                        :modelValue="nome"
+                                        
                                         v-model="nome"
                                         tipo="obrigatorio"
                                         @updateModelValue="(e)=> {
@@ -70,7 +70,7 @@
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Data de Nascimento" 
                                         v-model="PerfilStore.dataDeNascimento" 
-                                        tipo="obrigatorio"
+                                        tipo="date"
                                         @updateModelValue="(e)=> {
                                                 console.log(e)
                                                 PerfilStore.dataDeNascimento=e
@@ -143,9 +143,14 @@ onBeforeMount(async ()=>{
         PerfilStore.nome=usuario.nome
         nome.value=PerfilStore.nome
         PerfilStore.sobrenome=usuario.sobrenome
+        console.log('oi')
+        
         PerfilStore.email=usuario.email
         PerfilStore.username=usuario.username
-        PerfilStore.dataDeNascimento=usuario.dataNascimento
+        let data=new Date(usuario.dataNascimento).toLocaleDateString()
+        data=data.split('/').reverse().join('-')
+        
+        PerfilStore.dataDeNascimento=data
 })
 onMounted(()=>{
 

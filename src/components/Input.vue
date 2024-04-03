@@ -101,7 +101,22 @@
             <label 
             :style="estilizaDivPlaceHolder" 
             for="inputStyle"  
-            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            class=" 
+            absolute 
+            text-gray-500 
+            duration-300 
+            transform 
+            -translate-y-8 
+            scale-80  
+            z-10 
+            origin-[0] 
+            peer-focus:text-roxo  
+            peer-placeholder-shown:scale-100 
+            peer-placeholder-shown:translate-y-0 
+            peer-focus:scale-80 
+            peer-focus:-translate-y-8 
+            rtl:peer-focus:translate-x-1/4 
+            rtl:peer-focus:left-auto">
             {{ conteudoInput }}
             </label>
         </div>
