@@ -23,7 +23,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.patch("http://localhost:8084"+textoRequisicao,userId,equipeId)
       },
       atualizaListaDeValorPropriedade(IdTarefaCookie,valorPropriedadeTarefas){
-        return axios.patch("http://localhost:8084/tarefa/valorPropriedadeTarefa/" + IdTarefaCookie, valorPropriedadeTarefas)
+        return axios.put("http://localhost:8084/tarefa/valorPropriedadeTarefa/" + IdTarefaCookie, valorPropriedadeTarefas)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
         return axios.patch('http://localhost:8084'+ textoRequisicao +"/"+ equipeId, ids)

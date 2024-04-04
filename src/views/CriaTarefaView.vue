@@ -555,18 +555,9 @@ function criaStatus() {
 }
 
 async function patchDaListaDePropriedades() {
-  let IdTarefaCookie = VueCookies.get("IdTarefaCookies");
-  console.log(listaFiltradaPropriedades.value);
-  for(let propriedadeQuePrecisaReceberOValor of listaFiltradaPropriedades.value){
-    for(let propriedadeComOValor of tarefa.value.propriedades){
-      if(propriedadeQuePrecisaReceberOValor.id == propriedadeComOValor.id){
-        propriedadeQuePrecisaReceberOValor.valor.valor = propriedadeComOValor.valor.valor;
-      }
-    }
-  }
-  console.log(listaFiltradaPropriedades.value);
-  console.log(banco.atualizaListaDeValorPropriedade(IdTarefaCookie, listaFiltradaPropriedades.value));
-  banco.atualizaListaDeValorPropriedade(IdTarefaCookie, listaFiltradaPropriedades.value)
+  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+
+  banco.atualizar(tarefa2,"/tarefa")
 }
 
 //Função que deleta status
@@ -750,7 +741,7 @@ function update() {
 }
 
 onMounted(async () => {
-  VueCookies.set("IdProjetoAtual", 1, 100000000000);
+  VueCookies.set("IdProjetoAtual", 2, 100000000000);
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   procuraProjetosDoBanco();
   reloadSubTarefas();
