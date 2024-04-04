@@ -71,7 +71,7 @@
                             <div class="flex  flex-row  gap-4 h-max" @mouseenter="startTimer(status)"
                                 @mouseleave="clearTimer(status)" v-if="status.verNomeCompleto == true">
                                 <p class="w-[33%]  bg-brancoNeve break-words " v-if="status.verNomeCompleto == true">{{
-                                    status.status.nome }}</p>
+            status.status.nome }}</p>
                                 <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                                 <div class=" w-[50%] h-full ">
                                     <p class="bg-roxo-claro rounded-md p-1 w-full h-[33%]">Tarefas Atribuidas</p>
@@ -92,7 +92,8 @@
 
             <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
 
-                <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+                <div class="animation"
+                    v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
                     <div class="flex justify-end">
                         <img src="../imagem-vetores/triangulo.svg">
                     </div>
@@ -102,8 +103,9 @@
                                 v-model="nomePropriedade"></Input>
                         </div>
                         <div class="pr-2">
-                            <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                                largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
+                            <selectPadrao placeholderSelect="Tipo"
+                                :lista-select="['Texto', 'Data', 'Numero', 'Seleção']" largura="5" altura="3.8"
+                                fonteTamanho="1rem" v-model="tipoPropriedade"> </selectPadrao>
                         </div>
 
                     </div>

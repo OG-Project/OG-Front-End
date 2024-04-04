@@ -24,7 +24,7 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
             }
         }
         VueCookies.set("IdTarefaCookies", tarefaAux.data.id , 100000000000)
-        localStorage.removeItem("TarefaNaoFinalizada");
+        localStorage.removeItem("TarefaNaoFinalizada"); 
       }
       setCookies();
       router.push('/criaTarefa');
