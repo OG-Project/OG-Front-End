@@ -1,6 +1,6 @@
 <template>
     <div v-if="listaDeEquipes==true" class="flex justify-center">
-        <ListaDeEquipesProjeto></ListaDeEquipesProjeto>
+        <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
     <div class="w-full h-[30%] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
@@ -79,7 +79,7 @@ let listaDeEquipes = ref(false)
 
 onMounted(async () => {
 
-    projeto.value = await api.buscarUm('3', '/projeto')
+    projeto.value = await api.buscarUm('1', '/projeto')
     definePorcentagem()
 })
 
