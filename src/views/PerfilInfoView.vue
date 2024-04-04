@@ -8,7 +8,7 @@
                 />
                 <div v-else class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
             </div>
-            <div v-if="equipes.value!=null" :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
+            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
                 <div class="flex flex-col items-center gap-9">
                     <div v-for="i in equipes"
                         class="cardEquipe cursor-pointer shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
@@ -24,9 +24,9 @@
                 </div>
 
             </div>
-            <div v-else class="scroll w-[80%] h-[45%] py-2 " >
+            <!-- <div v-else class="scroll w-[80%] h-[45%] py-2 " >
                 Sem Equipes
-            </div>
+            </div> -->
         </div>
         <div class="w-[75vw] h-[92vh] flex flex-col  ">
             <div class="flex flex-col justify-around">
@@ -173,7 +173,6 @@ onMounted(async () => {
     console.log(id)
     usuario.value=await conexao.buscarUm(id,'/usuario')
     console.log(usuario)
-    projetos.value=usuario.value.projetos
     equipes.value=usuario.value.equipes
     if(projetos.value==undefined){
         projetos.value=[]
@@ -181,6 +180,14 @@ onMounted(async () => {
     if(equipes.value==undefined){
         equipes.value=[]
     }
+
+
+    let projetosEquipes=[]
+    equipes.value.forEach(async (element) => {
+        console.log(element.equipe.id)
+        projetosEquipes.push(await conexao.buscarProjetosEquipe('/equipe',element.equipe.id))
+    });
+
     console.log(projetos.value)
     console.log(equipes.value)
     dataNascimento.value = new Date(usuario.value.dataNascimento).toLocaleDateString() 
@@ -196,6 +203,12 @@ onMounted(async () => {
     // alert(width.value)
 });
 
+function verificaTemEquipe(equipes){
+    if(equipes.length!=0){
+        return true
+    }
+    return false
+}
 
 onUpdated(()=>{
     // alert(height)

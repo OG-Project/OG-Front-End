@@ -4,6 +4,7 @@
                 <div class=" grid-template flex w-full">
                         <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
                 </div>
+                
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                         <img class="imagem" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
                         <img class="imagem" v-else src="">
@@ -178,12 +179,13 @@ async function deletarEquipe(){
             banco.deletarEquipe(equipe.id,'/equipe')
             if(router.currentRoute.value.path == '/equipe'){
                 window.location.reload();
+            }else{
+            window.location.reload();
+            window.history.back(router.push({path:'/equipe'}));
             }
-            router.push({path:'/equipe'})
-            VueCookies.remove('equipeSelecionada');
         }
+        VueCookies.remove('equipeSelecionada');
     })
-
 }
 
 async function atualizarEquipe() { 

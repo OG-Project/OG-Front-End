@@ -1,3 +1,4 @@
+
 <template>
     <div>
      <div class="flex justify-center mt-20 p-6 text-5xl">
@@ -67,6 +68,7 @@
         listaUsuarios.forEach((usuario)=>{
            if(usuarioLogadoId == usuario.id ){ 
             equipesUsuario.value = usuario.equipes;
+            console.log(equipesUsuario.value)
            }
         })
     }
@@ -162,7 +164,7 @@
  }
  
  .listaEquipes{
-    @apply  flex flex-wrap justify-start w-[88vw] h-[75vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
+    @apply  flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md  shadow-gray-200;
     flex: 1 1 px;
    
  }

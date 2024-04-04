@@ -3,13 +3,11 @@
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input
-
           largura="32"
           altura="6"
           fontSize="2rem"
           conteudoInput="Nome da tarefa"
           styleInput="input-transparente-claro-grande"
-
           v-model="tarefa.nome"
         ></Input>
       </div>
@@ -20,12 +18,11 @@
           placeholder="Descrição da tarefa"
           tamanho-da-fonte="1rem"
           resize="none"
-
           v-model="tarefa.descricao"
         ></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
-        <div class="flex flex-col justify-center w-[38%]">
+        <div class="flex flex-col justify-center w-[30%]">
           <p>Propriedades</p>
           <button
             class="flex flex-col justify-center h-[70%]"
@@ -35,11 +32,10 @@
           </button>
         </div>
         <div class="flex flex-col justify-center w-[30%]">
-          <p>Status</p>
+          <p>Cor da Tarefa</p>
           <button
             class="flex flex-col justify-center break-keep h-[70%]"
-
-            @click="abreFechaCriaStatus()"
+            @click="abreFechaMudaCor()"
           >
             + Criar
           </button>
@@ -56,41 +52,27 @@
         </div>
       </div>
       <!-- Pop-Up utilizado para criar status -->
-      <div v-if="statusSendoCriado">
-        <div v-if="statusSendoCriado" class="h-full flex flex-row pl-12 pt-6 pb-6">
+      <div v-if="corSendoMudada">
+        <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
               <img src="../imagem-vetores/trianguloStart.svg" />
             </div>
 
             <div class="flex flex-row justify-between items-end">
-
               <div class="pl-2">
-                <Input
-                  largura="10"
-                  conteudoInput="Nome Subtarefa"
-                  fontSize="1rem"
-                  altura="3.8"
-                  v-model="nomeStatus"
-                ></Input>
+                <p>Qual a cor da sua Tarefa?</p>
               </div>
               <div class="pr-2">
-                <ColorPicker v-model="corStatus" class="border-2 rounded-lg" />
+                <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
               </div>
             </div>
-            <div class="flex felx-row justify-between">
-              <div class="pl-2 pt-2 pb-2">
-                <Botao
-                  preset="Sair"
-                  tamanhoPadrao="pequeno"
-                  :funcaoClick="abreFechaCriaStatus"
-                ></Botao>
-              </div>
+            <div class="flex felx-row justify-end">
               <div class="pr-2 pt-2 pb-2">
                 <Botao
                   preset="Confirmar"
                   tamanhoPadrao="pequeno"
-                  :funcaoClick="criaStatus"
+                  :funcaoClick="abreFechaMudaCor"
                 ></Botao>
               </div>
             </div>
@@ -98,7 +80,7 @@
         </div>
       </div>
 
-      <!-- Pop-Up para criar uma propriedade -->
+      <!-- Pop-araaaaa criar uma propriedade -->
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
@@ -159,11 +141,10 @@
             </div>
 
             <div class="flex flex-row justify-between items-end">
-
               <div class="pl-2">
                 <Input
                   largura="10"
-                  conteudoInput="Nome Status"
+                  conteudoInput="Nome SubTarefa"
                   fontSize="1rem"
                   altura="3.8"
                   v-model="nomeSubtarefa"
@@ -172,9 +153,7 @@
               <selectPadrao
                 placeholderSelect="Status"
                 :lista-select="['Em Progresso', 'Concluido']"
-
                 largura="8"
-
                 altura="3.8"
                 fonteTamanho="1rem"
                 v-model="statusSubtarefa"
@@ -200,24 +179,37 @@
         </div>
       </div>
 
-      <p class="pl-12 mt-4">Arquivos({{ numeroDeArquivos }})...</p>
+      <p class="pl-12 mt-4">Arquivos({{ tarefa.arquivos.length }})...</p>
       <div
         id="exploradorDeArquivos"
-        v-if="numeroDeArquivos != 0"
-        class="flex gap-4 h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto"
+        v-if="tarefa.arquivos.length != 0"
+        class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto"
       >
-        <p></p>
-        <!-- v-for com os arquivos -->
+        <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col" v-for="arquivo in tarefa.arquivos">
+          <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
+            <img v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'" class="h-[100%] w-[100%]" :src="arquivo.dados">
+            <div v-else>
+              <img class="h-[65%]" :src='getIconSrc(arquivo)' />
+            </div>
+          </a>
+          <div class="bg-[#F6F6F6] w-[100%] h-[15%] items-center flex justify-around">
+            <p class="truncate w-[100px] text-xs">{{ arquivo.nome }}</p>
+            <img @click="deletaArquivo(arquivo)" :src="BotaoX">
+          </div>
+        </div>
       </div>
       <div class="pl-12 mt-4">
-        <Botao
-          preset="PadraoVazadoIcon"
-          :icon="iconAnexo"
-          tamanhoDaBorda="2px"
-          texto="Anexar"
-          tamanhoPadrao="pequeno"
-          inverterCorIcon="sim"
-        ></Botao>
+        <div class="w-min h-min relative">
+          <Botao
+            preset="PadraoVazadoIcon"
+            :icon="iconAnexo"
+            tamanhoDaBorda="2px"
+            texto="Anexar"
+            tamanhoPadrao="pequeno"
+            inverterCorIcon="sim"
+          ></Botao>
+          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
+        </div>
       </div>
       <div class="pl-12 mt-4">
         <h1>SubTarefas</h1>
@@ -225,7 +217,7 @@
           <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
             <div :style="barraPorcentagem"></div>
           </div>
-          <p class="pl-4">Tarefas Concluidas {{ porcentagemDeTarefasConcluidas }}%</p>
+          <p class="pl-4">Tarefas Concluidas {{ porcentagemDeTarefasConcluidas.toFixed(2) }}%</p>
         </div>
       </div>
       <!-- Sub Tarefa -->
@@ -233,14 +225,14 @@
         class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-2 overflow-auto"
         id="subtarefaOverflow"
       >
-        <div v-for="(subtarefa, index) of subtarefas" :key="subtarefa.id">
+        <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
-            <div class="flex gap-2">
+            <div class="flex gap-2 items-center">
               <CheckBox
-                class="flex justify-center"
+                :checked="subtarefa.concluida"
+                tipo="checkbox"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)"
-                :model-value="subtarefa.concluida"
-              ></CheckBox>
+              />
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
@@ -257,15 +249,17 @@
         </div>
       </div>
       <!-- Fazer um v-for de propriedades -->
-      <div class="pl-12 mt-4">
+      <div class="pl-12 mt-8">
         <div class="flex text-xl">
           <p>Comentarios</p>
           <button class="ml-2" @click="abreFechaComentario()">+</button>
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
           <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
+            
             <img
-              class="shadow-2xl max-h-[60px] min-w-[60px] mt-4 mr-4 ml-4 rounded-full"
+            v-if="usuarioCookies.foto.tipo != null"
+              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full"
               :src="
                 'data:' +
                 usuarioCookies.foto.tipo +
@@ -289,7 +283,6 @@
                 tamanhoPadrao="pequeno"
                 :funcaoClick="enviaComentario"
                 :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"
-
               ></Botao>
             </div>
           </div>
@@ -328,7 +321,6 @@
                   class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
                 />
                 <div class="w-[80%]">
-
                   <p>
                     {{ comentario.autor }}
                   </p>
@@ -339,7 +331,6 @@
                       comentario.autor === usuarioCookies.username
                     "
                   >
-
                     <TextAreaPadrao
                       width="25vw"
                       height="15vh"
@@ -356,7 +347,6 @@
                       comentario.autor != usuarioCookies.username
                     "
                   >
-
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.comentario }}
                     </p>
@@ -368,7 +358,6 @@
                       comentario.autor === usuarioCookies.username
                     "
                   >
-
                     <Botao
                       texto="Editar"
                       preset="PadraoRoxo"
@@ -467,7 +456,7 @@
               class="w-[100%] min-h-[5vh] flex items-center justify-center"
               v-if="propriedade.sendoEditado"
             >
-              <div v-if="propriedade.tipo === 'Texto'">
+              <div v-if="propriedade.tipo === 'TEXTO'">
                 <Input
                   altura="2"
                   largura="28"
@@ -478,7 +467,7 @@
                 >
                 </Input>
               </div>
-              <div v-if="propriedade.tipo === 'Data'">
+              <div v-if="propriedade.tipo === 'DATA'">
                 <Calendar
                   class="border-2 rounded-lg border-[#620BA7]"
                   border
@@ -488,7 +477,7 @@
                   iconDisplay="input"
                 />
               </div>
-              <div v-if="propriedade.tipo === 'Numero'">
+              <div v-if="propriedade.tipo === 'NUMERO'">
                 <InputNumber
                   class="border-2 rounded-lg border-[#620BA7]"
                   showIcon
@@ -499,13 +488,11 @@
                   maxFractionDigits="2"
                 />
               </div>
-              <div v-if="propriedade.tipo === 'Seleção'">
+              <div v-if="propriedade.tipo === 'SELEÇÃO'">
                 <div v-for="(valor, index) in propriedade.valor" class="pt-4 flex">
                   <Input
                     altura="2"
-
                     largura="27"
-
                     conteudoInput=" "
                     v-model="propriedade.valor[index]"
                     width="60%"
@@ -513,9 +500,7 @@
                   >
                   </Input>
                   <img
-
                     class="w-[100%] ml-2"
-
                     @click="deletaValorSelect(propriedade.valor, index)"
                     :src="BotaoX"
                   />
@@ -579,8 +564,8 @@
             <p>Nome do Projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="w-[100%] text-[#620BA7] break-all">
-              <!-- {{ projetoDaTarefa.value.nome }} -->
+            <p class="w-[100%] text-[#620BA7] break-all" v-if="projetoDaTarefa">
+              {{ projetoDaTarefa.nome }}
             </p>
           </div>
         </div>
@@ -588,8 +573,11 @@
           <div class="w-[50%] justify-start flex-row">
             <p>Responsável</p>
           </div>
-          <div class="w-[40%] ml-2 justify-end flex-row">
-            <p class="text-[#620BA7] break-all">Kanye West</p>
+          <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
+            <p class="truncate text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
+              {{ responsavel.responsavel.username }}
+            </p>
+            
           </div>
         </div>
         <div class="flex pl-8">
@@ -604,9 +592,13 @@
       <div class="min-h-[4%] flex items-center justify-center p-8">
         <h1 class="text-xl font-semibold">Status</h1>
       </div>
+      <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
+        <p>Sua tarefa não possui status</p>
+      </div>
       <div
-        v-for="status of tarefa.statusDaTarefa"
+        v-for="status of tarefa.status"
         class="min-h-[4%] flex items-center justify-center gap-4"
+        v-if="tarefa.status.length != 0"
       >
         <p
           :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
@@ -634,16 +626,19 @@
           class="flex flex-col justify-around py-4 w-[80%]"
         >
           <p class="pb-4 break-all">Nome: {{ propriedade.nome }}</p>
-          <div v-if="propriedade.tipo === 'Data'">
+          <div v-if="propriedade.tipo === 'DATA'">
             <p>Valor: {{ format(new Date(propriedade.valor), "dd/MM/yyyy") }}</p>
           </div>
-          <div v-if="propriedade.tipo === 'Seleção'" class="flex">
+          <div v-if="propriedade.tipo === 'SELEÇÃO'" class="flex">
             <p>Valor:</p>
             <select class="flex text-center w-[80%]">
               <option v-for="valor in propriedade.valor">{{ valor }}</option>
             </select>
           </div>
-          <div v-else>
+          <div v-if="propriedade.tipo === 'NUMERO'">
+            <p>Valor: {{ propriedade.valor }}</p>
+          </div>
+          <div v-if="propriedade.tipo === 'TEXTO'">
             <p>Valor: {{ propriedade.valor }}</p>
           </div>
         </div>
@@ -672,6 +667,8 @@ import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
 import { conexaoBD } from "../stores/conexaoBD.js";
+import Checkbox from "primevue/checkbox";
+import { criaPropriedadeTarefaStore } from "../stores/criaPropriedadeTarefa";
 
 const banco = conexaoBD();
 
@@ -685,8 +682,6 @@ const Comentarios = ref([]);
 
 //Variavel que armazena as Subtarefas atreladas a tarefa
 
-const subtarefas = ref([]);
-
 //Variavel que armazena as propriedades que podem ser atreladas a tarefa
 
 const propriedades = ref([]);
@@ -694,6 +689,9 @@ const propriedades = ref([]);
 //Variavel que armazena os status que podem ser atreladas a tarefa
 
 const status = ref([]);
+
+let projetoDaTarefa = ref();
+let projetoId = VueCookies.get("Id");
 
 //Estilização usando Java Script
 
@@ -731,12 +729,26 @@ let corStatus = ref("ff0000");
 let nomeSubtarefa = ref("");
 let statusSubtarefa = ref("Em Progresso");
 
-
 function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
   return isLight ? "#000" : "#fff";
 }
 //Função utilizada para criar um Status
+
+function getIconSrc(arquivo) {
+      const fileTypeIcons = {
+        'application/pdf': 'https://cdn-icons-png.flaticon.com/512/337/337946.png',
+        'text/plain': 'https://cdn-icons-png.freepik.com/512/8243/8243060.png',
+        'video/mp4': 'https://cdn-icons-png.freepik.com/512/8243/8243015.png',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'https://cdn-icons-png.freepik.com/512/8361/8361467.png',
+        'application/vnd.ms-excel': 'https://cdn-icons-png.freepik.com/512/8361/8361467.png',
+        'text/csv': 'https://cdn-icons-png.freepik.com/512/8242/8242984.png'
+        // Adicione mais tipos de arquivo conforme necessário
+      };
+      const iconSrc = fileTypeIcons[arquivo.tipo];
+      if (iconSrc) return iconSrc;
+      return `data:image/jpg;base64, ${arquivo.dados}`;
+  }
 
 function criaStatus() {
   if (nomeStatus.value != "") {
@@ -747,7 +759,7 @@ function criaStatus() {
     };
     nomeStatus.value = "";
     status.value.push(statusNovo);
-    statusSendoCriado.value = false;
+    corSendoMudada.value = false;
   }
 }
 
@@ -759,9 +771,9 @@ function deletaStatus(stat) {
       status.value.splice(status.value.indexOf(stat), 1);
     }
   });
-  tarefa.value.statusDaTarefa.forEach((statParaDeletar) => {
+  tarefa.value.status.forEach((statParaDeletar) => {
     if (stat === statParaDeletar) {
-      tarefa.value.statusDaTarefa.splice(tarefa.value.statusDaTarefa.indexOf(stat), 1);
+      tarefa.value.status.splice(tarefa.value.status.indexOf(stat), 1);
     }
   });
 }
@@ -792,24 +804,31 @@ function criaSubtarefa() {
       concluida: booleanDaSubtarefa.value,
       status: statusSubtarefa.value,
     };
-    subtarefas.value.push(subtarefaNova);
+    tarefa.value.subtarefas.push(subtarefaNova);
     subtarefaSendoCriada.value = false;
-    numeroDeTarefas.value = subtarefas.value.length;
+    numeroDeTarefas.value = tarefa.value.subtarefas.length;
     numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
     porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
     barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
   }
 }
 
+function reloadSubTarefas() {
+  numeroDeTarefas.value = tarefa.value.subtarefas.length;
+  numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
+  porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
+  barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+}
+
 //Função utilizada para deletar uma Subtarefa
 
 function deletaSubtarefa(subtarefa) {
-  subtarefas.value.forEach((subtarefaParaDeletar) => {
+  tarefa.value.subtarefas.forEach((subtarefaParaDeletar) => {
     if (subtarefaParaDeletar === subtarefa) {
-      subtarefas.value.splice(subtarefas.value.indexOf(subtarefa), 1);
+      tarefa.value.subtarefas.splice(tarefa.value.subtarefas.indexOf(subtarefa), 1);
     }
   });
-  numeroDeTarefas.value = subtarefas.value.length;
+  numeroDeTarefas.value = tarefa.value.subtarefas.length;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
@@ -817,7 +836,7 @@ function deletaSubtarefa(subtarefa) {
 
 //Função utilizada para criar uma Propriedade
 
-function criaPropriedade() {
+async function criaPropriedade() {
   if (
     tipoPropriedade.value != "Data" &&
     tipoPropriedade.value != "Numero" &&
@@ -832,47 +851,52 @@ function criaPropriedade() {
     tipoPropriedade.value != " "
   ) {
     if (nomePropriedade.value != "") {
-      let propriedade = {
-        nome: nomePropriedade.value,
-        tipo: tipoPropriedade.value,
-        valor: "",
-        estaNaTarefa: ref(),
-      };
-      if (tipoPropriedade.value === "Seleção") {
-        propriedade.valor = ref([]);
-      }
-      nomePropriedade.value = "";
-      tipoPropriedade.value = "";
-      propriedades.value.push(propriedade);
-      propriedadeSendoCriada.value = false;
+      const cria = criaPropriedadeTarefaStore();
+      tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
+
+      cria.criaPropriedade(
+        nomePropriedade.value,
+        tipoPropriedade.value,
+        VueCookies.get("IdProjetoAtual")
+      );
     }
   }
+
+  await new Promise(r => setTimeout(r, 60));
+  await procuraProjetosDoBanco();
+  projetoDaTarefa.value = await procuraProjetosDoBanco();
+  nomePropriedade.value = "";
+  tipoPropriedade.value = "";
+  propriedades.value = projetoDaTarefa.value.propriedades;
+  propriedadeSendoCriada.value = false;
 }
 
-//Função que deleta uma propriedade
 
 function deletaPropriedade(propriedade) {
-  propriedades.value.forEach((propriedadeParaDeletar) => {
+  const deleta = criaPropriedadeTarefaStore();
+  propriedades.value.forEach(async (propriedadeParaDeletar) => {
     if (propriedadeParaDeletar === propriedade) {
-      propriedades.value.splice(propriedades.value.indexOf(propriedade), 1);
-    }
-  });
-  tarefa.value.propriedades.forEach((propriedadeParaDeletar) => {
-    if (propriedadeParaDeletar === propriedade) {
-      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
+      console.log(propriedadeParaDeletar.id);
+      console.log(propriedade.id);
+      console.log(VueCookies.get("IdProjetoAtual"));
+      deleta.deletaPropriedade(propriedade.id,parseInt(VueCookies.get("IdProjetoAtual")))
+
+      await new Promise(r => setTimeout(r, 60));
+      await procuraProjetosDoBanco();
+      projetoDaTarefa.value = await procuraProjetosDoBanco();
+      propriedades.value = projetoDaTarefa.value.propriedades;
     }
   });
 }
 
-let projetoDaTarefa = ref();
-
-async function procuraPropriedadesDoBanco() {
-  let projetos = banco.procurar("/projeto");
-  for (projeto in projetos) {
-    console.log(projeto);
-    if (projeto.id == tarefa.projetoId) {
-      projetoDaTarefa.value = projeto;
-      // propriedades.value = tarefa.propriedades;
+async function procuraProjetosDoBanco() {
+  const projetos = await banco.procurar("/projeto");
+  let projetoId = VueCookies.get("IdProjetoAtual");
+  for (const projeto of projetos) {
+    console.log("a");
+    if (projeto.id == projetoId) {
+      console.log(projeto.propriedades);
+      return projeto;
     }
   }
 }
@@ -886,62 +910,135 @@ let tarefa = ref({
   arquivos: [],
   comentarios: [],
   propriedades: [],
-  statusDaTarefa: [],
-  projetoId: VueCookies.get("IdProjetoAtual"),
+  status: [],
+  subtarefas: [],
+  corDaTarefa: "",
 });
+
+function puxaTarefaDaEdicao() {
+  let tarefas = banco.procurar("/tarefa");
+  let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
+  for (tarefaEdicao in tarefas) {
+    if (IdTarefaCookies.value == tarefa.id) {
+      tarefa.value.nome = tarefaEdicao.nome;
+      tarefa.value.descricao = tarefaEdicao.descricao;
+      tarefa.value.arquivos = tarefaEdicao.arquivos;
+      tarefa.value.comentarios = tarefaEdicao.comentarios;
+      tarefa.value.propriedades = tarefaEdicao.valorPropriedadeTarefas;
+      tarefa.value.status = tarefaEdicao.status;
+    }
+  }
+}
+
+async function atualizaPropriedadesEStatus() {
+  projetoDaTarefa.value = await procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
+  status.value = projetoDaTarefa.value.statusList;
+  propriedades.value = projetoDaTarefa.value.propriedades;
+}
 
 onUpdated(() => {
-  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
+  update();
 });
 
-onMounted(() => {
+function update(){
+  reloadSubTarefas();
+  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   autenticaUsuarioCookies();
+  adicionaExcluiPropriedadeNaTarefa()
+}
+
+onMounted(async () => {
+  VueCookies.set("IdProjetoAtual", 1, 100000000000);
+  projetoDaTarefa.value = await procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
+  procuraProjetosDoBanco();
+  console.log(projetoDaTarefa.value);
+  reloadSubTarefas();
   autenticarUsuario();
-  console.log("comeco");
-  procuraPropriedadesDoBanco();
-  console.log("fim");
-  VueCookies.set("IdProjetoAtual", 28, 100000000000);
+  puxaTarefaDaEdicao();
   tarefa.value = {
     nome: "",
     descricao: "",
     arquivos: [],
     comentarios: [],
     propriedades: [],
-    statusDaTarefa: [],
-    projetoId: VueCookies.get("IdProjetoAtual"),
+    status: [],
+    subtarefas: [],
+    corDaTarefa: "",
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
     tarefa.value = JSON.parse(localStorageData);
     localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
   }
+  exibirComentarios();
+  autenticaUsuarioCookies();
+  atualizaPropriedadesEStatus();
+  adicionaExcluiPropriedadeNaTarefa()
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
+// Supondo que você tenha um array chamado comentarios no seu componente
+function exibirComentarios() {
+  localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
+}
+
+function gerarArquivo(e){
+  console.log("Está executando");
+  console.log(tarefa.value.arquivos);
+  let arquivo = e.target.files[0];
+  console.log(arquivo);
+  let reader = new FileReader();
+  reader.readAsDataURL(arquivo);
+  reader.onload = function(){
+    let arquivoBase64 = reader.result;
+    let arquivoParaOBanco = {
+      nome: arquivo.name,
+      tipo: arquivo.type,
+      dados: arquivoBase64,
+    };
+    tarefa.value.arquivos.push(arquivoParaOBanco);
+    console.log(tarefa.value.arquivos);
+    update()
+  }
+
+}
+
+function deletaArquivo(arquivo){
+  tarefa.value.arquivos.forEach((arquivoParaDeletar) => {
+    if (arquivoParaDeletar === arquivo) {
+      tarefa.value.arquivos.splice(tarefa.value.arquivos.indexOf(arquivo), 1);
+    }
+  });
+  update()
+}
+
+
 let propriedadeSendoCriada = ref(false);
 
-let statusSendoCriado = ref(false);
+let corSendoMudada = ref(false);
 
 let subtarefaSendoCriada = ref(false);
 
 //Funções que trocam os valores das variaveis instanciadas acima
 
-function abreFechaCriaStatus() {
-  statusSendoCriado.value = !statusSendoCriado.value;
+function abreFechaMudaCor() {
+  corSendoMudada.value = !corSendoMudada.value;
   propriedadeSendoCriada.value = false;
   subtarefaSendoCriada.value = false;
 }
 
 function abreFechaCriaPropriedades() {
   propriedadeSendoCriada.value = !propriedadeSendoCriada.value;
-  statusSendoCriado.value = false;
+  corSendoMudada.value = false;
   subtarefaSendoCriada.value = false;
 }
 
 function abreFechaCriaSubTarefas() {
   subtarefaSendoCriada.value = !subtarefaSendoCriada.value;
   propriedadeSendoCriada.value = false;
-  statusSendoCriado.value = false;
+  corSendoMudada.value = false;
 }
 
 //Funções que removem e adicionam os status e propriedades da tarefa
@@ -949,44 +1046,36 @@ function abreFechaCriaSubTarefas() {
 function adicionaExcluiStatusNaTarefa(status) {
   status.estaNaTarefa = !status.estaNaTarefa;
   if (status.estaNaTarefa) {
-
-    tarefa.value.statusDaTarefa.push(status);
+    tarefa.value.status.push(status);
   } else {
-    tarefa.value.statusDaTarefa.forEach((statusDeletar) => {
+    tarefa.value.status.forEach((statusDeletar) => {
       if (statusDeletar === status) {
-        tarefa.value.statusDaTarefa.splice(
-          tarefa.value.statusDaTarefa.indexOf(statusDeletar),
-          1
-        );
+        tarefa.value.status.splice(tarefa.value.status.indexOf(statusDeletar), 1);
       }
+    });
+  }
+}
 
-    });
-  }
+function adicionaExcluiPropriedadeNaTarefa() {
+  propriedades.value.forEach((propriedade) => {
+    console.log(propriedades.value);
+    if (propriedade.valor === "" || propriedade.valor === null || propriedade.valor === " " || propriedade.valor === undefined) {
+      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
+    } else {
+      tarefa.value.propriedades.push(propriedade);
+    }
+  });
 }
-function adicionaExcluiPropriedadeNaTarefa(propriedade) {
-  propriedade.estaNaTarefa = !propriedade.estaNaTarefa;
-  if (propriedade.estaNaTarefa) {
-    tarefa.value.propriedades.push(propriedade);
-  } else {
-    tarefa.propriedades.forEach((propriedadeDeletar) => {
-      if (propriedadeDeletar === propriedade) {
-        tarefa.value.propriedades.splice(
-          tarefa.value.propriedades.indexOf(propriedadeDeletar),
-          1
-        );
-      }
-    });
-  }
-}
+
 
 //Usuario Logado
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
 
-let usuarioCookies;
+let usuarioCookies = ref();
 
 async function autenticaUsuarioCookies() {
-  usuarioCookies = await autenticarUsuario(usuarioId);
+  usuarioCookies.value = await autenticarUsuario(usuarioId);
 }
 
 async function autenticarUsuario(id) {
@@ -1002,7 +1091,6 @@ let abreFechaComentarioBoolean = ref(false);
 //Função utilizada para abrir e fechar os comentarios
 
 function abreFechaComentario() {
-  console.log(usuarioCookies);
   console.log(tarefa.propriedades);
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
 }
@@ -1025,7 +1113,6 @@ function deletaComentario(comentario) {
   tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
       tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
-
     }
   });
 }
@@ -1037,7 +1124,6 @@ function trocaComentarioSendoEditado() {
 }
 
 function editarComentario(comentario) {
-
   if (comentario.comentario === "") {
     deletaComentario(comentario);
   }
@@ -1071,14 +1157,15 @@ const listaFiltradaPropriedades = computed(() => {
   }
 
   return propriedades.value.filter(
-    (propriedade) => propriedade.tipo === parametroDoFiltroPropriedade.value
+    (propriedade) =>
+      propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
   );
 });
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
-  subtarefas.value.forEach((subtarefa) => {
+  tarefa.value.subtarefas.forEach((subtarefa) => {
     if (subtarefa.concluida) {
       numeroDeSubTarefasC.value++;
     }
@@ -1102,7 +1189,7 @@ let numeroDeTarefasConcluidas = ref(numeroDeSubTarefasConcluidas());
 
 //Armazena o tamanho da lista de subtarefas para que a conta de porcentagem possa ser feita
 
-let numeroDeTarefas = ref(subtarefas.value.length);
+let numeroDeTarefas = ref(tarefa.value.subtarefas.length);
 
 //Armazena as informações da conta de porcentagem de quantas tarefas foram concluidas
 
@@ -1115,7 +1202,7 @@ let comentarioSendoEditado = ref(false);
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
 function trocaStatusDaSubTarefa(subtarefa, index) {
-  subtarefas.value[index].concluida = !subtarefas.value[index].concluida;
+  tarefa.value.subtarefas[index].concluida = !tarefa.value.subtarefas[index].concluida;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
@@ -1189,7 +1276,6 @@ function clicouOpcaoStatus() {
 }
 
 #bgBranco {
-
   background-color: #ffffff;
 }
 
@@ -1311,6 +1397,4 @@ option {
   font-size: small;
   border: 1px solid #cbcbcb;
 }
-
 </style>
-
