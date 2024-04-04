@@ -1,10 +1,11 @@
 <template>
     <div>
         <fundoPopUp largura="77vh" altura="68vh">
-            <div class="flex flex-col justify-between  w-[740px] h-[655px]">
+            <div class="flex flex-col justify-between  w-[77vh] h-[68vh]">
                 <div class="flex pl-12 pt-12">
                     <div class="text-3xl text-roxo">
-                        Alterar Senha
+                        Alterar Senha 
+                        <!-- {{ senhaUsuario }} -->
                     </div>    
                 </div>
                 <div class="flex justify-center items-center">
@@ -14,21 +15,41 @@
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Antiga" 
                             v-model="senhaAntiga" 
-                            tipo="obrigatorio" />
+                            tipo="obrigatorio"
+                            
+                            @updateModelValue="(e)=> {
+                                    console.log(e)
+                                    senhaAntiga=e
+                            }"
+                            />
                         </div>
                         <div class="flex justify-between items-center gap-5">
                             <span class="text-xl font-semibold">Insira uma senha nova</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Nova" 
                             v-model="senhaNova" 
-                            tipo="obrigatorio" />
+                            tipo="password"
+                            :isInvalido="isInvalido"
+                            textoInvalido="Senha não é igual"
+                            @updateModelValue="(e)=> {
+                                    console.log(e)
+                                    senhaNova=e
+                            }"
+                            />
                         </div>
                         <div class="flex justify-between items-center gap-5">
                             <span class="text-xl font-semibold">Confirme a nova senha</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Confirmar Senha" 
                             v-model="senhaConfirmada" 
-                            tipo="obrigatorio" />
+                            tipo="password"
+                            :isInvalido="isInvalido"
+                            textoInvalido="Senha não é igual"
+                            @updateModelValue="(e)=> {
+                                    console.log(e)
+                                    senhaConfirmada=e
+                            }"
+                            />
                         </div>
                     </div>
                 </div>
@@ -50,34 +71,60 @@
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import Botao from './Botao.vue';
-import { onMounted, ref } from 'vue';
+import { onMounted,onUpdated ,ref,watch } from 'vue';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
 import  VueCookies  from 'vue-cookies';
 let perfil=perfilStore()
 let conexao=conexaoBD()
 
-let usuario
+let isInvalido=ref(false)
+
+let usuario=ref({})
+let senhaUsuario=ref('')
 let senhaAntiga=ref('')
 let senhaNova=ref('')
 let senhaConfirmada=ref('')
 
-onMounted(async ()=>{
-    usuario=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
-    console.log(usuario.senha)
-
+watch(usuario,(a)=>{
+    console.log(a)
+    console.log(usuario.value)
 })
 
+onUpdated(()=>{
+    console.log(usuario.value)
+})
+
+onMounted(async ()=>{
+    usuario.value=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    console.log(usuario.value.senha)
+    senhaUsuario.value=usuario.value.senha
+    console.log(senhaUsuario.value);
+})
+
+
 function alteraSenha(){
-    if(senhaAntiga.value==usuario.senha){
-        alert('vamo que hj é sexta')
-    }
-    if(senhaNova.value==senhaConfirmada.value){
-        alert('igual')
+    if(senhaAntiga.value==senhaUsuario.value && senhaNova.value==senhaConfirmada.value){
+        isInvalido.value=false
+        usuario.value.senha=senhaNova.value
+        alert(usuario.senha)
+        conexao.atualizar(usuario.value,'/usuario')
     }else{
-        alert('insira de novo')
+        isInvalido.value=true
     }
-    console.log('oi')
+
+    // if(senhaAntiga.value!=usuario.senha){
+    //     // alert('vamo que hj é sexta')
+    // }
+    // if(senhaNova.value!=senhaConfirmada.value){
+    //     isInvalido.value=true
+    // }else{
+    //     usuario.senha=senhaNova.value
+    //     alert(usuario.senha)
+    //     isInvalido.value=false
+    //     // conexao.atulizar(usuario,'/usuario')
+    // }
+    // console.log('oi')
 }
 
 </script>

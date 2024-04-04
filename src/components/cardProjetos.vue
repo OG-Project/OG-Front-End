@@ -11,7 +11,7 @@
                 </div>
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>Responsavel:</b> {{ reponsavel,18 }}
+                    <b>Responsavel:</b> {{ reponsavel }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -24,10 +24,10 @@
         <div class="parteDeBaixoCard">
             <!-- colocando a barra de progreço -->
             <div class="barraCinzaGrafico">
-                <div :style="{width: feito + '%'}" class="barraRoxaGrafico">
-                    <div class='absolute mt-[-0.6vh] right-[44%] z-10'> {{ feito }}% </div>
-                </div>
 
+                <div class="barraRoxaGrafico" :style="{width: feito + '%'}">
+                    <div class='flex items-center justify-center text-white absolute inset-y-0 left-0 right-0'> {{ feito }}% </div>
+                </div>
             </div>
             <!-- Informações de começo e fim do projeto -->
             <div class="text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null">
@@ -81,12 +81,9 @@ const props = defineProps({
 
 })
 let alinhamento=ref(43)
-onMounted(() => {
-
-})
-
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
 
 const grafico = {
     display: "flex",
@@ -94,9 +91,6 @@ const grafico = {
     alignItems: "center",
     width: props.feito + "%",
 }
-
-
-const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 let barraPorcentagem = ref({
   width: props.feito + "%",
@@ -117,6 +111,8 @@ let barraPorcentagem = ref({
 /* @aply usa o tailwind para para de usar colocar ";" */
 @layer components {
 
+    
+
     /* css para criar um paragrafo com quebra de texto 
         com tres pontos/reticências */
     .tresPontosCSS {
@@ -132,7 +128,7 @@ let barraPorcentagem = ref({
     }
 
     .barraRoxaGrafico {
-        @apply h-4 bg-purple-600;
+        @apply h-4 bg-purple-600 justify-start;
     }
 
     .parteDeBaixoCard {
