@@ -14,7 +14,8 @@ import "primevue/resources/themes/lara-light-purple/theme.css";
 import draggable from "vuedraggable";
 import VueDragscroll from "vue-dragscroll";
 import  VueColor  from '@ckpack/vue-color';
-
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const app = createApp(App)
 export const pinia = createPinia()
@@ -26,6 +27,7 @@ app.use(PrimeVue);
 app.use(draggable)
 app.use(VueDragscroll);
 
+app.component('VueDatePicker', VueDatePicker);
 app.component('Button', Button);
 app.component('Calendar', Calendar);
 app.mount('#app')

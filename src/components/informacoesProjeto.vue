@@ -118,7 +118,7 @@ function contraste(cor) {
     const g = parseInt(String(cor).substr(3, 2), 16)
     const b = parseInt(String(cor).substr(5, 2), 16)
     const luz = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    return luz > 128 ? '000' : 'ffff'
+    return luz > 145 ? '000' : 'ffff'
 }
 </script>
 
