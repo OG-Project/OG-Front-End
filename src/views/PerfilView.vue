@@ -108,6 +108,7 @@ onBeforeMount(async ()=>{
 
 onMounted(async () => {
     console.log(route.path)
+
     usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
     console.log(usuario.value)
     foto.value=usuario.value.foto

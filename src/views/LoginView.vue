@@ -93,6 +93,7 @@ async function cadastraUsuario() {
         emailCadastro.value = "";
         senhaCadastro.value = "";
         confirmarSenhaCadastro.value = "";
+        trocaDeTela();
       }
     }
   }
