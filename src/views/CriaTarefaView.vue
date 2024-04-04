@@ -297,8 +297,8 @@
             <div class="w-[100%] min-h-[5vh] flex items-center justify-center">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                  <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor"
-                   width="80%">
+                  <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                    @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor" width="80%">
                 </div>
               </div>
               <div v-if="propriedade.propriedade.tipo === 'DATA'">
@@ -486,7 +486,6 @@ const propriedades = ref([]);
 const status = ref([]);
 
 let projetoDaTarefa = ref();
-let projetoId = VueCookies.get("Id");
 
 //Estilização usando Java Script
 
@@ -545,23 +544,44 @@ function getIconSrc(arquivo) {
   return `data:image/jpg;base64, ${arquivo.dados}`;
 }
 
-function criaStatus() {
-  if (nomeStatus.value != "") {
-    let statusNovo = {
-      nome: nomeStatus.value,
-      cor: corStatus.value,
-      estaNaTarefa: ref(false),
-    };
-    nomeStatus.value = "";
-    status.value.push(statusNovo);
-    corSendoMudada.value = false;
-  }
-}
-
 async function patchDaListaDePropriedades() {
-  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
-
-  banco.atualizar(tarefa2,"/tarefa")
+  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  for (const props of tarefa2.valorPropriedadeTarefas) {
+    for (const propsComValor of tarefa.value.propriedades) {
+      if (propsComValor.propriedade.id == props.propriedade.id) {
+        if (props.propriedade.tipo == "TEXTO") {
+          let valor = {
+            id: props.valor.id,
+            texto: propsComValor.valor.valor
+          }
+          props.valor = valor
+        }
+        else if (props.propriedade.tipo == "NUMERO") {
+          let valor = {
+            id: props.valor.id,
+            numero: propsComValor.valor.valor
+          }
+          props.valor = valor
+        }
+        else if (props.propriedade.tipo == "SELECAO") {
+          let valor = {
+            id: props.valor.id,
+            selecao: propsComValor.valor.valor
+          }
+          props.valor = valor
+        }
+        else if (props.propriedade.tipo == "DATA") {
+          let valor = {
+            id: props.valor.id,
+            data: propsComValor.valor.valor
+          }
+          props.valor = valor
+        }
+      }
+    }
+  }
+  console.log(tarefa2);
+  banco.atualizar(tarefa2, "/tarefa")
 }
 
 //Função que deleta status
@@ -850,8 +870,8 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
       tarefa.value.propriedades.push(propriedade)
     }
     else {
-      for(let propriedadeForTarefa of tarefa.value.propriedades){
-        if(propriedadeForTarefa.propriedade.id == propriedade.propriedade.id){
+      for (let propriedadeForTarefa of tarefa.value.propriedades) {
+        if (propriedadeForTarefa.propriedade.id == propriedade.propriedade.id) {
           propriedade.valor.valor = propriedadeForTarefa.valor.valor
         }
       }
