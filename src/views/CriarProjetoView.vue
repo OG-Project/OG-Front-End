@@ -70,7 +70,7 @@
         </div>
         <div class="flex justify-end items-end ">
             <informacoesProjeto :nome-projeto="nomeProjeto" :lista-status="listaStatus"
-                :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada"></informacoesProjeto>
+                :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada" :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
     </div>
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
@@ -121,8 +121,8 @@ let dataFormatada = ref("")
 funcaoPopUp.variavelModal = false
 let idProjeto;
 let placeHolderDataFinalProjeto = ref("")
-let backGroundPlaceHolder = ref("")
-let stylePlaceHolder = ref({})
+let stylePlaceHolder = ref({});
+let dataFinalFormatada= ref("");
 onMounted(() => {
     verificaEdicaoProjeto();
     defineSelect()
@@ -146,15 +146,16 @@ stylePlaceHolder.value = {
     height: "2.5%",
     zIndex: "10",
     backgroundColor: "#FFFFFF",
-    marginTop:"0.35%",
-    display:"flex",
-    alingItems:"center"
+    marginTop: "0.35%",
+    display: "flex",
+    alingItems: "center"
 }
 
 function fazPlaceHolderDataFinalProjeto() {
-    if (dataFinalProjeto.value != "") {
+    if (dataFinalProjeto.value != undefined && dataFinalProjeto.value!="" && dataFinalProjeto.value!=null) {
         const [ano, mes, dia] = dataFinalProjeto.value.split("-");
-        placeHolderDataFinalProjeto.value = "Data Final: " + `${dia}/${mes}/${ano}`;
+        dataFinalFormatada.value=`${dia}/${mes}/${ano}`
+        placeHolderDataFinalProjeto.value = "Data Final: " +dataFinalFormatada.value ;
     }
 }
 
@@ -219,7 +220,7 @@ function buscaRascunhoCriacaoProjeto() {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
-        dataFinalProjeto.value=  variavelCookieProjeto.dataFinal;
+        dataFinalProjeto.value = variavelCookieProjeto.dataFinal;
         if (variavelCookieProjeto.equipes.length != 0) {
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
@@ -247,6 +248,11 @@ async function buscaProjetoEditar() {
     if (projeto != null) {
         nomeProjeto.value = projeto.nome;
         descricaoProjeto.value = projeto.descricao;
+        if (projeto.dataFinal != null) {
+            dataFinalProjeto.value = projeto.dataFinal;
+        }else{
+            dataFinalProjeto.value="";
+        }
         buscaListaResponsaveisBack(projeto);
         buscaListaEquipesRelacionadas(projeto);
     }
@@ -285,7 +291,7 @@ function criarProjetoCookies() {
         const criaProjetoCookies = Projeto
         criaProjetoCookies.descricao = descricaoProjeto.value;
         criaProjetoCookies.nome = nomeProjeto.value;
-        criaProjetoCookies.dataFinal= dataFinalProjeto.value
+        criaProjetoCookies.dataFinal = dataFinalProjeto.value
         if (listaEquipesSelecionadas.value != "") {
             criaProjetoCookies.equipes = listaEquipesSelecionadas.value.map((x) => x);
         } else {
@@ -339,11 +345,11 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack)
+        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         VueCookies.set("projetoEditarId", 1, 8640000)
     } else {
         const editaProjeto = editaProjetoStore()
-        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack)
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
     }
 
 }
