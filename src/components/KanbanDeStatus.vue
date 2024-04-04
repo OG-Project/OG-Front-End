@@ -42,7 +42,7 @@ import draggable from "vuedraggable";
 import sortBy from 'sort-by'
 
 let api = conexaoBD()
-let projetoApi = api.procurar("/projeto/3")
+let projetoApi = api.buscarUm("3","/projeto")
 let lista = ref([]);
 let listaStyle = ''
 const propriedadeAtual = ref("STATUS");
