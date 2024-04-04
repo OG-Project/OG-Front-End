@@ -4,7 +4,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+
+      path: '/home',
       name: 'Home',
       component: () => import('../views/HomeView.vue')
     },
@@ -12,12 +13,42 @@ const router = createRouter({
       path: '/login',
       name: 'Login',
       component: () => import('../views/LoginView.vue')
+
     },
     {
           path:'/projeto',
           name:'Projeto',
-          component: () => import('../views/ProjetoView.vue')
+          redirect:'/projeto/kanban',
+          component: () => import('../views/ProjetoView.vue'),
+          children:[
+            {
+              path:'kanban',
+              name:'Kanban',
+              component: ()=>import('../components/KanbanDeStatus.vue')
+            },
+            {
+              path:'lista',
+              name:'Lista',
+              component: ()=>import('../components/CardTarefaList.vue')
+            },
+            {
+              path:'timeline',
+              name:'TimeLine',
+              component: ()=>import('../components/timeLine.vue')
+            },
+            {
+              path:'calendario',
+              name:'Calendario',
+              component: ()=>import('../components/calendario.vue')
+            },
+            {
+              path:'aparencia',
+              name:'Aparencia',
+              component: ()=>import('../components/componentAparencia.vue')
+            }
+          ]
      },
+     
      {
           path: '/equipe',
           name: 'Equipe',
@@ -31,6 +62,11 @@ const router = createRouter({
      {
       path: '/criaProjeto',
       name: 'criaProjeto',
+      component: () => import('../views/CriarProjetoView.vue')
+    },
+    {
+      path: '/editaProjeto',
+      name: 'editaProjeto',
       component: () => import('../views/CriarProjetoView.vue')
     },
     {

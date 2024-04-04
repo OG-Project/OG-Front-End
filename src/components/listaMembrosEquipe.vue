@@ -70,27 +70,11 @@ let equipeMembros = ref({
     descricao: ''
 });
 
-function larguraNomeEquipe(){
-    const screenWidth = window.innerWidth;
-    if (screenWidth <= 768) {
-        return 14;
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
-        return 16;
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
-        return 15;
-    } else if (screenWidth >= 1920 && screenWidth < 2560) {
-        return 15;
-    }else if (screenWidth >= 2560){
-        return 20;
-    }
-    }
-
-
-
 async function filtrarEquipe(){
     console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
     equipeMembros.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
 }
+
 filtrarEquipe();
 
 async function removerMembro(membro){

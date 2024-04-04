@@ -1,5 +1,6 @@
 
 <template>
+<div class="">
     <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipo!='float'" 
         :style="estilizaDivInput">
@@ -17,7 +18,7 @@
             :disabled=desabilitado 
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput > 
             
         <div class="flex items-center justify-center">
@@ -49,14 +50,13 @@
             items-center 
             justify-center" />
         </div>
-   </div>
+    </div>
 
-   <!-- fazer input com botão com um ou dois -->
+    <!-- fazer input com botão com um ou dois -->
 
 
-   <div class="styleInputPadrao flex items-center" 
+    <div class="styleInputPadrao flex items-center" 
         v-if="icon=='null' & tipo=='float'">
-        
         <div class="estiloPlaceHolder">
             
             <input 
@@ -66,7 +66,7 @@
             :disabled=desabilitado 
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             class="peer" 
             placeholder=" "  > 
             <div class="flex items-center justify-center">
@@ -100,15 +100,16 @@
             <label 
             :style="estilizaDivPlaceHolder" 
             for="inputStyle"  
-            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-roxo  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
             {{ conteudoInput }}
             </label>
         </div>
-   </div>
-
-   <div 
-   class="styleInputPadrao flex flex-row-reverse items-center" 
-    v-if="icon=='null' && tipo!='float'" >
+    </div> 
+    <div 
+    class="styleInputPadrao flex flex-row-reverse items-center"
+    :class="{'Invalido':props.isInvalido}" 
+    v-if="icon=='null' && tipo!='float'"
+    >
         <div class="flex items-center justify-center">
             <svgIconMic 
             @click="mic" 
@@ -137,33 +138,35 @@
             items-center 
             justify-center" />
         </div>
+        <div>
             <input 
             :type="tipo" 
             :style="estilizaInput" 
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
-            @change="modelValue=modelValue"
+            
             @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('update:modelValue', $event.target.value)" 
+            @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
-      
-   </div>
-   <div 
-   class="styleInputPadraoIconDireita " 
-   :class="styleInputPadraoDireita" 
+        </div>
+    </div>
+    
+    <div 
+    class="styleInputPadraoIconDireita " 
+    :class="styleInputPadraoDireita" 
     v-if="direcao=='direita' && tipo!='float'" 
     :style="estilizaDivInput">
         
-        <input 
-        :type="tipo" 
-        :placeholder=conteudoInput
-        :style="estilizaInput" 
-        id="inputStyle" 
-        :disabled=desabilitado
-        :value="modelValue"
-        @focus="$emit('clickInput',perfil.el=$event.target)"
-        @input="$emit('update:modelValue', $event.target.value)">
+            <input 
+            :type="tipo" 
+            :placeholder=conteudoInput
+            :style="estilizaInput" 
+            id="inputStyle" 
+            :disabled=desabilitado
+            :value="modelValue"
+            @focus="$emit('clickInput',perfil.el=$event.target)"
+            @input="$emit('updateModelValue', $event.target.value)">
         
         <div 
         class="flex items-center justify-center">
@@ -196,7 +199,9 @@
             justify-center" />
 
         </div>
-   </div>
+    </div>
+    <label v-if="props.isInvalido" class="text-red-600 absolute">{{ props.textoInvalido }}</label>
+</div>
 </template>
 
 <script setup>
@@ -225,19 +230,25 @@ function mic(){
 
 }
 
+
 function teclado(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
 }
 
 
 //funcao de passar para o pai 
-    defineEmits(['update:modelValue','clickInput'])
+    defineEmits(['updateModelValue','clickInput'])
   const props=defineProps({
         styleInput: String, // pode passar input-escuro, input-claro, input-transparente-escuro, input-transparente-claro
         icon: {
             type:String,
             default:"null"
         },
+        isInvalido:{
+            type:Boolean,
+            default:false
+        },
+        textoInvalido:String,
         direcao: String,
         conteudoInput:String,
         desabilitado:ref(false),
@@ -283,7 +294,9 @@ function teclado(){
         height:"50%",
     }
 
-   const estilizaInput={
+
+    const estilizaInput={
+        // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
         color: verificaCor(),
         fontSize: verificaTamanhoFont(),
@@ -385,8 +398,33 @@ function teclado(){
     }
     
 </script>
-<style lang="scss" scoped>
-@import url(../assets/main.css);
+<style lang="scss">
+    .styleInputPadraoIcon{
+       @apply bg-transparent
+        border-b-roxo
+        max-w-max
+        w-min
+        border-b-2 border-transparent 
+        items-center focus-within:outline-roxo 
+        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
+        display: grid;
+        grid-template-columns: 20% 80%;  
+    }
+
+    .Invalido{
+        @apply
+         border-4 
+        border-transparent
+        *:*:text-red-600
+        border-b-red-600    
+        px-2
+        max-w-max
+        w-min
+        border-b-4
+        hover:rounded-[4px] hover:border-4
+         focus-within:border-red-600 
+        focus-within:border-4 focus-within:rounded-[4px];
+    }
 
     .styleInputPadrao{
        @apply 
@@ -461,9 +499,6 @@ function teclado(){
     .estiloPlaceHolder label{
         @apply absolute;
     }
-
-
-
     // <div class="relative">
 //     <input type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
 //     <label for="floating_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Floating filled</label>

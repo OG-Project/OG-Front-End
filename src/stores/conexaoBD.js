@@ -6,6 +6,7 @@ export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
       return {api:axios.get("http://localhost:8085")}
+
     },
     actions: {
     
@@ -42,6 +43,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8085${textoRequisicao}/${userId}`)).data)
+
       },
       async cadastrarFoto(equipeId, foto) {
         try {
@@ -62,7 +64,7 @@ export const conexaoBD = defineStore('conexaoBD', {
             console.error('Erro ao cadastrar a foto:', error);
             throw error;
         }
-          return await ((await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`)).data)
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       }
       
     }

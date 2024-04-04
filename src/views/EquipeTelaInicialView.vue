@@ -32,7 +32,6 @@
               <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
             </CardProjetos>
             </div>
-            
           </div> 
         </div>
         </div>       

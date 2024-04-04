@@ -1,5 +1,5 @@
 <template>
-    <div class="divMaior">
+    <div class="flex flex-col w-full h-full relative justify-center items-center overflow-y-scroll overflow-x-hidden">
         <div class="sticky top-0 h-[20%] w-full bg-[#FBFBFB] flex justify-center z-10">
             <div class="flex flex-row w-full ">
                 <div class="flex w-full">
@@ -7,9 +7,9 @@
                         <button @click="setaEsquerda()" class="w-[5%]">
                             <div
                                 class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
-
+    
                                 <div class="setaEsquerda"></div>
-
+    
                             </div>
                         </button>
                         <div class="text-[28px] w-[17%]">
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <div class="w-[85%] gap-[2.5%]  flex row justify-between text-[20px]">
+        <div class="w-[85%] gap-[2.5%]  flex row justify-between ">
             <div class="w-[14%] flex justify-start">
                 <h1>Domingo</h1>
             </div>
@@ -188,8 +188,8 @@ async function verificaTarefasDoDia(dia) {
                         tarefa: tarefa,
                         propriedade: propriedade
                     }
-                    const tarefaDuplicada = lista.find((objeto)=>objeto.tarefa==tarefaObjeto.tarefa)
-                    if(tarefaDuplicada==null){
+                    const tarefaDuplicada = lista.find((objeto) => objeto.tarefa == tarefaObjeto.tarefa)
+                    if (tarefaDuplicada == null) {
                         lista.push(tarefaObjeto)
                     }
                 }
@@ -268,20 +268,6 @@ function verificaQauntidadetarefa(dia) {
 @import url(../assets/main.css);
 
 @layer components {
-    .divMaior {
-        display: flex;
-        flex-direction: column;
-        width: 90%;
-        height: 72%;
-        align-items: center;
-        justify-content: center;
-        background-color: #FBFBFB;
-        clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
-        overflow-y: scroll;
-        overflow-x: hidden;
-        position: relative;
-
-    }
 
     .popUp {
         width: 100%;
@@ -353,4 +339,4 @@ function verificaQauntidadetarefa(dia) {
 
 
 }
-</style>1
+</style>
