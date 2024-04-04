@@ -86,7 +86,7 @@
             </div>
 
         </div>
-        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
+        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="colocaCorPadrao()"
             v-if="funcaoPopUp.variavelModal == false">
             <p>Nova</p>
             <img src="../imagem-vetores/sinalDeMaisIcon.svg">
@@ -215,6 +215,10 @@ function verificaEdicaoProjeto() {
 
 }
 
+function colocaCorPadrao(){
+    corStatus.value="620BA7";
+    funcaoPopUp.abrePopUp();
+}
 
 function mudaPaginaParaKanban() {
     router.push('/projeto')
@@ -223,10 +227,9 @@ function mudaPaginaParaKanban() {
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        console.log(buscarPor.value)
-        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A") {
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value =="Todos") {
             listaSelecionada.value = listaPropriedades.value
-            console.log(listaSelecionada.value)
+            
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
@@ -275,6 +278,7 @@ function filtroPropriedades(listaRecebida, buscarPor) {
             }
         }
     });
+  
     return listaAux1;
 }
 
