@@ -4,7 +4,7 @@
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
             <img class="imagemEquipe" v-else src="">
-             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 ">{{ truncarNome(equipeMembros.nome, larguraNomeEquipe()) }}</h1>
+             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
@@ -12,7 +12,7 @@
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                       <img class="imgDePerfil" src="" alt="">
-                      <h1 class="flex mt-5 text-xl md:text-lg">{{ truncarNome(membro.nome, 16) }}</h1>
+                      <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.nome }}</h1>
                     </div>
                     <SelectPadrao class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
@@ -26,7 +26,7 @@
                </div>
             </div>
             <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
-                <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados" ></ListaConvidados>
+                <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados" ></ListaConvidados>
             </div>
              <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
                 <div>
@@ -70,27 +70,11 @@ let equipeMembros = ref({
     descricao: ''
 });
 
-function larguraNomeEquipe(){
-    const screenWidth = window.innerWidth;
-    if (screenWidth <= 768) {
-        return 14;
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
-        return 16;
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
-        return 15;
-    } else if (screenWidth >= 1920 && screenWidth < 2560) {
-        return 15;
-    }else if (screenWidth >= 2560){
-        return 20;
-    }
-    }
-
-const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-
 async function filtrarEquipe(){
     console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
     equipeMembros.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
 }
+
 filtrarEquipe();
 
 async function removerMembro(membro){
@@ -138,6 +122,22 @@ function marginLeftConvidado(){
     }
 }
 
+function marginRightConvidado(){
+    if (screenWidth <= 768) {
+        return '6vw';
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return '4vw';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '4vw';
+    } else if( screenWidth > 1920 && screenWidth < 2560){
+        return '6vw';
+    }else if(screenWidth == 1920){
+        return '2vw';
+    }
+    else if(screenWidth >= 2560){
+        return '4.5vw';
+    }
+}
 
 function larguraInputConvidado(){
     if (screenWidth <= 768) {
@@ -251,7 +251,7 @@ function larguraInputConvidado(){
     }
 
 .listaConvidados{
-        @apply w-full
+        @apply w-full;
     }
 
 .div-membros::-webkit-scrollbar {
