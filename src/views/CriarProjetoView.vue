@@ -224,7 +224,6 @@ function buscaRascunhoCriacaoProjeto() {
         && !projetoEdita.value
         && VueCookies.get("projetoCookie") != undefined
         && VueCookies.get("projetoCookie") != "undefined") {
-
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
