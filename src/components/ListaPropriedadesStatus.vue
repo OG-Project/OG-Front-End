@@ -302,7 +302,7 @@ function buscaPropriedadeCookies() {
 }
 
 async function buscaPropriedadeBanco() {
-    idProjeto = VueCookies.get("projetoEditarId");
+    idProjeto = VueCookies.get("IdProjetoAtual");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     colocaListaTarefasDoProjeto(projeto.tarefas)
     if (projeto.propriedades != []) {
@@ -471,7 +471,7 @@ function buscaRascunhoStatus() {
 }
 
 async function buscaStatusBanco() {
-    idProjeto = VueCookies.get("projetoEditarId");
+    idProjeto = VueCookies.get("IdProjetoAtual");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     if (projeto != null) {
         projeto.statusList.forEach((statusAtual) => {

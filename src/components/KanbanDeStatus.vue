@@ -72,7 +72,7 @@ import ColorPicker from 'primevue/colorpicker';
 
 
 let api = conexaoBD()
-let projetoApi = api.buscarUm("3", "/projeto")
+let projetoApi = api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
 let lista = ref([]);
 let listaStyle = ''
 let store = criaTarefaEBuscaStore()

@@ -7,6 +7,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     state: () => {
       return {api:axios.get("http://localhost:8082/projeto")}
 
+
     },
     actions: {
     
@@ -44,6 +45,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+
 
       },
       async cadastrarFoto(equipeId, foto) {

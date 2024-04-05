@@ -46,6 +46,7 @@
   import {useRouter} from 'vue-router'
 
   let equipesUsuario = ref([]);
+  
   const banco = conexaoBD();
   const usuarioLogadoId = VueCookies.get('IdUsuarioCookie')
 

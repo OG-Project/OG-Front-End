@@ -79,7 +79,7 @@ let listaDeEquipes = ref(false)
 
 onMounted(async () => {
 
-    projeto.value = await api.buscarUm('1', '/projeto')
+    projeto.value = await api.buscarUm(projetoId, '/projeto')
     definePorcentagem()
 })
 
@@ -90,7 +90,7 @@ function enviaCookieTarefaNova(){
     router.push('/criaTarefa') 
 }
 function enviaCookieProjeto(){
-    router.push('/criaProjeto') 
+    router.push('/editaProjeto') 
 }
 function mudaVariavelBooleana(){
     listaDeEquipes.value = true;

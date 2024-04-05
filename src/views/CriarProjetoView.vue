@@ -91,13 +91,15 @@ import ListaConvidados from '../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../stores/criaProjeto'
 import { editaProjetoStore } from '../stores/editaProjeto'
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
+import {webSocket} from '../stores/webSocket'
 import { Projeto } from '../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Sair from "../imagem-vetores/Sair.svg";
 import ListaPropiedadesStatus from "../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
-import { format } from 'date-fns'
+import { format } from 'date-fns';
+import router from "@/router";
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
@@ -123,6 +125,7 @@ let idProjeto;
 let placeHolderDataFinalProjeto = ref("")
 let stylePlaceHolder = ref({});
 let dataFinalFormatada= ref("");
+
 onMounted(() => {
     verificaEdicaoProjeto();
     defineSelect()
@@ -132,6 +135,11 @@ onMounted(() => {
     listaEquipesConvidadas.value = [];
     placeHolderDataFinalProjeto.value = "Data final:"
 })
+
+webSocket.onmessage = function(event){
+    console.log(event.data);
+}
+
 
 onUpdated(() => {
     criarProjetoCookies();
@@ -169,7 +177,7 @@ function fazBackPadraoPlaceHolder() {
 
 async function mandaDataInformacoes() {
     if (projetoEdita.value) {
-        idProjeto = VueCookies.get("projetoEditarId");
+        idProjeto = VueCookies.get("IdProjetoAtual");
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         const dataBack = projeto.dataCriacao;
         const [data, hora] = dataBack.split("T");
@@ -243,7 +251,7 @@ function buscaRascunhoCriacaoProjeto() {
 }
 
 async function buscaProjetoEditar() {
-    idProjeto = VueCookies.get("projetoEditarId");
+    idProjeto = VueCookies.get("IdProjetoAtual");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     if (projeto != null) {
         nomeProjeto.value = projeto.nome;
@@ -346,10 +354,12 @@ async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-        VueCookies.set("projetoEditarId", 1, 8640000)
+        // router.push('/projetos')
+       webSocket.send("teste")
     } else {
         const editaProjeto = editaProjetoStore()
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        router.push('/projetos') 
     }
 
 }
