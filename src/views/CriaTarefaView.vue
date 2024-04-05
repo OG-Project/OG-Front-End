@@ -272,9 +272,9 @@
         </div>
 
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
-          <div v-for="(propriedade, index) in listaFiltradaPropriedades" :key="index"
+          <div v-for="propriedade in propriedades"
             class="w-[100%] min-h-[3vh] gap-2 flex flex-col items-center justify-center">
-            <div class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center">
+            <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center">
               <div class="flex gap-2 items-center w-[40%]">
                 <CheckBox
                   @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
@@ -301,27 +301,36 @@
                     @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor" width="80%">
                 </div>
               </div>
-              <div v-if="propriedade.propriedade.tipo === 'DATA'">
-                <Calendar class="border-2 rounded-lg border-[#620BA7]" v-model="propriedade.valor.valor"
-                  dateFormat="dd/mm/yy" showIcon iconDisplay="input" />
-              </div>
-              <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-                <InputNumber class="border-2 rounded-lg border-[#620BA7]" showIcon iconDisplay="input"
-                  v-model="propriedade.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
-                  maxFractionDigits="2" />
-              </div>
-              <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'">
-                <div v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
-                  <Input altura="2" largura="27" conteudoInput=" " v-model="propriedade.valor.valor[index]" width="60%"
-                    @input="editarPropriedade(index, valor)">
-                  </Input>
-                  <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor.valor, index)" :src="BotaoX" />
-
+              <div v-for="propriedadeForTarefa of tarefa.propriedades">
+                <div v-if="propriedade.propriedade.tipo === 'DATA'">
+                  <input @input="patchDaListaDePropriedades()"
+                    v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                    class="border-2 rounded-lg border-[#620BA7]" type="datetime-local"
+                    v-model="propriedadeForTarefa.valor.valor" />
                 </div>
-
-                <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
-                  Adicionar +
-                </p>
+              </div>
+              <div v-for="propriedadeForTarefa of tarefa.propriedades">
+                <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
+                  <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                    class="border-2 rounded-lg border-[#620BA7]" showIcon iconDisplay="input"
+                    v-model="propriedadeForTarefa.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
+                    maxFractionDigits="2" @input="patchDaListaDePropriedades()" />
+                </div>
+              </div>
+              <div v-for="propriedadeForTarefa of tarefa.propriedades">
+                <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'">
+                  <div v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                    v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
+                    <Input altura="2" largura="27" conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
+                      width="60%" @input="patchDaListaDePropriedades()">
+                    </Input>
+                    <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor.valor, index)"
+                      :src="BotaoX" />
+                  </div>
+                  <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
+                    Adicionar +
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -411,10 +420,10 @@
       <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
         <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
           <p class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
-          <div v-if="propriedade.tipo === 'DATA'">
-            <p>Valor: {{ format(new Date(propriedade.valor.valor), "dd/MM/yyyy") }}</p>
+          <div v-if="propriedade.propriedade.tipo === 'DATA'">
+            <p>Valor: {{ format(new Date(propriedade.valor.valor), "dd/MM/yyyy HH:mm") }}</p>
           </div>
-          <div v-if="propriedade.tipo === 'SELEÇÃO'" class="flex">
+          <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'" class="flex">
             <p>Valor:</p>
             <select class="flex text-center w-[80%]">
               <option v-for="valor of propriedade.valor.valor">{{ valor }}</option>
@@ -452,7 +461,6 @@ import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
 import { conexaoBD } from "../stores/conexaoBD.js";
-import Checkbox from "primevue/checkbox";
 import { criaPropriedadeTarefaStore } from "../stores/criaPropriedadeTarefa";
 
 const banco = conexaoBD();
@@ -468,7 +476,6 @@ function veSeAPropriedadeTaNaTarefa(propriedade) {
     }
   }
   return false
-
 }
 
 //Variavel utilizada para armazenar os comentarios da tarefa
@@ -575,6 +582,7 @@ async function patchDaListaDePropriedades() {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
+          console.log(valor.data);
           props.valor = valor
         }
       }
@@ -688,7 +696,9 @@ async function criaPropriedade() {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   nomePropriedade.value = "";
   tipoPropriedade.value = "";
+  console.log(projetoDaTarefa.value.propriedades);
   propriedades.value = projetoDaTarefa.value.propriedades;
+  console.log(propriedades.value);
   propriedadeSendoCriada.value = false;
 }
 
@@ -865,19 +875,22 @@ function adicionaExcluiStatusNaTarefa(status) {
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
-  if (propriedade.valor.valor.valor != '') {
-    if (!estaNaTarefa) {
-      tarefa.value.propriedades.push(propriedade)
-    }
-    else {
-      for (let propriedadeForTarefa of tarefa.value.propriedades) {
-        if (propriedadeForTarefa.propriedade.id == propriedade.propriedade.id) {
-          propriedade.valor.valor = propriedadeForTarefa.valor.valor
-        }
+  console.log("Entrou na função");
+  if (!estaNaTarefa) {
+    console.log("push");
+    tarefa.value.propriedades.push(propriedade)
+  }
+  else {
+    console.log("antes de começar o for");
+    for (let propriedadeForTarefa of tarefa.value.propriedades) {
+      console.log("começou o for");
+      if (propriedadeForTarefa.id == propriedade.id) {
+        console.log("entrou pra deletar a propriedade ", propriedade);
+        propriedade.valor.valor = propriedadeForTarefa.valor.valor
+        tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);
       }
-      tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedade), 1);
     }
-
+    
   }
 }
 
