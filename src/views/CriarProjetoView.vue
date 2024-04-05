@@ -175,7 +175,8 @@ function buscaProjetoCookies() {
 }
 
 function buscaRascunhoCriacaoProjeto() {
-    if (VueCookies.get("projetoCookie") != null && !projetoEdita.value) {
+    console.log(VueCookies.get("projetoCookie"))
+    if (VueCookies.get("projetoCookie") != "null" && !projetoEdita.value) {
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;

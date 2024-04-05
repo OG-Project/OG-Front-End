@@ -35,7 +35,7 @@
                   <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
                </div>
                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" 
-               draggable="true" @dragstart="onDragStart($event, projeto)">
+               draggable="true" @dragstart="onDragStart($event, projeto)" >
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
@@ -44,7 +44,7 @@
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" 
-                draggable="true" @dragstart="onDragStart($event, projeto)">
+                draggable="true" @dragstart="onDragStart($event, projeto)" >
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
@@ -53,7 +53,7 @@
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
                 <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" 
-                draggable="true" @dragstart="onDragStart($event, projeto)">
+                draggable="true" @dragstart="onDragStart($event, projeto)" >
                   <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
                 </div>
               </div>
@@ -303,27 +303,36 @@ const onDragStart = (event, projeto) => {
 };
 
 const onDrop = (event, categoria, cor) => {
-    console.log('onDrop acionado');
-    // Verificar se event e event.dataTransfer estão definidos
-    if (event && event.dataTransfer) {
-        // Evitar comportamento padrão apenas se necessário
+  if (event && event.dataTransfer) {
         event.preventDefault();
 
-        // Obter o ID do projeto a partir dos dados de transferência
         const projetoId = event.dataTransfer.getData('projetoId');
-        console.log('Projeto ID:', projetoId);
-
-        // Encontrar o projeto na lista de projetos pelo ID
         const projeto = projetos.value.find(projeto => projeto.id == projetoId);
-        console.log('Projeto:', projeto);
 
         if (projeto) {
-            projeto.categoria = categoria;
-            projeto.corTopico = cor;
-            salvarEstadoDragAndDrop(); // Adicione esta linha para salvar o estado  
+            // Verifica se o drop ocorreu na mesma coluna
+            if (projeto.categoria === categoria) {
+                const target = event.target.closest('.kanban-board');
+                const newIndex = getIndexFromDrop(event, target);
 
-            // Atualiza os projetos filtrados após as mudanças
-            filtrarProjetos();
+                if (newIndex !== -1) {
+                    const oldIndex = projetos.value.findIndex(proj => proj.id === projetoId);
+
+                    if (oldIndex !== newIndex) {
+                        // Remove o projeto da posição antiga
+                        projetos.value.splice(oldIndex, 1);
+                        // Insere o projeto na nova posição
+                        projetos.value.splice(newIndex, 0, projeto);
+                        salvarEstadoDragAndDrop();
+                    }
+                }
+            } else {
+                // Se o drop ocorreu em outra coluna, atualiza a categoria e a cor
+                projeto.categoria = categoria;
+                projeto.corTopico = cor;
+                salvarEstadoDragAndDrop();
+                filtrarProjetos();
+            }
         } else {
             console.error('Projeto não encontrado! ID:', projetoId);
         }
@@ -334,6 +343,14 @@ const onDrop = (event, categoria, cor) => {
 
 const salvarEstadoDragAndDrop = () => {
     localStorage.setItem('estadoDragAndDrop', JSON.stringify(projetos.value,projetos.categoria));
+};
+
+const getIndexFromDrop = (event, target) => {
+    const draggedProject = event.dataTransfer.getData('projetoId');
+    const projects = Array.from(target.querySelectorAll('.kanban-board > div'));
+    const newIndex = projects.findIndex(project => project.dataset.projectId == draggedProject);
+
+    return newIndex;
 };
 
 function carregarEstadoProjetos(){
@@ -367,7 +384,7 @@ kanban-board {
 }
 
 .mensagemKanban{
-  @apply flex justify-center mt-[5vh] font-semibold text-xl;
+  @apply flex justify-center  font-semibold text-xl;
 }
 
 .urgentes {

@@ -7,7 +7,7 @@
         </div>
         <div class="flex justify-end">
             <div class="flex mt-[-3vh] mr-[1vw]">
-                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
             <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
@@ -47,6 +47,7 @@
   import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
   import { conexaoBD } from "../stores/conexaoBD.js";
   import CardProjetos from "../components/cardProjetos.vue";
+  import {useRouter} from 'vue-router'
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const funcaoPopUp = funcaoPopUpStore();
@@ -62,10 +63,16 @@ let equipeEditar = ref({
     descricao: ''
 });
 let projetosEquipe = ref([]);
+const router = useRouter();
 
 async function entrarNoProjeto(projeto){
   console.log(projeto)
   VueCookies.set("projetoId", projeto.id, 30000)
+}
+
+async function criarProjeto(){
+  router.push({path: '/criaProjeto'})
+  VueCookies.set("projetoCookie", null);
 }
 
 function calcularResponsaveis(projeto) {
