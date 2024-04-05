@@ -213,7 +213,7 @@
     descricao.value = "";
     membrosEquipe = "";
 
-    window.location.reload();
+ 
     };
 
 
