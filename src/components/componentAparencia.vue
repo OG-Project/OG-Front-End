@@ -119,7 +119,7 @@ function corEscolhida(a){
     console.log('cor '+a)
     cor.value="#"+a
     console.log(perfil.corEscura)
-    let corHsl=convert.hex.hsl('#'+perfil.corClickBorder)
+    let corHsl=convert.hex.hsl('#'+perfil.corAtencao)
     let matizCor=convert.hex.hsl(cor.value)
     console.log('cor do perfil '+corHsl)
     console.log('cor escolhida '+matizCor)

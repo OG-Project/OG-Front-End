@@ -67,6 +67,7 @@
         listaUsuarios.forEach((usuario)=>{
            if(usuarioLogadoId == usuario.id ){ 
             equipesUsuario.value = usuario.equipes;
+            console.log(equipesUsuario.value)
            }
         })
     }

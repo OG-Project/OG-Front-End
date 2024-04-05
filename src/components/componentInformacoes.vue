@@ -8,11 +8,15 @@
                                 <div class="flex items-center justify-between gap-5 ">
                                         <span class="text-xl">Nome</span>
                                         <Input 
-                                        styleInput="input-transparente-claro-grande" 
+                                        styleInput="input-transparente-claro" 
                                         conteudoInput="Nome" 
-                                        v-model="PerfilStore.nome" 
+                                        :modelValue="nome"
+                                        v-model="nome"
                                         tipo="obrigatorio"
-                                        @clickInput="foi"
+                                        @updateModelValue="(e)=> {
+                                                console.log(e)
+                                                nome=e
+                                        }"
                                         />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
@@ -23,6 +27,10 @@
                                         conteudoInput="Username" 
                                         v-model="PerfilStore.username" 
                                         tipo="obrigatorio" 
+                                        @updateModelValue="(e)=> {
+                                                console.log(e)
+                                                PerfilStore.username=e
+                                                }"
                                          />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
@@ -31,7 +39,12 @@
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="E-mail" 
                                         v-model="PerfilStore.email" 
-                                        tipo="obrigatorio" />
+                                        tipo="obrigatorio"
+                                        @updateModelValue="(e)=> {
+                                                console.log(e)
+                                                PerfilStore.email=e
+                                                }"
+                                        />
                                 </div>
                         </div>
                         
@@ -43,15 +56,26 @@
                                         conteudoInput="Sobrenome"
                                         modelValue="" 
                                         v-model="PerfilStore.sobrenome" 
-                                        tipo="obrigatorio" />
+                                        tipo="obrigatorio"
+                                        @updateModelValue="(e)=> {
+                                                console.log(e)
+                                                PerfilStore.sobrenome=e
+                                        }"
+                                        />
                                 </div>
+                                <!-- @updateModelValue -->
                                 <div class="flex justify-between items-center gap-5">
                                         <span class="text-xl">Data de Nascimento</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Data de Nascimento" 
                                         v-model="PerfilStore.dataDeNascimento" 
-                                        tipo="date" />
+                                        tipo="obrigatorio"
+                                        @updateModelValue="(e)=> {
+                                                console.log(e)
+                                                PerfilStore.dataDeNascimento=e
+                                        }"
+                                        />
                                 </div>
                                 
                         </div>
@@ -59,13 +83,13 @@
                 <!-- conferir se de fato vamos usar isso de alteração -->
                 <div class="flex justify-end mr-[15%] mt-[23%]">
                         <Botao v-if="!editar" 
-                        :funcaoClick="alterarEmail()" 
+                        :funcaoClick="alterarEmail" 
                         preset="PadraoRoxo" 
                         texto="Editar E-mail" 
                         tamanhoDaBorda="2px" 
                         tamanhoDaFonte="2.0vh" />
                         <Botao v-else 
-                        :funcaoClick="alterarEmail()" 
+                        :funcaoClick="alterarEmail" 
                         preset="PadraoRoxo" 
                         texto="Confirmar Edição" 
                         tamanhoDaBorda="2px" 
@@ -79,7 +103,7 @@ import Input from '../components/Input.vue'
 import Botao from '../components/Botao.vue'
 import VueCookies from "vue-cookies";
 import {perfilStore} from '../stores/perfilStore'
-import { ref, onMounted, onBeforeMount } from 'vue';
+import { ref, onMounted, onBeforeMount, onUpdated, watch } from 'vue';
 import { Usuario } from '../models/usuario';
 import { storeToRefs } from 'pinia';
 import {conexaoBD} from '../stores/conexaoBD.js'
@@ -87,17 +111,18 @@ const PerfilStore=perfilStore()
 const {fonteTitulo} = storeToRefs(PerfilStore)
 const {fonteCorpo} = storeToRefs(PerfilStore)
 const conexao=conexaoBD()
-// console.log(conexao)
-let el
+// console.log(conexao
+
+let nome=ref('')
 
 let editar=ref(false)
 
-// function foi(el){
-//         console.log('oi')
-//         console.log(el)
-//         PerfilStore.el=el
-// }
 function alterarEmail(){
+        console.log(nome.value)
+        console.log(PerfilStore.dataDeNascimento)
+        console.log(PerfilStore.email)
+        console.log(PerfilStore.username)
+        console.log(PerfilStore.dataDeNascimento)
         // Revisar 
 
         // editar.value=!editar.value
@@ -116,6 +141,7 @@ onBeforeMount(async ()=>{
         console.log(usuario)
         // erros pelo fato do cookie
         PerfilStore.nome=usuario.nome
+        nome.value=PerfilStore.nome
         PerfilStore.sobrenome=usuario.sobrenome
         PerfilStore.email=usuario.email
         PerfilStore.username=usuario.username
@@ -123,6 +149,10 @@ onBeforeMount(async ()=>{
 })
 onMounted(()=>{
 
+})
+onUpdated(()=>{
+        console.log(PerfilStore.el)
+        console.log('update')        
 })
 </script>
 

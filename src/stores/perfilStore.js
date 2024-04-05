@@ -20,6 +20,7 @@ export const perfilStore = defineStore('perfilStore', {
          isVisualizacaoEquipe:false,
          isVisualizacaoProjeto:false,
          el:null,
+         valueModel:'',
          tamanhoTitulo:6,
          tamanhoCorpo:2,
          fonteTitulo: 'Source Sans 3',
@@ -27,7 +28,8 @@ export const perfilStore = defineStore('perfilStore', {
          corEscura: '#36213E',
          cor: '#620BA7',
          corAtencao: '#8E00FF',
-         corClickBorder: '#ECC3FF'
+         corClickBorder: '#ECC3FF',
+         press:''
         }
     },
     actions:{
@@ -38,8 +40,9 @@ export const perfilStore = defineStore('perfilStore', {
             console.log(usuarioAlterado)
             api.atualizar(usuarioAlterado,"/usuario")
         },
-        acessibilidade(){
-            return {vlibras: this.isVlibras,voiceMaker:this.isVoiceMaker,tecladoVirtual: this.isTecladoVirtual}
+        digitar(valor,press){
+            this.press
+            return valor
         }
     }
 

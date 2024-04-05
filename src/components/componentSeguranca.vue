@@ -10,9 +10,12 @@
                 <div class="flex flex-col gap-10">
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="text-2xl w-[470px]">
-                            Ao alterar a senha, a gente mantém você conectado
+                            <span class="text-roxo">*</span> Senha com 8 ou mais caracteres.<br>
+                            <span class="text-roxo">*</span> Senha contento letras, números e caracteres especiais. <br>
+                            <span class="text-roxo">*</span> Não utilize palavras comuns.
+                            <!-- Ao alterar a senha, a gente mantém você conectado
                             a este dispositivo, mas é possível que sua conta
-                            seja desconectada de outros dispositivos.
+                            seja desconectada de outros dispositivos. -->
                         </div>
                         <Botao 
                         :funcaoClick="abrePopUp" 
