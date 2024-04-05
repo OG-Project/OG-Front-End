@@ -3,7 +3,7 @@
         <div class="h-[6%] pt-8 flex items-end justify-center">
             <h1 class="text-3xl font-semibold">Informações</h1>
         </div>
-        <div class="pt-8 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
+        <div class="pt-8 mb-4 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
             <div class="flex pl-8 gap-2">
                 <div class="w-[60%] justify-start flex-row">
                     <p>Nome do projeto:</p>
@@ -18,6 +18,14 @@
                 </div>
                 <div class="w-[40%] justify-end flex-row">
                     <p class="text-[#620BA7]">{{ DataInicialProjeto }}</p>
+                </div>
+            </div>
+            <div class="flex pl-8">
+                <div class="w-[60%] justify-start flex-row">
+                    <p>Data Final:</p>
+                </div>
+                <div class="w-[40%] justify-end flex-row">
+                    <p class="text-[#620BA7]">{{ DataFinalProjeto }}</p>
                 </div>
             </div>
         </div>
@@ -60,6 +68,7 @@ import NotePad from '../imagem-vetores/NotePad.svg'
 const props = defineProps({
     nomeProjeto: String,
     DataInicialProjeto: String,
+    DataFinalProjeto:String,
     listaPropriedades: [],
     listaStatus: []
 })
@@ -69,7 +78,7 @@ onMounted(() => {
 })
 
 function temLista(lista) {
-    if (lista.length != 0) {
+    if (lista.length != 0 && lista!=null && lista!=undefined) {
         return true
     }
     return false;
@@ -87,7 +96,6 @@ function styleStatus(statusRecebido) {
         backgroundColor: corBackgroundStatus(statusRecebido),
         color: verificaCorFonte(statusRecebido)
     }
-    console.log(style.color)
     return style;
 }
 
@@ -113,12 +121,11 @@ function verificaCorFonte(statusRecebido){
 }
 
 function contraste(cor) {
-    console.log(cor)
     const r = parseInt(String(cor).substr(1, 2), 16)
     const g = parseInt(String(cor).substr(3, 2), 16)
     const b = parseInt(String(cor).substr(5, 2), 16)
     const luz = 0.2126 * r + 0.7152 * g + 0.0722 * b
-    return luz > 128 ? '000' : 'ffff'
+    return luz > 145 ? '000' : 'ffff'
 }
 </script>
 

@@ -2,7 +2,7 @@
 <template>
 <div class="">
     <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita' && tipo!='float'" 
+        v-if="icon!='null' && direcao!='direita' && tipoInput!='float'" 
         :style="estilizaDivInput">
         <div 
         class=" cursor-pointer flex items-center justify-center">
@@ -56,7 +56,7 @@
 
 
     <div class="styleInputPadrao flex items-center" 
-        v-if="icon=='null' & tipo=='float'">
+        v-if="icon=='null' & tipoInput=='float'">
         <div class="estiloPlaceHolder">
             
             <input 
@@ -100,7 +100,7 @@
             <label 
             :style="estilizaDivPlaceHolder" 
             for="inputStyle"  
-            class=" absolute text-gray-500 duration-300 transform -translate-y-8 scale-80  z-10 origin-[0]  peer-focus:text-black  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            class=" absolute text-gray-500 duration-500 transform -translate-y-8 scale-[0.8]  z-10 origin-[0]  peer-focus:text-gray-500  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
             {{ conteudoInput }}
             </label>
         </div>
@@ -108,7 +108,7 @@
     <div 
     class="styleInputPadrao flex flex-row-reverse items-center"
     :class="{'Invalido':props.isInvalido}" 
-    v-if="icon=='null' && tipo!='float'"
+    v-if="icon=='null' && tipoInput!='float'"
     >
         <div class="flex items-center justify-center">
             <svgIconMic 
@@ -155,7 +155,7 @@
     <div 
     class="styleInputPadraoIconDireita " 
     :class="styleInputPadraoDireita" 
-    v-if="direcao=='direita' && tipo!='float'" 
+    v-if="direcao=='direita' && tipoInput!='float'" 
     :style="estilizaDivInput">
         
             <input 
@@ -260,6 +260,7 @@ function teclado(){
         fontSize: String,
         corHover: String,
         tamanhoMinimoAltura:String,
+        tipoInput:String,
       })
 
     const hoverPadrao = {
@@ -497,7 +498,7 @@ function teclado(){
     }
 
     .estiloPlaceHolder label{
-        @apply absolute;
+        @apply absolute flex items-center;
     }
     // <div class="relative">
 //     <input type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />

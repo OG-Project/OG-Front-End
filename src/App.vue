@@ -1,9 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
-import Tabelas from "./components/Tabelas.vue";
-import LoginView from "./views/LoginView.vue";
-import Input from "./components/Input.vue";
-import fundoPopUp from "./components/fundoPopUp.vue";
+import { RouterView } from "vue-router";
 import { funcaoPopUpStore } from "./stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
 import KeyBoard from './components/Keyboard.vue'
@@ -14,6 +10,7 @@ import { ref, watch, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
+import router from "@/router";
 
 import { useDraggable } from '@vueuse/core'
 
@@ -73,6 +70,9 @@ const route = useRoute();
 
   var estaNoLogin = ref(true)
 watch(() => route.path, () => {
+  if(route.path == '/'){
+    router.push('/login')
+  }
   if(route.path == '/login'){
     estaNoLogin.value = true
   }else{

@@ -8,4 +8,5 @@
     statusList : [],
     projetoEquipes : [],
     responsaveis: [],
+    dataFinal:String
 }

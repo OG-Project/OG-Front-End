@@ -10,6 +10,13 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
+
+      path: '/',
+      name: 'Inicio',
+      redirect: '/login',
+      component: () => import('../views/HomeView.vue')
+    },
+    {
       path: '/login',
       name: 'Login',
       component: () => import('../views/LoginView.vue')

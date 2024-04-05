@@ -41,6 +41,7 @@ import router from "@/router";
 import { onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import { conexaoBD } from "../stores/conexaoBD.js";
+import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
 
 const banco = conexaoBD();
 
@@ -60,6 +61,10 @@ async function autenticarUsuario(id) {
 
 function redireciona(rota) {
   router.push(rota);
+  if(rota == '/criaTarefa'){
+    const criaTarefa = criaTarefaEBuscaStore();
+    criaTarefa.criaTarefa();
+  }
 }
 </script>
 <style scoped></style>

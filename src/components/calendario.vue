@@ -58,15 +58,15 @@
             <div class="calendario">
                 <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDiaEIndice(dia)"
                     @mouseenter="hover(dia)" @mouseleave="getCalendario()">
-                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(new Date(dia.dia), 'd') }}</h1>
-                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
+                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[5%]">{{ format(new Date(dia.dia), 'd') }}</h1>
+                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[5%] text-[#9C9494]">{{ format(new
                         Date(dia.dia), 'd') }}</h1>
                     <div :style="dia.style">
                         <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort(sortBy('indice'))">
-                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row"
+                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row h-full"
                                 @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
                                 @dragover="retornaDiaEIndice(dia, indice)">
-                                <cardTarefas :tarefa=tarefa.tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                                <cardTarefas :tarefa=tarefa.tarefa altura="1vh" largura="7vw" preset="2"></cardTarefas>
                             </div>
                         </div>
                     </div>

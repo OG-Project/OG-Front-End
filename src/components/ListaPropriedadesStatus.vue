@@ -86,7 +86,7 @@
             </div>
 
         </div>
-        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="funcaoPopUp.abrePopUp"
+        <div class="w-full flex flex-row justify-end gap-3 sticky" @click="colocaCorPadrao()"
             v-if="funcaoPopUp.variavelModal == false">
             <p>Nova</p>
             <img src="../imagem-vetores/sinalDeMaisIcon.svg">
@@ -215,6 +215,10 @@ function verificaEdicaoProjeto() {
 
 }
 
+function colocaCorPadrao() {
+    corStatus.value = "620BA7";
+    funcaoPopUp.abrePopUp();
+}
 
 function mudaPaginaParaKanban() {
     router.push('/projeto')
@@ -223,10 +227,9 @@ function mudaPaginaParaKanban() {
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        console.log(buscarPor.value)
-        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A") {
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == "Todos") {
             listaSelecionada.value = listaPropriedades.value
-            console.log(listaSelecionada.value)
+
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
@@ -275,6 +278,7 @@ function filtroPropriedades(listaRecebida, buscarPor) {
             }
         }
     });
+
     return listaAux1;
 }
 
@@ -298,7 +302,7 @@ function buscaPropriedadeCookies() {
 }
 
 async function buscaPropriedadeBanco() {
-    idProjeto = VueCookies.get("projetoEditarId");
+    idProjeto = VueCookies.get("IdProjetoAtual");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     colocaListaTarefasDoProjeto(projeto.tarefas)
     if (projeto.propriedades != []) {
@@ -308,7 +312,7 @@ async function buscaPropriedadeBanco() {
             }
         })
         auxParaCriarPropriedades = listaPropriedades.value;
-        
+
     }
 }
 
@@ -320,7 +324,10 @@ function colocaListaTarefasDoProjeto(tarefas) {
 
 function buscaRascunhoPropiedade() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
-    if (propriedadeArmazenada == null) {
+    if (propriedadeArmazenada == null
+        || propriedadeArmazenada == undefined
+        || propriedadeArmazenada == ''
+        || propriedadeArmazenada == 'undefined') {
         return;
     }
     listaPropriedades.value = propriedadeArmazenada
@@ -458,7 +465,10 @@ function buscarStatusCookies() {
 }
 
 function buscaRascunhoStatus() {
-    if (VueCookies.get("statusCookie") != null) {
+    if (VueCookies.get("statusCookie") != null
+        && VueCookies.get("statusCookie") != "undefined"
+        && VueCookies.get("statusCookie") != ""
+        && VueCookies.get("statusCookie") != undefined) {
         listaStatus.value = VueCookies.get("statusCookie");
         console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
@@ -467,7 +477,7 @@ function buscaRascunhoStatus() {
 }
 
 async function buscaStatusBanco() {
-    idProjeto = VueCookies.get("projetoEditarId");
+    idProjeto = VueCookies.get("IdProjetoAtual");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     if (projeto != null) {
         projeto.statusList.forEach((statusAtual) => {
@@ -517,8 +527,8 @@ async function removePropriedade(propriedadeRecebida) {
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
     }
-        criaPropriedadeCookies()
-  
+    criaPropriedadeCookies()
+
 }
 </script>
 
@@ -551,6 +561,7 @@ async function removePropriedade(propriedadeRecebida) {
     transition: overflow-y 0.3s ease;
     @apply p-2 overflow-y-auto w-full;
 }
+
 .animation {
     @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col;
     animation: myAnim 0.15s ease 0s 1 normal none;
