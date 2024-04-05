@@ -15,6 +15,7 @@ import draggable from "vuedraggable";
 import VueDragscroll from "vue-dragscroll";
 import  VueColor  from '@ckpack/vue-color';
 import VueDatePicker from '@vuepic/vue-datepicker';
+import VueSocketIO from 'vue-socket.io'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const app = createApp(App)
@@ -26,7 +27,6 @@ app.use(router)
 app.use(PrimeVue);
 app.use(draggable)
 app.use(VueDragscroll);
-
 app.component('VueDatePicker', VueDatePicker);
 app.component('Button', Button);
 app.component('Calendar', Calendar);
