@@ -70,7 +70,8 @@
         </div>
         <div class="flex justify-end items-end ">
             <informacoesProjeto :nome-projeto="nomeProjeto" :lista-status="listaStatus"
-                :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada" :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
+                :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada"
+                :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
     </div>
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
@@ -91,7 +92,7 @@ import ListaConvidados from '../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../stores/criaProjeto'
 import { editaProjetoStore } from '../stores/editaProjeto'
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
-import {webSocket} from '../stores/webSocket'
+import { webSocket } from '../stores/webSocket'
 import { Projeto } from '../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Sair from "../imagem-vetores/Sair.svg";
@@ -124,7 +125,7 @@ funcaoPopUp.variavelModal = false
 let idProjeto;
 let placeHolderDataFinalProjeto = ref("")
 let stylePlaceHolder = ref({});
-let dataFinalFormatada= ref("");
+let dataFinalFormatada = ref("");
 
 onMounted(() => {
     verificaEdicaoProjeto();
@@ -135,11 +136,6 @@ onMounted(() => {
     listaEquipesConvidadas.value = [];
     placeHolderDataFinalProjeto.value = "Data final:"
 })
-
-webSocket.onmessage = function(event){
-    console.log(event.data);
-}
-
 
 onUpdated(() => {
     criarProjetoCookies();
@@ -160,10 +156,10 @@ stylePlaceHolder.value = {
 }
 
 function fazPlaceHolderDataFinalProjeto() {
-    if (dataFinalProjeto.value != undefined && dataFinalProjeto.value!="" && dataFinalProjeto.value!=null) {
+    if (dataFinalProjeto.value != undefined && dataFinalProjeto.value != "" && dataFinalProjeto.value != null) {
         const [ano, mes, dia] = dataFinalProjeto.value.split("-");
-        dataFinalFormatada.value=`${dia}/${mes}/${ano}`
-        placeHolderDataFinalProjeto.value = "Data Final: " +dataFinalFormatada.value ;
+        dataFinalFormatada.value = `${dia}/${mes}/${ano}`
+        placeHolderDataFinalProjeto.value = "Data Final: " + dataFinalFormatada.value;
     }
 }
 
@@ -224,7 +220,11 @@ function buscaProjetoCookies() {
 }
 
 function buscaRascunhoCriacaoProjeto() {
-    if (VueCookies.get("projetoCookie") != null && !projetoEdita.value) {
+    if (VueCookies.get("projetoCookie") != null
+        && !projetoEdita.value
+        && VueCookies.get("projetoCookie") != undefined
+        && VueCookies.get("projetoCookie") != "undefined") {
+
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
@@ -258,8 +258,8 @@ async function buscaProjetoEditar() {
         descricaoProjeto.value = projeto.descricao;
         if (projeto.dataFinal != null) {
             dataFinalProjeto.value = projeto.dataFinal;
-        }else{
-            dataFinalProjeto.value="";
+        } else {
+            dataFinalProjeto.value = "";
         }
         buscaListaResponsaveisBack(projeto);
         buscaListaEquipesRelacionadas(projeto);
@@ -354,14 +354,21 @@ async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-        // router.push('/projetos')
-       webSocket.send("teste")
+        restauraCookies();
+        router.push('/projetos')
     } else {
         const editaProjeto = editaProjetoStore()
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-        router.push('/projetos') 
+        restauraCookies();
+        router.push('/projetos')
     }
 
+}
+
+function restauraCookies() {
+    VueCookies.set("projetoCookie")
+    VueCookies.set("propriedadeCookie")
+    VueCookies.set("statusCookie")
 }
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {

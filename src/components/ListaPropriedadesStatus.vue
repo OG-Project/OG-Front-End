@@ -215,8 +215,8 @@ function verificaEdicaoProjeto() {
 
 }
 
-function colocaCorPadrao(){
-    corStatus.value="620BA7";
+function colocaCorPadrao() {
+    corStatus.value = "620BA7";
     funcaoPopUp.abrePopUp();
 }
 
@@ -227,9 +227,9 @@ function mudaPaginaParaKanban() {
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value =="Todos") {
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == "Todos") {
             listaSelecionada.value = listaPropriedades.value
-            
+
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
@@ -278,7 +278,7 @@ function filtroPropriedades(listaRecebida, buscarPor) {
             }
         }
     });
-  
+
     return listaAux1;
 }
 
@@ -312,7 +312,7 @@ async function buscaPropriedadeBanco() {
             }
         })
         auxParaCriarPropriedades = listaPropriedades.value;
-        
+
     }
 }
 
@@ -324,7 +324,10 @@ function colocaListaTarefasDoProjeto(tarefas) {
 
 function buscaRascunhoPropiedade() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
-    if (propriedadeArmazenada == null) {
+    if (propriedadeArmazenada == null
+        || propriedadeArmazenada == undefined
+        || propriedadeArmazenada == ''
+        || propriedadeArmazenada == 'undefined') {
         return;
     }
     listaPropriedades.value = propriedadeArmazenada
@@ -462,7 +465,10 @@ function buscarStatusCookies() {
 }
 
 function buscaRascunhoStatus() {
-    if (VueCookies.get("statusCookie") != null) {
+    if (VueCookies.get("statusCookie") != null
+        && VueCookies.get("statusCookie") != "undefined"
+        && VueCookies.get("statusCookie") != ""
+        && VueCookies.get("statusCookie") != undefined) {
         listaStatus.value = VueCookies.get("statusCookie");
         console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
@@ -521,8 +527,8 @@ async function removePropriedade(propriedadeRecebida) {
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
     }
-        criaPropriedadeCookies()
-  
+    criaPropriedadeCookies()
+
 }
 </script>
 
@@ -555,6 +561,7 @@ async function removePropriedade(propriedadeRecebida) {
     transition: overflow-y 0.3s ease;
     @apply p-2 overflow-y-auto w-full;
 }
+
 .animation {
     @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col;
     animation: myAnim 0.15s ease 0s 1 normal none;
