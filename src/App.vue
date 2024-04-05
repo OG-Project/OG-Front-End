@@ -14,10 +14,11 @@ import { ref, watch, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
+import { useScriptTag } from '@vueuse/core'
 import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
 import listaProjetos from './components/listaProjetos.vue';
 import kanbanProjetos from './components/kanbanProjetos.vue'
-
+// import { VLibras } from '@vue-a11y/vlibras'
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
@@ -76,13 +77,33 @@ watch(() => route.path, () => {
     estaNoLogin.value = false
   }
 });
-
+useScriptTag(
+  'https://vlibras.gov.br/app/vlibras-plugin.js',
+  // on script tag loaded.
+  () => {
+    console.log('scritpt')
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  },
+)
 </script>
-
+<!-- <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script> -->
 <template draggable="true" >
 
       <Navbar v-show="!estaNoLogin" />
     <RouterView />
+    <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
+      <!-- <VLibras /> -->
+      <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
+      </div>
+      
+    </div>
     <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
     <div ref="el" :style="style" style="position: fixed"
     class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" 
@@ -94,14 +115,6 @@ watch(() => route.path, () => {
       </div>
       <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
     </div>
-  <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper>
-        <div class="vw-plugin-top-wrapper"></div>
-      </div>
-    </div>
-  </div>
   
 </div>
 
