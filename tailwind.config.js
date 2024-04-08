@@ -31,6 +31,14 @@ export default {
     width:{
         
     },
+
+    screens: {
+      'tablet': '640px',
+      'laptop': '1024px',
+      'desktop': '1280px',
+      'mobile':'320px' 
+     
+    },
     /* Cormorant+Garamond serif */
     /* Merriweather serif */
     /* Proza+Libre */
