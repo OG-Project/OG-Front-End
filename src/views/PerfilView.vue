@@ -10,14 +10,12 @@
                 @mouseout="()=> ishover=!ishover"
                 class="xl:w-[95%] text-center flex justify-center items-center  sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
                >    
-                    <div :style="{backgroundImage:imagemExibicao}"
-                    class="xl:w-[95%] bg-no-repeat bg-cover bg-center  hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]">
-
-                    </div>
-                    <!-- <img 
-                    :src="imagemExibicao" 
+                    <img 
+                    :src="Imagem"
                     class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
-                    /> -->
+                    />
+                    
+                    
                     <div v-if="ishover" class="absolute flex items-center text-white">
                         <span class=" ">Alterar Foto</span>
                         <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)] bg-cover ml-3 w-6 h-6"  />
@@ -112,13 +110,7 @@ const { files, open, reset, onChange } = useFileDialog({
 })
 
 const imagemSelecionada = ref(null);
-const imagemSelecionadaUrl = computed(() => {
-// Se não houver imagem selecionada, retorna null
-if (!imagemSelecionada.value) return null;
 
-// Cria uma URL temporária para a imagem selecionada
-return URL.createObjectURL(imagemSelecionada.value);
-});
 onChange((files)=>{
     console.log('files');
     console.log(files);
@@ -143,33 +135,57 @@ onChange((files)=>{
 })
 
 
+let Imagem=computed(()=>{
+    if(foto.value!=null && imagemSelecionada.value==null){
+        console.log(foto.value);
+        return 'data:' +foto.value.tipo + ';base64,' + foto.value.dados
+    }else if(foto.value!=null && imagemSelecionada.value!=null){
+        const reader=new FileReader()
+        imagemBlob.value=new Blob([imagemSelecionada.value],{type:imagemSelecionada.value.type})
+        reader.readAsDataURL(imagemBlob.value)
+        reader.onload = function(event) {
+            // event.target.result contém a string Base64 do Blob
+            const base64String = event.target.result;
+           return (base64String); // Exibe a string Base64 no console
+        };
+        console.log(reader.result)
+        
+        return reader.result
+    }
+})
+// let imagemSelecionadaBlob = null;
+
+// if (imagemSelecionada.value != null) {
+//   imagemSelecionadaBlob = new Blob([imagemSelecionada.value], { type: imagemSelecionada.value.type });
+// }
+
+// let Imagem = computed(() => {
+//   if (foto.value != null && imagemSelecionada.value == null) {
+//     console.log(foto.value);
+//     return 'data:' + foto.value.tipo + ';base64,' + foto.value.dados;
+//   } else if (foto.value != null && imagemSelecionadaBlob != null) {
+//     const reader = new FileReader();
+
+//     reader.onload = function(event) {
+//       const base64String = event.target.result;
+//       console.log(base64String);
+//     };
+
+//     reader.readAsDataURL(imagemSelecionadaBlob);
+//     return 'data:' + imagemSelecionadaBlob.type + ';base64,' + reader.result;
+//   }
+// });
+
 // URL da imagem padrão
 const imagemPadraoUrl = 'url('+'../src/imagem-vetores/perfilPadrao.svg'+')';
 
-// Computed property para determinar qual URL de imagem exibir
-const imagemExibicao = computed(() => {
-// Se houver uma imagem selecionada, retorna sua URL
-if (imagemSelecionadaUrl.value) {
-    console.log(imagemSelecionadaUrl.value);0
-
-return 'url('+imagemSelecionadaUrl.value+')';
-}else if(foto.value!=null){
-    console.log('foto');
-    let fileObject=new File([foto.value.dados],foto.value.nome)
-    fotoUrl.value=URL.createObjectURL(fileObject)
-    return 'url('+fotoUrl.value+')';
-} else {
-// Caso contrário, retorna a URL da imagem padrão
-return imagemPadraoUrl;
-}
-});
 // import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 // let funcaoPopUp=funcaoPopUpStore()
 let isSeguActive = ref(false)
 
 let usuario=ref({})
-let foto=ref(null)
-let fotoUrl=ref(null)
+const foto=ref(null)
+const imagemBlob=ref(null)
 let ishover=ref(false) 
 
 async function enviarFotoParaBackend() {
@@ -179,6 +195,7 @@ async function enviarFotoParaBackend() {
             console.error('Nenhuma imagem selecionada.');
             return;
         }
+        foto.value=imagemSelecionada.value
         await conexao.cadastrarFotoUsuario(usuario.value.id, imagemSelecionada.value);
         console.log('Foto enviada com sucesso para o backend.');
     } catch (error) {
@@ -187,11 +204,11 @@ async function enviarFotoParaBackend() {
 }
 
 onMounted(async () => {
-    console.log(route.path)
     usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    console.log(route.path)
     console.log(usuario.value)
-    foto.value=usuario.value.foto
-   
+    foto.value=await usuario.value.foto
+    
     // if(foto.value==undefined){
     //     foto.value=usuario.value.foto
     // }
