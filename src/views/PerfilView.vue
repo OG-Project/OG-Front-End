@@ -4,16 +4,26 @@
     <div class="flex justify-center flex-wrap ">
         <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
-                <img v-if="foto!=null"
-                  :src="'data:' + foto.tipo + ';base64,' + foto.dados" 
-                  class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
-                />
-                <div v-else 
-                class="xl:w-[95%] text-center flex justify-center items-center hover:bg-slate-500 hover:opacity-70 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
-                >
-                    <div class="w-full h-full bg-[url(../src/imagem-vetores/perfilPadrao.svg)] bg-no-repeat bg-contain" ></div>
-                  <!-- <img src="../imagem-vetores/UserIcon.svg" class=" w-full" >   -->
+                <div 
+                @click="open()"
+                @mouseover="()=> ishover=!ishover"
+                @mouseout="()=> ishover=!ishover"
+                class="xl:w-[95%] text-center flex justify-center items-center  sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+               >    
+                    <div :style="{backgroundImage:imagemExibicao}"
+                    class="xl:w-[95%] bg-no-repeat bg-cover bg-center  hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]">
+
+                    </div>
+                    <!-- <img 
+                    :src="imagemExibicao" 
+                    class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                    /> -->
+                    <div v-if="ishover" class="absolute flex items-center text-white">
+                        <span class=" ">Alterar Foto</span>
+                        <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)] bg-cover ml-3 w-6 h-6"  />
+                    </div> 
                 </div>
+                
             </div>
             <div class=" flex flex-col gap-10">
                 <div @click="informacao()" class="bg-roxo medioId 
@@ -87,30 +97,101 @@ import router from '../router';
 
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref , computed, onUnmounted } from 'vue';
 import {useRoute} from 'vue-router';
 import  VueCookies  from 'vue-cookies';
 import { conexaoBD } from '../stores/conexaoBD';
+import { useFileDialog } from '@vueuse/core'
+
+const perfil = perfilStore()
+const { popUpSenha, popUpEmail } = storeToRefs(perfil)
 const route = useRoute()
 const conexao = conexaoBD()
+const { files, open, reset, onChange } = useFileDialog({
+    accept:'image/*'
+})
+
+const imagemSelecionada = ref(null);
+const imagemSelecionadaUrl = computed(() => {
+// Se não houver imagem selecionada, retorna null
+if (!imagemSelecionada.value) return null;
+
+// Cria uma URL temporária para a imagem selecionada
+return URL.createObjectURL(imagemSelecionada.value);
+});
+onChange((files)=>{
+    console.log('files');
+    console.log(files);
+    const file = files[0];
+
+    // Extrair o nome do arquivo
+    const fileName = file.name;
+
+    // Extrair o tipo do arquivo
+    const fileType = file.type;
+
+    // Criar um blob do arquivo
+    const fileBlob = new Blob([file]);
+
+    // Agora você pode usar o fileName, fileType e fileBlob conforme necessário
+    console.log('Nome do arquivo:', fileName);
+    console.log('Tipo do arquivo:', fileType);
+    console.log('Blob do arquivo:', fileBlob);
+    // Armazena o arquivo na variável reativa
+    imagemSelecionada.value = file;
+    enviarFotoParaBackend()
+})
+
+
+// URL da imagem padrão
+const imagemPadraoUrl = 'url('+'../src/imagem-vetores/perfilPadrao.svg'+')';
+
+// Computed property para determinar qual URL de imagem exibir
+const imagemExibicao = computed(() => {
+// Se houver uma imagem selecionada, retorna sua URL
+if (imagemSelecionadaUrl.value) {
+    console.log(imagemSelecionadaUrl.value);0
+
+return 'url('+imagemSelecionadaUrl.value+')';
+}else if(foto.value!=null){
+    console.log('foto');
+    let fileObject=new File([foto.value.dados],foto.value.nome)
+    fotoUrl.value=URL.createObjectURL(fileObject)
+    return 'url('+fotoUrl.value+')';
+} else {
+// Caso contrário, retorna a URL da imagem padrão
+return imagemPadraoUrl;
+}
+});
 // import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 // let funcaoPopUp=funcaoPopUpStore()
 let isSeguActive = ref(false)
-const perfil = perfilStore()
-const { popUpSenha, popUpEmail } = storeToRefs(perfil)
 
 let usuario=ref({})
 let foto=ref(null)
-let imagemUsuario=ref('../imagem-vetores/user.png')
-onBeforeMount(async ()=>{
-    
-}),
+let fotoUrl=ref(null)
+let ishover=ref(false) 
+
+async function enviarFotoParaBackend() {
+    try {
+        if (!imagemSelecionada.value) {
+            // Verifica se uma imagem foi selecionada
+            console.error('Nenhuma imagem selecionada.');
+            return;
+        }
+        await conexao.cadastrarFotoUsuario(usuario.value.id, imagemSelecionada.value);
+        console.log('Foto enviada com sucesso para o backend.');
+    } catch (error) {
+        console.error('Erro ao enviar a foto para o backend:', error);
+    }
+}
 
 onMounted(async () => {
     console.log(route.path)
     usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
     console.log(usuario.value)
     foto.value=usuario.value.foto
+   
     // if(foto.value==undefined){
     //     foto.value=usuario.value.foto
     // }

@@ -1,9 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import Tabelas from "./components/Tabelas.vue";
-import LoginView from "./views/LoginView.vue";
-import Input from "./components/Input.vue";
-import fundoPopUp from "./components/fundoPopUp.vue";
 import { funcaoPopUpStore } from "./stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
 import KeyBoard from './components/Keyboard.vue'
@@ -14,13 +10,6 @@ import { ref, watch, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
-import { useScriptTag } from '@vueuse/core'
-import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
-import listaProjetos from './components/listaProjetos.vue';
-import kanbanProjetos from './components/kanbanProjetos.vue'
-// import { VLibras } from '@vue-a11y/vlibras'
-const funcaoPopUpPropriedade = funcaoPopUpStore();
-const funcaoPopUpProjeto= funcaoPopUpStore();
 const perfil=perfilStore()
 const {isVlibras}=storeToRefs(perfil);
 import { useDraggable } from '@vueuse/core'
@@ -39,10 +28,10 @@ const route = useRoute();
   perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
   perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
   console.log(perfil.isTecladoVirtual)
-  perfil.fonteTitulo= (VueCookies.get('fonteTitulo'))
+  perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
 
-  perfil.fonteCorpo=(VueCookies.get('fonteCorpo'))
-  perfil.isVlibras=(VueCookies.get('isVlibras'))
+  perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
+  perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
   })
   
   function press(b){
@@ -77,14 +66,6 @@ watch(() => route.path, () => {
     estaNoLogin.value = false
   }
 });
-useScriptTag(
-  'https://vlibras.gov.br/app/vlibras-plugin.js',
-  // on script tag loaded.
-  () => {
-    console.log('scritpt')
-    new window.VLibras.Widget('https://vlibras.gov.br/app');
-  },
-)
 </script>
 <!-- <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
     <script>
