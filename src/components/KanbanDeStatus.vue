@@ -22,16 +22,17 @@
                         </div>
                     </template>
                 </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]" @click="store.criaTarefa()">
-                    <p>+ Nova</p>
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]"  @click="store.criaTarefa()">
+                    <p :style="corDoTexto(propriedade.propriedade)">+ Nova</p>
                 </button>
             </div>
         </div>
-        <button class="novaPropriedade" @click="funcaoPopUp.variavelModal = true">
+        <button class="novaPropriedade" @click="popUpStatus = true">
+            {{ console.log(popUpStatus) }}
             <h1>+Novo</h1>
         </button>
     </div>
-    <div v-if="funcaoPopUp.variavelModal==true">
+    <div v-if="popUpStatus==true">
         <div class="flex justify-end">
             <img src="../imagem-vetores/triangulo.svg">
         </div>
@@ -45,9 +46,9 @@
             </div>
 
         </div>
-        <div class="flex felx-row justify-between">
+        <div class="flex justify-between">
             <div class="pl-2 pt-2 pb-2">
-                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="popUpStatus=false"></Botao>
             </div>
             <div class="pr-2 pt-2 pb-2">
 
@@ -69,7 +70,7 @@ import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca';
 import Botao from '../components/Botao.vue'
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 import ColorPicker from 'primevue/colorpicker';
-
+import tinycolor from "tinycolor2";
 
 let api = conexaoBD()
 let projetoApi = api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
@@ -82,7 +83,6 @@ const funcaoPopUp = funcaoPopUpStore()
 
 
 onMounted(() => {
-    console.log(projetoApi)
     cookies()
     defineListaDePropriedades()
 })
@@ -96,6 +96,24 @@ async function cookies() {
     $cookies.set("usuarioCookie", usuario, 1000000000)
 }
 
+function verificaCorTexto(status) {
+    if (tinycolor(status.cor).isDark()) {
+        return "white"
+    } else {
+        return "black"
+    }
+}
+
+function corDoTexto(status) {
+    console.log(status)
+    return {
+        color: verificaCorTexto(status)
+    }
+}
+
+function fechaPopUp() {
+    popUpStatus = false
+}
 async function defineListaDePropriedades() {
     let listaDePropriedades = []
     let projetoTeste = (await (projetoApi))

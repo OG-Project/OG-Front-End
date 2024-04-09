@@ -3,7 +3,7 @@ import {defineStore} from "pinia";
 
 export const funcaoPopUpStore = defineStore('fechaPopUP', {
     state: () => {
-      return { variavelModal: true }
+      return { variavelModal: false }
     },
 
     actions: {

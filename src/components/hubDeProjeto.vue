@@ -1,5 +1,5 @@
 <template>
-    <div v-if="listaDeEquipes==true" class="flex justify-center">
+    <div v-if="funcaoPopUp.variavelModal==true" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
     <div class="w-full h-[30%] flex  items-center ">
@@ -43,16 +43,6 @@
                 Calendário
             </button>
         </div>
-        <div class="w-max bg-[#CECCCE] px-2 flex flex-row justify-center items-center">
-            <svg width="26" height="24" viewBox="0 0 26 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M0.152344 0.328613V10.3198H9.81154V0.328613H0.152344ZM13.0313 0.328613V3.659H25.9102V0.328613H13.0313ZM13.0313 6.98939V10.3198H22.6905V6.98939H13.0313ZM0.152344 13.6502V23.6413H9.81154V13.6502H0.152344ZM13.0313 13.6502V16.9806H25.9102V13.6502H13.0313ZM13.0313 20.3109V23.6413H22.6905V20.3109H13.0313Z"
-                    fill="black" />
-            </svg>
-            <button class="w-[110%]">
-                Agrupar Por: status
-            </button>
-        </div>
     </div>
 </template>
 
@@ -66,6 +56,7 @@ import IconEngrenagem1 from '../assets/iconEngrenagem 1.vue';
 import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
 import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
 import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
+import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
@@ -76,6 +67,7 @@ let tarefasConcluidas = []
 let subtarefasConcluidas = ref([])
 let subtarefas = ref([])
 let listaDeEquipes = ref(false)
+let funcaoPopUp = funcaoPopUpStore()
 
 onMounted(async () => {
 
@@ -93,7 +85,7 @@ function enviaCookieProjeto(){
     router.push('/editaProjeto') 
 }
 function mudaVariavelBooleana(){
-    listaDeEquipes.value = true;
+    funcaoPopUp.abrePopUp()
 }
 
 function definePorcentagem() {
