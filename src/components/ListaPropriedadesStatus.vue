@@ -98,16 +98,33 @@
                 <div class="flex justify-end">
                     <img src="../imagem-vetores/triangulo.svg">
                 </div>
-                <div class="flex flex-row justify-between">
+                <div class="flex flex-row justify-between" v-if="screenWidth >= 340">
                     <div class="pl-2">
                         <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
-                            :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-            nomePropriedade = e
-        }"></Input>
+                            :modelValue="nomePropriedade" v-model="nomePropriedade" 
+                            @updateModelValue="(e) => {
+                                nomePropriedade = e
+                            }">
+                        </Input>
                     </div>
                     <div class="pr-2">
                         <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
                             largura="8" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
+                    </div>
+
+                </div>
+                <div class="flex flex-row justify-between" v-else>
+                    <div>
+                        <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.75rem" altura="2"
+                            :modelValue="nomePropriedade" v-model="nomePropriedade" 
+                            @updateModelValue="(e) => {
+                                nomePropriedade = e
+                            }">
+                        </Input>
+                    </div>
+                    <div class="pr-2">
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                            largura="30" altura="3.8" fonteTamanho="0.75rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
                 </div>
@@ -129,11 +146,23 @@
                     <img src="../imagem-vetores/triangulo.svg">
                 </div>
                 <div class="flex flex-row justify-between">
-                    <div class="pl-2">
-                        <Input largura="13" conteudoInput="Nome Status" fontSize="1rem" altura="2"
-                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
-            nomeStatus = e
-        }"></Input>
+            
+                    <div class="pl-2" v-if="screenWidth >= 340">
+                        <Input largura="8" conteudoInput="Nome Status" fontSize="1rem" altura="2"
+                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => 
+                            {
+                                nomeStatus = e
+                            }">
+                        </Input>
+                    </div>
+                    <div class="pl-2"  v-else>
+                         <Input largura="25" conteudoInput="Nome Status" fontSize="0.90rem" altura="2"
+                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => 
+                            {
+                                nomeStatus = e
+                            }">
+                        </Input>
+                    
                     </div>
                     <div class="pr-8">
                         <ColorPicker v-model="corStatus" class="rounded-md" />
@@ -205,6 +234,15 @@ onMounted(() => {
     tarefasAtribuidas = false
 }
 )
+
+const screenWidth = ref(window.innerWidth)
+
+onMounted(() => {
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+})
+
 
 function verificaEdicaoProjeto() {
     if (route.path == '/editaProjeto') {
@@ -563,7 +601,7 @@ async function removePropriedade(propriedadeRecebida) {
 }
 
 .animation {
-    @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col;
+    @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col miniMobile:w-full;
     animation: myAnim 0.15s ease 0s 1 normal none;
 }
 

@@ -36,7 +36,8 @@ export default {
       'tablet': '640px',
       'laptop': '1024px',
       'desktop': '1280px',
-      'mobile':'320px' 
+      'mobile':'320px',
+      'miniMobile':'280px'
      
     },
     /* Cormorant+Garamond serif */

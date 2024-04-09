@@ -72,18 +72,20 @@ const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaxim
 
 webSocket.onmessage = async function (event) {
   console.log(await event.data)
-   
+   listaUsuarios();
 }
 
 async function listaUsuarios() {
     usuarios= banco.procurar("/usuario");
     let listaUsuarios = await usuarios;
+    console.log(listaUsuarios)
     listaUsuarios.forEach((usuario) => {
         if (usuarioLogadoId == usuario.id) {
             console.log(usuario.equipes)
             equipesUsuario.value = usuario.equipes;
         }
     })
+    
 }
 
 function abrePaginaEquipe(equipe) {

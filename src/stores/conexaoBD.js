@@ -20,20 +20,28 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       atualizar(objeto,textoRequisicao){
         
-        return axios.put("http://localhost:8084"+textoRequisicao,objeto)
+        return axios.put("http://localhost:8084"+textoRequisicao,objeto).then(response =>{
+          this.enviaWebSocket("PUT");
+        })
       },
       async adicionarUsuarios(ids,equipeId,textoRequisicao){
-        axios.patch(`http://localhost:8084${textoRequisicao}/${equipeId}`, ids)
-        this.enviaWebSocket();
+        axios.patch(`http://localhost:8084${textoRequisicao}/${equipeId}`, ids).then(response =>{
+          this.enviaWebSocket("PATCH");
+        })
+        
       },
       deletarEquipe(id,textoRequisicao){
-        return axios.delete(`http://localhost:8084${textoRequisicao}/${id}`)
+        return axios.delete(`http://localhost:8084${textoRequisicao}/${id}`).then(response =>{
+          this.enviaWebSocket("DELETE");
+        })
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
           return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${equipeId}`)).data)
       },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
-          return axios.delete(`http://localhost:8084${textoRequisicao}/${equipeId}/${userId}`)
+          return axios.delete(`http://localhost:8084${textoRequisicao}/${equipeId}/${userId}`).then(response =>{
+            this.enviaWebSocket("DELETE");
+          })
       },
       async buscarUm(id,textoRequisicao){
         return (await axios.get('http://localhost:8084'+textoRequisicao+'/'+id).then(response => response.data))
@@ -57,6 +65,8 @@ export const conexaoBD = defineStore('conexaoBD', {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
+            }).then(response =>{
+              this.enviaWebSocket("PATCH");
             });
     
             // Retorne os dados da resposta
@@ -67,10 +77,8 @@ export const conexaoBD = defineStore('conexaoBD', {
         }
           return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${equipeId}`)).data)
       },
-      async enviaWebSocket(){
-        let equipe = await this.procurar("/equipe")
-        equipe = JSON.stringify(equipe);
-         webSocket.send(equipe)
+      async enviaWebSocket(mensagem){
+         webSocket.send(""+mensagem)
       }
       
     }
