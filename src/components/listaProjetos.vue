@@ -25,36 +25,36 @@
                 <div class="urgentes">
                      <h1 class="text-xl text-white"> URGENTES</h1>
                 </div>
-                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('urgentes')" :key="projeto.id"
+                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of projetosUrgentes" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id"
                 draggable="true" @dragstart="onDragStart($event, projeto)">
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)"  ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col" @dragover.prevent @drop.prevent="event => onDrop(event, 'nao-iniciados', '#0034BA')">
                 <div class="naoIniciado">
                   <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
                </div>
-               <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('nao-iniciados')" :key="projeto.id" 
+               <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of projetosNaoIniciados" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max flex min-h-[15vh] flex-col"  @dragover.prevent @drop.prevent="event => onDrop(event, 'prontos', '#389300')">
                 <div class="prontos">
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
-                <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('prontos')" :key="projeto.id" 
+                <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of projetosProntos" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col"  @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
                 <div class="meusProjetos">
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
-                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of agruparProjetosPorCategoria('meus-projetos')" :key="projeto.id" 
+                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of meusProjetos" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" ></KanbanProjetos>
+                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
             </div>
@@ -111,21 +111,28 @@
   
   const statusBotao = ref(null);
   const kanbanAtivo = ref(false);
+  const projetoEmBaixoId = ref()
   const banco = conexaoBD();
   let projetos = ref([]);
   const idUsuarioLogado = VueCookies.get('IdUsuarioCookie');
   let projetosUsuario = ref([]);
-  let projetosEquipe = ref([]);
   const projetosFiltrados = ref([]);
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
+  let projetosUrgentes = ref([]);
+  let projetosProntos = ref([]);
+  let projetosNaoIniciados = ref([]);
+  let meusProjetos = ref([]);
 
+  onMounted(() => {
+    buscarProjetos();
+  
+    carregarEstadoProjetos();
+  });
 
-  
-  
   filtrarProjetos();
-  
+
   const ativarBotao = (botao) => {
     if (statusBotao.value === botao) {
       statusBotao.value = null;
@@ -142,9 +149,9 @@
   }
 
   async function buscarProjetos(){
-    if(projetosSalvos != null){
-       return ;
-    }
+    //if(projetosSalvos != null){
+    //   return ;
+  //  }
     usuarioLogado.value = await banco.buscarUm(idUsuarioLogado, "/usuario");
     equipesUsuario.value = await usuarioLogado.value.equipes;
 
@@ -162,6 +169,7 @@
 
     if (Array.isArray(projetosUsuario)) {
       projetos.value =  projetosUsuario.filter(projeto => projeto != null);
+      
       const dataAtual = new Date();
       projetos.value.forEach(projeto => {
         projeto.dataFinal = new Date(projeto.dataFinal);
@@ -183,6 +191,7 @@
       console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
     }
     filtrarProjetos();
+    agruparProjetosPorCategoria();
   }
   
 
@@ -203,8 +212,23 @@
     }
   }
 
-  function agruparProjetosPorCategoria(categoria) {
-    return projetos.value.filter(projeto => projeto.categoria === categoria);
+  function agruparProjetosPorCategoria() {
+    console.log(projetos.value)
+    projetosUrgentes.value = projetos.value.filter(projeto => projeto.categoria === "urgentes");
+    console.log(projetosUrgentes.value)
+  
+ 
+    projetosNaoIniciados.value = projetos.value.filter(projeto  => projeto.categoria === "nao-iniciados");
+    console.log(projetos.value)
+  
+
+    projetosProntos.value = projetos.value.filter(projeto => projeto.categoria ==="prontos");
+    console.log(projetosProntos.value)
+ 
+ 
+    meusProjetos.value = projetos.value.filter(projeto => projeto.categoria === "meus-projetos");
+    console.log(meusProjetos.value)
+    
   }
   
   function formatarData(data){
@@ -303,42 +327,74 @@ const onDragStart = (event, projeto) => {
 };
 
 const onDrop = (event, categoria, cor) => {
-  if (event && event.dataTransfer) {
-        event.preventDefault();
+  event.preventDefault();
 
-        const projetoId = event.dataTransfer.getData('projetoId');
-        const projeto = projetos.value.find(projeto => projeto.id == projetoId);
+  const projetoId = event.dataTransfer.getData('projetoId');
+  const localprojeto = getListaPorCategoria(categoria).find(projeto => projeto.id == parseInt(projetoId));
+  const localprojetoEmBaixo = getListaPorCategoria(categoria).find(projeto => projeto.id == projetoEmBaixoId.value)
+  const localindex = getListaPorCategoria(categoria).indexOf(localprojeto);
+  const localindexEmBaixo = getListaPorCategoria(categoria).indexOf(localprojetoEmBaixo);
 
-        if (projeto) {
-            // Verifica se o drop ocorreu na mesma coluna
-            if (projeto.categoria === categoria) {
-                const target = event.target.closest('.kanban-board');
-                const newIndex = getIndexFromDrop(event, target);
+  const projeto = projetos.value.find(projeto => projeto.id == parseInt(projetoId));
+  const projetoEmBaixo = projetos.value.find(projeto => projeto.id == projetoEmBaixoId.value)
+  const index = projetos.value.indexOf(projeto);
+  const indexEmBaixo = projetos.value.indexOf(projetoEmBaixo);
+  
+  if(localindex != -1 && localindexEmBaixo != -1){
+    getListaPorCategoria(categoria).splice(localindex, 1)
+    getListaPorCategoria(categoria).splice(localindexEmBaixo, 0, projeto)
+    console.log(projetos.value)
+  }
 
-                if (newIndex !== -1) {
-                    const oldIndex = projetos.value.findIndex(proj => proj.id === projetoId);
+  console.log(index, indexEmBaixo)
 
-                    if (oldIndex !== newIndex) {
-                        // Remove o projeto da posição antiga
-                        projetos.value.splice(oldIndex, 1);
-                        // Insere o projeto na nova posição
-                        projetos.value.splice(newIndex, 0, projeto);
-                        salvarEstadoDragAndDrop();
-                    }
-                }
-            } else {
-                // Se o drop ocorreu em outra coluna, atualiza a categoria e a cor
-                projeto.categoria = categoria;
-                projeto.corTopico = cor;
-                salvarEstadoDragAndDrop();
-                filtrarProjetos();
-            }
-        } else {
-            console.error('Projeto não encontrado! ID:', projetoId);
-        }
-    } else {
-        console.error('Evento ou event.dataTransfer não definidos.');
+  if (!projeto) {
+    console.error('Projeto não encontrado! ID:', projetoId);
+    return;
+  }
+
+  // Verifica se o drop ocorreu na mesma coluna
+  if (projeto.categoria === categoria) {
+    const target = event.target.closest('.kanban-board');
+    const newIndex = getIndexFromDrop(event, target);
+
+    if (newIndex != -1) {
+      const oldIndex = projetos.value.findIndex(proj => proj.id == projeto.id);
+
+      if (oldIndex != newIndex) {
+        // Remove o projeto da posição antiga
+        projetos.value.splice(oldIndex, 1);
+        console.log(projetos.value.splice(oldIndex, 1))
+        // Insere o projeto na nova posição
+        projetos.value.splice(newIndex, 0, projeto);
+        console.log(projetos.value.splice(newIndex, 0, projeto))
+        salvarEstadoDragAndDrop();
+        agruparProjetosPorCategoria();
+      }
     }
+} else {
+  // Se o drop ocorreu em outra coluna, atualiza a categoria e a cor
+  projeto.categoria = categoria;
+  projeto.corTopico = cor;
+  salvarEstadoDragAndDrop();
+  filtrarProjetos();
+  agruparProjetosPorCategoria()
+}
+};
+
+const getListaPorCategoria = (categoria) => {
+  switch (categoria) {
+    case 'urgentes':
+      return projetosUrgentes.value;
+    case 'nao-iniciados':
+      return projetosNaoIniciados.value;
+    case 'prontos':
+      return projetosProntos.value;
+    case 'meus-projetos':
+      return meusProjetos.value;
+    default:
+      return null;
+  }
 };
 
 const salvarEstadoDragAndDrop = () => {
@@ -346,11 +402,11 @@ const salvarEstadoDragAndDrop = () => {
 };
 
 const getIndexFromDrop = (event, target) => {
-    const draggedProject = event.dataTransfer.getData('projetoId');
-    const projects = Array.from(target.querySelectorAll('.kanban-board > div'));
-    const newIndex = projects.findIndex(project => project.dataset.projectId == draggedProject);
+  const draggedProjectId = parseInt(event.dataTransfer.getData('projetoId'));
+  const projects = Array.from(target.querySelectorAll('.kanban-board > div'));
+  const newIndex = projects.findIndex(project => parseInt(project.dataset.projectId) === draggedProjectId);
 
-    return newIndex;
+  return newIndex;
 };
 
 function carregarEstadoProjetos(){
@@ -361,9 +417,6 @@ function carregarEstadoProjetos(){
     buscarProjetos();
 };
   
-  onMounted(() => {
-    carregarEstadoProjetos();
-  });
 
   </script>
   
