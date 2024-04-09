@@ -78,6 +78,7 @@ export const conexaoBD = defineStore('conexaoBD', {
           return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${equipeId}`)).data)
       },
       async enviaWebSocket(mensagem){
+        // quando for criar uma notificacao passa a mensagem ("post-notificacao-convite")
          webSocket.send(""+mensagem)
       }
       

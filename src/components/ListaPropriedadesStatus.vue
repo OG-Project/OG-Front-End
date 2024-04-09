@@ -1,21 +1,14 @@
 <template>
     <div class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
-        <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
+        <div>
             <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                <p @click="navegaPelaTabela('propriedade')" class="bg-roxo-claro p-2">Propriedades</p>
-                <p @click="navegaPelaTabela('status')" class="p-2">Status</p>
-                <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades</p>
+                <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
+                <div class="min-w-[7vw]">
+                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
                     styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+                </div>
 
-            </div>
-        </div>
-
-        <div v-if="opcaoSelecionadaNaTabela == 'status'">
-            <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
-                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2 mr-8">Status</p>
-                <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                    styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
             </div>
         </div>
 
@@ -101,10 +94,9 @@
                 <div class="flex flex-row justify-between" v-if="screenWidth >= 340">
                     <div class="pl-2">
                         <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
-                            :modelValue="nomePropriedade" v-model="nomePropriedade" 
-                            @updateModelValue="(e) => {
-                                nomePropriedade = e
-                            }">
+                            :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
+                nomePropriedade = e
+            }">
                         </Input>
                     </div>
                     <div class="pr-2">
@@ -116,10 +108,9 @@
                 <div class="flex flex-row justify-between" v-else>
                     <div>
                         <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.75rem" altura="2"
-                            :modelValue="nomePropriedade" v-model="nomePropriedade" 
-                            @updateModelValue="(e) => {
-                                nomePropriedade = e
-                            }">
+                            :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
+                nomePropriedade = e
+            }">
                         </Input>
                     </div>
                     <div class="pr-2">
@@ -146,23 +137,21 @@
                     <img src="../imagem-vetores/triangulo.svg">
                 </div>
                 <div class="flex flex-row justify-between">
-            
+
                     <div class="pl-2" v-if="screenWidth >= 340">
                         <Input largura="8" conteudoInput="Nome Status" fontSize="1rem" altura="2"
-                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => 
-                            {
-                                nomeStatus = e
-                            }">
+                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
+                nomeStatus = e
+            }">
                         </Input>
                     </div>
-                    <div class="pl-2"  v-else>
-                         <Input largura="25" conteudoInput="Nome Status" fontSize="0.90rem" altura="2"
-                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => 
-                            {
-                                nomeStatus = e
-                            }">
+                    <div class="pl-2" v-else>
+                        <Input largura="25" conteudoInput="Nome Status" fontSize="0.90rem" altura="2"
+                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
+                nomeStatus = e
+            }">
                         </Input>
-                    
+
                     </div>
                     <div class="pr-8">
                         <ColorPicker v-model="corStatus" class="rounded-md" />
@@ -223,7 +212,8 @@ let projetoEdita = ref(false);
 let timeoutId = null;
 let idProjeto;
 let tarefasAtribuidas = false
-let listaPropriedadesBackEnd = []
+let listaPropriedadesBackEnd = [];
+
 onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
@@ -235,7 +225,25 @@ onMounted(() => {
 }
 )
 
-const screenWidth = ref(window.innerWidth)
+const screenWidth = ref(window.innerWidth);
+
+function verificaStyleNavTabela(nomeGuia) {
+    const styleTabela = {
+        padding: "8px",
+        backgroundColor: verificaQualBackGround(nomeGuia)
+    }
+    return styleTabela
+}
+
+function verificaQualBackGround(nomeGuia){
+    if(nomeGuia == "propriedade" && opcaoSelecionadaNaTabela.value=="propriedade" ){
+        return "#DBB3FF"
+    }else if(nomeGuia == "status" && opcaoSelecionadaNaTabela.value=="status"){
+        return "#DBB3FF"
+    }
+}
+
+
 
 onMounted(() => {
     window.addEventListener('resize', () => {

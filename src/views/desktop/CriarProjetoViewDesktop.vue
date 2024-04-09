@@ -228,7 +228,10 @@ function buscaRascunhoCriacaoProjeto() {
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         dataFinalProjeto.value = variavelCookieProjeto.dataFinal;
-        if (variavelCookieProjeto.equipes.length != 0) {
+        if (variavelCookieProjeto.equipes != [] 
+        && variavelCookieProjeto.equipes != undefined 
+        && variavelCookieProjeto.equipes != "undefined" 
+        && variavelCookieProjeto.equipes != null) {
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
                 const objetoEnviaBack = {
@@ -239,7 +242,10 @@ function buscaRascunhoCriacaoProjeto() {
                 listaEquipeEnviaBack.push(objetoEnviaBack)
             })
         }
-        if (variavelCookieProjeto.responsaveis != []) {
+        if (variavelCookieProjeto.responsaveis != [] 
+        && variavelCookieProjeto.responsaveis != undefined 
+        && variavelCookieProjeto.responsaveis != "undefined" 
+        && variavelCookieProjeto.responsaveis != null) {
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
