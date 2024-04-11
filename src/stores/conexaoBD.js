@@ -1,7 +1,8 @@
 
 import {defineStore} from "pinia";
 import axios from "axios";
-import { webSocket } from '../stores/webSocket'
+import { webSocketStore } from "./webSocket.js";
+
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
@@ -21,18 +22,18 @@ export const conexaoBD = defineStore('conexaoBD', {
       atualizar(objeto,textoRequisicao){
         
         return axios.put("http://localhost:8084"+textoRequisicao,objeto).then(response =>{
-          this.enviaWebSocket("PUT");
+          
         })
       },
       async adicionarUsuarios(ids,equipeId,textoRequisicao){
         axios.patch(`http://localhost:8084${textoRequisicao}/${equipeId}`, ids).then(response =>{
-          this.enviaWebSocket("PATCH");
+          return response;
         })
         
       },
       deletarEquipe(id,textoRequisicao){
         return axios.delete(`http://localhost:8084${textoRequisicao}/${id}`).then(response =>{
-          this.enviaWebSocket("DELETE");
+          
         })
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
@@ -40,7 +41,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://localhost:8084${textoRequisicao}/${equipeId}/${userId}`).then(response =>{
-            this.enviaWebSocket("DELETE");
+           
           })
       },
       async buscarUm(id,textoRequisicao){
@@ -66,7 +67,7 @@ export const conexaoBD = defineStore('conexaoBD', {
                     'Content-Type': 'multipart/form-data'
                 }
             }).then(response =>{
-              this.enviaWebSocket("PATCH");
+            
             });
     
             // Retorne os dados da resposta
@@ -77,10 +78,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         }
           return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${equipeId}`)).data)
       },
-      async enviaWebSocket(mensagem){
-        // quando for criar uma notificacao passa a mensagem ("post-notificacao-convite")
-         webSocket.send(""+mensagem)
-      }
+      
       
     }
 })

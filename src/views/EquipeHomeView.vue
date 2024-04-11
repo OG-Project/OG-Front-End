@@ -43,17 +43,18 @@
 <script setup>
 import navBar from "../components/navBar.vue"
 import VueCookies from "vue-cookies";
-import { onMounted, ref, } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import editarEquipePopUp from "../components/editarEquipePopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
-import { webSocket } from '../stores/webSocket'
+import { webSocketStore } from '../stores/webSocket.js'
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
+const webSocket = webSocketStore();
 const usuarioLogadoId = 1;
-
+webSocket.url = "ws://localhost:8084/og/webSocket/usuario/"+usuarioLogadoId
 let usuarios;
 const funcaoPopUp = funcaoPopUpStore();
 funcaoPopUp.variavelModal = false;
@@ -62,21 +63,24 @@ let variavelEngrenagem = false;
 const nomeCompleto = ref('');
 const router = useRouter();
 
-
 onMounted(() => {
-   
     listaUsuarios();
+
+
 })
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
-webSocket.onmessage = async function (event) {
-  console.log(await event.data)
-   listaUsuarios();
-}
+webSocket.criaConexaoWebSocket();
 
+webSocket.esperaMensagem(() => {
+    listaUsuarios();
+});
+
+
+      
 async function listaUsuarios() {
-    usuarios= banco.procurar("/usuario");
+    usuarios = banco.procurar("/usuario");
     let listaUsuarios = await usuarios;
     console.log(listaUsuarios)
     listaUsuarios.forEach((usuario) => {
@@ -85,7 +89,7 @@ async function listaUsuarios() {
             equipesUsuario.value = usuario.equipes;
         }
     })
-    
+
 }
 
 function abrePaginaEquipe(equipe) {

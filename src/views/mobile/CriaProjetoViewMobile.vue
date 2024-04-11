@@ -82,7 +82,6 @@ import ListaConvidados from '../../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../../stores/criaProjeto'
 import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
-import { webSocket } from '../../stores/webSocket'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Sair from "../../imagem-vetores/Sair.svg";

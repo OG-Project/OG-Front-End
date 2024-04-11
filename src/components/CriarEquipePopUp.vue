@@ -70,7 +70,7 @@ const usuarioLogado = 1;
 let membrosEquipe = ref([]);
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
-
+import { webSocketStore } from '../stores/webSocket.js'
 
 
 function marginRightConvidado() {
@@ -208,9 +208,9 @@ async function cadastrarEquipe() {
         equipe = e.data;
     });
 
-    console.log(equipe);
-
-    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
+    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add").then(resposta => {
+         enviaParaWebSocket();
+    });
     await enviarFotoParaBackend(equipe);
 
     nome.value = "";
@@ -220,6 +220,12 @@ async function cadastrarEquipe() {
 
 };
 
+
+async function enviaParaWebSocket() {
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8084/og/webSocket/usuario/1"
+   await webSocket.enviaMensagemWebSocket("usuario:" + usuarioLogado)
+}
 
 async function enviarFotoParaBackend(equipe) {
     try {
