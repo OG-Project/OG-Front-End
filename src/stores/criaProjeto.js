@@ -2,6 +2,10 @@ import { defineStore } from "pinia";
 import { Projeto } from '../models/Projeto'
 
 import { conexaoBD } from './conexaoBD'
+import { set } from "date-fns";
+
+let api = conexaoBD();
+
 export const criaProjetoStore = defineStore('criaProjeto', {
   state: () => {
     return {
@@ -13,7 +17,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
     criaProjeto(nome, descricao, equipes, propriedades, status, responsaveis, dataFinal) {
       let projetoCriado = Projeto
       let lista = []
-      let api = conexaoBD();
+      let projetoAux = {}
       projetoCriado.nome = nome;
       projetoCriado.descricao = descricao;
       projetoCriado.projetoEquipes = equipes
@@ -21,23 +25,35 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       projetoCriado.statusList = status;
       projetoCriado.responsaveis = responsaveis;
       projetoCriado.dataFinal = dataFinal
-      api.cadastrar(projetoCriado, '/projeto')
-      equipes.forEach(async (equipe) => {
-        let membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
-        membros.forEach(membro => {
-          lista.push(membro.id)
-        });
-      });
+      api.cadastrar(projetoCriado, '/projeto').then((res) => {
+        projetoAux = res.data;
+        this.mandarNotificacao(projetoAux,equipes)
+      })
+    },
+    mandarNotificacao(projetoAux,equipes){
+      console.log(equipes)
       let notificacao = {
-        mensagem: "Sou Gay Criou o Projeto",
-        receptores: lista,
+        mensagem: "Davi Criou o Projeto",
+        receptores: [],
         conviteParaProjeto: {
-          projeto: {
-            id: projetoCriado.id
-          }
+          projeto: projetoAux
         }
       }
-      api.cadastrar(notificacao, '/notificacao/projeto')
-    },
+      equipes.forEach(async (equipe) => {
+        let membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
+        console.log(membros)
+        membros.forEach(membro => {
+          let teste = {
+            id:membro.id
+          }
+          notificacao.receptores.push(teste)
+        });
+      });
+      console.log(notificacao)
+      setTimeout(() => {
+        console.log(notificacao)
+        api.cadastrar(notificacao, '/notificacao/convite/projeto')
+      },10)
+    }
   },
 })

@@ -357,11 +357,9 @@ async function criaProjeto() {
         const criaProjeto = criaProjetoStore()
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         // router.push('/projetos')
-       webSocket.send("teste")
     } else {
         const editaProjeto = editaProjetoStore()
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-        router.push('/projetos') 
     }
 
 }
