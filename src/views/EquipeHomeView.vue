@@ -38,6 +38,7 @@
 
         </div>
     </div>
+
 </template>
 
 <script setup>
@@ -138,6 +139,7 @@ function mostrarNomeCompleto(nome) {
 
 function limparNomeCompleto() {
     nomeCompleto.value = '';
+
     reduzirCard
 }
 </script>

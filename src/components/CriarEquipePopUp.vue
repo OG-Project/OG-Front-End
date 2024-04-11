@@ -66,10 +66,11 @@ let nome = ref('');
 let descricao = ref('');
 let usuarioConvidado = ref('');
 let mensagemError = ref("");
-const usuarioLogado = 1;
+let usuarioLogado = VueCookies.get('IdUsuarioCookie');
 let membrosEquipe = ref([]);
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
+
 import { webSocketStore } from '../stores/webSocket.js'
 
 
@@ -92,6 +93,8 @@ function marginRightConvidado() {
 
 const imagemSelecionada = ref(null);
 
+// Função para lidar com o upload de arquivos
+
 function handleFileUpload(event) {
     const file = event.target.files[0];
 
@@ -112,12 +115,24 @@ function handleFileUpload(event) {
     imagemSelecionada.value = file;
 }
 
+// Computed property para retornar a URL da imagem selecionada
+const imagemSelecionadaUrl = computed(() => {
+    // Se não houver imagem selecionada, retorna null
+    if (!imagemSelecionada.value) return null;
+
+
 const imagemSelecionadaUrl = computed(() => {
     if (!imagemSelecionada.value) return null;
     return URL.createObjectURL(imagemSelecionada.value);
 });
 
+// URL da imagem padrão
 const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+
+// Computed property para determinar qual URL de imagem exibir
+
+const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+
 
 const imagemExibicao = computed(() => {
     // Se houver uma imagem selecionada, retorna sua URL
@@ -221,6 +236,7 @@ async function cadastrarEquipe() {
 };
 
 
+
 async function enviaParaWebSocket() {
     const webSocket = webSocketStore();
     webSocket.url = "ws://localhost:8084/og/webSocket/usuario/1"
@@ -241,7 +257,6 @@ async function enviarFotoParaBackend(equipe) {
         console.error('Erro ao enviar a foto para o backend:', error);
     }
 }
-
 
 
 </script>

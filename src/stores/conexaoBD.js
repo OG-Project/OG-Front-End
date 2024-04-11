@@ -6,52 +6,48 @@ import { webSocketStore } from "./webSocket.js";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
-      return {api:axios.get("http://localhost:8084/projeto")
-    }
+      return {api:axios.get("http://localhost:8082/projeto")}
 
     },
     actions: {
     
       procurar(textoRequisicao){
         // return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
-        return axios.get("http://localhost:8084"+ textoRequisicao).then(response => response.data)
+        return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
-        return axios.post("http://localhost:8084"+textoRequisicao,objeto)
+        return axios.post("http://localhost:8082"+textoRequisicao,objeto).then(response =>{
+          return response
+        })
       },
       atualizar(objeto,textoRequisicao){
-        
-        return axios.put("http://localhost:8084"+textoRequisicao,objeto).then(response =>{
-          
-        })
+        return axios.put("http://localhost:8082"+textoRequisicao,objeto)
       },
-      async adicionarUsuarios(ids,equipeId,textoRequisicao){
-        axios.patch(`http://localhost:8084${textoRequisicao}/${equipeId}`, ids).then(response =>{
-          return response;
-        })
-        
+      adicionaUsuarioAEquipe(userId, equipeId, textoRequisicao){
+        return axios.patch("http://localhost:8082"+textoRequisicao,userId,equipeId)
+      },
+      adicionarUsuarios(ids,equipeId,textoRequisicao){
+        return axios.patch(`http://localhost:8082${textoRequisicao}/${equipeId}`, ids)
       },
       deletarEquipe(id,textoRequisicao){
-        return axios.delete(`http://localhost:8084${textoRequisicao}/${id}`).then(response =>{
-          
-        })
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`)
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
-          return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${equipeId}`)).data)
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
-          return axios.delete(`http://localhost:8084${textoRequisicao}/${equipeId}/${userId}`).then(response =>{
-           
-          })
+          return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`)
       },
       async buscarUm(id,textoRequisicao){
-        return (await axios.get('http://localhost:8084'+textoRequisicao+'/'+id).then(response => response.data))
+
+        return (await axios.get('http://localhost:8082'+textoRequisicao+'/'+id).then(response => response.data))
       },
       async buscarProjetosEquipe(equipeId, textoRequisicao){
-        return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${equipeId}`)).data)
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
-        return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${userId}`)).data)
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+
 
       },
       async cadastrarFoto(equipeId, foto) {
@@ -61,8 +57,8 @@ export const conexaoBD = defineStore('conexaoBD', {
             formData.append('foto', foto);
     
             // Faça a requisição PATCH para enviar a imagem
-    
-            const response = await axios.patch(`http://localhost:8084/equipe/${equipeId}`, formData, {
+            const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
+
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
