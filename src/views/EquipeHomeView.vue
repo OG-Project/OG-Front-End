@@ -114,12 +114,12 @@
 
   function mostrarNomeCompleto(nome) {
     nomeCompleto.value = nome;
-    expandirCard
+  
   }
 
   function limparNomeCompleto() {
     nomeCompleto.value = '';
-    reduzirCard
+  
   }
  </script>
  

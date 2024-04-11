@@ -136,9 +136,11 @@ onMounted(() => {
     placeHolderDataFinalProjeto.value = "Data final:"
 })
 
+
 webSocket.onmessage = function(event){
     console.log(event.data);
 }
+
 
 
 onUpdated(() => {
