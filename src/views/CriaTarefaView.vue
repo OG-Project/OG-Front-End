@@ -279,10 +279,10 @@
                 <CheckBox
                   @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
                   :checked="veSeAPropriedadeTaNaTarefa(propriedade)"></CheckBox>
-                <p class="break-all">{{ propriedade.propriedade.nome }}</p>
+                <p class="break-all">{{ propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
-                <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
+                <p>Tipo: {{ propriedade.tipo }}</p>
               </div>
               <div class="w-[30%]">
                 <button @click="editarPropriedade(propriedade)" class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md">
@@ -295,14 +295,14 @@
               </div>
             </div>
             <div class="w-[100%] min-h-[5vh] flex items-center justify-center">
-              <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
+              <div v-if="propriedade.tipo === 'TEXTO'">
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
                   <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor" width="80%">
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'DATA'">
+                <div v-if="propriedade.tipo === 'DATA'">
                   <input @input="patchDaListaDePropriedades()"
                     v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     class="border-2 rounded-lg border-[#620BA7]" type="datetime-local"
@@ -310,7 +310,7 @@
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
+                <div v-if="propriedade.tipo === 'NUMERO'">
                   <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     class="border-2 rounded-lg border-[#620BA7]" showIcon iconDisplay="input"
                     v-model="propriedadeForTarefa.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
@@ -318,7 +318,7 @@
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'">
+                <div v-if="propriedade.tipo === 'SELEÇÃO'">
                   <div v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
                     <Input altura="2" largura="27" conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
