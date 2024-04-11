@@ -98,12 +98,14 @@
   
   <script setup>
 
-  import { ref, onMounted, watch} from 'vue';
+  import { ref, onMounted, onUnmounted} from 'vue';
   import { conexaoBD } from '../stores/conexaoBD';
   import cardProjetos from './cardProjetos.vue';
   import KanbanProjetos from './kanbanProjetos.vue';
   import VueCookies from "vue-cookies";
-  
+import { onBeforeRouteLeave } from 'vue-router';
+import { es } from 'date-fns/locale';
+
   const props = defineProps({
     height: { type: String, required: true },
     width: { type: String, required: true }
@@ -125,10 +127,18 @@
   let projetosNaoIniciados = ref([]);
   let meusProjetos = ref([]);
 
+  let projetosBack = {
+    id : Number,
+    projetosUrgentes,
+    projetosProntos,
+    meusProjetos,
+    projetosNaoIniciados,
+    usuarioLogado
+  }
+
   onMounted(() => {
     buscarProjetos();
   
-    carregarEstadoProjetos();
   });
 
   filtrarProjetos();
@@ -149,12 +159,10 @@
   }
 
   async function buscarProjetos(){
-    //if(projetosSalvos != null){
-    //   return ;
-  //  }
+
     usuarioLogado.value = await banco.buscarUm(idUsuarioLogado, "/usuario");
     equipesUsuario.value = await usuarioLogado.value.equipes;
-
+  
     let projetosEquipe = []; // Inicialize como um array vazio
 
     for (const equipeUsuario of equipesUsuario.value) {
@@ -176,22 +184,26 @@
         if (projeto.dataFinal.getTime() < dataAtual.getTime()) {
           projeto.categoria = "urgentes";
           projeto.corTopico = "#D27200";
+          projetosUrgentes.value.push(projeto);
         } else if (calcularProgressoProjeto(projeto) === 0) {
           projeto.categoria = "nao-iniciados";
           projeto.corTopico = "#0034BA";
+          projetosNaoIniciados.value.push(projeto);
         } else if (calcularProgressoProjeto(projeto) === 100) {
           projeto.categoria = "prontos";
           projeto.corTopico = "#389300";
+          projetosProntos.value.push(projeto);
         } else {
           projeto.categoria = "meus-projetos";
           projeto.corTopico = "#8E00FF";
+          meusProjetos.value.push(projeto);
         }
       });
     } else {
       console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
     }
     filtrarProjetos();
-    agruparProjetosPorCategoria();
+    agruparProjetosPorCategoria(); 
   }
   
 
@@ -336,9 +348,6 @@ const onDrop = (event, categoria, cor) => {
   const localindexEmBaixo = getListaPorCategoria(categoria).indexOf(localprojetoEmBaixo);
 
   const projeto = projetos.value.find(projeto => projeto.id == parseInt(projetoId));
-  const projetoEmBaixo = projetos.value.find(projeto => projeto.id == projetoEmBaixoId.value)
-  const index = projetos.value.indexOf(projeto);
-  const indexEmBaixo = projetos.value.indexOf(projetoEmBaixo);
   
   if(localindex != -1 && localindexEmBaixo != -1){
     getListaPorCategoria(categoria).splice(localindex, 1)
@@ -346,7 +355,7 @@ const onDrop = (event, categoria, cor) => {
     console.log(projetos.value)
   }
 
-  console.log(index, indexEmBaixo)
+  console.log(localindex, localindexEmBaixo)
 
   if (!projeto) {
     console.error('Projeto não encontrado! ID:', projetoId);
@@ -368,7 +377,6 @@ const onDrop = (event, categoria, cor) => {
         // Insere o projeto na nova posição
         projetos.value.splice(newIndex, 0, projeto);
         console.log(projetos.value.splice(newIndex, 0, projeto))
-        salvarEstadoDragAndDrop();
         agruparProjetosPorCategoria();
       }
     }
@@ -376,7 +384,6 @@ const onDrop = (event, categoria, cor) => {
   // Se o drop ocorreu em outra coluna, atualiza a categoria e a cor
   projeto.categoria = categoria;
   projeto.corTopico = cor;
-  salvarEstadoDragAndDrop();
   filtrarProjetos();
   agruparProjetosPorCategoria()
 }
@@ -397,8 +404,24 @@ const getListaPorCategoria = (categoria) => {
   }
 };
 
-const salvarEstadoDragAndDrop = () => {
-    localStorage.setItem('estadoDragAndDrop', JSON.stringify(projetos.value,projetos.categoria));
+const salvarEstadoDragAndDrop = async () => {
+  projetosBack = await banco.buscarUm(idUsuarioLogado, "/projetoDrag");
+  let estado={
+  'id': projetosBack.id,
+  'projetosUrgentes': projetosUrgentes.value,
+  'projetosProntos':projetosProntos.value,
+  'meusProjetos':meusProjetos.value,
+  'projetosNaoIniciados':projetosNaoIniciados.value,
+   "usuario": usuarioLogado.value
+  }
+
+  if(projetosBack != estado){
+    banco.atualizar(estado, "/projetoDrag")
+    console.log("atualizei")
+  }else{
+    banco.cadastrar(estado,"/projetoDrag")
+  }
+  carregarEstadoProjetos(estado);
 };
 
 const getIndexFromDrop = (event, target) => {
@@ -409,15 +432,14 @@ const getIndexFromDrop = (event, target) => {
   return newIndex;
 };
 
-function carregarEstadoProjetos(){
-    let projetosSalvos = localStorage.getItem('estadoDragAndDrop');
-    if (projetosSalvos) {
-        projetos.value = JSON.parse(projetosSalvos);
-    }
-    buscarProjetos();
+async function carregarEstadoProjetos(){
+   
+   console.log(projetosUrgentes.value)
 };
-  
 
+onUnmounted(()=>{
+  salvarEstadoDragAndDrop();
+})
   </script>
   
 <style scoped>

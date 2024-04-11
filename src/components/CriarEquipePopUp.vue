@@ -56,7 +56,7 @@
     let descricao = ref('');
     let usuarioConvidado = ref('');
     let mensagemError = ref("");
-    const usuarioLogado = VueCookies.get('IdUsuarioCookie');
+    const usuarioLogado = 1;
     let membrosEquipe = ref([]);
     const screenWidth = window.innerWidth;
     let usuarios = banco.procurar("/usuario");
