@@ -10,7 +10,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
     },
 
     actions: {
-        criaProjeto(nome,descricao,equipes, propriedades,status,responsaveis,dataFinal){
+        criaProjeto(nome,descricao,equipes, propriedades,status,responsaveis,dataFinal,retorno){
         let projetoCriado= Projeto
         let api= conexaoBD();
         projetoCriado.nome=nome;
@@ -20,7 +20,9 @@ export const criaProjetoStore = defineStore('criaProjeto', {
         projetoCriado.statusList=status;
         projetoCriado.responsaveis=responsaveis;
         projetoCriado.dataFinal=dataFinal  
-        api.cadastrar(projetoCriado,'/projeto')
+        api.cadastrar(projetoCriado,'/projeto').then(response =>{
+          return retorno(response);
+        })
         
       },
     },

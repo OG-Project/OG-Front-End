@@ -100,9 +100,11 @@ import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
 import { format } from 'date-fns';
 import router from "@/router";
+import { webSocketStore } from '../../stores/webSocket';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
+const webSocket = webSocketStore();
 var listaSelecao = ref([]);
 let nomeProjeto = ref("");
 let dataFinalProjeto = ref("");
@@ -357,16 +359,26 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+        ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
+           enviaWebSocket(response)
+        })
         restauraCookies();
         router.push('/projetos')
     } else {
         const editaProjeto = editaProjetoStore()
-        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
         router.push('/projetos')
     }
 
+}
+
+function enviaWebSocket(response){
+    console.log(response.data.id)
+    webSocket.url= "ws://localhost:8084/og/webSocket/tarefa/"+response.data.id;
+    webSocket.enviaMensagemWebSocket()
 }
 
 function restauraCookies() {
