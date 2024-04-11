@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center w-full h-[90%]">
-        <div class=" flex flex-col  mt-[3%] overflow-hidden gap-10">
+        <div class=" flex flex-col  mt-[3%] overflow-hidden gap-20">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
                     largura="80" altura="6" fontSize="1.5rem" v-model="nomeProjeto" :modelValue="nomeProjeto"
@@ -59,7 +59,7 @@
                 </ListaConvidados>
             </div>
         </div>
-        <div class=" w-full h-[90%] flex flex-row justify-center">
+        <div class=" w-full h-[90%] flex flex-row justify-center miniMobile:mr-7">
             <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"
                 @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
         </div>
@@ -82,14 +82,11 @@ import ListaConvidados from '../../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../../stores/criaProjeto'
 import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
-import { webSocket } from '../../stores/webSocket'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Sair from "../../imagem-vetores/Sair.svg";
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
-import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
-import { format } from 'date-fns';
 import router from "@/router";
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();

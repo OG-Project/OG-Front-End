@@ -92,7 +92,6 @@ import ListaConvidados from '../../components/ListaConvidados.vue';
 import { criaProjetoStore } from '../../stores/criaProjeto'
 import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
-import { webSocket } from '../../stores/webSocket'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Sair from "../../imagem-vetores/Sair.svg";
@@ -101,9 +100,11 @@ import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
 import { format } from 'date-fns';
 import router from "@/router";
+import { webSocketStore } from '../../stores/webSocket';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
+const webSocket = webSocketStore();
 var listaSelecao = ref([]);
 let nomeProjeto = ref("");
 let dataFinalProjeto = ref("");
@@ -228,7 +229,10 @@ function buscaRascunhoCriacaoProjeto() {
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         dataFinalProjeto.value = variavelCookieProjeto.dataFinal;
-        if (variavelCookieProjeto.equipes.length != 0) {
+        if (variavelCookieProjeto.equipes != [] 
+        && variavelCookieProjeto.equipes != undefined 
+        && variavelCookieProjeto.equipes != "undefined" 
+        && variavelCookieProjeto.equipes != null) {
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
                 const objetoEnviaBack = {
@@ -239,7 +243,10 @@ function buscaRascunhoCriacaoProjeto() {
                 listaEquipeEnviaBack.push(objetoEnviaBack)
             })
         }
-        if (variavelCookieProjeto.responsaveis != []) {
+        if (variavelCookieProjeto.responsaveis != [] 
+        && variavelCookieProjeto.responsaveis != undefined 
+        && variavelCookieProjeto.responsaveis != "undefined" 
+        && variavelCookieProjeto.responsaveis != null) {
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
@@ -352,16 +359,26 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+        ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
+           enviaWebSocket(response)
+        })
         restauraCookies();
         router.push('/projetos')
     } else {
         const editaProjeto = editaProjetoStore()
-        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
         router.push('/projetos')
     }
 
+}
+
+function enviaWebSocket(response){
+    console.log(response.data.id)
+    webSocket.url= "ws://localhost:8084/og/webSocket/tarefa/"+response.data.id;
+    webSocket.enviaMensagemWebSocket()
 }
 
 function restauraCookies() {
