@@ -29,6 +29,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
         projetoAux = res.data;
         this.mandarNotificacao(projetoAux,equipes)
       })
+
     },
     mandarNotificacao(projetoAux,equipes){
       console.log(equipes)

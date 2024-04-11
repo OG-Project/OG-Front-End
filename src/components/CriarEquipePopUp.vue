@@ -71,6 +71,9 @@ let membrosEquipe = ref([]);
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
 
+import { webSocketStore } from '../stores/webSocket.js'
+
+
 function marginRightConvidado() {
     if (screenWidth <= 768) {
         return '1vw';
@@ -91,6 +94,7 @@ function marginRightConvidado() {
 const imagemSelecionada = ref(null);
 
 // Função para lidar com o upload de arquivos
+
 function handleFileUpload(event) {
     const file = event.target.files[0];
 
@@ -116,7 +120,9 @@ const imagemSelecionadaUrl = computed(() => {
     // Se não houver imagem selecionada, retorna null
     if (!imagemSelecionada.value) return null;
 
-    // Cria uma URL temporária para a imagem selecionada
+
+const imagemSelecionadaUrl = computed(() => {
+    if (!imagemSelecionada.value) return null;
     return URL.createObjectURL(imagemSelecionada.value);
 });
 
@@ -124,6 +130,10 @@ const imagemSelecionadaUrl = computed(() => {
 const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
 
 // Computed property para determinar qual URL de imagem exibir
+
+const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+
+
 const imagemExibicao = computed(() => {
     // Se houver uma imagem selecionada, retorna sua URL
     if (imagemSelecionadaUrl.value) {
@@ -211,23 +221,11 @@ async function cadastrarEquipe() {
     let equipe;
     await equipePromise.then(e => {
         equipe = e.data;
-        console.log(e.data);
     });
 
-    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
-    console.log(equipe);
-    setTimeout(async () => {
-        usuarioLogado = await banco.buscarUm(usuarioLogado, "/usuario");
-        console.log(usuarioLogado)
-        for (const equipeAux of usuarioLogado.equipes) {
-            if (equipeAux.equipe.id == equipe.id) {
-                equipeAux.criador = true;
-                banco.atualizar(usuarioLogado, "/usuario")
-            }
-        }
-        console.log(usuarioLogado)
-    }, 1000);
-    console.log(usuarioLogado)
+    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add").then(resposta => {
+         enviaParaWebSocket();
+    });
     await enviarFotoParaBackend(equipe);
 
     nome.value = "";
@@ -238,10 +236,16 @@ async function cadastrarEquipe() {
 };
 
 
+
+async function enviaParaWebSocket() {
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8084/og/webSocket/usuario/1"
+   await webSocket.enviaMensagemWebSocket("usuario:" + usuarioLogado)
+}
+
 async function enviarFotoParaBackend(equipe) {
     try {
         if (!imagemSelecionada.value) {
-            // Verifica se uma imagem foi selecionada
             console.error('Nenhuma imagem selecionada.');
             return;
         }
@@ -253,7 +257,6 @@ async function enviarFotoParaBackend(equipe) {
         console.error('Erro ao enviar a foto para o backend:', error);
     }
 }
-
 
 
 </script>

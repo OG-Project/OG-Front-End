@@ -1,12 +1,12 @@
 
 import {defineStore} from "pinia";
 import axios from "axios";
+import { webSocketStore } from "./webSocket.js";
 
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
       return {api:axios.get("http://localhost:8082/projeto")}
-
 
     },
     actions: {
@@ -58,9 +58,12 @@ export const conexaoBD = defineStore('conexaoBD', {
     
             // Faça a requisição PATCH para enviar a imagem
             const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
+
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
+            }).then(response =>{
+            
             });
     
             // Retorne os dados da resposta
@@ -69,8 +72,9 @@ export const conexaoBD = defineStore('conexaoBD', {
             console.error('Erro ao cadastrar a foto:', error);
             throw error;
         }
-          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
-      }
+          return await ((await axios.get(`http://localhost:8084${textoRequisicao}/${equipeId}`)).data)
+      },
+      
       
     }
 })

@@ -1,21 +1,14 @@
 <template>
     <div class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
-        <div v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''" class="h-full">
+        <div>
             <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                <p @click="navegaPelaTabela('propriedade')" class="bg-roxo-claro p-2">Propriedades</p>
-                <p @click="navegaPelaTabela('status')" class="p-2">Status</p>
-                <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades</p>
+                <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
+                <div class="min-w-[7vw]">
+                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
                     styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+                </div>
 
-            </div>
-        </div>
-
-        <div v-if="opcaoSelecionadaNaTabela == 'status'">
-            <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                <p @click="navegaPelaTabela('propriedade')" class="p-2">Propriedades</p>
-                <p @click="navegaPelaTabela('status')" class="bg-roxo-claro p-2 mr-8">Status</p>
-                <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                    styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
             </div>
         </div>
 
@@ -98,16 +91,31 @@
                 <div class="flex justify-end">
                     <img src="../imagem-vetores/triangulo.svg">
                 </div>
-                <div class="flex flex-row justify-between">
+                <div class="flex flex-row justify-between" v-if="screenWidth >= 340">
                     <div class="pl-2">
                         <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-            nomePropriedade = e
-        }"></Input>
+                nomePropriedade = e
+            }">
+                        </Input>
                     </div>
                     <div class="pr-2">
                         <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
                             largura="8" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
+                    </div>
+
+                </div>
+                <div class="flex flex-row justify-between" v-else>
+                    <div>
+                        <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.75rem" altura="2"
+                            :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
+                nomePropriedade = e
+            }">
+                        </Input>
+                    </div>
+                    <div class="pr-2">
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                            largura="30" altura="3.8" fonteTamanho="0.75rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
                 </div>
@@ -129,11 +137,21 @@
                     <img src="../imagem-vetores/triangulo.svg">
                 </div>
                 <div class="flex flex-row justify-between">
-                    <div class="pl-2">
-                        <Input largura="13" conteudoInput="Nome Status" fontSize="1rem" altura="2"
+
+                    <div class="pl-2" v-if="screenWidth >= 340">
+                        <Input largura="8" conteudoInput="Nome Status" fontSize="1rem" altura="2"
                             :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
-            nomeStatus = e
-        }"></Input>
+                nomeStatus = e
+            }">
+                        </Input>
+                    </div>
+                    <div class="pl-2" v-else>
+                        <Input largura="25" conteudoInput="Nome Status" fontSize="0.90rem" altura="2"
+                            :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
+                nomeStatus = e
+            }">
+                        </Input>
+
                     </div>
                     <div class="pr-8">
                         <ColorPicker v-model="corStatus" class="rounded-md" />
@@ -194,7 +212,8 @@ let projetoEdita = ref(false);
 let timeoutId = null;
 let idProjeto;
 let tarefasAtribuidas = false
-let listaPropriedadesBackEnd = []
+let listaPropriedadesBackEnd = [];
+
 onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
@@ -206,6 +225,33 @@ onMounted(() => {
 }
 )
 
+const screenWidth = ref(window.innerWidth);
+
+function verificaStyleNavTabela(nomeGuia) {
+    const styleTabela = {
+        padding: "8px",
+        backgroundColor: verificaQualBackGround(nomeGuia)
+    }
+    return styleTabela
+}
+
+function verificaQualBackGround(nomeGuia){
+    if(nomeGuia == "propriedade" && opcaoSelecionadaNaTabela.value=="propriedade" ){
+        return "#DBB3FF"
+    }else if(nomeGuia == "status" && opcaoSelecionadaNaTabela.value=="status"){
+        return "#DBB3FF"
+    }
+}
+
+
+
+onMounted(() => {
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+})
+
+
 function verificaEdicaoProjeto() {
     if (route.path == '/editaProjeto') {
         projetoEdita.value = true
@@ -215,8 +261,8 @@ function verificaEdicaoProjeto() {
 
 }
 
-function colocaCorPadrao(){
-    corStatus.value="620BA7";
+function colocaCorPadrao() {
+    corStatus.value = "620BA7";
     funcaoPopUp.abrePopUp();
 }
 
@@ -227,9 +273,9 @@ function mudaPaginaParaKanban() {
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value =="Todos") {
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == "Todos") {
             listaSelecionada.value = listaPropriedades.value
-            
+
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
@@ -278,7 +324,7 @@ function filtroPropriedades(listaRecebida, buscarPor) {
             }
         }
     });
-  
+
     return listaAux1;
 }
 
@@ -312,7 +358,7 @@ async function buscaPropriedadeBanco() {
             }
         })
         auxParaCriarPropriedades = listaPropriedades.value;
-        
+
     }
 }
 
@@ -324,7 +370,10 @@ function colocaListaTarefasDoProjeto(tarefas) {
 
 function buscaRascunhoPropiedade() {
     const propriedadeArmazenada = VueCookies.get("propriedadeCookie");
-    if (propriedadeArmazenada == null) {
+    if (propriedadeArmazenada == null
+        || propriedadeArmazenada == undefined
+        || propriedadeArmazenada == ''
+        || propriedadeArmazenada == 'undefined') {
         return;
     }
     listaPropriedades.value = propriedadeArmazenada
@@ -462,7 +511,10 @@ function buscarStatusCookies() {
 }
 
 function buscaRascunhoStatus() {
-    if (VueCookies.get("statusCookie") != null) {
+    if (VueCookies.get("statusCookie") != null
+        && VueCookies.get("statusCookie") != "undefined"
+        && VueCookies.get("statusCookie") != ""
+        && VueCookies.get("statusCookie") != undefined) {
         listaStatus.value = VueCookies.get("statusCookie");
         console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
@@ -521,8 +573,8 @@ async function removePropriedade(propriedadeRecebida) {
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
     }
-        criaPropriedadeCookies()
-  
+    criaPropriedadeCookies()
+
 }
 </script>
 
@@ -555,8 +607,9 @@ async function removePropriedade(propriedadeRecebida) {
     transition: overflow-y 0.3s ease;
     @apply p-2 overflow-y-auto w-full;
 }
+
 .animation {
-    @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col;
+    @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col miniMobile:w-full;
     animation: myAnim 0.15s ease 0s 1 normal none;
 }
 
