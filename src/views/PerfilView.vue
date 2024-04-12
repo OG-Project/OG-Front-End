@@ -23,52 +23,52 @@
                 </div>
                 
             </div>
-            <div class=" flex flex-col gap-10">
-                <div @click="informacao()" class="bg-roxo medioId 
+            <div class="font-[var(--fonteCorpo)] flex flex-col gap-10">
+                <div @click="informacao()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
                     Informações
                 </div>
-                <div @click="seguranca()" class="bg-roxo medioId 
+                <div @click="seguranca()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
                     Segurança
                 </div>
-                <div @click="acessibilidade()" class="bg-roxo medioId 
+                <div @click="acessibilidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
                     Acessibilidade
                 </div>
-                <div @click="privacidade()" class="bg-roxo medioId 
+                <div @click="privacidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
                     Privacidade
                 </div>
-                <div @click="aparencia()" class="bg-roxo medioId 
+                <div @click="aparencia()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
@@ -153,34 +153,6 @@ let Imagem=computed(()=>{
         return reader.result
     }
 })
-// let imagemSelecionadaBlob = null;
-
-// if (imagemSelecionada.value != null) {
-//   imagemSelecionadaBlob = new Blob([imagemSelecionada.value], { type: imagemSelecionada.value.type });
-// }
-
-// let Imagem = computed(() => {
-//   if (foto.value != null && imagemSelecionada.value == null) {
-//     console.log(foto.value);
-//     return 'data:' + foto.value.tipo + ';base64,' + foto.value.dados;
-//   } else if (foto.value != null && imagemSelecionadaBlob != null) {
-//     const reader = new FileReader();
-
-//     reader.onload = function(event) {
-//       const base64String = event.target.result;
-//       console.log(base64String);
-//     };
-
-//     reader.readAsDataURL(imagemSelecionadaBlob);
-//     return 'data:' + imagemSelecionadaBlob.type + ';base64,' + reader.result;
-//   }
-// });
-
-// URL da imagem padrão
-const imagemPadraoUrl = 'url('+'../src/imagem-vetores/perfilPadrao.svg'+')';
-
-// import { funcaoPopUpStore } from '../stores/funcaoPopUp';
-// let funcaoPopUp=funcaoPopUpStore()
 let isSeguActive = ref(false)
 
 let usuario=ref({})
@@ -262,7 +234,7 @@ function identificarRota(rotaAtual, rota) {
 }
 
 .active {
-    @apply bg-roxoAtencao !important;
+     @apply bg-[var(--roxoAtencao)] ;
 }
 
 .slide-fade-enter-active {

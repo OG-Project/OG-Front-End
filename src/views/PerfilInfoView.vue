@@ -2,11 +2,11 @@
     <div class=" flex justify-center flex-wrap">
         <div class="flex  flex-col items-center w-[20%] h-[877px] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center w-[329px] h-[329px]">
-                <img v-if="foto!=null"
-                  :src="'data:' + foto.tipo + ';base64,' + foto.dados" 
-                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
-                />
-                <div v-else class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
+                <img 
+                    :src="Imagem"
+                    class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                    />
+                
             </div>
             <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
                 <div class="flex flex-col items-center gap-9">
@@ -149,7 +149,7 @@ import Carousel from 'primevue/carousel';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
-import { onMounted, ref, onUpdated, onBeforeUnmount } from 'vue';
+import { onMounted,computed, ref, onUpdated, onBeforeUnmount } from 'vue';
 import {useRoute} from 'vue-router';
 import { useMouseInElement, useWindowSize } from '@vueuse/core'
 
@@ -166,6 +166,7 @@ let equipes = ref([])
 let projetos =ref([])
 let dataNascimento=ref('')
 let usuario=ref({})
+let foto=ref(null)
 
 onMounted(async () => {
     
@@ -199,6 +200,7 @@ onMounted(async () => {
     perfil.username=usuario.value.username
     perfil.dataDeNascimento=usuario.value.dataNascimento
     projetos.value=usuario.value.projetos
+    foto.value=usuario.value.foto
     // alert(height.value)
     // alert(width.value)
 });
@@ -210,19 +212,13 @@ function verificaTemEquipe(equipes){
     return false
 }
 
-onUpdated(()=>{
-    // alert(height)
-    // alert(width)
-
+let Imagem=computed(()=>{
+    if(foto.value!=null){
+        console.log(foto.value);
+        return 'data:' +foto.value.tipo + ';base64,' + foto.value.dados
+    }
+    return
 })
-
-// function verificaProjetos(projetos){
-//     if(projetos.length!=0){
-//         return true
-//     }
-//     return false
-// }
-
 function temMaisDeQuatro(lista) {
     return lista.length >= 4 ? true : false
 }

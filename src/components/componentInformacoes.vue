@@ -10,7 +10,6 @@
                                         <Input 
                                         styleInput="input-transparente-claro" 
                                         conteudoInput="Nome" 
-                                        
                                         v-model="nome"
                                         tipo="obrigatorio"
                                         @updateModelValue="(e)=> {
@@ -54,7 +53,7 @@
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Sobrenome"
-                                        modelValue="" 
+                                        
                                         v-model="PerfilStore.sobrenome" 
                                         tipo="obrigatorio"
                                         @updateModelValue="(e)=> {
@@ -122,6 +121,7 @@ function alterarEmail(){
         console.log(PerfilStore.dataDeNascimento)
         console.log(PerfilStore.email)
         console.log(PerfilStore.username)
+        console.log(PerfilStore.sobrenome)
         console.log(PerfilStore.dataDeNascimento)
         // Revisar 
 

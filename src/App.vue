@@ -51,9 +51,6 @@ const route = useRoute();
     }
 
   }
-
-  function change(a){
-  }
   function close(){
     perfil.isTecladoAtivado=!perfil.isTecladoAtivado
   }
@@ -67,24 +64,24 @@ watch(() => route.path, () => {
   }
 });
 </script>
-<!-- <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget('https://vlibras.gov.br/app');
-  </script> -->
 <template draggable="true" >
 
+  <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
+    <!-- <VLibras /> -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+    <!-- <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script> -->
+    
+  </div>
       <Navbar v-show="!estaNoLogin" />
     <RouterView />
-    <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
-      <!-- <VLibras /> -->
-      <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-          <div class="vw-plugin-top-wrapper"></div>
-        </div>
-      </div>
-      
-    </div>
     <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
     <div ref="el" :style="style" style="position: fixed"
     class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" 

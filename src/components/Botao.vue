@@ -29,7 +29,7 @@
 
 <script setup>
 import { de } from "date-fns/locale";
-import { ref, onMounted, defineProps } from "vue";
+import { ref, onMounted, defineProps, watch } from "vue";
 
 // Define variáveis reativas para controlar os estados de hover e clique
 const isHovered = ref(false);
@@ -79,6 +79,7 @@ const props = defineProps({
   },
 });
 
+// let root=document.documentElement.style
 
 let corInvertidaIcon = ref('invert(0%)');
 let TemIcon = props.temIcon;

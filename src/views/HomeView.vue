@@ -14,7 +14,7 @@
         </div>
       </div>
       <div
-        class="bg-[#FBFBFB] ml-12 w-[76%] h-[92%] flex items-center justify-end"
+        class="bg-brancoNeve ml-12 w-[76%] h-[92%] flex items-center justify-end"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px"
       >
         <div class="overflow-y-auto h-[100%] w-[75%] flex items-center flex-col">
