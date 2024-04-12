@@ -11,8 +11,6 @@
              @click="ativarBotao('nao-iniciados')">NÃO INICIADOS</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }"
              @click="ativarBotao('meus-projetos')">MEUS PROJETOS</button>
-
-            
           </div>
           <div v-if="kanbanAtivo" >
             <div class="w-full">
@@ -25,36 +23,36 @@
                 <div class="urgentes">
                      <h1 class="text-xl text-white"> URGENTES</h1>
                 </div>
-                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of projetosUrgentes" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id"
+                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('urgentes')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id"
                 draggable="true" @dragstart="onDragStart($event, projeto)">
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos  :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col" @dragover.prevent @drop.prevent="event => onDrop(event, 'nao-iniciados', '#0034BA')">
                 <div class="naoIniciado">
                   <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
                </div>
-               <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of projetosNaoIniciados" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
+               <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('nao-iniciados')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos :v-if="projeto.categoria === 'nao-iniciados'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max flex min-h-[15vh] flex-col"  @dragover.prevent @drop.prevent="event => onDrop(event, 'prontos', '#389300')">
                 <div class="prontos">
                 <h1 class="text-xl text-white"> PRONTOS</h1>
                 </div>
-                <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of projetosProntos" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
+                <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('prontos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos :v-if="projeto.categoria === 'prontos'"  :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col"  @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
                 <div class="meusProjetos">
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
-                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of meusProjetos" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
+                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('meus-projetos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos :v-if="projeto.categoria === 'meus-projetos'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
             </div>
@@ -71,7 +69,7 @@
             <img  class="icone" src="../imagem-vetores/iconKanban.svg">
           </div>
         </div>
-        <div v-if="mostrarMensagem || projetosFiltrados.length === 0">
+        <div v-if="mostrarMensagem || !filtrarPorCategoria(statusBotao).length && statusBotao !== null">
           <div v-if="!kanbanAtivo"  class="mensagem">
             NÃO HÁ NENHUM PROJETO
           </div>
@@ -81,7 +79,7 @@
         </div>
         <div v-else-if="!mostrarMensagem">
           <div v-if="!kanbanAtivo" class="projetos" >
-            <div v-for="projeto of projetosFiltrados" :key="projeto.id">
+            <div v-for="projeto of filtrarPorCategoria(statusBotao).length ? filtrarPorCategoria(statusBotao) : projetos" :key="projeto.id">
               <cardProjetos class="cardProjetos" 
               :name="projeto.nome" 
               :descricao="projeto.descricao" 
@@ -103,9 +101,6 @@
   import cardProjetos from './cardProjetos.vue';
   import KanbanProjetos from './kanbanProjetos.vue';
   import VueCookies from "vue-cookies";
-import { onBeforeRouteLeave } from 'vue-router';
-import { es } from 'date-fns/locale';
-
   const props = defineProps({
     height: { type: String, required: true },
     width: { type: String, required: true }
@@ -117,40 +112,30 @@ import { es } from 'date-fns/locale';
   const banco = conexaoBD();
   let projetos = ref([]);
   const idUsuarioLogado = VueCookies.get('IdUsuarioCookie');
-  let projetosUsuario = ref([]);
-  const projetosFiltrados = ref([]);
+  let projetosFiltrados = ref([]);
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
-  let projetosUrgentes = ref([]);
-  let projetosProntos = ref([]);
-  let projetosNaoIniciados = ref([]);
-  let meusProjetos = ref([]);
 
-  let projetosBack = {
-    id : Number,
-    projetosUrgentes,
-    projetosProntos,
-    meusProjetos,
-    projetosNaoIniciados,
-    usuarioLogado
+  const filtrarPorCategoria = (categoria) => {
+    return projetos.value.filter(p => {
+      return p.categoria === categoria;
+    })
   }
 
   onMounted(() => {
     buscarProjetos();
-  
+    
   });
 
-  filtrarProjetos();
-
   const ativarBotao = (botao) => {
+
     if (statusBotao.value === botao) {
       statusBotao.value = null;
       mostrarMensagem = false; // Resetando a flag para esconder a mensagem
-      filtrarProjetos(); // Desativa o botão se ele estiver ativado
+      console.log(botao);; // Desativa o botão se ele estiver ativado
     } else {
       statusBotao.value = botao; // Ativa o botão clicado
-      filtrarProjetos(botao); // Filtra os projetos com base na categoria do botão clicado
     }
   }
   
@@ -163,84 +148,26 @@ import { es } from 'date-fns/locale';
     usuarioLogado.value = await banco.buscarUm(idUsuarioLogado, "/usuario");
     equipesUsuario.value = await usuarioLogado.value.equipes;
   
-    let projetosEquipe = []; // Inicialize como um array vazio
+    const projetosEquipe = [];
 
     for (const equipeUsuario of equipesUsuario.value) {
         const projetosDaEquipe = await banco.buscarProjetosEquipe(equipeUsuario.equipe.id, "/projeto/buscarProjetos");
-        projetosEquipe = projetosEquipe.concat(projetosDaEquipe);
-    }
-
-    console.log(projetosEquipe);
-
-    projetosUsuario = projetosEquipe;
-    console.log(projetosUsuario);
-
-    if (Array.isArray(projetosUsuario)) {
-      projetos.value =  projetosUsuario.filter(projeto => projeto != null);
-      
-      const dataAtual = new Date();
-      projetos.value.forEach(projeto => {
-        projeto.dataFinal = new Date(projeto.dataFinal);
-        if (projeto.dataFinal.getTime() < dataAtual.getTime()) {
-          projeto.categoria = "urgentes";
-          projeto.corTopico = "#D27200";
-          projetosUrgentes.value.push(projeto);
-        } else if (calcularProgressoProjeto(projeto) === 0) {
-          projeto.categoria = "nao-iniciados";
-          projeto.corTopico = "#0034BA";
-          projetosNaoIniciados.value.push(projeto);
-        } else if (calcularProgressoProjeto(projeto) === 100) {
-          projeto.categoria = "prontos";
-          projeto.corTopico = "#389300";
-          projetosProntos.value.push(projeto);
-        } else {
-          projeto.categoria = "meus-projetos";
-          projeto.corTopico = "#8E00FF";
-          meusProjetos.value.push(projeto);
-        }
-      });
-    } else {
-      console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
-    }
-    filtrarProjetos();
-    agruparProjetosPorCategoria(); 
-  }
-  
-
-  async function filtrarProjetos(categoria) {
-    const projetosDaCategoria = projetos.value.filter(projeto => projeto.categoria === categoria);
-  
-    if (!statusBotao.value && !categoria) {
-      projetosFiltrados.value = projetos.value;
-    } else if (!categoria) {
-      projetosFiltrados.value =  projetos.value.filter(projeto => projeto.categoria === statusBotao.value);
-    } else {
-      projetosFiltrados.value = projetosDaCategoria;
-      if (projetosDaCategoria.length === 0) {
-        mostrarMensagem = true; // Exibe a mensagem quando nenhum projeto é encontrado na categoria selecionada
-      } else {
-        mostrarMensagem = false; // Esconde a mensagem se projetos forem encontrados na categoria selecionada
+        projetosEquipe.push(...projetosDaEquipe); 
       }
+
+    if (Array.isArray(projetosEquipe)) {
+        projetos.value = projetosEquipe;
+        projetos.value.forEach(projeto => {
+            projeto.dataFinal = new Date(projeto.dataFinal);
+            
+        });
+
+        setarCoresPorCategoria();
+    } else {
+        console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
     }
-  }
 
-  function agruparProjetosPorCategoria() {
-    console.log(projetos.value)
-    projetosUrgentes.value = projetos.value.filter(projeto => projeto.categoria === "urgentes");
-    console.log(projetosUrgentes.value)
-  
- 
-    projetosNaoIniciados.value = projetos.value.filter(projeto  => projeto.categoria === "nao-iniciados");
-    console.log(projetos.value)
-  
-
-    projetosProntos.value = projetos.value.filter(projeto => projeto.categoria ==="prontos");
-    console.log(projetosProntos.value)
- 
- 
-    meusProjetos.value = projetos.value.filter(projeto => projeto.categoria === "meus-projetos");
-    console.log(meusProjetos.value)
-    
+   
   }
   
   function formatarData(data){
@@ -300,9 +227,8 @@ import { es } from 'date-fns/locale';
   function obterNomesResponsaveis(projeto) {
     if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
       let responsaveisComNome = []
-      console.log(projeto.responsaveis)
       for(let responsavel of projeto.responsaveis){
-        console.log(responsavel)
+
         responsaveisComNome.push(responsavel.responsavel.username)
       }
         if (responsaveisComNome.length >= 0) {
@@ -335,111 +261,53 @@ function obterFotosResponsaveis(projeto) {
 }
 
 const onDragStart = (event, projeto) => {
+  console.log(projeto);
     event.dataTransfer.setData('projetoId', projeto.id);
 };
 
-const onDrop = (event, categoria, cor) => {
-  event.preventDefault();
-
+const onDrop = (event, categoria) => {
   const projetoId = event.dataTransfer.getData('projetoId');
-  const localprojeto = getListaPorCategoria(categoria).find(projeto => projeto.id == parseInt(projetoId));
-  const localprojetoEmBaixo = getListaPorCategoria(categoria).find(projeto => projeto.id == projetoEmBaixoId.value)
-  const localindex = getListaPorCategoria(categoria).indexOf(localprojeto);
-  const localindexEmBaixo = getListaPorCategoria(categoria).indexOf(localprojetoEmBaixo);
-
   const projeto = projetos.value.find(projeto => projeto.id == parseInt(projetoId));
-  
-  if(localindex != -1 && localindexEmBaixo != -1){
-    getListaPorCategoria(categoria).splice(localindex, 1)
-    getListaPorCategoria(categoria).splice(localindexEmBaixo, 0, projeto)
-    console.log(projetos.value)
+  const projetoEmBaixo = projetos.value.find(projeto => projeto.id == projetoEmBaixoId.value)
+  const index = projetos.value.indexOf(projeto);
+  const indexEmBaixo = projetos.value.indexOf(projetoEmBaixo);
+  if(index != -1 && indexEmBaixo != -1){
+    projetos.value.splice(index, 1)
+    projetos.value.splice(indexEmBaixo, 0, projeto)
   }
 
-  console.log(localindex, localindexEmBaixo)
-
-  if (!projeto) {
-    console.error('Projeto não encontrado! ID:', projetoId);
-    return;
-  }
-
-  // Verifica se o drop ocorreu na mesma coluna
-  if (projeto.categoria === categoria) {
-    const target = event.target.closest('.kanban-board');
-    const newIndex = getIndexFromDrop(event, target);
-
-    if (newIndex != -1) {
-      const oldIndex = projetos.value.findIndex(proj => proj.id == projeto.id);
-
-      if (oldIndex != newIndex) {
-        // Remove o projeto da posição antiga
-        projetos.value.splice(oldIndex, 1);
-        console.log(projetos.value.splice(oldIndex, 1))
-        // Insere o projeto na nova posição
-        projetos.value.splice(newIndex, 0, projeto);
-        console.log(projetos.value.splice(newIndex, 0, projeto))
-        agruparProjetosPorCategoria();
-      }
-    }
-} else {
-  // Se o drop ocorreu em outra coluna, atualiza a categoria e a cor
+  projeto.indexLista = index;
   projeto.categoria = categoria;
-  projeto.corTopico = cor;
-  filtrarProjetos();
-  agruparProjetosPorCategoria()
+  
+  atualizarIndexes();
+  banco.atualizar(projeto, `/projeto`);
+};
+
+const setarCoresPorCategoria = () => {
+  projetos.value.forEach(p => {
+    p.corTopico = buscarCorPorCategoria(p.categoria);
+  })
 }
-};
 
-const getListaPorCategoria = (categoria) => {
-  switch (categoria) {
-    case 'urgentes':
-      return projetosUrgentes.value;
-    case 'nao-iniciados':
-      return projetosNaoIniciados.value;
-    case 'prontos':
-      return projetosProntos.value;
-    case 'meus-projetos':
-      return meusProjetos.value;
-    default:
-      return null;
-  }
-};
+const atualizarIndexes = () => {
+  projetos.value.forEach(p => {
+    p.corTopico = buscarCorPorCategoria(p.categoria);
+    p.indexLista = projetos.value.indexOf(p);
+    banco.atualizar(p, `/projeto`)
+  })
+}
 
-const salvarEstadoDragAndDrop = async () => {
-  projetosBack = await banco.buscarUm(idUsuarioLogado, "/projetoDrag");
-  let estado={
-  'id': projetosBack.id,
-  'projetosUrgentes': projetosUrgentes.value,
-  'projetosProntos':projetosProntos.value,
-  'meusProjetos':meusProjetos.value,
-  'projetosNaoIniciados':projetosNaoIniciados.value,
-   "usuario": usuarioLogado.value
+const buscarCorPorCategoria = (categoria) => {
+    const cores = {
+      'nao-iniciados': '#0034BA',
+      'urgentes': '#D27200',
+      'meus-projetos': '#8E00FF',
+      'prontos': '#389300'
+    }
+
+    return cores[categoria];
   }
 
-  if(projetosBack != estado){
-    banco.atualizar(estado, "/projetoDrag")
-    console.log("atualizei")
-  }else{
-    banco.cadastrar(estado,"/projetoDrag")
-  }
-  carregarEstadoProjetos(estado);
-};
-
-const getIndexFromDrop = (event, target) => {
-  const draggedProjectId = parseInt(event.dataTransfer.getData('projetoId'));
-  const projects = Array.from(target.querySelectorAll('.kanban-board > div'));
-  const newIndex = projects.findIndex(project => parseInt(project.dataset.projectId) === draggedProjectId);
-
-  return newIndex;
-};
-
-async function carregarEstadoProjetos(){
-   
-   console.log(projetosUrgentes.value)
-};
-
-onUnmounted(()=>{
-  salvarEstadoDragAndDrop();
-})
   </script>
   
 <style scoped>
