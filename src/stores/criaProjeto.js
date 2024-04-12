@@ -3,6 +3,7 @@ import { Projeto } from '../models/Projeto'
 
 import { conexaoBD } from './conexaoBD'
 import { set } from "date-fns";
+import { webSocketStore } from '../stores/webSocket.js'
 
 let api = conexaoBD();
 
@@ -27,34 +28,22 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       projetoCriado.dataFinal = dataFinal
       api.cadastrar(projetoCriado, '/projeto').then((res) => {
         projetoAux = res.data;
-        this.mandarNotificacao(projetoAux,equipes)
+        this.enviaParaWebSocket(equipes, projetoAux)
       })
 
     },
-    mandarNotificacao(projetoAux,equipes){
-      console.log(equipes)
-      let notificacao = {
-        mensagem: "Davi Criou o Projeto",
-        receptores: [],
-        conviteParaProjeto: {
+    enviaParaWebSocket(equipesAux, projetoAux) {
+      let teste = {
+        equipes: [ equipesAux ],
+        notificao: {
+          mensagem: "Criou o Projeto",
           projeto: projetoAux
         }
       }
-      equipes.forEach(async (equipe) => {
-        let membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
-        console.log(membros)
-        membros.forEach(membro => {
-          let teste = {
-            id:membro.id
-          }
-          notificacao.receptores.push(teste)
-        });
-      });
-      console.log(notificacao)
-      setTimeout(() => {
-        console.log(notificacao)
-        api.cadastrar(notificacao, '/notificacao/convite/projeto')
-      },10)
+      console.log(teste)
+      const webSocket = webSocketStore();
+      webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+      webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
     }
   },
 })

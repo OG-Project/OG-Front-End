@@ -66,7 +66,10 @@
     </div>
     <div class="h-[10%] w-full flex items-center justify-center  pr-4 pb-4 ">
         <Botao preset="PadraoRoxo" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="personalizado" height="5vh" width="79vw"
-            tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto" ></Botao>
+            tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"  v-if="!projetoEdita"></Botao>
+            <Botao preset="PadraoRoxo" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="personalizado" height="5vh" width="79vw"
+            tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"  v-if="projetoEdita"></Botao>
+            
     </div>
 </template>
 
