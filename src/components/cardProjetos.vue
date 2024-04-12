@@ -4,11 +4,23 @@
         class="cardTotal hover:outline hover:outline-purple-600  hover:outline-4 active:outline active:outline-4 active:outline-purple-200 ">
         <!-- textos  -->
         <div class="flex flex-col items-center ">
-            <div class="flex flex-col justify-evenly w-[313px] h-[202px]">
+            <div class="flex flex-col justify-evenly w-[18vw] h-[202px]">
                 <!-- falta colocar os tres pontos por linha -->
-                <div class="h-[28px] truncate overflow-hidden">
-                    <b>{{ name }}</b>
+                <div class=" flex flex-row">
+                    <div class="h-[28px] truncate overflow-hidden w-[80%]">
+                        <b>{{ name }}</b>
+                    </div>
+                    <div class="w-[20%] flex items-end justify-end" @click="tempoDeAtuacaoPopUp()">
+                        <img src="../imagem-vetores/relogio.svg">
+                    </div>
+                    <div @mouseleave="somePopUp()" v-if="funcaoPopUp.variavelModal" class="animation">
+                        <div class="flex justify-end">
+                            <img src="../imagem-vetores/triangulo.svg">
+                        </div>
+                        Tempo de Atuação: 1hr e 10 min
+                    </div>
                 </div>
+               
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
                     <b>Responsavel:</b> {{ reponsavel }}
@@ -52,7 +64,7 @@
 
 <script setup>
 import { ref } from 'vue';
-
+import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 const props = defineProps({
     name: {
         type: String,
@@ -81,7 +93,7 @@ const props = defineProps({
 
 })
 let alinhamento=ref(43)
-
+const funcaoPopUp= funcaoPopUpStore();
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 
@@ -100,6 +112,14 @@ let barraPorcentagem = ref({
   border: "none",
   boxShadow: "none",
 });
+
+function tempoDeAtuacaoPopUp(){
+    funcaoPopUp.abrePopUp();
+}
+
+function somePopUp(){
+    funcaoPopUp.fechaPopUp()
+}
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -149,6 +169,23 @@ let barraPorcentagem = ref({
     .cardTotal.imagemFundo {
     @apply bg-gray-300;
 
+    }
+
+    .animation {
+        @apply absolute left-16 top-1 w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col max-miniMobile:w-[60%] ;
+        animation: myAnim 0.15s ease 0s 1 normal none;
+    }
+    
+    @keyframes myAnim {
+        0% {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+    
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
 
 }</style>

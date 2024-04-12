@@ -379,7 +379,7 @@ async function criaProjeto() {
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
-        // router.push('/projeto')
+        router.push('/projeto')
     }
 
 }
