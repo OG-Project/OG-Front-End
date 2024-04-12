@@ -69,7 +69,7 @@
             <img  class="icone" src="../imagem-vetores/iconKanban.svg">
           </div>
         </div>
-        <div v-if="mostrarMensagem || !filtrarPorCategoria(statusBotao).length && statusBotao !== null">
+        <div v-if="mostrarMensagem || !filtrarPorCategoria(statusBotao).length && statusBotao !== null || projetos.length === 0">
           <div v-if="!kanbanAtivo"  class="mensagem">
             NÃO HÁ NENHUM PROJETO
           </div>
@@ -96,7 +96,7 @@
   
   <script setup>
 
-  import { ref, onMounted, onUnmounted} from 'vue';
+  import { ref, onMounted} from 'vue';
   import { conexaoBD } from '../stores/conexaoBD';
   import cardProjetos from './cardProjetos.vue';
   import KanbanProjetos from './kanbanProjetos.vue';
@@ -112,7 +112,6 @@
   const banco = conexaoBD();
   let projetos = ref([]);
   const idUsuarioLogado = VueCookies.get('IdUsuarioCookie');
-  let projetosFiltrados = ref([]);
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
@@ -180,7 +179,6 @@
       return "Indefinido";
     } 
   }
-
 
   function calcularProgressoProjeto(projeto) {
     let totalTarefas = 0;
@@ -307,9 +305,7 @@ const buscarCorPorCategoria = (categoria) => {
 
     return cores[categoria];
   }
-
-  </script>
-  
+</script>
 <style scoped>
 
 kanban-board {
