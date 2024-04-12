@@ -7,7 +7,7 @@
         </div>
         <div class="flex justify-end">
             <div class="flex mt-[-3vh] mr-[1vw]">
-                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
             <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
@@ -26,10 +26,14 @@
         <div class="flex justify-center">
           <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
         </div>
-      <div class="projetos" v-for="projeto of listaProjetos" :key="projeto.id" >
-        <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
-        </CardProjetos>
+        <div  class="projetos ">
+          <div  v-for="projeto of listaProjetos" :key="projeto.id" >
+            <div class="flex w-[100%]">
+              <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
+            </CardProjetos>
+            </div>
           </div> 
+        </div>
         </div>       
       </div>
 </template>
@@ -43,6 +47,7 @@
   import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
   import { conexaoBD } from "../stores/conexaoBD.js";
   import CardProjetos from "../components/cardProjetos.vue";
+  import {useRouter} from 'vue-router'
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const funcaoPopUp = funcaoPopUpStore();
@@ -58,10 +63,16 @@ let equipeEditar = ref({
     descricao: ''
 });
 let projetosEquipe = ref([]);
+const router = useRouter();
 
 async function entrarNoProjeto(projeto){
   console.log(projeto)
   VueCookies.set("projetoId", projeto.id, 30000)
+}
+
+async function criarProjeto(){
+  router.push({path: '/criaProjeto'})
+  VueCookies.set("projetoCookie", null);
 }
 
 function calcularResponsaveis(projeto) {
@@ -174,7 +185,7 @@ async function buscarMembrosEquipe() {
 }
 
 .cardProjeto{
-  @apply 2xl:m-[0.5vw] xl:m-[1.7vw] lg:m-[1.9vw] md:m-[1vw];
+  @apply 2xl:w-[20vw] 2xl:m-[0.5vw] xl:m-[1.7vw] lg:m-[1.9vw] md:m-[1vw];
   max-width: calc(25% - 1px); 
 }
 
@@ -245,20 +256,20 @@ async function buscarMembrosEquipe() {
  @media(min-width: 768px){
    .cardProjeto{
     @apply ml-[20vw] mt-10;
-    max-width: calc(55% - 1px);
+    max-width: calc(100% - 1px);
    }
  }
  @media(min-width:1024px){
   .cardProjeto{
     @apply ml-[4.5vw];
-    max-width: calc(45% - 1px);
+    max-width: calc(100% - 1px);
   }
  }
 
  @media (min-width: 1440px) {
   .cardProjeto{
     @apply ml-[2vw];
-    max-width: calc(30% - 1px);
+    max-width: calc(100% - 1px);
   }
  }
 
@@ -268,7 +279,7 @@ async function buscarMembrosEquipe() {
         }
         .cardProjeto{
           @apply ml-[2.5vw];
-          max-width: calc(20% - 1px);
+          max-width: calc(67% - 1px);
         }
     }
 

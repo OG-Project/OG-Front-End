@@ -5,12 +5,13 @@ import axios from "axios";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
-      return {api:axios.get("http://localhost:8082/projeto")}
+      return {api:axios.get("http://localhost:8082")}
+
     },
     actions: {
     
       procurar(textoRequisicao){
-        // return axios.get("http://10.2.96.35:8082"+ textoRequisicao).then(response => response.data)
+        // return axios.get("http://10.4.96.25:8082"+ textoRequisicao).then(response => response.data)
         return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
@@ -23,13 +24,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.patch("http://localhost:8082"+textoRequisicao,userId,equipeId)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch('http://localhost:8082'+ textoRequisicao +"/"+ equipeId, ids)
+        return axios.patch(`http://localhost:8082${textoRequisicao}/${equipeId}`, ids)
       },
       deletarEquipe(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`)
-      },
-      deletarPropriedade(textoRequisicao){
-        return axios.delete('http://localhost:8082' + textoRequisicao)
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
           return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
@@ -37,12 +35,8 @@ export const conexaoBD = defineStore('conexaoBD', {
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`)
       },
-      
       async buscarUm(id,textoRequisicao){
-        return await axios.get('http://localhost:8082'+textoRequisicao+'/'+id).then(response => response.data)
-      },
 
-      async buscarUm(id,textoRequisicao){
         return (await axios.get('http://localhost:8082'+textoRequisicao+'/'+id).then(response => response.data))
       },
       async buscarProjetosEquipe(equipeId, textoRequisicao){
@@ -50,6 +44,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+
       },
       async cadastrarFoto(equipeId, foto) {
         try {

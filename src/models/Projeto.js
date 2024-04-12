@@ -6,6 +6,7 @@
     tarefas : [] ,
     propriedades : [] ,
     statusList : [],
-    projetosEquipes : [],
+    projetoEquipes : [],
     responsaveis: [],
+    dataFinal:String
 }

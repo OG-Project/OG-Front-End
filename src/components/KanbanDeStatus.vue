@@ -12,8 +12,8 @@
                     </div>
                 </div>
                 <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
-                    v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true" @end="drag = false"
-                    item-key="tarefa.indice">
+                    v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
+                    @end="drag = false" item-key="tarefa.indice">
                     <template #item="{ element: tarefa }">
                         <div class="w-full h-full flex items-center justify-center">
                             <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
@@ -22,13 +22,38 @@
                         </div>
                     </template>
                 </draggable>
-                <div class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]">
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]" @click="store.criaTarefa()">
                     <p>+ Nova</p>
-                </div>
+                </button>
             </div>
         </div>
-        <div class="novaPropriedade">
-            <h1>+Nova</h1>
+        <button class="novaPropriedade" @click="funcaoPopUp.variavelModal = true">
+            <h1>+Novo</h1>
+        </button>
+    </div>
+    <div v-if="funcaoPopUp.variavelModal==true">
+        <div class="flex justify-end">
+            <img src="../imagem-vetores/triangulo.svg">
+        </div>
+        <div class="flex flex-row justify-between">
+            <div class="pl-2">
+                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
+                    v-model="nomeStatus"></Input>
+            </div>
+            <div class="pr-2">
+                <ColorPicker v-model="corStatus" class="rounded-sm" />
+            </div>
+
+        </div>
+        <div class="flex felx-row justify-between">
+            <div class="pl-2 pt-2 pb-2">
+                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+            </div>
+            <div class="pr-2 pt-2 pb-2">
+
+                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
+                </Botao>
+            </div>
         </div>
     </div>
 </template>
@@ -40,12 +65,20 @@ import { conexaoBD } from '../stores/conexaoBD';
 import VueCookies from "vue-cookies"
 import draggable from "vuedraggable";
 import sortBy from 'sort-by'
+import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca';
+import Botao from '../components/Botao.vue'
+import { funcaoPopUpStore } from '../stores/funcaoPopUp'
+import ColorPicker from 'primevue/colorpicker';
+
 
 let api = conexaoBD()
-let projetoApi = api.buscarUm("3","/projeto")
+let projetoApi = api.buscarUm("3", "/projeto")
 let lista = ref([]);
 let listaStyle = ''
+let store = criaTarefaEBuscaStore()
+let popUpStatus = ref(false);
 const propriedadeAtual = ref("STATUS");
+const funcaoPopUp = funcaoPopUpStore()
 
 
 onMounted(() => {
@@ -84,7 +117,7 @@ async function defineListaDePropriedades() {
                     display: "flex",
                     alignItems: "center",
                     flexDirection: "column",
-                    backgroundColor: ("#"+status.cor),
+                    backgroundColor: ("#" + status.cor),
                     paddingTop: "5px",
                     boxShadow: " 0px 5px 7px rgb(99, 99, 99)"
                 }

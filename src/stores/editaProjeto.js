@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import {Projeto} from '../models/Projeto'
 
 import {conexaoBD} from './conexaoBD'
-export const criaProjetoStore = defineStore('criaProjeto', {
+export const editaProjetoStore = defineStore('editaProjeto', {
     state: () => {
       return { 
         nomeProjeto: ''
@@ -10,17 +10,18 @@ export const criaProjetoStore = defineStore('criaProjeto', {
     },
 
     actions: {
-        criaProjeto(nome,descricao,equipes, propriedades,status,responsaveis,dataFinal){
+        editaProjeto(id,nome,descricao,equipes, propriedades,status,responsaveis,dataFinal){
         let projetoCriado= Projeto
         let api= conexaoBD();
+        projetoCriado.id=id;
         projetoCriado.nome=nome;
         projetoCriado.descricao=descricao;
         projetoCriado.projetoEquipes=equipes
         projetoCriado.propriedades=propriedades;
         projetoCriado.statusList=status;
         projetoCriado.responsaveis=responsaveis;
-        projetoCriado.dataFinal=dataFinal  
-        api.cadastrar(projetoCriado,'/projeto')
+        projetoCriado.dataFinal=dataFinal; 
+        api.atualizar(projetoCriado,'/projeto')
         
       },
     },

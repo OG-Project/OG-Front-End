@@ -4,9 +4,8 @@
             <div class="primeiraDiv">
                 <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate">{{ projetoAtual.nome }}</h1>
             </div>
-            <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin">
+            <div class="div-membros flex flex-col items-center overflow-y-auto scrollbar-thin">
                 <div class="flex justify-center w-full" v-for="equipe in projetoAtual.projetoEquipes">
-                    <div class="imgIcon"></div>
                     <div class="corDiv">
                         <img class="imgDePerfil" src="" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg">{{ equipe.equipe.nome }}</h1>
@@ -17,8 +16,8 @@
         </div>
         <div class="adiciona-membro">
             <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
-                v-model="usuarioConvidado"></Input>
+                icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Equipe"
+                v-model="equipeConvidada"></Input>
             <div class="flex mt-[1vh] ml-5">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
                     texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
@@ -28,7 +27,7 @@
             <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites"
                 mostrar-select="true" class="listaConvidados" altura="40vh"
                 caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg"
-                caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados">
+                caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="equipesConvidadas">
             </ListaConvidados>
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
@@ -63,16 +62,17 @@ onMounted(async () => {
     }
 )
 
-let listaMembros = ref([]);
+let listaEquipes = ref([]);
 let usuariosRemover = ref([]);
 let membrosEquipe = ref([]);
-let membrosConvidados = ref([]);
-let usuarioConvidado = ref('');
+let equipesConvidadas = ref([]);
+let equipeConvidada = ref('');
 const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
-let usuarios = banco.procurar('/usuario');
 
-
+let emit = defineEmits({
+    boolean : Boolean
+})
 
 function larguraNomeEquipe() {
     const screenWidth = window.innerWidth;
@@ -88,8 +88,6 @@ function larguraNomeEquipe() {
         return 20;
     }
 }
-
-const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 function marginLeftConvidado() {
     if (screenWidth <= 768) {
@@ -120,17 +118,19 @@ function larguraInputConvidado() {
     }
 }
 
-async function listaUsuarios() {
-    let listaUsuarios = await usuarios;
-    listaUsuarios.forEach((usuario) => {
-        if (usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email) {
-            membrosConvidados.value.push(usuario);
+async function listaDeEquipes() {
+    let equipes = projetoAtual.value.projetoEquipes
+    let listaDeEquipes = await equipes;
+    console.log(equipes)
+    listaDeEquipes.forEach((equipe) => {
+        if (equipeConvidada.value === equipe.username || equipeConvidada.value === equipe.email) {
+            equipesConvidadas.value.push(equipe);
         }
     })
 }
 
 async function adicionarMembro() {
-    const membroNaEquipe = listaMembros.value.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
+    const membroNaEquipe = listaEquipes.value.find(membro => membro.username === equipeConvidada.value || membro.email === equipeConvidada.value);
 
     if (membroNaEquipe) {
         console.log("Esse usuário já faz parte da equipe.");
@@ -138,43 +138,17 @@ async function adicionarMembro() {
     }
 
     // Verifica se o usuário já foi convidado
-    const usuarioJaConvidado = membrosConvidados.value.some(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
+    const usuarioJaConvidado = equipesConvidadas.value.some(membro => membro.username === equipeConvidada.value || membro.email === equipeConvidada.value);
 
     if (usuarioJaConvidado) {
         console.log("Você já convidou essa pessoa.");
     } else {
-        await listaUsuarios();
+        setTimeout(await listaDeEquipes(),100);
     }
 }
 
 async function confirmarConvites() {
-
-    for (const membro of usuariosRemover.value) {
-    }
-    // Limpe a lista de usuários a serem removidos após a remoção
-    usuariosRemover.value = [];
-
-
-    const ids = membrosConvidados.value.map(m => {
-        return Number(m.id);
-    })
-
-    // Verifica se o membro a ser convidado foi removido anteriormente
-    const membroRemovido = listaMembros.value.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
-
-    if (membroRemovido) {
-        if (membrosConvidados.value.some((membro) => membro.username == usuarioConvidado.value || membro.email == usuarioConvidado.value)) {
-            console.log("Esse membro ja faz parte da equipe")
-        } else {
-            // Se o membro foi removido, adicione-o novamente à equipe
-            console.log("Membro reconvidado com sucesso.");
-        }
-
-    } else {
-        // Se o membro não foi removido anteriormente, convide-o normalmente
-    }
-
-    window.location.reload()
+    props.boolean = false
 }
 
 </script>

@@ -33,7 +33,7 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
               await api.deletarPropriedade("/tarefa/" + tarefaAntiga.id);
             }
           }
-    
+  
           // Remover dados de tarefa não finalizada do armazenamento local
           localStorage.removeItem("TarefaNaoFinalizada");
           
