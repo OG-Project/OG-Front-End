@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { conexaoBD } from './conexaoBD'
+import  VueCookies  from "vue-cookies";
 
 
 
@@ -18,11 +19,13 @@ export const criaNotificacao = defineStore('criaNotificacao', {
             let equipes = objeto.equipes
             let rota = ""
             let notificacao = {}
+            let criador = VueCookies.get("IdUsuarioCookie")
             console.log(objeto)
             if (objetoNotificacao.projeto != null) {
                 rota = "/projeto"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     projeto: objetoNotificacao.projeto
                 }
@@ -31,6 +34,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/tarefa"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     tarefa: objetoNotificacao.tarefa
                 }
@@ -39,6 +43,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/equipe"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     equipe: objetoNotificacao.equipe
                 }
@@ -47,6 +52,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/convite/projeto"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     conviteParaProjeto:{
                         projeto: objetoNotificacao.projeto
@@ -57,6 +63,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/convite/equipe"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     conviteParaEquipe: {
                         equipe: objetoNotificacao.equipe
@@ -70,11 +77,16 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                     let teste = {
                         id: membro.id
                     }
-                    notificacao.receptores.push(teste)
+                    if(membro.id != criador){
+                        notificacao.receptores.push(teste)
+                    }
                 });
             });
-            console.log(notificacao)
-            setTimeout(() => {
+            
+            setTimeout(async () => {
+                criador = await api.buscarUm(criador, '/usuario')
+                notificacao.criador = criador
+                console.log(notificacao)
                 api.cadastrar(notificacao, '/notificacao'+rota)
             }, 10)
         }

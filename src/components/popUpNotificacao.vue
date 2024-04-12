@@ -15,6 +15,7 @@
                 </div>
                 <div :style="notificacao.estilo">
                     <div class="pr-1">
+                        {{ notificacao.notificacao.criador.username }}
                         {{ notificacao.notificacao.mensagem }}
                     </div>
                     <button v-if="notificacao.notificacao.projeto != null"
@@ -60,7 +61,7 @@
                             <p class="text-red-600">
                                 X
                             </p>
-                            <p class="text-roxo">
+                            <p class="text-roxo" @click="adicionaUsuarioALista(notificacao.conviteParaEquipe, notificacao.conviteParaProjeto)">
                                 ✔
                             </p>    
                         </div>
@@ -150,6 +151,10 @@ function clearTimer(objeto) {
     mudarEstilo(objeto)
 
 }
+
+function adicionaUsuarioALista(conviteParaEquipe, conviteParaProjeto) {
+    console.log(conviteParaEquipe, conviteParaProjeto)
+}   
 
 
 function trocarRota(idProjeto, rota, propriedadeCookie) {

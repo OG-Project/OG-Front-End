@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { conexaoBD } from './conexaoBD'
 import VueCookies from "vue-cookies";
 import router from "@/router";
+import { webSocketStore } from '../stores/webSocket.js'
 
 export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
   state: () => {
@@ -12,7 +13,12 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
   actions: {
     criaTarefa() {
       let api = conexaoBD();
-      let tarefa = api.cadastrar( {} ,'/tarefa/'+ VueCookies.get("IdProjetoAtual"))
+      let projeto = VueCookies.get("IdProjetoAtual");
+      let tarefa = api.cadastrar( {} ,'/tarefa/'+ VueCookies.get("IdProjetoAtual")).then((res) => {
+        projeto = api.buscarUm(projeto, "/projeto")
+        console.log(projeto)
+        this.enviaParaWebSocket(projeto.projetoEquipes,res.data)
+      })
       let setCookies = async () => {
         let tarefaAux = await tarefa
         console.log(tarefaAux.data.id);
@@ -29,5 +35,18 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
       setCookies();
       router.push('/criaTarefa');
     },
+    enviaParaWebSocket(equipesAux, tarefa) {
+      let teste = {
+        equipes: equipesAux ,
+        notificao: {
+          mensagem: "Criou o Projeto",
+          tarefa: tarefa
+        }
+      }
+      console.log(teste)
+      const webSocket = webSocketStore();
+      webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+      webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+    }
   },
 })

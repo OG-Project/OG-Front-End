@@ -174,7 +174,7 @@ function fazBackPadraoPlaceHolder() {
 
 async function mandaDataInformacoes() {
     if (projetoEdita.value) {
-        idProjeto = VueCookies.get("projetoEditarId");
+        idProjeto = VueCookies.get("IdProjetoAtual");
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         const dataBack = projeto.dataCriacao;
         const [data, hora] = dataBack.split("T");
@@ -362,15 +362,19 @@ async function criaProjeto() {
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
            enviaWebSocket(response)
+           VueCookies.set("IdProjetoCookie", response.data.id)
         })
         restauraCookies();
-        // router.push('/projeto')
+        router.push('/projeto')
     } else {
         const editaProjeto = editaProjetoStore()
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value), (response)=>{
+            enviaWebSocket(response)
+            VueCookies.set("IdProjetoCookie", response.data.id)
+        }
         restauraCookies();
-        // router.push('/projeto')
+        router.push('/projeto')
     }
 
 }
