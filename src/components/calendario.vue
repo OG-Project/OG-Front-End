@@ -86,6 +86,7 @@ import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, 
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import sortBy from 'sort-by'
+import  VueCookies  from 'vue-cookies';
 
 let data = Date.now()
 let diaNovo = ref()
@@ -94,13 +95,16 @@ let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
 let cardDia
-let tarefas = api.procurar("/tarefa")
+let projeto = {}
+let tarefas = []
 let border = "none"
 console.log(tarefas)
 
 getCalendario();
 
-onMounted(() => {
+onMounted( async () => {
+    projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),'/projeto')
+    tarefas = projeto.tarefas;
     getCalendario();
 })
 
@@ -178,7 +182,7 @@ async function adicionaDiasALista(dias) {
 
 async function verificaTarefasDoDia(dia) {
     let lista = []
-    let tarefas2 = await tarefas
+    let tarefas2 = tarefas
     tarefas2 = tarefas2.sort(sortBy('indice'))
     for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {
@@ -235,8 +239,7 @@ function setaDireita() {
 }
 async function trocaDiaEIndice(tarefa, dia, indice) {
     tarefa.propriedade.valor.valor = new Date(dia.dia)
-    console.log(tarefa.propriedade)
-
+    console.log(tarefa)
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
@@ -245,7 +248,6 @@ async function trocaDiaEIndice(tarefa, dia, indice) {
         tarefa2.tarefa.indice = indiceTeste
     }
     getCalendario()
-
 }
 function retornaDiaEIndice(dia, indice) {
     diaNovo = dia;
