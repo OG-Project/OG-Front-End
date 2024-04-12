@@ -76,6 +76,7 @@ webSocket.esperaMensagem((mensagem) => {
 });
 
 function teste(mensagem) {
+  console.log(mensagem)
   criaNotificacaoStore.mandarNotificacao(mensagem);
 }
 

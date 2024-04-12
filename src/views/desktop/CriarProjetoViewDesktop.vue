@@ -364,20 +364,20 @@ async function criaProjeto() {
            enviaWebSocket(response)
         })
         restauraCookies();
-        router.push('/projetos')
+        // router.push('/projeto')
     } else {
         const editaProjeto = editaProjetoStore()
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
-        router.push('/projetos')
+        // router.push('/projeto')
     }
 
 }
 
 function enviaWebSocket(response){
     console.log(response.data.id)
-    webSocket.url= "ws://localhost:8084/og/webSocket/tarefa/"+response.data.id;
+    webSocket.url= "ws://localhost:8082/og/webSocket/tarefa/"+response.data.id;
     webSocket.enviaMensagemWebSocket()
 }
 
