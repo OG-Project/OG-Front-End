@@ -51,11 +51,12 @@ import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
+
+
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
 const webSocket = webSocketStore();
 const usuarioLogadoId = 1;
-webSocket.url = "ws://localhost:8084/og/webSocket/usuario/"+usuarioLogadoId
 let usuarios;
 const funcaoPopUp = funcaoPopUpStore();
 funcaoPopUp.variavelModal = false;
@@ -72,11 +73,8 @@ onMounted(() => {
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
-webSocket.criaConexaoWebSocket();
 
-webSocket.esperaMensagem(() => {
-    listaUsuarios();
-});
+
 
 
       
