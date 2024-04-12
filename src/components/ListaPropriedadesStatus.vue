@@ -5,7 +5,7 @@
                 <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades</p>
                 <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
                 <div class="min-w-[7vw]">
-                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="['Texto','Data','Número','Seleção']"
                     styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
                 </div>
 
@@ -95,27 +95,27 @@
                     <div class="pl-2">
                         <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-                nomePropriedade = e
-            }">
+                        nomePropriedade = e
+                         }">
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="opcoesSelect"
                             largura="8" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
                 </div>
-                <div class="flex flex-row justify-between" v-else>
-                    <div>
-                        <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.75rem" altura="2"
+                <div class="flex flex-row justify-between w-full" v-else>
+                    <div class="pl-2">
+                        <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-                nomePropriedade = e
-            }">
+                        nomePropriedade = e
+                         }">
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                            largura="30" altura="3.8" fonteTamanho="0.75rem" v-model="tipoPropriedade"> </selectPadrao>
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="opcoesSelect"
+                            largura="30" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
                 </div>
@@ -318,8 +318,8 @@ function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux1 = []
     listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
-        if (opcaoAtual.tipo != "") {
-            if (opcaoAtual.tipo.toLowerCase() == buscarPor.toLowerCase()) {
+        if (opcaoAtual.propriedade.tipo != "") {
+            if (opcaoAtual.propriedade.tipo.toLowerCase() == buscarPor.toLowerCase()) {
                 listaAux1.push(opcaoAtual)
             }
         }
@@ -331,7 +331,7 @@ function filtroPropriedades(listaRecebida, buscarPor) {
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
         opcaoSelecionadaNaTabela.value = 'propriedade';
-        opcoesSelect.value = ["Todos", "Data", "Numero", "Seleção", "Texto"];
+        opcoesSelect.value = ["Todos", "Data", "Número", "Seleção", "Texto"];
 
     } else if (opcaoSelecionada == 'status') {
         opcaoSelecionadaNaTabela.value = 'status';
@@ -354,6 +354,18 @@ async function buscaPropriedadeBanco() {
     if (projeto.propriedades != []) {
         projeto.propriedades.forEach((propriedade) => {
             if (propriedade.nome != '') {
+                if(propriedade.tipo == 'TEXTO'){
+                    propriedade.tipo = "Texto"
+                }
+                if(propriedade.tipo == 'DATA'){
+                    propriedade.tipo = "Data"
+                }
+                if(propriedade.tipo == 'SELECAO'){
+                    propriedade.tipo = "Seleção"
+                }
+                if(propriedade.tipo == 'NUMERO'){
+                    propriedade.tipo = "Número"
+                }
                 criaPropriedadeCookies(propriedade);
             }
         })
@@ -386,6 +398,9 @@ function mandaProrpiedadesBack(listaPropriedadesRecebida) {
         const objetoModificado = { ...objeto };
         if (objetoModificado.tipo == "Seleção") {
             objetoModificado.tipo = "SELECAO";
+        }
+        if(objetoModificado.tipo == "Número"){
+            objetoModificado.tipo = "NUMERO"
         }
         objetoModificado.tipo = objetoModificado.tipo.toUpperCase()
         return objetoModificado;
@@ -569,7 +584,7 @@ async function removeStatus(statusRecebe) {
 }
 
 async function removePropriedade(propriedadeRecebida) {
-    let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome);
+    let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome && obj.propriedade.tipo == propriedadeRecebida.propriedade.tipo);
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
     }
