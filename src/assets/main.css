@@ -16,7 +16,7 @@
 
 
 html{
-    @apply font-poppins md:text-sm xl:text-lg  sm:text-xs;
+    @apply font-poppins md:text-sm xl:text-lg  sm:text-xs mobile:text-[0.75rem] miniMobile:text-[0.75rem];
 }
 
 

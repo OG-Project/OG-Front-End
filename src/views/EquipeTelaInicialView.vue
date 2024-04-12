@@ -63,7 +63,7 @@ let equipeEditar = ref({
     descricao: ''
 });
 let projetosEquipe = ref([]);
-const router = useRouter();
+const router = useRouter(); 
 
 async function entrarNoProjeto(projeto){
   console.log(projeto)

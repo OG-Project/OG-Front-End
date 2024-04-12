@@ -103,10 +103,8 @@ function unhover() {
 }
 function verificaCorTexto(tarefa) {
     if (tinycolor(tarefa.cor).isDark()) {
-        console.log("gay")
         return "white"
     } else {
-        console.log("gay2")
         return "black"
     }
 }

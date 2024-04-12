@@ -133,6 +133,7 @@ import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import Carousel from 'primevue/carousel';
 import { Propriedade } from '../models/Propriedade';
+import  VueCookies  from 'vue-cookies';
 
 
 
@@ -157,8 +158,11 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 let index = 0;
 let listaDePropriedades = ref([])
-api.procurar("/tarefa")
-onMounted(() => {
+let projeto = {}
+let listaDeTarefasTeste = []
+onMounted(async () => {
+    projeto = await api.buscarUm(VueCookies.get("IdProjetoAtual"),"/projeto")
+    listaDeTarefasTeste = projeto.tarefas
     getCalendario();
     adicionaNaLista();
     defineListaDeHoras()
@@ -181,12 +185,8 @@ function gerarDiaSelecionado(dia) {
 }
 
 async function adicionaNaLista() {
-    let api = conexaoBD()
-    let listaDeTarefasTeste = api.procurar("/tarefa")
-    let listaDeTarefasTeste2 = await listaDeTarefasTeste
     let lista = []
-    let hora
-    listaDeTarefasTeste2.forEach(tarefa => {
+    listaDeTarefasTeste.forEach(tarefa => {
         tarefa.valorPropriedadeTarefas.forEach(propriedade => {
             if (propriedade.propriedade.tipo == "DATA") {
                 if (propriedade.valor.valor != "") {
@@ -195,7 +195,9 @@ async function adicionaNaLista() {
                         if (!lista.includes(tarefa)) {
                             lista.push(tarefa)
                         }
-                        listaDePropriedades.value.push(propriedade)
+                        if(!listaDePropriedades.value.includes(propriedade)){
+                            listaDePropriedades.value.push(propriedade)
+                        }
                     }
                 }
             }
@@ -203,6 +205,7 @@ async function adicionaNaLista() {
     });
 
     diaSelecionado.listaDeTarefas.value = lista;
+    getCalendario()
 };
 
 function defineDiaSelecionado(dia) {

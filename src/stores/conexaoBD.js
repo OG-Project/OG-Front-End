@@ -1,6 +1,7 @@
 
 import {defineStore} from "pinia";
 import axios from "axios";
+import { webSocketStore } from "./webSocket.js";
 
 export const conexaoBD = defineStore('conexaoBD', {
   
@@ -12,6 +13,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     
       procurar(textoRequisicao){
         // return axios.get("http://10.4.96.35:8082"+ textoRequisicao).then(response => response.data)
+
         return axios.get("http://localhost:8085"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
@@ -24,7 +26,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.patch(`http://localhost:8085${textoRequisicao}/${equipeId}`, ids)
       },
       deletarEquipe(id,textoRequisicao){
-        return axios.delete(`http://localhost:8085${textoRequisicao}/${id}`)
+        return axios.delete('http://localhost:8085'+textoRequisicao+'/'+id)
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
           return await ((await axios.get(`http://localhost:8085${textoRequisicao}/${equipeId}`)).data)
@@ -48,12 +50,13 @@ export const conexaoBD = defineStore('conexaoBD', {
             // Crie um FormData e adicione a imagem a ele
             const formData = new FormData();
             formData.append('foto', foto);
-    
             // Faça a requisição PATCH para enviar a imagem
             const response = await axios.patch(`http://localhost:8085/equipe/${equipeId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
+            }).then(response =>{
+            
             });
     
             // Retorne os dados da resposta
@@ -62,8 +65,10 @@ export const conexaoBD = defineStore('conexaoBD', {
             console.error('Erro ao cadastrar a foto:', error);
             throw error;
         }
-          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
-      }
+
+          return await ((await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`)).data)
+      },
+      
       
     }
 })
