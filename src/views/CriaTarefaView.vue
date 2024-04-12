@@ -3,7 +3,7 @@
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input largura="32" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
-          styleInput="input-transparente-claro-grande" v-model="tarefa.nome"></Input>
+          styleInput="input-transparente-claro-grande" v-model="tarefa.nome" @updateModelValue="(e)=>{tarefa.nome = e}"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
         <TextAreaPadrao width="80%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
@@ -99,7 +99,7 @@
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
                 <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8"
-                  v-model="nomeSubtarefa"></Input>
+                  v-model="nomeSubtarefa" @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
               <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
                 altura="3.8" fonteTamanho="1rem" v-model="statusSubtarefa" />
@@ -288,7 +288,7 @@
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
               </div>
             </div>
-            <div class="w-[100%] h-[20vh] flex items-center justify-center ">
+            <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'" >
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
                   <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
@@ -587,8 +587,33 @@ async function patchDaListaDePropriedades() {
   banco.atualizar(tarefa2, "/tarefa")
 }
 
-function criaTarefaNoConcluido(){
-  //Cria a tarefa no banco de dados
+async function criaTarefaNoConcluido(){
+  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  let tarefaCriando = {
+    id: JSON.parse(VueCookies.get("IdTarefaCookies")),
+    responsaveis: [],
+    status: [],
+    subTarefas: [],
+    comentarios: [],
+    arquivos: [],
+    cor: null,
+    descricao: null,
+    nome: null,
+    valorPropriedadeTarefas: []
+  }
+  tarefaCriando.nome = tarefa.value.nome;
+  tarefaCriando.descricao = tarefa.value.descricao;
+  tarefaCriando.arquivos = tarefa.value.arquivos;
+  tarefaCriando.comentarios = tarefa.value.comentarios;
+  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  // tarefaCriando.responsaveis = tarefa.value.responsaveis;
+  tarefaCriando.status = tarefa.value.status;
+  tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas;
+
+console.log(tarefaCriando);
+
+  banco.atualizar(tarefaCriando, "/tarefa")
 }
 
 //Função que deleta status
@@ -629,7 +654,7 @@ function criaSubtarefa() {
     }
     let subtarefaNova = {
       nome: nomeSubtarefa.value,
-      concluida: booleanDaSubtarefa.value,
+      concluido: booleanDaSubtarefa.value,
       status: statusSubtarefa.value,
     };
     tarefa.value.subtarefas.push(subtarefaNova);
@@ -962,15 +987,15 @@ const listaFiltradaStatus = computed(() => {
     parametroDoFiltroStatus.value === ""
   ) {
     // Check for empty string
-    return status.value;
+    return projetoDaTarefa.value.statusList;
   }
   switch (parametroDoFiltroStatus.value) {
     case "az":
-      return status.value.sort((a, b) =>
+      return projetoDaTarefa.value.statusList.sort((a, b) =>
         a.nome > b.nome ? 1 : b.nome > a.nome ? -1 : 0
       );
     case "za":
-      return status.value.sort((a, b) =>
+      return projetoDaTarefa.value.statusList.sort((a, b) =>
         a.nome < b.nome ? 1 : b.nome < a.nome ? -1 : 0
       );
   }
