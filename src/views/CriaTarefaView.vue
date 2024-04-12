@@ -3,7 +3,7 @@
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input largura="32" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
-          styleInput="input-transparente-claro-grande" v-model="tarefa.nome"></Input>
+          styleInput="input-transparente-claro-grande" v-model="tarefa.nome" @updateModelValue="(e)=>{tarefa.nome = e}"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
         <TextAreaPadrao width="80%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
@@ -67,8 +67,8 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="3.8"
-                  v-model="nomePropriedade"></Input>
+                <input class="border-2 w-[80%] rounded-lg border-[#620BA7]" placeholder="Nome da Propriedade" type="text"
+                  v-model="nomePropriedade"></input>
               </div>
               <div class="pr-2">
                 <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
@@ -99,7 +99,7 @@
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
                 <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8"
-                  v-model="nomeSubtarefa"></Input>
+                  v-model="nomeSubtarefa" @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
               <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
                 altura="3.8" fonteTamanho="1rem" v-model="statusSubtarefa" />
@@ -273,7 +273,7 @@
 
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
           <div v-for="propriedade in propriedades"
-            class="w-[100%] min-h-[3vh] gap-2 flex flex-col items-center justify-center">
+            class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
             <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center">
               <div class="flex gap-2 items-center w-[40%]">
                 <CheckBox
@@ -284,21 +284,15 @@
               <div class="w-[30%]">
                 <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
               </div>
-              <div class="w-[30%]">
-                <button @click="editarPropriedade(propriedade)" class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md">
-
-                  Valor
-                </button>
-              </div>
               <div class="flex justify-center">
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
               </div>
             </div>
-            <div class="w-[100%] min-h-[5vh] flex items-center justify-center">
-              <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
+            <div class="w-[100%] h-[5vh] flex items-center justify-center ">
+              <div v-if="propriedade.propriedade.tipo === 'TEXTO'" >
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
                   <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor" width="80%">
+                    @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor" class="h-8 border-2 rounded-lg border-[#620BA7]">
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
@@ -355,7 +349,7 @@
         </div>
       </div>
       <div class="w-[80%] flex justify-end pt-8">
-        <Botao preset="PadraoVazado" texto="Concluído" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" texto="Concluído" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
 
@@ -462,6 +456,7 @@ import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaPropriedadeTarefaStore } from "../stores/criaPropriedadeTarefa";
+import { getActivePinia } from "pinia";
 
 const banco = conexaoBD();
 
@@ -592,6 +587,35 @@ async function patchDaListaDePropriedades() {
   banco.atualizar(tarefa2, "/tarefa")
 }
 
+async function criaTarefaNoConcluido(){
+  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  let tarefaCriando = {
+    id: JSON.parse(VueCookies.get("IdTarefaCookies")),
+    responsaveis: [],
+    status: [],
+    subTarefas: [],
+    comentarios: [],
+    arquivos: [],
+    cor: null,
+    descricao: null,
+    nome: null,
+    valorPropriedadeTarefas: []
+  }
+  tarefaCriando.nome = tarefa.value.nome;
+  tarefaCriando.descricao = tarefa.value.descricao;
+  tarefaCriando.arquivos = tarefa.value.arquivos;
+  tarefaCriando.comentarios = tarefa.value.comentarios;
+  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  // tarefaCriando.responsaveis = tarefa.value.responsaveis;
+  tarefaCriando.status = tarefa.value.status;
+  tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas;
+
+console.log(tarefaCriando);
+
+  banco.atualizar(tarefaCriando, "/tarefa")
+}
+
 //Função que deleta status
 
 function deletaStatus(stat) {
@@ -630,7 +654,7 @@ function criaSubtarefa() {
     }
     let subtarefaNova = {
       nome: nomeSubtarefa.value,
-      concluida: booleanDaSubtarefa.value,
+      concluido: booleanDaSubtarefa.value,
       status: statusSubtarefa.value,
     };
     tarefa.value.subtarefas.push(subtarefaNova);
@@ -682,6 +706,8 @@ async function criaPropriedade() {
     if (nomePropriedade.value != "") {
       const cria = criaPropriedadeTarefaStore();
       tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
+      console.log(tipoPropriedade.value);
+      console.log(nomePropriedade.value);
 
       cria.criaPropriedade(
         nomePropriedade.value,
@@ -690,7 +716,6 @@ async function criaPropriedade() {
       );
     }
   }
-
   await new Promise(r => setTimeout(r, 60));
   await procuraProjetosDoBanco();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
@@ -962,15 +987,15 @@ const listaFiltradaStatus = computed(() => {
     parametroDoFiltroStatus.value === ""
   ) {
     // Check for empty string
-    return status.value;
+    return projetoDaTarefa.value.statusList;
   }
   switch (parametroDoFiltroStatus.value) {
     case "az":
-      return status.value.sort((a, b) =>
+      return projetoDaTarefa.value.statusList.sort((a, b) =>
         a.nome > b.nome ? 1 : b.nome > a.nome ? -1 : 0
       );
     case "za":
-      return status.value.sort((a, b) =>
+      return projetoDaTarefa.value.statusList.sort((a, b) =>
         a.nome < b.nome ? 1 : b.nome < a.nome ? -1 : 0
       );
   }
@@ -1044,15 +1069,6 @@ let barraPorcentagem = ref({
   border: "none",
   boxShadow: "none",
 });
-
-//Edita o valor ja presenta na proriedade
-function editarPropriedade(propriedade) {
-  for (const propriedade of tarefa.value.propriedades) {
-    if (propriedade == propriedade) {
-
-    }
-  }
-}
 
 //Variavel utilizada para mostrar o display onde mostra os status e as propriedades que pode adicionar na tarefa
 
