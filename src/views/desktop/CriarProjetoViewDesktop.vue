@@ -76,7 +76,9 @@
     </div>
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
+            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
+            <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita"></Botao>
     </div>
 </template>
 
@@ -174,7 +176,7 @@ function fazBackPadraoPlaceHolder() {
 
 async function mandaDataInformacoes() {
     if (projetoEdita.value) {
-        idProjeto = VueCookies.get("projetoEditarId");
+        idProjeto = VueCookies.get("IdProjetoAtual");
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         const dataBack = projeto.dataCriacao;
         const [data, hora] = dataBack.split("T");
@@ -364,20 +366,21 @@ async function criaProjeto() {
            enviaWebSocket(response)
         })
         restauraCookies();
-        router.push('/projetos')
+        // router.push('/projeto')
     } else {
         const editaProjeto = editaProjetoStore()
+        console.log(idProjeto);
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
-        router.push('/projetos')
+        // router.push('/projeto')
     }
 
 }
 
 function enviaWebSocket(response){
     console.log(response.data.id)
-    webSocket.url= "ws://localhost:8084/og/webSocket/tarefa/"+response.data.id;
+    webSocket.url= "ws://localhost:8082/og/webSocket/tarefa/"+response.data.id;
     webSocket.enviaMensagemWebSocket()
 }
 

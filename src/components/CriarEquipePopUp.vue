@@ -66,10 +66,11 @@ let nome = ref('');
 let descricao = ref('');
 let usuarioConvidado = ref('');
 let mensagemError = ref("");
-const usuarioLogado = 1;
+let usuarioLogado = VueCookies.get('IdUsuarioCookie');
 let membrosEquipe = ref([]);
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
+
 import { webSocketStore } from '../stores/webSocket.js'
 
 
@@ -92,6 +93,8 @@ function marginRightConvidado() {
 
 const imagemSelecionada = ref(null);
 
+// Função para lidar com o upload de arquivos
+
 function handleFileUpload(event) {
     const file = event.target.files[0];
 
@@ -111,14 +114,15 @@ function handleFileUpload(event) {
     // Armazena o arquivo na variável reativa
     imagemSelecionada.value = file;
 }
-
 const imagemSelecionadaUrl = computed(() => {
     if (!imagemSelecionada.value) return null;
     return URL.createObjectURL(imagemSelecionada.value);
 });
 
+// URL da imagem padrão
 const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
 
+// Computed property para determinar qual URL de imagem exibir
 const imagemExibicao = computed(() => {
     // Se houver uma imagem selecionada, retorna sua URL
     if (imagemSelecionadaUrl.value) {
@@ -209,7 +213,7 @@ async function cadastrarEquipe() {
     });
 
     banco.adicionarUsuarios(ids, equipe.id, "/usuario/add").then(resposta => {
-         enviaParaWebSocket();
+        enviaParaWebSocket(equipe);
     });
     await enviarFotoParaBackend(equipe);
 
@@ -220,11 +224,17 @@ async function cadastrarEquipe() {
 
 };
 
-
-async function enviaParaWebSocket() {
+async function enviaParaWebSocket(equipeAux) {
+    let teste = {
+        equipes: [{equipe:equipeAux}],
+        notificao: {
+            mensagem: "Criou a Equipe",
+            equipe: equipeAux
+        }
+    }
     const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8084/og/webSocket/usuario/1"
-   await webSocket.enviaMensagemWebSocket("usuario:" + usuarioLogado)
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 async function enviarFotoParaBackend(equipe) {
@@ -241,7 +251,6 @@ async function enviarFotoParaBackend(equipe) {
         console.error('Erro ao enviar a foto para o backend:', error);
     }
 }
-
 
 
 </script>

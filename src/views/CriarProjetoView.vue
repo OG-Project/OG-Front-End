@@ -16,6 +16,7 @@ import CriaProjetoViewMobile from './mobile/CriaProjetoViewMobile.vue';
 
 const screenWidth = ref(window.innerWidth)
 
+
 onMounted(() => {
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth

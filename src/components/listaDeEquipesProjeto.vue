@@ -7,7 +7,11 @@
             <div class="div-membros flex flex-col items-center overflow-y-auto scrollbar-thin">
                 <div class="flex justify-center w-full" v-for="equipe in projetoAtual.projetoEquipes">
                     <div class="corDiv">
-                        <img class="imgDePerfil" src="" alt="">
+                        <img class="imgDePerfil" :src="'data:' +
+                    equipe.equipe.foto.tipo +
+                    ';base64,' +
+                    equipe.equipe.foto.dados
+                    " alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg">{{ equipe.equipe.nome }}</h1>
                     </div>
                 </div>
@@ -20,7 +24,7 @@
                 v-model="equipeConvidada"></Input>
             <div class="flex mt-[1vh] ml-5">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
-                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarEquipe"></Botao>
             </div>
         </div>
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
@@ -58,8 +62,8 @@ import VueCookies from "vue-cookies";
 let projetoAtual = ref(VueCookies.get('IdProjetoAtual'))
 const banco = conexaoBD();
 onMounted(async () => {
-    projetoAtual.value = await banco.buscarUm(projetoAtual.value,"/projeto")
-    }
+    projetoAtual.value = await banco.buscarUm(projetoAtual.value, "/projeto")
+}
 )
 
 let listaEquipes = ref([]);
@@ -71,7 +75,7 @@ const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
 
 let emit = defineEmits({
-    boolean : Boolean
+    boolean: Boolean
 })
 
 function larguraNomeEquipe() {
@@ -121,29 +125,28 @@ function larguraInputConvidado() {
 async function listaDeEquipes() {
     let equipes = projetoAtual.value.projetoEquipes
     let listaDeEquipes = await equipes;
-    console.log(equipes)
     listaDeEquipes.forEach((equipe) => {
-        if (equipeConvidada.value === equipe.username || equipeConvidada.value === equipe.email) {
+        if (equipeConvidada.value === equipe.nome) {
             equipesConvidadas.value.push(equipe);
         }
     })
 }
 
-async function adicionarMembro() {
-    const membroNaEquipe = listaEquipes.value.find(membro => membro.username === equipeConvidada.value || membro.email === equipeConvidada.value);
+async function adicionarEquipe() {
+    const equipeDoProjeto = listaEquipes.value.find(equipe => equipe.nome === equipeConvidada.value);
 
-    if (membroNaEquipe) {
+    if (equipeDoProjeto) {
         console.log("Esse usuário já faz parte da equipe.");
         return;
     }
 
     // Verifica se o usuário já foi convidado
-    const usuarioJaConvidado = equipesConvidadas.value.some(membro => membro.username === equipeConvidada.value || membro.email === equipeConvidada.value);
+    const equipeJaConvidada = equipesConvidadas.value.some(equipe => equipe.nome === equipeConvidada.value);
 
-    if (usuarioJaConvidado) {
+    if (equipeJaConvidada) {
         console.log("Você já convidou essa pessoa.");
     } else {
-        setTimeout(await listaDeEquipes(),100);
+        setTimeout(await listaDeEquipes(), 100);
     }
 }
 

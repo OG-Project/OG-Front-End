@@ -6,6 +6,7 @@ import { webSocketStore } from "./webSocket.js";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
+
       return {api:axios.get("http://10.4.96.35:8082/projeto")
     }
 
@@ -60,7 +61,7 @@ export const conexaoBD = defineStore('conexaoBD', {
             const formData = new FormData();
             formData.append('foto', foto);
     
-            // Faça a requisição PATCH para enviar a imagem
+            // Faça a requisição PATCH para enviar a image
     
             const response = await axios.patch(`http://10.4.96.35:8082/equipe/${equipeId}`, formData, {
                 headers: {
@@ -76,6 +77,7 @@ export const conexaoBD = defineStore('conexaoBD', {
             console.error('Erro ao cadastrar a foto:', error);
             throw error;
         }
+
           return await ((await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`)).data)
       },
       
