@@ -182,6 +182,12 @@ async function mandaDataInformacoes() {
         const [data, hora] = dataBack.split("T");
         const [ano, mes, dia] = data.split("-");
         dataFormatada.value = `${dia}/${mes}/${ano}`;
+    }else{
+        let dia = new Date().getDate();
+        let mes= new Date().getMonth();
+        let ano= new Date().getFullYear()
+        dataFormatada.value = `${dia}/${'0'+(mes+1)}/${ano}`;
+        
     }
 }
 
