@@ -25,11 +25,14 @@ let url= window.location.href;
 const route = useRoute();
 
   onMounted(()=>{
+  let root=document.documentElement.style
   perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
   perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
   console.log(perfil.isTecladoVirtual)
   perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
-
+  root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
+  root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
+  root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
   perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
   perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
   })

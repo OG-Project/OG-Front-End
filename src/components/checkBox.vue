@@ -270,11 +270,11 @@ function valorJaPassado() {
 
 <style scoped>
 input[type="checkbox"] {
-  accent-color: #620ba7;
+  accent-color: var(--roxo);
 }
 #checkbox {
   border-radius: 0px;
-  border-color: #620ba7;
+  border-color: var(--roxo);
   cursor: pointer;
   width: 20px;
   height: 20px;

@@ -2,11 +2,11 @@
     <div class="w-[75vw] h-[92vh] flex flex-col justify-evenly  ">
         <!-- <Input conteudoInput="oi" direcao="direita" styleInput="input-claro" ></Input> -->
         <div>
-            <h1 :style="{fontFamily:fonteTitulo,fontSize:tamanhoTitulo+'vh'}" class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            <h1 style="font-family: var(--fonteTitulo);" :style="{fontSize:tamanhoTitulo+'vh'}" class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Aparência
             </h1>
         </div>
-        <div :style="{fontFamily:fonteCorpo,fontSize:tamanhoCorpo+'vh'}" class=" sm:flex-wrap sm:justify-center flex-row-reverse items-center flex gap-4">
+        <div style="font-family: var(--fonteCorpo);" :style="{fontSize:tamanhoCorpo+'vh'}" class=" sm:flex-wrap sm:justify-center flex-row-reverse items-center flex gap-4">
             <div class=" w-[300px] h-[300px]  relative" >
                 <div class="hexagon shadow-xl right-[70px] absolute z-[10]  bg-[var(--roxo)] rotate-90 w-[166px] h-[152px]"></div>
                 <div class="hexagon top-[135px] right-[15px] absolute z-[9] bg-[var(--roxoEscuro)] rotate-90 w-[133px] h-[123px]"></div>
@@ -17,7 +17,7 @@
                 <div class="flex gap-4">
                     <div class="w-full flex flex-col gap-4  items-center">
                         <div 
-                        class="pb-1 border-b-2 border-roxo w-max px-12">
+                        class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
                         Titulo
                         </div>
                         <!-- <div>Tamanho</div> -->
@@ -35,7 +35,7 @@
                     </div>
                     <div class="w-full flex flex-col gap-4  items-center">
                         <div 
-                        class="pb-1 border-b-2 border-roxo w-max px-12">
+                        class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
                         Corpo de Texto
                         </div>
                         <!-- <div>Tamanho</div> -->
@@ -48,14 +48,14 @@
                         <selectPadrao 
                         class="w-max" 
                         @update:model-value="fontCorpoEscolhida" 
-                        :opcaoSelecionada="perfil.fonteCorpo" 
+                        :opcaoSelecionada="styleGet.getPropertyValue('--fonteCorpo')" 
                         :listaSelect="fonts">
                         </selectPadrao>
                     </div>
                 </div>
 
                 <div class="flex flex-col justify-center items-center gap-3">
-                    <div class="pb-1 border-b-2 border-roxo w-max px-12">Cores</div>
+                    <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">Cores</div>
                     <div class="flex flex-wrap justify-center w-96 gap-5">
                         <div 
                         @click="corEscolhida(cores[1])" 
@@ -134,7 +134,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 import selectPadrao from './selectPadrao.vue';
 import convert from 'color-convert';
 import Botao from './Botao.vue'
@@ -149,31 +149,25 @@ const {tamanhoCorpo} = storeToRefs(perfil)
 const {tamanhoTitulo} = storeToRefs(perfil)
 
 const cores = ref({
-    1: 'FA0808',
-    2: 'ED5806',
+    1: '0277f5',
+    2: 'f52f02',
     3: 'FF7A01',
     4: 'F5B102',
     5: 'F1F200',
-    6: 'C6DF29',
+    6: '02f5e9',
     7: '01F300',
     8: 'F30000',
     9: '05BD4F',
     10: '0302F6',
-    11: '3C029E',
-    12: '7802EB'
+    11: 'f502e5',
+    12: '620BA7'
 })
 let tamanhos=['Pequeno','Normal','Grande']
 
-let font=ref('Arial')
-/* Cormorant+Garamond serif */
-/* Merriweather serif */
-/* Proza+Libre */
-/* Quattrocento+Sans */
-/* Quattrocento serif */
-/* Work+Sans */
 let fonts=['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
 
-
+let root=document.documentElement
+let styleGet=getComputedStyle(root)
 
 let cor = ref('#80A4ED')
 const styleCor = ref({
@@ -192,22 +186,21 @@ function corEscolhida(a){
     console.log('cor '+a)
     cor.value="#"+a
     let matizCor=convert.hex.hsl(cor.value)
-    let root=document.documentElement
     console.log('cor escolhida '+matizCor)
     root.style.setProperty('--hueRoxo',matizCor[0])
-    
+    VueCookies.set('matizCor',JSON.stringify(matizCor[0],'30d'))
     console.log(matizCor[0])
-    
-    
-    console.log(convert.hsl.hex())
+
 }
 function fontCorpoEscolhida(f){
     perfil.fonteCorpo=f
     console.log(f)
+    root.style.setProperty('--fonteCorpo',f)
     VueCookies.set('fonteCorpo',JSON.stringify(perfil.fonteCorpo))
 }
 function fontTituloEscolhida(f){
     perfil.fonteTitulo=f
+    root.style.setProperty('--fonteTitulo',f)
     VueCookies.set('fonteTitulo',JSON.stringify(perfil.fonteTitulo))
 }
 function tamanhoFontTitulo(tamanho){
@@ -231,7 +224,7 @@ function tamanhoFontCorpo(tamanho){
         perfil.tamanhoCorpo=2
     }
     else if(tamanho=='Grande'){
-        perfil.tamanhoCorpo=3
+        perfil.tamanhoCorpo=2.5
     }
     console.log(perfil.tamanhoCorpo)
     console.log(tamanho)
@@ -255,6 +248,7 @@ onBeforeMount(async ()=>{
 })
 
 onMounted(() => {
+    
     console.log('fonts '+perfil.fonteCorpo+' '+perfil.fonteTitulo)
     let root =document.documentElement
     //  alert(cor.value)
@@ -264,16 +258,10 @@ onMounted(() => {
     console.log(convert.hex.hsl(cor.value)[0])
 
 })
-// teria que atribuir as cores com hsl,
-// pegar a cor do color pick em hex
-// e
-
-// criar um molde sem functions ativadas 
-// e apenas mude variaveis auxuliares que
-// trocam exemplares , ao confirmar mudar 
-// as variaveis da store e mudar o site inteiro
-
-
+onUpdated(()=>{
+    console.log('update')
+    console.log(styleGet.getPropertyValue('--roxo'));
+})
 </script>
 
 <style scoped>

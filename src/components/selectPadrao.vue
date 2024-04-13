@@ -113,14 +113,14 @@ defineEmits(['update:modelValue'])
     .styleSelectPadrao{
        @apply   border-4 
         border-transparent
-        border-b-roxo    
+        border-b-[var(--roxo)]    
         pt-2
         pb-2
         px-4
         border-b-4
         w-max
         h-[100%]
-        flex items-center justify-center focus-within:border-roxo 
+        flex items-center justify-center focus-within:border-[var(--roxo)] 
         focus-within:border-4 focus-within:rounded-[4px] truncate ;
     }
     .styleSelectSemBordaBaixo{
@@ -131,7 +131,7 @@ defineEmits(['update:modelValue'])
         px-4
         w-max
         h-[100%]
-        flex items-center justify-center focus-within:border-roxo 
+        flex items-center justify-center focus-within:border-[var(--roxo)] 
         focus-within:border-4 focus-within:rounded-[4px] truncate ;
     }
     .styleSelectPadrao:hover{

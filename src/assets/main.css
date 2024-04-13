@@ -25,12 +25,15 @@
     --clickBorder: hsl(var(--hueRoxo) 100 88);
     --roxoAtencao: hsl(var(--hueRoxo) 100 50);
     --roxoClaro: hsl(var(var(--hueRoxo)) 100 85);
-    --fonteTitulo:Source Sans 3;
-    --fonteCorpo:Poppins;
+    --fonteTitulo:'Source Sans 3';
+    --fonteCorpo:'Poppins';
+    --fonteTituloTamanho:6vh ;
+    --fonteCorpoTamanho:2vh;
 }
 
 html{
-    @apply font-poppins md:text-sm xl:text-lg  sm:text-xs;
+    @apply md:text-sm xl:text-lg  sm:text-xs;
+    font-family: var(--fonteCorpo);
 }
 
 

@@ -28,14 +28,19 @@
 </template>
 
 <script setup>
-import { de } from "date-fns/locale";
-import { ref, onMounted, defineProps, watch } from "vue";
+import { ref, onMounted, defineProps, watch, computed } from "vue";
 
 // Define variáveis reativas para controlar os estados de hover e clique
 const isHovered = ref(false);
 const isClick = ref(false);
 
 const tamanhoComClass = ref("medioId");
+let corRoxo=ref('')
+let root=document.documentElement
+onMounted(()=>{
+  corRoxo.value=getComputedStyle(root).getPropertyValue('--roxo')
+  console.log(corRoxo.value);
+})
 
 // Define as propriedades que o componente espera receber
 const props = defineProps({
