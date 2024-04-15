@@ -138,6 +138,7 @@ onMounted(() => {
     mandaDataInformacoes();
     listaEquipesConvidadas.value = [];
     placeHolderDataFinalProjeto.value = "Data final:"
+    console.log("her f")
 })
 
 onUpdated(() => {

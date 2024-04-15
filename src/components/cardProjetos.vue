@@ -12,13 +12,13 @@
                     </div>
                     <div class="w-[20%] flex items-end justify-end" @click="tempoDeAtuacaoPopUp()">
                         <img src="../imagem-vetores/relogio.svg">
-                    </div>
-                    <div @mouseleave="somePopUp()" v-if="funcaoPopUp.variavelModal" class="animation">
+                      </div>
+                      <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
                         <div class="flex justify-end">
-                            <img src="../imagem-vetores/triangulo.svg">
+                          <img src="../imagem-vetores/triangulo.svg">
                         </div>
                         Tempo de Atuação: 1hr e 10 min
-                    </div>
+                      </div>
                 </div>
                
                 <!-- falta colocar os tres pontos por linha-->
@@ -63,37 +63,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { funcaoPopUpStore } from '../stores/funcaoPopUp';
+import { onMounted, ref } from 'vue';
 const props = defineProps({
     name: {
         type: String,
-        required: false
     },
     descricao: {
         type: String,
-        required: false
     },
     reponsavel: {
         type: String,
-        required: false
     },
     feito: {
         type: Number,
-        required: false
     },
     comeco: {
         type: String,
-        required: false
     },
     final: {
         type: String,
-        required: false
     }
 
 })
+let verTempoAtuacao= ref(false)
 let alinhamento=ref(43)
-const funcaoPopUp= funcaoPopUpStore();
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 
@@ -114,11 +107,11 @@ let barraPorcentagem = ref({
 });
 
 function tempoDeAtuacaoPopUp(){
-    funcaoPopUp.abrePopUp();
+    verTempoAtuacao.value=true;
 }
 
 function somePopUp(){
-    funcaoPopUp.fechaPopUp()
+    verTempoAtuacao.value=false
 }
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
@@ -188,4 +181,5 @@ function somePopUp(){
         }
     }
 
-}</style>
+}
+</style>

@@ -1,8 +1,7 @@
-
 <template>
     <div class="w-full h-full flex flex-col items-center justify-end overflow-hidden">
         <hubDeProjeto @trocaValor="(event) => opcao = event"></hubDeProjeto>
-        <div class="w-full h-[72%] flex justify-center items-end"> 
+        <div class="w-full h-[72%] flex justify-center items-end">
             <div class="divMaior ">
                 <div v-if="defineOpcao(route.path, '/projeto/calendario')"
                     class="w-[100%] h-screen flex justify-center items-center">
@@ -25,7 +24,7 @@
     </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import calendario from '../components/calendario.vue';
 import KanbanDeStatus from '../components/KanbanDeStatus.vue';
 import timeLine from '../components/timeLine.vue';
@@ -34,6 +33,17 @@ import hubDeProjeto from '../components/hubDeProjeto.vue'
 import { conexaoBD } from '../stores/conexaoBD';
 import { useRoute } from 'vue-router';
 import VueCookies from 'vue-cookies';
+let tempoAtuado;
+let horaEntrada;
+let horaSaida;
+onMounted(() => {
+    timerTempoAtuacao();
+})
+
+onUnmounted(() => {
+    calculaTempoAtuacao()
+    // postar no banco
+})
 
 const route = useRoute()
 
@@ -41,6 +51,19 @@ function defineOpcao(rotaAtual, rota) {
     if (rotaAtual == rota) {
         return true
     }
+}
+
+function calculaTempoAtuacao() {
+    horaSaida = new Date().getTime()
+    const diferenca = horaSaida - horaEntrada
+    const segundos = Math.floor(diferenca / 1000)
+    const minutos = Math.floor(segundos / 60)
+    const horas = Math.floor(minutos / 60)
+    tempoAtuado = `${horas}:${minutos}:${segundos}`
+}
+
+function timerTempoAtuacao() {
+    horaEntrada = new Date().getTime()
 }
 </script>
 <style>
@@ -59,4 +82,3 @@ function defineOpcao(rotaAtual, rota) {
 
 }
 </style>
-
