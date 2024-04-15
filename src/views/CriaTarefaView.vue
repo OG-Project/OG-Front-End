@@ -275,7 +275,7 @@
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
           <div v-for="propriedade in propriedades"
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
-            <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center">
+            <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
               <div class="flex gap-2 items-center w-[40%]">
                 <CheckBox
                   @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
@@ -285,9 +285,9 @@
               <div class="w-[30%]">
                 <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
               </div>
-              <div class="flex justify-center">
+              <!-- <div class="flex justify-center">
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
-              </div>
+              </div> -->
             </div>
             <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
@@ -370,7 +370,7 @@
         </div>
         <div class="flex pl-8">
           <div class="w-[50%] justify-start flex-row">
-            <p>Responsável</p>
+            <p>Responsáveis do Projeto</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
             <p class="truncate text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
@@ -379,12 +379,12 @@
 
           </div>
         </div>
-        <div class="flex pl-8">
-          <div class="w-[50%] justify-start flex-row">
-            <p>Data Inicial</p>
+        <div class="flex pl-8" v-if="projetoDaTarefa">
+          <div class="w-[50%] justify-start flex-row" >
+            <p>Data inicial do Projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="text-[#620BA7]">13/02/2006</p>
+            <p class="text-[#620BA7]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
           </div>
         </div>
       </div>
@@ -600,11 +600,11 @@ async function criaTarefaNoConcluido() {
     cor: null,
     descricao: null,
     nome: null,
-    valorPropriedadeTarefas: []
+    valorPropriedadeTarefas: [],
+    dataCriacao: null,
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
-  tarefaCriando.arquivos = tarefa.value.arquivos;
   for (const props of tarefa2.valorPropriedadeTarefas) {
     for (const propsComValor of tarefa.value.propriedades) {
       if (propsComValor.propriedade.id == props.propriedade.id) {
@@ -641,6 +641,7 @@ async function criaTarefaNoConcluido() {
     }
   }
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas;
+  tarefaCriando.dataCriacao = new Date();
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
     comentario.push(comentarioFor);
@@ -651,6 +652,7 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   console.log(tarefaCriando);
+  banco.patchDeArquivosNaTarefa("/tarefa", VueCookies.get("IdTarefaCookies"), tarefa.value.arquivos)
   banco.atualizar(tarefaCriando, "/tarefa")
   
 }
