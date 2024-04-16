@@ -1,15 +1,15 @@
 <template>
-    <fundoPopUp v-if="!editando" largura="" altura="60vh" >
+    <fundoPopUp v-if="!editando" largura="" :altura="tamanhoPopUp()" >
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
-                        <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
+                        <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
                 </div>
                 
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                         <img class="imagem" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
                         <img class="imagem" v-else src="">
                         <div class="styleH1Padrao">
-                            <h1 class=" flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeEditar.nome" > {{ truncarNome(equipeEditar.nome, larguraNomeEquipe())  }}</h1>
+                            <h1 class="nomeEquipe flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeEditar.nome" > {{ truncarNome(equipeEditar.nome, larguraNomeEquipe())  }}</h1>
                         </div>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
@@ -19,15 +19,22 @@
                 </div> 
                 <div>
                     <div class="botao">
-                    <div class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
+                    <div v-if="screenWidth >= 620" class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
                         <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem" :funcaoClick="deletarEquipe">
                         </Botao>
                     </div>
-                    <div class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
+                    <div v-else class="flex justify-start mt-[10vh] mr-14">
+                        <Botao preset="Deletar" tamanhoPadrao="personalizado" width="35vw" height="5vh" texto="Deletar" tamanhoDaFonte="1rem" :funcaoClick="deletarEquipe">
+                        </Botao>
+                    </div>
+                    <div v-if="screenWidth >= 620" class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
                         </Botao>
                     </div>
-                    
+                    <div v-else class=" flex justify-end mb-16">
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="35vw" height="5vh" texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
+                        </Botao>
+                    </div>
                 </div>
                 </div>
             </div>
@@ -68,6 +75,18 @@ import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import {useRouter} from 'vue-router'
+const screenWidth = window.innerWidth;
+
+function tamanhoPopUp() {
+    const screenWidth = window.innerWidth;
+    if(screenWidth <= 620){
+          return '50vh'
+    }
+    else{
+        return '60vh'
+    }
+}
+
 
 function larguraNomeEquipe(){
     const screenWidth = window.innerWidth;
@@ -411,6 +430,23 @@ async function enviarFotoParaBackend(id) {
             @apply h-[5vh] w-[4vw];
         }
     }
+
+    @media(max-width: 620px){
+        .titulo{
+         @apply text-4xl; 
+        }
+        .textArea{
+            @apply flex w-[70vw] h-[20vh] bg-[#D7D7D7] text-black text-lg
+            border-transparent border-b-roxo border-b-2  focus-within:border-roxo focus-within:border-4;
+            border-bottom: 'solid 4px #620BA7' ;
+        }
+        .nomeEquipe{
+            @apply flex h-[3vh] w-[50vw]  text-xl text-[#877E7E];
+        }
+        .imagem{
+            @apply w-[40px] h-[40px]
+        }
+     }
 
 }
 </style>
