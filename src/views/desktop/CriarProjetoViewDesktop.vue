@@ -368,19 +368,18 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
+        
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
-           enviaWebSocket(response)
-        })
+        ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
-        // router.push('/projeto')
+        
     } else {
         const editaProjeto = editaProjetoStore()
-        console.log(idProjeto);
+        let projeto = await conexao.buscarUm(idProjeto,"/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao)
         restauraCookies();
-        router.push('/projeto')
+       
     }
 
 }

@@ -10,14 +10,14 @@
                     <div class="h-[28px] truncate overflow-hidden w-[80%]">
                         <b>{{ name }}</b>
                     </div>
-                    <div class="w-[20%] flex items-end justify-end" @click="tempoDeAtuacaoPopUp()">
+                    <div class="w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
                         <img src="../imagem-vetores/relogio.svg">
                       </div>
                       <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
                         <div class="flex justify-end">
                           <img src="../imagem-vetores/triangulo.svg">
                         </div>
-                        Tempo de Atuação: 1hr e 10 min
+                        Tempo de Atuação: {{tempoAtuacao}}
                       </div>
                 </div>
                
@@ -82,6 +82,9 @@ const props = defineProps({
     },
     final: {
         type: String,
+    },
+    tempoAtuacao:{
+        type: String
     }
 
 })
