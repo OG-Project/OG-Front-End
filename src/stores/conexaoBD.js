@@ -7,40 +7,45 @@ import { id } from "date-fns/locale";
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
-      return {api:axios.get("http://localhost:8082")}
+
+      return {api:axios.get("http://localhost:8082/projeto")
+    }
+
     },
     actions: {
     
       procurar(textoRequisicao){
-        // return axios.get("http://10.4.96.25:8082"+ textoRequisicao).then(response => response.data)
+        // return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
+        
         return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
         return axios.post("http://localhost:8082"+textoRequisicao,objeto)
       },
       atualizar(objeto,textoRequisicao){
-        return axios.put("http://localhost:8082"+textoRequisicao,objeto)
+        
+        return axios.put("http://localhost:8082"+textoRequisicao,objeto).then(response =>{
+          
+        })
       },
-      adicionaUsuarioAEquipe(userId, equipeId, textoRequisicao){
-        return axios.patch("http://localhost:8082"+textoRequisicao,userId,equipeId)
-      },
-      adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch(`http://localhost:8082${textoRequisicao}/${equipeId}`, ids)
+      async adicionarUsuarios(ids,equipeId,textoRequisicao){
+        axios.patch(`http://localhost:8082${textoRequisicao}/${equipeId}`, ids).then(response =>{
+          return response;
+        })
+        
       },
       deletarEquipe(id,textoRequisicao){
-        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`)
-      },
-      patchDeArquivosNaTarefa(textoRequisicao, id, arquivos){
-        return axios.patch("http://localhost:8082"+textoRequisicao+"/"+id, arquivos)
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response =>{
+          
+        })
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
           return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       },
-      async deletarPropriedade(textoRequisicao, id){
-        return axios.delete("http://localhost:8082"+textoRequisicao+id)
-      },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
-          return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`)
+          return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`).then(response =>{
+           
+          })
       },
       async buscarUm(id,textoRequisicao){
 
@@ -58,7 +63,9 @@ export const conexaoBD = defineStore('conexaoBD', {
             // Crie um FormData e adicione a imagem a ele
             const formData = new FormData();
             formData.append('foto', foto);
-            // Faça a requisição PATCH para enviar a imagem
+    
+            // Faça a requisição PATCH para enviar a image
+    
             const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -74,7 +81,7 @@ export const conexaoBD = defineStore('conexaoBD', {
             throw error;
         }
 
-          return await ((await axios.get(`http://10.4.96.35:8082${textoRequisicao}/${equipeId}`)).data)
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       },
       
       
