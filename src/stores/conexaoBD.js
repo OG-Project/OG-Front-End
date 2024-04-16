@@ -2,6 +2,7 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 import { webSocketStore } from "./webSocket.js";
+import { id } from "date-fns/locale";
 
 export const conexaoBD = defineStore('conexaoBD', {
   
@@ -29,8 +30,14 @@ export const conexaoBD = defineStore('conexaoBD', {
       deletarEquipe(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`)
       },
+      patchDeArquivosNaTarefa(textoRequisicao, id, arquivos){
+        return axios.patch("http://localhost:8082"+textoRequisicao+"/"+id, arquivos)
+      },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
           return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
+      },
+      async deletarPropriedade(textoRequisicao, id){
+        return axios.delete("http://localhost:8082"+textoRequisicao+id)
       },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
           return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`)
