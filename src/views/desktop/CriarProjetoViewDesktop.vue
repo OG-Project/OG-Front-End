@@ -76,7 +76,9 @@
     </div>
     <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"></Botao>
+            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
+            <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita"></Botao>
     </div>
 </template>
 
@@ -136,6 +138,7 @@ onMounted(() => {
     mandaDataInformacoes();
     listaEquipesConvidadas.value = [];
     placeHolderDataFinalProjeto.value = "Data final:"
+    console.log("her f")
 })
 
 onUpdated(() => {
@@ -180,6 +183,12 @@ async function mandaDataInformacoes() {
         const [data, hora] = dataBack.split("T");
         const [ano, mes, dia] = data.split("-");
         dataFormatada.value = `${dia}/${mes}/${ano}`;
+    }else{
+        let dia = new Date().getDate();
+        let mes= new Date().getMonth();
+        let ano= new Date().getFullYear()
+        dataFormatada.value = `${dia}/${'0'+(mes+1)}/${ano}`;
+        
     }
 }
 
@@ -359,6 +368,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
+        
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
            enviaWebSocket(response)
@@ -366,8 +376,10 @@ async function criaProjeto() {
         })
         restauraCookies();
         router.push('/projeto')
+
     } else {
         const editaProjeto = editaProjetoStore()
+        let projeto = await conexao.buscarUm(idProjeto,"/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value), (response)=>{
             enviaWebSocket(response)

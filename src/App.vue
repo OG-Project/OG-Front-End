@@ -88,9 +88,6 @@ function close() {
 
 var estaNoLogin = ref(true)
 watch(() => route.path, () => {
-  if (route.path == '/') {
-    router.push('/login')
-  }
   if (route.path == '/login') {
     estaNoLogin.value = true
   } else {
@@ -100,9 +97,9 @@ watch(() => route.path, () => {
 
 </script>
 
-<template draggable="true">
+<template>
 
-  <Navbar v-show="!estaNoLogin" />
+  <Navbar v-if="!estaNoLogin" />
   <RouterView />
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"

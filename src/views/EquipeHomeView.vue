@@ -72,11 +72,6 @@ onMounted(() => {
 })
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-
-
-
-
-
       
 async function listaUsuarios() {
     usuarios = banco.procurar("/usuario");
@@ -132,15 +127,14 @@ function larguraNomeEquipe() {
 
 function mostrarNomeCompleto(nome) {
     nomeCompleto.value = nome;
-    expandirCard
-}
+  }
+
 
 function limparNomeCompleto() {
     nomeCompleto.value = '';
 
-    reduzirCard
-}
-</script>
+  }
+ </script>
 
 <style scoped>
 .descricao {
@@ -179,7 +173,6 @@ function limparNomeCompleto() {
 .listaEquipes {
     @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md shadow-gray-200;
     flex: 1 1 px;
-
 }
 
 ::-webkit-scrollbar {
@@ -196,5 +189,32 @@ function limparNomeCompleto() {
 
 .imgIcon {
     @apply flex 2xl:ml-8 2xl:mt-2 lg:ml-4 lg:mt-2 md:ml-2 md:mt-0 2xl:h-[4vh] 2xl:w-[2vw] lg:h-[4vh] lg:w-[3vw] md:h-[6vh] md:w-[4vw];
+}
+
+@media(max-width: 620px) and (min-height: 1080px){
+    .maisEquipes {
+        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[20vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
+    }
+    .criarEquipe {
+        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[20vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
+    }
+    .imagemEquipe {
+        @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;
+    }
+    .imgIcon {
+        @apply flex ml-[1vw] mt-4 h-[30px] w-[30px];
+    }
+    .corDiv {
+        @apply flex ml-10 h-20 w-[45vw] border-transparent border-b-roxo border-b-2 items-center focus-within:border-roxo focus-within:border-4;
+    }
+    .textArea {
+        @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[60vw] h-[10vh]  bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-roxo border-b-2 focus-within:border-roxo focus-within:border-4;
+        border-bottom: 'solid 4px #620BA7';
+    }
+    .listaEquipes {
+        @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md shadow-gray-200;
+        flex: 1 1 px;
+    }
+    
 }
 </style>
