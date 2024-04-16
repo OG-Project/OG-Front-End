@@ -372,7 +372,6 @@ async function criaProjeto() {
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
            enviaWebSocket(response)
-           VueCookies.set("IdProjetoCookie", response.data.id)
         })
         restauraCookies();
         router.push('/projeto')
@@ -383,7 +382,8 @@ async function criaProjeto() {
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value), (response)=>{
             enviaWebSocket(response)
-            VueCookies.set("IdProjetoCookie", response.data.id)
+            console.log(response)
+            VueCookies.set("IdProjetoAtual", response.data.id)
         }
         restauraCookies();
         router.push('/projeto')
