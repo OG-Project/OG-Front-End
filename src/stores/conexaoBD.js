@@ -2,6 +2,7 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 import { webSocketStore } from "./webSocket.js";
+import { id } from "date-fns/locale";
 
 export const conexaoBD = defineStore('conexaoBD', {
   
@@ -15,6 +16,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     
       procurar(textoRequisicao){
         // return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
+        
         return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
@@ -46,6 +48,7 @@ export const conexaoBD = defineStore('conexaoBD', {
           })
       },
       async buscarUm(id,textoRequisicao){
+
         return (await axios.get('http://localhost:8082'+textoRequisicao+'/'+id).then(response => response.data))
       },
       async buscarProjetosEquipe(equipeId, textoRequisicao){

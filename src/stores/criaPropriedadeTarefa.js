@@ -15,6 +15,8 @@ export const criaPropriedadeTarefaStore = defineStore('criaPropriedadeTarefa', {
         let api= conexaoBD();
         propriedadeCriada.nome=nome;
         propriedadeCriada.tipo=tipo;
+        console.log(nome);
+        console.log(tipo);
         console.log(propriedadeCriada.nome);
         console.log( propriedadeCriada.tipo);
         console.log(projetoId);

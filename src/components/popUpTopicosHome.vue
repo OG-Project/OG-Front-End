@@ -1,6 +1,6 @@
 <template>
   <fundoPopUp largura="" altura="95vh">
-    <div class="h-[80vh] w-[45vw] flex flex-col items-center">
+    <div class="h-[80vh] w-[45vw] flex flex-col items-center z-[999]">
       <h1 class="text-4xl">{{ props.nomeDoTopico }}</h1>
       <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
         <div
