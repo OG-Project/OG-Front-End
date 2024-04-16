@@ -370,16 +370,23 @@ async function criaProjeto() {
         const criaProjeto = criaProjetoStore()
         
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
+           enviaWebSocket(response)
+           VueCookies.set("IdProjetoCookie", response.data.id)
+        })
         restauraCookies();
-        
+        router.push('/projeto')
+
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto,"/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao)
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value), (response)=>{
+            enviaWebSocket(response)
+            VueCookies.set("IdProjetoCookie", response.data.id)
+        }
         restauraCookies();
-       
+        router.push('/projeto')
     }
 
 }

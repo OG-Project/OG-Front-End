@@ -92,8 +92,7 @@ watch(propriedadeAtual, async () => {
 })
 
 async function cookies() {
-    let usuario = await api.procurar("/usuario/2")
-    $cookies.set("usuarioCookie", usuario, 1000000000)
+    let usuario = await api.procurar("/usuario/"+VueCookies.get("IdUsuarioCookie"))
 }
 
 function verificaCorTexto(status) {

@@ -226,27 +226,20 @@ async function cadastrarEquipe() {
     equipeCadastrada.descricao = descricao.value;
     mensagemError.value = "";
 
-    const equipePromise = cria.criaEquipe(equipeCadastrada);
+    const equipePromise = cria.criaEquipe(equipeCadastrada)
 
-    const ids = membrosEquipe.value.map(m => {
-        return Number(m.id);
-    });
+    const ids = []
 
     // Adicione automaticamente o usuário logado à equipe
     const usuarioLogadoId = Number(usuarioLogado);
-    if (!ids.includes(usuarioLogadoId)) {
-        ids.push(usuarioLogadoId);
-    }
-
+    ids.push(usuarioLogadoId);
     let equipe;
     await equipePromise.then(e => {
         equipe = e.data;
+        enviaParaWebSocket(equipe)
     });
-
-    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add").then(resposta => {
-        enviaParaWebSocket(equipe);
-    });
-    await enviarFotoParaBackend(equipe);
+    banco.adicionarUsuarios(ids,equipe.id,"/usuario/add");
+    await enviarFotoParaBackend();
 
     nome.value = "";
     descricao.value = "";
@@ -254,14 +247,22 @@ async function cadastrarEquipe() {
 
 
 };
-
-async function enviaParaWebSocket(equipeAux) {
+async function enviaParaWebSocket(equipe) {
+    let equipeAux = {
+        id: equipe.id,
+        nome: equipe.nome,
+        descricao: equipe.descricao,
+        membros: membrosEquipe.value
+    }
     let teste = {
-        equipes: [{equipe:equipeAux}],
+        equipes: [{ equipe: equipeAux }],
         notificao: {
-            mensagem: "Criou a Equipe",
-            equipe: equipeAux
+            mensagem: "Te Convidou para a Equipe",
+            conviteParaEquipe: {
+                equipe: equipe
+            }
         }
+
     }
     const webSocket = webSocketStore();
     webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"

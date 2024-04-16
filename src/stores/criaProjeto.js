@@ -34,7 +34,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
     },
     enviaParaWebSocket(equipesAux, projetoAux) {
       let teste = {
-        equipes: [ equipesAux ],
+        equipes: equipesAux ,
         notificao: {
           mensagem: "Criou o Projeto",
           projeto: projetoAux

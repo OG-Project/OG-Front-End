@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { conexaoBD } from './conexaoBD'
+import  VueCookies  from "vue-cookies";
 
 
 
@@ -18,11 +19,12 @@ export const criaNotificacao = defineStore('criaNotificacao', {
             let equipes = objeto.equipes
             let rota = ""
             let notificacao = {}
-            console.log(objeto)
+            let criador = VueCookies.get("IdUsuarioCookie")
             if (objetoNotificacao.projeto != null) {
                 rota = "/projeto"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     projeto: objetoNotificacao.projeto
                 }
@@ -31,6 +33,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/tarefa"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     tarefa: objetoNotificacao.tarefa
                 }
@@ -39,6 +42,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/equipe"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     equipe: objetoNotificacao.equipe
                 }
@@ -47,9 +51,11 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/convite/projeto"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     conviteParaProjeto:{
-                        projeto: objetoNotificacao.projeto
+                        projeto: objetoNotificacao.projeto,
+                        usuarioAceito:[]
                     }
                 }
             }
@@ -57,26 +63,44 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 rota = "/convite/equipe"
                 notificacao = {
                     mensagem: objetoNotificacao.mensagem,
+                    criador:{},
                     receptores: [],
                     conviteParaEquipe: {
-                        equipe: objetoNotificacao.equipe
+                        equipe: objetoNotificacao.conviteParaEquipe.equipe,
+                        usuarioAceito:[]
                     }
                 }
             }
             equipes.forEach(async (equipe) => {
-                let membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
+                let membros = []
+                if(equipe.equipe.membros!=null){
+                    membros = equipe.equipe.membros
+                }else{
+                    membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
+                }
                 console.log(membros)
                 membros.forEach(membro => {
                     let teste = {
                         id: membro.id
                     }
-                    notificacao.receptores.push(teste)
+                    if(membro.id != criador){
+                        notificacao.receptores.push(teste)
+                        if(objetoNotificacao.conviteParaProjeto != null){
+                            notificacao.conviteParaProjeto.usuarioAceito.push({usuario:teste})
+                        }
+                        if(objetoNotificacao.conviteParaEquipe != null){
+                            console.log(notificacao.conviteParaEquipe)
+                            notificacao.conviteParaEquipe.usuarioAceito.push({usuario:teste})
+                        } 
+                    }
                 });
             });
-            console.log(notificacao)
-            setTimeout(() => {
+            
+            setTimeout(async () => {
+                criador = await api.buscarUm(criador, '/usuario')
+                notificacao.criador = criador
                 api.cadastrar(notificacao, '/notificacao'+rota)
-            }, 10)
+            }, 100)
         }
     },
 })

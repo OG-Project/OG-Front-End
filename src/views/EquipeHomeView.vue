@@ -56,7 +56,7 @@ import { webSocketStore } from '../stores/webSocket.js'
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
 const webSocket = webSocketStore();
-const usuarioLogadoId = 1;
+const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 let usuarios;
 const funcaoPopUp = funcaoPopUpStore();
 funcaoPopUp.variavelModal = false;

@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { conexaoBD } from './conexaoBD'
 import VueCookies from "vue-cookies";
 import router from "@/router";
+import { webSocketStore } from '../stores/webSocket.js'
 
 export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
   state: () => {

@@ -15,6 +15,7 @@
                 </div>
                 <div :style="notificacao.estilo">
                     <div class="pr-1">
+                        {{ notificacao.notificacao.criador.username }}
                         {{ notificacao.notificacao.mensagem }}
                     </div>
                     <button v-if="notificacao.notificacao.projeto != null"
@@ -57,12 +58,12 @@
                     </div>
                     <div class="w-[10%] flex flex-row" @mouseenter="clearTimer()">
                         <div class="flex flex-row justify-end w-full gap-2" v-if="notificacao.notificacao.conviteParaEquipe != null || notificacao.notificacao.conviteParaProjeto != null">
-                            <p class="text-red-600">
+                            <button class="text-red-600">
                                 X
-                            </p>
-                            <p class="text-roxo">
+                            </button>
+                            <button class="text-roxo" @click="adicionaUsuarioALista(notificacao.notificacao)">
                                 ✔
-                            </p>    
+                            </button>    
                         </div>
                     </div>
                 </div>
@@ -150,6 +151,27 @@ function clearTimer(objeto) {
     mudarEstilo(objeto)
 
 }
+
+function adicionaUsuarioALista(notificacao) {
+    if (notificacao.conviteParaEquipe != null) {
+        api.adicionarUsuarios([usuarioId], notificacao.conviteParaEquipe.equipe.id, '/usuario/add')
+        notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito)=>{
+            if(usuarioAceito.usuario.id == usuarioId){
+                usuarioAceito.aceito = true
+                console.log(usuarioAceito.aceito)
+            }
+        }) 
+    }
+    if (notificacao.conviteParaProjeto != null) {
+        api.adicionarUsuarios([usuarioId], notificacao.conviteParaProjeto.projeto.id, '/usuario/add')
+        notificacao.conviteParaProjeto.usuarioAceito.map((usuarioAceito)=>{
+            if(usuarioAceito.usuario.id == usuarioId){
+                usuarioAceito.aceito = true
+            }
+        })     }
+    api.atualizar(notificacao,'/notificacao')
+    emit('fecharPopUp')
+}   
 
 
 function trocarRota(idProjeto, rota, propriedadeCookie) {
