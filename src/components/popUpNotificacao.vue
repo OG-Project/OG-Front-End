@@ -58,12 +58,12 @@
                     </div>
                     <div class="w-[10%] flex flex-row" @mouseenter="clearTimer()">
                         <div class="flex flex-row justify-end w-full gap-2" v-if="notificacao.notificacao.conviteParaEquipe != null || notificacao.notificacao.conviteParaProjeto != null">
-                            <p class="text-red-600">
+                            <button class="text-red-600">
                                 X
-                            </p>
-                            <p class="text-roxo" @click="adicionaUsuarioALista(notificacao.conviteParaEquipe, notificacao.conviteParaProjeto)">
+                            </button>
+                            <button class="text-roxo" @click="adicionaUsuarioALista(notificacao.notificacao)">
                                 ✔
-                            </p>    
+                            </button>    
                         </div>
                     </div>
                 </div>
@@ -152,8 +152,25 @@ function clearTimer(objeto) {
 
 }
 
-function adicionaUsuarioALista(conviteParaEquipe, conviteParaProjeto) {
-    console.log(conviteParaEquipe, conviteParaProjeto)
+function adicionaUsuarioALista(notificacao) {
+    if (notificacao.conviteParaEquipe != null) {
+        api.adicionarUsuarios([usuarioId], notificacao.conviteParaEquipe.equipe.id, '/usuario/add')
+        notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito)=>{
+            if(usuarioAceito.usuario.id == usuarioId){
+                usuarioAceito.aceito = true
+                console.log(usuarioAceito.aceito)
+            }
+        }) 
+    }
+    if (notificacao.conviteParaProjeto != null) {
+        api.adicionarUsuarios([usuarioId], notificacao.conviteParaProjeto.projeto.id, '/usuario/add')
+        notificacao.conviteParaProjeto.usuarioAceito.map((usuarioAceito)=>{
+            if(usuarioAceito.usuario.id == usuarioId){
+                usuarioAceito.aceito = true
+            }
+        })     }
+    api.atualizar(notificacao,'/notificacao')
+    emit('fecharPopUp')
 }   
 
 

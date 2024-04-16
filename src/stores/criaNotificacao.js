@@ -20,7 +20,6 @@ export const criaNotificacao = defineStore('criaNotificacao', {
             let rota = ""
             let notificacao = {}
             let criador = VueCookies.get("IdUsuarioCookie")
-            console.log(objeto)
             if (objetoNotificacao.projeto != null) {
                 rota = "/projeto"
                 notificacao = {
@@ -55,7 +54,8 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                     criador:{},
                     receptores: [],
                     conviteParaProjeto:{
-                        projeto: objetoNotificacao.projeto
+                        projeto: objetoNotificacao.projeto,
+                        usuarioAceito:[]
                     }
                 }
             }
@@ -66,12 +66,18 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                     criador:{},
                     receptores: [],
                     conviteParaEquipe: {
-                        equipe: objetoNotificacao.equipe
+                        equipe: objetoNotificacao.conviteParaEquipe.equipe,
+                        usuarioAceito:[]
                     }
                 }
             }
             equipes.forEach(async (equipe) => {
-                let membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
+                let membros = []
+                if(equipe.equipe.membros!=null){
+                    membros = equipe.equipe.membros
+                }else{
+                    membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
+                }
                 console.log(membros)
                 membros.forEach(membro => {
                     let teste = {
@@ -79,6 +85,13 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                     }
                     if(membro.id != criador){
                         notificacao.receptores.push(teste)
+                        if(objetoNotificacao.conviteParaProjeto != null){
+                            notificacao.conviteParaProjeto.usuarioAceito.push({usuario:teste})
+                        }
+                        if(objetoNotificacao.conviteParaEquipe != null){
+                            console.log(notificacao.conviteParaEquipe)
+                            notificacao.conviteParaEquipe.usuarioAceito.push({usuario:teste})
+                        } 
                     }
                 });
             });
@@ -86,9 +99,8 @@ export const criaNotificacao = defineStore('criaNotificacao', {
             setTimeout(async () => {
                 criador = await api.buscarUm(criador, '/usuario')
                 notificacao.criador = criador
-                console.log(notificacao)
                 api.cadastrar(notificacao, '/notificacao'+rota)
-            }, 10)
+            }, 100)
         }
     },
 })

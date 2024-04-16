@@ -27,7 +27,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.patch("http://localhost:8082"+textoRequisicao,userId,equipeId)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch(`http://localhost:8082${textoRequisicao}/${equipeId}`, ids)
+        return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId, ids)
       },
       deletarEquipe(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`)
