@@ -1,8 +1,8 @@
 <template>
-    <fundoPopUp largura="" altura="95vh">
+    <fundoPopUp largura="" :altura="tamanhoPopUp()">
         <div class="divGeral">
             <div class=" grid-template flex w-full">
-                <h1 class="flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe</h1>
+                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-sm color-[#000]">Equipe</h1>
             </div>
             <div class=" grid-template  flex w-full mt-[1vh]  p-5">
                 <div class="relative">
@@ -24,8 +24,12 @@
                         usuarioConvidado = e
                     }"></Input>
             </div>
-            <div class="grid-template flex w-full mt-[1vh]">
+            <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
+                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+            </div>
+            <div v-else class="grid-template flex w-full mt-[1vh]">
+                <Botao class="flex justify-center " preset="PadraoRoxo" tamanhoDaBorda="2px" tamanhoPadrao="personalizado" width="70vw" height="3vh"
                     texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
             <div class=" grid-template flex w-full mt-[1vh]">
@@ -42,8 +46,13 @@
                     caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe">
                 </ListaConvidados>
             </div>
-            <div class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+            <div v-if="screenWidth >= 620" class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
                 <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem"
+                    :funcaoClick="cadastrarEquipe">
+                </Botao>
+            </div>
+            <div v-else class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+                <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="70vw" height="3vh" texto="Criar Equipe" tamanhoDaFonte="1rem"
                     :funcaoClick="cadastrarEquipe">
                 </Botao>
             </div>
@@ -61,16 +70,16 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
 
+
 const banco = conexaoBD();
 let nome = ref('');
 let descricao = ref('');
 let usuarioConvidado = ref('');
 let mensagemError = ref("");
-let usuarioLogado = VueCookies.get('IdUsuarioCookie');
+let usuarioLogado = 1
 let membrosEquipe = ref([]);
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
-
 import { webSocketStore } from '../stores/webSocket.js'
 
 
@@ -140,28 +149,50 @@ const equipeCadastrada = {
 }
 
 console.log(usuarioLogado)
+
+function tamanhoPopUp() {
+    const screenWidth = window.innerWidth;
+    if(screenWidth <= 620){
+          return '80vh'
+    }
+    else{
+        return '95vh'
+    }
+}
+
 function larguraInput() {
     const screenWidth = window.innerWidth;
+    if(screenWidth <= 620){
+          return '50'
+    }
     if (screenWidth <= 768) {
         return '25';
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
+    } if (screenWidth > 768 && screenWidth <= 1024) {
         return '28';
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
+    }if (screenWidth > 1024 && screenWidth <= 1440) {
         return '25';
-    } else {
+    }if(screenWidth > 1440 && screenWidth < 1920){
+        return '10';
+    }
+    else {
         return '13';
     }
 };
 
 function larguraInputConvidado() {
     const screenWidth = window.innerWidth;
+    if(screenWidth <= 620){
+          return '70'
+    }
     if (screenWidth <= 768) {
         return '30';
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
+    } if (screenWidth > 768 && screenWidth <= 1024) {
         return '35';
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
+    } if (screenWidth > 1024 && screenWidth <= 1440) {
         return '35';
-    } else {
+    } if(screenWidth > 1440 && screenWidth < 1920){
+        return '15';
+    }else {
         return '18';
     }
 }
@@ -291,6 +322,10 @@ async function enviarFotoParaBackend(equipe) {
         clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
     }
 
+    .titulo{
+        @apply 2xl:mt-5 xl:mt-1;
+    }
+
     .listaConvidados {
         @apply w-full h-full 2xl:w-[100%] 2xl:h-[20%] xl:w-[60%] xl:h-[30%] lg:w-[50%] lg:h-[20%];
     }
@@ -363,6 +398,18 @@ async function enviarFotoParaBackend(equipe) {
         .imagem {
             @apply h-[5vh] w-[4vw];
         }
+    }
+
+    @media(max-width: 620px){
+       .titulo{
+        @apply text-4xl ; 
+       }
+       .botao{
+        @apply ml-14 mt-10
+       }
+       .convidados-div {
+        @apply h-full mt-10;
+    }
     }
 
 }

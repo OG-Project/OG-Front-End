@@ -491,8 +491,6 @@ function teclado(){
         @apply focus-visible:outline-0  bg-transparent m-1;
     }
 
-    
-
     .estiloPlaceHolder{
         @apply flex items-center
     }

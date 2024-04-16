@@ -15,6 +15,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     actions: {
     
       procurar(textoRequisicao){
+
         // return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
         
         return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
@@ -57,12 +58,14 @@ export const conexaoBD = defineStore('conexaoBD', {
       async buscarProjetosUsuario(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
 
+
       },
       async cadastrarFoto(equipeId, foto) {
         try {
             // Crie um FormData e adicione a imagem a ele
             const formData = new FormData();
             formData.append('foto', foto);
+
     
             // Faça a requisição PATCH para enviar a image
     
