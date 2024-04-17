@@ -87,26 +87,35 @@ export const conexaoBD = defineStore('conexaoBD', {
     },
     async patchDeArquivosNaTarefa(arquivos, id) {
       try {
-        const formData = new FormData();
-        let lista = []
-        // Itera sobre a lista de arquivos 
-        for(const arquivo of arquivos){
-          // Adiciona cada arquivo ao FormData
-          formData.append('arquivos',[arquivo]);
+        // Deleta os arquivos existentes relacionados à tarefa
+        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`);
+    
+        // Array para armazenar as respostas de cada requisição
+        const responses = [];
+    
+        // Itera sobre a lista de arquivos
+        for (const arquivo of arquivos) {
+          // Transforma o arquivo em um objeto File
+          const file = new File([arquivo.conteudo], arquivo.nome, { type: arquivo.tipo });
+          const formData = new FormData();
+          formData.append('arquivo', file);
+          // Envia o arquivo individualmente para o servidor
+          const response = await axios.patch(`http://localhost:8082/tarefa/${id}`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          });
+    
+          responses.push(response.data);
         }
-        // Faça a requisição PATCH para enviar os arquivos
-        const response = await axios.patch("http://localhost:8082/tarefa/"+id, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        // Retorne os dados da resposta
-        return response.data;
-      } catch(error) {
+    
+        return responses;
+      } catch (error) {
         console.error('Erro ao cadastrar os arquivos na tarefa:', error);
         throw error;
       }
-    }
+    }    
+    
   } 
 })
 

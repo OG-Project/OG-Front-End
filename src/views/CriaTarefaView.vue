@@ -653,8 +653,8 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   console.log(tarefaCriando);
   console.log(tarefa.value.arquivos);
-  banco.patchDeArquivosNaTarefa( tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   banco.atualizar(tarefaCriando, "/tarefa")
+  banco.patchDeArquivosNaTarefa( tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   router.push("/projeto")
 }
 
