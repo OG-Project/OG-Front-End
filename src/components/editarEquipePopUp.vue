@@ -23,7 +23,7 @@
                         <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem" :funcaoClick="deletarEquipe">
                         </Botao>
                     </div>
-                    <div v-else class="flex justify-start mt-[10vh] mr-14">
+                    <div v-else class="flex mt-20">
                         <Botao preset="Deletar" tamanhoPadrao="personalizado" width="35vw" height="5vh" texto="Deletar" tamanhoDaFonte="1rem" :funcaoClick="deletarEquipe">
                         </Botao>
                     </div>
@@ -31,7 +31,7 @@
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
                         </Botao>
                     </div>
-                    <div v-else class=" flex justify-end mb-16">
+                    <div v-else class="flex justify-end mt-20">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="35vw" height="5vh" texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
                         </Botao>
                     </div>
@@ -41,10 +41,10 @@
                 
         </fundoPopUp>
 
-        <fundoPopUp  v-if="editando" largura="" altura="60vh">
+        <fundoPopUp  v-if="editando" largura="" :altura="tamanhoPopUp()">
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
-                        <h1 class="flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
+                        <h1 class="tituloEditar flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                     <div class="relative">
@@ -57,7 +57,9 @@
                     <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="20vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
                 </div> 
                 <div class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
+                        <Botao v-if="screenWidth >= 620" preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
+                        </Botao>
+                        <Botao v-else preset="PadraoRoxo" tamanhoPadrao="personalizado" width="70vw" height="5vh" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
                         </Botao>
                 </div>
             </div>
@@ -178,12 +180,17 @@ async function editarEquipe(){
 }
 function larguraInput(){
 const screenWidth = window.innerWidth;
+if(screenWidth <= 620){
+    return '50'
+}
 if (screenWidth <= 768) {
     return '25';
-} else if (screenWidth > 768 && screenWidth <= 1024) {
+}if (screenWidth > 768 && screenWidth <= 1024) {
     return '28';
-} else if (screenWidth > 1024 && screenWidth < 1920) {
+} if (screenWidth > 1024 && screenWidth < 1920) {
     return '25';
+}if (screenWidth > 1440 && screenWidth < 1920){
+        return '20';
 } else {
     return '13';
 }
@@ -441,10 +448,19 @@ async function enviarFotoParaBackend(id) {
             border-bottom: 'solid 4px #620BA7' ;
         }
         .nomeEquipe{
-            @apply flex h-[3vh] w-[50vw]  text-xl text-[#877E7E];
+            @apply flex h-[3vh] w-[50vw] text-xl text-[#877E7E];
         }
         .imagem{
             @apply w-[40px] h-[40px]
+        }
+        .divGeral{
+            @apply w-full flex justify-center p-5 flex-col;
+        }
+        .tituloEditar{
+            @apply text-4xl;
+        }
+        .botaoSalvar{
+            @apply flex justify-end ml-14 mt-20;
         }
      }
 

@@ -151,4 +151,13 @@ let barraPorcentagem = ref({
 
     }
 
+    @media(max-width: 620px){
+        .parteDeBaixoCard{
+            @apply flex flex-col h-[76px] items-center justify-evenly bg-[url(../assets/Polygon126footer.png)] w-full
+        }
+        .cardTotal {
+            @apply flex flex-col items-center justify-between relative w-[320px] h-[289px] bg-white overflow-hidden;
+            transition: transform 0.3s ease;
+        }
+    }
 }</style>
