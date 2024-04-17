@@ -38,16 +38,16 @@ let tempoAtuado;
 let horaEntrada;
 let horaSaida;
 const banco = conexaoBD();
-let idProjeto = VueCookies.get("IdProjetoAtual")
+
 
 const editaProjetoFunc = editaProjetoStore();
 onMounted(() => {
+    
     timerTempoAtuacao();
 })
 
 onUnmounted(() => {
     calculaTempoAtuacao()
-
 })
 
 const route = useRoute()
@@ -59,6 +59,7 @@ function defineOpcao(rotaAtual, rota) {
 }
 
 async function calculaTempoAtuacao() {
+    let idProjeto = VueCookies.get("IdProjetoAtual")
     let projeto = await banco.buscarUm(idProjeto, "/projeto")
     let segundos
     let minutos
@@ -100,6 +101,7 @@ function timerTempoAtuacao() {
 }
 
 async function atualizaProjetoBanco() {
+    let idProjeto = VueCookies.get("IdProjetoAtual")
     let projeto = await banco.buscarUm(idProjeto, "/projeto")
     //(id: any, nome: any, descricao: any, equipes: any, propriedades: any, status: any, responsaveis: any, dataFinal: any, tempoAtuacao: any)
     console.log(projeto)

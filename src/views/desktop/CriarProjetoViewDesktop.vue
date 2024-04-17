@@ -138,7 +138,6 @@ onMounted(() => {
     mandaDataInformacoes();
     listaEquipesConvidadas.value = [];
     placeHolderDataFinalProjeto.value = "Data final:"
-    console.log("her f")
 })
 
 onUpdated(() => {
@@ -371,8 +370,8 @@ async function criaProjeto() {
         
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         ,listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, (response)=>{
-           enviaWebSocket(response)
-           VueCookies.set("IdProjetoCookie", response.data.id)
+           
+          
         })
         restauraCookies();
         router.push('/projeto')
@@ -381,10 +380,7 @@ async function criaProjeto() {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto,"/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value), (response)=>{
-            enviaWebSocket(response)
-            VueCookies.set("IdProjetoCookie", response.data.id)
-        }
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
         router.push('/projeto')
     }

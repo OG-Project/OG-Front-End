@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import {Projeto} from '../models/Projeto'
 import { webSocketStore } from '../stores/webSocket.js'
 import {conexaoBD} from './conexaoBD'
-
+import VueCookies from 'vue-cookies';
 export const editaProjetoStore = defineStore('editaProjeto', {
     state: () => {
       return { 
@@ -25,7 +25,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
         projetoCriado.dataFinal=dataFinal; 
         console.log(projetoCriado)
         api.atualizar(projetoCriado,'/projeto').then((res)=>{
-          console.log(res.data)
+          VueCookies.set("IdProjetoAtual", res.data.id)
           this.enviaParaWebSocket(equipes, res.data)
         })
 
