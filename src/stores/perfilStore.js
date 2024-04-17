@@ -25,11 +25,7 @@ export const perfilStore = defineStore('perfilStore', {
          tamanhoCorpo:2,
          fonteTitulo: null,
          fonteCorpo: null,
-         corEscura: '#36213E',
-         cor: '#620BA7',
-         corAtencao: '#8E00FF',
-         corClickBorder: '#ECC3FF',
-         press:''
+         hue:0
         }
     },
     actions:{

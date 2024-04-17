@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[75vw] h-[92vh] flex flex-col justify-evenly  ">
+    <div id="id" class="w-[75vw] h-[92vh] flex flex-col justify-evenly  ">
         <!-- <Input conteudoInput="oi" direcao="direita" styleInput="input-claro" ></Input> -->
         <div>
             <h1 style="font-family: var(--fonteTitulo);" :style="{fontSize:tamanhoTitulo+'vh'}" class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
@@ -40,6 +40,7 @@
                         </div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao 
+                        
                         class="w-max" 
                         @update:model-value="tamanhoFontCorpo"  
                         :listaSelect="tamanhos">
@@ -124,11 +125,13 @@
         </div>
         <div class="flex justify-end pt-[8%] pr-[15%]">
             <Botao 
-            :funcaoClick="salvarCor" 
+            :funcaoClick="salvarCor"
+            :roxo="styleGet.getPropertyValue('--roxo')" 
             preset="PadraoRoxo" 
             texto="Confirmar" 
             tamanhoDaBorda="2px" 
             tamanhoDaFonte="2.0vh" />
+            
         </div>
     </div>
 </template>
@@ -143,7 +146,7 @@ import VueCookies from 'vue-cookies';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore'
 const perfil = perfilStore()
-const {fonteTitulo} = storeToRefs(perfil)
+const {hue} = storeToRefs(perfil)
 const {fonteCorpo} = storeToRefs(perfil)
 const {tamanhoCorpo} = storeToRefs(perfil)
 const {tamanhoTitulo} = storeToRefs(perfil)
@@ -170,13 +173,6 @@ let root=document.documentElement
 let styleGet=getComputedStyle(root)
 
 let cor = ref('#80A4ED')
-const styleCor = ref({
-    backgroundColor: cor,
-    color: contraste(cor),
-    fontFamily: 'Poppi'
-})
-
-
 
 function salvarCor(){
 
@@ -188,6 +184,7 @@ function corEscolhida(a){
     let matizCor=convert.hex.hsl(cor.value)
     console.log('cor escolhida '+matizCor)
     root.style.setProperty('--hueRoxo',matizCor[0])
+    perfil.hue=matizCor[0]
     VueCookies.set('matizCor',JSON.stringify(matizCor[0],'30d'))
     console.log(matizCor[0])
 
@@ -252,7 +249,7 @@ onMounted(() => {
     console.log('fonts '+perfil.fonteCorpo+' '+perfil.fonteTitulo)
     let root =document.documentElement
     //  alert(cor.value)
-    styleCor.value.color = contraste(cor.value)
+    
     
     //  alert(contraste(cor.value))
     console.log(convert.hex.hsl(cor.value)[0])

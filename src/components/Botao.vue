@@ -15,7 +15,7 @@
   </button>
 </div>
   <div v-if="TemIcon === 'nao'">
-
+    
     <button :class="tamanhoComClass"
       :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
       @mouseover="hover"
@@ -28,22 +28,36 @@
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps, watch, computed } from "vue";
-
+import { ref, onMounted, defineProps, watch, computed, onUpdated } from "vue";
+import { useMutationObserver } from '@vueuse/core'
+import { perfilStore } from "../stores/perfilStore";
 // Define variáveis reativas para controlar os estados de hover e clique
+let perfil=perfilStore()
+import { storeToRefs } from 'pinia';
+const {hue} =storeToRefs(perfil)
 const isHovered = ref(false);
 const isClick = ref(false);
 
 const tamanhoComClass = ref("medioId");
-let corRoxo=ref('')
-let root=document.documentElement
+
 onMounted(()=>{
-  corRoxo.value=getComputedStyle(root).getPropertyValue('--roxo')
-  console.log(corRoxo.value);
+  console.log(props.roxo);
+  console.log(hue.value)
 })
 
-// Define as propriedades que o componente espera receber
+watch(hue,(newValue) => {
+  console.log(newValue)
+  hue.value=newValue
+  
+})
+onUpdated(()=>{
+  console.log('teste');
+  console.log(hue.value);
+
+})
+
 const props = defineProps({
+  roxo:String,
   texto: String,
   cor: String,
   corHover: String,
@@ -95,7 +109,6 @@ let hoverBotao;
 let clickBotao;
 let width = "";
 let height = "";
-
 let estiloIcone = {
   width: "15%",
   filter: corInvertidaIcon.value,
@@ -249,25 +262,25 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
-      color: "#620BA7",
+      border: props.tamanhoDaBorda + " solid "+props.roxo,
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     hoverBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid "+props.roxo,
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -283,7 +296,7 @@ switch (Preset) {
     Texto = props.texto;
     TemIcon = "nao";
     botao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -322,7 +335,7 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color: "#620BA7",
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
@@ -338,7 +351,7 @@ switch (Preset) {
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -353,11 +366,11 @@ switch (Preset) {
     Texto = props.texto;
     TemIcon = "sim";
     botao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid "+props.roxo,
       alignItems: "center",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
@@ -400,7 +413,7 @@ switch (Preset) {
       justifyContent: "space-evenly",
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
-      color: "#620BA7",
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
@@ -418,7 +431,7 @@ switch (Preset) {
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
@@ -439,26 +452,26 @@ switch (Preset) {
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
-      color: "#620BA7",
+      border: props.tamanhoDaBorda + " solid "+props.roxo,
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     hoverBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid "+props.roxo,
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",

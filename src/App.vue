@@ -30,6 +30,7 @@ const route = useRoute();
   perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
   console.log(perfil.isTecladoVirtual)
   perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
+  perfil.hue=JSON.parse(VueCookies.get('matizCor'))
   root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
   root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
   root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
