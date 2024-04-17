@@ -202,37 +202,37 @@
           <div v-for="comentario of tarefa.comentarios">
             <div class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
-                <div v-if="comentario.autor === usuarioCookies.username" class="w-[80%] mt-2 gap-4 flex justify-center">
+                <div v-if="comentario.autor.username === usuarioCookies.username" class="w-[80%] mt-2 gap-4 flex justify-center">
                   <img class="w-[25%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
                   <img @click="deletaComentario(comentario)" class="w-[25%]" :src="BotaoX" />
                 </div>
-                <div v-if="comentario.autor != usuarioCookies.username" class="w-[80%] mt-6 gap-4 flex justify-center">
+                <div v-if="comentario.autor.username != usuarioCookies.username" class="w-[80%] mt-6 gap-4 flex justify-center">
                 </div>
               </div>
               <div class="flex w-[100%] mb-2">
-                <img :src="'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados
+                <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
             " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
-                    {{ comentario.autor }}
+                    {{ comentario.autor.username }}
                   </p>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor === usuarioCookies.username
+            comentario.autor.username === usuarioCookies.username
             ">
                     <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" placeholder="Descrição da tarefa"
-                      tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.comentario"></TextAreaPadrao>
+                      tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                   </div>
                   <div v-if="!comentarioSendoEditado ||
-            comentario.autor != usuarioCookies.username
+            comentario.autor.username != usuarioCookies.username
             ">
                     <p class="pt-4 pb-4 pr-4 break-all">
-                      {{ comentario.comentario }}
+                      {{ comentario.conteudo }}
                     </p>
                   </div>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor === usuarioCookies.username
+            comentario.autor.username === usuarioCookies.username
             ">
                     <Botao texto="Editar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
                       :parametrosFuncao="comentario"></Botao>
@@ -595,9 +595,8 @@ async function criaTarefaNoConcluido() {
     status: [],
     subTarefas: [],
     comentarios: [],
-    arquivos: [],
     valorPropriedadeTarefas: [],
-    cor: null,
+    cor: "FFFFFF",
     descricao: null,
     nome: null,
     valorPropriedadeTarefas: [],
@@ -644,6 +643,7 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.dataCriacao = new Date();
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
+    
     comentario.push(comentarioFor);
   });
   tarefaCriando.comentarios = comentario;
@@ -652,9 +652,10 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   console.log(tarefaCriando);
-  banco.patchDeArquivosNaTarefa("/tarefa", VueCookies.get("IdTarefaCookies"), tarefa.value.arquivos)
+  console.log(tarefa.value.arquivos);
+  banco.patchDeArquivosNaTarefa( tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   banco.atualizar(tarefaCriando, "/tarefa")
-  
+  router.push("/projeto")
 }
 
 //Função que deleta status
@@ -804,7 +805,7 @@ let tarefa = ref({
   propriedades: [],
   status: [],
   subtarefas: [],
-  corDaTarefa: "",
+  corDaTarefa: "ffffff",
 });
 
 async function puxaTarefaDaEdicao() {
@@ -813,6 +814,10 @@ async function puxaTarefaDaEdicao() {
   if (tarefaAux.nome == null) {
     tarefa.value.nome = tarefaAux.nome;
     tarefa.value.descricao = tarefaAux.descricao;
+    for (const comentarioId of tarefaAux.comentarios) {
+      let comentario = await banco.buscarUm(comentarioId, "/comentario");
+      tarefa.value.comentarios.push(comentario);
+    }
     tarefa.value.arquivos = tarefaAux.arquivos;
     tarefa.value.comentarios = tarefaAux.comentarios;
     tarefa.value.status = tarefaAux.status;
@@ -840,8 +845,8 @@ function update() {
 }
 
 onMounted(async () => {
-  VueCookies.set("IdProjetoAtual", 3, 100000000000);
   projetoDaTarefa.value = await procuraProjetosDoBanco();
+  VueCookies.set("IdProjetoAtual", 1,100000);
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();
@@ -854,7 +859,7 @@ onMounted(async () => {
     propriedades: [],
     status: [],
     subtarefas: [],
-    corDaTarefa: "",
+    corDaTarefa: "ffffff",
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
@@ -986,9 +991,8 @@ function abreFechaComentario() {
 
 function enviaComentario(comentario) {
   tarefa.value.comentarios.push({
-    autor: comentario[1].username,
-    comentario: comentario[0],
-    foto: comentario[1].foto,
+    autor: comentario[1],
+    conteudo: comentario[0]
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
@@ -1011,7 +1015,7 @@ function trocaComentarioSendoEditado() {
 }
 
 function editarComentario(comentario) {
-  if (comentario.comentario === "") {
+  if (comentario.conteudo === "") {
     deletaComentario(comentario);
   }
   trocaComentarioSendoEditado();
