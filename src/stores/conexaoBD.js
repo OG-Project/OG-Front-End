@@ -33,8 +33,13 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId, ids)
 
       },
-      deletarEquipe(id,textoRequisicao){
+      deletar(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response =>{
+          
+        })
+      },
+      deletarProjetoEquipe(id,idProjeto,textoRequisicao){
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`).then(response =>{
           
         })
       },

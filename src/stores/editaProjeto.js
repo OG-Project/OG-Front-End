@@ -11,7 +11,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
     },
 
     actions: {
-        editaProjeto(id,nome,descricao,equipes, propriedades,status,responsaveis,dataFinal, tempoAtuacao){
+        editaProjeto(id,nome,descricao,equipes, propriedades,status,responsaveis,dataFinal, tempoAtuacao, indexLista){
         let projetoCriado= Projeto
         let api= conexaoBD();
         projetoCriado.id=id;
@@ -23,8 +23,10 @@ export const editaProjetoStore = defineStore('editaProjeto', {
         projetoCriado.responsaveis=responsaveis;
         projetoCriado.tempoAtuacao = tempoAtuacao
         projetoCriado.dataFinal=dataFinal; 
+        projetoCriado.indexLista = indexLista;
         console.log(projetoCriado)
         api.atualizar(projetoCriado,'/projeto').then((res)=>{
+          console.log(res.data)
           VueCookies.set("IdProjetoAtual", res.data.id)
           this.enviaParaWebSocket(equipes, res.data)
         })
