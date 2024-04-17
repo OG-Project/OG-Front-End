@@ -75,6 +75,9 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 let membros = []
                 if(equipe.equipe.membros!=null){
                     membros = equipe.equipe.membros
+                    if(membros.lenght == 1 && membros[0].id == criador){
+                        notificacao.receptores.push({id:criador})
+                    }
                 }else{
                     membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
                 }
