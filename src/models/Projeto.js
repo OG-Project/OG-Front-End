@@ -9,5 +9,6 @@
     projetoEquipes : [],
     responsaveis: [],
     tempoAtuacao: String,
-    dataFinal:String
+    dataFinal:String,
+    indexLista: Number
 }
