@@ -23,8 +23,7 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
           console.log(response.data.id);
           console.log(response);
 
-          // Remover dados de tarefa não finalizada do armazenamento local
-          localStorage.removeItem("TarefaNaoFinalizada");
+          
           
           // Armazenar o ID da tarefa nos cookies
           VueCookies.set("IdTarefaCookies", idTarefa, 100000000000);
@@ -37,9 +36,9 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
               await api.deletarPropriedade("/tarefa/",tarefaAntiga.id);
             }
           }
-  
-          
-          
+
+          // Remover dados de tarefa não finalizada do armazenamento local
+          localStorage.removeItem("TarefaNaoFinalizada");
           // Redirecionar para a página de criação de tarefa
           router.push('/criaTarefa');
         })
