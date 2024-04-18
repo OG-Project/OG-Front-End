@@ -10,7 +10,7 @@
         <TextAreaPadrao width="100%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
           resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
-      <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
+      <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[100%]">
         <div class="flex flex-col justify-center w-[30%]">
           <p>Propriedades</p>
           <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
@@ -349,7 +349,7 @@
         </div>
       </div>
       <div class="fixed bottom-2 right-4 pt-8">
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" texto="Concluído" tamanhoDaBorda="2px"
+        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
