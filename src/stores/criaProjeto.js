@@ -1,10 +1,9 @@
 import { defineStore } from "pinia";
 import { Projeto } from '../models/Projeto'
-
 import { conexaoBD } from './conexaoBD'
-import { set } from "date-fns";
 import { webSocketStore } from '../stores/webSocket.js'
 import VueCookies from "vue-cookies";
+
 
 let api = conexaoBD();
 

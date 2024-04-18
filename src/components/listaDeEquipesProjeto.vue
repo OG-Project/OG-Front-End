@@ -6,8 +6,8 @@
             </div>
             <div class="div-membros flex flex-col items-center overflow-y-auto scrollbar-thin">
                 <div class="flex justify-center w-full" v-for="equipe in projetoAtual.projetoEquipes">
-                    <div class="corDiv">
-                        <img class="imgDePerfil" :src="'data:' +
+                    <div class="corDiv" >
+                        <img v-if="equipe.equipe.foto != null" class="imgDePerfil" :src="'data:' +
                     equipe.equipe.foto.tipo +
                     ';base64,' +
                     equipe.equipe.foto.dados
@@ -63,6 +63,7 @@ let projetoAtual = ref(VueCookies.get('IdProjetoAtual'))
 const banco = conexaoBD();
 onMounted(async () => {
     projetoAtual.value = await banco.buscarUm(projetoAtual.value, "/projeto")
+    listaUsuarios();
 }
 )
 
@@ -150,7 +151,21 @@ async function adicionarEquipe() {
     }
 }
 
+async function listaUsuarios() {
+    let convites = await banco.buscarUm(projetoAtual.value.id, "/notificacao/conviteProjeto");
+    convites.forEach((convite) => {
+        console.log(convite)
+        for(const usuarioAceito of convite.conviteParaEquipe.usuarioAceito){
+            if(usuarioAceito.aceito==false){
+                equipesConvidadas.value.push(usuarioAceito.usuario);
+            }
+        }
+
+    })
+}
+
 async function confirmarConvites() {
+    listaUsuarios();
     props.boolean = false
 }
 

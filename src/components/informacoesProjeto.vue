@@ -1,18 +1,18 @@
 <template>
-    <div class="w-[20vw] max-h-max h-[92vh] flex flex-col border-2 gap-8 border-black border-b-0 overflow-y-auto">
+    <div class="w-[20vw] max-h-max h-[92vh] flex flex-col border-2 gap-8 border-black border-b-0 overflow-y-auto overflow-x-hidden ">
         <div class="h-[6%] pt-8 flex items-end justify-center">
             <h1 class="text-3xl font-semibold">Informações</h1>
         </div>
-        <div class="pt-8 mb-4 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly">
-            <div class="flex pl-8 gap-2">
-                <div class="w-[60%] justify-start flex-row">
+        <div class="pt-8 mb-4 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly ">
+            <div class="flex pl-8 gap-2 break-words min-h-[4rem]">
+                <div class="w-[60%] justify-start flex-row h-max">
                     <p>Nome do projeto:</p>
                 </div>
-                <div class="w-[40%] justify-end flex-row">
-                    <p class="w-[100%] text-[#620BA7]">{{ nomeProjeto }}</p>
+                <div class="w-[40%] justify-end flex-row flex-grow-1 h-max">
+                    <p class="w-[100%] text-[#620BA7] ">{{ nomeProjeto }}</p>
                 </div>
             </div>
-            <div class="flex pl-8">
+            <div class="flex pl-8 mt-4">
                 <div class="w-[60%] justify-start flex-row">
                     <p>Data Inicial:</p>
                 </div>
