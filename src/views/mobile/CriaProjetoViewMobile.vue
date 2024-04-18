@@ -89,11 +89,15 @@ import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
 import Sair from "../../imagem-vetores/Sair.svg";
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
+import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
+import { format } from 'date-fns';
 import router from "@/router";
+import { webSocketStore } from '../../stores/webSocket';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
+const webSocket = webSocketStore();
 var listaSelecao = ref([]);
 let nomeProjeto = ref("");
 let dataFinalProjeto = ref("");
@@ -163,12 +167,18 @@ function fazBackPadraoPlaceHolder() {
 
 async function mandaDataInformacoes() {
     if (projetoEdita.value) {
-        idProjeto = VueCookies.get("projetoEditarId");
+        idProjeto = VueCookies.get("IdProjetoAtual");
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         const dataBack = projeto.dataCriacao;
         const [data, hora] = dataBack.split("T");
         const [ano, mes, dia] = data.split("-");
         dataFormatada.value = `${dia}/${mes}/${ano}`;
+    } else {
+        let dia = new Date().getDate();
+        let mes = new Date().getMonth();
+        let ano = new Date().getFullYear()
+        dataFormatada.value = `${dia}/${'0' + (mes + 1)}/${ano}`;
+
     }
 }
 
@@ -218,7 +228,10 @@ function buscaRascunhoCriacaoProjeto() {
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         dataFinalProjeto.value = variavelCookieProjeto.dataFinal;
-        if (variavelCookieProjeto.equipes.length != 0) {
+        if (variavelCookieProjeto.equipes != []
+            && variavelCookieProjeto.equipes != undefined
+            && variavelCookieProjeto.equipes != "undefined"
+            && variavelCookieProjeto.equipes != null) {
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
                 const objetoEnviaBack = {
@@ -229,7 +242,10 @@ function buscaRascunhoCriacaoProjeto() {
                 listaEquipeEnviaBack.push(objetoEnviaBack)
             })
         }
-        if (variavelCookieProjeto.responsaveis != []) {
+        if (variavelCookieProjeto.responsaveis != []
+            && variavelCookieProjeto.responsaveis != undefined
+            && variavelCookieProjeto.responsaveis != "undefined"
+            && variavelCookieProjeto.responsaveis != null) {
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
@@ -342,16 +358,27 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+
+        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
-        router.push('/projetos')
+        router.push('/projeto')
+
     } else {
         const editaProjeto = editaProjetoStore()
-        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.indexLista)
         restauraCookies();
-        router.push('/projetos')
+        router.push('/projeto')
     }
 
+}
+
+function enviaWebSocket(response) {
+    console.log(response.data.id)
+    webSocket.url = "ws://localhost:8082/og/webSocket/tarefa/" + response.data.id;
+    webSocket.enviaMensagemWebSocket()
 }
 
 function restauraCookies() {
@@ -380,28 +407,52 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     defineSelect();
 }
 
-function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
+async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
+    let idProjetoEquipe = ""
     let equipeBack;
-    let listaBackEquipe = listaEquipeFront.map((equipeFront) => {
-        return equipeBack = {
+    let projeto
+    if(projetoEdita.value){
+         projeto = await conexao.buscarUm(idProjeto, '/projeto')
+    }
+    let listaBackEquipe =  listaEquipeFront.map((equipeFront) => {
+        if (projetoEdita.value) {
+             idProjetoEquipe =  verificaIdProjetoEquipe(equipeFront,projeto)   
+        }
+         return equipeBack = {
+             id:  idProjetoEquipe,
             equipe: {
                 id: equipeFront.id
             }
         }
     })
+    console.log(listaBackEquipe)
     listaEquipeEnviaBack = listaBackEquipe;
 }
 
-async function removeListaEquipeConvidadas(equipeRemover) {
+ function verificaIdProjetoEquipe(equipe,projeto){
+    let idRetorno;
+    projeto.projetoEquipes.forEach((projetoEquipe) =>{
+        if(projetoEquipe.equipe.id == equipe.id){
+            idRetorno=  projetoEquipe.id
+        }
+    })
+    return idRetorno;
+}
 
+async function removeListaEquipeConvidadas(equipeRemover) {
+    
     let listaEquipes = await conexao.procurar('/equipe');
-    let equipeVinculada = listaEquipes.find((objeto) => objeto.nome == equipeRemover.nome);
+    let equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeRemover.nome);
     let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
     if (indice !== -1) {
         // Remover o objeto da lista usando splice
         listaEquipesSelecionadas.value.splice(indice, 1);
     }
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
+    if(projetoEdita.value){
+        console.log("vai deletar")
+        conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
+    }
     criarProjetoCookies();
 
 }

@@ -5,7 +5,7 @@
                 <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades</p>
                 <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
                 <div class="min-w-[7vw]">
-                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="['Texto','Data','Número','Seleção']"
+                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
                     styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
                 </div>
 
@@ -100,7 +100,7 @@
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="opcoesSelect"
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect"
                             largura="8" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
@@ -114,7 +114,7 @@
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="opcoesSelect"
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect"
                             largura="30" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
@@ -213,7 +213,7 @@ let timeoutId = null;
 let idProjeto;
 let tarefasAtribuidas = false
 let listaPropriedadesBackEnd = [];
-
+let tipoPropriedadeSelect = ref([])
 onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
@@ -331,7 +331,8 @@ function filtroPropriedades(listaRecebida, buscarPor) {
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
         opcaoSelecionadaNaTabela.value = 'propriedade';
-        opcoesSelect.value = ["Todos", "Data", "Número", "Seleção", "Texto"];
+        opcoesSelect.value = ["Todos","Data", "Número", "Seleção", "Texto"];
+        tipoPropriedadeSelect.value=["Data", "Número", "Seleção", "Texto"]
 
     } else if (opcaoSelecionada == 'status') {
         opcaoSelecionadaNaTabela.value = 'status';
