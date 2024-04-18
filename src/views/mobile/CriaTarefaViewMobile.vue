@@ -1,13 +1,13 @@
 <template>
-  <div id="bgBranco" class="flex flex-row min-h-[96%] w-full">
-    <div class="w-[40vw] min-h-[96%] flex flex-col">
+  <div id="bgBranco" class="flex flex-col min-h-[96%] w-full">
+    <div class="w-full min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
-        <Input largura="32" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
+        <Input largura="81" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
           styleInput="input-transparente-claro-grande" v-model="tarefa.nome"
           @updateModelValue="(e) => { tarefa.nome = e }"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
-        <TextAreaPadrao width="80%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
+        <TextAreaPadrao width="100%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
           resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
@@ -119,8 +119,8 @@
 
       <p class="pl-12 mt-4">Arquivos({{ tarefa.arquivos.length }})...</p>
       <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
-        class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
-        <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
+        class="flex h-[22vw] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
+        <div class="relative w-[15vw] mx-4 h-[100%] flex items-center justify-center flex-col"
           v-for="arquivo in tarefa.arquivos">
           <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
             <img
@@ -177,41 +177,42 @@
       </div>
       <!-- Fazer um v-for de propriedades -->
       <div class="pl-12 mt-8">
-        <div class="flex text-xl">
+        <div class="flex text-xl ">
           <p>Comentarios</p>
           <button class="ml-2" @click="abreFechaComentario()">+</button>
         </div>
-        <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
-          <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-
-            <img v-if="usuarioCookies.foto.tipo != null"
-              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
+        <div v-if="abreFechaComentarioBoolean" class="w-[90%] flex flex-col items-center">
+          <div class="w-[70%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
+            <img v-if="usuarioCookies.foto.tipo != null" class="shadow-2xl h-[7vw] w-[7vw] mt-4 mr-4 ml-4 rounded-full"
+              :src="'data:' +
             usuarioCookies.foto.tipo +
             ';base64,' +
             usuarioCookies.foto.dados
             " />
-            <div class="pb-2 flex flex-col items-end">
-              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4" placeholder="Descrição da tarefa"
+            <div class="pb-2 flex flex-col items-end w-[70%]">
+              <TextAreaPadrao width="38vw" height="10vh" class="pt-6 pb-4" placeholder="Descrição da tarefa"
                 tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
               <Botao texto="Enviar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
                 :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
           </div>
         </div>
-        <div class="w-[85%] flex flex-col">
+        <div class="w-[95%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
             <div class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
-              <div class="w-[15%] gap-4 flex justify-center">
-                <div v-if="comentario.autor.username === usuarioCookies.username" class="w-[80%] mt-2 gap-4 flex justify-center">
-                  <img class="w-[25%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
-                  <img @click="deletaComentario(comentario)" class="w-[25%]" :src="BotaoX" />
+              <div class="w-[100%] gap-4 flex justify-center">
+                <div v-if="comentario.autor.username === usuarioCookies.username"
+                  class="w-[100%] mt-2 gap-4 flex justify-end">
+                  <img class="w-[3%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
+                  <img @click="deletaComentario(comentario)" class="w-[3%]" :src="BotaoX" />
                 </div>
-                <div v-if="comentario.autor.username != usuarioCookies.username" class="w-[80%] mt-6 gap-4 flex justify-center">
+                <div v-if="comentario.autor.username != usuarioCookies.username"
+                  class="w-[80%] mt-6 gap-4 flex justify-center">
                 </div>
               </div>
-              <div class="flex w-[100%] mb-2">
+              <div class="flex w-[100%] mb-6">
                 <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-            " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+            " class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
@@ -245,8 +246,8 @@
       </div>
     </div>
     <!-- Propriedades e Status -->
-    <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
-      <div class="w-[80%] h-[80vh] shadow-xl border-2">
+    <div class="w-[100vw] min-h-[96%] flex flex-col pl-12 pt-8 mb-24">
+      <div class="w-[95%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
           <button class="w-[33%]" @click="clicouOpcaoPropriedades()" :style="estiloBotaoPropriedades">
             Propriedades
@@ -286,8 +287,8 @@
                 <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
               </div>
               <!-- <div class="flex justify-center">
-                <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
-              </div> -->
+                  <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
+                </div> -->
             </div>
             <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
@@ -347,116 +348,34 @@
           </div>
         </div>
       </div>
-      <div class="w-[80%] flex justify-end pt-8">
+      <div class="fixed bottom-2 right-4 pt-8">
         <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" texto="Concluído" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
-      </div>
-    </div>
-
-    <div id="propriedadesOverflow" class="shadow-xl border-2">
-      <div class="min-h-[9%] pt-8 flex items-end justify-center">
-        <h1 class="min-h-[9%] text-3xl font-semibold">Informações</h1>
-      </div>
-      <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
-        <div class="flex pl-8">
-          <div class="w-[50%] justify-start flex-row">
-            <p>Nome do Projeto</p>
-          </div>
-          <div class="w-[40%] justify-end flex-row">
-            <p class="w-[100%] text-[#620BA7] break-all" v-if="projetoDaTarefa">
-              {{ projetoDaTarefa.nome }}
-            </p>
-          </div>
-        </div>
-        <div class="flex pl-8">
-          <div class="w-[50%] justify-start flex-row">
-            <p>Responsáveis do Projeto</p>
-          </div>
-          <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
-            <p class="truncate text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-              {{ responsavel.responsavel.username }}
-            </p>
-
-          </div>
-        </div>
-        <div class="flex pl-8" v-if="projetoDaTarefa">
-          <div class="w-[50%] justify-start flex-row" >
-            <p>Data inicial do Projeto</p>
-          </div>
-          <div class="w-[40%] justify-end flex-row">
-            <p class="text-[#620BA7]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
-          </div>
-        </div>
-      </div>
-      <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">Status</h1>
-      </div>
-      <div v-if="tarefa.status != null">
-        <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
-          <p>Sua tarefa não possui status</p>
-        </div>
-        <div class="min-h-[4%] flex items-center justify-center gap-4">
-          <p :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
-            class="flex items-center border-2 shadow-md justify-center px-4">
-            {{ tarefa.status.nome }}
-          </p>
-        </div>
-      </div>
-      <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">Propriedades</h1>
-      </div>
-      <div v-if="tarefa.propriedades.length === 0" class="h-[35%] flex flex-col items-center justify-center p-8">
-        <img :src="NotePad" class="h-[200px] w-[200px]" />
-        <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
-      </div>
-      <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
-        <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
-          <p class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
-          <div v-if="propriedade.propriedade.tipo === 'DATA'">
-            <p>Valor: {{ format(new Date(propriedade.valor.valor), "dd/MM/yyyy HH:mm") }}</p>
-          </div>
-          <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'" class="flex">
-            <p>Valor:</p>
-            <select class="flex text-center w-[80%]">
-              <option v-for="valor of propriedade.valor.valor">{{ valor }}</option>
-            </select>
-          </div>
-          <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-            <p>Valor: {{ propriedade.valor.valor }}</p>
-          </div>
-          <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-            <p>Valor: {{ propriedade.valor.valor }}</p>
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import { format } from "date-fns";
-import Input from "../components/Input.vue";
-import NotePad from "../imagem-vetores/NotePad.svg";
-import Botao from "../components/Botao.vue";
-import CheckBox from "../components/checkBox.vue";
-import iconAnexo from "../imagem-vetores/anexoIcon.svg";
-import TextAreaPadrao from "../components/textAreaPadrao.vue";
+import Input from "../../components/Input.vue";
+import NotePad from "../../imagem-vetores/NotePad.svg";
+import Botao from "../../components/Botao.vue";
+import CheckBox from "../../components/checkBox.vue";
+import iconAnexo from "../../imagem-vetores/anexoIcon.svg";
+import TextAreaPadrao from "../../components/textAreaPadrao.vue";
 import { onUnmounted, ref, watch } from "vue";
-import selectPadrao from "../components/selectPadrao.vue";
-import navBar from "../components/navBar.vue";
+import selectPadrao from "../../components/selectPadrao.vue";
 import ColorPicker from "primevue/colorpicker";
-import BotaoX from "../imagem-vetores/XPreto.svg";
+import BotaoX from "../../imagem-vetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
-import Calendar from "primevue/calendar";
-import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
+import iconeLapisPreto from "../../imagem-vetores/icon-lapis-preto.svg";
 import { computed } from "vue";
 import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
-import { conexaoBD } from "../stores/conexaoBD.js";
-import { criaPropriedadeTarefaStore } from "../stores/criaPropriedadeTarefa";
-import { getActivePinia } from "pinia";
-import route from "color-convert/route";
-import router from "../router";
+import { conexaoBD } from "../../stores/conexaoBD.js";
+import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
+import router from "../../router";
 
 const banco = conexaoBD();
 
@@ -643,7 +562,7 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.dataCriacao = new Date();
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
-    
+
     comentario.push(comentarioFor);
   });
   tarefaCriando.comentarios = comentario;
@@ -654,7 +573,9 @@ async function criaTarefaNoConcluido() {
   console.log(tarefaCriando);
   console.log(tarefa.value.arquivos);
   banco.atualizar(tarefaCriando, "/tarefa")
-  banco.patchDeArquivosNaTarefa( tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+  if (tarefa.value.arquivos.length != 0) {
+    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+  }
   router.push("/projeto")
 }
 
@@ -846,7 +767,7 @@ function update() {
 
 onMounted(async () => {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
-  VueCookies.set("IdProjetoAtual", 1,100000);
+  VueCookies.set("IdProjetoAtual", 1, 100000);
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();
