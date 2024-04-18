@@ -434,29 +434,25 @@
 </template>
 <script setup>
 import { format } from "date-fns";
-import Input from "../components/Input.vue";
-import NotePad from "../imagem-vetores/NotePad.svg";
-import Botao from "../components/Botao.vue";
-import CheckBox from "../components/checkBox.vue";
-import iconAnexo from "../imagem-vetores/anexoIcon.svg";
-import TextAreaPadrao from "../components/textAreaPadrao.vue";
+import Input from "../../components/Input.vue";
+import NotePad from "../../imagem-vetores/NotePad.svg";
+import Botao from "../../components/Botao.vue";
+import CheckBox from "../../components/checkBox.vue";
+import iconAnexo from "../../imagem-vetores/anexoIcon.svg";
+import TextAreaPadrao from "../../components/textAreaPadrao.vue";
 import { onUnmounted, ref, watch } from "vue";
-import selectPadrao from "../components/selectPadrao.vue";
-import navBar from "../components/navBar.vue";
+import selectPadrao from "../../components/selectPadrao.vue";
 import ColorPicker from "primevue/colorpicker";
-import BotaoX from "../imagem-vetores/XPreto.svg";
+import BotaoX from "../../imagem-vetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
-import Calendar from "primevue/calendar";
-import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
+import iconeLapisPreto from "../../imagem-vetores/icon-lapis-preto.svg";
 import { computed } from "vue";
 import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
-import { conexaoBD } from "../stores/conexaoBD.js";
-import { criaPropriedadeTarefaStore } from "../stores/criaPropriedadeTarefa";
-import { getActivePinia } from "pinia";
-import route from "color-convert/route";
-import router from "../router";
+import { conexaoBD } from "../../stores/conexaoBD.js";
+import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
+import router from "../../router";
 
 const banco = conexaoBD();
 
