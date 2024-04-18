@@ -1,10 +1,10 @@
 <template>
-      <fundoPopUp largura="" altura="95vh">
+      <fundoPopUp :largura="larguraPopUp()" altura="95vh">
       <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
             <img class="imagemEquipe" v-else src="">
-             <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
+             <h1 class="equipeNome xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
@@ -139,7 +139,18 @@ function marginRightConvidado(){
     }
 }
 
+function larguraPopUp(){
+    if(screenWidth <= 620){
+          return '90vw';
+    }else{
+        return '';
+    }
+}
+
 function larguraInputConvidado(){
+    if(screenWidth <= 620){
+          return '40'
+    }
     if (screenWidth <= 768) {
         return '24';
     } else if (screenWidth > 768 && screenWidth <= 1024) {
@@ -317,5 +328,52 @@ function larguraInputConvidado(){
             @apply 2xl:w-[52%] gap-8 2xl:mt-[2vh];
         }
     }
+
+    @media(max-width: 620px){
+        .adiciona-membro{
+            @apply flex justify-end;
+        }
+        .divGeral{
+            @apply w-[65vw];
+        }
+        .corDiv{
+            @apply flex mr-10 h-20 w-[60vw] 
+            border-transparent
+            border-b-roxo    
+            border-b-2
+            items-center focus-within:border-roxo 
+            focus-within:border-4;
+            
+        }
+        .div-membros{
+            @apply w-[100%];
+        }
+        .equipeNome{
+             @apply flex mt-2;
+        }
+        .styleSelectPadraoBranco{
+            @apply border-4 mt-[1vh] 
+            flex justify-center
+            border-transparent
+            border-b-brancoNeve
+            border-b-2
+            w-max
+            items-center  focus-within:border-white
+            focus-within:border-4 focus-within:rounded-md truncate;
+        }
+        .imgDePerfil{
+            @apply w-[35px] h-[35px]
+        }
+        .imagemEquipe{
+            @apply w-[40px] h-[40px] mb-10;
+        }
+        .imgIcon{
+            @apply w-[20px] h-[20px]  bg-center flex mt-8;
+        }
+        .div-lista{
+            @apply w-[200vw] p-2 ml-[-12vw] ;
+            
+        }
+     }
     
 </style>

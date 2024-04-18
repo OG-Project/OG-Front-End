@@ -30,18 +30,19 @@
                 </div>
             </div>
             <!-- Informações de começo e fim do projeto -->
-            <div class="text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null">
+            <div class="data text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null">
                 <div>{{ comeco }}</div>
                 <!-- svg da flechinha -->
-                <svg width="30" height="17" viewBox="0 0 30 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg v-if="screenWidth >= 620" width="30" height="17" viewBox="0 0 30 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M0.376953 1.15878H2.74332V15.357H0.376953V1.15878ZM5.10969 9.44106H25.4273L20.3479 14.5205L22.0209 16.1935L29.9565 8.25787L22.0209 0.322266L20.3479 1.99529L25.4273 7.07469H5.10969V9.44106Z"
                         fill="white" />
                 </svg>
-
+                <h1 v-else class="w-[10vw] h-[2vh] ml-2 mr-2"> - </h1>
+               
                 <div>{{ final }}</div>
             </div>
-            <div class="text-white items-center w-3/5 flex justify-evenly" v-else>
+            <div class=" text-white items-center w-3/5 flex justify-evenly" v-else>
                 <div class="w-[5vw] h-[3.4vh]">
                 </div>
             </div>
@@ -81,7 +82,7 @@ const props = defineProps({
 
 })
 let alinhamento=ref(43)
-
+const screenWidth = window.innerWidth;
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 
@@ -156,8 +157,14 @@ let barraPorcentagem = ref({
             @apply flex flex-col h-[76px] items-center justify-evenly bg-[url(../assets/Polygon126footer.png)] w-full
         }
         .cardTotal {
-            @apply flex flex-col items-center justify-between relative w-[320px] h-[289px] bg-white overflow-hidden;
+            @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-white overflow-hidden;
             transition: transform 0.3s ease;
+        }
+        .barraCinzaGrafico {
+            @apply relative text-white flex w-72 h-6 justify-start bg-gray-500;
+        }
+        .data{
+            @apply flex justify-start mr-3;
         }
     }
 }</style>

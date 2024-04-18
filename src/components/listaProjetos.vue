@@ -111,7 +111,7 @@
   const projetoEmBaixoId = ref()
   const banco = conexaoBD();
   let projetos = ref([]);
-  const idUsuarioLogado = VueCookies.get('IdUsuarioCookie');
+  const idUsuarioLogado = 1
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();

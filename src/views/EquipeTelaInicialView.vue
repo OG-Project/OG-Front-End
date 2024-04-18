@@ -310,7 +310,7 @@ async function buscarMembrosEquipe() {
     }
     .cardProjeto{
       @apply mt-20 text-2xl ml-1;
-      max-width: calc(100% - 1px);
+      max-width: calc(125% - 1px);
     }
   }    
 
