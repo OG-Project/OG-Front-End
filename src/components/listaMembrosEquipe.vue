@@ -63,6 +63,7 @@ import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
+import {webSocketStore} from "../stores/webSocket.js";
 
 onMounted(exibirMembrosNaLista)
 
@@ -204,12 +205,12 @@ async function adicionarMembro() {
     }
 }
 
-async function enviaParaWebSocket(equipe) {
+async function enviaParaWebSocket(equipe,membrosConvidados) {
     let equipeAux = {
         id: equipe.id,
         nome: equipe.nome,
         descricao: equipe.descricao,
-        membros: membrosEquipe.value
+        membros: membrosConvidados
     }
     let teste = {
         equipes: [{ equipe: equipeAux }],
@@ -254,8 +255,7 @@ async function confirmarConvites() {
     } else {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
-    enviaParaWebSocket(equipeMembros.value)
-    window.location.reload()
+    enviaParaWebSocket(equipeMembros.value, membrosConvidados.value);
 }
 
 </script>

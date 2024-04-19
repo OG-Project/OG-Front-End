@@ -71,12 +71,15 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                     }
                 }
             }
+            console.log(equipes)
             equipes.forEach(async (equipe) => {
                 let membros = []
+                console.log(equipe.equipe)
                 if(equipe.equipe.membros!=null){
                     membros = equipe.equipe.membros
                     if(membros.lenght == 1 && membros[0].id == criador){
                         notificacao.receptores.push({id:criador})
+                        notificacao.conviteParaProjeto.usuarioAceito.push({usuario:{id:criador}})
                     }
                 }else{
                     membros = await api.buscarMembrosEquipe(equipe.equipe.id, "/usuario/buscarMembros")
@@ -92,7 +95,6 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                             notificacao.conviteParaProjeto.usuarioAceito.push({usuario:teste})
                         }
                         if(objetoNotificacao.conviteParaEquipe != null){
-                            console.log(notificacao.conviteParaEquipe)
                             notificacao.conviteParaEquipe.usuarioAceito.push({usuario:teste})
                         } 
                     }
@@ -102,6 +104,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
             setTimeout(async () => {
                 criador = await api.buscarUm(criador, '/usuario')
                 notificacao.criador = criador
+                console.log(notificacao)
                 api.cadastrar(notificacao, '/notificacao'+rota)
             }, 100)
         }

@@ -6,7 +6,7 @@
             </div>
             <div class="div-membros flex flex-col items-center overflow-y-auto scrollbar-thin">
                 <div class="flex justify-center w-full" v-for="equipe in projetoAtual.projetoEquipes">
-                    <div class="corDiv" >
+                    <div class="corDiv">
                         <img v-if="equipe.equipe.foto != null" class="imgDePerfil" :src="'data:' +
                     equipe.equipe.foto.tipo +
                     ';base64,' +
@@ -21,7 +21,9 @@
         <div class="adiciona-membro">
             <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
                 icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Equipe"
-                v-model="equipeConvidada"></Input>
+                v-model="equipeConvidada" :modelValue="equipeConvidada" @updateModelValue="(e) => {
+                    equipeConvidada = e
+                }"></Input>
             <div class="flex mt-[1vh] ml-5">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
                     texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarEquipe"></Botao>
@@ -56,7 +58,7 @@ import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
-
+import { webSocketStore } from '../stores/webSocket.js';
 
 
 let projetoAtual = ref(VueCookies.get('IdProjetoAtual'))
@@ -135,7 +137,8 @@ async function listaDeEquipes() {
 
 async function adicionarEquipe() {
     const equipeDoProjeto = listaEquipes.value.find(equipe => equipe.nome === equipeConvidada.value);
-
+    const equipes = await banco.procurar("/equipe")
+    const equipe = equipes.find(equipe => equipe.nome === equipeConvidada.value)
     if (equipeDoProjeto) {
         console.log("Esse usuário já faz parte da equipe.");
         return;
@@ -143,10 +146,11 @@ async function adicionarEquipe() {
 
     // Verifica se o usuário já foi convidado
     const equipeJaConvidada = equipesConvidadas.value.some(equipe => equipe.nome === equipeConvidada.value);
-
+    console.log(equipeConvidada.value)
     if (equipeJaConvidada) {
         console.log("Você já convidou essa pessoa.");
     } else {
+        equipesConvidadas.value.push(equipe)
         setTimeout(await listaDeEquipes(), 100);
     }
 }
@@ -155,8 +159,8 @@ async function listaUsuarios() {
     let convites = await banco.buscarUm(projetoAtual.value.id, "/notificacao/conviteProjeto");
     convites.forEach((convite) => {
         console.log(convite)
-        for(const usuarioAceito of convite.conviteParaEquipe.usuarioAceito){
-            if(usuarioAceito.aceito==false){
+        for (const usuarioAceito of convite.conviteParaEquipe.usuarioAceito) {
+            if (usuarioAceito.aceito == false) {
                 equipesConvidadas.value.push(usuarioAceito.usuario);
             }
         }
@@ -164,9 +168,41 @@ async function listaUsuarios() {
     })
 }
 
+
+
+
+async function enviaParaWebSocket(projeto, membrosConvidados) {
+    let equipeAux = {
+        id: "",
+        nome: "",
+        descricao: "",
+        membros: membrosConvidados
+    }
+    let teste = {
+        equipes: [{ equipe: equipeAux }],
+        notificao: {
+            mensagem: "Te Convidou para o Projeto",
+            conviteParaProjeto: {
+                projeto: projeto
+            }
+        }
+
+    }
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+}
+
+
 async function confirmarConvites() {
-    listaUsuarios();
-    props.boolean = false
+    let membros = []
+    
+    for (const equipe of equipesConvidadas.value) {
+        membros.push(await banco.buscarUm(equipe.id, "/equipe/criador"))
+    }
+    console.log(membros)
+    enviaParaWebSocket(projetoAtual.value, membros);
+
 }
 
 </script>
