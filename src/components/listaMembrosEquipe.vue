@@ -14,7 +14,7 @@
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                         <img class="imgDePerfil" src="" alt="">
-                        <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.nome }}</h1>
+                        <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
                     <SelectPadrao class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco"
                         fonteTamanho="1rem" :listaSelect="opcoesSelect"></SelectPadrao>
@@ -25,7 +25,10 @@
         <div class="adiciona-membro">
             <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
                 icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
-                v-model="usuarioConvidado"></Input>
+                v-model="usuarioConvidado" :modelValue="usuarioConvidado"
+                    @updateModelValue="(e) => {
+                        usuarioConvidado = e
+                    }"></Input>
             <div class="flex mt-[1vh] ml-5">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
                     texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
@@ -180,21 +183,47 @@ async function listaUsuarios() {
 }
 
 async function adicionarMembro() {
+    
     const membroNaEquipe = listaMembros.value.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
 
     if (membroNaEquipe) {
         console.log("Esse usuário já faz parte da equipe.");
         return;
     }
-
+    let lista = await banco.procurar('/usuario');
+    const membroConvidado = lista.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
+    membrosConvidados.value.push(membroConvidado);
     // Verifica se o usuário já foi convidado
     const usuarioJaConvidado = membrosConvidados.value.some(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
-
+    
+    console.log(membrosConvidados)
     if (usuarioJaConvidado) {
         console.log("Você já convidou essa pessoa.");
     } else {
         await listaUsuarios();
     }
+}
+
+async function enviaParaWebSocket(equipe) {
+    let equipeAux = {
+        id: equipe.id,
+        nome: equipe.nome,
+        descricao: equipe.descricao,
+        membros: membrosEquipe.value
+    }
+    let teste = {
+        equipes: [{ equipe: equipeAux }],
+        notificao: {
+            mensagem: "Te Convidou para a Equipe",
+            conviteParaEquipe: {
+                equipe: equipe
+            }
+        }
+
+    }
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 async function confirmarConvites() {
@@ -224,9 +253,8 @@ async function confirmarConvites() {
 
     } else {
         // Se o membro não foi removido anteriormente, convide-o normalmente
-        banco.adicionarUsuarios(ids, equipeSelecionada, "/usuario/add");
     }
-
+    enviaParaWebSocket(equipeMembros.value)
     window.location.reload()
 }
 
