@@ -348,7 +348,7 @@
           </div>
         </div>
       </div>
-      <div class="fixed bottom-2 right-4 pt-8">
+      <div class="fixed bottom-24 right-4 pt-8">
         <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
