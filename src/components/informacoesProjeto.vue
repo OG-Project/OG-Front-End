@@ -3,7 +3,7 @@
         <div class="h-[6%]  pt-2 flex items-end justify-center">
             <h1 class="text-3xl font-semibold">Informações</h1>
         </div>
-        <div class="pt-8  h-auto mt-4 mb-4 gap-4 w-[100%] flex flex-col justify-evenly ">
+        <div class="  h-auto mt-4 mb-4 gap-4 w-[100%] flex flex-col justify-evenly ">
             <div class="flex pl-8 gap-2 " v-if="!mudaAlinhamentoNomeProjeto">
                 <div class="w-[60%] justify-start flex-row">
                     <p>Nome do projeto:</p>
@@ -20,7 +20,7 @@
                     <p class="w-[100%] text-[#620BA7] break-all">{{ nomeProjeto }}</p>
                 </div>
             </div>
-            <div class="flex pl-8 mt-4">
+            <div class="flex pl-8 mt-4 pb-2">
                 <div class="w-[60%] justify-start flex-row">
                     <p>Data Inicial:</p>
                 </div>
@@ -37,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="h-[4%] flex items-center justify-center p-4">
+        <div class="h-[4%] flex items-center justify-center p-2">
             <h1 class="text-xl font-semibold">Status</h1>
         </div>
         <div class="h-max flex items-center justify-center">
@@ -54,7 +54,7 @@
                     </p>
             </div>
         </div>
-        <div class="h-[4%] flex items-center justify-center p-8">
+        <div class="h-[4%] flex items-center justify-center p-6">
             <h1 class="text-xl font-semibold">Propriedades</h1>
         </div>
         <div class="h-[35%] flex flex-col items-center justify-center p-6 pb-0" v-if="!temLista(listaPropriedades)">

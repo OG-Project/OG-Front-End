@@ -450,7 +450,6 @@ async function removeListaEquipeConvidadas(equipeRemover) {
     }
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     if(projetoEdita.value){
-        console.log("vai deletar")
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
     criarProjetoCookies();
