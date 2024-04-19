@@ -12,6 +12,7 @@
           altura="10%"
           conteudoInput="Pesquisar..."
         ></Input>
+        <!-- asdasdasd -->
         <img
           @click="redireciona('/perfil/informacoes')"
           v-if="usuarioCookies && usuarioCookies.foto"
