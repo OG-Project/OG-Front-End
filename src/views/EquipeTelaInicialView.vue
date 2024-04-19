@@ -9,7 +9,7 @@
             <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
                 <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
-                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="personalizado" width="50vw" height="5.3vh"  texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
+                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="personalizado" width="50vw" height="5vh"  texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
             <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">

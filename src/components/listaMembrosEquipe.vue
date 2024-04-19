@@ -14,7 +14,8 @@
                       <img class="imgDePerfil" src="" alt="">
                       <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.nome }}</h1>
                     </div>
-                    <SelectPadrao class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
+                    <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
+                    <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
              
             </div>
@@ -30,8 +31,11 @@
             </div>
              <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
                 <div>
-                    <div>
+                    <div v-if="screenWidth >= 620">
                     <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                    </div>
+                    <div else>
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="80vw" height="5vh" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                 </div>
             </div>
@@ -234,7 +238,7 @@ function larguraInputConvidado(){
         border-transparent
         border-b-brancoNeve
         border-b-2
-        w-max
+        w-[60]
         items-center  focus-within:border-white
         focus-within:border-4 focus-within:rounded-md truncate;
         
@@ -349,7 +353,7 @@ function larguraInputConvidado(){
             @apply w-[100%];
         }
         .equipeNome{
-             @apply flex mt-2;
+             @apply flex mt-5;
         }
         .styleSelectPadraoBranco{
             @apply border-4 mt-[1vh] 
@@ -365,7 +369,7 @@ function larguraInputConvidado(){
             @apply w-[35px] h-[35px]
         }
         .imagemEquipe{
-            @apply w-[40px] h-[40px] mb-10;
+            @apply w-[40px] h-[40px] mt-3;
         }
         .imgIcon{
             @apply w-[20px] h-[20px]  bg-center flex mt-8;
@@ -373,6 +377,10 @@ function larguraInputConvidado(){
         .div-lista{
             @apply w-[200vw] p-2 ml-[-12vw] ;
             
+        }
+        .botao{
+            @apply flex justify-end mr-[-5vw]
+            p-[10vw] mt-[50vh] ;
         }
      }
     
