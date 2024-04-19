@@ -1,4 +1,3 @@
-
 import { defineStore } from "pinia";
 import axios from "axios";
 import { webSocketStore } from "./webSocket.js";
@@ -38,6 +37,10 @@ export const conexaoBD = defineStore('conexaoBD', {
     deletarEquipe(id, textoRequisicao) {
       return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response => {
 
+      })
+    },
+    async deletarTarefa(textoRequisicao, id) {
+      return await axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response => {
       })
     },
     async buscarMembrosEquipe(equipeId, textoRequisicao) {
