@@ -20,12 +20,18 @@
             <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieTarefaNova()">
                 +Tarefa
             </button>
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="fazComentarioProjeto()">
+                <iconComentarioProjeto></iconComentarioProjeto>
+            </button>
             <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieProjeto()">
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
             <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
+            <div v-if="abreFechaComentario" class=" absolute w-[25%] flex flex-col z-30">
+                <comentario></comentario>
+            </div>  
         </div>
     </div>
     <div class="w-[80%] flex flex-row justify-around">
@@ -54,10 +60,11 @@ import VueCookies from 'vue-cookies';
 import { onMounted, ref } from 'vue';
 import IconEngrenagem1 from '../assets/iconEngrenagem 1.vue';
 import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
+import iconComentarioProjeto from '../assets/iconComentarioProjeto.vue';
 import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
 import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp';
-
+import comentario from './comentario.vue'
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
 let projeto = ref({})
@@ -68,7 +75,7 @@ let subtarefasConcluidas = ref([])
 let subtarefas = ref([])
 let listaDeEquipes = ref(false)
 let funcaoPopUp = funcaoPopUpStore()
-
+let abreFechaComentario = ref(false)
 onMounted(async () => {
 
     projeto.value = await api.buscarUm(projetoId, '/projeto')
@@ -86,6 +93,10 @@ function enviaCookieProjeto(){
 }
 function mudaVariavelBooleana(){
     funcaoPopUp.abrePopUp()
+}
+
+function fazComentarioProjeto(){
+    abreFechaComentario.value= !abreFechaComentario.value;
 }
 
 function definePorcentagem() {

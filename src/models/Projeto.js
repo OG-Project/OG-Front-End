@@ -10,5 +10,6 @@
     responsaveis: [],
     tempoAtuacao: String,
     dataFinal:String,
-    indexLista: Number
+    indexLista: Number,
+    comentarios: []
 }

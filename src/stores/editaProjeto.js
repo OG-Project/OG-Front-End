@@ -11,7 +11,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
     },
 
     actions: {
-        editaProjeto(id,nome,descricao,equipes, propriedades,status,responsaveis,dataFinal, tempoAtuacao, indexLista){
+        editaProjeto(id,nome,descricao,equipes, propriedades,status,responsaveis,dataFinal, tempoAtuacao, indexLista, comentarios){
         let projetoCriado= Projeto
         let api= conexaoBD();
         projetoCriado.id=id;
@@ -24,6 +24,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
         projetoCriado.tempoAtuacao = tempoAtuacao
         projetoCriado.dataFinal=dataFinal; 
         projetoCriado.indexLista = indexLista;
+        projetoCriado.comentarios = comentarios
         console.log(projetoCriado)
         api.atualizar(projetoCriado,'/projeto').then((res)=>{
           console.log(res.data)

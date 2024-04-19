@@ -22,7 +22,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       return axios.get("http://localhost:8082" + textoRequisicao).then(response => response.data)
     },
     cadastrar(objeto, textoRequisicao) {
-      return axios.post("http://localhost:8082" + textoRequisicao, objeto)
+      return axios.post("http://localhost:8082" + textoRequisicao, objeto).then(response =>{
+       return response.data
+      })
     },
     atualizar(objeto, textoRequisicao) {
 

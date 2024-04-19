@@ -53,7 +53,8 @@ const estiloBranco = {
   color: '#000000',
   backgroundColor: '#D7D7D7',
   borderBottom: 'solid 4px #620BA7',
-  resize: props.resize
+  resize: props.resize,
+
 };
 
 const estiloPreto = {
@@ -63,7 +64,8 @@ const estiloPreto = {
   color: '#FFFFFF',
   backgroundColor: '#777777',
   borderBottom: 'solid 4px #620BA7',
-  resize: props.resize
+  resize: props.resize,
+ 
 };
 
 const estiloTransparente = {
@@ -72,7 +74,8 @@ const estiloTransparente = {
   fontSize: props.tamanhoDaFonte,
   color: '#000000',
   borderBottom: 'solid 4px #620BA7',
-  resize: props.resize
+  resize: props.resize,
+ 
 };
 
 switch (props.preset) {
