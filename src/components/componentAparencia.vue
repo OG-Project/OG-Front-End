@@ -13,7 +13,7 @@
                 <div class="hexagon top-[150px] right-[150px] absolute z-[8] bg-[var(--brancoNeve)] rotate-90 w-[100px] h-[95px]"></div>
             </div>
 
-            <div class=" flex flex-col gap-3">
+            <div class=" flex flex-col gap-20">
                 <div class="flex gap-4">
                     <div class="w-full flex flex-col gap-4  items-center">
                         <div 
@@ -120,10 +120,19 @@
                         </div>
                     </div>
                 </div>
+                <div class="flex justify-between items-center gap-5">
+                    <span class="text-[var(--fonteCorpoTamanho)]">Modo Claro</span>
+                    <CheckBox 
+                    tipo="toggle" 
+                    el-id="checkDarkMode" 
+                    @envia-valor="temaDoSite($event)">
+                    </CheckBox>                  
+                    <span class="text-[var(--fonteCorpoTamanho)]">Modo Escuro</span>
+                </div>
             </div>
 
         </div>
-        <div class="flex justify-end pt-[8%] pr-[15%]">
+        <!-- <div class="flex justify-end pt-[8%] pr-[15%]">
             <Botao 
             :funcaoClick="salvarCor"
             :roxo="styleGet.getPropertyValue('--roxo')" 
@@ -132,7 +141,7 @@
             tamanhoDaBorda="2px" 
             tamanhoDaFonte="2.0vh" />
             
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -145,6 +154,7 @@ import VueCookies from 'vue-cookies';
 
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore'
+import CheckBox from './checkBox.vue';
 const perfil = perfilStore()
 const {hue} = storeToRefs(perfil)
 const {fonteCorpo} = storeToRefs(perfil)
@@ -173,6 +183,10 @@ let root=document.documentElement
 let styleGet=getComputedStyle(root)
 
 let cor = ref('#80A4ED')
+
+function temaDoSite(e){
+    console.log(e);
+}
 
 function salvarCor(){
 
@@ -210,6 +224,7 @@ function tamanhoFontTitulo(tamanho){
     else if(tamanho=='Grande'){
         perfil.tamanhoTitulo=7
     }
+    VueCookies.set('fonteTituloTamanho',JSON.stringify(perfil.tamanhoTitulo+'vh'))
     console.log(perfil.tamanhoTitulo)
     console.log(tamanho)
 }
@@ -223,6 +238,7 @@ function tamanhoFontCorpo(tamanho){
     else if(tamanho=='Grande'){
         perfil.tamanhoCorpo=2.5
     }
+    VueCookies.set('fonteCorpoTamanho',JSON.stringify(perfil.tamanhoCorpo+'vh'))
     console.log(perfil.tamanhoCorpo)
     console.log(tamanho)
 }

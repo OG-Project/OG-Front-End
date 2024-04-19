@@ -29,11 +29,13 @@ const route = useRoute();
   perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
   perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
   console.log(perfil.isTecladoVirtual)
-  perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
-  perfil.hue=JSON.parse(VueCookies.get('matizCor'))
   root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
   root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
   root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
+  root.setProperty('--fonteCorpoTamanho',JSON.parse(VueCookies.get('fonteCorpoTamanho')))
+  root.setProperty('--fonteTituloTamanho',JSON.parse(VueCookies.get('fonteTituloTamanho')))
+  perfil.hue=JSON.parse(VueCookies.get('matizCor'))
+  perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
   perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
   perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
   })
@@ -78,13 +80,11 @@ watch(() => route.path, () => {
         <div class="vw-plugin-top-wrapper"></div>
       </div>
     </div>
-    <!-- <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script> -->
-    
   </div>
-      <Navbar v-show="!estaNoLogin" />
+  
+  <div class="bg-[var(--backgroundPuro)]">
+
+    <Navbar v-show="!estaNoLogin" />
     <RouterView />
     <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
     <div ref="el" :style="style" style="position: fixed"
@@ -95,9 +95,9 @@ watch(() => route.path, () => {
         <svgIconMove class="w-[1vw] h-[3vh]" />
         <svgIconX @click="close" class="w-[1vw] h-[3vh]" ></svgIconX>
       </div>
-      <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
+        <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
+      </div>
     </div>
-  
 </div>
 
 </template>

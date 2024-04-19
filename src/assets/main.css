@@ -29,6 +29,8 @@
     --fonteCorpo:'Poppins';
     --fonteTituloTamanho:6vh ;
     --fonteCorpoTamanho:2vh;
+    --backgroundPuro: #ffffff;
+    --backgroundItems: #f8f8f8; 
 }
 
 html{

@@ -2,7 +2,7 @@
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
-        <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
                 <div 
                 @click="open()"
@@ -168,6 +168,7 @@ async function enviarFotoParaBackend() {
             return;
         }
         foto.value=imagemSelecionada.value
+        console.log(foto.value);
         await conexao.cadastrarFotoUsuario(usuario.value.id, imagemSelecionada.value);
         console.log('Foto enviada com sucesso para o backend.');
     } catch (error) {
