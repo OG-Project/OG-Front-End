@@ -63,7 +63,7 @@ export const conexaoBD = defineStore('conexaoBD', {
 
 
       },
-      async cadastrarFoto(equipeId, foto) {
+      async cadastrarFoto(textoRequisicao,id, foto) {
         try {
             // Crie um FormData e adicione a imagem a ele
             const formData = new FormData();
@@ -72,7 +72,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     
             // Faça a requisição PATCH para enviar a image
     
-            const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
+            const response = await axios.patch(`http://localhost:8082${textoRequisicao}"/"${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
