@@ -1,20 +1,25 @@
 <template>
     <div class="fixed bottom-0 w-full flex justify-around items-center h-[8vh] bg-[#36213E]">
-        <img class="h-[60%]" :src="IconHome" />
-        <img class="h-[60%]" :src="IconProfile" />
-        <img class="h-[60%]" :src="IconFolder" />
-        <img class="h-[60%]" :src="IconNotification" />
-        <img class="h-[60%]" :src="IconConfig" />
+        <img class="h-[40%]" @click="redireciona('/home')" :src="IconHome" />
+        <img class="h-[40%]" @click="redireciona('/perfil')" :src="IconProfile" />
+        <img class="h-[40%]" @click="redireciona('/projetos')" :src="IconFolder" />
+        <img class="h-[40%]" :src="IconNotification" />
+        <img class="h-[40%]" @click="redireciona('/perfil/informacoes')" :src="IconConfig" />
     </div>
 </template>
 
 <script setup>
-
 import IconConfig from "../assets/ConfigIconMobile.svg"
 import IconFolder from "../assets/FolderIconMobile.svg"
 import IconHome from "../assets/HomeIconMobile.svg"
 import IconNotification from "../assets/NotificacaoIconMobile.svg"
 import IconProfile from "../assets/EquipeIconMobile.svg"
+import router from "@/router";
+
+function redireciona(caminho){
+    router.push(caminho)
+}
+
 </script>
 
 <style scoped>
