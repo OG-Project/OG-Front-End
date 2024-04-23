@@ -377,18 +377,13 @@ async function criaProjeto() {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.indexLista)
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.indexLista)
         restauraCookies();
         router.push('/projeto')
     }
 
 }
 
-function enviaWebSocket(response) {
-    console.log(response.data.id)
-    webSocket.url = "ws://localhost:8082/og/webSocket/tarefa/" + response.data.id;
-    webSocket.enviaMensagemWebSocket()
-}
 
 function restauraCookies() {
     VueCookies.set("projetoCookie")

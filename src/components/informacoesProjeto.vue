@@ -1,6 +1,6 @@
 <template>
     <div class="w-[20vw] max-h-max h-[92vh] flex flex-col border-2 gap-8 shadow-xl border-b-0 overflow-y-auto overflow-x-hidden ">
-        <div class="h-[6%]  pt-2 flex items-end justify-center">
+        <div class="h-[6%] pt-8 flex items-end justify-center">
             <h1 class="text-3xl font-semibold">Informações</h1>
         </div>
         <div class="  h-auto mt-4 mb-4 gap-4 w-[100%] flex flex-col justify-evenly ">
@@ -57,21 +57,21 @@
         <div class="h-[4%] flex items-center justify-center p-6">
             <h1 class="text-xl font-semibold">Propriedades</h1>
         </div>
-        <div class="h-[35%] flex flex-col items-center justify-center p-6 pb-0" v-if="!temLista(listaPropriedades)">
+        <div class="h-[35%] flex flex-col items-center justify-center p-8" v-if="!temLista(listaPropriedades)">
             <img :src="NotePad" class="h-[200px] w-[200px]" />
             <p class="text-center">Este projeto não possui nenhuma propriedade</p>
         </div>
         <div class="h-[35%] flex flex-col pl-4 gap-8" v-if="temLista(listaPropriedades)">
             <div v-for="propriedade of listaPropriedades" class="flex pl-8 gap-2 h-max">
                 <p>Nome Propriedade:</p>
-                <p class="text-center break-all">{{ propriedade.nome }}</p>
+                <p class="text-center ">{{ propriedade.nome }}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { onMounted, watch, ref } from 'vue';
+import { onMounted } from 'vue';
 import NotePad from '../imagem-vetores/NotePad.svg'
 const props = defineProps({
     nomeProjeto: String,
@@ -80,18 +80,9 @@ const props = defineProps({
     listaPropriedades: [],
     listaStatus: []
 })
-let mudaAlinhamentoNomeProjeto = ref(false)
-onMounted(() => {
-    props.DataFinalProjeto="Indefinada"
-})
 
-watch(() => props.nomeProjeto, () =>{
-    if(props.nomeProjeto.length>10){
-        console.log("entar")
-        mudaAlinhamentoNomeProjeto = true
-        return
-    }
-    mudaAlinhamentoNomeProjeto = false
+onMounted(() => {
+
 })
 
 function temLista(lista) {

@@ -15,14 +15,7 @@ export const criaPropriedadeTarefaStore = defineStore('criaPropriedadeTarefa', {
         let api= conexaoBD();
         propriedadeCriada.nome=nome;
         propriedadeCriada.tipo=tipo;
-        console.log(nome);
-        console.log(tipo);
-        console.log(propriedadeCriada.nome);
-        console.log( propriedadeCriada.tipo);
-        console.log(projetoId);
-        console.log("aaaaa");
         api.cadastrar(propriedadeCriada,'/propriedade/'+projetoId)
-        console.log("foi");
       },
       deletaPropriedade(id,projetoId){
         let api = conexaoBD();

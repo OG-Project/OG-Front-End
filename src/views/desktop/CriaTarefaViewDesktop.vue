@@ -36,7 +36,7 @@
         <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../imagem-vetores/trianguloStart.svg" />
+              <img src="../../imagem-vetores/trianguloStart.svg" />
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -63,7 +63,7 @@
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../imagem-vetores/trianguloStart.svg" />
+              <img src="../../imagem-vetores/trianguloStart.svg" />
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -94,7 +94,7 @@
         <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../imagem-vetores/trianguloStart.svg" />
+              <img src="../../imagem-vetores/trianguloStart.svg" />
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -844,7 +844,6 @@ function update() {
 
 onMounted(async () => {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
-  VueCookies.set("IdProjetoAtual", 1,100000);
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();

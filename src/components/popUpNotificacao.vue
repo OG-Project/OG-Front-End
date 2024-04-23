@@ -56,18 +56,19 @@
                             </button>
                         </div>
                     </div>
-                    <div class="w-[10%] flex flex-row" @mouseenter="clearTimer()">
-                        <div class="flex flex-row justify-end w-full gap-2" v-if="notificacao.notificacao.conviteParaEquipe != null || notificacao.notificacao.conviteParaProjeto != null">
-                            <button class="text-red-600">
+                    <div class="w-[25%] flex flex-row" @mouseenter="clearTimer()">
+                        <div class="flex flex-row justify-end w-full gap-1"
+                            v-if="notificacao.notificacao.conviteParaEquipe != null || notificacao.notificacao.conviteParaProjeto != null">
+                            <button class="text-white w-[50%] h-[100%] bg-red-600" @click="removerUsuarioALista(notificacao.notificacao)">
                                 X
                             </button>
-                            <button class="text-roxo" @click="adicionaUsuarioALista(notificacao.notificacao)">
+                            <button class="text-white w-[50%] h-[100%] bg-green-600" @click="adicionaUsuarioALista(notificacao.notificacao)">
                                 ✔
-                            </button>    
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="w-[10%] h-full flex justify-center items-center">
+                <div class="w-[10%] h-full flex justify-center items-center" @click="removerUsuarioALista(notificacao.notificacao)">
                     <Vector></Vector>
                 </div>
             </div>
@@ -84,6 +85,7 @@ import { tryOnBeforeUnmount } from '@vueuse/core';
 import Pessoa from '../assets/Pessoa.vue';
 import Vector from '../assets/Vector.vue';
 import SvgIconX from '../assets/svgIconX.vue';
+import { set } from 'date-fns';
 
 let usuarioId = VueCookies.get('IdUsuarioCookie');
 let api = conexaoBD();
@@ -93,12 +95,13 @@ let estilo = ref({})
 let timeoutId = null;
 
 onMounted(async () => {
-    notificacoes.value = await api.buscarUm(usuarioId, '/notificacao/buscar')
     defineNotificacoes()
-    console.log(notificacoes)
+
 })
 
-function defineNotificacoes() {
+async function defineNotificacoes() {
+    notificacoes.value = await api.buscarUm(usuarioId, '/notificacao/buscar')
+    console.log(notificacoes.value)
     let lista = []
     for (const notificacaoAux of notificacoes.value) {
         let notificacao = ref({
@@ -109,7 +112,6 @@ function defineNotificacoes() {
         mudarEstilo(notificacao.value)
         lista.push(notificacao.value)
     }
-    console.log(notificacoes)
     notificacoes.value = lista
 }
 
@@ -117,7 +119,7 @@ function mudarEstilo(notificacao) {
     if (notificacao.hover2Segundos == true) {
         notificacao.estilo = {
             width: '80%',
-            minWidth:'0px',
+            minWidth: '0px',
             flexDirection: 'col',
             textAlign: 'left',
             justifyContent: 'start'
@@ -126,7 +128,7 @@ function mudarEstilo(notificacao) {
     }
     notificacao.estilo = {
         width: '80%',
-        minWidth:'0px',
+        minWidth: '0px',
         display: 'flex',
         flexDirection: 'row',
         textAlign: 'left',
@@ -155,23 +157,38 @@ function clearTimer(objeto) {
 function adicionaUsuarioALista(notificacao) {
     if (notificacao.conviteParaEquipe != null) {
         api.adicionarUsuarios([usuarioId], notificacao.conviteParaEquipe.equipe.id, '/usuario/add')
-        notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito)=>{
-            if(usuarioAceito.usuario.id == usuarioId){
+        notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito) => {
+            if (usuarioAceito.usuario.id == usuarioId) {
                 usuarioAceito.aceito = true
-                console.log(usuarioAceito.aceito)
+                console.log(notificacao)
+                let index = notificacao.receptores.indexOf(usuarioAceito.usuario)
+                notificacao.receptores.splice(index, 1)
+                api.atualizar(notificacao, '/notificacao')
             }
-        }) 
+        })
     }
     if (notificacao.conviteParaProjeto != null) {
-        api.adicionarUsuarios([usuarioId], notificacao.conviteParaProjeto.projeto.id, '/usuario/add')
-        notificacao.conviteParaProjeto.usuarioAceito.map((usuarioAceito)=>{
-            if(usuarioAceito.usuario.id == usuarioId){
+        api.adicionarEquipe(notificacao.conviteParaProjeto.idEquipe, notificacao.conviteParaProjeto.projeto.id, '/projeto/add')
+        notificacao.conviteParaProjeto.usuarioAceito.map((usuarioAceito) => {
+            if (usuarioAceito.usuario.id == usuarioId) {
+                console.log(notificacao)
                 usuarioAceito.aceito = true
+                let index = notificacao.receptores.indexOf(usuarioAceito.usuario)
+                notificacao.receptores.splice(index, 1)
+                api.atualizar(notificacao, '/notificacao')
             }
-        })     }
-    api.atualizar(notificacao,'/notificacao')
-    emit('fecharPopUp')
-}   
+        })
+    }
+    api.atualizar(notificacao, '/notificacao').then(() => {
+        defineNotificacoes()
+    })
+
+}
+function removerUsuarioALista(notificacao) {
+    api.deletarEquipe(notificacao.id, '/notificacao').then(() => {
+        defineNotificacoes()
+    })
+}
 
 
 function trocarRota(idProjeto, rota, propriedadeCookie) {

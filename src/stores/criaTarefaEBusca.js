@@ -14,6 +14,7 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
     criaTarefa() {
       let api = conexaoBD();
       
+      localStorage.removeItem("TarefaNaoFinalizada");
       // Criar a tarefa e esperar pela resposta
       api.cadastrar({}, '/tarefa/' + VueCookies.get("IdProjetoAtual"))
         .then(async (response) => {
@@ -33,12 +34,11 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
           if (idTarefaAntiga) {
             let tarefaAntiga = await api.buscarUm(idTarefaAntiga, "/tarefa");
             if (tarefaAntiga.nome == null) {
-              await api.deletarPropriedade("/tarefa/",tarefaAntiga.id);
+              await api.deletarTarefa("/tarefa",tarefaAntiga.id);
             }
           }
 
           // Remover dados de tarefa não finalizada do armazenamento local
-          localStorage.removeItem("TarefaNaoFinalizada");
           // Redirecionar para a página de criação de tarefa
           router.push('/criaTarefa');
         })
