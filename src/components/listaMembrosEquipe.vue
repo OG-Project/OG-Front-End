@@ -76,6 +76,7 @@ let usuariosRemover = ref([]);
 let membrosEquipe = ref([]);
 let membrosConvidados = ref([]);
 let usuarioConvidado = ref('');
+let membroParaConvidar = ref([]);
 const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
 let usuarios = banco.procurar('/usuario');
@@ -193,14 +194,14 @@ async function adicionarMembro() {
     }
     let lista = await banco.procurar('/usuario');
     const membroConvidado = lista.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
-    membrosConvidados.value.push(membroConvidado);
     // Verifica se o usuário já foi convidado
     const usuarioJaConvidado = membrosConvidados.value.some(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
     
-    console.log(membrosConvidados)
     if (usuarioJaConvidado) {
         console.log("Você já convidou essa pessoa.");
     } else {
+        membrosConvidados.value.push(membroConvidado);
+        membroParaConvidar.value.push(membroConvidado);
         await listaUsuarios();
     }
 }
@@ -255,7 +256,7 @@ async function confirmarConvites() {
     } else {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
-    enviaParaWebSocket(equipeMembros.value, membrosConvidados.value);
+    enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
 }
 
 </script>

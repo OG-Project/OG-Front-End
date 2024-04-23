@@ -98,7 +98,7 @@ function VerificaPrazoDoProjeto() {
       let dataProjeto = new Date(projetos[i].dataFinal);
       let diferenca = dataProjeto.getTime() - dataAtual.getTime();
       dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
-      if (dias < 7 && projetos[i].dataFinal != null) {
+      if (dias < 7 && projetos[i].dataFinal != null  && projetos[i].dataFinal > dataAtual) {
         enviaParaWebSocket(projetos[i], dias)
       }
     }

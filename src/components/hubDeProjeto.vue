@@ -1,5 +1,5 @@
 <template>
-    <div v-if="funcaoPopUp.variavelModal==true" class="flex justify-center">
+    <div v-if="funcaoPopUp.variavelModal == true" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
     <div class="w-full h-[30%] flex  items-center ">
@@ -17,13 +17,16 @@
             </div>
         </div>
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
-            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieTarefaNova()">
+            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center"
+                @click="enviaCookieTarefaNova()">
                 +Tarefa
             </button>
-            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="enviaCookieProjeto()">
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
+                @click="enviaCookieProjeto()">
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
-            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center" @click="mudaVariavelBooleana()">
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
+                @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
         </div>
@@ -43,6 +46,10 @@
                 Calendário
             </button>
         </div>
+        <div v-if="$route.path === '/projeto/lista'" class="flex flex-row bg-[#CECCCE] px-2" >
+            Propriedades Visiveis
+            <select v-model="listaPropriedadeVisiveis" multiple :options="listaPropriedadeVisiveis"></select>
+        </div>
     </div>
 </template>
 
@@ -58,6 +65,7 @@ import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
 import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 
+let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
 let projeto = ref({})
@@ -68,23 +76,26 @@ let subtarefasConcluidas = ref([])
 let subtarefas = ref([])
 let listaDeEquipes = ref(false)
 let funcaoPopUp = funcaoPopUpStore()
+let visualizacao = ref({})
 
 onMounted(async () => {
-
     projeto.value = await api.buscarUm(projetoId, '/projeto')
+    visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista')
+    console.log(visualizacao)
+    listaPropriedadeVisiveis.value = visualizacao.propriedadesVisiveis
     definePorcentagem()
 })
 
 
-function enviaCookieTarefaNova(){
-    VueCookies.set("IdTarefaCookies",0,new Date())
-    localStorage.setItem("TarefaNaoFinalizada","",new Date())
-    router.push('/criaTarefa') 
+function enviaCookieTarefaNova() {
+    VueCookies.set("IdTarefaCookies", 0, new Date())
+    localStorage.setItem("TarefaNaoFinalizada", "", new Date())
+    router.push('/criaTarefa')
 }
-function enviaCookieProjeto(){
-    router.push('/editaProjeto') 
+function enviaCookieProjeto() {
+    router.push('/editaProjeto')
 }
-function mudaVariavelBooleana(){
+function mudaVariavelBooleana() {
     funcaoPopUp.abrePopUp()
 }
 

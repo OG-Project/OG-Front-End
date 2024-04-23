@@ -74,6 +74,7 @@ let usuariosRemover = ref([]);
 let membrosEquipe = ref([]);
 let equipesConvidadas = ref([]);
 let equipeConvidada = ref('');
+let equipesParaConvidar = ref([]);
 const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
 
@@ -151,37 +152,35 @@ async function adicionarEquipe() {
         console.log("Você já convidou essa pessoa.");
     } else {
         equipesConvidadas.value.push(equipe)
+        equipesParaConvidar.value.push(equipe)
         setTimeout(await listaDeEquipes(), 100);
     }
 }
 
 async function listaUsuarios() {
     let convites = await banco.buscarUm(projetoAtual.value.id, "/notificacao/conviteProjeto");
-    convites.forEach((convite) => {
+    convites.forEach(async (convite) => {
+        let listaForEach = []
         console.log(convite)
-        for (const usuarioAceito of convite.conviteParaEquipe.usuarioAceito) {
+        for (const usuarioAceito of convite.conviteParaProjeto.usuarioAceito) {
             if (usuarioAceito.aceito == false) {
-                equipesConvidadas.value.push(usuarioAceito.usuario);
+                let equipe = await banco.buscarUm(convite.conviteParaProjeto.idEquipe, "/equipe")
+                equipesConvidadas.value.push(equipe);
             }
         }
 
     })
+    console.log(equipesConvidadas.value)
 }
 
 
 
 
-async function enviaParaWebSocket(projeto, membrosConvidados) {
-    let equipeAux = {
-        id: "",
-        nome: "",
-        descricao: "",
-        membros: membrosConvidados
-    }
+async function enviaParaWebSocket(projeto, equipesConvidadas) {
     let teste = {
-        equipes: [{ equipe: equipeAux }],
+        equipes: equipesConvidadas,
         notificao: {
-            mensagem: "Te Convidou para o Projeto",
+            mensagem: "Convidou o Projeto",
             conviteParaProjeto: {
                 projeto: projeto
             }
@@ -196,12 +195,22 @@ async function enviaParaWebSocket(projeto, membrosConvidados) {
 
 async function confirmarConvites() {
     let membros = []
+    let equipes = []
     
-    for (const equipe of equipesConvidadas.value) {
+    for (const equipe of equipesParaConvidar.value) {
         membros.push(await banco.buscarUm(equipe.id, "/equipe/criador"))
+        let equipeAux = {
+            equipe: {
+                id:equipe.id,
+                nome: equipe.nome,
+                descricao:equipe.descricao,
+                foto:equipe.foto,
+                membros:membros
+            },
+        }
+        equipes.push(equipeAux)
     }
-    console.log(membros)
-    enviaParaWebSocket(projetoAtual.value, membros);
+    enviaParaWebSocket(projetoAtual.value, equipes);
 
 }
 
