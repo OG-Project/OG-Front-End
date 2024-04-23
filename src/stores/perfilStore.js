@@ -19,6 +19,7 @@ export const perfilStore = defineStore('perfilStore', {
          isVisualizacaoEmail:false,
          isVisualizacaoEquipe:false,
          isVisualizacaoProjeto:false,
+         isVisualizacaoPerfil:false,
          el:null,
          valueModel:'',
          tamanhoTitulo:6,
@@ -36,10 +37,7 @@ export const perfilStore = defineStore('perfilStore', {
             console.log(usuarioAlterado)
             api.atualizar(usuarioAlterado,"/usuario")
         },
-        digitar(valor,press){
-            this.press
-            return valor
-        }
+        
     }
 
 

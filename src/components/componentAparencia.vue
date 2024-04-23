@@ -2,11 +2,15 @@
     <div id="id" class="w-[75vw] h-[92vh] flex flex-col justify-evenly  ">
         <!-- <Input conteudoInput="oi" direcao="direita" styleInput="input-claro" ></Input> -->
         <div>
-            <h1 style="font-family: var(--fonteTitulo);" :style="{fontSize:tamanhoTitulo+'vh'}" class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            <h1 
+            style="font-family: var(--fonteTitulo); font-size: var(--fonteTituloTamanho);" 
+            class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Aparência
             </h1>
         </div>
-        <div style="font-family: var(--fonteCorpo);" :style="{fontSize:tamanhoCorpo+'vh'}" class=" sm:flex-wrap sm:justify-center flex-row-reverse items-center flex gap-4">
+        <div 
+        style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"  
+        class=" sm:flex-wrap sm:justify-center flex-row-reverse items-center flex gap-4">
             <div class=" w-[300px] h-[300px]  relative" >
                 <div class="hexagon shadow-xl right-[70px] absolute z-[10]  bg-[var(--roxo)] rotate-90 w-[166px] h-[152px]"></div>
                 <div class="hexagon top-[135px] right-[15px] absolute z-[9] bg-[var(--roxoEscuro)] rotate-90 w-[133px] h-[123px]"></div>
@@ -132,16 +136,7 @@
             </div>
 
         </div>
-        <!-- <div class="flex justify-end pt-[8%] pr-[15%]">
-            <Botao 
-            :funcaoClick="salvarCor"
-            :roxo="styleGet.getPropertyValue('--roxo')" 
-            preset="PadraoRoxo" 
-            texto="Confirmar" 
-            tamanhoDaBorda="2px" 
-            tamanhoDaFonte="2.0vh" />
-            
-        </div> -->
+        
     </div>
 </template>
 
@@ -155,12 +150,30 @@ import VueCookies from 'vue-cookies';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore'
 import CheckBox from './checkBox.vue';
+import { conexaoBD } from '../stores/conexaoBD';
 const perfil = perfilStore()
+const conexao=conexaoBD()
 const {hue} = storeToRefs(perfil)
 const {fonteCorpo} = storeToRefs(perfil)
 const {tamanhoCorpo} = storeToRefs(perfil)
 const {tamanhoTitulo} = storeToRefs(perfil)
+let usuario=ref()
 
+// let configuracaoa={
+//     fonteCorpo:'Poppins',
+//     fonteCorpoTamanho:2,
+//     fonteTitulo:'Source Sans 3' ,
+//     fonteTituloTamanho: 6,
+//     hueCor: 273,
+//     idioma:'Portugues',
+//     isVisualizaProjetos:true,
+//     isVisualizaEmail:true,
+//     isVisualizaEquipes:true,
+//     isVisualizaPerfil:true,
+//     isDigitarVoz:false ,
+//     isTecladoVirtual: false,
+//     isLibras: false
+// }
 const cores = ref({
     1: '0277f5',
     2: 'f52f02',
@@ -188,9 +201,6 @@ function temaDoSite(e){
     console.log(e);
 }
 
-function salvarCor(){
-
-}
 function corEscolhida(a){
     // parte de conversão de cores e matiz apenas realizar a conversão total de tudo
     console.log('cor '+a)
@@ -199,7 +209,17 @@ function corEscolhida(a){
     console.log('cor escolhida '+matizCor)
     root.style.setProperty('--hueRoxo',matizCor[0])
     perfil.hue=matizCor[0]
-    VueCookies.set('matizCor',JSON.stringify(matizCor[0],'30d'))
+    usuario.value.configuracao.hueCor=matizCor[0]+''
+    console.log(usuario.value.configuracao.hueCor);
+    conexao.atualizar(usuario.value,'/usuario')
+    try {
+        console.log(conexao.buscarUm(
+          JSON.parse(
+            VueCookies.get('IdUsuarioCookie')),'/usuario'));
+    } catch (error) {
+        console.log(error);
+    }
+    // VueCookies.set('matizCor',JSON.stringify(matizCor[0],'30d'))
     console.log(matizCor[0])
 
 }
@@ -207,12 +227,16 @@ function fontCorpoEscolhida(f){
     perfil.fonteCorpo=f
     console.log(f)
     root.style.setProperty('--fonteCorpo',f)
-    VueCookies.set('fonteCorpo',JSON.stringify(perfil.fonteCorpo))
+    usuario.value.configuracao.fonteCorpo=perfil.fonteCorpo
+    conexao.atualizar(usuario.value,'/usuario')
+    // VueCookies.set('fonteCorpo',JSON.stringify(perfil.fonteCorpo))
 }
 function fontTituloEscolhida(f){
     perfil.fonteTitulo=f
     root.style.setProperty('--fonteTitulo',f)
-    VueCookies.set('fonteTitulo',JSON.stringify(perfil.fonteTitulo))
+    usuario.value.configuracao.fonteTitulo=perfil.fonteTitulo
+    conexao.atualizar(usuario.value,'/usuario')
+    // VueCookies.set('fonteTitulo',JSON.stringify(perfil.fonteTitulo))
 }
 function tamanhoFontTitulo(tamanho){
     if (tamanho=='Pequeno') {
@@ -224,7 +248,10 @@ function tamanhoFontTitulo(tamanho){
     else if(tamanho=='Grande'){
         perfil.tamanhoTitulo=7
     }
-    VueCookies.set('fonteTituloTamanho',JSON.stringify(perfil.tamanhoTitulo+'vh'))
+    // VueCookies.set('fonteTituloTamanho',JSON.stringify(perfil.tamanhoTitulo))
+    root.style.setProperty('--fonteTituloTamanho',perfil.tamanhoTitulo)
+    usuario.value.configuracao.fonteTituloTamanho=perfil.tamanhoTitulo
+    conexao.atualizar(usuario.value,'/usuario')
     console.log(perfil.tamanhoTitulo)
     console.log(tamanho)
 }
@@ -238,7 +265,10 @@ function tamanhoFontCorpo(tamanho){
     else if(tamanho=='Grande'){
         perfil.tamanhoCorpo=2.5
     }
-    VueCookies.set('fonteCorpoTamanho',JSON.stringify(perfil.tamanhoCorpo+'vh'))
+    // VueCookies.set('fonteCorpoTamanho',JSON.stringify(perfil.tamanhoCorpo))
+    root.style.setProperty('--fonteCorpoTamanho',perfil.tamanhoCorpo)
+    usuario.value.configuracao.fonteCorpoTamanho=perfil.tamanhoCorpo
+    conexao.atualizar(usuario.value,'/usuario')
     console.log(perfil.tamanhoCorpo)
     console.log(tamanho)
 }
@@ -256,18 +286,18 @@ onBeforeMount(async ()=>{
     console.log()
     perfil.fonteCorpo= await JSON.parse(VueCookies.get('fonteCorpo'))
     perfil.fonteTitulo= await JSON.parse(VueCookies.get('fonteTitulo'))
+    usuario.value=
+        await conexao.buscarUm(JSON.parse
+            (VueCookies.get('IdUsuarioCookie')),'/usuario')
+    
     console.log(perfil.fonteCorpo)
+    console.log(configuracao.value)
     console.log(perfil.fonteTitulo)
 })
 
 onMounted(() => {
     
     console.log('fonts '+perfil.fonteCorpo+' '+perfil.fonteTitulo)
-    let root =document.documentElement
-    //  alert(cor.value)
-    
-    
-    //  alert(contraste(cor.value))
     console.log(convert.hex.hsl(cor.value)[0])
 
 })

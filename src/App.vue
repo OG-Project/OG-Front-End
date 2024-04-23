@@ -10,34 +10,51 @@ import { ref, watch, onMounted} from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
+import { conexaoBD } from './stores/conexaoBD';
 const perfil=perfilStore()
 const {isVlibras}=storeToRefs(perfil);
 import { useDraggable } from '@vueuse/core'
 const el = ref(perfil.el)
-
+const conexao=conexaoBD()
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70},
 })
 // let ativado='';
 let url= window.location.href;
-
+let usuario=ref()
+let configuracao=ref()
 
 const route = useRoute();
 
-  onMounted(()=>{
+  onMounted(async()=>{
   let root=document.documentElement.style
-  perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
-  perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
-  console.log(perfil.isTecladoVirtual)
-  root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
-  root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
-  root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
-  root.setProperty('--fonteCorpoTamanho',JSON.parse(VueCookies.get('fonteCorpoTamanho')))
-  root.setProperty('--fonteTituloTamanho',JSON.parse(VueCookies.get('fonteTituloTamanho')))
-  perfil.hue=JSON.parse(VueCookies.get('matizCor'))
-  perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
-  perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
-  perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
+  usuario.value=
+    await conexao.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')),'/usuario')
+  configuracao.value=usuario.value.configuracao
+  root.setProperty('--hueRoxo',configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho)
+  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho)
+
+  // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
+  // perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
+  // console.log(perfil.isTecladoVirtual)
+  // root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
+  // root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
+  // root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
+  // let tamanhoCorpo=JSON.parse(VueCookies.get('fonteCorpoTamanho'))
+  // let tamanhoTitulo=JSON.parse(VueCookies.get('fonteTituloTamanho'))
+  // console.log(tamanhoCorpo);
+  // console.log(tamanhoTitulo);
+  // root.setProperty('--fonteCorpoTamanho',tamanhoCorpo+'vh')
+  // root.setProperty('--fonteTituloTamanho',tamanhoTitulo+'vh')
+  // perfil.hue=JSON.parse(VueCookies.get('matizCor'))
+  // perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
+  // perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
+  // perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
   })
   
   function press(b){
