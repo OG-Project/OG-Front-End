@@ -43,7 +43,7 @@
 
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Chart from "chart.js/auto";
 import { onMounted } from "vue";
 import topicosHome from "../../components/topicosHome.vue";
@@ -82,6 +82,8 @@ async function verificaTarefasFeitas() {
         });
       });
     });
+    console.log(tarefasFeitas.value);
+    console.log(tarefasNaoFeitas.value);
     porcentagemTarefasFeitas();
   });
 }
@@ -93,6 +95,7 @@ function porcentagemTarefasFeitas() {
   console.log(quantidadeTarefasFeitas.value);
   console.log(quantidadeNaoTarefasFeitas.value);
 }
+
 const DATA_COUNT = 5;
 const NUMBER_CFG = { count: DATA_COUNT, min: 0, max: 100 };
 
@@ -158,11 +161,18 @@ const config = {
     },
   },
 };
+
 onMounted(() => {
-  new Chart(document.getElementById("tabela"), config);
   verificaTarefasFeitas();
 });
+
+watch([quantidadeTarefasFeitas, quantidadeNaoTarefasFeitas], () => {
+  data.labels = ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"];
+  data.datasets[0].data = [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value];
+  new Chart(document.getElementById("tabela"), config);
+});
 </script>
+
 <style>
 #poligono {
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
