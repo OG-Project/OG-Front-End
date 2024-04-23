@@ -2,10 +2,11 @@
   <fundoPopUp largura="" altura="95vh">
     <div class="h-[80vh] w-[45vw] flex flex-col items-center z-[9999]">
       <h1 class="text-4xl">{{ props.nomeDoTopico }}</h1>
-        <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
-        <div  v-for="projeto of listaDeProjetos" class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
+      <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
+        <div v-for="projeto of listaDeProjetos" class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
           style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
-          <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid #620ba7" @click="redireciona('/projeto/kanban', projeto.id)">
+          <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid #620ba7"
+            @click="redireciona('/projeto/kanban', projeto.id)">
             <p>{{ projeto.nome }}</p>
             <p v-if="projeto.responsaveis[0]">{{ projeto.responsaveis[0].responsavel.username }}</p>
             <p v-if="!projeto.responsaveis[0]"> Não possui responsável</p>
@@ -18,7 +19,7 @@
 <script setup>
 import fundoPopUp from "./fundoPopUp.vue";
 import { conexaoBD } from "../stores/conexaoBD.js"
-import {onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import VueCookies from "vue-cookies";
 import router from "../router";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
@@ -32,7 +33,7 @@ onMounted(() => {
   pegaListaDeProjetosDia();
 });
 
-function redireciona(rota,id) {
+function redireciona(rota, id) {
   VueCookies.set("IdProjetoAtual", id);
   router.push(rota);
   funcaoPopUp.fechaPopUp();
@@ -88,9 +89,11 @@ const props = defineProps({
   width: 4%;
   height: 4%;
 }
+
 .blur-background {
   @apply fixed inset-0 w-full h-full bg-black bg-opacity-50 backdrop-filter backdrop-blur-lg absolute;
 }
+
 #bgBranco::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #f1f1f1;
@@ -105,6 +108,7 @@ const props = defineProps({
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: #d8d8d8;
 }
+
 #exploradorDeArquivos::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
   height: 6px;
@@ -121,9 +125,11 @@ const props = defineProps({
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
   background-color: #d8d8d8;
 }
+
 #filtroDeSubTarefa {
   font-size: small;
 }
+
 option {
   font-size: small;
   border: 1px solid #cbcbcb;
