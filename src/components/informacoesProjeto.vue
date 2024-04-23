@@ -3,8 +3,8 @@
         <div class="h-[6%] pt-8 flex items-end justify-center">
             <h1 class="text-3xl font-semibold">Informações</h1>
         </div>
-        <div class="pt-8  mt-4 mb-4 gap-4 min-h-[8%] w-[100%] flex flex-col justify-evenly ">
-            <div class="flex pl-8 gap-2 ">
+        <div class="  h-auto mt-4 mb-4 gap-4 w-[100%] flex flex-col justify-evenly ">
+            <div class="flex pl-8 gap-2 " v-if="!mudaAlinhamentoNomeProjeto">
                 <div class="w-[60%] justify-start flex-row">
                     <p>Nome do projeto:</p>
                 </div>
@@ -12,7 +12,15 @@
                     <p class="w-[100%] text-[#620BA7] break-all">{{ nomeProjeto }}</p>
                 </div>
             </div>
-            <div class="flex pl-8 mt-4">
+            <div class="flex flex-col pl-8 gap-2 " v-else>
+                <div class="w-[60%] justify-start flex-row">
+                    <p>Nome do projeto:</p>
+                </div>
+                <div class="w-full justify-end flex-row ">
+                    <p class="w-[100%] text-[#620BA7] break-all">{{ nomeProjeto }}</p>
+                </div>
+            </div>
+            <div class="flex pl-8 mt-4 pb-2">
                 <div class="w-[60%] justify-start flex-row">
                     <p>Data Inicial:</p>
                 </div>
@@ -29,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="h-[4%] flex items-center justify-center p-8">
+        <div class="h-[4%] flex items-center justify-center p-2">
             <h1 class="text-xl font-semibold">Status</h1>
         </div>
         <div class="h-max flex items-center justify-center">
@@ -46,7 +54,7 @@
                     </p>
             </div>
         </div>
-        <div class="h-[4%] flex items-center justify-center p-8">
+        <div class="h-[4%] flex items-center justify-center p-6">
             <h1 class="text-xl font-semibold">Propriedades</h1>
         </div>
         <div class="h-[35%] flex flex-col items-center justify-center p-8" v-if="!temLista(listaPropriedades)">
