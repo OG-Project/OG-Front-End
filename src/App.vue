@@ -11,6 +11,7 @@ import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
 import router from "@/router";
+
 import { useDraggable } from '@vueuse/core'
 import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
 import listaProjetos from './components/listaProjetos.vue';
@@ -18,6 +19,10 @@ import kanbanProjetos from './components/kanbanProjetos.vue'
 import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
 import { conexaoBD } from "./stores/conexaoBD";
+
+import tabBar from "./components/tabBar.vue";
+import NavBarMobile from "./components/NavBarMobile.vue";
+
 
 const banco = conexaoBD();
 const criaNotificacaoStore = criaNotificacao();
@@ -32,6 +37,9 @@ const perfil = perfilStore()
 const { isVlibras } = storeToRefs(perfil);
 
 const el = ref(perfil.el)
+
+const screenWidth = ref(window.innerWidth)
+
 
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70 },
@@ -53,6 +61,14 @@ onMounted(() => {
   setTimeout(() => {
     VerificaPrazoDoProjeto()
   }, 1000);
+
+  window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+})
+
+watch(() => window.innerWidth, () => {
+    screenWidth.value = window.innerWidth
 })
 
 function press(b) {
@@ -142,7 +158,9 @@ watch(() => route.path, () => {
 
 <template>
 
-  <Navbar v-if="!estaNoLogin" />
+  <Navbar v-if="!estaNoLogin && screenWidth >= 1024"/>
+  <tabBar v-if="!estaNoLogin && screenWidth < 1024"/>
+  <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024"/>
   <RouterView />
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
@@ -162,7 +180,6 @@ watch(() => route.path, () => {
         </div>
       </div>
     </div>
-
   </div>
 
 </template>

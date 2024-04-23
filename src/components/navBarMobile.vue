@@ -1,39 +1,22 @@
 <template>
-  <div class="h-[8vh] w-full flex">
-    <div class="h-[8vh] w-[15%] flex gap-8">
-      <BarraLateral class=" cursor-pointer"></BarraLateral>
-      <div class="h-[8vh] w-[15%] flex items-center">
-        <Botao
-          preset="PadraoVazado"
-          texto="Nova Tarefa"
-          tamanhoDaBorda="2px"
-          :funcaoClick="redireciona"
-          :parametrosFuncao="'/criaTarefa'"
-        >
-        </Botao>
+  <div class="h-[8vh] w-full flex justify-around">
+
+    <div class="h-[8vh] w-[80%] flex items-center gap-8 justify-end mr-8">
+      <Input styleInput="input-claro-pequeno" largura="60" altura="20%" conteudoInput="Pesquisar..."></Input>
+      <!-- asdasdasd -->
+      <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies && usuarioCookies.foto"
+        class="shadow-2xl h-[60px] w-[60px] rounded-full"
+        :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
+    </div>
+    <div class="h-[8vh] w-[20%] flex gap-8 items-center">
+      <div class="h-[8vh] flex items-center">
+        <img @click="redireciona('/criaTarefa')" class="w-" src="../assets/BotaoCriaTarefaMobile.svg" />
       </div>
     </div>
-    <div class="h-[8vh] w-[35%] flex gap-8"></div>
-    <div class="h-[8vh] w-[50%] flex items-center gap-8 justify-end mr-8">
-      <Input
-        styleInput="input-claro-pequeno"
-        largura="20%"
-        altura="10%"
-        conteudoInput="Pesquisar..."
-      ></Input>
-      <button @click="notificacaoBoolean = true">
-        <img :src="notificacao" />
-      </button>
-      <img
-        @click="redireciona('/perfil/informacoes')"
-        v-if="usuarioCookies && usuarioCookies.foto"
-        class="shadow-2xl h-[60px] w-[60px] rounded-full"
-        :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
-      />
-    </div>
+
   </div>
-  <div v-if="notificacaoBoolean==true" class="w-full fixed z-50 flex justify-end pr-4" >
-    <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean=false"></popUpNotificacao>
+  <div v-if="notificacaoBoolean == true" class="w-full fixed z-50 flex justify-end pr-4">
+    <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean = false"></popUpNotificacao>
   </div>
 </template>
 <script setup>
@@ -69,7 +52,7 @@ async function autenticarUsuario(id) {
 
 function redireciona(rota) {
   router.push(rota);
-  if(rota == '/criaTarefa'){
+  if (rota == '/criaTarefa') {
     const criaTarefa = criaTarefaEBuscaStore();
     criaTarefa.criaTarefa();
   }
