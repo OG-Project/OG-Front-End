@@ -844,7 +844,6 @@ function update() {
 
 onMounted(async () => {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
-  VueCookies.set("IdProjetoAtual", 1,100000);
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();

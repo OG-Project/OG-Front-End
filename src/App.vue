@@ -12,21 +12,24 @@ import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
 import router from "@/router";
 
-
 import { useDraggable } from '@vueuse/core'
-
 import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
 import listaProjetos from './components/listaProjetos.vue';
 import kanbanProjetos from './components/kanbanProjetos.vue'
 import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
+import { conexaoBD } from "./stores/conexaoBD";
+
 import tabBar from "./components/tabBar.vue";
 import NavBarMobile from "./components/NavBarMobile.vue";
 
+
+const banco = conexaoBD();
 const criaNotificacaoStore = criaNotificacao();
 const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
-webSocket.url = "ws://localhost:8082/og/webSocket/usuario/"+usuarioLogadoId
+webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" + usuarioLogadoId
+webSocket.criaConexaoWebSocket();
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto = funcaoPopUpStore();
@@ -55,6 +58,10 @@ onMounted(() => {
 
   perfil.fonteCorpo = (VueCookies.get('fonteCorpo'))
   perfil.isVlibras = (VueCookies.get('isVlibras'))
+  setTimeout(() => {
+    VerificaPrazoDoProjeto()
+  }, 1000);
+
   window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
     })
@@ -97,6 +104,45 @@ function change(a) {
 }
 function close() {
   perfil.isTecladoAtivado = !perfil.isTecladoAtivado
+}
+
+function VerificaPrazoDoProjeto() {
+  banco.procurar("/projeto").then((projetos) => {
+    let dataAtual = new Date();
+    let dias = 0;
+    for (let i = 0; i < projetos.length; i++) {
+      let dataProjeto = new Date(projetos[i].dataFinal);
+      let diferenca = dataProjeto.getTime() - dataAtual.getTime();
+      dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
+      if (dias < 7 && projetos[i].dataFinal != null  && projetos[i].dataFinal > dataAtual) {
+        enviaParaWebSocket(projetos[i], dias)
+      }
+    }
+  });
+}
+
+function enviaParaWebSocket(projetoAux, dias) {
+  let teste = {
+    equipes: [
+      {
+        equipe: {
+          membros: [
+            {
+              id: usuarioLogadoId
+            }
+          ]
+        }
+      }
+    ],
+    notificao: {
+      mensagem: "Restam " + dias + " Para o fim do projeto",
+      projeto: projetoAux
+    }
+  }
+  console.log(teste)
+  const webSocket = webSocketStore();
+  webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+  webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 var estaNoLogin = ref(true)
