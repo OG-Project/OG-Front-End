@@ -2,14 +2,14 @@
     <div>
         <div class="corDiv">
           <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="expandirImagem" @mouseleave="reduzirImagem">
-          <img class="imagemEquipe" v-else src="" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
+          <img class="imagemEquipe" v-else src="../imagem-vetores/imagemEquipePadrao.svg" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
             <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
         </div>
         <div class="divCel flex justify-end">
             <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
                 <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
-                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="personalizado" width="50vw" height="5vh"  texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
+                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="personalizado" width="50vw" height="6vh"  texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
             <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
@@ -286,7 +286,7 @@ async function buscarMembrosEquipe() {
         }
     }
 
-  @media(max-width: 620px){
+  @media screen and (max-width: 620px){
     .botaoIcone{
       @apply w-[50px] h-[50px] mt-[8vh] mr-4
     }

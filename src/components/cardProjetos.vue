@@ -164,7 +164,7 @@ let barraPorcentagem = ref({
             @apply relative text-white flex w-72 h-6 justify-start bg-gray-500;
         }
         .data{
-            @apply flex justify-start mr-3;
+            @apply flex justify-start mr-7;
         }
     }
 }</style>

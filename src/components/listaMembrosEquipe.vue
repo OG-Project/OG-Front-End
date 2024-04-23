@@ -3,11 +3,11 @@
       <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
-            <img class="imagemEquipe" v-else src="">
+            <img class="imagemEquipe" v-else src="../imagem-vetores/Equipe.svg">
              <h1 class="equipeNome xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
-             <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
+             <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
                     <img  v-if="membro.id != usuarioLogado"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
@@ -21,9 +21,11 @@
             </div>
         </div>  
             <div class="adiciona-membro">
-                  <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
-               <div class="flex mt-[1vh] ml-5">
-                <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
+                  <Input v-if="screenWidth >=620" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+                  <Input v-else class="flex mt-1" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+               <div class="divBotaoAdiciona flex mt-[1vh] ml-5">
+                <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
+                <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="personalizado" width="20vw" height="5vh" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
                </div>
             </div>
             <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
@@ -34,7 +36,7 @@
                     <div v-if="screenWidth >= 620">
                     <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
-                    <div else>
+                    <div v-else>
                     <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="80vw" height="5vh" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                 </div>
@@ -238,7 +240,7 @@ function larguraInputConvidado(){
         border-transparent
         border-b-brancoNeve
         border-b-2
-        w-[60]
+        w-[10]
         items-center  focus-within:border-white
         focus-within:border-4 focus-within:rounded-md truncate;
         
@@ -334,6 +336,10 @@ function larguraInputConvidado(){
     }
 
     @media(max-width: 620px){
+
+        .divEquipe{
+           @apply flex justify-center w-[100%]
+        }
         .adiciona-membro{
             @apply flex justify-end;
         }
@@ -341,7 +347,7 @@ function larguraInputConvidado(){
             @apply w-[65vw];
         }
         .corDiv{
-            @apply flex mr-10 h-20 w-[60vw] 
+            @apply flex ml-5 mr-5 h-20 w-[40vw] 
             border-transparent
             border-b-roxo    
             border-b-2
@@ -356,7 +362,7 @@ function larguraInputConvidado(){
              @apply flex mt-5;
         }
         .styleSelectPadraoBranco{
-            @apply border-4 mt-[1vh] 
+            @apply border-4 mt-[1.5vh] ml-3 
             flex justify-center
             border-transparent
             border-b-brancoNeve
@@ -366,7 +372,7 @@ function larguraInputConvidado(){
             focus-within:border-4 focus-within:rounded-md truncate;
         }
         .imgDePerfil{
-            @apply w-[35px] h-[35px]
+            @apply w-[30px] h-[30px]
         }
         .imagemEquipe{
             @apply w-[40px] h-[40px] mt-3;

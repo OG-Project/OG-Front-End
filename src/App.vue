@@ -23,7 +23,7 @@ import { criaNotificacao } from './stores/criaNotificacao.js';
 const criaNotificacaoStore = criaNotificacao();
 const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
-webSocket.url = "ws://localhost:8082/og/webSocket/usuario/"+usuarioLogadoId
+webSocket.url = "ws://localhost:8085/og/webSocket/usuario/"+usuarioLogadoId
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto = funcaoPopUpStore();

@@ -7,7 +7,7 @@
                 
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                         <img class="imagem" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
-                        <img class="imagem" v-else src="">
+                        <img class="imagem" v-else src="../imagem-vetores/Equipe.svg">
                         <div class="styleH1Padrao">
                             <h1 class="nomeEquipe flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] " :title="equipeEditar.nome" > {{ truncarNome(equipeEditar.nome, larguraNomeEquipe())  }}</h1>
                         </div>
@@ -138,7 +138,7 @@ return URL.createObjectURL(imagemSelecionada.value);
 });
 
 // URL da imagem padrão
-const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+const imagemPadraoUrl = '../src/imagem-vetores/imagemEquipePadrao.svg';
 
 // Computed property para determinar qual URL de imagem exibir
 const imagemExibicao = computed(() => {

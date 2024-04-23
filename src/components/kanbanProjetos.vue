@@ -17,7 +17,6 @@
      
     </template>
     <script setup>
-     import { VueCookies } from 'vue-cookies';
 
     const props = defineProps({
     cor: String,
@@ -74,10 +73,10 @@
 
     @media(min-width: 2560px){
        .imagem{
-        @apply 2xl:w-[60px] 2xl:h-[60px] mr-[2vw] mt-[-4vh]
+        @apply 2xl:w-[40px] 2xl:h-[40px] mt-[-4vh] ml-[0.2vw]
        }
        .icone{
-        @apply 2xl:w-[50px] 2xl:h-[50px] mt-[-6.5vh] ml-[12.45vw]
+        @apply 2xl:w-[50px] 2xl:h-[50px] mt-[-7.5vh] ml-[12.45vw]
        }
        .card-titulo{
         @apply ml-5 text-xl w-[10vw]

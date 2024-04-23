@@ -1,7 +1,7 @@
 <template>
     <div :style="{ height: height, width: width }" class="flex justify-center">
       <div class="listaProjetos overflow-auto ">
-        <div class="flex  w-[100%]">
+        <div class="divGeral flex w-[100%]">
           <div v-if="!kanbanAtivo" class="flex w-full">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
              @click="ativarBotao('urgentes')">URGENTES</button>
@@ -50,7 +50,7 @@
                 <div class="meusProjetos">
                   <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
                 </div>
-                <div class="flex justify-center ml-5 mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('meus-projetos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
+                <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('meus-projetos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
                   <KanbanProjetos :v-if="projeto.categoria === 'meus-projetos'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
@@ -65,15 +65,15 @@
             </div>
           </div>
           </div>
-          <div  v-if="!kanbanAtivo" class="iconeKanban" @click="toggleKanban()">
-            <img  class="icone" src="../imagem-vetores/iconKanban.svg">
+          <div  v-if="!kanbanAtivo " class="iconeKanban" @click="toggleKanban()">
+            <img   class="icone" src="../imagem-vetores/iconKanban.svg">
           </div>
         </div>
         <div v-if="mostrarMensagem || !filtrarPorCategoria(statusBotao).length && statusBotao !== null || projetos.length === 0">
           <div v-if="!kanbanAtivo"  class="mensagem">
             NÃO HÁ NENHUM PROJETO
           </div>
-          <div  v-if="!kanbanAtivo" class="flex justify-center mt-10" >
+          <div v-if="!kanbanAtivo" class="flex justify-center mt-10" >
             <img src="../imagem-vetores/pasta.svg" alt="">
           </div>
         </div>
@@ -105,7 +105,8 @@
     height: { type: String, required: true },
     width: { type: String, required: true }
   });
-  
+
+  const screenWidth = window.innerWidth;
   const statusBotao = ref(null);
   const kanbanAtivo = ref(false);
   const projetoEmBaixoId = ref()
@@ -157,7 +158,7 @@
     if (Array.isArray(projetosEquipe)) {
         projetos.value = projetosEquipe;
         projetos.value.forEach(projeto => {
-            projeto.dataFinal = new Date(projeto.dataFinal);
+            
             
         });
 
@@ -351,6 +352,8 @@ kanban-board {
   flex-wrap: wrap;
   padding: 30px; 
   justify-content:flex-start;
+  margin-left: -15px;
+  font-size: large;
 }
 .iconeKanban{
   @apply w-[25px] h-[25px] flex justify-end xl:mr-[0.8vw] xl:mt-[1.2vh] lg:mr-[1.5vw] lg:mt-[1vh]  md:mr-[1.5vw] md:mt-[1vh];
@@ -370,7 +373,7 @@ kanban-board {
 }
 
 .botaoStatus {
-  @apply bg-transparent font-semibold mt-3 px-5 text-xl rounded mr-2;
+  @apply bg-transparent font-semibold mt-3 px-5 text-xl rounded mr-2 truncate;
 }
 
 .bordaRoxa {
@@ -416,6 +419,52 @@ kanban-board {
 .nenhumProjeto{
   @apply ml-[42%] mt-[22vh];
 }
-    }
+
+@media(max-width: 620px){
+  kanban-board {
+    @apply flex;
+    width: 1500px;
+    height: 600px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    overflow: auto;
+  }
+  .urgentes {
+    @apply flex w-[80vw];
+  }
+  divGeral{
+    @apply flex w-full
+  }
+  .naoIniciado{
+    @apply flex w-[22.8vw] ;
+  }
+  .prontos{
+    @apply flex w-[22.8vw] ;
+  }
+  
+  .meusProjetos{
+    @apply flex w-[22.8vw] ;
+  }
+  .cardProjetos{
+    @apply mt-20 text-2xl;
+    max-width: calc(125% - 1px);
+  }
+  .iconeKanban{
+    @apply w-[20px] h-[20px] flex justify-end mr-[0.8vw] mt-[1.2vh];
+  }
+  
+  .iconeCard{
+    @apply  flex justify-end  mr-[-0.5vw] mt-[1.2vh];
+  } 
+  .mensagemKanban{
+    @apply ml-[42%];
+  }
+  .nenhumProjeto{
+    @apply ml-[42%] mt-[22vh];
+  }
+}
+}
   </style>
   
