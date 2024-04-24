@@ -134,10 +134,10 @@ function alterarEmail(){
 onBeforeMount(async ()=>{
         // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE
 
-        VueCookies.set("IdUsuarioCookie",JSON.stringify(6),"30d")
+        // VueCookies.set("IdUsuarioCookie",JSON.stringify(6),"30d")
         let id=JSON.parse(VueCookies.get("IdUsuarioCookie"))
         console.log(id)
-        let usuario = await conexao.buscarUm(1,'/usuario')
+        let usuario = await conexao.buscarUm(id,'/usuario')
         console.log(usuario)
         // erros pelo fato do cookie
         PerfilStore.nome=usuario.nome

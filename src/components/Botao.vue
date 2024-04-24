@@ -23,7 +23,6 @@
 <script setup>
 import { ref, onMounted, defineProps, watch, computed, onUpdated } from "vue";
 import { perfilStore } from "../stores/perfilStore";
-// Define variáveis reativas para controlar os estados de hover e clique
 let perfil=perfilStore()
 import { storeToRefs } from 'pinia';
 const {hue} =storeToRefs(perfil)
@@ -100,8 +99,7 @@ let Preset = props.preset;
 let botao;
 let hoverBotao;
 let clickBotao;
-let width = "";
-let height = "";
+
 let estiloIcone = {
   width: "15%",
   filter: corInvertidaIcon.value,
@@ -566,8 +564,5 @@ function click() {
   @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh]
 }
 
-.personalizadoId {
-  width: v-bind('tamanho.width');
-  height: v-bind('tamanho.height');
-}
+
 </style>

@@ -54,7 +54,7 @@ const route = useRoute();
   onMounted(async()=>{
   let root=document.documentElement.style
   usuario.value=
-    await conexao.buscarUm(
+    await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')),'/usuario')
   configuracao.value=usuario.value.configuracao
@@ -85,6 +85,7 @@ const route = useRoute();
 
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
+    console.log(screenWidth.value);
 })
 
 function press(b) {
@@ -162,9 +163,6 @@ function enviaParaWebSocket(projetoAux, dias) {
   webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
-function close(){
-  perfil.isTecladoAtivado=!perfil.isTecladoAtivado
-}
 var estaNoLogin = ref(true)
 
 watch(() => route.path, () => {

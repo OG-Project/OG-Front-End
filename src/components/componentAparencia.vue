@@ -291,7 +291,6 @@ onBeforeMount(async ()=>{
             (VueCookies.get('IdUsuarioCookie')),'/usuario')
     
     console.log(perfil.fonteCorpo)
-    console.log(configuracao.value)
     console.log(perfil.fonteTitulo)
 })
 
