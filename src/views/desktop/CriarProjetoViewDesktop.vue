@@ -370,8 +370,9 @@ async function criaProjeto() {
 
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+            router.push('/projeto')
         restauraCookies();
-        router.push('/projeto')
+        
 
     } else {
         const editaProjeto = editaProjetoStore()

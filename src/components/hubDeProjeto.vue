@@ -21,6 +21,10 @@
                 @click="enviaCookieTarefaNova()">
                 +Tarefa
             </button>
+            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center"
+                @click="abreModalMensagem()">
+                <iconMensagem></iconMensagem>
+            </button>
             <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
                 @click="enviaCookieProjeto()">
                 <IconEngrenagem1></IconEngrenagem1>
@@ -29,7 +33,11 @@
                 @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
+            <div v-if="enviandoMensagem" class="absolute w-[30%] z-10">
+                <comentarioProjeto></comentarioProjeto>
+            </div>
         </div>
+        
     </div>
     <div class="w-[80%] flex flex-row justify-around">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
@@ -64,7 +72,8 @@ import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
 import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
 import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp';
-
+import iconMensagem from '../assets/iconMensagem.vue';
+import comentarioProjeto from './comentarioProjeto.vue';
 let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
@@ -77,7 +86,7 @@ let subtarefas = ref([])
 let listaDeEquipes = ref(false)
 let funcaoPopUp = funcaoPopUpStore()
 let visualizacao = ref({})
-
+let enviandoMensagem = ref(false)
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
     visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista')
@@ -121,6 +130,9 @@ function defineSubTarefasConcluida(tarefas) {
     subtarefasConcluidas.value = subtarefas.value.filter(subtarefa => subtarefa.concluido)
 }
 
+function abreModalMensagem(){
+    enviandoMensagem.value=!enviandoMensagem.value
+}
 
 </script>
 

@@ -60,7 +60,7 @@
     </fundoPopUp>
 </template>
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -78,10 +78,15 @@ let usuarioConvidado = ref('');
 let mensagemError = ref("");
 let usuarioLogado = VueCookies.get("IdUsuarioCookie")
 let membrosEquipe = ref([]);
+let conexaoWeb = webSocketStore()
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
 import { webSocketStore } from '../stores/webSocket.js'
 
+onMounted(()=>{
+    conexaoWeb.url= "ws://localhost:8082/og/webSocket/usuario/1";
+    conexaoWeb.criaConexaoWebSocket()
+})
 
 function marginRightConvidado() {
     if (screenWidth <= 768) {
@@ -129,7 +134,7 @@ const imagemSelecionadaUrl = computed(() => {
 });
 
 // URL da imagem padrão
-const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+const imagemPadraoUrl = '../src/imagem-vetores/imagemEquipePadrao.svg';
 
 // Computed property para determinar qual URL de imagem exibir
 const imagemExibicao = computed(() => {
@@ -225,48 +230,52 @@ async function cadastrarEquipe() {
     equipeCadastrada.nome = nome.value;
     equipeCadastrada.descricao = descricao.value;
     mensagemError.value = "";
-
-    const equipePromise = cria.criaEquipe(equipeCadastrada)
-
-    const ids = []
-
-    // Adicione automaticamente o usuário logado à equipe
-    const usuarioLogadoId = Number(usuarioLogado);
-    ids.push(usuarioLogadoId);
+    
     let equipe;
-    await equipePromise.then(e => {
-        equipe = e.data;
-        enviaParaWebSocket(equipe)
+    cria.criaEquipe(equipeCadastrada).then(response =>{
+        equipe = response.data
+      colocaMembrosEquipe(equipe)
     });
-    banco.adicionarUsuarios(ids,equipe.id,"/usuario/add");
-    await enviarFotoParaBackend();
 
-    nome.value = "";
-    descricao.value = "";
-    membrosEquipe = "";
-
-
+    await enviarFotoParaBackend(equipe);
 };
-async function enviaParaWebSocket(equipe) {
-    let equipeAux = {
-        id: equipe.id,
-        nome: equipe.nome,
-        descricao: equipe.descricao,
-        membros: membrosEquipe.value
-    }
-    let teste = {
-        equipes: [{ equipe: equipeAux }],
-        notificao: {
-            mensagem: "Te Convidou para a Equipe",
-            conviteParaEquipe: {
-                equipe: equipe
-            }
-        }
 
+function colocaMembrosEquipe(equipe){
+    const ids = membrosEquipe.value.map(m => {
+        return Number(m.id);
+    });
+    adicionaUsuarioLogado(ids, equipe)
+}
+
+function adicionaUsuarioLogado(ids, equipe){
+// Adicione automaticamente o usuário logado à equipe
+const usuarioLogadoId = Number(usuarioLogado);
+   
+    if (!ids.includes(usuarioLogadoId)) {
+        ids.push(usuarioLogadoId);
     }
-    const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+    adicionaUsuariosBanco(ids, equipe)
+}
+
+function adicionaUsuariosBanco(ids, equipe){
+    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add").then(resposta => {
+        console.log(resposta)
+        enviaParaWebSocket(equipe);
+        nome.value = "";
+        descricao.value = "";
+        membrosEquipe = "";
+    });
+}
+
+async function enviaParaWebSocket(equipeAux) {
+    let teste = {
+        equipes: [{equipe:equipeAux}],
+        notificao: {
+            mensagem: "Criou a Equipe",
+            equipe: equipeAux
+        }
+    }
+    await conexaoWeb.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 async function enviarFotoParaBackend(equipe) {
