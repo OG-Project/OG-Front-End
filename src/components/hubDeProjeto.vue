@@ -48,6 +48,7 @@
         </div>
         <div v-if="$route.path === '/projeto/lista'" class="flex flex-row bg-[#CECCCE] px-2" >
             Propriedades Visiveis
+            {{ console.log(listaPropriedadeVisiveis) }}
             <select v-model="listaPropriedadeVisiveis" multiple :options="listaPropriedadeVisiveis"></select>
         </div>
     </div>
