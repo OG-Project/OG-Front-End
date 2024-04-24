@@ -24,10 +24,10 @@
             </h1>
         </div>
         <div class="h-32 w-full flex items-center justify-around">
-            <img :src="EstrelaHomeIcon" @click="trocaTopico('Tarefas Urgentes')" />
-            <img :src="DiaHomeIcon" @click="trocaTopico('Tarefas do Dia')" />
-            <img :src="SemanaHomeIcon" @click="trocaTopico('Tarefas da Semana')" />
-            <img :src="MesHomeIcon" @click="trocaTopico('Tarefas do Mês')" />
+            <img :src="EstrelaHomeIcon" @click="trocaTopico('Projetos Urgentes')" />
+            <img :src="DiaHomeIcon" @click="trocaTopico('Projetos do Dia')" />
+            <img :src="SemanaHomeIcon" @click="trocaTopico('Projetos da Semana')" />
+            <img :src="MesHomeIcon" @click="trocaTopico('Projetos do Mês')" />
         </div>
         <div class="w-[90%] h-[45vh] flex flex-col items-center"
             style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
@@ -94,31 +94,31 @@ async function verificaTarefasFeitas() {
 }
 
 onMounted(() => {
-    trocaTopico('Tarefas Urgentes')
+    trocaTopico('Projetos Urgentes')
     verificaTarefasFeitas();
 });
 
 function trocaTopico(nome) {
-    if (nome === 'Tarefas Urgentes') {
-        nomeDoTopico.value = "Tarefas Urgentes";
+    if (nome === 'Projetos Urgentes') {
+        nomeDoTopico.value = "Projetos Urgentes";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosUrgentes();
     }
-    else if (nome === 'Tarefas do Dia') {
-        nomeDoTopico.value = "Tarefas do Dia";
+    else if (nome === 'Projetos do Dia') {
+        nomeDoTopico.value = "Projetos do Dia";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosDia();
     }
-    else if (nome === 'Tarefas da Semana') {
-        nomeDoTopico.value = "Tarefas da Semana";
+    else if (nome === 'Projetos da Semana') {
+        nomeDoTopico.value = "Projetos da Semana";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosSemana();
     }
-    else if (nome === 'Tarefas do Mês') {
-        nomeDoTopico.value = "Tarefas do Mês";
+    else if (nome === 'Projetos do Mês') {
+        nomeDoTopico.value = "Projetos do Mês";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosMes();
@@ -182,24 +182,34 @@ async function pegaListaDeProjetosSemana() {
 }
 
 async function pegaListaDeProjetosDia() {
-    const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
-    const dataAtual = new Date();
-    const primeiroDiaSemana = new Date(dataAtual);
-    primeiroDiaSemana.setDate(primeiroDiaSemana.getDate() - primeiroDiaSemana.getDay());
-    const ultimoDiaSemana = new Date(primeiroDiaSemana);
-    ultimoDiaSemana.setDate(ultimoDiaSemana.getDate() + 6);
+    try {
+        const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
+        let dataAtual;
+        let dia = new Date().getDate();
+        let mes = new Date().getMonth();
+        let ano = new Date().getFullYear();
+        dataAtual = `${ano}-${'0' + (mes + 1)}-${dia}`;
 
-    equipeUsuario.equipes.forEach(async equipe => {
-        let projetoDoBanco = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos")
-        projetoDoBanco.forEach(projeto => {
-            if (projeto.dataFinal) {
-                const dataFinal = new Date(projeto.dataFinal);
-                if (dataFinal.toDateString() === dataAtual.toDateString()) {
-                    listaDeProjetos.value.push(projeto);
+        for (const equipe of equipeUsuario.equipes) {
+            const projetosDaEquipe = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos");
+
+            for (const projeto of projetosDaEquipe) {
+                if (projeto.dataFinal) {
+
+                    console.log(projeto.dataFinal);
+                    console.log(dataAtual);
+
+                    // Comparando apenas dia, mês e ano das datas
+                    if (projeto.dataFinal == dataAtual) {
+                        listaDeProjetos.value.push(projeto);
+                    }
                 }
             }
-        });
-    });
+        }
+    } catch (error) {
+        console.error("Erro ao buscar projetos do dia:", error);
+    }
 }
+
 
 </script>
