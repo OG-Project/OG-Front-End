@@ -1,7 +1,7 @@
 <template>
   <div class="h-[8vh] w-full flex">
     <div class="h-[8vh] w-[15%] flex gap-8">
-      <BarraLateral class="w-[45%]"></BarraLateral>
+      <BarraLateral class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
         <Botao
           preset="PadraoVazado"
@@ -21,7 +21,9 @@
         altura="10%"
         conteudoInput="Pesquisar..."
       ></Input>
-      <img :src="notificacao" />
+      <button @click="notificacaoBoolean = true">
+        <img :src="notificacao" />
+      </button>
       <img
         @click="redireciona('/perfil/informacoes')"
         v-if="usuarioCookies && usuarioCookies.foto"
@@ -30,9 +32,13 @@
       />
     </div>
   </div>
+  <div v-if="notificacaoBoolean==true" class="w-full fixed z-50 flex justify-end pr-4" >
+    <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean=false"></popUpNotificacao>
+  </div>
 </template>
 <script setup>
 import BarraLateral from "../components/BarraLateral.vue";
+import { ref } from "vue";
 import Botao from "../components/Botao.vue";
 import notificacao from "../imagem-vetores/Notificacao.svg";
 import UserIcon from "../imagem-vetores/UserIcon.svg";
@@ -41,6 +47,8 @@ import router from "@/router";
 import { onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import { conexaoBD } from "../stores/conexaoBD.js";
+import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
+import popUpNotificacao from "../components/popUpNotificacao.vue";
 
 const banco = conexaoBD();
 
@@ -50,6 +58,7 @@ onMounted(async () => {
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
 let usuarioCookies;
+let notificacaoBoolean = ref(false);
 
 async function autenticarUsuario(id) {
   let usuarios = banco.procurar("/usuario");
@@ -60,6 +69,10 @@ async function autenticarUsuario(id) {
 
 function redireciona(rota) {
   router.push(rota);
+  if(rota == '/criaTarefa'){
+    const criaTarefa = criaTarefaEBuscaStore();
+    criaTarefa.criaTarefa();
+  }
 }
 </script>
 <style scoped></style>

@@ -58,15 +58,15 @@
             <div class="calendario">
                 <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDiaEIndice(dia)"
                     @mouseenter="hover(dia)" @mouseleave="getCalendario()">
-                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[7%]">{{ format(new Date(dia.dia), 'd') }}</h1>
-                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[7%] text-[#9C9494]">{{ format(new
+                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[5%]">{{ format(new Date(dia.dia), 'd') }}</h1>
+                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[5%] text-[#9C9494]">{{ format(new
                         Date(dia.dia), 'd') }}</h1>
                     <div :style="dia.style">
                         <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort(sortBy('indice'))">
-                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row"
+                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row h-full"
                                 @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
                                 @dragover="retornaDiaEIndice(dia, indice)">
-                                <cardTarefas :tarefa=tarefa.tarefa altura="1vw" largura="7vw" preset="2"></cardTarefas>
+                                <cardTarefas :tarefa=tarefa.tarefa altura="1vh" largura="7vw" preset="2"></cardTarefas>
                             </div>
                         </div>
                     </div>
@@ -86,6 +86,7 @@ import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, 
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import sortBy from 'sort-by'
+import  VueCookies  from 'vue-cookies';
 
 let data = Date.now()
 let diaNovo = ref()
@@ -94,13 +95,16 @@ let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
 let cardDia
-let tarefas = api.procurar("/tarefa")
+let projeto = {}
+let tarefas = []
 let border = "none"
 console.log(tarefas)
 
 getCalendario();
 
-onMounted(() => {
+onMounted( async () => {
+    projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),'/projeto')
+    tarefas = projeto.tarefas;
     getCalendario();
 })
 
@@ -178,7 +182,7 @@ async function adicionaDiasALista(dias) {
 
 async function verificaTarefasDoDia(dia) {
     let lista = []
-    let tarefas2 = await tarefas
+    let tarefas2 = tarefas
     tarefas2 = tarefas2.sort(sortBy('indice'))
     for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {
@@ -235,8 +239,7 @@ function setaDireita() {
 }
 async function trocaDiaEIndice(tarefa, dia, indice) {
     tarefa.propriedade.valor.valor = new Date(dia.dia)
-    console.log(tarefa.propriedade)
-
+    console.log(tarefa)
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
@@ -245,7 +248,6 @@ async function trocaDiaEIndice(tarefa, dia, indice) {
         tarefa2.tarefa.indice = indiceTeste
     }
     getCalendario()
-
 }
 function retornaDiaEIndice(dia, indice) {
     diaNovo = dia;

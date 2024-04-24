@@ -4,14 +4,26 @@
         class="cardTotal hover:outline hover:outline-purple-600  hover:outline-4 active:outline active:outline-4 active:outline-purple-200 ">
         <!-- textos  -->
         <div class="flex flex-col items-center ">
-            <div class="flex flex-col justify-evenly w-[313px] h-[202px]">
+            <div class="flex flex-col justify-evenly w-[18vw] h-[202px]">
                 <!-- falta colocar os tres pontos por linha -->
-                <div class="h-[28px] truncate overflow-hidden">
-                    <b>{{ name }}</b>
+                <div class=" flex flex-row">
+                    <div class="h-[28px] truncate overflow-hidden w-[80%]">
+                        <b>{{ name }}</b>
+                    </div>
+                    <div class="w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
+                        <img src="../imagem-vetores/relogio.svg">
+                      </div>
+                      <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
+                        <div class="flex justify-end">
+                          <img src="../imagem-vetores/triangulo.svg">
+                        </div>
+                        Tempo de Atuação: {{tempoAtuacao}}
+                      </div>
                 </div>
+               
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>Responsavel:</b> {{ reponsavel,18 }}
+                    <b>Responsavel:</b> {{ reponsavel }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -24,10 +36,10 @@
         <div class="parteDeBaixoCard">
             <!-- colocando a barra de progreço -->
             <div class="barraCinzaGrafico">
-                <div :style="{width: feito + '%'}" class="barraRoxaGrafico">
-                    <div class='absolute mt-[-0.6vh] right-[44%] z-10'> {{ feito }}% </div>
-                </div>
 
+                <div class="barraRoxaGrafico" :style="{width: feito + '%'}">
+                    <div class='flex items-center justify-center text-white absolute inset-y-0 left-0 right-0'> {{ feito }}% </div>
+                </div>
             </div>
             <!-- Informações de começo e fim do projeto -->
             <div class="text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null">
@@ -51,42 +63,35 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
+import { onMounted, ref } from 'vue';
 const props = defineProps({
     name: {
         type: String,
-        required: false
     },
     descricao: {
         type: String,
-        required: false
     },
     reponsavel: {
         type: String,
-        required: false
     },
     feito: {
         type: Number,
-        required: false
     },
     comeco: {
         type: String,
-        required: false
     },
     final: {
         type: String,
-        required: false
+    },
+    tempoAtuacao:{
+        type: String
     }
 
 })
+let verTempoAtuacao= ref(false)
 let alinhamento=ref(43)
-onMounted(() => {
-
-})
-
-
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
 
 const grafico = {
     display: "flex",
@@ -94,9 +99,6 @@ const grafico = {
     alignItems: "center",
     width: props.feito + "%",
 }
-
-
-const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 let barraPorcentagem = ref({
   width: props.feito + "%",
@@ -107,6 +109,14 @@ let barraPorcentagem = ref({
   boxShadow: "none",
 });
 
+function tempoDeAtuacaoPopUp(){
+    verTempoAtuacao.value=true;
+}
+
+function somePopUp(){
+    verTempoAtuacao.value=false
+}
+
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 </script>
@@ -116,6 +126,8 @@ let barraPorcentagem = ref({
 
 /* @aply usa o tailwind para para de usar colocar ";" */
 @layer components {
+
+    
 
     /* css para criar um paragrafo com quebra de texto 
         com tres pontos/reticências */
@@ -132,7 +144,7 @@ let barraPorcentagem = ref({
     }
 
     .barraRoxaGrafico {
-        @apply h-4 bg-purple-600;
+        @apply h-4 bg-purple-600 justify-start;
     }
 
     .parteDeBaixoCard {
@@ -155,4 +167,22 @@ let barraPorcentagem = ref({
 
     }
 
-}</style>
+    .animation {
+        @apply absolute left-16 top-1 w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col max-miniMobile:w-[60%] ;
+        animation: myAnim 0.15s ease 0s 1 normal none;
+    }
+    
+    @keyframes myAnim {
+        0% {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+    
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+}
+</style>

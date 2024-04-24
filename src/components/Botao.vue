@@ -1,19 +1,12 @@
 <template>
   <!-- Verifica se o botão deve ter um ícone ou não -->
   <div v-if="TemIcon === 'sim'">
-  <button :class="tamanhoComClass"
-    :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
-    @mouseover="hover"
-    @mouseout="unhover"
-    @click="click"
-  >
-    <p>{{ Texto }}</p>
-    <img :src="icon" 
-      @mouseover="hover"
-      @mouseout="unhover"
-      :style="estiloIcone"/>
-  </button>
-</div>
+    <button :class="tamanhoComClass" :style="isClick ? clickBotao : isHovered ? hoverBotao : botao" @mouseover="hover"
+      @mouseout="unhover" @click="click">
+      <p>{{ Texto }}</p>
+      <img :src="icon" @mouseover="hover" @mouseout="unhover" :style="estiloIcone" />
+    </button>
+  </div>
   <div v-if="TemIcon === 'nao'">
     
     <button :class="tamanhoComClass"
@@ -114,23 +107,21 @@ let estiloIcone = {
   filter: corInvertidaIcon.value,
 };
 
-  switch (props.tamanhoPadrao) {
-  
-    case 'medio':
-      tamanhoComClass.value = "medioId"
-      break;
-    case 'pequeno':
-      tamanhoComClass.value = "pequenoId"
-      break;
-    case 'grande':
-      tamanhoComClass.value = "grandeId"
-      break;
-    case 'personalizado':
-      height = props.height;
-      width = props.width;
-      tamanhoComClass.value = "personalizadoId"
+switch (props.tamanhoPadrao) {
+
+  case 'medio':
+    tamanhoComClass.value = "medioId"
     break;
-  }
+  case 'pequeno':
+    tamanhoComClass.value = "pequenoId"
+    break;
+  case 'grande':
+    tamanhoComClass.value = "grandeId"
+    break;
+  case 'personalizado':
+    tamanhoComClass.value = "personalizadoId"
+    break;
+}
 
 let sombras = ""
 
@@ -387,7 +378,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid #8E00FF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
-      
+
     };
 
     clickBotao = {
@@ -523,7 +514,7 @@ switch (Preset) {
 function hover() {
   isHovered.value = true;
 
-  switch(props.inverterCorIcon) {
+  switch (props.inverterCorIcon) {
     case 'sim':
       corInvertidaIcon.value = "invert(100%)";
       break;
@@ -539,7 +530,7 @@ function hover() {
 function unhover() {
   isHovered.value = false;
 
-  switch(props.inverterCorIcon) {
+  switch (props.inverterCorIcon) {
     case 'sim':
       corInvertidaIcon.value = "invert(0%)";
       break;
@@ -562,24 +553,21 @@ function click() {
 }
 </script>
 
-<style>
-@import url(../assets/main.css);
-
-@layer components{
-
-  .medioId{
-    @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh] 
-  }
-
-  .pequenoId{
-    @apply 2xl:w-[5vw] 2xl:h-[4vh]  lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm
-  }
-
-  .grandeId{
-    @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh] 
-  }
-
+<style lang="scss">
+.medioId {
+  @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh]
 }
 
-</style>
+.pequenoId {
+  @apply 2xl:w-[5vw] 2xl:h-[4vh] lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm
+}
 
+.grandeId {
+  @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh]
+}
+
+.personalizadoId {
+  width: v-bind('tamanho.width');
+  height: v-bind('tamanho.height');
+}
+</style>

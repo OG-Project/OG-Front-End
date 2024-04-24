@@ -93,6 +93,7 @@ async function cadastraUsuario() {
         emailCadastro.value = "";
         senhaCadastro.value = "";
         confirmarSenhaCadastro.value = "";
+        trocaDeTela();
       }
     }
   }
@@ -141,6 +142,7 @@ function mostraSenhaConfirmacao() {
             :icon="iconePessoaLogin"
             conteudoInput="User"
             v-model="usuarioLogin"
+            @updateModelValue="(e) => { usuarioLogin = e;}"
           ></Input>
           <div class="flex flex-row justify-center items-center pl-10">
             <Input
@@ -149,6 +151,7 @@ function mostraSenhaConfirmacao() {
               conteudoInput="Senha"
               v-model="senhaUsuarioLogin"
               :tipo="vizualizacaoDeSenha"
+              @updateModelValue="(e) => { senhaUsuarioLogin = e;}"
             ></Input>
             <button class="h-[100%] w-[6%]" @click="mostraSenhas">
               <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
@@ -194,12 +197,14 @@ function mostraSenhaConfirmacao() {
             :icon="imgPessoaLogin"
             conteudoInput="Usuario"
             v-model="usuarioCadastro"
+            @updateModelValue="(e) => { usuarioCadastro = e;}"
           ></Input>
           <Input
             styleInput="input-transparente-escuro"
             :icon="imgEmailRegistro"
             conteudoInput="E-Mail"
             v-model="emailCadastro"
+            @updateModelValue="(e) => { emailCadastro = e;}"
           ></Input>
           <div class="flex flex-row justify-center items-center pl-10">
             <Input
@@ -208,6 +213,7 @@ function mostraSenhaConfirmacao() {
               conteudoInput="Senha"
               v-model="senhaCadastro"
               :tipo="vizualizacaoDeSenha"
+              @updateModelValue="(e) => { senhaCadastro = e;}"
             ></Input>
             <button
               class="h-[100%] w-[6%] flex items-center justify-center"
@@ -223,6 +229,7 @@ function mostraSenhaConfirmacao() {
               conteudoInput="Confirmar Senha"
               v-model="confirmarSenhaCadastro"
               :tipo="vizualizacaoDeSenhaConfirmacao"
+              @updateModelValue="(e) => { confirmarSenhaCadastro = e;}"
             ></Input>
             <button
               class="h-[100%] w-[6%] flex items-center justify-center"

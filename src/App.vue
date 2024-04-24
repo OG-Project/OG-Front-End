@@ -6,18 +6,43 @@ import KeyBoard from './components/Keyboard.vue'
 import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
 import Navbar from '@/components/Navbar.vue';
-import { ref, watch, onMounted} from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
-import { conexaoBD } from './stores/conexaoBD';
-const perfil=perfilStore()
-const {isVlibras}=storeToRefs(perfil);
+import router from "@/router";
+
 import { useDraggable } from '@vueuse/core'
+import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
+import listaProjetos from './components/listaProjetos.vue';
+import kanbanProjetos from './components/kanbanProjetos.vue'
+import { webSocketStore } from './stores/webSocket.js'
+import { criaNotificacao } from './stores/criaNotificacao.js';
+import { conexaoBD } from "./stores/conexaoBD";
+
+import tabBar from "./components/tabBar.vue";
+import NavBarMobile from "./components/NavBarMobile.vue";
+
+
+const banco = conexaoBD();
+const criaNotificacaoStore = criaNotificacao();
+const webSocket = webSocketStore();
+const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
+webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" + usuarioLogadoId
+webSocket.criaConexaoWebSocket();
+
+const funcaoPopUpPropriedade = funcaoPopUpStore();
+const funcaoPopUpProjeto = funcaoPopUpStore();
+const perfil = perfilStore()
+const { isVlibras } = storeToRefs(perfil);
+
 const el = ref(perfil.el)
-const conexao=conexaoBD()
+
+const screenWidth = ref(window.innerWidth)
+
+
 const { x, y, style } = useDraggable(el, {
-  initialValue: { x: 1300, y: 70},
+  initialValue: { x: 1300, y: 70 },
 })
 // let ativado='';
 let url= window.location.href;
@@ -57,65 +82,125 @@ const route = useRoute();
   // perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
   })
   
-  function press(b){
-  
-    console.log('press '+b)
 
-    let valorElemento=perfil.el.value
-    let valor=b
-    if(b=='{bksp}'){
-      perfil.el.value=valorElemento.substring(0,valorElemento.length-1)
-    }else if(b=='{space}'){
-      perfil.el.value+=' '
-      perfil.el.dispatchEvent(new Event('input'))
-    }else if(b!='{enter}' & b!='{shift}' & b!='{lock}' & b!='{tab}'){
-      perfil.el.value+=valor  
-      perfil.el.dispatchEvent(new Event('input'))
+watch(() => window.innerWidth, () => {
+    screenWidth.value = window.innerWidth
+})
+
+function press(b) {
+
+  console.log('press ' + b)
+
+  let valorElemento = perfil.el.value
+  let valor = b
+  if (b == '{bksp}') {
+    perfil.el.value = valorElemento.substring(0, valorElemento.length - 1)
+  } else if (b == '{space}') {
+    perfil.el.value += ' '
+    perfil.el.dispatchEvent(new Event('input'))
+  } else if (b != '{enter}' & b != '{shift}' & b != '{lock}' & b != '{tab}') {
+    perfil.el.value += valor
+    perfil.el.dispatchEvent(new Event('input'))
+  }
+
+}
+
+webSocket.criaConexaoWebSocket();
+
+webSocket.esperaMensagem((mensagem) => {
+  teste(JSON.parse(mensagem))
+});
+
+function teste(mensagem) {
+  console.log(mensagem)
+  criaNotificacaoStore.mandarNotificacao(mensagem);
+}
+
+function change(a) {
+}
+function close() {
+  perfil.isTecladoAtivado = !perfil.isTecladoAtivado
+}
+
+function VerificaPrazoDoProjeto() {
+  banco.procurar("/projeto").then((projetos) => {
+    let dataAtual = new Date();
+    let dias = 0;
+    for (let i = 0; i < projetos.length; i++) {
+      let dataProjeto = new Date(projetos[i].dataFinal);
+      let diferenca = dataProjeto.getTime() - dataAtual.getTime();
+      dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
+      if (dias < 7 && projetos[i].dataFinal != null  && projetos[i].dataFinal > dataAtual) {
+        enviaParaWebSocket(projetos[i], dias)
+      }
     }
+  });
+}
 
+function enviaParaWebSocket(projetoAux, dias) {
+  let teste = {
+    equipes: [
+      {
+        equipe: {
+          membros: [
+            {
+              id: usuarioLogadoId
+            }
+          ]
+        }
+      }
+    ],
+    notificao: {
+      mensagem: "Restam " + dias + " Para o fim do projeto",
+      projeto: projetoAux
+    }
   }
-  function close(){
-    perfil.isTecladoAtivado=!perfil.isTecladoAtivado
-  }
+  
+  console.log(teste)
+  const webSocket = webSocketStore();
+  webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+  webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+}
 
-  var estaNoLogin = ref(true)
+function close(){
+  perfil.isTecladoAtivado=!perfil.isTecladoAtivado
+}
+var estaNoLogin = ref(true)
+
 watch(() => route.path, () => {
-  if(route.path == '/login'){
+  if (route.path == '/login') {
     estaNoLogin.value = true
-  }else{
+  } else {
     estaNoLogin.value = false
   }
 });
 </script>
-<template draggable="true" >
 
-  <div v-show="isVlibras==true || VueCookies.get('isVlibras')=='true'">
-    <!-- <VLibras /> -->
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper>
-        <div class="vw-plugin-top-wrapper"></div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="bg-[var(--backgroundPuro)]">
+<template>
 
-    <Navbar v-show="!estaNoLogin" />
-    <RouterView />
-    <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
-    <div ref="el" :style="style" style="position: fixed"
-    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" 
-    v-if="perfil.isTecladoAtivado">
+  <Navbar v-if="!estaNoLogin && screenWidth >= 1024"/>
+  <tabBar v-if="!estaNoLogin && screenWidth < 1024"/>
+  <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024"/>
+  <RouterView />
+  <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
+  <div ref="el" :style="style" style="position: fixed"
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">
         <svgIconMove class="w-[1vw] h-[3vh]" />
-        <svgIconX @click="close" class="w-[1vw] h-[3vh]" ></svgIconX>
+        <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
       </div>
-        <KeyBoard @onChange="change" @onKeyPress="press" ></KeyBoard>
+      <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
+    </div>
+    <div v-show="isVlibras == true || VueCookies.get('isVlibras') == 'true'">
+      <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+          <div class="vw-plugin-top-wrapper"></div>
+        </div>
       </div>
     </div>
-</div>
+  </div>
 
 </template>
-<style scoped></style>
+<style scoped></style>                  

@@ -6,7 +6,7 @@
                 <p class="bordaTitulo"></p>    
             </div>
             <div class="flex justify-end mx-10 mt-[-5vh] mb-5">
-                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="medio"  texto="Novo Projetos" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe"></Botao> 
+                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="medio"  texto="Novo Projetos" tamanhoDaFonte="1rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
             </div>  
         </div>
         
@@ -19,6 +19,11 @@
 <script setup>
 import Botao from '../components/Botao.vue';
 import listaProjetos from '../components/listaProjetos.vue';
+import router from "@/router";
+
+function enviaTelaCriaProjeto(){
+    router.push('/criaProjeto')
+}
 </script>
 <style scoped>
 .bordaTitulo{

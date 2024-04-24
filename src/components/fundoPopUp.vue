@@ -44,7 +44,6 @@ const funcaoPopUp = funcaoPopUpStore();
        
        backdrop-filter: blur(10px);
        animation-name: aparecePopUp;
-       animation-duration: 0.09s;
        animation-iteration-count: initial;
        overflow: hidden; 
     }

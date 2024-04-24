@@ -8,4 +8,7 @@
     statusList : [],
     projetoEquipes : [],
     responsaveis: [],
+    tempoAtuacao: String,
+    dataFinal:String,
+    indexLista: Number
 }

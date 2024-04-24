@@ -1,8 +1,8 @@
 <template>
   <div class="bg-opacity-40 z-[999]">
-    <div v-if="!aberto" @click="openClose()" class="h-[8vh] w-[4vw] flex items-center justify-center">
+    <button v-if="!aberto" @click="openClose()" class="ml-6 h-[8vh] w-[4vw] flex items-center justify-center">
       <img class="h-[50px] w-[50px]" src="../imagem-vetores/haburguer.svg" />
-    </div>
+    </button>
     <div v-if="aberto" class="sidebar slide-in flex fixed" style="z-index:999999;">
       <div class="transition h-[100vh] w-[15vw] bg-roxoEscuro">
         <div class="flex-col h-full flex justify-between gap-6">
@@ -58,7 +58,7 @@
           </div>
         </div>
       </div>
-      <div class="transition h-[100vh] w-[90vw] bg-opacity-50 backdrop-blur">
+      <div class="transition h-[100vh] w-[90vw] bg-opacity-50 backdrop-blur" @click="openClose()">
       </div>
     </div>
   </div>
