@@ -62,6 +62,7 @@ onMounted(() => {
 
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
+    console.log(screenWidth.value);
 })
 
 function press(b) {
