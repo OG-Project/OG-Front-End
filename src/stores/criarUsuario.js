@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { Usuario } from "../models/usuario.js"
 import { conexaoBD } from './conexaoBD'
-
 export const criaUsuarioStore = defineStore('criaUsuario', {
   state: () => {
     return {
@@ -15,7 +14,6 @@ export const criaUsuarioStore = defineStore('criaUsuario', {
       usuarioCriado.username = username;
       usuarioCriado.email = email;
       usuarioCriado.senha = senha;
-      console.log(usuarioCriado)
       api.cadastrar(usuarioCriado, '/usuario')
     },
   },

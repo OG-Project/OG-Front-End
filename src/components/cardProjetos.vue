@@ -4,11 +4,23 @@
         class="cardTotal hover:outline hover:outline-purple-600  hover:outline-4 active:outline active:outline-4 active:outline-purple-200 ">
         <!-- textos  -->
         <div class="flex flex-col items-center ">
-            <div class="flex flex-col justify-evenly w-[313px] h-[202px]">
+            <div class="flex flex-col justify-evenly w-[18vw] h-[202px]">
                 <!-- falta colocar os tres pontos por linha -->
-                <div class="h-[28px] truncate overflow-hidden">
-                    <b>{{ name }}</b>
+                <div class=" flex flex-row">
+                    <div class="h-[28px] truncate overflow-hidden w-[80%]">
+                        <b>{{ name }}</b>
+                    </div>
+                    <div class="w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
+                        <img src="../imagem-vetores/relogio.svg">
+                      </div>
+                      <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
+                        <div class="flex justify-end">
+                          <img src="../imagem-vetores/triangulo.svg">
+                        </div>
+                        Tempo de Atuação: {{tempoAtuacao}}
+                      </div>
                 </div>
+               
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
                     <b>Responsavel:</b> {{ reponsavel }}
@@ -52,37 +64,35 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
+import { onMounted, ref } from 'vue';
 const props = defineProps({
     name: {
         type: String,
-        required: false
     },
     descricao: {
         type: String,
-        required: false
     },
     reponsavel: {
         type: String,
-        required: false
     },
     feito: {
         type: Number,
-        required: false
     },
     comeco: {
         type: String,
-        required: false
     },
     final: {
         type: String,
-        required: false
+    },
+    tempoAtuacao:{
+        type: String
     }
 
 })
+let verTempoAtuacao= ref(false)
 let alinhamento=ref(43)
 const screenWidth = window.innerWidth;
+
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 
@@ -101,6 +111,14 @@ let barraPorcentagem = ref({
   border: "none",
   boxShadow: "none",
 });
+
+function tempoDeAtuacaoPopUp(){
+    verTempoAtuacao.value=true;
+}
+
+function somePopUp(){
+    verTempoAtuacao.value=false
+}
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -152,6 +170,7 @@ let barraPorcentagem = ref({
 
     }
 
+
     @media(max-width: 620px){
         .parteDeBaixoCard{
             @apply flex flex-col h-[76px] items-center justify-evenly bg-[url(../assets/Polygon126footer.png)] w-full
@@ -167,4 +186,6 @@ let barraPorcentagem = ref({
             @apply flex justify-start mr-7;
         }
     }
-}</style>
+    }
+    </style>
+

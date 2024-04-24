@@ -79,7 +79,7 @@ const router = createRouter({
     {
       path: '/criaTarefa',
       name: 'criaTarefa',
-      component: () => import('../views/CriaTarefaView.vue')
+      component: () => import('../views/CriarTarefaView.vue')
     },
     {
      path: '/projetos',

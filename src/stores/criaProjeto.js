@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { Projeto } from '../models/Projeto'
-
 import { conexaoBD } from './conexaoBD'
-import { set } from "date-fns";
 import { webSocketStore } from '../stores/webSocket.js'
+import VueCookies from "vue-cookies";
+
 
 let api = conexaoBD();
 
@@ -28,13 +28,14 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       projetoCriado.dataFinal = dataFinal
       api.cadastrar(projetoCriado, '/projeto').then((res) => {
         projetoAux = res.data;
+        VueCookies.set("IdProjetoAtual", res.data.id)
         this.enviaParaWebSocket(equipes, projetoAux)
       })
 
     },
     enviaParaWebSocket(equipesAux, projetoAux) {
       let teste = {
-        equipes: [ equipesAux ],
+        equipes: equipesAux ,
         notificao: {
           mensagem: "Criou o Projeto",
           projeto: projetoAux

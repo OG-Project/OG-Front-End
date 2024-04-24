@@ -79,14 +79,16 @@
         </div>
         <div v-else-if="!mostrarMensagem">
           <div v-if="!kanbanAtivo" class="projetos" >
-            <div v-for="projeto of filtrarPorCategoria(statusBotao).length ? filtrarPorCategoria(statusBotao) : projetos" :key="projeto.id">
+            <div v-for="projeto of filtrarPorCategoria(statusBotao).length ? filtrarPorCategoria(statusBotao) : projetos" :key="projeto.id" >
               <cardProjetos class="cardProjetos" 
               :name="projeto.nome" 
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
               :reponsavel="obterNomesResponsaveis(projeto)"
-              :feito="calcularProgressoProjeto(projeto)"></cardProjetos>
+              :feito="calcularProgressoProjeto(projeto)"
+              :tempo-atuacao="projeto.tempoAtuacao"
+              @click="entrarNoProjeto(projeto)"></cardProjetos>
             </div>
           </div>
         </div>
@@ -101,6 +103,7 @@
   import cardProjetos from './cardProjetos.vue';
   import KanbanProjetos from './kanbanProjetos.vue';
   import VueCookies from "vue-cookies";
+  import { useRouter } from 'vue-router'
   const props = defineProps({
     height: { type: String, required: true },
     width: { type: String, required: true }
@@ -116,7 +119,8 @@
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
-
+  const router = useRouter();
+  
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;
@@ -306,6 +310,11 @@ const buscarCorPorCategoria = (categoria) => {
 
     return cores[categoria];
   }
+  async function entrarNoProjeto(projeto) {
+  console.log(projeto)
+  VueCookies.set("IdProjetoAtual", projeto.id, 30000)
+  router.push({ path: '/projeto' })
+}
 </script>
 <style scoped>
 

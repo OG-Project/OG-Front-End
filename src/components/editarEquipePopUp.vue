@@ -202,7 +202,7 @@ async function deletarEquipe(){
     listaEquipes.forEach((equipe) =>{
         if(equipeSelecionada == equipe.id){
         
-            banco.deletarEquipe(equipe.id,'/equipe')
+            banco.deletar(equipe.id,'/equipe')
             if(router.currentRoute.value.path == '/equipe'){
                 window.location.reload();
             }else{

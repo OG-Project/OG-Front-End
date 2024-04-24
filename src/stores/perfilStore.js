@@ -19,17 +19,14 @@ export const perfilStore = defineStore('perfilStore', {
          isVisualizacaoEmail:false,
          isVisualizacaoEquipe:false,
          isVisualizacaoProjeto:false,
+         isVisualizacaoPerfil:false,
          el:null,
          valueModel:'',
          tamanhoTitulo:6,
          tamanhoCorpo:2,
-         fonteTitulo: 'Source Sans 3',
-         fonteCorpo: 'Poppins',
-         corEscura: '#36213E',
-         cor: '#620BA7',
-         corAtencao: '#8E00FF',
-         corClickBorder: '#ECC3FF',
-         press:''
+         fonteTitulo: null,
+         fonteCorpo: null,
+         hue:0
         }
     },
     actions:{
@@ -40,10 +37,7 @@ export const perfilStore = defineStore('perfilStore', {
             console.log(usuarioAlterado)
             api.atualizar(usuarioAlterado,"/usuario")
         },
-        digitar(valor,press){
-            this.press
-            return valor
-        }
+        
     }
 
 

@@ -1,15 +1,16 @@
 <template>
-  <div id="bgBranco" class="flex flex-row min-h-[96%] w-full">
-    <div class="w-[40vw] min-h-[96%] flex flex-col">
+  <div id="bgBranco" class="flex flex-col min-h-[96%] w-full">
+    <div class="w-full min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
-        <Input largura="32" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
-          styleInput="input-transparente-claro-grande" v-model="tarefa.nome"></Input>
+        <Input largura="81" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
+          styleInput="input-transparente-claro-grande" v-model="tarefa.nome"
+          @updateModelValue="(e) => { tarefa.nome = e }"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
-        <TextAreaPadrao width="80%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
+        <TextAreaPadrao width="100%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
           resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
-      <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
+      <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[100%]">
         <div class="flex flex-col justify-center w-[30%]">
           <p>Propriedades</p>
           <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
@@ -35,7 +36,7 @@
         <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../imagem-vetores/trianguloStart.svg" />
+              <img src="../../imagem-vetores/trianguloStart.svg" />
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -62,13 +63,13 @@
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../imagem-vetores/trianguloStart.svg" />
+              <img src="../../imagem-vetores/trianguloStart.svg" />
             </div>
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="3.8"
-                  v-model="nomePropriedade"></Input>
+                <input class="border-2 w-[80%] rounded-lg border-[#620BA7]" placeholder="Nome da Propriedade"
+                  type="text" v-model="nomePropriedade"></input>
               </div>
               <div class="pr-2">
                 <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
@@ -93,13 +94,13 @@
         <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../imagem-vetores/trianguloStart.svg" />
+              <img src="../../imagem-vetores/trianguloStart.svg" />
             </div>
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8"
-                  v-model="nomeSubtarefa"></Input>
+                <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
+                  @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
               <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
                 altura="3.8" fonteTamanho="1rem" v-model="statusSubtarefa" />
@@ -118,8 +119,8 @@
 
       <p class="pl-12 mt-4">Arquivos({{ tarefa.arquivos.length }})...</p>
       <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
-        class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
-        <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
+        class="flex h-[22vw] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
+        <div class="relative w-[15vw] mx-4 h-[100%] flex items-center justify-center flex-col"
           v-for="arquivo in tarefa.arquivos">
           <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
             <img
@@ -157,13 +158,13 @@
         <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
             <div class="flex gap-2 items-center">
-              <CheckBox :checked="subtarefa.concluida" tipo="checkbox"
+              <CheckBox :checked="subtarefa.concluido" tipo="checkbox"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)" />
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
               <p>Status:</p>
-              <div v-if="subtarefa.concluida">
+              <div v-if="subtarefa.concluido">
                 <p class="flex items-center justify-center bg-[#7CC0E5]">Concluído</p>
               </div>
               <div v-else>
@@ -176,62 +177,63 @@
       </div>
       <!-- Fazer um v-for de propriedades -->
       <div class="pl-12 mt-8">
-        <div class="flex text-xl">
+        <div class="flex text-xl ">
           <p>Comentarios</p>
           <button class="ml-2" @click="abreFechaComentario()">+</button>
         </div>
-        <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
-          <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-
-            <img v-if="usuarioCookies.foto.tipo != null"
-              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
+        <div v-if="abreFechaComentarioBoolean" class="w-[90%] flex flex-col items-center">
+          <div class="w-[70%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
+            <img v-if="usuarioCookies.foto.tipo != null" class="shadow-2xl h-[7vw] w-[7vw] mt-4 mr-4 ml-4 rounded-full"
+              :src="'data:' +
             usuarioCookies.foto.tipo +
             ';base64,' +
             usuarioCookies.foto.dados
             " />
-            <div class="pb-2 flex flex-col items-end">
-              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4" placeholder="Descrição da tarefa"
+            <div class="pb-2 flex flex-col items-end w-[70%]">
+              <TextAreaPadrao width="38vw" height="10vh" class="pt-6 pb-4" placeholder="Descrição da tarefa"
                 tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
               <Botao texto="Enviar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
                 :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
           </div>
         </div>
-        <div class="w-[85%] flex flex-col">
+        <div class="w-[95%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
             <div class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
-              <div class="w-[15%] gap-4 flex justify-center">
-                <div v-if="comentario.autor === usuarioCookies.username" class="w-[80%] mt-2 gap-4 flex justify-center">
-                  <img class="w-[25%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
-                  <img @click="deletaComentario(comentario)" class="w-[25%]" :src="BotaoX" />
+              <div class="w-[100%] gap-4 flex justify-center">
+                <div v-if="comentario.autor.username === usuarioCookies.username"
+                  class="w-[100%] mt-2 gap-4 flex justify-end">
+                  <img class="w-[3%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
+                  <img @click="deletaComentario(comentario)" class="w-[3%]" :src="BotaoX" />
                 </div>
-                <div v-if="comentario.autor != usuarioCookies.username" class="w-[80%] mt-6 gap-4 flex justify-center">
+                <div v-if="comentario.autor.username != usuarioCookies.username"
+                  class="w-[80%] mt-6 gap-4 flex justify-center">
                 </div>
               </div>
-              <div class="flex w-[100%] mb-2">
-                <img :src="'data:' + comentario.foto.tipo + ';base64,' + comentario.foto.dados
-            " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+              <div class="flex w-[100%] mb-6">
+                <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
+            " class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
-                    {{ comentario.autor }}
+                    {{ comentario.autor.username }}
                   </p>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor === usuarioCookies.username
+            comentario.autor.username === usuarioCookies.username
             ">
                     <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" placeholder="Descrição da tarefa"
-                      tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.comentario"></TextAreaPadrao>
+                      tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                   </div>
                   <div v-if="!comentarioSendoEditado ||
-            comentario.autor != usuarioCookies.username
+            comentario.autor.username != usuarioCookies.username
             ">
                     <p class="pt-4 pb-4 pr-4 break-all">
-                      {{ comentario.comentario }}
+                      {{ comentario.conteudo }}
                     </p>
                   </div>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor === usuarioCookies.username
+            comentario.autor.username === usuarioCookies.username
             ">
                     <Botao texto="Editar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
                       :parametrosFuncao="comentario"></Botao>
@@ -244,8 +246,8 @@
       </div>
     </div>
     <!-- Propriedades e Status -->
-    <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
-      <div class="w-[80%] h-[80vh] shadow-xl border-2">
+    <div class="w-[100vw] min-h-[96%] flex flex-col pl-12 pt-8 mb-24">
+      <div class="w-[95%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
           <button class="w-[33%]" @click="clicouOpcaoPropriedades()" :style="estiloBotaoPropriedades">
             Propriedades
@@ -273,8 +275,8 @@
 
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
           <div v-for="propriedade in propriedades"
-            class="w-[100%] min-h-[3vh] gap-2 flex flex-col items-center justify-center">
-            <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-center">
+            class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
+            <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
               <div class="flex gap-2 items-center w-[40%]">
                 <CheckBox
                   @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
@@ -284,21 +286,16 @@
               <div class="w-[30%]">
                 <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
               </div>
-              <div class="w-[30%]">
-                <button @click="editarPropriedade(propriedade)" class="w-[85%] h-[100%] bg-[#DBB3FF] rounded-md">
-
-                  Valor
-                </button>
-              </div>
-              <div class="flex justify-center">
-                <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
-              </div>
+              <!-- <div class="flex justify-center">
+                  <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
+                </div> -->
             </div>
-            <div class="w-[100%] min-h-[5vh] flex items-center justify-center">
+            <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
                   <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor" width="80%">
+                    @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor"
+                    class="h-8 border-2 rounded-lg border-[#620BA7]">
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
@@ -345,123 +342,40 @@
               </div>
               <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
               <div class="w-[40%] flex justify-between">
-                <ColorPicker v-model="statsAdd.cor" class="border-2 rounded-lg ml-16" />
-                <div class="flex justify-center">
-                  <img class="w-[100%] mr-4" @click="deletaStatus(statsAdd)" :src="BotaoX" />
-                </div>
+                <ColorPicker disabled v-model="statsAdd.cor" class="border-2 rounded-lg ml-16" />
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="w-[80%] flex justify-end pt-8">
-        <Botao preset="PadraoVazado" texto="Concluído" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-      </div>
-    </div>
-
-    <div id="propriedadesOverflow" class="shadow-xl border-2">
-      <div class="min-h-[9%] pt-8 flex items-end justify-center">
-        <h1 class="min-h-[9%] text-3xl font-semibold">Informações</h1>
-      </div>
-      <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
-        <div class="flex pl-8">
-          <div class="w-[50%] justify-start flex-row">
-            <p>Nome do Projeto</p>
-          </div>
-          <div class="w-[40%] justify-end flex-row">
-            <p class="w-[100%] text-[#620BA7] break-all" v-if="projetoDaTarefa">
-              {{ projetoDaTarefa.nome }}
-            </p>
-          </div>
-        </div>
-        <div class="flex pl-8">
-          <div class="w-[50%] justify-start flex-row">
-            <p>Responsável</p>
-          </div>
-          <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
-            <p class="truncate text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-              {{ responsavel.responsavel.username }}
-            </p>
-
-          </div>
-        </div>
-        <div class="flex pl-8">
-          <div class="w-[50%] justify-start flex-row">
-            <p>Data Inicial</p>
-          </div>
-          <div class="w-[40%] justify-end flex-row">
-            <p class="text-[#620BA7]">13/02/2006</p>
-          </div>
-        </div>
-      </div>
-      <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">Status</h1>
-      </div>
-      <div v-if="tarefa.status != null">
-        <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
-          <p>Sua tarefa não possui status</p>
-        </div>
-        <div v-for="status of tarefa.status" class="min-h-[4%] flex items-center justify-center gap-4"
-          v-if="tarefa.status.length != 0">
-          <p :style="{ 'background-color': '#' + status.cor, color: corDaFonte(status.cor) }"
-            class="flex items-center border-2 shadow-md justify-center px-4">
-            {{ status.nome }}
-          </p>
-        </div>
-
-      </div>
-      <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">Propriedades</h1>
-      </div>
-      <div v-if="tarefa.propriedades.length === 0" class="h-[35%] flex flex-col items-center justify-center p-8">
-        <img :src="NotePad" class="h-[200px] w-[200px]" />
-        <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
-      </div>
-      <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
-        <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
-          <p class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
-          <div v-if="propriedade.propriedade.tipo === 'DATA'">
-            <p>Valor: {{ format(new Date(propriedade.valor.valor), "dd/MM/yyyy HH:mm") }}</p>
-          </div>
-          <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'" class="flex">
-            <p>Valor:</p>
-            <select class="flex text-center w-[80%]">
-              <option v-for="valor of propriedade.valor.valor">{{ valor }}</option>
-            </select>
-          </div>
-          <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-            <p>Valor: {{ propriedade.valor.valor }}</p>
-          </div>
-          <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-            <p>Valor: {{ propriedade.valor.valor }}</p>
-          </div>
-        </div>
+      <div class="fixed bottom-24 right-4 pt-8">
+        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
+          tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import { format } from "date-fns";
-import Input from "../components/Input.vue";
-import NotePad from "../imagem-vetores/NotePad.svg";
-import Botao from "../components/Botao.vue";
-import CheckBox from "../components/checkBox.vue";
-import iconAnexo from "../imagem-vetores/anexoIcon.svg";
-import TextAreaPadrao from "../components/textAreaPadrao.vue";
+import Input from "../../components/Input.vue";
+import NotePad from "../../imagem-vetores/NotePad.svg";
+import Botao from "../../components/Botao.vue";
+import CheckBox from "../../components/checkBox.vue";
+import iconAnexo from "../../imagem-vetores/anexoIcon.svg";
+import TextAreaPadrao from "../../components/textAreaPadrao.vue";
 import { onUnmounted, ref, watch } from "vue";
-import selectPadrao from "../components/selectPadrao.vue";
-import navBar from "../components/navBar.vue";
+import selectPadrao from "../../components/selectPadrao.vue";
 import ColorPicker from "primevue/colorpicker";
-import BotaoX from "../imagem-vetores/XPreto.svg";
+import BotaoX from "../../imagem-vetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
-import Calendar from "primevue/calendar";
-import iconeLapisPreto from "../imagem-vetores/icon-lapis-preto.svg";
+import iconeLapisPreto from "../../imagem-vetores/icon-lapis-preto.svg";
 import { computed } from "vue";
 import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
 import tinycolor from "tinycolor2";
-import { conexaoBD } from "../stores/conexaoBD.js";
-import { criaPropriedadeTarefaStore } from "../stores/criaPropriedadeTarefa";
+import { conexaoBD } from "../../stores/conexaoBD.js";
+import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
+import router from "../../router";
 
 const banco = conexaoBD();
 
@@ -592,6 +506,79 @@ async function patchDaListaDePropriedades() {
   banco.atualizar(tarefa2, "/tarefa")
 }
 
+async function criaTarefaNoConcluido() {
+  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  let tarefaCriando = {
+    id: JSON.parse(VueCookies.get("IdTarefaCookies")),
+    responsaveis: [],
+    status: [],
+    subTarefas: [],
+    comentarios: [],
+    valorPropriedadeTarefas: [],
+    cor: "FFFFFF",
+    descricao: null,
+    nome: null,
+    valorPropriedadeTarefas: [],
+    dataCriacao: null,
+  }
+  tarefaCriando.nome = tarefa.value.nome;
+  tarefaCriando.descricao = tarefa.value.descricao;
+  for (const props of tarefa2.valorPropriedadeTarefas) {
+    for (const propsComValor of tarefa.value.propriedades) {
+      if (propsComValor.propriedade.id == props.propriedade.id) {
+        if (props.propriedade.tipo == "TEXTO") {
+          let valor = {
+            id: props.valor.id,
+            texto: propsComValor.valor.valor
+          }
+          props.valor = valor
+        }
+        else if (props.propriedade.tipo == "NUMERO") {
+          let valor = {
+            id: props.valor.id,
+            numero: propsComValor.valor.valor
+          }
+          props.valor = valor
+        }
+        else if (props.propriedade.tipo == "SELECAO") {
+          let valor = {
+            id: props.valor.id,
+            selecao: propsComValor.valor.valor
+          }
+          props.valor = valor
+        }
+        else if (props.propriedade.tipo == "DATA") {
+          let valor = {
+            id: props.valor.id,
+            data: propsComValor.valor.valor
+          }
+          console.log(valor.data);
+          props.valor = valor
+        }
+      }
+    }
+  }
+  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas;
+  tarefaCriando.dataCriacao = new Date();
+  let comentario = [];
+  tarefa.value.comentarios.forEach((comentarioFor) => {
+
+    comentario.push(comentarioFor);
+  });
+  tarefaCriando.comentarios = comentario;
+  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  // tarefaCriando.responsaveis = tarefa.value.responsaveis;
+  tarefaCriando.status = tarefa.value.status;
+  tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  console.log(tarefaCriando);
+  console.log(tarefa.value.arquivos);
+  banco.atualizar(tarefaCriando, "/tarefa")
+  if (tarefa.value.arquivos.length != 0) {
+    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+  }
+  router.push("/projeto")
+}
+
 //Função que deleta status
 
 function deletaStatus(stat) {
@@ -630,7 +617,7 @@ function criaSubtarefa() {
     }
     let subtarefaNova = {
       nome: nomeSubtarefa.value,
-      concluida: booleanDaSubtarefa.value,
+      concluido: booleanDaSubtarefa.value,
       status: statusSubtarefa.value,
     };
     tarefa.value.subtarefas.push(subtarefaNova);
@@ -682,6 +669,8 @@ async function criaPropriedade() {
     if (nomePropriedade.value != "") {
       const cria = criaPropriedadeTarefaStore();
       tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
+      console.log(tipoPropriedade.value);
+      console.log(nomePropriedade.value);
 
       cria.criaPropriedade(
         nomePropriedade.value,
@@ -690,7 +679,6 @@ async function criaPropriedade() {
       );
     }
   }
-
   await new Promise(r => setTimeout(r, 60));
   await procuraProjetosDoBanco();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
@@ -738,7 +726,7 @@ let tarefa = ref({
   propriedades: [],
   status: [],
   subtarefas: [],
-  corDaTarefa: "",
+  corDaTarefa: "ffffff",
 });
 
 async function puxaTarefaDaEdicao() {
@@ -747,6 +735,10 @@ async function puxaTarefaDaEdicao() {
   if (tarefaAux.nome == null) {
     tarefa.value.nome = tarefaAux.nome;
     tarefa.value.descricao = tarefaAux.descricao;
+    for (const comentarioId of tarefaAux.comentarios) {
+      let comentario = await banco.buscarUm(comentarioId, "/comentario");
+      tarefa.value.comentarios.push(comentario);
+    }
     tarefa.value.arquivos = tarefaAux.arquivos;
     tarefa.value.comentarios = tarefaAux.comentarios;
     tarefa.value.status = tarefaAux.status;
@@ -774,8 +766,8 @@ function update() {
 }
 
 onMounted(async () => {
-  VueCookies.set("IdProjetoAtual", 2, 100000000000);
   projetoDaTarefa.value = await procuraProjetosDoBanco();
+  VueCookies.set("IdProjetoAtual", 1, 100000);
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();
@@ -788,7 +780,7 @@ onMounted(async () => {
     propriedades: [],
     status: [],
     subtarefas: [],
-    corDaTarefa: "",
+    corDaTarefa: "ffffff",
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
@@ -862,15 +854,10 @@ function abreFechaCriaSubTarefas() {
 //Funções que removem e adicionam os status e propriedades da tarefa
 
 function adicionaExcluiStatusNaTarefa(status) {
-  status.estaNaTarefa = !status.estaNaTarefa;
-  if (status.estaNaTarefa) {
-    tarefa.value.status.push(status);
+  if (tarefa.value.status == status) {
+    tarefa.value.status = null;
   } else {
-    tarefa.value.status.forEach((statusDeletar) => {
-      if (statusDeletar === status) {
-        tarefa.value.status.splice(tarefa.value.status.indexOf(statusDeletar), 1);
-      }
-    });
+    tarefa.value.status = status;
   }
 }
 
@@ -890,7 +877,7 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
         tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);
       }
     }
-    
+
   }
 }
 
@@ -925,9 +912,8 @@ function abreFechaComentario() {
 
 function enviaComentario(comentario) {
   tarefa.value.comentarios.push({
-    autor: comentario[1].username,
-    comentario: comentario[0],
-    foto: comentario[1].foto,
+    autor: comentario[1],
+    conteudo: comentario[0]
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
@@ -950,7 +936,7 @@ function trocaComentarioSendoEditado() {
 }
 
 function editarComentario(comentario) {
-  if (comentario.comentario === "") {
+  if (comentario.conteudo === "") {
     deletaComentario(comentario);
   }
   trocaComentarioSendoEditado();
@@ -962,15 +948,15 @@ const listaFiltradaStatus = computed(() => {
     parametroDoFiltroStatus.value === ""
   ) {
     // Check for empty string
-    return status.value;
+    return projetoDaTarefa.value.statusList;
   }
   switch (parametroDoFiltroStatus.value) {
     case "az":
-      return status.value.sort((a, b) =>
+      return projetoDaTarefa.value.statusList.sort((a, b) =>
         a.nome > b.nome ? 1 : b.nome > a.nome ? -1 : 0
       );
     case "za":
-      return status.value.sort((a, b) =>
+      return projetoDaTarefa.value.statusList.sort((a, b) =>
         a.nome < b.nome ? 1 : b.nome < a.nome ? -1 : 0
       );
   }
@@ -992,7 +978,7 @@ const listaFiltradaPropriedades = computed(() => {
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
   tarefa.value.subtarefas.forEach((subtarefa) => {
-    if (subtarefa.concluida) {
+    if (subtarefa.concluido) {
       numeroDeSubTarefasC.value++;
     }
   });
@@ -1028,7 +1014,7 @@ let comentarioSendoEditado = ref(false);
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
 function trocaStatusDaSubTarefa(subtarefa, index) {
-  tarefa.value.subtarefas[index].concluida = !tarefa.value.subtarefas[index].concluida;
+  tarefa.value.subtarefas[index].concluido = !tarefa.value.subtarefas[index].concluido;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
@@ -1044,15 +1030,6 @@ let barraPorcentagem = ref({
   border: "none",
   boxShadow: "none",
 });
-
-//Edita o valor ja presenta na proriedade
-function editarPropriedade(propriedade) {
-  for (const propriedade of tarefa.value.propriedades) {
-    if (propriedade == propriedade) {
-
-    }
-  }
-}
 
 //Variavel utilizada para mostrar o display onde mostra os status e as propriedades que pode adicionar na tarefa
 

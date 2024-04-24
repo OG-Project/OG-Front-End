@@ -13,10 +13,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+:root{
+    --hueRoxoEscuro:283;
+    --hueRoxo:273;
+    --hueClickBorder:281;
+    --hueRoxoAtencao:273;
+    --hueRoxoClaro:272;
+    --roxoEscuro: hsl(var(--hueRoxo) 31 19);
+    --roxo:hsl(var(--hueRoxo) 88 35) ;
+    --brancoNeve: #FBFBFB;
+    --clickBorder: hsl(var(--hueRoxo) 100 88);
+    --roxoAtencao: hsl(var(--hueRoxo) 100 50);
+    --roxoClaro: hsl(var(var(--hueRoxo)) 100 85);
+    --fonteTitulo:'Source Sans 3';
+    --fonteCorpo:'Poppins';
+    --fonteTituloTamanho:6vh ;
+    --fonteCorpoTamanho:2vh;
+    --backgroundPuro: #ffffff;
+    --backgroundItems: #f8f8f8; 
+}
 
 html{
-    @apply font-poppins md:text-sm xl:text-lg  sm:text-xs mobile:text-[0.75rem] miniMobile:text-[0.75rem];
+    @apply md:text-sm xl:text-lg  sm:text-xs;
+    font-family: var(--fonteCorpo);
 }
 
 

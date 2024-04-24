@@ -1,3 +1,4 @@
+
 <template>
     <div>
         <div class="flex justify-center mt-20 p-6 text-5xl">
@@ -90,9 +91,9 @@ async function listaUsuarios() {
         if (usuarioLogadoId == usuario.id) {
             console.log(usuario.equipes)
             equipesUsuario.value = usuario.equipes;
-        }
-    })
-
+            console.log(equipesUsuario.value)
+           }
+        })
 }
 
 function abrePaginaEquipe(equipe) {
