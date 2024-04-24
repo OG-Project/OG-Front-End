@@ -31,7 +31,7 @@
     </fundoPopUp>
 </template>
 <script setup>
-import { ref, computed} from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -46,9 +46,36 @@ let nome = ref('');
 let descricao = ref('');
 let usuarioConvidado = ref('');
 let mensagemError = ref("");
-const usuarioLogado = VueCookies.get('IdUsuarioCookie');
+
+let usuarioLogado = VueCookies.get("IdUsuarioCookie")
 let membrosEquipe = ref([]);
+let conexaoWeb = webSocketStore()
+const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
+import { webSocketStore } from '../stores/webSocket.js'
+
+onMounted(()=>{
+    conexaoWeb.url= "ws://localhost:8085/og/webSocket/usuario/1";
+    conexaoWeb.criaConexaoWebSocket()
+})
+
+function marginRightConvidado() {
+    if (screenWidth <= 768) {
+        return '1vw';
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return '4vw';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '5vw';
+    } else if (screenWidth > 1920 && screenWidth < 2560) {
+        return '4vw';
+    } else if (screenWidth == 1920) {
+        return '2vw';
+    }
+    else if (screenWidth >= 2560) {
+        return '1.5vw';
+    }
+}
+
 
 const imagemSelecionada = ref(null);
 
@@ -83,7 +110,7 @@ return URL.createObjectURL(imagemSelecionada.value);
 });
 
 // URL da imagem padrão
-const imagemPadraoUrl = '../src/imagem-vetores/adicionarPessoa.svg';
+const imagemPadraoUrl = '../src/imagem-vetores/imagemEquipePadrao.svg';
 
 // Computed property para determinar qual URL de imagem exibir
 const imagemExibicao = computed(() => {
@@ -154,39 +181,56 @@ console.log("É obrigatório o nome da equipe");
 return;
 }
 
-equipeCadastrada.nome = nome.value;
-equipeCadastrada.descricao = descricao.value;
-mensagemError.value = "";
+    equipeCadastrada.nome = nome.value;
+    equipeCadastrada.descricao = descricao.value;
+    mensagemError.value = "";
+    
+    let equipe;
+    cria.criaEquipe(equipeCadastrada).then(response =>{
+        equipe = response
+      colocaMembrosEquipe(equipe)
+    });
 
-const equipePromise = cria.criaEquipe(equipeCadastrada);
+    await enviarFotoParaBackend(equipe);
+};
 
-const ids = membrosEquipe.value.map(m => {
-return Number(m.id);
-});
-
-// Adicione automaticamente o usuário logado à equipe
-const usuarioLogadoId = Number(usuarioLogado);
-if (!ids.includes(usuarioLogadoId)) {
-ids.push(usuarioLogadoId);
+function colocaMembrosEquipe(equipe){
+    const ids = membrosEquipe.value.map(m => {
+        return Number(m.id);
+    });
+    adicionaUsuarioLogado(ids, equipe)
 }
 
-let equipe;
-await equipePromise.then(e => {
-equipe = e.data;
-console.log(e.data);
-});
+function adicionaUsuarioLogado(ids, equipe){
+// Adicione automaticamente o usuário logado à equipe
+const usuarioLogadoId = Number(usuarioLogado);
+   
+    if (!ids.includes(usuarioLogadoId)) {
+        ids.push(usuarioLogadoId);
+    }
+    adicionaUsuariosBanco(ids, equipe)
+}
 
-console.log(equipe);
+function adicionaUsuariosBanco(ids, equipe){
+    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add").then(resposta => {
+        console.log(resposta)
+        enviaParaWebSocket(equipe);
+        nome.value = "";
+        descricao.value = "";
+        membrosEquipe = "";
+    });
+}
 
-banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
-await enviarFotoParaBackend(equipe);
-
-nome.value = "";
-descricao.value = "";
-membrosEquipe = "";
-
-window.location.reload();
-};
+async function enviaParaWebSocket(equipeAux) {
+    let teste = {
+        equipes: [{equipe:equipeAux}],
+        notificao: {
+            mensagem: "Criou a Equipe",
+            equipe: equipeAux
+        }
+    }
+    await conexaoWeb.enviaMensagemWebSocket(JSON.stringify(teste))
+}
 
 
 async function enviarFotoParaBackend(equipe) {
