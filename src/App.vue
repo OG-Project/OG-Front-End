@@ -1,5 +1,5 @@
 <script setup>
-import { RouterView } from "vue-router";
+import { RouterLink, RouterView } from "vue-router";
 import { funcaoPopUpStore } from "./stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
 import KeyBoard from './components/Keyboard.vue'
@@ -45,30 +45,47 @@ const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70 },
 })
 // let ativado='';
-let url = window.location.href;
-
+let url= window.location.href;
+let usuario=ref()
+let configuracao=ref()
 
 const route = useRoute();
 
-onMounted(() => {
-  perfil.isVoiceMaker = JSON.parse(VueCookies.get('isVoiceMaker'))
-  perfil.isTecladoVirtual = JSON.parse(VueCookies.get('isTecladovirtual'))
-  console.log(perfil.isTecladoVirtual)
-  perfil.fonteTitulo = (VueCookies.get('fonteTitulo'))
+  onMounted(async()=>{
+  let root=document.documentElement.style
+  usuario.value=
+    await banco.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')),'/usuario')
+  configuracao.value=usuario.value.configuracao
+  root.setProperty('--hueRoxo',configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho)
+  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho)
 
-  perfil.fonteCorpo = (VueCookies.get('fonteCorpo'))
-  perfil.isVlibras = (VueCookies.get('isVlibras'))
-  setTimeout(() => {
-    VerificaPrazoDoProjeto()
-  }, 1000);
-
-  window.addEventListener('resize', () => {
-        screenWidth.value = window.innerWidth
-    })
-})
+  // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
+  // perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
+  // console.log(perfil.isTecladoVirtual)
+  // root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
+  // root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
+  // root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
+  // let tamanhoCorpo=JSON.parse(VueCookies.get('fonteCorpoTamanho'))
+  // let tamanhoTitulo=JSON.parse(VueCookies.get('fonteTituloTamanho'))
+  // console.log(tamanhoCorpo);
+  // console.log(tamanhoTitulo);
+  // root.setProperty('--fonteCorpoTamanho',tamanhoCorpo+'vh')
+  // root.setProperty('--fonteTituloTamanho',tamanhoTitulo+'vh')
+  // perfil.hue=JSON.parse(VueCookies.get('matizCor'))
+  // perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
+  // perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
+  // perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
+  })
+  
 
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
+    console.log(screenWidth.value);
 })
 
 function press(b) {
@@ -139,6 +156,7 @@ function enviaParaWebSocket(projetoAux, dias) {
       projeto: projetoAux
     }
   }
+  
   console.log(teste)
   const webSocket = webSocketStore();
   webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
@@ -146,6 +164,7 @@ function enviaParaWebSocket(projetoAux, dias) {
 }
 
 var estaNoLogin = ref(true)
+
 watch(() => route.path, () => {
   if (route.path == '/login') {
     estaNoLogin.value = true
@@ -153,7 +172,6 @@ watch(() => route.path, () => {
     estaNoLogin.value = false
   }
 });
-
 </script>
 
 <template>
@@ -183,4 +201,4 @@ watch(() => route.path, () => {
   </div>
 
 </template>
-<style scoped></style>
+<style scoped></style>                  

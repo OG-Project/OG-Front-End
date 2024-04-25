@@ -24,8 +24,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.put("http://localhost:8082"+textoRequisicao,objeto).then(response => response)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId, ids)
-
+        return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId,ids)
       },
       deletar(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response =>{
@@ -56,6 +55,9 @@ export const conexaoBD = defineStore('conexaoBD', {
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
 
 
+      },
+      buscarProjetosEquipe(equipeId, textoRequisicao){
+        return axios.get('http://localhost:8085'+textoRequisicao+'/'+equipeId).data
       },
 
     adicionarEquipe(equipeId,projetoId, textoRequisicao) {
@@ -112,10 +114,30 @@ export const conexaoBD = defineStore('conexaoBD', {
             console.error('Erro ao cadastrar a foto:', error);
             throw error;
         }
-
-          // return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       },
-      
-      
-    }
+      async cadastrarFotoUsuario(idUsuario, foto) {
+        try {
+            // Crie um FormData e adicione a imagem a ele
+            const formData = new FormData();
+            formData.append('foto', foto);
+    
+            // Faça a requisição PATCH para enviar a imagem
+            const response = await axios.patch(`http://localhost:8082/usuario/${idUsuario}`, formData, {
+
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            // Retorne os dados da resposta
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao cadastrar a foto:', error);
+            throw error;
+        }
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
+      }
+     
+  }
 })

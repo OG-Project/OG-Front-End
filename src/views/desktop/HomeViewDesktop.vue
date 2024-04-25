@@ -74,7 +74,7 @@ async function verificaTarefasFeitas() {
       projeto.tarefas.forEach(tarefa => {
         tarefa.subTarefas.forEach(subtarefa => {
           console.log(subtarefa);
-          if (subtarefa.concluido) {
+          if (subtarefa.concluido == true) {
             tarefasFeitas.value++;
           } else {
             tarefasNaoFeitas.value++;

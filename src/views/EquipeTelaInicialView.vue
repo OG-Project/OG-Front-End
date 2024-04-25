@@ -1,47 +1,37 @@
 <template>
-  <div>
-    <div class="corDiv">
-      <img class="imagemEquipe" v-if="equipeEditar.foto"
-        :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados"
-        @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')" @mouseover="expandirImagem"
-        @mouseleave="reduzirImagem">
-      <img class="imagemEquipe" v-else src="" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')">
-      <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
-    </div>
-    <div class="flex justify-end">
-      <div class="flex mt-[-3vh] mr-[1vw]">
-        <Botao preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7"
-          tamanhoPadrao="pequeno" texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
-        </Botao>
-      </div>
-      <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl "
-        @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')" @mouseover="hover = true"
-        @mouseleave="hover = false">
-        <img src="../imagem-vetores/engrenagem.svg" alt="" :class="{ 'imagem-hover': hover }">
-      </div>
-      <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  "
-        @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true"
-        @mouseleave="hoverMembros = false">
-        <img src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
-        <p class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md"
-          :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
-      </div>
-      <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
-      <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true"> </ListaMembrosEquipe>
-    </div>
-  </div>
-  <div class="flex justify-center">
-    <div class="listaProjetos overflow-auto">
-      <div class="flex justify-center">
-        <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1>
-      </div>
-      <div class="projetos ">
-        <div v-for="projeto of listaProjetos" :key="projeto.id">
-          <div class="flex w-[100%]">
-            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
-              :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
-              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
-              :reponsavel="calcularResponsaveis(projeto)" :tempoAtuacao="projeto.tempoAtuacao">
+    <div>
+        <div class="corDiv">
+          <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="expandirImagem" @mouseleave="reduzirImagem">
+          <img class="imagemEquipe" v-else src="../imagem-vetores/imagemEquipePadrao.svg" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
+            <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
+        </div>
+        <div class="divCel flex justify-end">
+            <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
+                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
+                </Botao>
+                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="personalizado" width="50vw" height="6vh"  texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
+                </Botao>
+            </div>
+            <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
+                <img src="../imagem-vetores/engrenagem.svg" alt="" :class="{ 'imagem-hover': hover }">
+            </div>
+            <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
+                <img src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
+                <p v-if="screenWidth >= 620" class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
+            </div>
+                <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
+                <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true">  </ListaMembrosEquipe>
+        </div>
+    </div>  
+    <div class="flex justify-center">
+      <div class="listaProjetos overflow-auto">
+        <div class="flex justify-center">
+          <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
+        </div>
+        <div  class="projetos ">
+          <div  v-for="projeto of listaProjetos" :key="projeto.id" >
+            <div class="flex w-[100%]">
+              <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
             </CardProjetos>
           </div>
         </div>
@@ -74,6 +64,7 @@ let equipeEditar = ref({
   nome: '',
   descricao: ''
 });
+const screenWidth = window.innerWidth;
 let projetosEquipe = ref([]);
 const router = useRouter();
 
@@ -286,9 +277,32 @@ function abrePopUp(equipe, tipo) {
     @apply w-[3vw] h-[4vh]
   }
 
-  .cardProjeto {
-    @apply ml-[2.5vw];
-    max-width: calc(67% - 1px);
-  }
-}
+  @media screen and (max-width: 620px){
+    .botaoIcone{
+      @apply w-[50px] h-[50px] mt-[8vh] mr-4
+    }
+    .listaProjetos{
+      @apply mt-0;
+    }
+    .botaoProjetos{
+      @apply flex mt-[8vh] mr-[14vw];
+    }
+    .tituloEquipe{
+      @apply w-[60vw]
+    }
+    .corDiv{
+      @apply w-[80vw] ml-[10vw] mt-[5vh]
+    }
+    .imagemEquipe{
+      @apply w-[60px] h-[60px]
+    }
+    .divCel{
+      @apply mt-0;
+    }
+    .cardProjeto{
+      @apply mt-20 text-2xl ml-1;
+      max-width: calc(125% - 1px);
+    }
+  }    
+
 </style>

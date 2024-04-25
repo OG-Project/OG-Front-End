@@ -1,18 +1,18 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div>
-            <h1 :style="{fontFamily:fonteTitulo}" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            <h1 style="font-Family:var(--fonteTitulo)" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Segurança
             </h1>
         </div>
-        <div :style="{fontFamily:fonteCorpo}" class="pl-32 items-center">
+        <div style="font-Family:var(--fonteCorpo)" class="pl-32 items-center">
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="text-2xl w-[470px]">
-                            <span class="text-roxo">*</span> Senha com 8 ou mais caracteres.<br>
-                            <span class="text-roxo">*</span> Senha contento letras, números e caracteres especiais. <br>
-                            <span class="text-roxo">*</span> Não utilize palavras comuns.
+                            <span class="text-[var(--roxo)]">*</span> Senha com 8 ou mais caracteres.<br>
+                            <span class="text-[var(--roxo)]">*</span> Senha contento letras, números e caracteres especiais. <br>
+                            <span class="text-[var(--roxo)]">*</span> Não utilize palavras comuns.
                             <!-- Ao alterar a senha, a gente mantém você conectado
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos. -->
@@ -27,7 +27,7 @@
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="gap-5">
                             <div class="text-2xl w-[470px]">
-                                Seu endereço de e-mail atual é <span class="text-roxo">{{email}}</span>
+                                Seu endereço de e-mail atual é <span class="text-[var(--roxo)]">{{email}}</span>
                             </div>
                             <div v-if="isLogadoGoogle" class="text-2xl w-[470px]">
                                 Login com a conta do Google ativado
@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div :style="{fontFamily:fonteCorpo}" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
+        <div style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
             <span>Deseja deletar sua Conta?</span>
         </div>
         

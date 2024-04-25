@@ -1,3 +1,4 @@
+
 <template>
     <div>
         <div class="flex justify-center mt-20 p-6 text-5xl">
@@ -12,8 +13,10 @@
                     @mouseleave="limparNomeCompleto()" :title="nomeCompleto" v-for="equipe in equipesUsuario">
                     <div class="flex justify-center">
                         <div class="corDiv">
-                            <img class="imagemEquipe"
+                            <img class="imagemEquipe" v-if="equipe.equipe.foto" 
                                 :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
+                            <img class="imagemEquipe" v-else 
+                                src="../imagem-vetores/Equipe.svg">
                             <p class=" text-2xl mt-5 ml-4 text-[#877E7E] ">{{ truncarNome(equipe.equipe.nome,
                         larguraNomeEquipe()) }}</p>
                         </div>
@@ -48,7 +51,7 @@ import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import editarEquipePopUp from "../components/editarEquipePopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
+import criarEquipePopUp from "../components/criarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
 
@@ -71,6 +74,13 @@ onMounted(() => {
 
 })
 
+ webSocket.url="ws://localhost:8085/og/webSocket/usuario/" + usuarioLogadoId
+
+ webSocket.esperaMensagem((mensagem) =>{
+    console.log(mensagem)
+    listaUsuarios()
+ })
+
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
       
 async function listaUsuarios() {
@@ -81,9 +91,9 @@ async function listaUsuarios() {
         if (usuarioLogadoId == usuario.id) {
             console.log(usuario.equipes)
             equipesUsuario.value = usuario.equipes;
-        }
-    })
-
+            console.log(equipesUsuario.value)
+           }
+        })
 }
 
 function abrePaginaEquipe(equipe) {
@@ -167,7 +177,7 @@ function limparNomeCompleto() {
 }
 
 .maisEquipes {
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[23vh] xl:w-[23.5vw] xl:h-[23vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
 }
 
 .listaEquipes {
@@ -180,7 +190,7 @@ function limparNomeCompleto() {
 }
 
 .criarEquipe {
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[23vh] xl:w-[23.5vw] xl:h-[23vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
 }
 
 .imagemEquipe {
@@ -191,12 +201,15 @@ function limparNomeCompleto() {
     @apply flex 2xl:ml-8 2xl:mt-2 lg:ml-4 lg:mt-2 md:ml-2 md:mt-0 2xl:h-[4vh] 2xl:w-[2vw] lg:h-[4vh] lg:w-[3vw] md:h-[6vh] md:w-[4vw];
 }
 
-@media(max-width: 620px) and (min-height: 1080px){
+@media(max-width: 620px){
+}
+
+@media(max-width: 620px){
     .maisEquipes {
-        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[20vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
+        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
     }
     .criarEquipe {
-        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[20vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
+        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
     }
     .imagemEquipe {
         @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;

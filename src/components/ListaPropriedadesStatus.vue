@@ -273,9 +273,9 @@ function mudaPaginaParaKanban() {
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == "Todos") {
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value =="Todos") {
             listaSelecionada.value = listaPropriedades.value
-
+            
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
@@ -318,8 +318,8 @@ function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux1 = []
     listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
-        if (opcaoAtual.propriedade.tipo != "") {
-            if (opcaoAtual.propriedade.tipo.toLowerCase() == buscarPor.toLowerCase()) {
+        if (opcaoAtual.tipo != "" && opcaoAtual.tipo!=undefined) {
+            if (opcaoAtual.tipo.toLowerCase() == buscarPor.toLowerCase()) {
                 listaAux1.push(opcaoAtual)
             }
         }
