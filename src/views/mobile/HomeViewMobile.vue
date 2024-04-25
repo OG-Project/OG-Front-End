@@ -1,9 +1,8 @@
 <template>
     <div class="w-full h-full flex flex-col items-center justify-center">
         <div class="h-16 flex items-center justify-center">
-            <h1 class="text-5xl font-bold w-fit border-b-2 border-black">
-                Bem-Vindo
-                Lil X!
+            <h1 class="text-3xl sm:text-5xl font-bold w-fit border-b-2 border-black" v-if="usuarioCookies">
+                Bem-Vindo {{ usuarioCookies.username }}
             </h1>
         </div>
         <div class="h-48 flex items-center justify-around w-full">
@@ -19,7 +18,7 @@
             </div>
         </div>
         <div class="h-16 flex items-center justify-center">
-            <h1 class="text-4xl w-fit font-bold">
+            <h1 class="text-3xl sm:text-4xl w-fit font-bold">
                 Minhas Tarefas
             </h1>
         </div>
@@ -31,7 +30,7 @@
         </div>
         <div class="w-[90%] h-[45vh] flex flex-col items-center"
             style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
-            <h1 class="text-4xl pt-4">{{ nomeDoTopico }}</h1>
+            <h1 class="text-2xl sm:text-4xl pt-4">{{ nomeDoTopico }}</h1>
             <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
                 <div v-for="projeto of listaDeProjetos"
                     class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
@@ -65,6 +64,20 @@ let nomeDoTopico = ref();
 let listaDeProjetos = ref([]);
 let tarefasFeitas = ref(0);
 let tarefasNaoFeitas = ref(0);
+let usuarioCookies;
+let usuarioId = VueCookies.get("IdUsuarioCookie");
+
+async function pegaUsuario() {
+    let usuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
+    return usuario;
+}
+
+async function autenticarUsuario(id) {
+  let usuarios = banco.procurar("/usuario");
+  let listaUsuarios = await usuarios;
+  let usuario = listaUsuarios.find((usuario) => usuario.id == id);
+  return usuario;
+}
 
 function redireciona(rota, id) {
     VueCookies.set("IdProjetoAtual", id);
@@ -93,7 +106,8 @@ async function verificaTarefasFeitas() {
     console.log(tarefasNaoFeitas.value);
 }
 
-onMounted(() => {
+onMounted( async () =>{
+    usuarioCookies = await autenticarUsuario(usuarioId);
     trocaTopico('Projetos Urgentes')
     verificaTarefasFeitas();
 });

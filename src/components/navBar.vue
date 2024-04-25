@@ -26,7 +26,7 @@
       </button>
       <img
         @click="redireciona('/perfil/informacoes')"
-        v-if="usuarioCookies && usuarioCookies.foto"
+        v-if="usuarioCookies"
         class="shadow-2xl h-[60px] w-[60px] rounded-full"
         :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
       />
@@ -53,11 +53,11 @@ import popUpNotificacao from "../components/popUpNotificacao.vue";
 const banco = conexaoBD();
 
 onMounted(async () => {
-  usuarioCookies = await autenticarUsuario(usuarioId);
+  usuarioCookies.value = await autenticarUsuario(usuarioId);
 });
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
-let usuarioCookies;
+let usuarioCookies = ref();
 let notificacaoBoolean = ref(false);
 
 async function autenticarUsuario(id) {

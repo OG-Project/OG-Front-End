@@ -38,31 +38,33 @@ const { isVlibras } = storeToRefs(perfil);
 
 const el = ref(perfil.el)
 
-const screenWidth = ref(window.innerWidth)
 
 
 const { x, y, style } = useDraggable(el, {
   initialValue: { x: 1300, y: 70 },
 })
 // let ativado='';
-let url= window.location.href;
-let usuario=ref()
-let configuracao=ref()
+let url = window.location.href;
+let usuario = ref()
+let configuracao = ref()
 
 const route = useRoute();
 
-  onMounted(async()=>{
-  let root=document.documentElement.style
-  usuario.value=
+onMounted(async () => {
+  if(configuracao.value != null){
+    let root = document.documentElement.style
+  usuario.value =
     await banco.buscarUm(
       JSON.parse(
-        VueCookies.get('IdUsuarioCookie')),'/usuario')
-  configuracao.value=usuario.value.configuracao
-  root.setProperty('--hueRoxo',configuracao.value.hueCor)
-  root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
-  root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
-  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho)
-  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho)
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho)
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho)
+  }
+  
 
   // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
   // perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
@@ -80,13 +82,10 @@ const route = useRoute();
   // perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
   // perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
   // perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
-  })
-  
-
-watch(() => window.innerWidth, () => {
-    screenWidth.value = window.innerWidth
-    console.log(screenWidth.value);
 })
+
+
+
 
 function press(b) {
 
@@ -131,7 +130,7 @@ function VerificaPrazoDoProjeto() {
       let dataProjeto = new Date(projetos[i].dataFinal);
       let diferenca = dataProjeto.getTime() - dataAtual.getTime();
       dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
-      if (dias < 7 && projetos[i].dataFinal != null  && projetos[i].dataFinal > dataAtual) {
+      if (dias < 7 && projetos[i].dataFinal != null && projetos[i].dataFinal > dataAtual) {
         enviaParaWebSocket(projetos[i], dias)
       }
     }
@@ -156,12 +155,18 @@ function enviaParaWebSocket(projetoAux, dias) {
       projeto: projetoAux
     }
   }
-  
+
   console.log(teste)
   const webSocket = webSocketStore();
   webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
   webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
+
+const screenWidth = ref(window.innerWidth)
+
+watch(() => window.innerWidth, () => {
+  screenWidth.value = window.innerWidth
+})
 
 var estaNoLogin = ref(true)
 
@@ -176,9 +181,9 @@ watch(() => route.path, () => {
 
 <template>
 
-  <Navbar v-if="!estaNoLogin && screenWidth >= 1024"/>
-  <tabBar v-if="!estaNoLogin && screenWidth < 1024"/>
-  <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024"/>
+  <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
+  <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
+  <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
   <RouterView />
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
@@ -201,4 +206,4 @@ watch(() => route.path, () => {
   </div>
 
 </template>
-<style scoped></style>                  
+<style scoped></style>

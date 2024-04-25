@@ -56,10 +56,6 @@ export const conexaoBD = defineStore('conexaoBD', {
 
 
       },
-      buscarProjetosEquipe(equipeId, textoRequisicao){
-        return axios.get('http://localhost:8085'+textoRequisicao+'/'+equipeId).data
-      },
-
     adicionarEquipe(equipeId,projetoId, textoRequisicao) {
       return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId)
     },
