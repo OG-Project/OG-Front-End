@@ -40,24 +40,29 @@ function redireciona(rota, id) {
 }
 
 async function pegaListaDeProjetosDia() {
-  const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
-  const dataAtual = new Date();
-  const primeiroDiaSemana = new Date(dataAtual);
-  primeiroDiaSemana.setDate(primeiroDiaSemana.getDate() - primeiroDiaSemana.getDay());
-  const ultimoDiaSemana = new Date(primeiroDiaSemana);
-  ultimoDiaSemana.setDate(ultimoDiaSemana.getDate() + 6);
+  try {
+    const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
+    const dataAtual = new Date();
+    const dataAtualSemHora = new Date(dataAtual.getFullYear(), dataAtual.getMonth(), dataAtual.getDate()); // Zerando horas, minutos, segundos e milissegundos
 
-  equipeUsuario.equipes.forEach(async equipe => {
-    let projetoDoBanco = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos")
-    projetoDoBanco.forEach(projeto => {
-      if (projeto.dataFinal) {
-        const dataFinal = new Date(projeto.dataFinal);
-        if (dataFinal.toDateString() === dataAtual.toDateString()) {
-          listaDeProjetos.value.push(projeto);
+    for (const equipe of equipeUsuario.equipes) {
+      const projetosDaEquipe = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos");
+
+      for (const projeto of projetosDaEquipe) {
+        if (projeto.dataFinal) {
+          const dataFinal = new Date(projeto.dataFinal);
+          const dataFinalSemHora = new Date(dataFinal.getFullYear(), dataFinal.getMonth(), dataFinal.getDate()); // Zerando horas, minutos, segundos e milissegundos
+
+          // Verifica se o projeto termina hoje ou depois
+          if (dataFinalSemHora >= dataAtualSemHora) {
+            listaDeProjetos.value.push(projeto);
+          }
         }
       }
-    });
-  });
+    }
+  } catch (error) {
+    console.error("Erro ao buscar projetos do dia:", error);
+  }
 }
 
 const props = defineProps({

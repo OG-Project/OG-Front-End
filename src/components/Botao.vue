@@ -32,9 +32,14 @@ const isClick = ref(false);
 
 const tamanhoComClass = ref("medioId");
 
+const screenWidth = ref(window.innerWidth)
+
 onMounted(()=>{
   console.log(props.roxo);
   console.log(hue.value)
+  if(screenWidth < 640){
+    props.tamanhoDaFonte.value='0.5vh'
+  }
 })
 
 watch(hue,(newValue) => {
@@ -552,17 +557,16 @@ function click() {
 </script>
 
 <style lang="scss">
+
 .medioId {
-  @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh]
+  @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh] sm:text-xs;
 }
 
 .pequenoId {
-  @apply 2xl:w-[5vw] 2xl:h-[4vh] lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm
+  @apply 2xl:w-[5vw] 2xl:h-[4vh] lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm;
 }
 
 .grandeId {
-  @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh]
+  @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh] sm:text-xs;
 }
-
-
 </style>

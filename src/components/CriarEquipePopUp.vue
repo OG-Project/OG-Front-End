@@ -55,7 +55,7 @@ let usuarios = banco.procurar("/usuario");
 import { webSocketStore } from '../stores/webSocket.js'
 
 onMounted(()=>{
-    conexaoWeb.url= "ws://localhost:8085/og/webSocket/usuario/1";
+    conexaoWeb.url= "ws://localhost:8082/og/webSocket/usuario/1";
     conexaoWeb.criaConexaoWebSocket()
 })
 
@@ -187,7 +187,7 @@ return;
     
     let equipe;
     cria.criaEquipe(equipeCadastrada).then(response =>{
-        equipe = response
+        equipe = response.data
       colocaMembrosEquipe(equipe)
     });
 

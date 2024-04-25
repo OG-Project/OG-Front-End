@@ -107,6 +107,7 @@ async function buscarProjetosEquipe() {
   if (Array.isArray(projetosEquipe.value)) {
     // Filtrar espaços nulos (null) da lista de membros da equipe
     listaProjetos.value = projetosEquipe.value.filter(projeto => projeto != null);
+    console.log(listaProjetos)
   } else {
     console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
   }
@@ -270,11 +271,6 @@ function abrePopUp(equipe, tipo) {
     max-width: calc(100% - 1px);
   }
 }
-
-@media(min-width: 2560px) {
-  .botaoIcone {
-    @apply w-[3vw] h-[4vh]
-  }
 
   @media screen and (max-width: 620px){
     .botaoIcone{

@@ -158,13 +158,13 @@
         <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
             <div class="flex gap-2 items-center">
-              <CheckBox :checked="subtarefa.concluida" tipo="checkbox"
+              <CheckBox :checked="subtarefa.concluido" tipo="checkbox"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)" />
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
               <p>Status:</p>
-              <div v-if="subtarefa.concluida">
+              <div v-if="subtarefa.concluido">
                 <p class="flex items-center justify-center bg-[#7CC0E5]">Concluído</p>
               </div>
               <div v-else>
@@ -202,38 +202,40 @@
           <div v-for="comentario of tarefa.comentarios">
             <div class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
-                <div v-if="comentario.autor.username === usuarioCookies.username" class="w-[80%] mt-2 gap-4 flex justify-center">
+                <div v-if="comentario.autor.username === usuarioCookies.username"
+                  class="w-[80%] mt-2 gap-4 flex justify-center">
                   <img class="w-[25%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
                   <img @click="deletaComentario(comentario)" class="w-[25%]" :src="BotaoX" />
                 </div>
-                <div v-if="comentario.autor.username != usuarioCookies.username" class="w-[80%] mt-6 gap-4 flex justify-center">
+                <div v-if="comentario.autor.username != usuarioCookies.username"
+                  class="w-[80%] mt-6 gap-4 flex justify-center">
                 </div>
               </div>
               <div class="flex w-[100%] mb-2">
                 <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-            " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+                    " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
                   </p>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor.username === usuarioCookies.username
-            ">
+                            comentario.autor.username === usuarioCookies.username
+                                    ">
                     <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" placeholder="Descrição da tarefa"
                       tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                   </div>
                   <div v-if="!comentarioSendoEditado ||
-            comentario.autor.username != usuarioCookies.username
-            ">
+                                comentario.autor.username != usuarioCookies.username
+                                   ">
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.conteudo }}
                     </p>
                   </div>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor.username === usuarioCookies.username
-            ">
+                  comentario.autor.username === usuarioCookies.username
+                    ">
                     <Botao texto="Editar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
                       :parametrosFuncao="comentario"></Botao>
                   </div>
@@ -380,7 +382,7 @@
           </div>
         </div>
         <div class="flex pl-8" v-if="projetoDaTarefa">
-          <div class="w-[50%] justify-start flex-row" >
+          <div class="w-[50%] justify-start flex-row">
             <p>Data inicial do Projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
@@ -639,7 +641,7 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.dataCriacao = new Date();
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
-    
+
     comentario.push(comentarioFor);
   });
   tarefaCriando.comentarios = comentario;
@@ -650,8 +652,8 @@ async function criaTarefaNoConcluido() {
   console.log(tarefaCriando);
   console.log(tarefa.value.arquivos);
   banco.atualizar(tarefaCriando, "/tarefa")
-  if(tarefa.value.arquivos.length != 0){
-    banco.patchDeArquivosNaTarefa( tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+  if (tarefa.value.arquivos.length != 0) {
+    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto")
 }
@@ -1054,7 +1056,7 @@ const listaFiltradaPropriedades = computed(() => {
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
   tarefa.value.subtarefas.forEach((subtarefa) => {
-    if (subtarefa.concluida) {
+    if (subtarefa.concluido) {
       numeroDeSubTarefasC.value++;
     }
   });
@@ -1090,7 +1092,7 @@ let comentarioSendoEditado = ref(false);
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
 function trocaStatusDaSubTarefa(subtarefa, index) {
-  tarefa.value.subtarefas[index].concluida = !tarefa.value.subtarefas[index].concluida;
+  tarefa.value.subtarefas[index].concluido = !tarefa.value.subtarefas[index].concluido;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";

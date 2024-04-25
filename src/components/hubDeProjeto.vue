@@ -1,4 +1,6 @@
 <template>
+    <div v-if="enviandoMensagem" class="absolute w-full h-full z-[5]" @click="abreModalMensagem()">
+    </div>
     <div v-if="funcaoPopUp.variavelModal == true" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
@@ -22,6 +24,10 @@
                 +Tarefa
             </button>
             <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
+                @click="abreModalMensagem()">
+                <iconMensagem></iconMensagem>
+            </button>
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
                 @click="enviaCookieProjeto()">
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
@@ -29,7 +35,11 @@
                 @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
+                <div v-if="enviandoMensagem" class=" animation">
+                    <comentarioProjeto></comentarioProjeto>
+                </div>
         </div>
+        
     </div>
     <div class="w-[80%] flex flex-row justify-around">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
@@ -64,7 +74,8 @@ import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
 import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
 import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp';
-
+import iconMensagem from '../assets/iconMensagem.vue';
+import comentarioProjeto from './comentarioProjeto.vue';
 let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
@@ -77,7 +88,7 @@ let subtarefas = ref([])
 let listaDeEquipes = ref(false)
 let funcaoPopUp = funcaoPopUpStore()
 let visualizacao = ref({})
-
+let enviandoMensagem = ref(false)
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
     visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista')
@@ -121,7 +132,29 @@ function defineSubTarefasConcluida(tarefas) {
     subtarefasConcluidas.value = subtarefas.value.filter(subtarefa => subtarefa.concluido)
 }
 
+function abreModalMensagem(){
+    enviandoMensagem.value=!enviandoMensagem.value
+    console.log(enviandoMensagem.value)
+}
 
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+.animation {
+    @apply absolute w-[30%] h-[80%] z-10;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>

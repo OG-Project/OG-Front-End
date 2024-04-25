@@ -29,7 +29,6 @@
                 <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="personalizado" width="20vw" height="5vh" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
                </div>
             </div>
-        </div>
         <div class="adiciona-membro">
             <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
                 icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
@@ -51,7 +50,7 @@
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
             <div>
-                <div
+                <div>
                     <div v-if="screenWidth >= 620">
                     <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
@@ -61,8 +60,6 @@
                 </div>
             </div>
         </div>
-
-
     </fundoPopUp>
 </template>
 
@@ -286,9 +283,6 @@ async function confirmarConvites() {
 </script>
 
 <style scoped>
-.styleSelectPadraoBranco {
-    @apply border-4 mt-[1vh] flex justify-center border-transparent border-b-brancoNeve border-b-2 w-max items-center focus-within:border-white focus-within:border-4 focus-within:rounded-md truncate;
-
 .styleSelectPadraoBranco{
         @apply border-4 mt-[1vh]
         flex justify-center
@@ -361,20 +355,6 @@ async function confirmarConvites() {
 .imgDePerfil {
     @apply rounded-full bg-cover bg-center flex flex-col mt-5 mr-5 2xl:w-[2vw] 2xl:h-[4vh] xl:w-[3vw] xl:h-[4vh] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
 }
-
-
-@media(min-width: 2560px) {
-    .divGeral {
-        @apply w-[25vw];
-    }
-
-    .imgIcon {
-        @apply w-[1vw]
-    }
-
-    .div-lista {
-        @apply 2xl:w-[53vw];
-    }
 
     @media(max-width: 620px){
 

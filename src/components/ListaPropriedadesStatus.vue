@@ -2,11 +2,12 @@
     <div class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
         <div>
             <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
-                <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades</p>
+                <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades
+                </p>
                 <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
                 <div class="min-w-[7vw]">
                     <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
-                    styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
+                        styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
                 </div>
 
             </div>
@@ -95,13 +96,13 @@
                     <div class="pl-2">
                         <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-                        nomePropriedade = e
-                         }">
+                nomePropriedade = e
+            }">
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect"
-                            largura="8" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect" largura="8"
+                            altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
                 </div>
@@ -109,13 +110,13 @@
                     <div class="pl-2">
                         <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-                        nomePropriedade = e
-                         }">
+                nomePropriedade = e
+            }">
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect"
-                            largura="30" altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect" largura="30"
+                            altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
                 </div>
@@ -235,10 +236,10 @@ function verificaStyleNavTabela(nomeGuia) {
     return styleTabela
 }
 
-function verificaQualBackGround(nomeGuia){
-    if(nomeGuia == "propriedade" && opcaoSelecionadaNaTabela.value=="propriedade" ){
+function verificaQualBackGround(nomeGuia) {
+    if (nomeGuia == "propriedade" && opcaoSelecionadaNaTabela.value == "propriedade") {
         return "#DBB3FF"
-    }else if(nomeGuia == "status" && opcaoSelecionadaNaTabela.value=="status"){
+    } else if (nomeGuia == "status" && opcaoSelecionadaNaTabela.value == "status") {
         return "#DBB3FF"
     }
 }
@@ -249,7 +250,32 @@ onMounted(() => {
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
     })
+
+    criaStatusPadrao()
 })
+
+function criaStatusPadrao() {
+    if (!projetoEdita.value && VueCookies.get("statusCookie") == null) {
+        let statusPronto = {
+            nome: "Pronto",
+            cor: '38a31a'
+        }
+        let statusEmProgresso = {
+            nome: "Em Progresso",
+            cor: '17179c'
+        }
+        let statusNaoIniciado = {
+            nome: "Não iniciado",
+            cor: '36213E'
+        }
+        let statusArray = [statusPronto, statusEmProgresso, statusNaoIniciado];
+
+        statusArray.forEach(status => auxParaCriarStatus.push(status))
+        statusArray.forEach(status => criaStatusCookies(status));
+        mandaStatusBack();
+
+    }
+}
 
 
 function verificaEdicaoProjeto() {
@@ -273,9 +299,9 @@ function mudaPaginaParaKanban() {
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value =="Todos") {
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == "Todos") {
             listaSelecionada.value = listaPropriedades.value
-            
+
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);
@@ -318,7 +344,7 @@ function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux1 = []
     listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
-        if (opcaoAtual.tipo != "" && opcaoAtual.tipo!=undefined) {
+        if (opcaoAtual.tipo != "" && opcaoAtual.tipo != undefined) {
             if (opcaoAtual.tipo.toLowerCase() == buscarPor.toLowerCase()) {
                 listaAux1.push(opcaoAtual)
             }
@@ -331,8 +357,8 @@ function filtroPropriedades(listaRecebida, buscarPor) {
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
         opcaoSelecionadaNaTabela.value = 'propriedade';
-        opcoesSelect.value = ["Todos","Texto", "Número", "Seleção", "Data"];    
-        tipoPropriedadeSelect.value=["Texto", "Número", "Seleção","Data" ]
+        opcoesSelect.value = ["Todos", "Texto", "Número", "Seleção", "Data"];
+        tipoPropriedadeSelect.value = ["Texto", "Número", "Seleção", "Data"]
 
     } else if (opcaoSelecionada == 'status') {
         opcaoSelecionadaNaTabela.value = 'status';
@@ -355,16 +381,16 @@ async function buscaPropriedadeBanco() {
     if (projeto.propriedades != []) {
         projeto.propriedades.forEach((propriedade) => {
             if (propriedade.nome != '') {
-                if(propriedade.tipo == 'TEXTO'){
+                if (propriedade.tipo == 'TEXTO') {
                     propriedade.tipo = "Texto"
                 }
-                if(propriedade.tipo == 'DATA'){
+                if (propriedade.tipo == 'DATA') {
                     propriedade.tipo = "Data"
                 }
-                if(propriedade.tipo == 'SELECAO'){
+                if (propriedade.tipo == 'SELECAO') {
                     propriedade.tipo = "Seleção"
                 }
-                if(propriedade.tipo == 'NUMERO'){
+                if (propriedade.tipo == 'NUMERO') {
                     propriedade.tipo = "Número"
                 }
                 criaPropriedadeCookies(propriedade);
@@ -400,7 +426,7 @@ function mandaProrpiedadesBack(listaPropriedadesRecebida) {
         if (objetoModificado.tipo == "Seleção") {
             objetoModificado.tipo = "SELECAO";
         }
-        if(objetoModificado.tipo == "Número"){
+        if (objetoModificado.tipo == "Número") {
             objetoModificado.tipo = "NUMERO"
         }
         objetoModificado.tipo = objetoModificado.tipo.toUpperCase()

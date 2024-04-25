@@ -2,7 +2,7 @@
   <div id="bgBranco" class="flex flex-col min-h-[96%] w-full">
     <div class="w-full min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
-        <Input largura="81" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
+        <Input largura="70" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
           styleInput="input-transparente-claro-grande" v-model="tarefa.nome"
           @updateModelValue="(e) => { tarefa.nome = e }"></Input>
       </div>
@@ -767,7 +767,6 @@ function update() {
 
 onMounted(async () => {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
-  VueCookies.set("IdProjetoAtual", 1, 100000);
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();
