@@ -1,4 +1,4 @@
-<template >
+<template>
     <!-- div maior com os textos e o footer -->
     <div
         class="cardTotal hover:outline hover:outline-purple-600  hover:outline-4 active:outline active:outline-4 active:outline-purple-200 ">
@@ -12,15 +12,15 @@
                     </div>
                     <div class="w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
                         <img src="../imagem-vetores/relogio.svg">
-                      </div>
-                      <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
+                    </div>
+                    <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
                         <div class="flex justify-end">
-                          <img src="../imagem-vetores/triangulo.svg">
+                            <img src="../imagem-vetores/triangulo.svg">
                         </div>
-                        Tempo de Atuação: {{tempoAtuacao}}
-                      </div>
+                        Tempo de Atuação: {{ tempoAtuacao }}
+                    </div>
                 </div>
-               
+
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
                     <b>Responsavel:</b> {{ reponsavel }}
@@ -37,21 +37,23 @@
             <!-- colocando a barra de progreço -->
             <div class="barraCinzaGrafico">
 
-                <div class="barraRoxaGrafico" :style="{width: feito + '%'}">
-                    <div class='flex items-center justify-center text-white absolute inset-y-0 left-0 right-0'> {{ feito }}% </div>
+                <div class="barraRoxaGrafico" :style="{ width: feito + '%' }">
+                    <div class='flex items-center justify-center text-white absolute inset-y-0 left-0 right-0'> {{ feito
+                        }}% </div>
                 </div>
             </div>
             <!-- Informações de começo e fim do projeto -->
             <div class="data text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null">
                 <div>{{ comeco }}</div>
                 <!-- svg da flechinha -->
-                <svg v-if="screenWidth >= 620" width="30" height="17" viewBox="0 0 30 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg v-if="screenWidth >= 620" width="30" height="17" viewBox="0 0 30 17" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M0.376953 1.15878H2.74332V15.357H0.376953V1.15878ZM5.10969 9.44106H25.4273L20.3479 14.5205L22.0209 16.1935L29.9565 8.25787L22.0209 0.322266L20.3479 1.99529L25.4273 7.07469H5.10969V9.44106Z"
                         fill="white" />
                 </svg>
                 <h1 v-else class="w-[10vw] h-[2vh] ml-2 mr-2"> - </h1>
-               
+
                 <div>{{ final }}</div>
             </div>
             <div class=" text-white items-center w-3/5 flex justify-evenly" v-else>
@@ -84,13 +86,13 @@ const props = defineProps({
     final: {
         type: String,
     },
-    tempoAtuacao:{
+    tempoAtuacao: {
         type: String
     }
 
 })
-let verTempoAtuacao= ref(false)
-let alinhamento=ref(43)
+let verTempoAtuacao = ref(false)
+let alinhamento = ref(43)
 const screenWidth = window.innerWidth;
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
@@ -104,33 +106,33 @@ const grafico = {
 }
 
 let barraPorcentagem = ref({
-  width: props.feito + "%",
-  height: "100%",
-  borderRadius: "0px",
-  backgroundColor: "#620BA7",
-  border: "none",
-  boxShadow: "none",
+    width: props.feito + "%",
+    height: "100%",
+    borderRadius: "0px",
+    backgroundColor: "#620BA7",
+    border: "none",
+    boxShadow: "none",
 });
 
-function tempoDeAtuacaoPopUp(){
-    verTempoAtuacao.value=true;
+function tempoDeAtuacaoPopUp() {
+    verTempoAtuacao.value = true;
 }
 
-function somePopUp(){
-    verTempoAtuacao.value=false
+function somePopUp() {
+    verTempoAtuacao.value = false
 }
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
 </script>
 
-<style  scoped>
+<style scoped>
 @import url(../assets/main.css);
 
 /* @aply usa o tailwind para para de usar colocar ";" */
 @layer components {
 
-    
+
 
     /* css para criar um paragrafo com quebra de texto 
         com tres pontos/reticências */
@@ -161,31 +163,38 @@ function somePopUp(){
     }
 
     .cardTotal:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
     }
 
     .cardTotal.imagemFundo {
-    @apply bg-gray-300;
+        @apply bg-gray-300;
 
     }
 
 
-    @media(max-width: 620px){
-        .parteDeBaixoCard{
+    @media(max-width: 620px) {
+        .parteDeBaixoCard {
             @apply flex flex-col h-[76px] items-center justify-evenly bg-[url(../assets/Polygon126footer.png)] w-full
         }
+
         .cardTotal {
             @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-white overflow-hidden;
             transition: transform 0.3s ease;
         }
+
         .barraCinzaGrafico {
             @apply relative text-white flex w-72 h-6 justify-start bg-gray-500;
         }
-        .data{
+
+        .data {
             @apply flex justify-start mr-7;
         }
     }
-    }
-    </style>
 
+    .animation {
+        @apply absolute left-16 top-1 w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
+        animation: myAnim 0.15s ease 0s 1 normal none;
+    }
+}
+</style>

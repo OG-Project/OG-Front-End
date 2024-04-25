@@ -58,7 +58,7 @@
             <h1 class="text-xl font-semibold">Propriedades</h1>
         </div>
         <div class="h-[35%] flex flex-col items-center justify-center p-8" v-if="!temLista(listaPropriedades)">
-            <img :src="NotePad" class="h-[200px] w-[200px]" />
+            <img :src="NotePad" class="h-[200px] w-[200px] *:*:fill-[var(--roxo)]" />
             <p class="text-center">Este projeto não possui nenhuma propriedade</p>
         </div>
         <div class="h-[35%] flex flex-col pl-4 gap-8" v-if="temLista(listaPropriedades)">

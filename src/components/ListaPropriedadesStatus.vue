@@ -1,7 +1,7 @@
 <template>
     <div class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
         <div>
-            <div class="flex flex-row justify-between items-center border-b-2 border-b-roxo" @click="buscandoPor()">
+            <div class="flex flex-row justify-between items-center border-b-2 border-[var(--roxo)]" @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades
                 </p>
                 <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
@@ -32,7 +32,7 @@
 
                         <div class=" w-[36%] ">
                             <div v-if="tarefasAtribuidas"
-                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                                class="bg-[var(--roxoClaro)] rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
                                 Tarefas Atribuidas
                             </div>
@@ -63,7 +63,7 @@
 
                         <div class=" w-[36%]  ">
                             <div v-if="tarefasAtribuidas"
-                                class="bg-roxo-claro rounded-md w-full p-1 flex justify-center items-center "
+                                class="bg-[var(--roxoClaro)] rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
                                 Tarefas Atribuidas
                             </div>
@@ -215,6 +215,8 @@ let idProjeto;
 let tarefasAtribuidas = false
 let listaPropriedadesBackEnd = [];
 let tipoPropriedadeSelect = ref([])
+let usuario=  ref()
+let configuracao = ref()
 onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
@@ -224,11 +226,25 @@ onMounted(() => {
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
     tarefasAtribuidas = false
-    
-    
+    console.log(document.documentElement.style.getPropertyValue('--hueRoxo'));
+    buscaConfiguracaoesPadrao();
 }
 )
 
+async function buscaConfiguracaoesPadrao(){
+    let root = document.documentElement.style
+  usuario.value =
+    await conexao.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
+  defineSelect(usuario.value.configuracao)
+}
 const screenWidth = ref(window.innerWidth);
 
 function verificaStyleNavTabela(nomeGuia) {

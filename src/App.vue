@@ -51,7 +51,17 @@ let configuracao = ref()
 const route = useRoute();
 
 onMounted(async () => {
-  
+  let root = document.documentElement.style
+  usuario.value =
+    await conexao.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
   
 
   // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
