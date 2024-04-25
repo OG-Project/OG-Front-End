@@ -28,7 +28,7 @@ const banco = conexaoBD();
 const criaNotificacaoStore = criaNotificacao();
 const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
-webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" + usuarioLogadoId
+webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
 webSocket.criaConexaoWebSocket();
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
@@ -88,10 +88,8 @@ function press(b) {
   }
 
 }
-
-webSocket.criaConexaoWebSocket();
-
 webSocket.esperaMensagem((mensagem) => {
+  console.log(mensagem)
   teste(JSON.parse(mensagem))
 });
 
@@ -140,8 +138,6 @@ function enviaParaWebSocket(projetoAux, dias) {
     }
   }
   console.log(teste)
-  const webSocket = webSocketStore();
-  webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
   webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 

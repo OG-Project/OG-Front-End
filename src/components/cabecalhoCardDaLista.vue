@@ -9,25 +9,30 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
 let api = conexaoBD()
-let propriedadeVisiveis = ref([])
 let listaDeNomesVisiveis = ref([])
+let projeto2 = {}
+let visualizacao = {}
 const props = defineProps({
-    projeto: {}
+    projeto: {},
+    listaDePropriedadesVisiveis: ref([]),
 })
-onMounted(() => {
-    DefineListaDeNomes()
+onMounted(async () => {
+    defineListaDeNomes()
 })
 
-async function DefineListaDeNomes() {
-    let projeto2 = await props.projeto
-    let visualizacao = await api.procurar("/visualizacaoEmLista/" + projeto2.id)
-    propriedadeVisiveis.value = visualizacao.propriedadeVisiveis
+watch(() => props.listaDePropriedadesVisiveis, async () => {
+    defineListaDeNomes()
+})
+
+async function defineListaDeNomes() {
+    listaDeNomesVisiveis.value = []
     listaDeNomesVisiveis.value.push("nome")
     listaDeNomesVisiveis.value.push("Descrição")
-    for(const propriedade of propriedadeVisiveis.value){
+    console.log(props.listaDePropriedadesVisiveis)
+    for (const propriedade of props.listaDePropriedadesVisiveis) {
         listaDeNomesVisiveis.value.push(propriedade.nome)
     }
     console.log(listaDeNomesVisiveis)
@@ -35,4 +40,4 @@ async function DefineListaDeNomes() {
 
 </script>
 
-<style lang="scss" ></style>
+<style lang="scss"></style>

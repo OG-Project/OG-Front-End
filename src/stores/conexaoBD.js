@@ -68,7 +68,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     },
 
     async deletarTarefa(textoRequisicao, id) {
-      return await axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response => {
+      return await axios.delete('http://localhost:8082'+textoRequisicao+'/'+id).then(response => {
       })
     },
     async cadastrarFoto(equipeId, foto) {

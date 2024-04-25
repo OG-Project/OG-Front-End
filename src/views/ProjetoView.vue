@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full flex flex-col items-center justify-end overflow-hidden">
-        <hubDeProjeto @trocaValor="(event) => opcao = event"></hubDeProjeto>
+        <hubDeProjeto @trocaValor="(event) => opcao = event" @atualizaPropriedadesVisiveis="atualizaValorDaLista($event)"></hubDeProjeto>
         <div class="w-full h-[72%] flex justify-center items-end">
             <div class="divMaior ">
                 <div v-if="defineOpcao(route.path, '/projeto/calendario')"
@@ -17,7 +17,7 @@
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/lista')"
                     class="w-[100%] h-screen flex justify-center items-center">
-                    <cardList></cardList>
+                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
                 </div>
             </div>
         </div>
@@ -36,13 +36,16 @@ import { editaProjetoStore } from '../stores/editaProjeto';
 import VueCookies from 'vue-cookies';
 let tempoAtuado;
 let horaEntrada;
+let listaDePropriedadesVisiveis = ref([])
 let horaSaida;
+let idProjeto = VueCookies.get("IdProjetoAtual")
+let projeto = ref({})
 const banco = conexaoBD();
 
 
 const editaProjetoFunc = editaProjetoStore();
-onMounted(() => {
-    
+onMounted(async() => {
+    projeto.value = await banco.buscarUm(idProjeto, "/projeto")
     timerTempoAtuacao();
 })
 
@@ -59,16 +62,14 @@ function defineOpcao(rotaAtual, rota) {
 }
 
 async function calculaTempoAtuacao() {
-    let idProjeto = VueCookies.get("IdProjetoAtual")
-    let projeto = await banco.buscarUm(idProjeto, "/projeto")
     let segundos
     let minutos
     let horas
     let segundosSoma = 0
     let minutosSoma = 0
     let horasSoma = 0
-    if (projeto.tempoAtuacao != null && projeto.tempoAtuacao != undefined && projeto.tempoAtuacao != 0 && projeto.tempoAtuacao != "") {
-        [horasSoma, minutosSoma, segundosSoma] = projeto.tempoAtuacao.split(":").map(Number);
+    if (projeto.value.tempoAtuacao != null && projeto.value.tempoAtuacao != undefined && projeto.value.tempoAtuacao != 0 && projeto.value.tempoAtuacao != "") {
+        [horasSoma, minutosSoma, segundosSoma] = projeto.value.tempoAtuacao.split(":").map(Number);
         console.log(horasSoma)
     }
     const horaSaida = new Date().getTime();
@@ -99,6 +100,10 @@ async function calculaTempoAtuacao() {
 function timerTempoAtuacao() {
     horaEntrada = new Date().getTime()
 }
+function atualizaValorDaLista(objeto) {
+    listaDePropriedadesVisiveis.value = objeto
+}
+
 
 async function atualizaProjetoBanco() {
     let idProjeto = VueCookies.get("IdProjetoAtual")
