@@ -14,7 +14,8 @@
                         Permitir que visualizem seus projetos
                         </span>
                         <CheckBox 
-                        :checked="gerarBooleano(usuario.value.configuracao.isVisualizacaoProjeto)" 
+                        :key="isVisualizaProjetos.valueOf()"
+                        :checked="gerarBooleano('visualizacaoProjeto')" 
                         tipo="toggle" 
                         el-id="visualizacaoProjeto" 
                         @envia-valor="visualizacaoProjeto($event)" />
@@ -25,7 +26,8 @@
                         Permitir que visualizem seu email
                         </span>
                         <CheckBox 
-                        :checked="gerarBooleano(usuario.value.configuracao.isVisualizacaoEmail)" 
+                        :key="isVisualizaEmail.valueOf()"
+                        :checked="gerarBooleano('visualizacaoEmail')" 
                         tipo="toggle" 
                         el-id="visualizacaoEmail" 
                         @envia-valor="visualizacaoEmail($event)" />
@@ -36,7 +38,8 @@
                         Permitir que visualizem suas equipes
                         </span>
                         <CheckBox 
-                        :checked="gerarBooleano(usuario.value.configuracao.isVisualizacaoEquipe)" 
+                        :key=" isVisualizaEquipes.valueOf()" 
+                        :checked="gerarBooleano('visualizacaoEquipes')"
                         tipo="toggle" 
                         el-id="visualizacaoEquipes" 
                         @envia-valor="visualizacaoEquipes($event)" />
@@ -47,7 +50,8 @@
                         Permitir que visualizem seu perfil
                         </span>
                         <CheckBox 
-                        :checked="gerarBooleano(usuario.value.configuracao.isVisualizacaoPerfil)" 
+                        :key="isVisualizaPerfil.valueOf()"
+                        :checked="gerarBooleano('visualizacaoPerfil')" 
                         tipo="toggle" 
                         el-id="visualizacaoPerfil" 
                         @envia-valor="visualizacaoPerfil($event)" />
@@ -73,49 +77,57 @@ const conexao=conexaoBD()
 const {fonteTitulo} = storeToRefs(perfil)
 const {fonteCorpo} = storeToRefs(perfil)
 let usuario=ref()
-let isVisualizacaoEmail
-let isVisualizacaoEquipe
-let isVisualizacaoPerfil
-let isVisualizacaoProjeto
+let isVisualizaEmail=ref(false)
+let isVisualizaEquipes=ref(false)
+let isVisualizaPerfil=ref(false)
+let isVisualizaProjetos=ref(false)
 
-function visualizacaoProjeto(valor){    
+function visualizacaoProjeto(valor){ 
+    console.log(valor);   
     perfil.isVisualizacaoProjeto=valor.valor
-    usuario.value.configuracao.isVisualizacaoProjeto=
+    usuario.value.configuracao.isVisualizaProjetos=
     perfil.isVisualizacaoProjeto
     conexao.atualizar(usuario.value,'/usuario')
-    VueCookies.set('isVisualizacaoProjeto',JSON.stringify(perfil.isVisualizacaoProjeto))
+    // VueCookies.set('isVisualizacaoProjeto',JSON.stringify(perfil.isVisualizacaoProjeto))
 }
 function visualizacaoEquipes(valor){
+    console.log(valor);   
     perfil.isVisualizacaoEquipe=valor.valor
-    usuario.value.configuracao.isVisualizacaoEquipe=
+    usuario.value.configuracao.isVisualizaEquipes=
     perfil.isVisualizacaoEquipe
     conexao.atualizar(usuario.value,'/usuario')
-    VueCookies.set('isVisualizacaoEquipe',JSON.stringify(perfil.isVisualizacaoEquipe))
+    // VueCookies.set('isVisualizacaoEquipe',JSON.stringify(perfil.isVisualizacaoEquipe))
 
 }
 function visualizacaoEmail(valor){
+    console.log(valor);   
     perfil.isVisualizacaoEmail=valor.valor
-    usuario.value.configuracao.isVisualizacaoEmail=
+    usuario.value.configuracao.isVisualizaEmail=
     perfil.isVisualizacaoEmail
     conexao.atualizar(usuario.value,'/usuario')
-    VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
+    // VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
 }
 function visualizacaoPerfil(valor){
+    console.log(valor);   
     perfil.isVisualizacaoPerfil=valor.valor
-    usuario.value.configuracao.isVisualizacaoPerfil=
+    usuario.value.configuracao.isVisualizaPerfil=
     perfil.isVisualizacaoPerfil
     conexao.atualizar(usuario.value,'/usuario')
-    VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
+    // VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
 }
 
-function gerarBooleano(boolean){
-    if(boolean=="true"){
-        console.log('foi booleano '+ boolean)
-        return 1
-    }else if(boolean=="false"){
-        console.log('foi booleano '+ boolean)
-        return 0
+function gerarBooleano(id){
+    console.log(id);
+    if(id=='visualizacaoPerfil') {
+        return isVisualizaPerfil.value
+    }else if(id=='visualizacaoEquipes'){
+        return isVisualizaEquipes.value
+    }else if(id=='visualizacaoEmail'){
+        return isVisualizaEmail.value
+    }else if(id=='visualizacaoProjeto'){
+        return isVisualizaProjetos.value
     }
+    
 }
 onBeforeMount(async()=>{
     
@@ -126,7 +138,15 @@ onMounted(async()=>{
         await conexao.buscarUm(
             JSON.parse(
                 VueCookies.get('IdUsuarioCookie')),'/usuario')
-        
+    console.log(usuario.value.configuracao);
+    isVisualizaEmail.value=usuario.value.configuracao.isVisualizaEmail
+    isVisualizaEquipes.value=usuario.value.configuracao.isVisualizaEquipes
+    isVisualizaPerfil.value=usuario.value.configuracao.isVisualizaPerfil
+    isVisualizaProjetos.value=usuario.value.configuracao.isVisualizaProjetos
+    console.log(isVisualizaProjetos.value);
+    console.log(isVisualizaPerfil.value);
+    console.log(isVisualizaEquipes.value);
+    console.log(isVisualizaEmail.value);
     VueCookies.config('30d')
 })
 </script>

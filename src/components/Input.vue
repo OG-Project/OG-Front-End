@@ -234,12 +234,9 @@ const perfil=perfilStore()
 
 const {isTecladoVirtual} = storeToRefs(perfil)
 const {isVoiceMaker} = storeToRefs(perfil)
-let cookieVoice
-let cookieTeclado
+
 
 onBeforeMount(()=>{
-    cookieVoice=VueCookies.get('isVoiceMaker')
-    cookieTeclado=VueCookies.get('isTecladovirtual')
 })
 
 function mic(){
