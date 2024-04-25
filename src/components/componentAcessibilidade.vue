@@ -82,17 +82,17 @@ onMounted(async()=>{
         conexao.buscarUm(
             JSON.parse(
                 VueCookies.get('IdUsuarioCookie')),'/usuario')
-    console.log(usuario.value);
-    console.log(usuario.value);
+    // console.log(usuario.value);
+    // console.log(usuario.value);
     isVlibra.value=usuario.value.configuracao.isLibras 
     isTecladoVirtual.value=usuario.value.configuracao.isTecladoVirtual
     isDigitarVoz.value=usuario.value.configuracao.isDigitarVoz
-    console.log(isDigitarVoz.value);
-    console.log(isDigitarVoz.value);
-    console.log(isVlibra.value);
-    console.log(isVlibra.value);
-    console.log(isTecladoVirtual.value);
-    console.log(isTecladoVirtual.value);
+    // console.log(isDigitarVoz.value);
+    // console.log(isDigitarVoz.value);
+    // console.log(isVlibra.value);
+    // console.log(isVlibra.value);
+    // console.log(isTecladoVirtual.value);
+    // console.log(isTecladoVirtual.value);
     VueCookies.config('30d')
 })
 
