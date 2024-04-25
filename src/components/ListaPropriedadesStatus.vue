@@ -219,10 +219,13 @@ onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
     buscarStatusCookies();
+    
     buscandoPor();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
     tarefasAtribuidas = false
+    
+    
 }
 )
 
@@ -301,7 +304,6 @@ async function buscandoPor() {
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
         if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == "Todos") {
             listaSelecionada.value = listaPropriedades.value
-
             return;
         }
         return listaSelecionada.value = filtroPropriedades(listaPropriedades.value, this.buscarPor);

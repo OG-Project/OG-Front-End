@@ -27,14 +27,15 @@
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao 
                         class="w-max" 
-                        @update:model-value="tamanhoFontTitulo"  
+                        @update:model-value="tamanhoFontTitulo" 
+                        v-model="fonteTamanhoTituloInicial" 
                         :listaSelect="tamanhos" >
                         </selectPadrao>
                         <selectPadrao 
                         class="w-max" 
                         @update:model-value="fontTituloEscolhida" 
                         :opcaoSelecionada="perfil.fonteTitulo" 
-                        :listaSelect="fonts">
+                        :listaSelect="fontsTitulo">
                         </selectPadrao>
                     </div>
                     <div class="w-full flex flex-col gap-4  items-center">
@@ -44,7 +45,6 @@
                         </div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao 
-                        
                         class="w-max" 
                         @update:model-value="tamanhoFontCorpo"  
                         :listaSelect="tamanhos">
@@ -54,7 +54,7 @@
                         class="w-max" 
                         @update:model-value="fontCorpoEscolhida" 
                         :opcaoSelecionada="styleGet.getPropertyValue('--fonteCorpo')" 
-                        :listaSelect="fonts">
+                        :listaSelect="fontsCorpo">
                         </selectPadrao>
                     </div>
                 </div>
@@ -158,7 +158,7 @@ const {fonteCorpo} = storeToRefs(perfil)
 const {tamanhoCorpo} = storeToRefs(perfil)
 const {tamanhoTitulo} = storeToRefs(perfil)
 let usuario=ref()
-
+let fonteTamanhoTituloInicial= ref("")
 // let configuracaoa={
 //     fonteCorpo:'Poppins',
 //     fonteCorpoTamanho:2,
@@ -188,15 +188,15 @@ const cores = ref({
     11: 'f502e5',
     12: '620BA7'
 })
-let tamanhos=['Pequeno','Normal','Grande']
+let tamanhos=ref([])
 
-let fonts=['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
-
+let fontsCorpo=ref([])
+let fontsTitulo = ref([])
 let root=document.documentElement
 let styleGet=getComputedStyle(root)
-
+let primeiroListaFonte = ref("")
 let cor = ref('#80A4ED')
-
+let configuracao = ref();
 function temaDoSite(e){
     console.log(e);
 }
@@ -249,11 +249,10 @@ function tamanhoFontTitulo(tamanho){
         perfil.tamanhoTitulo=7
     }
     // VueCookies.set('fonteTituloTamanho',JSON.stringify(perfil.tamanhoTitulo))
-    root.style.setProperty('--fonteTituloTamanho',perfil.tamanhoTitulo)
+    root.style.setProperty('--fonteTituloTamanho',perfil.tamanhoTitulo+"vh")
     usuario.value.configuracao.fonteTituloTamanho=perfil.tamanhoTitulo
     conexao.atualizar(usuario.value,'/usuario')
-    console.log(perfil.tamanhoTitulo)
-    console.log(tamanho)
+   
 }
 function tamanhoFontCorpo(tamanho){
     if (tamanho=='Pequeno') {
@@ -266,11 +265,9 @@ function tamanhoFontCorpo(tamanho){
         perfil.tamanhoCorpo=2.5
     }
     // VueCookies.set('fonteCorpoTamanho',JSON.stringify(perfil.tamanhoCorpo))
-    root.style.setProperty('--fonteCorpoTamanho',perfil.tamanhoCorpo)
+    root.style.setProperty('--fonteCorpoTamanho',perfil.tamanhoCorpo+"vh")
     usuario.value.configuracao.fonteCorpoTamanho=perfil.tamanhoCorpo
     conexao.atualizar(usuario.value,'/usuario')
-    console.log(perfil.tamanhoCorpo)
-    console.log(tamanho)
 }
 
 
@@ -282,6 +279,43 @@ function contraste(cor) {
     return luz > 128 ? '#000' : '#fff'
 }
 
+function defineSelect(configuracao){
+    tamanhos.value= ['Pequeno','Normal','Grande']
+    fontsCorpo.value = ['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
+    fontsTitulo.value= ['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans'];
+    if(configuracao.fonteTituloTamanho == "7"){
+      tamanhos.value.splice(0, 0, tamanhos.value.splice(2, 1)[0]);
+    }
+    if(configuracao.fonteTituloTamanho == "6"){
+        tamanhos.value.splice(0, 0, tamanhos.value.splice(1, 1)[0]);
+    }
+    fontFamily(fontsCorpo.value, configuracao.fonteCorpo)
+    fontFamily(fontsTitulo.value, configuracao.fonteTitulo)
+}
+
+function fontFamily(lista, comparacao){
+    for (const i in lista) {
+        if (lista[i] == comparacao) {
+            lista.splice(0, 0, lista.splice(i, 1)[0]); 
+        }
+    }
+    return lista;
+}
+async function buscaConfiguracaoesPadrao(){
+    let root = document.documentElement.style
+  usuario.value =
+    await conexao.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
+  defineSelect(usuario.value.configuracao)
+}
+
 onBeforeMount(async ()=>{
     console.log()
     perfil.fonteCorpo= await JSON.parse(VueCookies.get('fonteCorpo'))
@@ -290,15 +324,14 @@ onBeforeMount(async ()=>{
         await conexao.buscarUm(JSON.parse
             (VueCookies.get('IdUsuarioCookie')),'/usuario')
     
-    console.log(perfil.fonteCorpo)
-    console.log(perfil.fonteTitulo)
+
 })
 
 onMounted(() => {
     
     console.log('fonts '+perfil.fonteCorpo+' '+perfil.fonteTitulo)
     console.log(convert.hex.hsl(cor.value)[0])
-
+    buscaConfiguracaoesPadrao()
 })
 onUpdated(()=>{
     console.log('update')
