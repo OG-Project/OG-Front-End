@@ -202,14 +202,11 @@ function limparNomeCompleto() {
 }
 
 @media(max-width: 620px){
-}
-
-@media(max-width: 620px){
     .maisEquipes {
-        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
+        @apply flex flex-col ml-[8vw] mt-[5vh] w-[70vw] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
     }
     .criarEquipe {
-        @apply flex flex-col ml-[10vw] mr-16 mt-[5vh] w-[100%] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
+        @apply flex flex-col ml-[9vw] mr-12 mt-[5vh] w-[100%] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
     }
     .imagemEquipe {
         @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;

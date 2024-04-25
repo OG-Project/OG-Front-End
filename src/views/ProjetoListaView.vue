@@ -9,7 +9,7 @@
                 <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="medio"  texto="Novo Projetos" tamanhoDaFonte="1rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
             </div>  
             <div v-else class="flex justify-center mx-10 mt-[2vh] mb-10">
-                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="personalizado" width="80vw" height="6vh"  texto="Novo Projetos" tamanhoDaFonte="1.5rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
+                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="mobilegrande"  texto="Novo Projetos" tamanhoDaFonte="1.5rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
             </div> 
         </div>
         

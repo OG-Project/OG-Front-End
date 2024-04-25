@@ -18,28 +18,20 @@
                     <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
                     <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
-             
             </div>
         </div>  
-            <div class="adiciona-membro">
-                  <Input v-if="screenWidth >=620" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
-                  <Input v-else class="flex mt-1" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
-               <div class="divBotaoAdiciona flex mt-[1vh] ml-5">
-                <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
-                <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="personalizado" width="20vw" height="5vh" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
-               </div>
-            </div>
-        </div>
         <div class="adiciona-membro">
-            <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
+            <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
                 icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
                 v-model="usuarioConvidado" :modelValue="usuarioConvidado"
                     @updateModelValue="(e) => {
                         usuarioConvidado = e
                     }"></Input>
             <div class="flex mt-[1vh] ml-5">
-                <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
+                <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
                     texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilepequeno"
+                texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
         </div>
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
@@ -51,17 +43,17 @@
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
             <div>
-                <div
+                <div>
                     <div v-if="screenWidth >= 620">
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                     <div v-else>
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="80vw" height="5vh" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                 </div>
             </div>
         </div>
-
+    
 
     </fundoPopUp>
 </template>
@@ -181,7 +173,6 @@ function larguraInputConvidado(){
     if(screenWidth <= 620){
           return '40'
     }
-
     if (screenWidth <= 768) {
         return '24';
     } else if (screenWidth > 768 && screenWidth <= 1024) {
@@ -248,7 +239,7 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
 
     }
     const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    webSocket.url = "ws://localhost:8085/og/webSocket/usuario/" +usuarioLogado
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
@@ -286,8 +277,6 @@ async function confirmarConvites() {
 </script>
 
 <style scoped>
-.styleSelectPadraoBranco {
-    @apply border-4 mt-[1vh] flex justify-center border-transparent border-b-brancoNeve border-b-2 w-max items-center focus-within:border-white focus-within:border-4 focus-within:rounded-md truncate;
 
 .styleSelectPadraoBranco{
         @apply border-4 mt-[1vh]
@@ -363,7 +352,7 @@ async function confirmarConvites() {
 }
 
 
-@media(min-width: 2560px) {
+    @media(min-width: 2560px) {
     .divGeral {
         @apply w-[25vw];
     }
@@ -374,15 +363,19 @@ async function confirmarConvites() {
 
     .div-lista {
         @apply 2xl:w-[53vw];
+        
+     }
+     .botaoIcone {
+        @apply w-[3vw] h-[4vh]
+      }
     }
-
     @media(max-width: 620px){
 
         .divEquipe{
            @apply flex justify-center w-[100%]
         }
         .adiciona-membro{
-            @apply flex justify-end;
+            @apply flex justify-end ml-[-5vw];
         }
         .divGeral{
             @apply w-[65vw];
@@ -416,7 +409,7 @@ async function confirmarConvites() {
             @apply w-[30px] h-[30px]
         }
         .imagemEquipe{
-            @apply w-[40px] h-[40px] mt-3;
+            @apply w-[40px] h-[40px] mt-5 mr-3;
         }
         .imgIcon{
             @apply w-[20px] h-[20px]  bg-center flex mt-8;
@@ -426,9 +419,9 @@ async function confirmarConvites() {
             
         }
         .botao{
-            @apply flex justify-end mr-[-5vw]
+            @apply flex justify-start mr-[41vw]
             p-[10vw] mt-[50vh] ;
         }
      }
-   
+    
 </style>
