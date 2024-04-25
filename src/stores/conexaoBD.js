@@ -17,13 +17,11 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
       },
       cadastrar(objeto, textoRequisicao){
-        return axios.post("http://localhost:8082"+textoRequisicao,objeto).then(response => response.data)
+        return axios.post("http://localhost:8082"+textoRequisicao,objeto).then(response => response)
       },
       atualizar(objeto,textoRequisicao){
         
-        return axios.put("http://localhost:8082"+textoRequisicao,objeto).then(response =>{
-          
-        })
+        return axios.put("http://localhost:8082"+textoRequisicao,objeto).then(response => response)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
         return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId,ids)

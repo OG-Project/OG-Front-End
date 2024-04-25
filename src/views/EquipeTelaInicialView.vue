@@ -107,6 +107,7 @@ async function buscarProjetosEquipe() {
   if (Array.isArray(projetosEquipe.value)) {
     // Filtrar espaços nulos (null) da lista de membros da equipe
     listaProjetos.value = projetosEquipe.value.filter(projeto => projeto != null);
+    console.log(listaProjetos)
   } else {
     console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
   }
