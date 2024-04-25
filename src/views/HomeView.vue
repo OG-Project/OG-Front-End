@@ -14,6 +14,8 @@ import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
 
 const screenWidth = ref(window.innerWidth)
+let usuario=ref()
+let configuracao=ref()
 
 watch(() => window.innerWidth, () => {
   screenWidth.value = window.innerWidth
@@ -22,5 +24,7 @@ onMounted(() => {
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
+
+
 })
 </script>

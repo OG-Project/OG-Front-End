@@ -58,6 +58,9 @@ const route = useRoute();
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')),'/usuario')
   configuracao.value=usuario.value.configuracao
+  perfil.isVlibras=configuracao.value.isLibras
+  perfil.isTecladoVirtual=configuracao.value.isTecladoVirtual
+  perfil.isVoiceMaker=configuracao.value.isDigitarVoz
   root.setProperty('--hueRoxo',configuracao.value.hueCor)
   root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
@@ -175,30 +178,30 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-
+  
   <Navbar v-if="!estaNoLogin && screenWidth >= 1024"/>
   <tabBar v-if="!estaNoLogin && screenWidth < 1024"/>
   <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024"/>
   <RouterView />
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
-    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
-    <div class=" flex flex-col items-center">
-      <div class="flex w-full justify-between px-4 ">
-        <svgIconMove class="w-[1vw] h-[3vh]" />
-        <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
-      </div>
-      <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
+  class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
+  <div class=" flex flex-col items-center">
+    <div class="flex w-full justify-between px-4 ">
+      <svgIconMove class="w-[1vw] h-[3vh]" />
+      <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
     </div>
-    <div v-show="isVlibras == true || VueCookies.get('isVlibras') == 'true'">
-      <div vw class="enabled">
-        <div vw-access-button class="active"></div>
-        <div vw-plugin-wrapper>
-          <div class="vw-plugin-top-wrapper"></div>
-        </div>
-      </div>
+    <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
+  </div>
+</div>
+<div v-show="isVlibras == true ">
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
     </div>
   </div>
+</div>
 
 </template>
 <style scoped></style>                  
