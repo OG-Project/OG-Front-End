@@ -212,10 +212,10 @@ function limparNomeCompleto() {
         @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;
     }
     .imgIcon {
-        @apply flex ml-[1vw] mt-4 h-[30px] w-[30px];
+        @apply flex ml-[1vw] mt-4 h-[25px] w-[25px];
     }
     .corDiv {
-        @apply flex ml-10 h-20 w-[45vw] border-transparent border-b-roxo border-b-2 items-center focus-within:border-roxo focus-within:border-4;
+        @apply flex ml-[5vw] h-20 w-[45vw] border-transparent border-b-roxo border-b-2 items-center focus-within:border-roxo focus-within:border-4;
     }
     .textArea {
         @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[60vw] h-[10vh]  bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-roxo border-b-2 focus-within:border-roxo focus-within:border-4;

@@ -209,17 +209,17 @@ return;
     
     let equipe;
     cria.criaEquipe(equipeCadastrada).then(response =>{
-        equipe = response
+        equipe = response.data
       colocaMembrosEquipe(equipe)
     });
 
-    await enviarFotoParaBackend(equipe);
 };
 
-function colocaMembrosEquipe(equipe){
+async function colocaMembrosEquipe(equipe){
     const ids = membrosEquipe.value.map(m => {
         return Number(m.id);
     });
+    await enviarFotoParaBackend(equipe);
     adicionaUsuarioLogado(ids, equipe)
 }
 

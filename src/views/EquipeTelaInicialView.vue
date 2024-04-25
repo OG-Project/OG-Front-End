@@ -102,7 +102,7 @@ function formatarData(data) {
 
 async function buscarProjetosEquipe() {
   // Chama a função do banco de dados para buscar os membros da equipe
-  console.log(await (await banco.buscarProjetosEquipe(equipeSelecionada, "/projeto/buscarProjetos")));
+  console.log(await( await banco.buscarProjetosEquipe(Number(equipeSelecionada), "/projeto/buscarProjetos")));
   projetosEquipe.value = await (banco.buscarProjetosEquipe(equipeSelecionada, "/projeto/buscarProjetos"));
   if (Array.isArray(projetosEquipe.value)) {
     // Filtrar espaços nulos (null) da lista de membros da equipe
@@ -255,6 +255,9 @@ function abrePopUp(equipe, tipo) {
     @apply ml-[20vw] mt-10;
     max-width: calc(100% - 1px);
   }
+  .listaProjetos{
+    @apply h-[57vh];
+  }
 }
 
 @media(min-width:1024px) {
@@ -275,14 +278,21 @@ function abrePopUp(equipe, tipo) {
   .botaoIcone {
     @apply w-[3vw] h-[4vh]
   }
+  .cardProjeto {
+    max-width: calc(68% - 1px);
+  }
+  .projetos {
+    @apply ml-16
+  }
+  
 }
 
-  @media screen and (max-width: 620px){
+  @media(max-width: 620px){
     .botaoIcone{
       @apply w-[50px] h-[50px] mt-[8vh] mr-4
     }
     .listaProjetos{
-      @apply mt-0;
+      @apply mt-0 h-[60vh];
     }
     .botaoProjetos{
       @apply flex mt-[8vh] mr-[14vw];
@@ -300,7 +310,7 @@ function abrePopUp(equipe, tipo) {
       @apply mt-0;
     }
     .cardProjeto{
-      @apply mt-20 text-2xl ml-1;
+      @apply mt-10 text-xl;
       max-width: calc(125% - 1px);
     }
   }    

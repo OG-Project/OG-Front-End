@@ -14,7 +14,9 @@
         </div>
         
         <div class="flex justify-center">
-            <listaProjetos width="95vw" height="73vh">
+            <listaProjetos v-if="screenWidth >= 620" width="95vw" height="73vh">
+            </listaProjetos>
+            <listaProjetos v-else width="95vw" height="59vh">
             </listaProjetos>
         </div>
     </div>

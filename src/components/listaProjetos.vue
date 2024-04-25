@@ -80,7 +80,7 @@
         <div v-else-if="!mostrarMensagem">
           <div v-if="!kanbanAtivo" class="projetos" >
             <div v-for="projeto of filtrarPorCategoria(statusBotao).length ? filtrarPorCategoria(statusBotao) : projetos" :key="projeto.id" >
-              <cardProjetos class="cardProjetos" 
+              <cardProjetos v-if="screenWidth >= 620" class="cardProjetos" 
               :name="projeto.nome" 
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
@@ -89,6 +89,15 @@
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
+              <cardProjetos v-else class="cardProjetos" 
+                :name="projeto.nome" 
+                :descricao="projeto.descricao" 
+                :comeco="formatarData(projeto.dataCriacao)" 
+                :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
+                :reponsavel="obterNomesResponsaveis(projeto)"
+                :feito="calcularProgressoProjeto(projeto)"
+                :tempo-atuacao="projeto.tempoAtuacao"
+                @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
             </div>
           </div>
         </div>
@@ -158,7 +167,7 @@
         const projetosDaEquipe = await banco.buscarProjetosEquipe(equipeUsuario.equipe.id, "/projeto/buscarProjetos");
         projetosEquipe.push(...projetosDaEquipe); 
       }
-
+    console.log(projetosEquipe)
     if (Array.isArray(projetosEquipe)) {
         projetos.value = projetosEquipe;
         projetos.value.forEach(projeto => {
@@ -452,7 +461,6 @@ kanban-board {
   .prontos{
     @apply flex w-[22.8vw] ;
   }
-  
   .meusProjetos{
     @apply flex w-[22.8vw] ;
   }
@@ -465,7 +473,7 @@ kanban-board {
   }
   
   .iconeCard{
-    @apply  flex justify-end  mr-[-0.5vw] mt-[1.2vh];
+    @apply flex justify-end  mr-[-0.5vw] mt-[1.2vh];
   } 
   .mensagemKanban{
     @apply ml-[42%];
