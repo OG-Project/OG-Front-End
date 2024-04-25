@@ -158,13 +158,13 @@
         <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
             <div class="flex gap-2 items-center">
-              <CheckBox :checked="subtarefa.concluida" tipo="checkbox"
+              <CheckBox :checked="subtarefa.concluido" tipo="checkbox"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)" />
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
               <p>Status:</p>
-              <div v-if="subtarefa.concluida">
+              <div v-if="subtarefa.concluido">
                 <p class="flex items-center justify-center bg-[#7CC0E5]">Concluído</p>
               </div>
               <div v-else>
@@ -1054,7 +1054,7 @@ const listaFiltradaPropriedades = computed(() => {
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
   tarefa.value.subtarefas.forEach((subtarefa) => {
-    if (subtarefa.concluida) {
+    if (subtarefa.concluido) {
       numeroDeSubTarefasC.value++;
     }
   });
@@ -1090,7 +1090,7 @@ let comentarioSendoEditado = ref(false);
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
 function trocaStatusDaSubTarefa(subtarefa, index) {
-  tarefa.value.subtarefas[index].concluida = !tarefa.value.subtarefas[index].concluida;
+  tarefa.value.subtarefas[index].concluido = !tarefa.value.subtarefas[index].concluido;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";

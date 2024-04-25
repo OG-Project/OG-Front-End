@@ -1,7 +1,7 @@
 <template>
-    <div class="fixed bottom-0 w-full flex justify-around items-center h-[8vh] bg-[#36213E]">
+    <div class="fixed bottom-0 w-full flex justify-around items-center h-[8vh] bg-[#36213E] z-[9999999999]">
         <img class="h-[40%]" @click="redireciona('/home')" :src="IconHome" />
-        <img class="h-[40%]" @click="redireciona('/perfil')" :src="IconProfile" />
+        <img class="h-[40%]" @click="redireciona('/equipe')" :src="IconProfile" />
         <img class="h-[40%]" @click="redireciona('/projetos')" :src="IconFolder" />
         <img class="h-[40%]" :src="IconNotification" />
         <img class="h-[40%]" @click="redireciona('/perfil/informacoes')" :src="IconConfig" />

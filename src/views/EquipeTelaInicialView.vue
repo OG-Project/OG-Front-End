@@ -271,11 +271,6 @@ function abrePopUp(equipe, tipo) {
   }
 }
 
-@media(min-width: 2560px) {
-  .botaoIcone {
-    @apply w-[3vw] h-[4vh]
-  }
-
   @media screen and (max-width: 620px){
     .botaoIcone{
       @apply w-[50px] h-[50px] mt-[8vh] mr-4
