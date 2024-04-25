@@ -21,9 +21,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       atualizar(objeto,textoRequisicao){
         
-        return axios.put("http://localhost:8082"+textoRequisicao,objeto).then(response =>{
-          
-        })
+        return axios.put("http://localhost:8082"+textoRequisicao,objeto).then(response => response)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
         return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId, ids)
