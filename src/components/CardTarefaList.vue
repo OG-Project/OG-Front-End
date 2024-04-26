@@ -4,18 +4,27 @@
       <cabecalhoCardDaLista :projeto="projetoPromise" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
       </cabecalhoCardDaLista>
     </div>
-    <div class="flex flex-row w-max h-[10%] justify-center items-center">
+    <div class="flex flex-col w-max h-[10%] justify-center items-center">
       <div v-for="tarefa of projeto.tarefas" class=" truncate ">
-        {{ console.log(tarefa) }}
-        <div class="border-r-2 flex items-center justify-center w-[10vw]">
-          {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
-        </div>
-        <div class="border-r-2 flex items-center justify-center w-[10vw]" v-if="tarefa.descricao != null">
-          {{ tarefa.descricao.charAt(0).toUpperCase() + tarefa.descricao.slice(1) }}
-
-        </div>
-        <div class="border-r-2 flex items-center justify-center w-[10vw]"> 
-          {{ a }}
+        <div class="flex flex-row truncate h-full bg-pink-200">
+          {{ console.log(tarefa) }}
+          <div class="border-r-2 flex items-center justify-center w-[10vw]">
+            {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
+          </div>
+          <div class="border-r-2 flex items-center justify-center w-[10vw]" v-if="tarefa.descricao != null">
+            {{ tarefa.descricao.charAt(0).toUpperCase() + tarefa.descricao.slice(1) }}
+          </div>
+          <div v-if="tarefa.descricao == null" class="border-r-2 flex items-center justify-center w-[10vw]">
+            <p>Não Tem Valor</p>
+          </div>
+          <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+            <div class="border-r-2 flex items-center justify-center w-[10vw] truncate" v-if="funcaoVerificaPropriedade(propriedade.propriedade)">
+              {{ propriedade.valor.valor }}
+            </div>
+            <div v-if="propriedade.valor.valor == null" class="border-r-2 flex items-center justify-center w-[10vw]">
+            <p>Não Tem Valor</p>
+          </div>
+          </div>
         </div>
       </div>
     </div>
@@ -49,6 +58,14 @@ async function transformaEmObject() {
   // visualizacaoPromise = api.procurar("/visualizacaoEmLista/" + projeto.id)
   visualizacao = await visualizacaoPromise
   console.log(visualizacao)
+}
+
+function funcaoVerificaPropriedade(propriedade){
+  for(const propriedadeVisivel of props.listaDePropriedadesVisiveis){
+    if(propriedade.id == propriedadeVisivel.id){
+      return true
+    }
+  }
 }
 
 function defineTarefas() {
