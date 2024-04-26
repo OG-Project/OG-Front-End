@@ -86,9 +86,9 @@ function enviaComentario(comentario) {
         conteudo: comentario[0]
     });
     console.log(projeto)
-    editaProjeto.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes, projeto.tarefas,projeto.propriedades
+    editaProjeto.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes,  projeto.tarefas,projeto.propriedades
         , projeto.statusList, projeto.responsaveis, projeto.dataFinal
-        , projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, comentariosProjeto.value) // passar todos os dados do projeto 
+        , projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, comentariosProjeto.value,projeto.tarefas) // passar todos os dados do projeto 
 }
 function formatarData(data) {
     let dataFormatada = new Date(data)
