@@ -12,7 +12,7 @@
                     <timeLine></timeLine>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/kanban')"
-                    class="w-[100%] h-screen flex justify-center items-center">
+                    class="w-full max-w-full h-full flex justify-start px-4 items-center overflow-x-auto" >
                     <KanbanDeStatus></KanbanDeStatus>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/lista')"

@@ -40,6 +40,7 @@ import ListaConvidados from './ListaConvidados.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
+import { webSocketStore } from '../stores/webSocket.js'
 
 const banco = conexaoBD();
 let nome = ref('');
@@ -49,10 +50,8 @@ let mensagemError = ref("");
 
 let usuarioLogado = VueCookies.get("IdUsuarioCookie")
 let membrosEquipe = ref([]);
-let conexaoWeb = webSocketStore()
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
-import { webSocketStore } from '../stores/webSocket.js'
 
 function marginRightConvidado() {
     if (screenWidth <= 768) {
@@ -223,8 +222,6 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
             }
         }
     }
-    console.log(teste)
-    console.log(equipeAux)
     const webSocket = webSocketStore();
     webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))

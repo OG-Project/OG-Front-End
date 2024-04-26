@@ -1,6 +1,6 @@
 <template>
-    <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-        <div v-for="propriedade of lista" class="w-[20%]">
+    <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
+        <div v-for="propriedade of lista" class="w-auto flex h-full">
             <div :style="propriedade.style">
 
                 <div class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
@@ -27,10 +27,13 @@
                 </button>
             </div>
         </div>
-        <button class="novaPropriedade" @click="popUpStatus = true">
-            {{ console.log(popUpStatus) }}
-            <h1>+Novo</h1>
-        </button>
+        <span class="pr-4">
+
+            <button class="novaPropriedade " @click="popUpStatus = true">
+                {{ console.log(popUpStatus) }}
+                <h1>+Novo</h1>
+            </button>
+        </span>
     </div>
     <div v-if="popUpStatus==true">
         <div class="flex justify-end">
@@ -130,7 +133,7 @@ async function defineListaDePropriedades() {
                 propriedade: status,
                 tarefas: listaDeTarefas,
                 style: listaStyle = {
-                    width: "100%",
+                    width: "15vw",
                     height: "max-content",
                     display: "flex",
                     alignItems: "center",
@@ -176,7 +179,7 @@ function verificaListaVaziaBoolean(tarefas) {
 }
 
 .novaPropriedade {
-    @apply w-[20%] h-[50%] flex-col bg-[#A79DB0] pt-[5px] flex justify-center items-center text-[2vw];
+    @apply w-[15vw] h-[50%] bg-[#A79DB0] flex justify-center items-center text-[2vw] p-[3.2vw];
     box-shadow: 0px 5px 7px rgb(99, 99, 99);
 
 }

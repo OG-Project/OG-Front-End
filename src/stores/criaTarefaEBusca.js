@@ -20,16 +20,16 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
         .then(async (response) => {
           // Obter o ID da tarefa recém-criada
 
-          let idTarefa = response.id;
+          let idTarefa = response.data.id;
 
-          console.log(response.id);
+          console.log(response.data.id);
           console.log(response);
 
           
           
           let idTarefaAntiga = VueCookies.get("IdTarefaCookies");
           // Armazenar o ID da tarefa nos cookies
-          VueCookies.set("IdTarefaCookies", response.id, 100000000000);
+          VueCookies.set("IdTarefaCookies", response.data.id, 100000000000);
           
           // Verificar e deletar a tarefa anterior, se existir
           let projetoId = VueCookies.get("IdProjetoAtual");
