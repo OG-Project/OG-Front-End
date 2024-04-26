@@ -158,13 +158,13 @@
         <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
           <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
             <div class="flex gap-2 items-center">
-              <CheckBox :checked="subtarefa.concluida" tipo="checkbox"
+              <CheckBox :checked="subtarefa.concluido" tipo="checkbox"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)" />
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
               <p>Status:</p>
-              <div v-if="subtarefa.concluida">
+              <div v-if="subtarefa.concluido">
                 <p class="flex items-center justify-center bg-[#7CC0E5]">Concluído</p>
               </div>
               <div v-else>
@@ -213,29 +213,29 @@
               </div>
               <div class="flex w-[100%] mb-2">
                 <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-                    " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+            " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
                   </p>
 
                   <div v-if="comentarioSendoEditado &&
-                            comentario.autor.username === usuarioCookies.username
-                                    ">
+            comentario.autor.username === usuarioCookies.username
+            ">
                     <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" placeholder="Descrição da tarefa"
                       tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                   </div>
                   <div v-if="!comentarioSendoEditado ||
-                                comentario.autor.username != usuarioCookies.username
-                                   ">
+            comentario.autor.username != usuarioCookies.username
+            ">
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.conteudo }}
                     </p>
                   </div>
 
                   <div v-if="comentarioSendoEditado &&
-                  comentario.autor.username === usuarioCookies.username
-                    ">
+            comentario.autor.username === usuarioCookies.username
+            ">
                     <Botao texto="Editar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
                       :parametrosFuncao="comentario"></Botao>
                   </div>
@@ -275,7 +275,7 @@
         </div>
 
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
-          <div v-for="propriedade in propriedades"
+          <div v-for="propriedade in listaFiltradaPropriedades"
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
             <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
               <div class="flex gap-2 items-center w-[40%]">
@@ -338,7 +338,9 @@
             class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
             <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
               <div class="w-[35%] flex gap-2 items-center pl-4">
-                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)"></CheckBox>
+                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)"
+                  tipo="radio">
+                </CheckBox>
                 <p class="break-all">{{ statsAdd.nome }}</p>
               </div>
               <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
@@ -415,7 +417,7 @@
         <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
           <p class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
           <div v-if="propriedade.propriedade.tipo === 'DATA'">
-            <p>Valor: {{ format(new Date(propriedade.valor.valor), "dd/MM/yyyy HH:mm") }}</p>
+            <p>Valor: {{ formatarData(propriedade.valor.valor) }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'" class="flex">
             <p>Valor:</p>
@@ -583,6 +585,16 @@ async function patchDaListaDePropriedades() {
   }
   console.log(tarefa2);
   banco.atualizar(tarefa2, "/tarefa")
+}
+
+function veSeOStatusTaNaTarefa(status) {
+  if (tarefa.value.status) {
+    if (tarefa.value.status.id == status.id) {
+      console.log(true);
+      return true
+    }
+    return false
+  }
 }
 
 async function criaTarefaNoConcluido() {
@@ -763,7 +775,8 @@ async function criaPropriedade() {
   nomePropriedade.value = "";
   tipoPropriedade.value = "";
   console.log(projetoDaTarefa.value.propriedades);
-  propriedades.value = projetoDaTarefa.value.propriedades;
+  let tarefaAtual = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa");
+  propriedades.value = tarefaAtual.valorPropriedadeTarefas;
   console.log(propriedades.value);
   propriedadeSendoCriada.value = false;
 }
@@ -828,6 +841,7 @@ async function puxaTarefaDaEdicao() {
 
 async function atualizaPropriedadesEStatus() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
+  console.log(IdTarefaCookies);
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   status.value = projetoDaTarefa.value.statusList;
   propriedades.value = tarefaAux.valorPropriedadeTarefas;
@@ -931,11 +945,17 @@ function abreFechaCriaSubTarefas() {
 //Funções que removem e adicionam os status e propriedades da tarefa
 
 function adicionaExcluiStatusNaTarefa(status) {
-  if (tarefa.value.status == status) {
-    tarefa.value.status = null;
-  } else {
+  if (tarefa.value.status) {
+    if (tarefa.value.status.id == status.id) {
+      tarefa.value.status = null;
+    } else {
+      tarefa.value.status = status;
+    }
+  }
+  else {
     tarefa.value.status = status;
   }
+  veSeOStatusTaNaTarefa(status)
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
@@ -1040,14 +1060,16 @@ const listaFiltradaStatus = computed(() => {
 });
 
 const listaFiltradaPropriedades = computed(() => {
+  console.log(parametroDoFiltroPropriedade.value);
   if (parametroDoFiltroPropriedade.value === "Ordenar Por") {
-    // Check for empty string
     return propriedades.value;
   }
-
+  for (const propriedade of propriedades.value) {
+    console.log(propriedade.propriedade.tipo.toUpperCase());
+  }
   return propriedades.value.filter(
     (propriedade) =>
-      propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
+      propriedade.propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
   );
 });
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
@@ -1055,7 +1077,7 @@ const listaFiltradaPropriedades = computed(() => {
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
   tarefa.value.subtarefas.forEach((subtarefa) => {
-    if (subtarefa.concluida) {
+    if (subtarefa.concluido) {
       numeroDeSubTarefasC.value++;
     }
   });
@@ -1091,7 +1113,7 @@ let comentarioSendoEditado = ref(false);
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
 function trocaStatusDaSubTarefa(subtarefa, index) {
-  tarefa.value.subtarefas[index].concluida = !tarefa.value.subtarefas[index].concluida;
+  tarefa.value.subtarefas[index].concluido = !tarefa.value.subtarefas[index].concluido;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
@@ -1114,6 +1136,23 @@ let opcaoEstaClicadaPropriedades = ref(true);
 let opcaoEstaClicadaStatus = ref(false);
 
 //Função que troca qual é o display onde mostra os status e as propriedades que pode adicionar na tarefa
+
+function formatarData(data) {
+  console.log(data);
+  const dataObj = new Date(data);
+  if (dataObj.getDate()) {
+    const dia = String(dataObj.getDate()).padStart(2, '0');
+    const mes = String(dataObj.getMonth() + 1).padStart(2, '0');
+    const ano = dataObj.getFullYear();
+    const horas = String(dataObj.getHours()).padStart(2, '0');
+    const minutos = String(dataObj.getMinutes()).padStart(2, '0');
+    return `${ano}/${mes}/${dia} - ${horas}:${minutos}`;
+  }
+  else {
+    return "Data não especificada"
+  }
+
+}
 
 function clicouOpcaoPropriedades() {
   if (opcaoEstaClicadaPropriedades.value === false) {

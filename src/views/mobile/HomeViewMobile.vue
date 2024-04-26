@@ -1,9 +1,8 @@
 <template>
     <div class="w-full h-full flex flex-col items-center justify-center">
         <div class="h-16 flex items-center justify-center">
-            <h1 class="text-5xl font-bold w-fit border-b-2 border-black">
-                Bem-Vindo
-                Lil X!
+            <h1 class="text-3xl sm:text-5xl font-bold w-fit border-b-2 border-black" v-if="usuarioCookies">
+                Bem-Vindo {{ usuarioCookies.username }}
             </h1>
         </div>
         <div class="h-48 flex items-center justify-around w-full">
@@ -19,19 +18,19 @@
             </div>
         </div>
         <div class="h-16 flex items-center justify-center">
-            <h1 class="text-4xl w-fit font-bold">
+            <h1 class="text-3xl sm:text-4xl w-fit font-bold">
                 Minhas Tarefas
             </h1>
         </div>
         <div class="h-32 w-full flex items-center justify-around">
-            <img :src="EstrelaHomeIcon" @click="trocaTopico('Tarefas Urgentes')" />
-            <img :src="DiaHomeIcon" @click="trocaTopico('Tarefas do Dia')" />
-            <img :src="SemanaHomeIcon" @click="trocaTopico('Tarefas da Semana')" />
-            <img :src="MesHomeIcon" @click="trocaTopico('Tarefas do Mês')" />
+            <img :src="EstrelaHomeIcon" @click="trocaTopico('Projetos Urgentes')" />
+            <img :src="DiaHomeIcon" @click="trocaTopico('Projetos do Dia')" />
+            <img :src="SemanaHomeIcon" @click="trocaTopico('Projetos da Semana')" />
+            <img :src="MesHomeIcon" @click="trocaTopico('Projetos do Mês')" />
         </div>
         <div class="w-[90%] h-[45vh] flex flex-col items-center"
             style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
-            <h1 class="text-4xl pt-4">{{ nomeDoTopico }}</h1>
+            <h1 class="text-2xl sm:text-4xl pt-4">{{ nomeDoTopico }}</h1>
             <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
                 <div v-for="projeto of listaDeProjetos"
                     class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
@@ -65,6 +64,20 @@ let nomeDoTopico = ref();
 let listaDeProjetos = ref([]);
 let tarefasFeitas = ref(0);
 let tarefasNaoFeitas = ref(0);
+let usuarioCookies;
+let usuarioId = VueCookies.get("IdUsuarioCookie");
+
+async function pegaUsuario() {
+    let usuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
+    return usuario;
+}
+
+async function autenticarUsuario(id) {
+  let usuarios = banco.procurar("/usuario");
+  let listaUsuarios = await usuarios;
+  let usuario = listaUsuarios.find((usuario) => usuario.id == id);
+  return usuario;
+}
 
 function redireciona(rota, id) {
     VueCookies.set("IdProjetoAtual", id);
@@ -93,32 +106,33 @@ async function verificaTarefasFeitas() {
     console.log(tarefasNaoFeitas.value);
 }
 
-onMounted(() => {
-    trocaTopico('Tarefas Urgentes')
+onMounted( async () =>{
+    usuarioCookies = await autenticarUsuario(usuarioId);
+    trocaTopico('Projetos Urgentes')
     verificaTarefasFeitas();
 });
 
 function trocaTopico(nome) {
-    if (nome === 'Tarefas Urgentes') {
-        nomeDoTopico.value = "Tarefas Urgentes";
+    if (nome === 'Projetos Urgentes') {
+        nomeDoTopico.value = "Projetos Urgentes";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosUrgentes();
     }
-    else if (nome === 'Tarefas do Dia') {
-        nomeDoTopico.value = "Tarefas do Dia";
+    else if (nome === 'Projetos do Dia') {
+        nomeDoTopico.value = "Projetos do Dia";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosDia();
     }
-    else if (nome === 'Tarefas da Semana') {
-        nomeDoTopico.value = "Tarefas da Semana";
+    else if (nome === 'Projetos da Semana') {
+        nomeDoTopico.value = "Projetos da Semana";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosSemana();
     }
-    else if (nome === 'Tarefas do Mês') {
-        nomeDoTopico.value = "Tarefas do Mês";
+    else if (nome === 'Projetos do Mês') {
+        nomeDoTopico.value = "Projetos do Mês";
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosMes();
@@ -182,24 +196,34 @@ async function pegaListaDeProjetosSemana() {
 }
 
 async function pegaListaDeProjetosDia() {
-    const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
-    const dataAtual = new Date();
-    const primeiroDiaSemana = new Date(dataAtual);
-    primeiroDiaSemana.setDate(primeiroDiaSemana.getDate() - primeiroDiaSemana.getDay());
-    const ultimoDiaSemana = new Date(primeiroDiaSemana);
-    ultimoDiaSemana.setDate(ultimoDiaSemana.getDate() + 6);
+    try {
+        const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
+        let dataAtual;
+        let dia = new Date().getDate();
+        let mes = new Date().getMonth();
+        let ano = new Date().getFullYear();
+        dataAtual = `${ano}-${'0' + (mes + 1)}-${dia}`;
 
-    equipeUsuario.equipes.forEach(async equipe => {
-        let projetoDoBanco = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos")
-        projetoDoBanco.forEach(projeto => {
-            if (projeto.dataFinal) {
-                const dataFinal = new Date(projeto.dataFinal);
-                if (dataFinal.toDateString() === dataAtual.toDateString()) {
-                    listaDeProjetos.value.push(projeto);
+        for (const equipe of equipeUsuario.equipes) {
+            const projetosDaEquipe = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos");
+
+            for (const projeto of projetosDaEquipe) {
+                if (projeto.dataFinal) {
+
+                    console.log(projeto.dataFinal);
+                    console.log(dataAtual);
+
+                    // Comparando apenas dia, mês e ano das datas
+                    if (projeto.dataFinal == dataAtual) {
+                        listaDeProjetos.value.push(projeto);
+                    }
                 }
             }
-        });
-    });
+        }
+    } catch (error) {
+        console.error("Erro ao buscar projetos do dia:", error);
+    }
 }
+
 
 </script>

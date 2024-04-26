@@ -1,30 +1,30 @@
 <template>
-  <div class="h-[8vh] w-full flex justify-around">
+  <div class="h-[8vh] w-full flex justify-around z-[9999999999]">
 
-    <div class="h-[8vh] w-[80%] flex items-center gap-8 justify-end mr-8">
-      <Input styleInput="input-claro-pequeno" largura="60" altura="20%" conteudoInput="Pesquisar..."></Input>
+    <div class="h-[8vh] w-[70%] flex items-center gap-8 justify-end mr-8">
+      <Input styleInput="input-claro-pequeno" largura="50" altura="20%" conteudoInput="Pesquisar..."></Input>
       <!-- asdasdasd -->
-      <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies && usuarioCookies.foto"
-        class="shadow-2xl h-[60px] w-[60px] rounded-full"
-        :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
+
     </div>
-    <div class="h-[8vh] w-[20%] flex gap-8 items-center">
+    <div class="h-[8vh] w-[10%] flex gap-8 items-center">
       <div class="h-[8vh] flex items-center">
         <img @click="redireciona('/criaTarefa')" class="w-" src="../assets/BotaoCriaTarefaMobile.svg" />
       </div>
     </div>
-
+    <div class="h-[8vh] w-[20%] flex justify-center items-center">
+      <img
+       @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
+        class="shadow-2xl h-[45px] w-[45px] mr-4 ml-4 rounded-full "
+        :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
+    </div>
   </div>
+  
   <div v-if="notificacaoBoolean == true" class="w-full fixed z-50 flex justify-end pr-4">
     <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean = false"></popUpNotificacao>
   </div>
 </template>
 <script setup>
-import BarraLateral from "../components/BarraLateral.vue";
 import { ref } from "vue";
-import Botao from "../components/Botao.vue";
-import notificacao from "../imagem-vetores/Notificacao.svg";
-import UserIcon from "../imagem-vetores/UserIcon.svg";
 import Input from "./Input.vue";
 import router from "@/router";
 import { onMounted } from "vue";
@@ -36,11 +36,11 @@ import popUpNotificacao from "../components/popUpNotificacao.vue";
 const banco = conexaoBD();
 
 onMounted(async () => {
-  usuarioCookies = await autenticarUsuario(usuarioId);
+  usuarioCookies.value = await autenticarUsuario(usuarioId);
 });
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
-let usuarioCookies;
+let usuarioCookies = ref();
 let notificacaoBoolean = ref(false);
 
 async function autenticarUsuario(id) {

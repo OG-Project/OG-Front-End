@@ -8,26 +8,53 @@
     </button>
   </div>
   <div v-if="TemIcon === 'nao'">
-
-    <button :class="tamanhoComClass" :style="isClick ? clickBotao : isHovered ? hoverBotao : botao" @mouseover="hover"
-      @mouseout="unhover" @click="click">
+    
+    <button :class="tamanhoComClass"
+      :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
+      @mouseover="hover"
+      @mouseout="unhover"
+      @click="click"
+    >
       <p>{{ Texto }}</p>
     </button>
   </div>
 </template>
 
 <script setup>
-import { de } from "date-fns/locale";
-import { ref, onMounted, defineProps } from "vue";
-
-// Define variáveis reativas para controlar os estados de hover e clique
+import { ref, onMounted, defineProps, watch, computed, onUpdated } from "vue";
+import { perfilStore } from "../stores/perfilStore";
+let perfil=perfilStore()
+import { storeToRefs } from 'pinia';
+const {hue} =storeToRefs(perfil)
 const isHovered = ref(false);
 const isClick = ref(false);
+// 
 
 const tamanhoComClass = ref("medioId");
 
-// Define as propriedades que o componente espera receber
+const screenWidth = ref(window.innerWidth)
+
+onMounted(()=>{
+  console.log(props.roxo);
+  console.log(hue.value)
+  if(screenWidth < 640){
+    props.tamanhoDaFonte.value='0.5vh'
+  }
+})
+
+watch(hue,(newValue) => {
+  console.log(newValue)
+  hue.value=newValue
+  
+})
+onUpdated(()=>{
+  console.log('teste');
+  console.log(hue.value);
+
+})
+
 const props = defineProps({
+  roxo:String,
   texto: String,
   cor: String,
   corHover: String,
@@ -68,6 +95,7 @@ const props = defineProps({
   },
 });
 
+// let root=document.documentElement.style
 
 let corInvertidaIcon = ref('invert(0%)');
 let TemIcon = props.temIcon;
@@ -76,12 +104,7 @@ let Preset = props.preset;
 let botao;
 let hoverBotao;
 let clickBotao;
-let width = "";
-let height = "";
-const tamanho = {
-  height: props.height,
-  width: props.width,
-}
+
 let estiloIcone = {
   width: "15%",
   filter: corInvertidaIcon.value,
@@ -234,7 +257,7 @@ switch (Preset) {
       justifyContent: "center",
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #620BA7",
-      color: "#620BA7",
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
@@ -251,7 +274,7 @@ switch (Preset) {
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -267,7 +290,7 @@ switch (Preset) {
     Texto = props.texto;
     TemIcon = "nao";
     botao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: '#620BA7',
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -306,7 +329,7 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      color: "#620BA7",
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
@@ -322,7 +345,7 @@ switch (Preset) {
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -337,7 +360,7 @@ switch (Preset) {
     Texto = props.texto;
     TemIcon = "sim";
     botao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: props.roxo,
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
@@ -384,7 +407,7 @@ switch (Preset) {
       justifyContent: "space-evenly",
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
-      color: "#620BA7",
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
@@ -424,7 +447,7 @@ switch (Preset) {
       justifyContent: "space-evenly",
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #620BA7",
-      color: "#620BA7",
+      color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
@@ -534,20 +557,16 @@ function click() {
 </script>
 
 <style lang="scss">
+
 .medioId {
-  @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh]
+  @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh] sm:text-xs;
 }
 
 .pequenoId {
-  @apply 2xl:w-[5vw] 2xl:h-[4vh] lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm
+  @apply 2xl:w-[5vw] 2xl:h-[4vh] lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm;
 }
 
 .grandeId {
-  @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh]
-}
-
-.personalizadoId {
-  width: v-bind('tamanho.width');
-  height: v-bind('tamanho.height');
+  @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh] sm:text-xs;
 }
 </style>

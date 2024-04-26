@@ -17,16 +17,17 @@
                 <div class="h-[50%] flex justify-center">
                     <div class="bola"></div>
                 </div>
-    
+   
             </div>
             <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
+                {{ console.log(tarefa) }}
                 <div v-if="tarefa.tarefa.id == props.tarefa.id" class="flex justify-end pl-[20%]">
                     <svg width="2vh" height="2vh" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M14.6252 14.3234L0.464865 14.3233L14.6257 0.610178L14.6252 14.3234Z" fill="#620BA7" />
                     </svg>
                 </div>
             </div>
-    
+   
         </div>
         <!-- Preset 2 Tira -->
         <div :style="tira" v-if="preset == 2" id="draggableElement" draggable="true">
@@ -49,9 +50,6 @@ import { ref } from 'vue';
 import tinycolor from "tinycolor2";
 import VueCookies from "vue-cookies";
 import router from '@/router'
-import { conexaoBD } from '../stores/conexaoBD';
-
-const banco = conexaoBD();
 
 const isHovered = ref(false);
 
@@ -61,19 +59,11 @@ const props = defineProps({
     altura: String,
     preset: String
 })
-
-async function buscaUsuario(id) {
-
-    let usuario = await banco.procurar("/usuario/" + id);
-    return usuario;
-}
-
 let tarefa1
 let kanban
 let hoverCard
 let tira
-let usuarioLogado = VueCookies.get("IdUsuarioCookie");
-let usuario = ref(await buscaUsuario(usuarioLogado));
+let usuarioLogado = $cookies.get("usuarioCookie");
 tarefa1 = {
     backgroundColor:("#"+ props.tarefa.cor),
     width: "6%",
@@ -120,7 +110,7 @@ function verificaCorTexto(tarefa) {
 }
 function enviaCookie(tarefa){
     $cookies.set("IdTarefaCookies",tarefa.id)
-    router.push('/criaTarefa') 
+    router.push('/criaTarefa')
 }
 
 </script>
@@ -161,3 +151,4 @@ function enviaCookie(tarefa){
 
 }
 </style>
+

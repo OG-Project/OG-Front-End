@@ -9,7 +9,7 @@
       />
     </div>
     <div v-if="props.tipo === 'toggle'">
-      {{ console.log(props.checked) }}
+      <!-- {{ console.log(props.checked) }} -->
       <div :style="estiloToggle" id="bordaToggle" @click="check('toggle')">
         <svg :style="estiloSVG">
           <circle
@@ -22,11 +22,19 @@
         </svg>
       </div>
     </div>
+    <div v-if="props.tipo === 'radio'" class="flex items-center">
+      <input
+        id="radio"
+        type="radio"
+        :checked="checked"
+        @click="check('checkbox'), $emit('modelValue', $event.target.value)"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onUpdated, ref } from "vue";
 import mojs from "@mojs/core";
 import { defineProps, onMounted } from "vue";
 
@@ -50,7 +58,7 @@ const props = defineProps({
 });
 let idCircle = props.elId;
 let posicaoBola = ref(14);
-let ativo = ref(props.checked);
+let ativo = ref();
 let corBolaToggle = ref("#620BA7");
 let estiloSVG = ref({
   width: "60px",
@@ -169,8 +177,10 @@ switch (props.tamanho) {
 
 let estiloToggle;
 onBeforeMount(() => {
+  ativo.value=props.checked
+  // console.log(props.checked);
+  // console.log(ativo.value);
   if (props.tipo == "toggle") {
-    console.log(ativo.value);
     if (ativo.value) {
       corBolaToggle.value = "#F3F3F3";
       estiloToggle = ref(estiloBolaFinal.value);
@@ -184,6 +194,8 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+  // console.log(ativo.value);
+  // console.log(props.checked);
   if (props.tipo == "toggle") {
     if (ativo.value) {
       const animation = new mojs.Html({
@@ -266,17 +278,28 @@ function valorJaPassado() {
     animation.play();
   }
 }
+
 </script>
 
 <style scoped>
 input[type="checkbox"] {
-  accent-color: #620ba7;
+  accent-color: var(--roxo);
 }
 #checkbox {
   border-radius: 0px;
-  border-color: #620ba7;
+  border-color: var(--roxo);
   cursor: pointer;
   width: 20px;
   height: 20px;
+}
+#radio {
+  border-radius: 9999px;
+  border-color: var(--roxo);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+input[type="radio"] {
+  accent-color: var(--roxo);
 }
 </style>

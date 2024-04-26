@@ -19,9 +19,10 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
       api.cadastrar({}, '/tarefa/' + VueCookies.get("IdProjetoAtual"))
         .then(async (response) => {
           // Obter o ID da tarefa recém-criada
-          let idTarefa = response.data.id;
 
-          console.log(response.data.id);
+          let idTarefa = response.id;
+
+          console.log(response.id);
           console.log(response);
 
           
