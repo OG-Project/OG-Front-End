@@ -161,7 +161,7 @@ function abreModalMensagem() {
 .labelContainer:active{
     border-color: grey;
     border: none;
-
+}
 .animation {
     @apply absolute w-[30%] h-[80%] z-10;
     animation: myAnim 0.15s ease 0s 1 normal none;
