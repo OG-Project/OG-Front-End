@@ -137,12 +137,11 @@
         </div>
       </div>
       <div class="pl-12 mt-4">
-        <div class="w-min h-min relative">
-          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
+        <div class="w-min h-min relative cursor-pointer">
+          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
             inverterCorIcon="sim"></Botao>
-          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
+          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer" @change="e => gerarArquivo(e)">
         </div>
-
       </div>
       <div class="pl-12 mt-4">
         <h1>SubTarefas</h1>
@@ -249,10 +248,10 @@
     <div class="w-[100vw] min-h-[96%] flex flex-col pl-12 pt-8 mb-24">
       <div class="w-[95%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
-          <button class="w-[33%]" @click="clicouOpcaoPropriedades()" :style="estiloBotaoPropriedades">
+          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%;">
             Propriedades
           </button>
-          <button class="w-[33%]" @click="clicouOpcaoStatus()" :style="estiloBotaoStatus">
+          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%;">
             Status
           </button>
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
@@ -1059,38 +1058,33 @@ let opcaoEstaClicadaStatus = ref(false);
 //Função que troca qual é o display onde mostra os status e as propriedades que pode adicionar na tarefa
 
 function clicouOpcaoPropriedades() {
-  if (opcaoEstaClicadaPropriedades.value === false) {
-    opcaoEstaClicadaPropriedades.value = true;
-    opcaoEstaClicadaStatus.value = false;
-    estiloBotaoPropriedades.value = estiloOpcaoClicadoPropriedades;
-    estiloBotaoStatus.value = {
-      borderBottom: "solid 4px transparent",
-    };
-  } else {
-    opcaoEstaClicadaPropriedades.value = false;
-    opcaoEstaClicadaStatus.value = true;
-    estiloBotaoPropriedades.value = {
-      borderBottom: "solid 4px transparent",
-    };
-    estiloBotaoStatus.value = estiloOpcaoClicadoStatus;
-  }
+    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+    const opcaoStatus = document.getElementById('opcaoStatus');
+
+    if (!opcaoEstaClicadaPropriedades.value) {
+        opcaoEstaClicadaPropriedades.value = true;
+        opcaoEstaClicadaStatus.value = false;
+
+        opcaoPropriedades.classList.add('opcaoClicada');
+        opcaoPropriedades.classList.remove('opcaoNaoClicada');
+        opcaoStatus.classList.add('opcaoNaoClicada');
+        opcaoStatus.classList.remove('opcaoClicada');
+    }
 }
+
 function clicouOpcaoStatus() {
-  if (opcaoEstaClicadaStatus.value === false) {
-    opcaoEstaClicadaStatus.value = true;
-    opcaoEstaClicadaPropriedades.value = false;
-    estiloBotaoPropriedades.value = {
-      borderBottom: "solid 4px transparent",
-    };
-    estiloBotaoStatus.value = estiloOpcaoClicadoStatus;
-  } else {
-    opcaoEstaClicadaStatus.value = false;
-    opcaoEstaClicadaPropriedades.value = true;
-    estiloBotaoPropriedades.value = estiloOpcaoClicadoPropriedades;
-    estiloBotaoStatus.value = {
-      borderBottom: "solid 4px transparent",
-    };
-  }
+    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+    const opcaoStatus = document.getElementById('opcaoStatus');
+
+    if (!opcaoEstaClicadaStatus.value) {
+        opcaoEstaClicadaStatus.value = true;
+        opcaoEstaClicadaPropriedades.value = false;
+
+        opcaoStatus.classList.add('opcaoClicada');
+        opcaoStatus.classList.remove('opcaoNaoClicada');
+        opcaoPropriedades.classList.add('opcaoNaoClicada');
+        opcaoPropriedades.classList.remove('opcaoClicada');
+    }
 }
 </script>
 <style scoped>
@@ -1227,5 +1221,15 @@ function clicouOpcaoStatus() {
 option {
   font-size: small;
   border: 1px solid #cbcbcb;
+}
+
+.opcaoClicada {
+  border-bottom: solid 4px var(--roxo);
+  width: 33%;
+}
+
+.opcaoNaoClicada {
+  border-bottom: solid 4px transparent;
+  width: 33%;
 }
 </style>

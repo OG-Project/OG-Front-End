@@ -15,7 +15,7 @@ import IconHome from "../assets/HomeIconMobile.svg"
 import IconNotification from "../assets/NotificacaoIconMobile.svg"
 import IconProfile from "../assets/EquipeIconMobile.svg"
 import router from "@/router";
-import { onMounted } from "vue"
+import { onMounted, ref } from "vue"
 let configuracao = ref()
 let usuario = ref()
 onMounted(()=>{

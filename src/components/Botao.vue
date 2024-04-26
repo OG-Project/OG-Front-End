@@ -256,18 +256,18 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     hoverBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
@@ -278,7 +278,7 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #ECC3FF",
+      border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
@@ -290,7 +290,7 @@ switch (Preset) {
     Texto = props.texto;
     TemIcon = "nao";
     botao = {
-      backgroundColor: '#620BA7',
+      backgroundColor: 'var(--roxo)',
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -300,7 +300,7 @@ switch (Preset) {
     };
 
     hoverBotao = {
-      backgroundColor: "#8E00FF",
+      backgroundColor: "var(--roxoAtencao)",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -310,11 +310,11 @@ switch (Preset) {
     };
 
     clickBotao = {
-      backgroundColor: "#8E00FF",
+      backgroundColor: "var(--roxoAtencao)",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #ECC3FF",
+      border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
@@ -335,7 +335,7 @@ switch (Preset) {
     };
 
     hoverBotao = {
-      backgroundColor: "#8E00FF",
+      backgroundColor: "var(--roxoAtencao)",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -349,7 +349,7 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #ECC3FF",
+      border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
@@ -364,7 +364,7 @@ switch (Preset) {
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid var(--roxo)",
       alignItems: "center",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
@@ -372,25 +372,25 @@ switch (Preset) {
     };
 
     hoverBotao = {
-      backgroundColor: "#8E00FF",
+      backgroundColor: "var(--roxoAtencao)",
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
       color: "#FFFFFF",
-      border: props.tamanhoDaBorda + " solid #8E00FF",
+      border: props.tamanhoDaBorda + " solid var(--roxoAtencao)",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
 
     };
 
     clickBotao = {
-      backgroundColor: "#8E00FF",
+      backgroundColor: "var(--roxoAtencao)",
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #ECC3FF",
+      border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
@@ -413,24 +413,24 @@ switch (Preset) {
     };
 
     hoverBotao = {
-      backgroundColor: "#8E00FF",
+      backgroundColor: "var(--roxoAtencao)",
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #8E00FF",
+      border: props.tamanhoDaBorda + " solid var(--roxoAtencao)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #ECC3FF",
+      border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
@@ -446,31 +446,31 @@ switch (Preset) {
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: props.roxo,
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     hoverBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #620BA7",
+      border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
     };
 
     clickBotao = {
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       display: "flex",
       flexDirection: props.ladoDoIcon,
       justifyContent: "space-evenly",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #ECC3FF",
+      border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,
