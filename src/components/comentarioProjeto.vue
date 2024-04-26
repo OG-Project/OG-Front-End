@@ -7,10 +7,10 @@
                     <div class="flex items-center h-full">
                         <img v-if="usuarioCookies != verificacao"
                             class="shadow-2xl h-[60px] min-w-[60px]  mr-4 ml-4 rounded-full" :src="'data:' +
-                             comentario.autor.foto.tipo +
-                                 ';base64,' +
-                                comentario.autor.foto.dados
-                        " />
+            comentario.autor.foto.tipo +
+            ';base64,' +
+            comentario.autor.foto.dados
+            " />
                     </div>
                     <div class="w-full pb-2 pr-2 flex justify-end max-w-full">
                         <div class="w-full flex pt-2">
@@ -26,10 +26,14 @@
                 </div>
             </div>
         </div>
-        <div v-else class="w-full h-full" >
-            Não tem comentarios ainda
+        <div v-else class="w-full h-full ">
+            <div class="w-full h-full flex flex-col justify-center items-center ">
+                <iconMensagem class=" w-[60%] h-[50%]"></iconMensagem>
+                <p class="w-[70%] h-max">Esse projeto ainda não tem comentarios</p>
+            </div>
+
         </div>
-        <div class="w-[100%]  mt-4  shadow-lg min-h-[55%] max-h-[100%] flex flex-col justify-end">
+        <div class="w-[100%]  mt-4  shadow-lg min-h-[50%] max-h-[100%] flex flex-col justify-end">
             <div class=" w-full flex flex-row">
                 <img v-if="usuarioCookies != verificacao"
                     class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
@@ -37,8 +41,8 @@
             ';base64,' +
             usuarioCookies.foto.dados
             " />
-                <div class="w-full pb-2 pr-2 flex justify-end items-end">
-                    <TextAreaPadrao width="23vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
+                <div class="w-full pb-2 pr-2 pl-2 flex justify-end items-end">
+                    <TextAreaPadrao width="29vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
                         tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
                 </div>
             </div>
@@ -58,6 +62,7 @@ import TextAreaPadrao from "../components/textAreaPadrao.vue";
 import { onMounted, ref, watch } from "vue";
 import { conexaoBD } from "../stores/conexaoBD";
 import { editaProjetoStore } from "../stores/editaProjeto";
+import iconMensagem from "../assets/iconMensagem.vue";
 const conexao = conexaoBD();
 const editaProjeto = editaProjetoStore();
 const idUsuarioCookie = VueCookies.get("IdUsuarioCookie")
@@ -86,9 +91,9 @@ function enviaComentario(comentario) {
         conteudo: comentario[0]
     });
     console.log(projeto)
-    editaProjeto.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes,  projeto.tarefas,projeto.propriedades
+    editaProjeto.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes, projeto.propriedades
         , projeto.statusList, projeto.responsaveis, projeto.dataFinal
-        , projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, comentariosProjeto.value,projeto.tarefas) // passar todos os dados do projeto 
+        , projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, comentariosProjeto.value, projeto.tarefas) // passar todos os dados do projeto 
 }
 function formatarData(data) {
     let dataFormatada = new Date(data)

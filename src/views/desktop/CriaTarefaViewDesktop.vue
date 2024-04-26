@@ -410,7 +410,7 @@
         <h1 class="text-xl font-semibold">Propriedades</h1>
       </div>
       <div v-if="tarefa.propriedades.length === 0" class="h-[35%] flex flex-col items-center justify-center p-8">
-        <img :src="NotePad" class="h-[200px] w-[200px]" />
+        <NotePad></NotePad>
         <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
       </div>
       <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
@@ -439,7 +439,7 @@
 <script setup>
 import { format } from "date-fns";
 import Input from "../../components/Input.vue";
-import NotePad from "../../imagem-vetores/NotePad.svg";
+import NotePad from "../../imagem-vetores/NotePad.vue";
 import Botao from "../../components/Botao.vue";
 import CheckBox from "../../components/checkBox.vue";
 import iconAnexo from "../../imagem-vetores/anexoIcon.svg";

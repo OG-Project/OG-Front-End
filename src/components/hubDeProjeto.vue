@@ -180,4 +180,21 @@ function abreModalMensagem() {
 
 }
 }
+.animation {
+    @apply absolute w-[30%] h-[80%] z-10;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
 </style>

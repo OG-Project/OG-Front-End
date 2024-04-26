@@ -25,7 +25,7 @@
                     <p>Data Inicial:</p>
                 </div>
                 <div class="w-[40%] justify-end flex-row">
-                    <p class="text-[#620BA7]">{{ DataInicialProjeto }}</p>
+                    <p class="text-[var(--roxo)]">{{ DataInicialProjeto }}</p>
                 </div>
             </div>
             <div class="flex pl-8">
@@ -58,7 +58,7 @@
             <h1 class="text-xl font-semibold">Propriedades</h1>
         </div>
         <div class="h-[35%] flex flex-col items-center justify-center p-8" v-if="!temLista(listaPropriedades)">
-            <img :src="NotePad" class="h-[200px] w-[200px] *:*:fill-[var(--roxo)]" />
+            <NotePad></NotePad>
             <p class="text-center">Este projeto não possui nenhuma propriedade</p>
         </div>
         <div class="h-[35%] flex flex-col pl-4 gap-8" v-if="temLista(listaPropriedades)">
@@ -72,7 +72,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import NotePad from '../imagem-vetores/NotePad.svg'
+import NotePad from '../imagem-vetores/NotePad.vue'
 const props = defineProps({
     nomeProjeto: String,
     DataInicialProjeto: String,
