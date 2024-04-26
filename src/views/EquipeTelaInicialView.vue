@@ -265,12 +265,18 @@ function abrePopUp(equipe, tipo) {
     @apply ml-[4.5vw];
     max-width: calc(100% - 1px);
   }
+  .listaProjetos{
+    @apply h-[65vh];
+  }
 }
 
 @media (min-width: 1440px) {
   .cardProjeto {
     @apply ml-[2vw];
     max-width: calc(100% - 1px);
+  }
+  .listaProjetos{
+    @apply h-[65vh];
   }
 }
 
@@ -283,6 +289,9 @@ function abrePopUp(equipe, tipo) {
   }
   .projetos {
     @apply ml-16
+  }
+  .listaProjetos{
+    @apply h-[65vh];
   }
   
 }

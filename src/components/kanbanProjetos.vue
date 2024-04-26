@@ -6,9 +6,6 @@
       </div>
       <div class="flex justify-center">
         <div>
-          <img @click="editarProjeto(projeto)" class="icone" src="../imagem-vetores/tresPontos.svg" alt="">
-        </div>
-        <div>
           <img class="imagem" :src="imagem" alt="">
         </div>
       </div>
@@ -57,12 +54,8 @@
       @apply w-[1vw] h-[6vh] bg-orange-500;
       clip-path: polygon(50% 0, 78% 13%, 79% 49%, 78% 87%, 50% 100%, 0 100%, 0 79%, 0% 43%, 0 0);
     }
-    
     .imagem {
-      @apply flex 2xl:mt-[-3.5vh] 2xl:mr-[1vw] xl:ml-[0vw] xl:mt-[-3.7vh]  lg:ml-[0vw] lg:mt-[-3.7vh] md:mr-[4vw] md:mt-[-3.7vh] w-[30px] h-[30px] rounded-full;
-    }
-    .icone {
-      @apply flex justify-end 2xl:mt-[-5vh] 2xl:ml-[13.1vw] xl:mt-[-5vh] xl:ml-[14.1vw] lg:mt-[-5vh] lg:ml-[14.7vw] md:mt-[-5.2vh] md:ml-[16vw];
+      @apply flex 2xl:mt-[-4.3vh] 2xl:ml-[13vw] xl:ml-[14vw] xl:mt-[-4.3vh]  lg:ml-[14vw] lg:mt-[-4.4vh] md:ml-[15vw] md:mt-[-4.3vh] w-[30px] h-[30px] rounded-full;
     }
     .card-titulo {
       @apply truncate flex 2xl:w-[10vw] xl:w-[13vw] lg:w-[14vw] md:w-[14vw] text-base font-semibold items-center justify-start ml-3 mr-[3vw] md:text-sm md:ml-0;
@@ -73,15 +66,21 @@
 
     @media(min-width: 2560px){
        .imagem{
-        @apply 2xl:w-[40px] 2xl:h-[40px] mt-[-4vh] ml-[0.2vw]
-       }
-       .icone{
-        @apply 2xl:w-[50px] 2xl:h-[50px] mt-[-7.5vh] ml-[12.45vw]
+        @apply 2xl:w-[40px] 2xl:h-[40px] mt-[-4.8vh] ml-[13vw]
        }
        .card-titulo{
         @apply ml-5 text-xl w-[10vw]
        }
 
+    }
+
+    @media(max-width: 620px){
+      .imagem{
+        @apply w-[40px] h-[40px] mt-[1.5vh] mr-[1.5vw]
+       }
+       .card-titulo{
+        @apply ml-5 text-xl w-[60vw]
+       }
     }
     </style>
     
