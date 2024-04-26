@@ -198,6 +198,8 @@ let styleGet=getComputedStyle(root)
 let cor = ref('#80A4ED')
 
 function temaDoSite(e){
+    root.style.setProperty('--backgroundPuro','#202020')
+    root.style.setProperty('--backgroundItems','#2D2D2D')
     console.log(e);
 }
 

@@ -51,7 +51,7 @@ let configuracao = ref()
 const route = useRoute();
 
 onMounted(async () => {
-  if(configuracao.value != null){
+  
     let root = document.documentElement.style
   usuario.value =
     await banco.buscarUm(
@@ -66,7 +66,7 @@ onMounted(async () => {
   root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho)
   root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho)
-  }
+  
 
 
   // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
@@ -183,11 +183,12 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-
+<div class=" bg-[var(--backgroundPuro)]">
   <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
-  <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
-  <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
-  <RouterView />
+    <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
+    <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
+    <RouterView />
+  </div>
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
   class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
