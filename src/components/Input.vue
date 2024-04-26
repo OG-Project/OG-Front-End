@@ -100,7 +100,23 @@
             <label 
             :style="estilizaDivPlaceHolder" 
             for="inputStyle"  
-            class=" absolute text-gray-500 duration-500 transform -translate-y-8 scale-[0.8]  z-10 origin-[0]  peer-focus:text-gray-500  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-80 peer-focus:-translate-y-8 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">
+            class=" 
+            absolute 
+            text-gray-500 
+            duration-300 
+            transform 
+            -translate-y-8 
+            scale-80  
+            z-10 
+            origin-[0] 
+            peer-focus:text-[var(--roxo)]  
+            peer-placeholder-shown:scale-100 
+            peer-placeholder-shown:translate-y-0 
+            peer-focus:scale-80 
+            peer-focus:-translate-y-8 
+            rtl:peer-focus:translate-x-1/4 
+            rtl:peer-focus:left-auto">
+
             {{ conteudoInput }}
             </label>
         </div>
@@ -218,12 +234,9 @@ const perfil=perfilStore()
 
 const {isTecladoVirtual} = storeToRefs(perfil)
 const {isVoiceMaker} = storeToRefs(perfil)
-let cookieVoice
-let cookieTeclado
+
 
 onBeforeMount(()=>{
-    cookieVoice=VueCookies.get('isVoiceMaker')
-    cookieTeclado=VueCookies.get('isTecladovirtual')
 })
 
 function mic(){
@@ -402,11 +415,11 @@ function teclado(){
 <style lang="scss">
     .styleInputPadraoIcon{
        @apply bg-transparent
-        border-b-roxo
+        border-b-[var(--roxo)]
         max-w-max
         w-min
         border-b-2 border-transparent 
-        items-center focus-within:outline-roxo 
+        items-center focus-within:outline-[var(--roxo)] 
         focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
         display: grid;
         grid-template-columns: 20% 80%;  
@@ -431,13 +444,13 @@ function teclado(){
        @apply 
        border-4 
         border-transparent
-        border-b-roxo    
+        border-b-[var(--roxo)]    
         px-2
         max-w-max
         w-min
         border-b-4
         hover:rounded-[4px] hover:border-4
-         focus-within:border-roxo 
+         focus-within:border-[var(--roxo)] 
         focus-within:border-4 focus-within:rounded-[4px]  ;
         
     }
@@ -449,14 +462,14 @@ function teclado(){
        @apply 
         border-4 
         border-transparent
-        border-b-roxo    
+        border-b-[var(--roxo)]    
         pt-2
         pb-2
         px-4
         max-w-max
         border-b-4
         hover:rounded-[4px] hover:border-4
-         focus-within:border-roxo 
+         focus-within:border-[var(--roxo)] 
         focus-within:border-4 focus-within:rounded-[4px] ;
         display: grid;
         grid-template-columns: 80% 10% 10%;
@@ -470,14 +483,14 @@ function teclado(){
        @apply 
         border-4 
         border-transparent
-        border-b-roxo    
+        border-b-[var(--roxo)]    
         pt-2
         pb-2
         px-2
         max-w-max
         border-b-4
         hover:rounded-[4px] hover:border-4
-         focus-within:border-roxo 
+         focus-within:border-[var(--roxo)] 
         focus-within:border-4 focus-within:rounded-[4px];
         display: grid;
         grid-template-columns: 10% 70% 10%;

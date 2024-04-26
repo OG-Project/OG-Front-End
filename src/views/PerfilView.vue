@@ -2,65 +2,73 @@
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
-        <div class="flex  flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
-                <img v-if="foto!=null"
-                  :src="'data:' + foto.tipo + ';base64,' + foto.dados" 
-                  class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
-                />
-                <div v-else 
-                class="xl:w-[95%] text-center flex justify-center items-center hover:bg-slate-500 hover:opacity-70 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
-                >
-                    <div class="w-full h-full bg-[url(../imagem-vetores/UserIcon.svg)] bg-no-repeat bg-contain" ></div>
-                  <!-- <img src="../imagem-vetores/UserIcon.svg" class=" w-full" >   -->
+                <div 
+                @click="open()"
+                @mouseover="()=> ishover=!ishover"
+                @mouseout="()=> ishover=!ishover"
+                class="xl:w-[95%] text-center flex justify-center items-center  sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+               >    
+                    <img 
+                    :src="Imagem"
+                    class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                    />
+                    
+                    
+                    <div v-if="ishover" class="absolute flex items-center text-white">
+                        <span class=" ">Alterar Foto</span>
+                        <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)] bg-cover ml-3 w-6 h-6"  />
+                    </div> 
                 </div>
+                
             </div>
-            <div class=" flex flex-col gap-10">
-                <div @click="informacao()" class="bg-roxo medioId 
+            <div class="font-[var(--fonteCorpo)] flex flex-col gap-10">
+                <div @click="informacao()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
                     Informações
                 </div>
-                <div @click="seguranca()" class="bg-roxo medioId 
+                <div @click="seguranca()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
                     Segurança
                 </div>
-                <div @click="acessibilidade()" class="bg-roxo medioId 
+                <div @click="acessibilidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
                     Acessibilidade
                 </div>
-                <div @click="privacidade()" class="bg-roxo medioId 
+                <div @click="privacidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
                     Privacidade
                 </div>
-                <div @click="aparencia()" class="bg-roxo medioId 
+                <div @click="aparencia()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
                     active:border-2 
-                    active:border-clickBorder 
+                    active:border-[var(--clickBorder)] 
                     flex 
                     items-center
                     cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
@@ -87,31 +95,92 @@ import router from '../router';
 
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { onBeforeMount, onMounted, ref , computed, onUnmounted } from 'vue';
 import {useRoute} from 'vue-router';
 import  VueCookies  from 'vue-cookies';
 import { conexaoBD } from '../stores/conexaoBD';
-const route = useRoute()
-const conexao = conexaoBD()
-// import { funcaoPopUpStore } from '../stores/funcaoPopUp';
-// let funcaoPopUp=funcaoPopUpStore()
-let isSeguActive = ref(false)
+import { useFileDialog } from '@vueuse/core'
+
 const perfil = perfilStore()
 const { popUpSenha, popUpEmail } = storeToRefs(perfil)
+const route = useRoute()
+const conexao = conexaoBD()
+const { files, open, reset, onChange } = useFileDialog({
+    accept:'image/*'
+})
+
+const imagemSelecionada = ref(null);
+
+onChange((files)=>{
+    console.log('files');
+    console.log(files);
+    const file = files[0];
+
+    // Extrair o nome do arquivo
+    const fileName = file.name;
+
+    // Extrair o tipo do arquivo
+    const fileType = file.type;
+
+    // Criar um blob do arquivo
+    const fileBlob = new Blob([file]);
+
+    // Agora você pode usar o fileName, fileType e fileBlob conforme necessário
+    console.log('Nome do arquivo:', fileName);
+    console.log('Tipo do arquivo:', fileType);
+    console.log('Blob do arquivo:', fileBlob);
+    // Armazena o arquivo na variável reativa
+    imagemSelecionada.value = file;
+    enviarFotoParaBackend()
+})
+
+
+let Imagem=computed(()=>{
+    if(foto.value!=null && imagemSelecionada.value==null){
+        console.log(foto.value);
+        return 'data:' +foto.value.tipo + ';base64,' + foto.value.dados
+    }else if(foto.value!=null && imagemSelecionada.value!=null){
+        const reader=new FileReader()
+        imagemBlob.value=new Blob([imagemSelecionada.value],{type:imagemSelecionada.value.type})
+        reader.readAsDataURL(imagemBlob.value)
+        reader.onload = function(event) {
+            // event.target.result contém a string Base64 do Blob
+            const base64String = event.target.result;
+           return (base64String); // Exibe a string Base64 no console
+        };
+        console.log(reader.result)
+        
+        return reader.result
+    }
+})
+let isSeguActive = ref(false)
 
 let usuario=ref({})
-let foto=ref(null)
-let imagemUsuario=ref('../imagem-vetores/user.png')
-onBeforeMount(async ()=>{
-    
-}),
+const foto=ref(null)
+const imagemBlob=ref(null)
+let ishover=ref(false) 
+
+async function enviarFotoParaBackend() {
+    try {
+        if (!imagemSelecionada.value) {
+            // Verifica se uma imagem foi selecionada
+            console.error('Nenhuma imagem selecionada.');
+            return;
+        }
+        foto.value=imagemSelecionada.value
+        console.log(foto.value);
+        await conexao.cadastrarFotoUsuario(usuario.value.id, imagemSelecionada.value);
+        console.log('Foto enviada com sucesso para o backend.');
+    } catch (error) {
+        console.error('Erro ao enviar a foto para o backend:', error);
+    }
+}
 
 onMounted(async () => {
-    console.log(route.path)
-
     usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
-    console.log(usuario.value)
-    foto.value=usuario.value.foto
+    console.log(route.path)
+    foto.value=await usuario.value.foto
+    
     // if(foto.value==undefined){
     //     foto.value=usuario.value.foto
     // }
@@ -165,7 +234,7 @@ function identificarRota(rotaAtual, rota) {
 }
 
 .active {
-    @apply bg-roxoAtencao !important;
+     @apply bg-[var(--roxoAtencao)] ;
 }
 
 .slide-fade-enter-active {

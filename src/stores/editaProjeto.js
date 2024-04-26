@@ -11,12 +11,13 @@ export const editaProjetoStore = defineStore('editaProjeto', {
     },
 
     actions: {
-        editaProjeto(id, nome,descricao,equipes, propriedades,status,responsaveis,dataFinal, tempoAtuacao, indexLista,tarefas=null){
+        editaProjeto(id,nome,descricao,equipes, propriedades,status,responsaveis,dataFinal, tempoAtuacao, categoria,indexLista, comentarios,tarefas){
         let projetoCriado= Projeto
         let api= conexaoBD();
         projetoCriado.id=id;
         projetoCriado.nome=nome;
         projetoCriado.descricao=descricao;
+        projetoCriado.tarefas = tarefas
         projetoCriado.projetoEquipes=equipes
         projetoCriado.propriedades=propriedades;
         projetoCriado.statusList=status;
@@ -25,7 +26,8 @@ export const editaProjetoStore = defineStore('editaProjeto', {
         projetoCriado.dataFinal=dataFinal; 
         projetoCriado.tarefas = tarefas;
         projetoCriado.indexLista = indexLista;
-        console.log(projetoCriado)
+        projetoCriado.comentarios = comentarios;
+        projetoCriado.categoria = categoria;
         api.atualizar(projetoCriado,'/projeto').then((res)=>{
           console.log(res.data)
           VueCookies.set("IdProjetoAtual", res.data.id)
@@ -35,13 +37,25 @@ export const editaProjetoStore = defineStore('editaProjeto', {
         
       },
       enviaParaWebSocket(equipesAux, projetoAux) {
-        let teste = {
-          equipes: equipesAux ,
-          notificao: {
-            mensagem: "Editou o Projeto",
-            projeto: projetoAux
+        let teste
+        if(window.location.pathname=="/editaProjeto"){
+           teste = {
+            equipes: equipesAux ,
+            notificao: {
+              mensagem: "Editou o Projeto",
+              projeto: projetoAux
+            }
+          }
+        }else{
+           teste = {
+            equipes: equipesAux ,
+            notificao: {
+              mensagem: "comentou no Projeto",
+              projeto: projetoAux
+            }
           }
         }
+        
         console.log(teste)
         const webSocket = webSocketStore();
         webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"

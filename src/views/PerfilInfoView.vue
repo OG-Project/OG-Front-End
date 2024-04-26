@@ -2,11 +2,11 @@
     <div class=" flex justify-center flex-wrap">
         <div class="flex  flex-col items-center w-[20%] h-[877px] drop-shadow-md bg-[#FEFBFF]">
             <div class=" flex justify-center w-[329px] h-[329px]">
-                <img v-if="foto!=null"
-                  :src="'data:' + foto.tipo + ';base64,' + foto.dados" 
-                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full"
-                />
-                <div v-else class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%] bg-emerald-400"></div>
+                <img 
+                    :src="Imagem"
+                    class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                    />
+                
             </div>
             <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
                 <div class="flex flex-col items-center gap-9">
@@ -24,6 +24,9 @@
                 </div>
 
             </div>
+            <!-- <div v-else class="scroll w-[80%] h-[45%] py-2 " >
+                Sem Equipes
+            </div> -->
         </div>
         <div class="w-[75vw] h-[92vh] flex flex-col  ">
             <div class="flex flex-col justify-around">
@@ -39,7 +42,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Nome" 
                             v-model="perfil.nome"
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                         <div class="flex items-center justify-between gap-5">
@@ -48,7 +51,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Username"
                             v-model="perfil.username" 
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                         <div class="flex items-center justify-between gap-5">
@@ -57,7 +60,7 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="E-mail"
                             v-model="perfil.email" 
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio" />
                         </div>
                     </div>
@@ -69,24 +72,25 @@
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Sobrenome"
                             v-model="perfil.sobrenome"
-                         
-                            desabilitado="true"
+                            :desabilitado="true"
                             tipo="obrigatorio"
                              />
                         </div>
                         <div class="flex  justify-between items-center gap-5">
+                            
                             <span class="text-xl">Data de Nascimento</span>
                             <Input 
                             styleInput="input-transparente-claro-grande" 
                             conteudoInput="Data de Nascimento"
-                            v-model="perfil.dataDeNascimento"
-                            desabilitado="true" 
-                            tipo="obrigatorio" />
+                            v-model="dataNascimento"
+                            :modelValue="dataNascimento.value"
+                            :desabilitado="true" 
+                            tipo="date" />
                         </div>
                     </div>
                 </div>
                 <div >
-                    {{ console.log(projetos.value)}}
+                    
                     <Carousel 
                     v-if="width>958 " 
                     :value="projetos" 
@@ -107,7 +111,7 @@
                     </Carousel>
 
                     <Carousel 
-                    v-if="width<958 && projetos.value.length!=0"
+                    v-if="width<958"
                     :value="projetos" 
                     :numVisible="1" 
                     containerClass="" 
@@ -119,11 +123,15 @@
                     :numScroll="1"
                     :responsiveOptions="projetos">
                         <template #item="slotProps">
+                            
                             <!-- {{ slotProps.index }} -->
                             <cardProjetos class="my-4 mx-auto"></cardProjetos>
                             <!-- {{ slotProps.index }} -->
                         </template>
                     </Carousel>
+                    <div v-else>
+                        oi
+                    </div>
                 </div>
             </div>
         </div>
@@ -141,9 +149,9 @@ import Carousel from 'primevue/carousel';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
-import { onMounted, ref, onUpdated, onBeforeUnmount } from 'vue';
+import { onMounted,computed, ref, onUpdated, onBeforeUnmount } from 'vue';
 import {useRoute} from 'vue-router';
-import { useWindowSize } from '@vueuse/core'
+import { useMouseInElement, useWindowSize } from '@vueuse/core'
 
 const route=useRoute()
 
@@ -156,35 +164,61 @@ const { fonteCorpo } = storeToRefs(perfil)
 const { fonteTitulo } = storeToRefs(perfil)
 let equipes = ref([])
 let projetos =ref([])
-
+let dataNascimento=ref('')
+let usuario=ref({})
+let foto=ref(null)
 
 onMounted(async () => {
     
     let id=route.params.id
     console.log(id)
-    let usuario=await conexao.buscarUm(id,'/usuario')
+    usuario.value=await conexao.buscarUm(id,'/usuario')
     console.log(usuario)
-    projetos.value=usuario.projetos
-    equipes.value=usuario.equipes
-    console.log(fonteTitulo.value)
-    console.log(fonteCorpo.value)
-    perfil.nome=usuario.nome
-    perfil.sobrenome=usuario.sobrenome
-    perfil.email=usuario.email
-    perfil.username=usuario.username
-    perfil.dataDeNascimento=usuario.dataNascimento
-    projetos.value=usuario.projetos
+    equipes.value=usuario.value.equipes
+    if(projetos.value==undefined){
+        projetos.value=[]
+    }
+    if(equipes.value==undefined){
+        equipes.value=[]
+    }
+
+
+    let projetosEquipes=[]
+    equipes.value.forEach(async (element) => {
+        console.log(element.equipe.id)
+        projetosEquipes.push(await conexao.buscarProjetosEquipe('/equipe',element.equipe.id))
+    });
+
+    console.log(projetos.value)
+    console.log(equipes.value)
+    dataNascimento.value = new Date(usuario.value.dataNascimento).toLocaleDateString() 
+    dataNascimento.value=dataNascimento.value.split('/').reverse().join('-')
+    console.log(dataNascimento.value);
+    perfil.nome=usuario.value.nome
+    perfil.sobrenome=usuario.value.sobrenome
+    perfil.email=usuario.value.email
+    perfil.username=usuario.value.username
+    perfil.dataDeNascimento=usuario.value.dataNascimento
+    projetos.value=usuario.value.projetos
+    foto.value=usuario.value.foto
     // alert(height.value)
     // alert(width.value)
 });
 
+function verificaTemEquipe(equipes){
+    if(equipes.length!=0){
+        return true
+    }
+    return false
+}
 
-onUpdated(()=>{
-    // alert(height)
-    // alert(width)
-
+let Imagem=computed(()=>{
+    if(foto.value!=null){
+        console.log(foto.value);
+        return 'data:' +foto.value.tipo + ';base64,' + foto.value.dados
+    }
+    return
 })
-
 function temMaisDeQuatro(lista) {
     return lista.length >= 4 ? true : false
 }

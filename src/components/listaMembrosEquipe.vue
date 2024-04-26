@@ -1,27 +1,34 @@
 <template>
-    <fundoPopUp largura="" altura="95vh">
-        <div class="divGeral mb-[65vh]">
-            <div class="primeiraDiv">
-                <img class="imagemEquipe" v-if="equipeMembros.foto"
-                    :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados">
-                <img class="imagemEquipe" v-else src="">
-                <h1 class="xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome }}</h1>
-            </div>
-            <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin">
-                <div class="flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
-                    <img v-if="membro.id != usuarioLogado" class="imgIcon" src="../imagem-vetores/Sair.svg" alt=""
-                        @click="removerMembro(membro)" />
+      <fundoPopUp :largura="larguraPopUp()" altura="95vh">
+      <div class="divGeral mb-[65vh]" >
+          <div class="primeiraDiv">
+            <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
+            <img class="imagemEquipe" v-else src="../imagem-vetores/Equipe.svg">
+             <h1 class="equipeNome xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
+          </div>
+          <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
+             <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
+                    <img  v-if="membro.id != usuarioLogado"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
+
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                         <img class="imgDePerfil" src="" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
-                    <SelectPadrao class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco"
-                        fonteTamanho="1rem" :listaSelect="opcoesSelect"></SelectPadrao>
-                </div>
-
+                    <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
+                    <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
+             </div>
+             
             </div>
-        </div>
+        </div>  
+            <div class="adiciona-membro">
+                  <Input v-if="screenWidth >=620" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+                  <Input v-else class="flex mt-1" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+               <div class="divBotaoAdiciona flex mt-[1vh] ml-5">
+                <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
+                <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="personalizado" width="20vw" height="5vh" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro" ></Botao>
+               </div>
+            </div>
         <div class="adiciona-membro">
             <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
                 icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
@@ -44,13 +51,15 @@
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
             <div>
                 <div>
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem"
-                        :funcaoClick="confirmarConvites"></Botao>
+                    <div v-if="screenWidth >= 620">
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                    </div>
+                    <div v-else>
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="80vw" height="5vh" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                    </div>
                 </div>
             </div>
         </div>
-
-
     </fundoPopUp>
 </template>
 
@@ -157,7 +166,19 @@ function marginRightConvidado() {
     }
 }
 
-function larguraInputConvidado() {
+function larguraPopUp(){
+    if(screenWidth <= 620){
+          return '90vw';
+    }else{
+        return '';
+    }
+}
+
+function larguraInputConvidado(){
+    if(screenWidth <= 620){
+          return '40'
+    }
+
     if (screenWidth <= 768) {
         return '24';
     } else if (screenWidth > 768 && screenWidth <= 1024) {
@@ -262,10 +283,18 @@ async function confirmarConvites() {
 </script>
 
 <style scoped>
-.styleSelectPadraoBranco {
-    @apply border-4 mt-[1vh] flex justify-center border-transparent border-b-brancoNeve border-b-2 w-max items-center focus-within:border-white focus-within:border-4 focus-within:rounded-md truncate;
+.styleSelectPadraoBranco{
+        @apply border-4 mt-[1vh]
+        flex justify-center
+        border-transparent
+        border-b-brancoNeve
+        border-b-2
+        w-[10]
+        items-center  focus-within:border-white
+        focus-within:border-4 focus-within:rounded-md truncate;
+        
+    }
 
-}
 
 .imagemEquipe {
     @apply 2xl:mr-5 xl:mt-3 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[60px] 2xl:w-[60px] xl:h-[60px] xl:w-[60px] lg:w-[50px] lg:h-[50px] md:w-[50px] md:h-[50px] rounded-full;
@@ -327,26 +356,59 @@ async function confirmarConvites() {
     @apply rounded-full bg-cover bg-center flex flex-col mt-5 mr-5 2xl:w-[2vw] 2xl:h-[4vh] xl:w-[3vw] xl:h-[4vh] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
 }
 
+    @media(max-width: 620px){
 
-@media(min-width: 2560px) {
-    .divGeral {
-        @apply w-[25vw];
-    }
-
-    .imgIcon {
-        @apply w-[1vw]
-    }
-
-    .div-lista {
-        @apply 2xl:w-[53vw];
-    }
-
-    .adiciona-membro {
-        @apply 2xl:ml-[2.5vw];
-    }
-
-    .botao {
-        @apply 2xl:w-[52%] gap-8 2xl:mt-[2vh];
-    }
-}
+        .divEquipe{
+           @apply flex justify-center w-[100%]
+        }
+        .adiciona-membro{
+            @apply flex justify-end;
+        }
+        .divGeral{
+            @apply w-[65vw];
+        }
+        .corDiv{
+            @apply flex ml-5 mr-5 h-20 w-[40vw] 
+            border-transparent
+            border-b-roxo    
+            border-b-2
+            items-center focus-within:border-roxo 
+            focus-within:border-4;
+            
+        }
+        .div-membros{
+            @apply w-[100%];
+        }
+        .equipeNome{
+             @apply flex mt-5;
+        }
+        .styleSelectPadraoBranco{
+            @apply border-4 mt-[1.5vh] ml-3 
+            flex justify-center
+            border-transparent
+            border-b-brancoNeve
+            border-b-2
+            w-max
+            items-center  focus-within:border-white
+            focus-within:border-4 focus-within:rounded-md truncate;
+        }
+        .imgDePerfil{
+            @apply w-[30px] h-[30px]
+        }
+        .imagemEquipe{
+            @apply w-[40px] h-[40px] mt-3;
+        }
+        .imgIcon{
+            @apply w-[20px] h-[20px]  bg-center flex mt-8;
+        }
+        .div-lista{
+            @apply w-[200vw] p-2 ml-[-12vw] ;
+            
+        }
+        .botao{
+            @apply flex justify-end mr-[-5vw]
+            p-[10vw] mt-[50vh] ;
+        }
+     }
+   
 </style>

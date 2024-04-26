@@ -1,4 +1,6 @@
 <template>
+    <div v-if="enviandoMensagem" class="absolute w-full h-full z-[5]" @click="abreModalMensagem()">
+    </div>
     <div v-if="funcaoPopUp.variavelModal == true" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
@@ -21,7 +23,7 @@
                 @click="enviaCookieTarefaNova()">
                 +Tarefa
             </button>
-            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center"
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
                 @click="abreModalMensagem()">
                 <iconMensagem></iconMensagem>
             </button>
@@ -33,9 +35,9 @@
                 @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
-            <div v-if="enviandoMensagem" class="absolute w-[30%] z-10">
-                <comentarioProjeto></comentarioProjeto>
-            </div>
+                <div v-if="enviandoMensagem" class=" animation">
+                    <comentarioProjeto></comentarioProjeto>
+                </div>
         </div>
 
     </div>
@@ -159,5 +161,22 @@ function abreModalMensagem() {
 .labelContainer:active{
     border-color: grey;
     border: none;
+
+.animation {
+    @apply absolute w-[30%] h-[80%] z-10;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
 }
 </style>
