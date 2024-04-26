@@ -1,16 +1,23 @@
 <template>
-  <div class="w-full h-full bg-purple-50 flex justify-center">
-    <cabecalhoCardDaLista  :projeto="projetoPromise" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cabecalhoCardDaLista>
-  </div>
-  <div v-for="tarefa of projeto.tarefas">
+  <div class="w-full h-[90%] flex flex-col items-center">
     <div>
-      {{tarefa.nome}}
+      <cabecalhoCardDaLista :projeto="projetoPromise" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
+      </cabecalhoCardDaLista>
     </div>
-    <div>
-      {{tarefa.descricao}}  
-    </div>
-    <div v-for="propriedade of listaDePropriedadesVisiveis">
+    <div class="flex flex-row w-max h-[10%] justify-center items-center">
+      <div v-for="tarefa of projeto.tarefas" class=" truncate ">
+        {{ console.log(tarefa) }}
+        <div class="border-r-2 flex items-center justify-center w-[10vw]">
+          {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
+        </div>
+        <div class="border-r-2 flex items-center justify-center w-[10vw]" v-if="tarefa.descricao != null">
+          {{ tarefa.descricao.charAt(0).toUpperCase() + tarefa.descricao.slice(1) }}
 
+        </div>
+        <div class="border-r-2 flex items-center justify-center w-[10vw]"> 
+          {{ a }}
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -22,13 +29,13 @@ import { conexaoBD } from '../stores/conexaoBD';
 
 let api = conexaoBD()
 let projetoPromise = api.procurar("/projeto/1")
-let visualizacaoPromise ={ }
-let projeto = {}
+let visualizacaoPromise = {}
+let projeto = ref({})
 let visualizacao = {}
 let lista = ref([])
 
 
-onMounted(()=>{
+onMounted(() => {
   transformaEmObject()
 })
 
@@ -37,28 +44,28 @@ const props = defineProps({
   listaDePropriedadesVisiveis: ref([]),
 })
 
-async function transformaEmObject(){
-  projeto = await projetoPromise
-  visualizacaoPromise = api.procurar("/visualizacaoEmLista/" +  projeto.id)
+async function transformaEmObject() {
+  projeto.value = await projetoPromise
+  // visualizacaoPromise = api.procurar("/visualizacaoEmLista/" + projeto.id)
   visualizacao = await visualizacaoPromise
   console.log(visualizacao)
 }
 
-function defineTarefas(){
+function defineTarefas() {
   let listaAux = []
-  for(const tarefa of projeto.tarefas){
-    for(const valorPropriedadeTarefas of tarefa.valorPropriedadeTarefas){
-      for(const propriedade of listaDePropriedadesVisiveis){
-        if(valorPropriedadeTarefas.propriedadeId == propriedade.id){
-          
+  for (const tarefa of projeto.tarefas) {
+    for (const valorPropriedadeTarefas of tarefa.valorPropriedadeTarefas) {
+      for (const propriedade of listaDePropriedadesVisiveis) {
+        if (valorPropriedadeTarefas.propriedadeId == propriedade.id) {
+
         }
       }
     }
-    for(const propriedade of listaDePropriedadesVisiveis){
+    for (const propriedade of listaDePropriedadesVisiveis) {
 
-    } 
+    }
   }
 }
 </script>
 
-<style lang="scss" ></style>
+<style lang="scss"></style>
