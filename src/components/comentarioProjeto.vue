@@ -1,6 +1,6 @@
 <template>
     <div class="w-full h-full flex flex-col overflow-y-auto">
-        <div v-if="comentariosProjeto != []" class="w-full h-full">
+        <div v-if="comentariosProjeto.length != 0" class="w-full h-full">
             <div class="w-[100%]  mt-4 min-h-[5vh] flex flex-col border-b-[1px] border-roxo "
                 v-for="comentario of comentariosProjeto">
                 <div class=" w-full flex flex-row">
@@ -25,6 +25,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-else class="w-full h-full" >
+            Não tem comentarios ainda
         </div>
         <div class="w-[100%]  mt-4  shadow-lg min-h-[55%] max-h-[100%] flex flex-col justify-end">
             <div class=" w-full flex flex-row">
@@ -83,9 +86,9 @@ function enviaComentario(comentario) {
         conteudo: comentario[0]
     });
     console.log(projeto)
-    editaProjeto.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes, projeto.tarefas,projeto.propriedades
+    editaProjeto.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes,  projeto.tarefas,projeto.propriedades
         , projeto.statusList, projeto.responsaveis, projeto.dataFinal
-        , projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, comentariosProjeto.value) // passar todos os dados do projeto 
+        , projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, comentariosProjeto.value,projeto.tarefas) // passar todos os dados do projeto 
 }
 function formatarData(data) {
     let dataFormatada = new Date(data)

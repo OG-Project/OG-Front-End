@@ -11,7 +11,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
     },
 
     actions: {
-        editaProjeto(id,nome,descricao,equipes,tarefas, propriedades,status,responsaveis,dataFinal, tempoAtuacao, categoria,indexLista, comentarios){
+        editaProjeto(id,nome,descricao,equipes, propriedades,status,responsaveis,dataFinal, tempoAtuacao, categoria,indexLista, comentarios,tarefas){
         let projetoCriado= Projeto
         let api= conexaoBD();
         projetoCriado.id=id;

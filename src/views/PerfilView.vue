@@ -179,7 +179,6 @@ async function enviarFotoParaBackend() {
 onMounted(async () => {
     usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
     console.log(route.path)
-    console.log(usuario.value)
     foto.value=await usuario.value.foto
     
     // if(foto.value==undefined){
