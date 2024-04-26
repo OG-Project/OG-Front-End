@@ -559,7 +559,6 @@ async function criaTarefaNoConcluido() {
     }
   }
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas;
-  tarefaCriando.dataCriacao = new Date();
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
 
@@ -572,8 +571,10 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   console.log(tarefaCriando);
   console.log(tarefa.value.arquivos);
+  console.log("Put de tarefa");
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
+    console.log("Arquivos");
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto")
