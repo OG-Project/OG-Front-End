@@ -174,9 +174,9 @@ watch([quantidadeTarefasFeitas, quantidadeNaoTarefasFeitas], () => {
 });
 </script>
 
-<style>
+<style scoped>
 #poligono {
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-  background-color: #36213e;
+  background-color: var(--roxoEscuro);
 }
 </style>

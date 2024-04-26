@@ -6,6 +6,7 @@
 </template>
 
 <script setup>
+import { get } from '@vueuse/core';
 import { defineProps, ref } from 'vue';
 defineEmits(['update:modelValue'])
 const props = defineProps({
@@ -52,7 +53,6 @@ const estiloBranco = {
   fontSize: props.tamanhoDaFonte,
   color: '#000000',
   backgroundColor: '#D7D7D7',
-  borderBottom: 'solid 4px #620BA7',
   resize: props.resize
 };
 
@@ -62,7 +62,6 @@ const estiloPreto = {
   fontSize: props.tamanhoDaFonte,
   color: '#FFFFFF',
   backgroundColor: '#777777',
-  borderBottom: 'solid 4px #620BA7',
   resize: props.resize
 };
 
@@ -71,7 +70,6 @@ const estiloTransparente = {
   height: props.height,
   fontSize: props.tamanhoDaFonte,
   color: '#000000',
-  borderBottom: 'solid 4px #620BA7',
   resize: props.resize
 };
 
@@ -92,10 +90,13 @@ switch (props.preset) {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 textarea:hover{
     background-color: v-bind('hoverPadrao.color');
 }
 
+textarea{
+  border-bottom: solid 4px var(--roxo);
+}
 </style>

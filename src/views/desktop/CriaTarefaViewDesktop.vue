@@ -68,7 +68,7 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <input class="border-2 w-[80%] rounded-lg border-[#620BA7]" placeholder="Nome da Propriedade"
+                <input class="border-2 w-[80%] rounded-lg border-[var(--roxo)]" placeholder="Nome da Propriedade"
                   type="text" v-model="nomePropriedade"></input>
               </div>
               <div class="pr-2">
@@ -148,7 +148,7 @@
         <h1>SubTarefas</h1>
         <div class="flex items-center">
           <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
-            <div :style="barraPorcentagem"></div>
+            <div :style="barraPorcentagem" class="corDaBarraDeProgresso"></div>
           </div>
           <p class="pl-4">Tarefas Concluidas {{ porcentagemDeTarefasConcluidas.toFixed(2) }}%</p>
         </div>
@@ -250,10 +250,10 @@
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
       <div class="w-[80%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
-          <button class="w-[33%]" @click="clicouOpcaoPropriedades()" :style="estiloBotaoPropriedades">
+          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%;">
             Propriedades
           </button>
-          <button class="w-[33%]" @click="clicouOpcaoStatus()" :style="estiloBotaoStatus">
+          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%;">
             Status
           </button>
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
@@ -296,21 +296,21 @@
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
                   <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor"
-                    class="h-8 border-2 rounded-lg border-[#620BA7]">
+                    class="h-8 border-2 rounded-lg border-[var(--roxo)]">
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'DATA'">
                   <input @input="patchDaListaDePropriedades()"
                     v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    class="border-2 rounded-lg border-[#620BA7]" type="datetime-local"
+                    class="border-2 rounded-lg border-[var(--roxo)]" type="datetime-local"
                     v-model="propriedadeForTarefa.valor.valor" />
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
                   <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    class="border-2 rounded-lg border-[#620BA7]" showIcon iconDisplay="input"
+                    class="border-2 rounded-lg border-[var(--roxo)]" showIcon iconDisplay="input"
                     v-model="propriedadeForTarefa.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
                     maxFractionDigits="2" @input="patchDaListaDePropriedades()" />
                 </div>
@@ -367,7 +367,7 @@
             <p>Nome do Projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="w-[100%] text-[#620BA7] break-all" v-if="projetoDaTarefa">
+            <p class="w-[100%] text-[var(--roxo)] break-all" v-if="projetoDaTarefa">
               {{ projetoDaTarefa.nome }}
             </p>
           </div>
@@ -377,7 +377,7 @@
             <p>Responsáveis do Projeto</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
-            <p class="truncate text-[#620BA7] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
+            <p class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
               {{ responsavel.responsavel.username }}
             </p>
 
@@ -388,7 +388,7 @@
             <p>Data inicial do Projeto</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="text-[#620BA7]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
+            <p class="text-[var(--roxo)]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
           </div>
         </div>
       </div>
@@ -1125,7 +1125,6 @@ let barraPorcentagem = ref({
   width: porcentagemDeTarefasConcluidas.value + "%",
   height: "100%",
   borderRadius: "0px",
-  backgroundColor: "#620BA7",
   border: "none",
   boxShadow: "none",
 });
@@ -1155,39 +1154,35 @@ function formatarData(data) {
 }
 
 function clicouOpcaoPropriedades() {
-  if (opcaoEstaClicadaPropriedades.value === false) {
-    opcaoEstaClicadaPropriedades.value = true;
-    opcaoEstaClicadaStatus.value = false;
-    estiloBotaoPropriedades.value = estiloOpcaoClicadoPropriedades;
-    estiloBotaoStatus.value = {
-      borderBottom: "solid 4px transparent",
-    };
-  } else {
-    opcaoEstaClicadaPropriedades.value = false;
-    opcaoEstaClicadaStatus.value = true;
-    estiloBotaoPropriedades.value = {
-      borderBottom: "solid 4px transparent",
-    };
-    estiloBotaoStatus.value = estiloOpcaoClicadoStatus;
-  }
+    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+    const opcaoStatus = document.getElementById('opcaoStatus');
+
+    if (!opcaoEstaClicadaPropriedades.value) {
+        opcaoEstaClicadaPropriedades.value = true;
+        opcaoEstaClicadaStatus.value = false;
+
+        opcaoPropriedades.classList.add('opcaoClicada');
+        opcaoPropriedades.classList.remove('opcaoNaoClicada');
+        opcaoStatus.classList.add('opcaoNaoClicada');
+        opcaoStatus.classList.remove('opcaoClicada');
+    }
 }
+
 function clicouOpcaoStatus() {
-  if (opcaoEstaClicadaStatus.value === false) {
-    opcaoEstaClicadaStatus.value = true;
-    opcaoEstaClicadaPropriedades.value = false;
-    estiloBotaoPropriedades.value = {
-      borderBottom: "solid 4px transparent",
-    };
-    estiloBotaoStatus.value = estiloOpcaoClicadoStatus;
-  } else {
-    opcaoEstaClicadaStatus.value = false;
-    opcaoEstaClicadaPropriedades.value = true;
-    estiloBotaoPropriedades.value = estiloOpcaoClicadoPropriedades;
-    estiloBotaoStatus.value = {
-      borderBottom: "solid 4px transparent",
-    };
-  }
+    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+    const opcaoStatus = document.getElementById('opcaoStatus');
+
+    if (!opcaoEstaClicadaStatus.value) {
+        opcaoEstaClicadaStatus.value = true;
+        opcaoEstaClicadaPropriedades.value = false;
+
+        opcaoStatus.classList.add('opcaoClicada');
+        opcaoStatus.classList.remove('opcaoNaoClicada');
+        opcaoPropriedades.classList.add('opcaoNaoClicada');
+        opcaoPropriedades.classList.remove('opcaoClicada');
+    }
 }
+
 </script>
 <style scoped>
 #fundoPopUp {
@@ -1199,6 +1194,16 @@ function clicouOpcaoStatus() {
 
 #bgBranco {
   background-color: #ffffff;
+}
+
+.opcaoClicada {
+  border-bottom: solid 4px var(--roxo);
+  width: 33%;
+}
+
+.opcaoNaoClicada {
+  border-bottom: solid 4px transparent;
+  width: 33%;
 }
 
 #bordaCinza {
@@ -1234,6 +1239,10 @@ function clicouOpcaoStatus() {
   @apply w-[60%] bg-brancoNeve shadow-md flex justify-around flex-col;
   animation: myAnim 0.15s ease 0s 1 normal none;
   /*isso é opcional */
+}
+
+.corDaBarraDeProgresso {
+  background-color: var(--roxo);
 }
 
 @keyframes myAnim {

@@ -59,7 +59,7 @@ const props = defineProps({
 let idCircle = props.elId;
 let posicaoBola = ref(14);
 let ativo = ref();
-let corBolaToggle = ref("#620BA7");
+let corBolaToggle = ref("var(--roxo)");
 let estiloSVG = ref({
   width: "60px",
   height: "30px",
@@ -81,7 +81,7 @@ let estiloBolaInicio = ref({
 let estiloBolaFinal = ref({
   width: "60px",
   height: "30px",
-  backgroundColor: "#620BA7",
+  backgroundColor: "var(--roxo)",
   borderRadius: "20px",
   cursor: "pointer",
   position: "relative",
@@ -102,7 +102,7 @@ switch (props.tamanho) {
     estiloBolaFinal.value = {
       width: "45px",
       height: "22px",
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       borderRadius: "20px",
       cursor: "pointer",
       position: "relative",
@@ -130,7 +130,7 @@ switch (props.tamanho) {
     estiloBolaFinal.value = {
       width: "60px",
       height: "30px",
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       borderRadius: "20px",
       cursor: "pointer",
       position: "relative",
@@ -158,7 +158,7 @@ switch (props.tamanho) {
     estiloBolaFinal.value = {
       width: "90px",
       height: "45px",
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       borderRadius: "30px",
       cursor: "pointer",
       position: "relative",
@@ -186,7 +186,7 @@ onBeforeMount(() => {
       estiloToggle = ref(estiloBolaFinal.value);
       console.log(estiloToggle);
     } else if (!ativo.value) {
-      corBolaToggle.value = "#620BA7";
+      corBolaToggle.value = "var(--roxo)";
       estiloToggle = ref(estiloBolaInicio.value);
       console.log(estiloToggle);
     }
@@ -213,7 +213,7 @@ onMounted(() => {
         x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
-          corBolaToggle.value = "#620BA7";
+          corBolaToggle.value = "var(--roxo)";
         },
       });
       animation.play();
@@ -244,7 +244,7 @@ function check(tipo) {
         x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
-          corBolaToggle.value = "#620BA7";
+          corBolaToggle.value = "var(--roxo)";
         },
       });
       animation.play();
@@ -260,7 +260,7 @@ function valorJaPassado() {
         x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
-          corBolaToggle.value = "#620BA7";
+          corBolaToggle.value = "var(--roxo)";
         },
       });
       animation.play();
