@@ -15,7 +15,7 @@
             </div>
             <div class=" w-full pb-2 pr-2 flex justify-end">
                 <Botao texto="Enviar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
-                :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
+                    :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
         </div>
 
@@ -34,7 +34,7 @@ const editaProjeto = editaProjetoStore();
 const idUsuarioCookie = VueCookies.get("IdUsuarioCookie")
 let usuarioCookies = ref();
 let verificacao = ref()
-let comentariosProjeto =[];
+let comentariosProjeto = [];
 onMounted(() => {
     buscaUsuario()
 })
@@ -43,11 +43,11 @@ async function buscaUsuario() {
     usuarioCookies.value = await conexao.buscarUm(idUsuarioCookie, "/usuario")
 }
 function enviaComentario(comentario) {
-  comentariosProjeto.push({
-    autor: comentario[1],
-    conteudo: comentario[0]
-  });
-  editaProjeto.editaProjeto() // passar todos os dados do projeto 
+    comentariosProjeto.push({
+        autor: comentario[1],
+        conteudo: comentario[0]
+    });
+    // editaProjeto.idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value, listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.indexLista, projeto.tarefas) // passar todos os dados do projeto 
 }
 </script>
 

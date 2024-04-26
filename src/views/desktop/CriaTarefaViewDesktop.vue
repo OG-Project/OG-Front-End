@@ -829,6 +829,7 @@ async function puxaTarefaDaEdicao() {
 
 async function atualizaPropriedadesEStatus() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
+  console.log(IdTarefaCookies);
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   status.value = projetoDaTarefa.value.statusList;
   propriedades.value = tarefaAux.valorPropriedadeTarefas;

@@ -110,7 +110,7 @@ async function atualizaProjetoBanco() {
     let projeto = await banco.buscarUm(idProjeto, "/projeto")
     //(id: any, nome: any, descricao: any, equipes: any, propriedades: any, status: any, responsaveis: any, dataFinal: any, tempoAtuacao: any)
     console.log(projeto.projetoEquipes)
-    editaProjetoFunc.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes, projeto.propriedades, projeto.statusList, projeto.responsaveis, projeto.dataFinal, tempoAtuado)
+    editaProjetoFunc.editaProjeto(projeto.id,  projeto.nome, projeto.descricao, projeto.projetoEquipes, projeto.propriedades, projeto.statusList, projeto.responsaveis, projeto.dataFinal, tempoAtuado, projeto.tarefas)
 }
 
 </script>
