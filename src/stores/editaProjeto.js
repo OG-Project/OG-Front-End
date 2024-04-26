@@ -24,6 +24,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
         projetoCriado.responsaveis=responsaveis;
         projetoCriado.tempoAtuacao = tempoAtuacao
         projetoCriado.dataFinal=dataFinal; 
+        projetoCriado.tarefas = tarefas;
         projetoCriado.indexLista = indexLista;
         projetoCriado.comentarios = comentarios;
         projetoCriado.categoria = categoria;
