@@ -243,7 +243,7 @@ async function buscaConfiguracaoesPadrao(){
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
-  defineSelect(usuario.value.configuracao)
+ 
 }
 const screenWidth = ref(window.innerWidth);
 
