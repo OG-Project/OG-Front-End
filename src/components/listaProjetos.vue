@@ -171,7 +171,7 @@
     if (Array.isArray(projetosEquipe)) {
         projetos.value = projetosEquipe;
         projetos.value.forEach(projeto => {
-            
+         
             
         });
 
