@@ -29,7 +29,7 @@
                         class="w-max" 
                         @update:model-value="tamanhoFontTitulo" 
                         v-model="fonteTamanhoTituloInicial" 
-                        :listaSelect="tamanhos" >
+                        :listaSelect="tamanhoTitulos" >
                         </selectPadrao>
                         <selectPadrao 
                         class="w-max" 
@@ -47,7 +47,7 @@
                         <selectPadrao 
                         class="w-max" 
                         @update:model-value="tamanhoFontCorpo"  
-                        :listaSelect="tamanhos">
+                        :listaSelect="tamanhoCorpos">
                         </selectPadrao>
                         
                         <selectPadrao 
@@ -197,6 +197,8 @@ let styleGet=getComputedStyle(root)
 let primeiroListaFonte = ref("")
 let cor = ref('#80A4ED')
 let configuracao = ref();
+let tamanhoCorpos = ref ([])
+let tamanhoTitulos = ref ([])
 function temaDoSite(e){
     console.log(e);
 }
@@ -280,14 +282,21 @@ function contraste(cor) {
 }
 
 function defineSelect(configuracao){
-    tamanhos.value= ['Pequeno','Normal','Grande']
+    tamanhoTitulos.value= ['Pequeno','Normal','Grande']
+    tamanhoCorpos.value = ['Pequeno','Normal','Grande']
     fontsCorpo.value = ['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
     fontsTitulo.value= ['Poppins','Source Sans 3','Cormorant Garamond','Merriweather','Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans'];
     if(configuracao.fonteTituloTamanho == "7"){
-      tamanhos.value.splice(0, 0, tamanhos.value.splice(2, 1)[0]);
+        tamanhoTitulos.value.splice(0, 0, tamanhoTitulos.value.splice(2, 1)[0]);
     }
     if(configuracao.fonteTituloTamanho == "6"){
-        tamanhos.value.splice(0, 0, tamanhos.value.splice(1, 1)[0]);
+        tamanhoTitulos.value.splice(0, 0, tamanhoTitulos.value.splice(1, 1)[0]);
+    }
+    if(configuracao.fonteCorpoTamanho == "7"){
+        tamanhoCorpos.value.splice(0, 0, tamanhoCorpos.value.splice(2, 1)[0]);
+    }
+    if(configuracao.fonteCorpoTamanho == "6"){
+        tamanhoCorpos.value.splice(0, 0, tamanhoCorpos.value.splice(1, 1)[0]);
     }
     fontFamily(fontsCorpo.value, configuracao.fonteCorpo)
     fontFamily(fontsTitulo.value, configuracao.fonteTitulo)
