@@ -9,10 +9,9 @@
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
                     <img  v-if="membro.id != usuarioLogado"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
-
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
-                        <img class="imgDePerfil" src="" alt="">
+                        <img class="imgDePerfil" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
                     <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>

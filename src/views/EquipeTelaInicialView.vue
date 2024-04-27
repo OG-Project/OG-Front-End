@@ -34,7 +34,7 @@
               <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  
               :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :reponsavel="calcularResponsaveis(projeto)" :tempoAtuacao="projeto.tempoAtuacao">
+              :reponsavel="obterNomesResponsaveis(projeto)" :tempoAtuacao="projeto.tempoAtuacao">
             </CardProjetos>
           </div>
         </div>
@@ -82,16 +82,21 @@ async function criarProjeto() {
   VueCookies.set("projetoCookie");
 }
 
-function calcularResponsaveis(projeto) {
-  const nomes = [];
-  if (projeto.responsaveis && Array.isArray(projeto.responsaveis)) {
-    projeto.responsaveis.forEach(responsavel => {
-      if (responsavel && responsavel.nome) {
-        nomes.push(responsavel.nome);
+function obterNomesResponsaveis(projeto) {
+    if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
+      let responsaveisComNome = []
+      for(let responsavel of projeto.responsaveis){
+
+        responsaveisComNome.push(responsavel.responsavel.username)
       }
-    });
-  }
-  return nomes.join(', ');
+        if (responsaveisComNome.length >= 0) {
+          return responsaveisComNome.join(', ');
+        } else {
+            return "Responsáveis encontrados, mas nenhum deles possui nome.";
+        }
+    } else {
+        return "Não há responsáveis";
+    }
 }
 
 function formatarData(data) {
