@@ -1,8 +1,8 @@
 <template>
   <div class="h-[8vh] w-full flex">
-    <div class="h-[8vh] w-[15%] flex gap-8">
+    <div class="h-[8vh] w-[25%] flex gap-8">
       <BarraLateral class=" cursor-pointer"></BarraLateral>
-      <div class="h-[8vh] w-[15%] flex items-center">
+      <div class="h-[8vh] w-[100%] flex items-center">
         <Botao
           preset="PadraoVazado"
           texto="Nova Tarefa"
@@ -13,7 +13,9 @@
         </Botao>
       </div>
     </div>
-    <div class="h-[8vh] w-[35%] flex gap-8"></div>
+    <div class="h-[8vh] w-[25%] items-end flex gap-8">
+        
+    </div>
     <div class="h-[8vh] w-[50%] flex items-center gap-8 justify-end mr-8">
       <Input
         styleInput="input-claro-pequeno"
@@ -26,7 +28,7 @@
       </button>
       <img
         @click="redireciona('/perfil/informacoes')"
-        v-if="usuarioCookies && usuarioCookies.foto"
+        v-if="usuarioCookies"
         class="shadow-2xl h-[60px] w-[60px] rounded-full"
         :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
       />
@@ -53,11 +55,12 @@ import popUpNotificacao from "../components/popUpNotificacao.vue";
 const banco = conexaoBD();
 
 onMounted(async () => {
-  usuarioCookies = await autenticarUsuario(usuarioId);
+  usuarioCookies.value = await autenticarUsuario(usuarioId);
+  
 });
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
-let usuarioCookies;
+let usuarioCookies = ref();
 let notificacaoBoolean = ref(false);
 
 async function autenticarUsuario(id) {

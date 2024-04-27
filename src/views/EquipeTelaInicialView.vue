@@ -31,7 +31,10 @@
         <div  class="projetos ">
           <div  v-for="projeto of listaProjetos" :key="projeto.id" >
             <div class="flex w-[100%]">
-              <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" :reponsavel="calcularResponsaveis(projeto)">
+              <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  
+              :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" 
+              :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
+              :reponsavel="calcularResponsaveis(projeto)" :tempoAtuacao="projeto.tempoAtuacao">
             </CardProjetos>
           </div>
         </div>
@@ -107,6 +110,7 @@ async function buscarProjetosEquipe() {
   if (Array.isArray(projetosEquipe.value)) {
     // Filtrar espaços nulos (null) da lista de membros da equipe
     listaProjetos.value = projetosEquipe.value.filter(projeto => projeto != null);
+    console.log(listaProjetos)
   } else {
     console.error("O retorno de buscarMembrosEquipe() não é um array válido.");
   }

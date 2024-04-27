@@ -17,7 +17,7 @@
                 <div class="h-[50%] flex justify-center">
                     <div class="bola"></div>
                 </div>
-    
+   
             </div>
             <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
                 {{ console.log(tarefa) }}
@@ -27,7 +27,7 @@
                     </svg>
                 </div>
             </div>
-    
+   
         </div>
         <!-- Preset 2 Tira -->
         <div :style="tira" v-if="preset == 2" id="draggableElement" draggable="true">
@@ -110,7 +110,7 @@ function verificaCorTexto(tarefa) {
 }
 function enviaCookie(tarefa){
     $cookies.set("IdTarefaCookies",tarefa.id)
-    router.push('/criaTarefa') 
+    router.push('/criaTarefa')
 }
 
 </script>
@@ -151,3 +151,4 @@ function enviaCookie(tarefa){
 
 }
 </style>
+

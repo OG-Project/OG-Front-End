@@ -22,7 +22,7 @@
                         </div>
                     </template>
                 </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]"  @click="store.criaTarefa()">
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]"  @click="store.criaTarefa(), router.push('/criaTarefa')">
                     <p :style="corDoTexto(propriedade.propriedade)">+ Nova</p>
                 </button>
             </div>
@@ -71,6 +71,7 @@ import Botao from '../components/Botao.vue'
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 import ColorPicker from 'primevue/colorpicker';
 import tinycolor from "tinycolor2";
+import router from '@/router'
 
 let api = conexaoBD()
 let projetoApi = api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")

@@ -53,7 +53,6 @@
                 </div>
             </div>
         </div>
-    
 
     </fundoPopUp>
 </template>
@@ -277,7 +276,6 @@ async function confirmarConvites() {
 </script>
 
 <style scoped>
-
 .styleSelectPadraoBranco{
         @apply border-4 mt-[1vh]
         flex justify-center

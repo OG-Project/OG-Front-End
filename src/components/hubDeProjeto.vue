@@ -1,4 +1,6 @@
 <template>
+    <div v-if="enviandoMensagem" class="absolute w-full h-full z-[5]" @click="abreModalMensagem()">
+    </div>
     <div v-if="funcaoPopUp.variavelModal == true" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
@@ -22,6 +24,10 @@
                 +Tarefa
             </button>
             <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
+                @click="abreModalMensagem()">
+                <iconMensagem></iconMensagem>
+            </button>
+            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
                 @click="enviaCookieProjeto()">
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
@@ -29,9 +35,13 @@
                 @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
+                <div v-if="enviandoMensagem" class=" animation">
+                    <comentarioProjeto></comentarioProjeto>
+                </div>
         </div>
+
     </div>
-    <div class="w-[80%] flex flex-row justify-around">
+    <div class="w-[80%] h-[3.5%] flex flex-row justify-between align-bottom">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
             <button @click="router.push('/projeto/kanban')" class="bg-[#CECCCE] px-[1%]">
                 Kanban
@@ -46,9 +56,9 @@
                 Calendário
             </button>
         </div>
-        <div v-if="$route.path === '/projeto/lista'" class="flex flex-row bg-[#CECCCE] px-2" >
-            Propriedades Visiveis
-            <select v-model="listaPropriedadeVisiveis" multiple :options="listaPropriedadeVisiveis"></select>
+        <div v-if="$route.path === '/projeto/lista'" class="flex justify-center items-center bg-[#CECCCE] px-2 w-[15%] h-[100%]">
+            <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" placeholder="Propriedades Visiveis" filter
+                optionLabel="nome" :options="projeto.propriedades" :pt="{root: 'select', labelContainer:'labelContainer'}" class="bg-[#CECCCE] h-[75%] w-full flex justify-center items-center"></MultiSelect>
         </div>
     </div>
 </template>
@@ -58,13 +68,18 @@ import router from '@/router'
 import Dashboard from '../assets/dashboard.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import VueCookies from 'vue-cookies';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import IconEngrenagem1 from '../assets/iconEngrenagem 1.vue';
 import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
 import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
 import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
 import { funcaoPopUpStore } from '../stores/funcaoPopUp';
+import iconMensagem from '../assets/iconMensagem.vue';
+import MultiSelect from 'primevue/multiselect';
+import comentarioProjeto from './comentarioProjeto.vue';
+import {criaTarefaEBuscaStore} from '../stores/criaTarefaEBusca'
 
+let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
 let projetoId = VueCookies.get('IdProjetoAtual')
@@ -77,19 +92,23 @@ let subtarefas = ref([])
 let listaDeEquipes = ref(false)
 let funcaoPopUp = funcaoPopUpStore()
 let visualizacao = ref({})
+let enviandoMensagem = ref(false)
 
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
     visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista')
-    console.log(visualizacao)
-    listaPropriedadeVisiveis.value = visualizacao.propriedadesVisiveis
-    definePorcentagem()
 })
 
+const emit = defineEmits(['atualizaPropriedadesVisiveis'])
+
+watch(listaPropriedadeVisiveis, () => {
+    emit('atualizaPropriedadesVisiveis', listaPropriedadeVisiveis.value)
+})
 
 function enviaCookieTarefaNova() {
     VueCookies.set("IdTarefaCookies", 0, new Date())
     localStorage.setItem("TarefaNaoFinalizada", "", new Date())
+    criaTarefa.criaTarefa()
     router.push('/criaTarefa')
 }
 function enviaCookieProjeto() {
@@ -121,7 +140,61 @@ function defineSubTarefasConcluida(tarefas) {
     subtarefasConcluidas.value = subtarefas.value.filter(subtarefa => subtarefa.concluido)
 }
 
+function abreModalMensagem() {
+    enviandoMensagem.value = !enviandoMensagem.value
+}
 
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+
+.select{
+    outline: 4px solid #CECCCE;
+    border-radius: 0;
+}
+.select:active{
+    border: none;
+    outline: none;
+    border-radius: 0;
+}
+
+.labelContainer:active{
+    border-color: grey;
+    border: none;
+
+.animation {
+    @apply absolute w-[30%] h-[80%] z-10;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+}
+.animation {
+    @apply absolute w-[30%] h-[80%] z-10;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+</style>

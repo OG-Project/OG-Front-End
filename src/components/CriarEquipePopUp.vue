@@ -211,8 +211,8 @@ return;
     cria.criaEquipe(equipeCadastrada).then(response =>{
         equipe = response.data
       colocaMembrosEquipe(equipe)
+      enviaParaWebSocket(equipe, membrosEquipe.value);
     });
-
 };
 
 async function colocaMembrosEquipe(equipe){
@@ -226,32 +226,34 @@ async function colocaMembrosEquipe(equipe){
 function adicionaUsuarioLogado(ids, equipe){
 // Adicione automaticamente o usuário logado à equipe
 const usuarioLogadoId = Number(usuarioLogado);
-   
+    ids = []
     if (!ids.includes(usuarioLogadoId)) {
         ids.push(usuarioLogadoId);
     }
-    adicionaUsuariosBanco(ids, equipe)
+    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
 }
 
-function adicionaUsuariosBanco(ids, equipe){
-    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add").then(resposta => {
-        console.log(resposta)
-        enviaParaWebSocket(equipe);
-        nome.value = "";
-        descricao.value = "";
-        membrosEquipe = "";
-    });
-}
-
-async function enviaParaWebSocket(equipeAux) {
+async function enviaParaWebSocket(equipe,membrosConvidados) {
+    let equipeAux = {
+        id: equipe.id,
+        nome: equipe.nome,
+        descricao: equipe.descricao,
+        membros: membrosConvidados
+    }
     let teste = {
-        equipes: [{equipe:equipeAux}],
+        equipes: [{ equipe: equipeAux }],
         notificao: {
-            mensagem: "Criou a Equipe",
-            equipe: equipeAux
+            mensagem: "Te Convidou para a Equipe",
+            conviteParaEquipe: {
+                equipe: equipe
+            }
         }
     }
-    await conexaoWeb.enviaMensagemWebSocket(JSON.stringify(teste))
+    console.log(teste)
+    console.log(equipeAux)
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 

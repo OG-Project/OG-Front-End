@@ -19,25 +19,27 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
       api.cadastrar({}, '/tarefa/' + VueCookies.get("IdProjetoAtual"))
         .then(async (response) => {
           // Obter o ID da tarefa recém-criada
-          let idTarefa = response.data.id;
 
-          console.log(response.data.id);
+          let idTarefa = response.id;
+
+          console.log(response.id);
           console.log(response);
 
           
           
+          let idTarefaAntiga = VueCookies.get("IdTarefaCookies");
           // Armazenar o ID da tarefa nos cookies
-          VueCookies.set("IdTarefaCookies", idTarefa, 100000000000);
+          VueCookies.set("IdTarefaCookies", response.data.id, 100000000000);
           
           // Verificar e deletar a tarefa anterior, se existir
-          let idTarefaAntiga = VueCookies.get("IdTarefaCookies");
-          if (idTarefaAntiga) {
+          let projetoId = VueCookies.get("IdProjetoAtual");
+          if (idTarefaAntiga != null) {
             let tarefaAntiga = await api.buscarUm(idTarefaAntiga, "/tarefa");
-            if (tarefaAntiga.nome == null) {
-              await api.deletarTarefa("/tarefa",tarefaAntiga.id);
+            if (tarefaAntiga.nome === null) {
+              await api.deletarTarefa("/tarefa",tarefaAntiga.id );
             }
           }
-
+          
           // Remover dados de tarefa não finalizada do armazenamento local
           // Redirecionar para a página de criação de tarefa
           router.push('/criaTarefa');

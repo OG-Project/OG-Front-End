@@ -9,7 +9,7 @@
       />
     </div>
     <div v-if="props.tipo === 'toggle'">
-      {{ console.log(props.checked) }}
+      <!-- {{ console.log(props.checked) }} -->
       <div :style="estiloToggle" id="bordaToggle" @click="check('toggle')">
         <svg :style="estiloSVG">
           <circle
@@ -22,11 +22,19 @@
         </svg>
       </div>
     </div>
+    <div v-if="props.tipo === 'radio'" class="flex items-center">
+      <input
+        id="radio"
+        type="radio"
+        :checked="checked"
+        @click="check('checkbox'), $emit('modelValue', $event.target.value)"
+      />
+    </div>
   </div>
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, onUpdated, ref } from "vue";
 import mojs from "@mojs/core";
 import { defineProps, onMounted } from "vue";
 
@@ -50,8 +58,8 @@ const props = defineProps({
 });
 let idCircle = props.elId;
 let posicaoBola = ref(14);
-let ativo = ref(props.checked);
-let corBolaToggle = ref("#620BA7");
+let ativo = ref();
+let corBolaToggle = ref("var(--roxo)");
 let estiloSVG = ref({
   width: "60px",
   height: "30px",
@@ -73,7 +81,7 @@ let estiloBolaInicio = ref({
 let estiloBolaFinal = ref({
   width: "60px",
   height: "30px",
-  backgroundColor: "#620BA7",
+  backgroundColor: "var(--roxo)",
   borderRadius: "20px",
   cursor: "pointer",
   position: "relative",
@@ -94,7 +102,7 @@ switch (props.tamanho) {
     estiloBolaFinal.value = {
       width: "45px",
       height: "22px",
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       borderRadius: "20px",
       cursor: "pointer",
       position: "relative",
@@ -122,7 +130,7 @@ switch (props.tamanho) {
     estiloBolaFinal.value = {
       width: "60px",
       height: "30px",
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       borderRadius: "20px",
       cursor: "pointer",
       position: "relative",
@@ -150,7 +158,7 @@ switch (props.tamanho) {
     estiloBolaFinal.value = {
       width: "90px",
       height: "45px",
-      backgroundColor: "#620BA7",
+      backgroundColor: "var(--roxo)",
       borderRadius: "30px",
       cursor: "pointer",
       position: "relative",
@@ -169,14 +177,16 @@ switch (props.tamanho) {
 
 let estiloToggle;
 onBeforeMount(() => {
+  ativo.value=props.checked
+  // console.log(props.checked);
+  // console.log(ativo.value);
   if (props.tipo == "toggle") {
-    console.log(ativo.value);
     if (ativo.value) {
       corBolaToggle.value = "#F3F3F3";
       estiloToggle = ref(estiloBolaFinal.value);
       console.log(estiloToggle);
     } else if (!ativo.value) {
-      corBolaToggle.value = "#620BA7";
+      corBolaToggle.value = "var(--roxo)";
       estiloToggle = ref(estiloBolaInicio.value);
       console.log(estiloToggle);
     }
@@ -184,6 +194,8 @@ onBeforeMount(() => {
 });
 
 onMounted(() => {
+  // console.log(ativo.value);
+  // console.log(props.checked);
   if (props.tipo == "toggle") {
     if (ativo.value) {
       const animation = new mojs.Html({
@@ -201,7 +213,7 @@ onMounted(() => {
         x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
-          corBolaToggle.value = "#620BA7";
+          corBolaToggle.value = "var(--roxo)";
         },
       });
       animation.play();
@@ -232,7 +244,7 @@ function check(tipo) {
         x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
-          corBolaToggle.value = "#620BA7";
+          corBolaToggle.value = "var(--roxo)";
         },
       });
       animation.play();
@@ -248,7 +260,7 @@ function valorJaPassado() {
         x: { [maximoMovimentoBola.value]: 0, easing: "sin.out" },
         onComplete: () => {
           estiloToggle.value = estiloBolaInicio.value;
-          corBolaToggle.value = "#620BA7";
+          corBolaToggle.value = "var(--roxo)";
         },
       });
       animation.play();
@@ -266,6 +278,7 @@ function valorJaPassado() {
     animation.play();
   }
 }
+
 </script>
 
 <style scoped>
@@ -278,5 +291,15 @@ input[type="checkbox"] {
   cursor: pointer;
   width: 20px;
   height: 20px;
+}
+#radio {
+  border-radius: 9999px;
+  border-color: var(--roxo);
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+input[type="radio"] {
+  accent-color: var(--roxo);
 }
 </style>

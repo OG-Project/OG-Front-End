@@ -1,7 +1,7 @@
 <template>
-    <div class="fixed bottom-0 w-full flex justify-around items-center h-[8vh] bg-[#36213E]">
+    <div class="fixed bottom-0 w-full flex justify-around items-center h-[8vh] bg-[var(--roxo)] z-[9999999999]">
         <img class="h-[40%]" @click="redireciona('/home')" :src="IconHome" />
-        <img class="h-[40%]" @click="redireciona('/perfil')" :src="IconProfile" />
+        <img class="h-[40%]" @click="redireciona('/equipe')" :src="IconProfile" />
         <img class="h-[40%]" @click="redireciona('/projetos')" :src="IconFolder" />
         <img class="h-[40%]" :src="IconNotification" />
         <img class="h-[40%]" @click="redireciona('/perfil/informacoes')" :src="IconConfig" />
@@ -15,7 +15,27 @@ import IconHome from "../assets/HomeIconMobile.svg"
 import IconNotification from "../assets/NotificacaoIconMobile.svg"
 import IconProfile from "../assets/EquipeIconMobile.svg"
 import router from "@/router";
+import { onMounted, ref } from "vue"
+let configuracao = ref()
+let usuario = ref()
+onMounted(()=>{
+    buscaConfiguracaoesPadrao()
+})
 
+async function buscaConfiguracaoesPadrao(){
+    let root = document.documentElement.style
+  usuario.value =
+    await conexao.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
+ 
+}
 function redireciona(caminho){
     router.push(caminho)
 }
