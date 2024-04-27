@@ -107,18 +107,27 @@ let estiloIcone = {
 
 switch (props.tamanhoPadrao) {
 
-  case 'medio':
-    tamanhoComClass.value = "medioId"
-    break;
-  case 'pequeno':
-    tamanhoComClass.value = "pequenoId"
-    break;
-  case 'grande':
-    tamanhoComClass.value = "grandeId"
-    break;
-  case 'personalizado':
-    tamanhoComClass.value = "personalizadoId"
-    break;
+case 'medio':
+  tamanhoComClass.value = "medioId"
+  break;
+case 'pequeno':
+  tamanhoComClass.value = "pequenoId"
+  break;
+case 'grande':
+  tamanhoComClass.value = "grandeId"
+  break;
+case 'mobilegrande':
+  tamanhoComClass.value = "mobileGrandeId"
+  break;
+case 'mobilemedio':
+  tamanhoComClass.value = "mobileMedioId"
+  break;
+case 'mobilepequeno':
+  tamanhoComClass.value = "mobilePequenoId"
+  break;
+case 'mobilepadrao':
+  tamanhoComClass.value = "mobilePadraoId"
+  break;
 }
 
 let sombras = ""
@@ -554,14 +563,27 @@ function click() {
 <style lang="scss">
 
 .medioId {
-  @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh] sm:text-xs;
+  @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh]
 }
 
 .pequenoId {
-  @apply 2xl:w-[5vw] 2xl:h-[4vh] lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm;
+  @apply 2xl:w-[5vw] 2xl:h-[4vh] lg:w-[8vw] lg:h-[4vh] xl:w-[7vw] xl:h-[4vh] md:w-[10vw] md:h-[4vh] sm:w-[12vw] sm:h-[4vh] sm:text-sm h-[4vh] w-[15vw] text-sm
 }
 
 .grandeId {
-  @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh] sm:text-xs;
+  @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh]
+}
+
+.mobileGrandeId{
+  @apply w-[80vw] h-[5vh]
+}
+.mobileMedioId{
+  @apply w-[42vw] h-[5vh]
+}
+.mobilePadraoId{
+  @apply w-[48vw] h-[5vh]
+}
+.mobilePequenoId{
+  @apply w-[20vw] 2xl:h-[5vh] xl:h-[8vh]
 }
 </style>

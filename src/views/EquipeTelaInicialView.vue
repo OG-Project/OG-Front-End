@@ -9,7 +9,7 @@
             <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
                 <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
-                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="personalizado" width="50vw" height="6vh"  texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
+                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="mobilepadrao"   texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
             <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
@@ -105,7 +105,7 @@ function formatarData(data) {
 
 async function buscarProjetosEquipe() {
   // Chama a função do banco de dados para buscar os membros da equipe
-  console.log(await (await banco.buscarProjetosEquipe(equipeSelecionada, "/projeto/buscarProjetos")));
+  console.log(await( await banco.buscarProjetosEquipe(Number(equipeSelecionada), "/projeto/buscarProjetos")));
   projetosEquipe.value = await (banco.buscarProjetosEquipe(equipeSelecionada, "/projeto/buscarProjetos"));
   if (Array.isArray(projetosEquipe.value)) {
     // Filtrar espaços nulos (null) da lista de membros da equipe
@@ -259,12 +259,18 @@ function abrePopUp(equipe, tipo) {
     @apply ml-[20vw] mt-10;
     max-width: calc(100% - 1px);
   }
+  .listaProjetos{
+    @apply h-[57vh];
+  }
 }
 
 @media(min-width:1024px) {
   .cardProjeto {
     @apply ml-[4.5vw];
     max-width: calc(100% - 1px);
+  }
+  .listaProjetos{
+    @apply h-[65vh];
   }
 }
 
@@ -273,14 +279,33 @@ function abrePopUp(equipe, tipo) {
     @apply ml-[2vw];
     max-width: calc(100% - 1px);
   }
+  .listaProjetos{
+    @apply h-[65vh];
+  }
 }
 
-  @media screen and (max-width: 620px){
+@media(min-width: 2560px) {
+  .botaoIcone {
+    @apply w-[3vw] h-[4vh]
+  }
+  .cardProjeto {
+    max-width: calc(68% - 1px);
+  }
+  .projetos {
+    @apply ml-16
+  }
+  .listaProjetos{
+    @apply h-[65vh];
+  }
+  
+}
+
+  @media(max-width: 620px){
     .botaoIcone{
       @apply w-[50px] h-[50px] mt-[8vh] mr-4
     }
     .listaProjetos{
-      @apply mt-0;
+      @apply mt-0 h-[60vh];
     }
     .botaoProjetos{
       @apply flex mt-[8vh] mr-[14vw];
@@ -298,7 +323,7 @@ function abrePopUp(equipe, tipo) {
       @apply mt-0;
     }
     .cardProjeto{
-      @apply mt-20 text-2xl ml-1;
+      @apply mt-10 text-xl;
       max-width: calc(125% - 1px);
     }
   }    

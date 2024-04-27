@@ -2,7 +2,7 @@
     <fundoPopUp  largura="" altura="95vh">
         <div class="divGeral">
             <div class=" grid-template flex w-full">
-                    <h1 class="flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe</h1>
+                    <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe</h1>
             </div>
             <div class=" grid-template  flex w-full mt-[1vh]  p-5">
                 <div class="relative">
@@ -14,19 +14,27 @@
                 <div class=" grid-template  flex w-full">
                     <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e)=> {usuarioConvidado=e}"  styleInput="input-transparente-claro" :largura="larguraInputConvidado()" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
             </div>
-            <div class="grid-template flex w-full mt-[1vh]">
+            <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+            </div>
+            <div v-else class="grid-template flex w-full mt-[1vh]">
+                <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilegrande" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
             <div class=" grid-template flex w-full mt-[1vh]">
                 <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
             </div> 
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                <ListaConvidados  texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
+                <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
             </div>
-            <div class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+            <div v-if="screenWidth >= 620" class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+                    <Botao  preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
                     </Botao>
             </div>
+            <div v-else class="mt-10 ml-2" >
+                <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                </Botao>
+            </div>
+            
         </div>    
     </fundoPopUp>
 </template>
@@ -54,7 +62,15 @@ const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
 import { webSocketStore } from '../stores/webSocket.js'
 
+onMounted(()=>{
+    conexaoWeb.url= "ws://localhost:8085/og/webSocket/usuario/" +usuarioLogado;
+    conexaoWeb.criaConexaoWebSocket()
+})
+
 function marginRightConvidado() {
+    if(screenWidth <= 620){
+          return '7vw'
+    }
     if (screenWidth <= 768) {
         return '1vw';
     } else if (screenWidth > 768 && screenWidth <= 1024) {
@@ -127,28 +143,39 @@ descricao:""
 console.log(usuarioLogado)
 function larguraInput(){
 const screenWidth = window.innerWidth;
-if (screenWidth <= 768) {
-return '25';
-} else if (screenWidth > 768 && screenWidth <= 1024) {
-return '28';
-} else if (screenWidth > 1024 && screenWidth < 1920) {
-return '25';
-} else {
-return '13';
-}
+if(screenWidth <= 620){
+          return '45'
+    }
+    if (screenWidth <= 768) {
+        return '25';
+    } if (screenWidth > 768 && screenWidth <= 1024) {
+        return '28';
+    }if (screenWidth > 1024 && screenWidth <= 1440) {
+        return '25';
+    }if(screenWidth > 1440 && screenWidth < 1920){
+        return '10';
+    }
+    else {
+        return '13';
+    }
 };
 
 function larguraInputConvidado(){
 const screenWidth = window.innerWidth;
-if (screenWidth <= 768) {
-return '30';
-} else if (screenWidth > 768 && screenWidth <= 1024) {
-return '35';
-} else if (screenWidth > 1024 && screenWidth < 1920) {
-return '35';
-} else {
-return '18';
-}
+    if(screenWidth <= 620){
+          return '70'
+    }
+    if (screenWidth <= 768) {
+        return '30';
+    } if (screenWidth > 768 && screenWidth <= 1024) {
+        return '35';
+    } if (screenWidth > 1024 && screenWidth <= 1440) {
+        return '35';
+    } if(screenWidth > 1440 && screenWidth < 1920){
+        return '15';
+    }else {
+        return '18';
+    }
 }
 
 async function listaUsuarios() {
@@ -186,14 +213,13 @@ return;
       colocaMembrosEquipe(equipe)
       enviaParaWebSocket(equipe, membrosEquipe.value);
     });
-    
-    await enviarFotoParaBackend(equipe);
 };
 
-function colocaMembrosEquipe(equipe){
+async function colocaMembrosEquipe(equipe){
     const ids = membrosEquipe.value.map(m => {
         return Number(m.id);
     });
+    await enviarFotoParaBackend(equipe);
     adicionaUsuarioLogado(ids, equipe)
 }
 
@@ -351,6 +377,21 @@ border-radius: 50%;
         @apply h-[5vh] w-[4vw];
     }
 }
+
+@media(max-width: 620px){
+    .titulo{
+     @apply text-4xl mb-2; 
+    }
+    .botao{
+     @apply flex justify-end mt-10
+    }
+    .convidados-div {
+     @apply h-full mt-10;
+    }
+    .imagem{
+     @apply w-[60px] h-[60px]
+    }
+ }
 
 }
 </style>

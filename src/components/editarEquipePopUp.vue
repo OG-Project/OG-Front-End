@@ -24,7 +24,7 @@
                         </Botao>
                     </div>
                     <div v-else class="flex mt-20">
-                        <Botao preset="Deletar" tamanhoPadrao="personalizado" width="35vw" height="5vh" texto="Deletar" tamanhoDaFonte="1rem" :funcaoClick="deletarEquipe">
+                        <Botao preset="Deletar" tamanhoPadrao="mobilemedio" texto="Deletar" tamanhoDaFonte="1rem" :funcaoClick="deletarEquipe">
                         </Botao>
                     </div>
                     <div v-if="screenWidth >= 620" class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
@@ -32,7 +32,7 @@
                         </Botao>
                     </div>
                     <div v-else class="flex justify-end mt-20">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="personalizado" width="35vw" height="5vh" texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilemedio"  texto="Editar" tamanhoDaFonte="1rem" :funcaoClick="editarEquipe">
                         </Botao>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
                         <Botao v-if="screenWidth >= 620" preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
                         </Botao>
-                        <Botao v-else preset="PadraoRoxo" tamanhoPadrao="personalizado" width="70vw" height="5vh" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
+                        <Botao v-else preset="PadraoRoxo" tamanhoPadrao="mobilepadrao" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
                         </Botao>
                 </div>
             </div>

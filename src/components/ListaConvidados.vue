@@ -110,14 +110,20 @@ const imagemIcon = {
         display: grid;
         grid-template-columns: 40% 55%;
     }
-   
-
-
-.grid-template {
-
-  @apply w-[100%] h-[11%] gap-4 items-center justify-items-center justify-center;
-
-  display: grid;
-  grid-template-columns: 40% 55%;
-}
+    @media(max-width: 620px){
+      .imgDePerfil{
+       @apply mr-2 w-[40px] h-[40px]; 
+      }
+      .imgIcon{
+       @apply bg-cover 
+       bg-center flex flex-col justify-center 
+       items-center mr-5 ml-[2vw];
+      }
+      .nome-convidado  {
+       @apply mr-2 justify-center w-[20vw];
+      }
+      .selectEdit{
+       @apply w-[60px] h-[30px]
+      }
+   }
 </style>
