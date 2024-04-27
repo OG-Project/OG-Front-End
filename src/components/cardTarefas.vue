@@ -79,7 +79,7 @@ tira = {
     fontSize: "0.7vw"
 }
 kanban = {
-    width: "12.7vw",
+    width: "100%",
     height: "8vh",
     backgroundColor: "#D9D9D9",
     display: "flex",
@@ -87,7 +87,7 @@ kanban = {
 }
 
 hoverCard = {
-    width: "12.7vw",
+    width: "100%",
     height: "8vh",
     backgroundColor: "#D9D9D9",
     display: "flex",
