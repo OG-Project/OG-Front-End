@@ -98,7 +98,6 @@ let cardDia
 let projeto = {}
 let tarefas = []
 let border = "none"
-console.log(tarefas)
 
 getCalendario();
 
@@ -239,7 +238,6 @@ function setaDireita() {
 }
 async function trocaDiaEIndice(tarefa, dia, indice) {
     tarefa.propriedade.valor.valor = new Date(dia.dia)
-    console.log(tarefa)
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)

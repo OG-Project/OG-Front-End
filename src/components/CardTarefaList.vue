@@ -7,7 +7,6 @@
     <div class="flex flex-col w-max h-[10%] justify-center items-center">
       <div v-for="tarefa of projeto.tarefas" class=" truncate ">
         <div class="flex flex-row truncate h-full bg-pink-200">
-          {{ console.log(tarefa) }}
           <div class="border-r-2 flex items-center justify-center w-[10vw]">
             {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
           </div>
@@ -57,7 +56,6 @@ async function transformaEmObject() {
   projeto.value = await projetoPromise
   // visualizacaoPromise = api.procurar("/visualizacaoEmLista/" + projeto.id)
   visualizacao = await visualizacaoPromise
-  console.log(visualizacao)
 }
 
 function funcaoVerificaPropriedade(propriedade){

@@ -395,7 +395,6 @@ function veSeAPropriedadeTaNaTarefa(propriedade) {
 function veSeOStatusTaNaTarefa(status) {
   if (tarefa.value.status) {
     if (tarefa.value.status.id == status.id) {
-      console.log(true);
       return true
     }
     return false
@@ -506,13 +505,11 @@ async function patchDaListaDePropriedades() {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
         }
       }
     }
   }
-  console.log(tarefa2);
   banco.atualizar(tarefa2, "/tarefa")
 }
 
@@ -562,7 +559,6 @@ async function criaTarefaNoConcluido() {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
         }
       }
@@ -579,12 +575,8 @@ async function criaTarefaNoConcluido() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  console.log(tarefaCriando);
-  console.log(tarefa.value.arquivos);
-  console.log("Put de tarefa");
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
-    console.log("Arquivos");
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto")
@@ -680,8 +672,6 @@ async function criaPropriedade() {
     if (nomePropriedade.value != "") {
       const cria = criaPropriedadeTarefaStore();
       tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
-      console.log(tipoPropriedade.value);
-      console.log(nomePropriedade.value);
 
       cria.criaPropriedade(
         nomePropriedade.value,
@@ -695,10 +685,8 @@ async function criaPropriedade() {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   nomePropriedade.value = "";
   tipoPropriedade.value = "";
-  console.log(projetoDaTarefa.value.propriedades);
   let tarefaAtual = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa");
   propriedades.value = tarefaAtual.valorPropriedadeTarefas;
-  console.log(propriedades.value);
   propriedadeSendoCriada.value = false;
 }
 
@@ -879,17 +867,12 @@ function adicionaExcluiStatusNaTarefa(status) {
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
-  console.log("Entrou na função");
   if (!estaNaTarefa) {
-    console.log("push");
     tarefa.value.propriedades.push(propriedade)
   }
   else {
-    console.log("antes de começar o for");
     for (let propriedadeForTarefa of tarefa.value.propriedades) {
-      console.log("começou o for");
       if (propriedadeForTarefa.id == propriedade.id) {
-        console.log("entrou pra deletar a propriedade ", propriedade);
         propriedade.valor.valor = propriedadeForTarefa.valor.valor
         tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);
       }
@@ -980,12 +963,10 @@ const listaFiltradaStatus = computed(() => {
 });
 
 const listaFiltradaPropriedades = computed(() => {
-  console.log(parametroDoFiltroPropriedade.value);
   if (parametroDoFiltroPropriedade.value === "Ordenar Por") {
     return propriedades.value;
   }
   for (const propriedade of propriedades.value) {
-    console.log(propriedade.propriedade.tipo.toUpperCase());
   }  
   return propriedades.value.filter(
     (propriedade) =>

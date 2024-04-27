@@ -35,21 +35,16 @@ const tamanhoComClass = ref("medioId");
 const screenWidth = ref(window.innerWidth)
 
 onMounted(()=>{
-  console.log(props.roxo);
-  console.log(hue.value)
   if(screenWidth < 640){
     props.tamanhoDaFonte.value='0.5vh'
   }
 })
 
 watch(hue,(newValue) => {
-  console.log(newValue)
   hue.value=newValue
   
 })
 onUpdated(()=>{
-  console.log('teste');
-  console.log(hue.value);
 
 })
 

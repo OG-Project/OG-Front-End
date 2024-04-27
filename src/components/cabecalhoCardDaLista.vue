@@ -31,11 +31,9 @@ async function defineListaDeNomes() {
     listaDeNomesVisiveis.value = []
     listaDeNomesVisiveis.value.push("nome")
     listaDeNomesVisiveis.value.push("Descrição")
-    console.log(props.listaDePropriedadesVisiveis)
     for (const propriedade of props.listaDePropriedadesVisiveis) {
         listaDeNomesVisiveis.value.push(propriedade.nome)
     }
-    console.log(listaDeNomesVisiveis)
 }
 
 </script>
