@@ -5,7 +5,7 @@
         <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
         <div  v-for="projeto of listaDeProjetos" class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
           style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
-          <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid #620ba7" @click="redireciona('/projeto/kanban', projeto.id)">
+          <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid var(--roxo)" @click="redireciona('/projeto/kanban', projeto.id)">
             <p>{{ projeto.nome }}</p>
             <p v-if="projeto.responsaveis[0]">{{ projeto.responsaveis[0].responsavel.username }}</p>
             <p v-if="!projeto.responsaveis[0]"> Não possui responsável</p>
@@ -65,7 +65,7 @@ const props = defineProps({
 </script>
 <style scoped>
 #fundoPopUp {
-  background-color: #36213e;
+  background-color: var(--roxoEscuro);
   display: flex;
   justify-content: center;
   align-items: center;

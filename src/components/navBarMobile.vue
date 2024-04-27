@@ -8,17 +8,16 @@
     </div>
     <div class="h-[8vh] w-[10%] flex gap-8 items-center">
       <div class="h-[8vh] flex items-center">
-        <img @click="redireciona('/criaTarefa')" class="w-" src="../assets/BotaoCriaTarefaMobile.svg" />
+        <BotaoCriaTarefaMobile @click="redireciona('/criaTarefa')"></BotaoCriaTarefaMobile>
       </div>
     </div>
     <div class="h-[8vh] w-[20%] flex justify-center items-center">
-      <img
-       @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
+      <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
         class="shadow-2xl h-[45px] w-[45px] mr-4 ml-4 rounded-full "
-        :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
+        :src="'data:'+ usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
     </div>
   </div>
-  
+
   <div v-if="notificacaoBoolean == true" class="w-full fixed z-50 flex justify-end pr-4">
     <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean = false"></popUpNotificacao>
   </div>
@@ -32,6 +31,7 @@ import VueCookies from "vue-cookies";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
 import popUpNotificacao from "../components/popUpNotificacao.vue";
+import BotaoCriaTarefaMobile from "../assets/BotaoCriaTarefaMobile.vue";
 
 const banco = conexaoBD();
 

@@ -9,7 +9,6 @@
       />
     </div>
     <div v-if="props.tipo === 'toggle'">
-      <!-- {{ console.log(props.checked) }} -->
       <div :style="estiloToggle" id="bordaToggle" @click="check('toggle')">
         <svg :style="estiloSVG">
           <circle
@@ -178,17 +177,13 @@ switch (props.tamanho) {
 let estiloToggle;
 onBeforeMount(() => {
   ativo.value=props.checked
-  // console.log(props.checked);
-  // console.log(ativo.value);
   if (props.tipo == "toggle") {
     if (ativo.value) {
       corBolaToggle.value = "#F3F3F3";
       estiloToggle = ref(estiloBolaFinal.value);
-      console.log(estiloToggle);
     } else if (!ativo.value) {
       corBolaToggle.value = "var(--roxo)";
       estiloToggle = ref(estiloBolaInicio.value);
-      console.log(estiloToggle);
     }
   }
 });

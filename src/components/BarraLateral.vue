@@ -1,6 +1,6 @@
 <template>
   <div class="bg-opacity-40 z-[999]">
-    <button v-if="!aberto" @click="openClose()" class="ml-6 h-[8vh] w-[4vw] flex items-center justify-center">
+    <button v-if="!aberto" @click="openClose()" class="ml-6 h-[8vh] w-[4vw] flex items-center justify-center" >
      <hamburger></hamburger>
     </button>
     <div v-if="aberto" class="sidebar slide-in flex fixed" style="z-index:999999;">
