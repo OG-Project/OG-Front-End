@@ -1,28 +1,37 @@
 <template>
   <div :style="tamanhoPesquisa">
     <div v-if="temIcon">
-      <Input :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa":fontSize="fontSize"
-        :conteudoInput="placeHolderPesquisa"
-         v-model="conteudoDaPesquisa" 
-        :modelValue="conteudoDaPesquisa" tipo="obrigatorio" @updateModelValue="(e) => {
-        conteudoDaPesquisa = e
-       }"></Input>
+      <Input :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa" :fontSize="fontSize"
+        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa"
+        tipo="obrigatorio" @updateModelValue="(e) => {
+    conteudoDaPesquisa = e
+  }"></Input>
     </div>
     <div v-if="!temIcon" @="$emit('itemSelecionado', conteudoDaPesquisa)">
-      <Input :largura="props.largura" styleInput="input-transparente-claro" :conteudoInput="placeHolderPesquisa" :fontSize="fontSize"
-        v-model="conteudoDaPesquisa"  
-        :modelValue="conteudoDaPesquisa"
-        @updateModelValue="(e) => {
-        conteudoDaPesquisa = e
-     }"></Input>
+      <Input :largura="props.largura" styleInput="input-transparente-claro" :conteudoInput="placeHolderPesquisa"
+        :fontSize="fontSize" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa" @updateModelValue="(e) => {
+    conteudoDaPesquisa = e
+  }"></Input>
     </div>
 
-    <div v-if="conteudoDaPesquisa != '' && !itemsIguais"
+    <div v-if="conteudoDaPesquisa != '' && !itemsIguais && props.tipo != 'NavBar'"
       style="overflow-y: auto; overflow-x: hidden; max-height: 16vh; border-radius: 5px" id="barraDePesquisa">
       <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
         @click="passaValorProInput(itemPesquisado)">
         <div :style="respostaPesquisa">
           <p>{{ itemPesquisado }}</p>
+        </div>
+        <hr />
+      </div>
+    </div>
+
+    <div v-if="conteudoDaPesquisa != '' && !itemsIguais && props.tipo == 'NavBar'" class="z-[99999999999999999]"
+      style="overflow-y: auto; overflow-x: hidden; max-height: 16vh; border-radius: 5px" id="barraDePesquisa">
+      <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
+        @click="passaValorProInput(itemPesquisado)">
+        <div :style="respostaPesquisa">
+          <p class="w-[40%]">{{ itemPesquisado.nome }}</p>
+          <p class="w-[40%]">{{ itemPesquisado.tipo }}</p>
         </div>
         <hr />
       </div>
@@ -34,6 +43,9 @@
 import Input from "./Input.vue";
 import { createVNode, ref, watch } from "vue";
 import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
+import { defineProps, defineEmits } from "vue";
+import VueCookies from "vue-cookies";
+import router from "@/router";
 
 let conteudoDaPesquisa = ref("");
 defineEmits(['itemSelecionado'])
@@ -49,8 +61,8 @@ const props = defineProps({
     type: String,
     default: 'Pesquisa'
   },
-  fontSize: String
-
+  fontSize: String,
+  tipo: String
 });
 
 let itemsIguais = ref(false);
@@ -70,20 +82,69 @@ function verificaSeSaoIguais() {
 }
 
 function passaValorProInput(valor) {
-  conteudoDaPesquisa.value = valor;
+  if (props.tipo == 'NavBar') {
+    conteudoDaPesquisa.value = valor.nome;
+    switch (valor.tipo) {
+      case "Projeto":
+        conteudoDaPesquisa.value = "";
+        VueCookies.set("IdProjetoAtual", valor.id);
+        redireciona("/projeto").then(() => {
+          window.location.reload();
+          conteudoDaPesquisa.value = "";
+        });
+        break;
+      case "Equipe":
+        conteudoDaPesquisa.value = "";
+        VueCookies.set("equipeSelecionada", valor.id);
+        redireciona("/equipe/telaInicial").then(() => {
+          window.location.reload();
+        });
+        break;
+      case "Usuario":
+        conteudoDaPesquisa.value = "";
+        redireciona("/perfil/" + valor.id).then(() => {
+          window.location.reload();
+        });
+        break;
+      case "Tarefa":
+        VueCookies.set("IdTarefaCookies", valor.id);
+        redireciona("/criaTarefa").then(() => {
+          window.location.reload();
+        });
+        break;
+    }
+  } else {
+    conteudoDaPesquisa.value = valor;
+  }
 }
+
+function redireciona(rota) {
+  router.push(rota);
+}
+
 watch(() => {
   renderizaLista();
   verificaSeSaoIguais();
 });
 function renderizaLista() {
-  let palavraPesquisada = conteudoDaPesquisa.value.toLowerCase();
+  if (props.tipo == 'NavBar') {
+    let palavraPesquisada = conteudoDaPesquisa.value.toLowerCase();
 
-  const listaFiltrada = props.listaDaPesquisa.filter((item) => {
-    const itemLowerCase = item.toLowerCase();
-    return [...palavraPesquisada].every((letra) => itemLowerCase.includes(letra));
-  });
-  listaRenderizada.value = listaFiltrada;
+    const listaFiltrada = props.listaDaPesquisa.filter((item) => {
+      console.log(item);
+      const itemLowerCase = item.nome.toLowerCase();
+      return [...palavraPesquisada].every((letra) => itemLowerCase.includes(letra));
+    });
+    listaRenderizada.value = listaFiltrada;
+  } else {
+    let palavraPesquisada = conteudoDaPesquisa.value.toLowerCase();
+
+    const listaFiltrada = props.listaDaPesquisa.filter((item) => {
+      const itemLowerCase = item.toLowerCase();
+      return [...palavraPesquisada].every((letra) => itemLowerCase.includes(letra));
+    });
+    listaRenderizada.value = listaFiltrada;
+  }
 }
 
 const respostaPesquisa = ref({});
@@ -108,35 +169,17 @@ if (props.modoEscuro === "nao") {
     gap: "4rem",
     rowGap: "8rem",
     cursor: "pointer",
-    color: "#620BA7",
+    color: "var(--roxo)",
   };
 
   espacoRespostasPesquisa.value = {
-    width: props.largura + "vw",
-    backgroundColor: "#FEFBFF",
+    width: props.largura,
   };
 
   //   corLinha.value = {
   //     backgroundColor: "#620BA7",
   //   };
-} else if (props.modoEscuro == "sim") {
-  respostaPesquisa.value = {
-    width: props.largura,
-    backgroundColor: "transparent",
-    height: "4vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    gap: "4rem",
-    rowGap: "8rem",
-    cursor: "pointer",
-    color: "#FEFBFF",
-  };
-  espacoRespostasPesquisa.value = {
-    width: props.largura + "vw",
-    backgroundColor: "#620BA7",
-  };
+
   //   corLinha.value = {
   //     width: props.largura,
   //     backgroundColor: "#36213E",

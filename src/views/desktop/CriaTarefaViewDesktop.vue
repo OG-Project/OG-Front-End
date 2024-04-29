@@ -1,5 +1,5 @@
 <template>
-  <div id="bgBranco" class="flex flex-row min-h-[96%] w-full">
+  <div class="bg-[var(--backgroundPuro)]  flex flex-row min-h-[92vh] w-full">
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input largura="32" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
@@ -182,7 +182,7 @@
           <button class="ml-2" @click="abreFechaComentario()">+</button>
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
-          <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
+          <div class="w-[100%] border-2 border-[var(--backgroundItems)] mt-4 mb-4 shadow-lg min-h-[10vh] flex">
 
             <img v-if="usuarioCookies.foto.tipo != null"
               class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
@@ -200,7 +200,7 @@
         </div>
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
-            <div class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
+            <div class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
                 <div v-if="comentario.autor.username === usuarioCookies.username"
                   class="w-[80%] mt-2 gap-4 flex justify-center">
@@ -248,7 +248,7 @@
     </div>
     <!-- Propriedades e Status -->
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
-      <div class="w-[80%] h-[80vh] shadow-xl border-2">
+      <div class="w-[80%] h-[80vh] shadow-xl border-2 border-[var(--backgroundItems)]">
         <div class="flex justify-around h-[4%]">
           <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%;">
             Propriedades
@@ -345,7 +345,7 @@
               </div>
               <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
               <div class="w-[40%] flex justify-between">
-                <ColorPicker disabled v-model="statsAdd.cor" class="border-2 rounded-lg ml-16" />
+                <ColorPicker disabled v-model="statsAdd.cor" class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
               </div>
             </div>
           </div>
@@ -357,7 +357,7 @@
       </div>
     </div>
 
-    <div id="propriedadesOverflow" class="shadow-xl border-2">
+    <div id="propriedadesOverflow" class="shadow-xl border-2 border-[var(--backgroundItems)]">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
         <h1 class="min-h-[9%] text-3xl font-semibold">Informações</h1>
       </div>
@@ -401,7 +401,7 @@
         </div>
         <div class="min-h-[4%] flex items-center justify-center gap-4">
           <p :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
-            class="flex items-center border-2 shadow-md justify-center px-4">
+            class="flex items-center border-2 border-[var(--backgroundItems)] shadow-md justify-center px-4">
             {{ tarefa.status.nome }}
           </p>
         </div>
