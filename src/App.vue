@@ -28,7 +28,7 @@ const banco = conexaoBD();
 const criaNotificacaoStore = criaNotificacao();
 const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
-webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" + usuarioLogadoId
+webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
 webSocket.criaConexaoWebSocket();
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
@@ -51,22 +51,27 @@ let configuracao = ref()
 const route = useRoute();
 
 onMounted(async () => {
-  
-    let root = document.documentElement.style
+  let root = document.documentElement.style
   usuario.value =
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')),'/usuario')
-  configuracao.value=usuario.value.configuracao
+        configuracao.value=usuario.value.configuracao
+    console.log(configuracao.value);
   perfil.isVlibras=configuracao.value.isLibras
   perfil.isTecladoVirtual=configuracao.value.isTecladoVirtual
   perfil.isVoiceMaker=configuracao.value.isDigitarVoz
   root.setProperty('--hueRoxo',configuracao.value.hueCor)
   root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
-  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho)
-  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho)
-  
+  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho+'vh')
+  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho+'vh')
+  console.log(configuracao.value.isDark);
+  if(configuracao.value.isDark){
+    root.setProperty('--backgroundPuro','#0F0F0F')
+    root.setProperty('--backgroundItems','#222222')
+    root.setProperty('--fonteCor','#ffffff')
+  }
 
 
   // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
@@ -107,10 +112,8 @@ function press(b) {
   }
 
 }
-
-webSocket.criaConexaoWebSocket();
-
 webSocket.esperaMensagem((mensagem) => {
+  console.log(mensagem)
   teste(JSON.parse(mensagem))
 });
 
@@ -160,8 +163,6 @@ function enviaParaWebSocket(projetoAux, dias) {
   }
 
   console.log(teste)
-  const webSocket = webSocketStore();
-  webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
   webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
@@ -183,7 +184,7 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-<div class=" bg-[var(--backgroundPuro)]">
+<div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
   <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />

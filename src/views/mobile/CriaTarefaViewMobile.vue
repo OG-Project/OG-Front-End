@@ -358,7 +358,7 @@
 <script setup>
 import { format } from "date-fns";
 import Input from "../../components/Input.vue";
-import NotePad from "../../imagem-vetores/NotePad.svg";
+
 import Botao from "../../components/Botao.vue";
 import CheckBox from "../../components/checkBox.vue";
 import iconAnexo from "../../imagem-vetores/anexoIcon.svg";

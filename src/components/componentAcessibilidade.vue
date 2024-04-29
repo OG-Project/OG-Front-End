@@ -15,7 +15,6 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Digitar com a voz</span>
-                        {{ isDigitarVoz }}
                         <CheckBox 
                         :key="isDigitarVoz.valueOf()"
                         tipo="toggle" 
@@ -27,7 +26,6 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Libras</span>
-                        {{ isVlibra }}
                         <CheckBox 
                         :key="isVlibra.valueOf()"
                         tipo="toggle" 
@@ -39,7 +37,6 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Teclado Virtual</span>
-                        {{ isTecladoVirtual }}
                         <CheckBox 
                         :key="isTecladoVirtual.valueOf()"
                         tipo="toggle" 
@@ -47,7 +44,6 @@
                         :checked="gerarBooleano('checkTecladoVirtual')" 
                         @envia-valor="tecladoVirtual($event)">
                         </CheckBox>                                        
-                        {{Boolean('a')}}
                     </div>
                 </div>
             </div>
