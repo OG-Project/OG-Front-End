@@ -167,12 +167,12 @@ function limparNomeCompleto() {
 }
 
 .textArea {
-    @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-roxo border-b-2 focus-within:border-roxo focus-within:border-4;
-    border-bottom: 'solid 4px #620BA7';
+    @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+    border-bottom: 'solid 4px var(--roxo)';
 }
 
 .corDiv {
-    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[15vw] lg:w-[21vw] md:w-[25vw] border-transparent border-b-roxo border-b-2 items-center focus-within:border-roxo focus-within:border-4;
+    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[15vw] lg:w-[21vw] md:w-[25vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
 
 }
 
@@ -215,11 +215,11 @@ function limparNomeCompleto() {
         @apply flex ml-[1vw] mt-4 h-[25px] w-[25px];
     }
     .corDiv {
-        @apply flex ml-[5vw] h-20 w-[45vw] border-transparent border-b-roxo border-b-2 items-center focus-within:border-roxo focus-within:border-4;
+        @apply flex ml-[5vw] h-20 w-[45vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
     }
     .textArea {
-        @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[60vw] h-[10vh]  bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-roxo border-b-2 focus-within:border-roxo focus-within:border-4;
-        border-bottom: 'solid 4px #620BA7';
+        @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[60vw] h-[10vh]  bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+        border-bottom: 'solid 4px var(--roxo)';
     }
     .listaEquipes {
         @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md shadow-gray-200;

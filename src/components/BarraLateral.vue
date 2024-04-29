@@ -68,6 +68,7 @@
 import router from '@/router';
 import { ref } from "vue";
 import hamburger from '../imagem-vetores/haburguer.vue'
+import VueCookies from "vue-cookies";
 const aberto = ref(false);
 
 function openClose() {
@@ -75,8 +76,17 @@ function openClose() {
 }
 
 function redirecionamento(local) {
-  router.push(local);
-  openClose();
+  router.push(local).then(() => {
+    openClose();
+  if(local == '/login'){
+    VueCookies.remove('IdUsuarioCookie');
+    VueCookies.remove('IdTarefaCookies');
+    VueCookies.remove('IdProjetoAtual');
+    VueCookies.remove('equipeSelecionada');
+    window.location.reload();
+  }
+  });
+  
 }
 </script>
 
