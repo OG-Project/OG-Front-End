@@ -92,7 +92,12 @@
                 </div>
                 <div class="flex justify-between items-center gap-5">
                     <span class="text-[var(--fonteCorpoTamanho)]">Modo Claro</span>
-                    <CheckBox tipo="toggle" el-id="checkDarkMode" @envia-valor="temaDoSite($event)">
+                    <CheckBox 
+                    :key="isDark.valueOf()"
+                    tipo="toggle" 
+                    :checked="gerarBooleano('checkDarkMode')"
+                    el-id="checkDarkMode" 
+                    @envia-valor="temaDoSite($event)">
                     </CheckBox>
                     <span class="text-[var(--fonteCorpoTamanho)]">Modo Escuro</span>
                 </div>
@@ -161,14 +166,34 @@ let cor = ref('#80A4ED')
 let configuracao = ref();
 let tamanhoCorpos = ref([])
 let tamanhoTitulos = ref([])
+let isDark=ref(false)
 
 
 tamanhoTitulos.value = ['Pequeno', 'Normal', 'Grande']
 tamanhoCorpos.value = ['Pequeno', 'Normal', 'Grande']
 fontsCorpo.value = ['Poppins', 'Source Sans 3', 'Cormorant Garamond', 'Merriweather', 'Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
 fontsTitulo.value = ['Poppins', 'Source Sans 3', 'Cormorant Garamond', 'Merriweather', 'Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans'];
-
+function gerarBooleano(id){
+    if(id=='checkDarkMode'){
+        return isDark.value
+    }
+}
 function temaDoSite(e) {
+    if(!isDark.value){
+        root.style.setProperty('--backgroundPuro','#0F0F0F')
+        root.style.setProperty('--backgroundItems','#222222')
+        root.style.setProperty('--fonteCor','#ffffff')
+        isDark.value=!isDark.value
+        usuario.value.configuracao.isDark=isDark.value
+        conexao.atualizar(usuario.value,'/usuario')
+    }else if(isDark.value){
+        root.style.setProperty('--backgroundPuro','#ffffff')
+        root.style.setProperty('--backgroundItems','#f8f8f8')
+        root.style.setProperty('--fonteCor','#000000')
+        isDark.value=!isDark.value
+        usuario.value.configuracao.isDark=isDark.value
+        conexao.atualizar(usuario.value,'/usuario')
+    }
     console.log(e);
 }
 
@@ -283,11 +308,11 @@ async function buscaConfiguracaoesPadrao() {
             JSON.parse(
                 VueCookies.get('IdUsuarioCookie')), '/usuario')
     configuracao.value = usuario.value.configuracao
-    root.setProperty('--hueRoxo', configuracao.value.hueCor)
-    root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
-    root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
-    root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + "vh")
-    root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + "vh")
+    // root.setProperty('--hueRoxo', configuracao.value.hueCor)
+    // root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+    // root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+    // root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + "vh")
+    // root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + "vh")
     defineSelect(usuario.value.configuracao)
 }
 
@@ -298,12 +323,10 @@ onBeforeMount(async () => {
     usuario.value =
         await conexao.buscarUm(JSON.parse
             (VueCookies.get('IdUsuarioCookie')), '/usuario')
-
-
+    isDark.value=usuario.value.configuracao.isDark
 })
 
 onMounted(() => {
-
     console.log('fonts ' + perfil.fonteCorpo + ' ' + perfil.fonteTitulo)
     console.log(convert.hex.hsl(cor.value)[0])
     buscaConfiguracaoesPadrao()
