@@ -2,7 +2,7 @@
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
-        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
                 <div 
                 @click="open()"
@@ -44,7 +44,9 @@
                 </div>
                 
             </div>
-            <div class="font-[var(--fonteCorpo)] flex flex-col gap-10">
+            <div 
+            style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
+            class=" flex flex-col gap-10">
                 <div @click="informacao()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 

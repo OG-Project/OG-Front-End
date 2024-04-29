@@ -26,10 +26,9 @@
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
+            
             class="  
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -39,10 +38,9 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual "
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
+            
             class=" 
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -73,10 +71,9 @@
                 <svgIconMic 
                 @click="mic" 
                 v-show="isVoiceMaker" 
-                :class="{'*:fill-black':verificaCorFill(props.styleInput),
-                '*:fill-white':verificaCorFill(props.styleInput),
-                }"
-                class="  
+                
+                class=" 
+                *:fill-[var(--fonteCor)] 
                 cursor-pointer 
                 w-[2.5vw] 
                 h-[2.5vh] 
@@ -86,10 +83,9 @@
                 <svgIconKeyboard 
                 @click="teclado" 
                 v-show="isTecladoVirtual "
-                :class="{'*:fill-black':verificaCorFill(props.styleInput),
-                '*:fill-white':verificaCorFill(props.styleInput),
-                }"
+                
                 class=" 
+                *:fill-[var(--fonteCor)]
                 cursor-pointer 
                 w-[2.5vw] 
                 h-[2.5vh] 
@@ -130,10 +126,8 @@
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
-            class="  
+            class=" 
+            *:fill-[var(--fonteCor)] 
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -143,10 +137,9 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual " 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
+            
             class=" 
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -190,10 +183,9 @@
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
+            
             class="  
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -203,10 +195,9 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual "
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
+            
             class=" 
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -398,12 +389,7 @@ function teclado(){
             return 'black';
         }
     }
-    function verificaCorFill(a){
-        if(a=="input-escuro" || a=="input-transparente-escuro" || a=="input-transparente-escuro-grande" ){
-            return true
-        }
-        return false
-    }
+    
     function hoverStyle(){
             if(props.corHover=="escuro"){
                 return props.corHover=="#484848"
