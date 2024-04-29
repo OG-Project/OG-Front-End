@@ -1,5 +1,5 @@
 <template>
-  <div id="bgBranco" class="flex flex-col min-h-[96%] w-full">
+  <div class="bg-[var(--backgroundPuro)] flex flex-col min-h-[96%] w-full">
     <div class="w-full min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
         <Input largura="70" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
