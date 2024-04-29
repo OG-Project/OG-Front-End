@@ -1,8 +1,18 @@
 <template>
     <div :style="{ height: height, width: width }" class="flex justify-center">
       <div class="listaProjetos overflow-auto ">
-        <div class="divGeral flex w-[100%]">
-          <div v-if="!kanbanAtivo" class="flex w-full">
+        <div class="divGeral sm:flex w-[100%] max-mobile:justify-center">
+          <div v-if="!kanbanAtivo && screenWidth > 620" class="flex w-full">
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
+             @click="ativarBotao('urgentes')">URGENTES</button>
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
+             @click="ativarBotao('prontos')">PRONTOS</button>
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'nao-iniciados' }"
+             @click="ativarBotao('nao-iniciados')">NÃO INICIADOS</button>
+            <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }"
+             @click="ativarBotao('meus-projetos')">MEUS PROJETOS</button>
+          </div>
+          <div v-if="!kanbanAtivo && screenWidth <= 620" class="flex w-full mobile:w-[80vw]">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
              @click="ativarBotao('urgentes')">URGENTES</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
@@ -14,41 +24,42 @@
           </div>
           <div v-if="kanbanAtivo" >
             <div class="w-full">
-              <div class="iconeCard" @click="toggleKanban()">
+              <div class="iconeCard mobile:mt-3 mobile:ml-1 " @click="toggleKanban()">
               <img  class="icone" src="../imagem-vetores/iconCard.svg">
             </div>
             </div>
-            <div class="kanban-board w-full pl-2 2xl:mt-2 xl:mt-3 lg:mt-4 md:mt-5  flex justify-start">
-              <div class="kanban-board w-full max-h-max min-h-[15vh] flex  flex-col"  @dragover.prevent @drop.prevent="event => onDrop(event, 'urgentes','#D27200')">
+            <div class="kanban-board w-full pl-2 2xl:mt-2 xl:mt-3 lg:mt-4 md:mt-5 sm:flex sm:justify-start max-mobile:flex-row  ">
+
+              <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'urgentes','#D27200')">
                 <div class="urgentes">
-                     <h1 class="text-xl text-white"> URGENTES</h1>
+                     <h1 class="xl:text-xl sm:text-sm text-white"> URGENTES</h1>
                 </div>
                 <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('urgentes')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id"
                 draggable="true" @dragstart="onDragStart($event, projeto)">
                   <KanbanProjetos  :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col" @dragover.prevent @drop.prevent="event => onDrop(event, 'nao-iniciados', '#0034BA')">
+              <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col  mobile:mt-5" @dragover.prevent @drop.prevent="event => onDrop(event, 'nao-iniciados', '#0034BA')">
                 <div class="naoIniciado">
-                  <h1 class="text-xl text-white"> NÃO INICIADOS</h1>
+                  <h1 class="xl:text-xl sm:text-sm text-white"> NÃO INICIADOS</h1>
                </div>
                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('nao-iniciados')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                draggable="true" @dragstart="onDragStart($event, projeto)" >
                   <KanbanProjetos :v-if="projeto.categoria === 'nao-iniciados'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full max-h-max flex min-h-[15vh] flex-col"  @dragover.prevent @drop.prevent="event => onDrop(event, 'prontos', '#389300')">
+              <div class="kanban-board w-full max-h-max flex min-h-[15vh] flex-col  mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'prontos', '#389300')">
                 <div class="prontos">
-                <h1 class="text-xl text-white"> PRONTOS</h1>
+                <h1 class="xl:text-xl sm:text-sm text-white"> PRONTOS</h1>
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('prontos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
                   <KanbanProjetos :v-if="projeto.categoria === 'prontos'"  :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
-              <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col"  @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
+              <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col  mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
                 <div class="meusProjetos">
-                  <h1 class="text-xl text-white"> MEUS PROJETOS</h1>
+                  <h1 class="txl:text-xl sm:text-sm text-white"> MEUS PROJETOS</h1>
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('meus-projetos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
@@ -65,7 +76,11 @@
             </div>
           </div>
           </div>
-          <div  v-if="!kanbanAtivo " class="iconeKanban" @click="toggleKanban()">
+         
+          <div  v-if="!kanbanAtivo && screenWidth <= 620" class="iconeKanban mobile:ml-[88vw] mobile:mt-[-2.8vh]" @click="toggleKanban()">
+            <img   class="icone" src="../imagem-vetores/iconKanban.svg">
+          </div>
+          <div  v-if="!kanbanAtivo && screenWidth > 620 " class="iconeKanban mobile:mt-[-2.8vh]" @click="toggleKanban()">
             <img   class="icone" src="../imagem-vetores/iconKanban.svg">
           </div>
         </div>
@@ -80,7 +95,7 @@
         <div v-else-if="!mostrarMensagem">
           <div v-if="!kanbanAtivo" class="projetos" >
             <div v-for="projeto of filtrarPorCategoria(statusBotao).length ? filtrarPorCategoria(statusBotao) : projetos" :key="projeto.id" >
-              <cardProjetos class="cardProjetos" 
+              <cardProjetos v-if="screenWidth >= 620" class="cardProjetos" 
               :name="projeto.nome" 
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
@@ -89,6 +104,15 @@
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
+              <cardProjetos v-else class="cardProjetos" 
+                :name="projeto.nome" 
+                :descricao="projeto.descricao" 
+                :comeco="formatarData(projeto.dataCriacao)" 
+                :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
+                :reponsavel="obterNomesResponsaveis(projeto)"
+                :feito="calcularProgressoProjeto(projeto)"
+                :tempo-atuacao="projeto.tempoAtuacao"
+                @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
             </div>
           </div>
         </div>
@@ -158,11 +182,11 @@
         const projetosDaEquipe = await banco.buscarProjetosEquipe(equipeUsuario.equipe.id, "/projeto/buscarProjetos");
         projetosEquipe.push(...projetosDaEquipe); 
       }
-
+    console.log(projetosEquipe)
     if (Array.isArray(projetosEquipe)) {
         projetos.value = projetosEquipe;
         projetos.value.forEach(projeto => {
-            
+         
             
         });
 
@@ -321,10 +345,10 @@ const buscarCorPorCategoria = (categoria) => {
 kanban-board {
   width: 800px;
   height: 600px;
-  margin: 0 auto;
+  margin: 20px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 30px;
   overflow: auto;
 }
 
@@ -382,7 +406,7 @@ kanban-board {
 }
 
 .botaoStatus {
-  @apply bg-transparent font-semibold mt-3 px-5 text-xl rounded mr-2 truncate;
+  @apply bg-transparent font-semibold mt-3 px-5 text-xl rounded mr-2 truncate  mobile:text-lg;
 }
 
 .bordaRoxa {
@@ -431,41 +455,26 @@ kanban-board {
 
 @media(max-width: 620px){
   kanban-board {
-    @apply flex;
-    width: 1500px;
+    width: 800px;
     height: 600px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 20px;
     overflow: auto;
-  }
-  .urgentes {
-    @apply flex w-[80vw];
-  }
-  divGeral{
-    @apply flex w-full
-  }
-  .naoIniciado{
-    @apply flex w-[22.8vw] ;
-  }
-  .prontos{
-    @apply flex w-[22.8vw] ;
-  }
-  
-  .meusProjetos{
-    @apply flex w-[22.8vw] ;
   }
   .cardProjetos{
     @apply mt-20 text-2xl;
     max-width: calc(125% - 1px);
   }
   .iconeKanban{
-    @apply w-[20px] h-[20px] flex justify-end mr-[0.8vw] mt-[1.2vh];
+    @apply w-[60px] h-[60px] flex mt-[1.2vh];
   }
-  
+  .icone{
+    @apply w-[50px] h-[50px]
+  }
   .iconeCard{
-    @apply  flex justify-end  mr-[-0.5vw] mt-[1.2vh];
+    @apply flex justify-end  mr-[-0.5vw] mt-[1.2vh];
   } 
   .mensagemKanban{
     @apply ml-[42%];

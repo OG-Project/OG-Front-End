@@ -36,7 +36,7 @@
         <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -63,13 +63,13 @@
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <input class="border-2 w-[80%] rounded-lg border-[#620BA7]" placeholder="Nome da Propriedade"
-                  type="text" v-model="nomePropriedade"></input>
+                <Input largura="22" conteudoInput="Nome Propriedade" fontSize="1rem" altura="3.8" v-model="nomePropriedade"
+                  @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
                 <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
@@ -94,16 +94,16 @@
         <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
+                <Input largura="22" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
                   @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
-              <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
-                altura="3.8" fonteTamanho="1rem" v-model="statusSubtarefa" />
+              <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="16"
+                altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
@@ -137,12 +137,11 @@
         </div>
       </div>
       <div class="pl-12 mt-4">
-        <div class="w-min h-min relative">
-          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
+        <div class="w-min h-min relative cursor-pointer">
+          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
             inverterCorIcon="sim"></Botao>
-          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
+          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer" @change="e => gerarArquivo(e)">
         </div>
-
       </div>
       <div class="pl-12 mt-4">
         <h1>SubTarefas</h1>
@@ -249,10 +248,10 @@
     <div class="w-[100vw] min-h-[96%] flex flex-col pl-12 pt-8 mb-24">
       <div class="w-[95%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
-          <button class="w-[33%]" @click="clicouOpcaoPropriedades()" :style="estiloBotaoPropriedades">
+          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%;">
             Propriedades
           </button>
-          <button class="w-[33%]" @click="clicouOpcaoStatus()" :style="estiloBotaoStatus">
+          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%;">
             Status
           </button>
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
@@ -274,14 +273,14 @@
         </div>
 
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
-          <div v-for="propriedade in propriedades"
+          <div v-for="propriedade in listaFiltradaPropriedades"
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
             <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
               <div class="flex gap-2 items-center w-[40%]">
                 <CheckBox
                   @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
                   :checked="veSeAPropriedadeTaNaTarefa(propriedade)"></CheckBox>
-                <p class="break-all">{{ propriedade.propriedade.nome }}</p>
+                <p v-if="propriedade" class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
                 <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
@@ -337,7 +336,8 @@
             class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
             <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
               <div class="w-[35%] flex gap-2 items-center pl-4">
-                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)"></CheckBox>
+                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)" tipo="radio">
+                </CheckBox>
                 <p class="break-all">{{ statsAdd.nome }}</p>
               </div>
               <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
@@ -358,7 +358,7 @@
 <script setup>
 import { format } from "date-fns";
 import Input from "../../components/Input.vue";
-
+import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
 import Botao from "../../components/Botao.vue";
 import CheckBox from "../../components/checkBox.vue";
 import iconAnexo from "../../imagem-vetores/anexoIcon.svg";
@@ -390,6 +390,15 @@ function veSeAPropriedadeTaNaTarefa(propriedade) {
     }
   }
   return false
+}
+
+function veSeOStatusTaNaTarefa(status) {
+  if (tarefa.value.status) {
+    if (tarefa.value.status.id == status.id) {
+      return true
+    }
+    return false
+  }
 }
 
 //Variavel utilizada para armazenar os comentarios da tarefa
@@ -496,13 +505,11 @@ async function patchDaListaDePropriedades() {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
         }
       }
     }
   }
-  console.log(tarefa2);
   banco.atualizar(tarefa2, "/tarefa")
 }
 
@@ -552,14 +559,12 @@ async function criaTarefaNoConcluido() {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
         }
       }
     }
   }
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas;
-  tarefaCriando.dataCriacao = new Date();
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
 
@@ -570,8 +575,6 @@ async function criaTarefaNoConcluido() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  console.log(tarefaCriando);
-  console.log(tarefa.value.arquivos);
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
@@ -669,8 +672,6 @@ async function criaPropriedade() {
     if (nomePropriedade.value != "") {
       const cria = criaPropriedadeTarefaStore();
       tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
-      console.log(tipoPropriedade.value);
-      console.log(nomePropriedade.value);
 
       cria.criaPropriedade(
         nomePropriedade.value,
@@ -684,9 +685,8 @@ async function criaPropriedade() {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   nomePropriedade.value = "";
   tipoPropriedade.value = "";
-  console.log(projetoDaTarefa.value.propriedades);
-  propriedades.value = projetoDaTarefa.value.propriedades;
-  console.log(propriedades.value);
+  let tarefaAtual = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa");
+  propriedades.value = tarefaAtual.valorPropriedadeTarefas;
   propriedadeSendoCriada.value = false;
 }
 
@@ -853,25 +853,26 @@ function abreFechaCriaSubTarefas() {
 //Funções que removem e adicionam os status e propriedades da tarefa
 
 function adicionaExcluiStatusNaTarefa(status) {
-  if (tarefa.value.status == status) {
-    tarefa.value.status = null;
-  } else {
-    tarefa.value.status = status;
+  if (tarefa.value.status) {
+    if (tarefa.value.status.id == status.id) {
+      tarefa.value.status = null;
+    } else {
+      tarefa.value.status = status;
+    }
   }
+  else {
+      tarefa.value.status = status;
+  }
+  veSeOStatusTaNaTarefa(status)
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
-  console.log("Entrou na função");
   if (!estaNaTarefa) {
-    console.log("push");
     tarefa.value.propriedades.push(propriedade)
   }
   else {
-    console.log("antes de começar o for");
     for (let propriedadeForTarefa of tarefa.value.propriedades) {
-      console.log("começou o for");
       if (propriedadeForTarefa.id == propriedade.id) {
-        console.log("entrou pra deletar a propriedade ", propriedade);
         propriedade.valor.valor = propriedadeForTarefa.valor.valor
         tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);
       }
@@ -963,14 +964,14 @@ const listaFiltradaStatus = computed(() => {
 
 const listaFiltradaPropriedades = computed(() => {
   if (parametroDoFiltroPropriedade.value === "Ordenar Por") {
-    // Check for empty string
     return propriedades.value;
   }
-
+  for (const propriedade of propriedades.value) {
+  }  
   return propriedades.value.filter(
     (propriedade) =>
-      propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
-  );
+    propriedade.propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
+    );
 });
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
@@ -1038,38 +1039,33 @@ let opcaoEstaClicadaStatus = ref(false);
 //Função que troca qual é o display onde mostra os status e as propriedades que pode adicionar na tarefa
 
 function clicouOpcaoPropriedades() {
-  if (opcaoEstaClicadaPropriedades.value === false) {
-    opcaoEstaClicadaPropriedades.value = true;
-    opcaoEstaClicadaStatus.value = false;
-    estiloBotaoPropriedades.value = estiloOpcaoClicadoPropriedades;
-    estiloBotaoStatus.value = {
-      borderBottom: "solid 4px transparent",
-    };
-  } else {
-    opcaoEstaClicadaPropriedades.value = false;
-    opcaoEstaClicadaStatus.value = true;
-    estiloBotaoPropriedades.value = {
-      borderBottom: "solid 4px transparent",
-    };
-    estiloBotaoStatus.value = estiloOpcaoClicadoStatus;
-  }
+    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+    const opcaoStatus = document.getElementById('opcaoStatus');
+
+    if (!opcaoEstaClicadaPropriedades.value) {
+        opcaoEstaClicadaPropriedades.value = true;
+        opcaoEstaClicadaStatus.value = false;
+
+        opcaoPropriedades.classList.add('opcaoClicada');
+        opcaoPropriedades.classList.remove('opcaoNaoClicada');
+        opcaoStatus.classList.add('opcaoNaoClicada');
+        opcaoStatus.classList.remove('opcaoClicada');
+    }
 }
+
 function clicouOpcaoStatus() {
-  if (opcaoEstaClicadaStatus.value === false) {
-    opcaoEstaClicadaStatus.value = true;
-    opcaoEstaClicadaPropriedades.value = false;
-    estiloBotaoPropriedades.value = {
-      borderBottom: "solid 4px transparent",
-    };
-    estiloBotaoStatus.value = estiloOpcaoClicadoStatus;
-  } else {
-    opcaoEstaClicadaStatus.value = false;
-    opcaoEstaClicadaPropriedades.value = true;
-    estiloBotaoPropriedades.value = estiloOpcaoClicadoPropriedades;
-    estiloBotaoStatus.value = {
-      borderBottom: "solid 4px transparent",
-    };
-  }
+    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+    const opcaoStatus = document.getElementById('opcaoStatus');
+
+    if (!opcaoEstaClicadaStatus.value) {
+        opcaoEstaClicadaStatus.value = true;
+        opcaoEstaClicadaPropriedades.value = false;
+
+        opcaoStatus.classList.add('opcaoClicada');
+        opcaoStatus.classList.remove('opcaoNaoClicada');
+        opcaoPropriedades.classList.add('opcaoNaoClicada');
+        opcaoPropriedades.classList.remove('opcaoClicada');
+    }
 }
 </script>
 <style scoped>
@@ -1206,5 +1202,15 @@ function clicouOpcaoStatus() {
 option {
   font-size: small;
   border: 1px solid #cbcbcb;
+}
+
+.opcaoClicada {
+  border-bottom: solid 4px var(--roxo);
+  width: 33%;
+}
+
+.opcaoNaoClicada {
+  border-bottom: solid 4px transparent;
+  width: 33%;
 }
 </style>

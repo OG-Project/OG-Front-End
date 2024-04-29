@@ -18,7 +18,6 @@
                             tipo="obrigatorio"
                             
                             @updateModelValue="(e)=> {
-                                    console.log(e)
                                     senhaAntiga=e
                             }"
                             />
@@ -32,7 +31,6 @@
                             :isInvalido="isInvalido"
                             textoInvalido="Senha não é igual"
                             @updateModelValue="(e)=> {
-                                    console.log(e)
                                     senhaNova=e
                             }"
                             />
@@ -46,7 +44,6 @@
                             :isInvalido="isInvalido"
                             textoInvalido="Senha não é igual"
                             @updateModelValue="(e)=> {
-                                    console.log(e)
                                     senhaConfirmada=e
                             }"
                             />
@@ -87,19 +84,16 @@ let senhaNova=ref('')
 let senhaConfirmada=ref('')
 
 watch(usuario,(a)=>{
-    console.log(a)
-    console.log(usuario.value)
+    
 })
 
 onUpdated(()=>{
-    console.log(usuario.value)
+    
 })
 
 onMounted(async ()=>{
     usuario.value=await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
-    console.log(usuario.value.senha)
-    senhaUsuario.value=usuario.value.senha
-    console.log(senhaUsuario.value);
+    senhaUsuario.value=usuario.value.senha 
 })
 
 
@@ -124,7 +118,6 @@ function alteraSenha(){
     //     isInvalido.value=false
     //     // conexao.atulizar(usuario,'/usuario')
     // }
-    // console.log('oi')
 }
 
 </script>

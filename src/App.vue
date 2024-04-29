@@ -76,14 +76,12 @@ onMounted(async () => {
 
   // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
   // perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
-  // console.log(perfil.isTecladoVirtual)
+  // perfil.isTecladoVirtual)
   // root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
   // root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
   // root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
   // let tamanhoCorpo=JSON.parse(VueCookies.get('fonteCorpoTamanho'))
   // let tamanhoTitulo=JSON.parse(VueCookies.get('fonteTituloTamanho'))
-  // console.log(tamanhoCorpo);
-  // console.log(tamanhoTitulo);
   // root.setProperty('--fonteCorpoTamanho',tamanhoCorpo+'vh')
   // root.setProperty('--fonteTituloTamanho',tamanhoTitulo+'vh')
   // perfil.hue=JSON.parse(VueCookies.get('matizCor'))
@@ -96,9 +94,6 @@ onMounted(async () => {
 
 
 function press(b) {
-
-  console.log('press ' + b)
-
   let valorElemento = perfil.el.value
   let valor = b
   if (b == '{bksp}') {
@@ -113,12 +108,10 @@ function press(b) {
 
 }
 webSocket.esperaMensagem((mensagem) => {
-  console.log(mensagem)
   teste(JSON.parse(mensagem))
 });
 
 function teste(mensagem) {
-  console.log(mensagem)
   criaNotificacaoStore.mandarNotificacao(mensagem);
 }
 
@@ -162,7 +155,6 @@ function enviaParaWebSocket(projetoAux, dias) {
     }
   }
 
-  console.log(teste)
   webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 

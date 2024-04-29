@@ -4,13 +4,13 @@
         class="cardTotal hover:outline hover:outline-purple-600  hover:outline-4 active:outline active:outline-4 active:outline-purple-200 ">
         <!-- textos  -->
         <div class="flex flex-col items-center ">
-            <div class="flex flex-col justify-evenly w-[18vw] h-[202px]">
+            <div class="divInformacoes">
                 <!-- falta colocar os tres pontos por linha -->
-                <div class=" flex flex-row">
+                <div class="flex flex-row">
                     <div class="h-[28px] truncate overflow-hidden w-[80%]">
                         <b>{{ name }}</b>
                     </div>
-                    <div class="w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
+                    <div class="tempoAtuacao w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
                         <img src="../imagem-vetores/relogio.svg">
                     </div>
                     <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
@@ -43,7 +43,7 @@
                 </div>
             </div>
             <!-- Informações de começo e fim do projeto -->
-            <div class="data text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null">
+            <div class="data text-white items-center w-3/5 flex justify-evenly" v-if="comeco != null && final != null" :style="{'margin-right': marginRight}">
                 <div>{{ comeco }}</div>
                 <!-- svg da flechinha -->
                 <svg v-if="screenWidth >= 620" width="30" height="17" viewBox="0 0 30 17" fill="none"
@@ -86,8 +86,11 @@ const props = defineProps({
     final: {
         type: String,
     },
-    tempoAtuacao: {
-        type: String
+    tempoAtuacao:{
+        type: String,
+    },
+    marginRight:{
+        type: String,
     }
 
 })
@@ -147,6 +150,9 @@ function somePopUp() {
     .barraCinzaGrafico {
         @apply relative text-white flex w-72 justify-start bg-gray-500;
     }
+    .divInformacoes{
+       @apply flex flex-col justify-evenly w-[18vw] h-[202px]
+    }
 
     .barraRoxaGrafico {
         @apply h-4 bg-purple-600 justify-start;
@@ -161,6 +167,9 @@ function somePopUp() {
         transition: transform 0.3s ease;
 
     }
+    .divInformacoes{
+        @apply flex flex-col justify-evenly 2xl:w-[18vw] xl:w-[25vw]  lg:w-[35vw] md:w-[45vw] h-[202px]
+    }
 
     .cardTotal:hover {
         transform: scale(1.05);
@@ -171,24 +180,34 @@ function somePopUp() {
         @apply bg-gray-300;
 
     }
+    @media(min-width: 2560px){
+        .divInformacoes{
+            @apply flex flex-col justify-evenly w-[13vw]
+        }
+       
+    }
 
-
-    @media(max-width: 620px) {
-        .parteDeBaixoCard {
-            @apply flex flex-col h-[76px] items-center justify-evenly bg-[url(../assets/Polygon126footer.png)] w-full
+    @media(max-width: 620px){
+        .parteDeBaixoCard{
+            @apply flex flex-col h-[76px] items-center  justify-evenly bg-[url(../assets/Polygon126footer.png)];
         }
 
         .cardTotal {
-            @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-white overflow-hidden;
+            @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-white overflow-hidden mt-[3vh];
             transition: transform 0.3s ease;
         }
 
         .barraCinzaGrafico {
-            @apply relative text-white flex w-72 h-6 justify-start bg-gray-500;
+            @apply relative text-white flex w-[70vw] h-5 justify-start bg-gray-500;
         }
-
-        .data {
-            @apply flex justify-start mr-7;
+        .data{
+            @apply mr-[14vw];
+        }
+        .divInformacoes{
+            @apply flex flex-col justify-evenly w-[80vw] h-[202px] 
+        }
+        .tempoAtuacao{
+            @apply flex justify-end ;
         }
     }
 

@@ -18,7 +18,6 @@
                         :isInvalido="isEmailInvalido"
                         textoInvalido='Deve conter "@" e "."'
                         @updateModelValue="(e)=> {
-                                    console.log(e)
                                     emailNovo=e
                         }"
                         />
@@ -62,7 +61,6 @@ function alteraEmail(){
         if(emailNovo.value[1].includes('.')){
             // alert('.')
             emailNovo.value=emailNovo.value[0].concat('@'+emailNovo.value[1])
-            console.log(emailNovo.value);
             usuario.value.email=emailNovo.value
             conexao.atualizar(usuario.value,'/usuario')
             isEmailInvalido.value=false

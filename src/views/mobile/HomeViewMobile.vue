@@ -23,10 +23,10 @@
             </h1>
         </div>
         <div class="h-32 w-full flex items-center justify-around">
-            <img :src="EstrelaHomeIcon" @click="trocaTopico('Projetos Urgentes')" />
-            <img :src="DiaHomeIcon" @click="trocaTopico('Projetos do Dia')" />
-            <img :src="SemanaHomeIcon" @click="trocaTopico('Projetos da Semana')" />
-            <img :src="MesHomeIcon" @click="trocaTopico('Projetos do Mês')" />
+            <EstrelaHomeIcon @click="trocaTopico('Projetos Urgentes')" />
+            <DiaHomeIcon @click="trocaTopico('Projetos do Dia')" />
+            <SemanaHomeIcon @click="trocaTopico('Projetos da Semana')" />
+            <MesHomeIcon @click="trocaTopico('Projetos do Mês')" />
         </div>
         <div class="w-[90%] h-[45vh] flex flex-col items-center"
             style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
@@ -51,10 +51,10 @@
 import { ref, onMounted } from 'vue';
 import VerificadoVermelhoIcon from '../../assets/VerificadoVermelhoIcon.svg';
 import VerificadoVerdeIcon from '../../assets/VerificadoVerdeIcon.svg';
-import EstrelaHomeIcon from '../../assets/EstrelaHomeIcon.svg';
-import DiaHomeIcon from '../../assets/DiaHomeIcon.svg';
-import SemanaHomeIcon from '../../assets/SemanaHomeIcon.svg';
-import MesHomeIcon from '../../assets/MesHomeIcon.svg';
+import EstrelaHomeIcon from '../../assets/EstrelaHomeIcon.vue';
+import DiaHomeIcon from '../../assets/DiaHomeIcon.vue';
+import SemanaHomeIcon from '../../assets/SemanaHomeIcon.vue';
+import MesHomeIcon from '../../assets/MesHomeIcon.vue';
 import { conexaoBD } from "../../stores/conexaoBD.js"
 import VueCookies from "vue-cookies";
 import router from "@/router";
@@ -91,7 +91,6 @@ async function verificaTarefasFeitas() {
         projetosDoBanco.forEach(projeto => {
             projeto.tarefas.forEach(tarefa => {
                 tarefa.subTarefas.forEach(subtarefa => {
-                    console.log(subtarefa);
                     if (subtarefa.concluido == true) {
                         tarefasFeitas.value++;
                     }
