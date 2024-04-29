@@ -36,7 +36,7 @@
         <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -63,13 +63,13 @@
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <input class="border-2 w-[80%] rounded-lg border-[#620BA7]" placeholder="Nome da Propriedade"
-                  type="text" v-model="nomePropriedade"></input>
+                <Input largura="22" conteudoInput="Nome Propriedade" fontSize="1rem" altura="3.8" v-model="nomePropriedade"
+                  @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
                 <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
@@ -94,16 +94,16 @@
         <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
+                <Input largura="22" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
                   @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
-              <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
-                altura="3.8" fonteTamanho="1rem" v-model="statusSubtarefa" />
+              <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="16"
+                altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
@@ -358,7 +358,7 @@
 <script setup>
 import { format } from "date-fns";
 import Input from "../../components/Input.vue";
-
+import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
 import Botao from "../../components/Botao.vue";
 import CheckBox from "../../components/checkBox.vue";
 import iconAnexo from "../../imagem-vetores/anexoIcon.svg";

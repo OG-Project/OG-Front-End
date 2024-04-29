@@ -36,7 +36,7 @@
         <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -63,17 +63,17 @@
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <input class="border-2 w-[80%] rounded-lg border-[var(--roxo)]" placeholder="Nome da Propriedade"
-                  type="text" v-model="nomePropriedade"></input>
+                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="3.8" v-model="nomePropriedade"
+                  @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
                 <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                  largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade">
+                largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
                 </selectPadrao>
               </div>
             </div>
@@ -94,7 +94,7 @@
         <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
           <div class="animation">
             <div class="flex justify-start">
-              <img src="../../imagem-vetores/trianguloStart.svg" />
+              <TrianguloStart></TrianguloStart>
             </div>
 
             <div class="flex flex-row justify-between items-end">
@@ -103,7 +103,7 @@
                   @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
               <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
-                altura="3.8" fonteTamanho="1rem" v-model="statusSubtarefa" />
+                altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
@@ -457,6 +457,7 @@ import tinycolor from "tinycolor2";
 import { conexaoBD } from "../../stores/conexaoBD.js";
 import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
 import router from "../../router";
+import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
 
 const banco = conexaoBD();
 
