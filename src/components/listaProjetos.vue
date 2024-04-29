@@ -275,7 +275,8 @@ function obterFotosResponsaveis(projeto) {
             .filter(responsavel => responsavel && responsavel.foto)
             .map(responsavel => responsavel.foto);
 
-        if (responsaveisComFoto.length > 0) {
+        if (responsaveisComFoto) {
+          console.log(responsaveisComFoto)
             return responsaveisComFoto;
         } else {
           console.log("Responsáveis encontrados, mas nenhum deles possui foto.")
