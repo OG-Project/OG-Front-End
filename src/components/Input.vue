@@ -312,7 +312,7 @@ function teclado(){
     const estilizaInput={
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
-        color: verificaCor(),
+        color: 'var(--fonteCor)',
         fontSize: verificaTamanhoFont(),
         height: verificaHeigth()+'vh',
         width: verificaWidth()+"vw",

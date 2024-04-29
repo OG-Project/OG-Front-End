@@ -8,17 +8,38 @@
                 @click="open()"
                 @mouseover="()=> ishover=!ishover"
                 @mouseout="()=> ishover=!ishover"
-                class="xl:w-[95%] text-center flex justify-center items-center  sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                class="xl:w-[95%] 
+                text-center 
+                flex 
+                justify-center 
+                items-center  
+                sm:h-[30%] 
+                sm:w-[30%] 
+                md:w-[70%] 
+                md:h-[70%] 
+                rounded-full 
+                xl:h-[95%]"
                >    
                     <img 
                     :src="Imagem"
-                    class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                    class="xl:w-[95%] 
+                    hover:bg-slate-600 
+                    sm:h-[30%] 
+                    sm:w-[30%] 
+                    md:w-[70%] 
+                    md:h-[70%] 
+                    rounded-full 
+                    xl:h-[95%]"
                     />
                     
                     
                     <div v-if="ishover" class="absolute flex items-center text-white">
                         <span class=" ">Alterar Foto</span>
-                        <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)] bg-cover ml-3 w-6 h-6"  />
+                        <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)]
+                         bg-cover 
+                         ml-3 
+                         w-6 
+                         h-6"  />
                     </div> 
                 </div>
                 
@@ -31,7 +52,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
                     Informações
                 </div>
                 <div @click="seguranca()" class="bg-[var(--roxo)] medioId 
@@ -41,7 +63,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
                     Segurança
                 </div>
                 <div @click="acessibilidade()" class="bg-[var(--roxo)] medioId 
@@ -51,7 +74,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
                     Acessibilidade
                 </div>
                 <div @click="privacidade()" class="bg-[var(--roxo)] medioId 
@@ -61,7 +85,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
                     Privacidade
                 </div>
                 <div @click="aparencia()" class="bg-[var(--roxo)] medioId 
@@ -71,7 +96,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
                     Aparência
                 </div>
 
