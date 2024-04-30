@@ -7,18 +7,9 @@
     <div class="flex flex-col w-min h-full justify-strart items-center gap-3">
       <draggable class=" truncate flex flex-col gap-3" v-model="projeto.tarefas" :animation="300" group="tarefa"
         item-key="tarefa.indice"  @start="drag = true" @end="drag = false">
-        <template #item="{ element: tarefa }">
+        <template #item="{ element: tarefa,index }">
           <div class="flex flex-row truncate h-[6vh] bg-[#CCC9CE] py-[1%]" v-if="tarefa.nome != null" @click="trocaRota(tarefa)">
-            <div class="flex justify-center items-center h-full w-[2vw] absolute left-0">
-              <svg width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect y="0.973145" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
-                <rect x="11.4297" y="0.973145" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
-                <rect y="12.6582" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
-                <rect x="11.4297" y="12.6582" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
-                <rect y="24.3433" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
-                <rect x="11.4297" y="24.3433" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
-              </svg>
-            </div>
+
             <div class="border-r-2 flex items-center justify-center w-[10vw] truncate h-full">
               {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
             </div>
@@ -71,6 +62,7 @@ let lista = ref([])
 
 onMounted(() => {
   transformaEmObject()
+  ordenaTarefas()
 })
 
 const props = defineProps({
@@ -95,6 +87,9 @@ function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
   }
 }
 
+function ordenaTarefas(){
+  projeto.tarefas.sort((tarefa, tarefa2) => tarefa.valorPropriedadeTarefa - b.indice)
+}
 function trocaRota(tarefa){
     VueCookies.set("IdTarefaCookies",tarefa.id)
     router.push('/criaTarefa').then(() => {

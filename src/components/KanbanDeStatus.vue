@@ -22,7 +22,9 @@
                         </div>
                     </template>
                 </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]"  @click="store.criaTarefa(), router.push('/criaTarefa')">
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]"  @click="store.criaTarefa(), router.push('/criaTarefa').then(() => {
+        window.location.reload()
+    });">
                     <p :style="corDoTexto(propriedade.propriedade)">+ Nova</p>
                 </button>
             </div>

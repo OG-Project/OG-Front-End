@@ -96,7 +96,9 @@ function abrePaginaEquipe(equipe) {
     const equipeSelecionada = equipe;
     console.log(equipeSelecionada)
     VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
-    router.push({ name: 'telaInicial' })
+    router.push({ name: 'telaInicial' }).then(() => {
+        window.location.reload()
+    });
 
 }
 

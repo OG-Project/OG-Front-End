@@ -193,7 +193,9 @@ function removerUsuarioALista(notificacao) {
 
 function trocarRota(idProjeto, rota, propriedadeCookie) {
     VueCookies.set(propriedadeCookie, idProjeto)
-    router.push(rota)
+    router.push(rota).then(() => {
+        window.location.reload()
+    });
     emit('fecharPopUp')
 }
 
