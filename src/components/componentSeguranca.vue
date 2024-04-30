@@ -1,11 +1,11 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div>
-            <h1 style="font-Family:var(--fonteTitulo)" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            <h1 style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Segurança
             </h1>
         </div>
-        <div style="font-Family:var(--fonteCorpo)" class="pl-32 items-center">
+        <div style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" class="pl-32 items-center">
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
                     <div class="flex items-center sm:flex-wrap gap-8">

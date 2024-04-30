@@ -283,10 +283,10 @@ function defineSelect(configuracao) {
     if (configuracao.fonteTituloTamanho == "6") {
         tamanhoTitulos.value.splice(0, 0, tamanhoTitulos.value.splice(1, 1)[0]);
     }
-    if (configuracao.fonteCorpoTamanho == "7") {
+    if (configuracao.fonteCorpoTamanho == "2.5") {
         tamanhoCorpos.value.splice(0, 0, tamanhoCorpos.value.splice(2, 1)[0]);
     }
-    if (configuracao.fonteCorpoTamanho == "6") {
+    if (configuracao.fonteCorpoTamanho == "2") {
         tamanhoCorpos.value.splice(0, 0, tamanhoCorpos.value.splice(1, 1)[0]);
     }
     fontFamily(fontsCorpo.value, configuracao.fonteCorpo)
