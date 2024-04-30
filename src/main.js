@@ -14,6 +14,8 @@ import Chines from './locales/ch.json';
 import Portugues from './locales/pt-br.json';
 import Ingles from './locales/en.json';
 import Espanhol from './locales/es.json';
+import Japones from './locales/jp.json';
+import Russo from './locales/ru.json';
 import draggable from "vuedraggable";
 import VueDragscroll from "vue-dragscroll";
 import  VueColor  from '@ckpack/vue-color';
@@ -22,23 +24,18 @@ import VueSocketIO from 'vue-socket.io'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const i18n = createI18n({
-    locale: 'pt-br',
-    fallbackLocale: 'en',
+    locale: 'es',
+    fallbackLocale: 'pt-BR',
     messages: {
-        'pt-br': {
-            message: Portugues
-        },
-        'en': {
-            message: Ingles
-        },
-        'es': {
-            message: Espanhol
-        },
-        'ch': {
-            message: Chines
-        }
+        'pt-BR': Portugues,
+        'en': Ingles,
+        'es': Espanhol,
+        'zh': Chines,
+        'jp': Japones,
+        'ru': Russo
     }
-  })
+});
+
 
 const app = createApp(App)
 export const pinia = createPinia()
