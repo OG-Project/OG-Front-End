@@ -35,9 +35,9 @@
                 @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
-                <div v-if="enviandoMensagem" class=" animation">
-                    <comentarioProjeto></comentarioProjeto>
-                </div>
+            <div v-if="enviandoMensagem" class=" animation">
+                <comentarioProjeto></comentarioProjeto>
+            </div>
         </div>
 
     </div>
@@ -56,9 +56,13 @@
                 Calendário
             </button>
         </div>
-        <div v-if="$route.path === '/projeto/lista'" class="flex justify-center items-center bg-[#CECCCE] px-2 w-[15%] h-[100%]">
+        <div v-if="$route.path === '/projeto/lista'"
+            class="flex justify-center items-center bg-[#CECCCE] px-2 w-[15%] h-[100%]">
             <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" placeholder="Propriedades Visiveis" filter
-                optionLabel="nome" :options="projeto.propriedades" :pt="{root: 'select', labelContainer:'labelContainer'}" class="bg-[#CECCCE] h-[75%] w-full flex justify-center items-center"></MultiSelect>
+                optionLabel="nome" :options="projeto.propriedades"
+                :pt="{ root: 'select', labelContainer: 'labelContainer' }"
+                class="bg-[#CECCCE] h-[75%] w-full flex justify-center items-center"
+                :onclick="atualizaVisualizacao()"></MultiSelect>
         </div>
     </div>
 </template>
@@ -77,7 +81,7 @@ import { funcaoPopUpStore } from '../stores/funcaoPopUp';
 import iconMensagem from '../assets/iconMensagem.vue';
 import MultiSelect from 'primevue/multiselect';
 import comentarioProjeto from './comentarioProjeto.vue';
-import {criaTarefaEBuscaStore} from '../stores/criaTarefaEBusca'
+import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca'
 
 let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
@@ -96,8 +100,21 @@ let enviandoMensagem = ref(false)
 
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
+    console.log(projeto.value)
     visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista')
+    if ( visualizacao.value.propriedadeVisiveis != null) {
+        listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
+    }
+
+    console.log(visualizacao.value)
 })
+
+function atualizaVisualizacao() {
+    setTimeout(() => {
+        visualizacao.value.propriedadeVisiveis = listaPropriedadeVisiveis.value
+        api.atualizar(visualizacao.value, '/visualizacaoEmLista')
+    }, 1000)
+}
 
 const emit = defineEmits(['atualizaPropriedadesVisiveis'])
 
@@ -147,39 +164,40 @@ function abreModalMensagem() {
 </script>
 
 <style lang="scss">
-
-.select{
+.select {
     outline: 4px solid #CECCCE;
     border-radius: 0;
 }
-.select:active{
+
+.select:active {
     border: none;
     outline: none;
     border-radius: 0;
 }
 
-.labelContainer:active{
+.labelContainer:active {
     border-color: grey;
     border: none;
 
-.animation {
-    @apply absolute w-[30%] h-[80%] z-10;
-    animation: myAnim 0.15s ease 0s 1 normal none;
-}
-
-@keyframes myAnim {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
+    .animation {
+        @apply absolute w-[30%] h-[80%] z-10;
+        animation: myAnim 0.15s ease 0s 1 normal none;
     }
 
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    @keyframes myAnim {
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
 
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
 }
-}
+
 .animation {
     @apply absolute w-[30%] h-[80%] z-10;
     animation: myAnim 0.15s ease 0s 1 normal none;
