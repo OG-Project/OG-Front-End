@@ -48,6 +48,7 @@ import ListaConvidados from './ListaConvidados.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
+import logsTela from '@/components/logsTela'
 
 const banco = conexaoBD();
 let nome = ref('');
@@ -199,7 +200,7 @@ async function cadastrarEquipe() {
 const cria = criaEquipeStore();
 
 if (!nome.value.trim()) {
-console.log("É obrigatório o nome da equipe");
+mensagemError.value = "É obrigatório o nome da equipe";
 return;
 }
 
@@ -214,7 +215,6 @@ return;
       enviaParaWebSocket(equipe, membrosEquipe.value);
     });
 
-    window.location.reload();
 };
 
 async function colocaMembrosEquipe(equipe){
