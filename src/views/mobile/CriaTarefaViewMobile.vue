@@ -20,7 +20,7 @@
         <div class="flex flex-col justify-center w-[30%]">
           <p>Cor da Tarefa</p>
           <button class="flex flex-col justify-center break-keep h-[70%]" @click="abreFechaMudaCor()">
-            + Criar
+            + {{ $t('message.hello') }}
           </button>
         </div>
 
