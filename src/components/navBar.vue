@@ -12,7 +12,7 @@
     <div class="h-[8vh] w-[50%] flex gap-8 justify-end mr-8">
       <div class="flex justify-between pt-3 w-[16vw]">
         <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10" conteudoInput="Pesquisar..."
-          :lista-da-pesquisa="lista" tipo="NavBar"></inputDePesquisa>
+          :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99999999999999999]"></inputDePesquisa>
       </div>
       <div class="flex items-center justify-between w-[14%]">
         <button @click="notificacaoBoolean = true">

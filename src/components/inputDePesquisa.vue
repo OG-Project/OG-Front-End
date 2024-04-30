@@ -30,8 +30,8 @@
       <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
         @click="passaValorProInput(itemPesquisado)">
         <div :style="respostaPesquisa">
-          <p class="w-[40%]">{{ itemPesquisado.nome }}</p>
-          <p class="w-[40%]">{{ itemPesquisado.tipo }}</p>
+          <p class="w-[50%] pl-4">{{ itemPesquisado.nome }}</p>
+          <p class="w-[50%]">{{ itemPesquisado.tipo }}</p>
         </div>
         <hr />
       </div>
@@ -169,11 +169,12 @@ if (props.modoEscuro === "nao") {
     gap: "4rem",
     rowGap: "8rem",
     cursor: "pointer",
-    color: "var(--roxo)",
+    color: "var(--roxoClaro)",
   };
 
   espacoRespostasPesquisa.value = {
     width: props.largura,
+    backgroundColor: "var(--backgroundItems)",
   };
 
   //   corLinha.value = {
