@@ -9,7 +9,7 @@
     "status": "Status",
     "subtask_name": "Subtask Name",
     "files": "Files({ arquivos })...",
-    "completed_tasks": "Completed Tasks { porcentagem }%",
+    "completed_tasks": "Completed Tasks { porcentagem }",
     "comments": "Comments",
     "send": "Send",
     "add": "Add +",
@@ -33,7 +33,11 @@
     "attach": "Attach",
     "in_progress": "In Progress",
     "this_taks_has_no_properties": "This task has no properties",
-    "information": "Information"
+    "information": "Information",
+    "Texto": "Text",
+    "Data": "Date",
+    "Numero": "Number",
+    "Seleção": "Selection"
   },
   "home": {
     "bemVindoUsuario": "Welcome { nome }",

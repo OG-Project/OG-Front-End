@@ -24,6 +24,7 @@ import VueSocketIO from 'vue-socket.io'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 const i18n = createI18n({
+    legacy: false,
     locale: 'jp',
     fallbackLocale: 'pt-BR',
     messages: {

@@ -9,7 +9,7 @@
     "status": "ステータス",
     "subtask_name": "サブタスク名",
     "files": "ファイル({ arquivos })...",
-    "completed_tasks": "完了したタスク { porcentagem }%",
+    "completed_tasks": "完了したタスク { porcentagem }",
     "comments": "コメント",
     "send": "送信",
     "add": "追加 +",
@@ -33,7 +33,11 @@
     "attach": "添付",
     "in_progress": "進行中",
     "this_taks_has_no_properties": "このタスクにはプロパティがありません",
-    "information": "情報"
+    "information": "情報",
+    "Texto": "テキスト",
+    "Data": "日付",
+    "Numero": "番号",
+    "Seleção": "選択"
   },
   "home": {
     "bemVindoUsuario": "ようこそ { nome } さん",

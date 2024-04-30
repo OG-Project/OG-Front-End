@@ -9,7 +9,7 @@
     "status": "Status",
     "subtask_name": "Nome SubTarefa",
     "files": "Arquivos({ arquivos })...",
-    "completed_tasks": "Tarefas Completadas { porcentagem }%",
+    "completed_tasks": "Tarefas Completadas { porcentagem }",
     "comments": "Comentários",
     "send": "Enviar",
     "add": "Adicionar +",
@@ -33,7 +33,11 @@
     "attach": "Anexar",
     "in_progress": "Em Progresso",
     "this_taks_has_no_properties": "Esta tarefa não possui propriedades",
-    "information": "Informação"
+    "information": "Informação",
+    "Texto": "Texto",
+    "Data": "Data",
+    "Numero": "Número",
+    "Seleção": "Seleção"
   },
   "home": {
     "bemVindoUsuario": "Bem-Vindo {nome}",

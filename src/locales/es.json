@@ -9,7 +9,7 @@
     "status": "Estado",
     "subtask_name": "Nombre de la Subtarea",
     "files": "Archivos({ archivos })...",
-    "completed_tasks": "Tareas Completadas { porcentaje }%",
+    "completed_tasks": "Tareas Completadas { porcentaje }",
     "comments": "Comentarios",
     "send": "Enviar",
     "add": "Agregar +",
@@ -33,7 +33,11 @@
     "attach": "Adjuntar",
     "in_progress": "En Progreso",
     "this_taks_has_no_properties": "Esta tarea no tiene propiedades",
-    "information": "Información"
+    "information": "Información",
+    "Texto": "Texto",
+    "Data": "Fecha",
+    "Numero": "Número",
+    "Seleção": "Selección"
   },
   "home": {
     "bemVindoUsuario": "Bienvenido {nome}",

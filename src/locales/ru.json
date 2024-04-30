@@ -9,7 +9,7 @@
     "status": "Статус",
     "subtask_name": "Название подзадачи",
     "files": "Файлы({ arquivos })...",
-    "completed_tasks": "Завершенные задачи { porcentagem }%",
+    "completed_tasks": "Завершенные задачи { porcentagem }",
     "comments": "Комментарии",
     "send": "Отправить",
     "add": "Добавить +",
@@ -33,7 +33,11 @@
     "attach": "Прикрепить",
     "in_progress": "В процессе",
     "this_taks_has_no_properties": "У этой задачи нет свойств",
-    "information": "Информация"
+    "information": "Информация",
+    "Texto": "Текст",
+    "Data": "Дата",
+    "Numero": "Число",
+    "Seleção": "Выбор"
   },
   "home": {
     "bemVindoUsuario": "Добро пожаловать {nome}",

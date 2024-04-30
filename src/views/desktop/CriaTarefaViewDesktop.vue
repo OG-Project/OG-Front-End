@@ -72,7 +72,7 @@
                   @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
-                <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                <selectPadrao :placeholderSelect="$t('criaTarefa.type')" :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
                 largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
                 </selectPadrao>
               </div>
@@ -102,7 +102,7 @@
                 <Input largura="10" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
                   @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
-              <selectPadrao :placeholderSelect="$t('criaTarefa.status')" :lista-select="['Em Progresso', 'Concluido']" largura="8"
+              <selectPadrao :placeholderSelect="$t('criaTarefa.status')" :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8"
                 altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
@@ -259,17 +259,17 @@
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroPropriedade">
               <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
-              <option>Texto</option>
-              <option>Data</option>
-              <option>Numero</option>
-              <option>Seleção</option>
+              <option>{{ $t('criaTarefa.Texto')}}</option>
+              <option>{{$t('criaTarefa.Data')}}</option>
+              <option>{{$t('criaTarefa.Numero')}}</option>
+              <option>{{$t('criaTarefa.Seleção')}}</option>
             </select>
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
               <option value="Ordenar Por">{{$t('criaTarefa.sort_by')}}</option>
-              <option value="az">A - Z</option>
-              <option value="za">Z - A</option>
+              <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
+              <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
             </select>
           </div>
         </div>
@@ -285,7 +285,10 @@
                 <p class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
-                <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
+                <p v-if="propriedade.propriedade.tipo=='TEXTO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto') }}</p>
+                <p v-if="propriedade.propriedade.tipo=='DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data') }}</p>
+                <p v-if="propriedade.propriedade.tipo=='NUMERO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero') }}</p>
+                <p v-if="propriedade.propriedade.tipo=='SELEÇÃO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Seleção') }}</p>
               </div>
               <!-- <div class="flex justify-center">
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
@@ -458,12 +461,11 @@ import { conexaoBD } from "../../stores/conexaoBD.js";
 import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
 import router from "../../router";
 import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const banco = conexaoBD();
-
-const parametroDoFiltroStatus = ref("Ordenar Por");
-
-const parametroDoFiltroPropriedade = ref("Ordenar Por");
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   for (const propriedadeFor of tarefa.value.propriedades) {
@@ -514,7 +516,20 @@ let numeroDeArquivos = ref(0);
 //Variáveis usadas na hora de criar uma propriedade
 
 let nomePropriedade = ref("");
-let tipoPropriedade = ref("Texto");
+let tipoPropriedade = computed(() => {
+  if (tipoPropriedade.value == t('criaTarefa.Texto')) {
+    return "Texto"
+  }
+  else if (tipoPropriedade.value == t('criaTarefa.Data')) {
+    return "Data"
+  }
+  else if (tipoPropriedade.value == t('criaTarefa.Numero') ) {
+    return "Numero"
+  }
+  else if (tipoPropriedade.value == t('criaTarefa.Seleção')) {
+    return "Seleção"
+  }
+});
 
 //Variáveis utiliazadas na hora de criar um status
 
@@ -524,7 +539,7 @@ let corStatus = ref("ff0000");
 //Variaveis utilizadas na hora de criar uma subtarefa
 
 let nomeSubtarefa = ref("");
-let statusSubtarefa = ref("Em Progresso");
+let statusSubtarefa = ref(t('criaTarefa.in_progress'));
 
 function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
@@ -701,9 +716,9 @@ function criaSubtarefa() {
       nomeSubtarefa.value = "";
     }
     let booleanDaSubtarefa = ref();
-    if (statusSubtarefa.value == "Em Progresso") {
+    if (statusSubtarefa.value == t('criaTarefa.in_progress')) {
       booleanDaSubtarefa.value = false;
-    } else if (statusSubtarefa.value == "Concluido") {
+    } else if (statusSubtarefa.value == t('criaTarefa.completed')) {
       booleanDaSubtarefa.value = true;
     }
     let subtarefaNova = {
@@ -859,6 +874,7 @@ function update() {
 }
 
 onMounted(async () => {
+  const {t} = useI18n();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   procuraProjetosDoBanco();
   reloadSubTarefas();
@@ -882,6 +898,8 @@ onMounted(async () => {
   exibirComentarios();
   autenticaUsuarioCookies();
   atualizaPropriedadesEStatus();
+  parametroDoFiltroStatus.value = t('criaTarefa.sort_by');
+  parametroDoFiltroPropriedade.value = t('criaTarefa.sort_by');
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
@@ -1060,20 +1078,40 @@ const listaFiltradaStatus = computed(() => {
   }
 });
 
+
+const parametroDoFiltroStatus = ref(); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+
+const parametroDoFiltroPropriedade = ref(); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+//Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
+
 const listaFiltradaPropriedades = computed(() => {
   console.log(parametroDoFiltroPropriedade.value);
-  if (parametroDoFiltroPropriedade.value === "Ordenar Por") {
+  console.log(t('criaTarefa.sort_by'));
+  if (parametroDoFiltroPropriedade.value === t('criaTarefa.sort_by')) {
     return propriedades.value;
   }
-  for (const propriedade of propriedades.value) {
-    console.log(propriedade.propriedade.tipo.toUpperCase());
-  }
-  return propriedades.value.filter(
-    (propriedade) =>
-      propriedade.propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
-  );
+  const filtro = parametroDoFiltroPropriedade.value;
+  const tipoFiltroTexto = t('criaTarefa.Texto');
+  const tipoFiltroNumero = t('criaTarefa.Numero');
+  const tipoFiltroSelecao = t('criaTarefa.Seleção');
+  const tipoFiltroData = t('criaTarefa.Data');
+
+  return propriedades.value.filter((propriedade) => {
+    switch (filtro) {
+      case tipoFiltroTexto:
+        return propriedade.propriedade.tipo.toUpperCase() === "TEXTO";
+      case tipoFiltroNumero:
+        return propriedade.propriedade.tipo.toUpperCase() === "NUMERO";
+      case tipoFiltroSelecao:
+        return propriedade.propriedade.tipo.toUpperCase() === "SELECAO";
+      case tipoFiltroData:
+        return propriedade.propriedade.tipo.toUpperCase() === "DATA";
+      default:
+        return true;
+    }
+  });
 });
-//Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
+
 
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);

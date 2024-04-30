@@ -72,8 +72,8 @@
                   @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
-                <selectPadrao :placeholderSelect="$t('criaTarefa.type')" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
-                  largura="5" altura="3.8" fonteTamanho="1rem" v-model="tipoPropriedade">
+                <selectPadrao :placeholderSelect="$t('criaTarefa.type')" :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
+                largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
                 </selectPadrao>
               </div>
             </div>
@@ -102,7 +102,7 @@
                 <Input largura="22" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
                   @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
-              <selectPadrao :placeholderSelect="$t('criaTarefa.status')" :lista-select="['Em Progresso', 'Concluido']" largura="16"
+              <selectPadrao :placeholderSelect="$t('criaTarefa.status')" :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8"
                 altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
@@ -257,19 +257,20 @@
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroPropriedade">
               <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
-              <option>Texto</option>
-              <option>Data</option>
-              <option>Numero</option>
-              <option>Seleção</option>
+              <option>{{ $t('criaTarefa.Texto')}}</option>
+              <option>{{$t('criaTarefa.Data')}}</option>
+              <option>{{$t('criaTarefa.Numero')}}</option>
+              <option>{{$t('criaTarefa.Seleção')}}</option>
             </select>
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
-              <option value="Ordenar Por">{{ $t('criaTarefa.sort_by') }}</option>
-              <option value="az">A - Z</option>
-              <option value="za">Z - A</option>
+              <option value="Ordenar Por">{{$t('criaTarefa.sort_by')}}</option>
+              <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
+              <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
             </select>
           </div>
+        </div>
         </div>
 
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
@@ -353,7 +354,6 @@
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
-  </div>
 </template>
 <script setup>
 import { format } from "date-fns";
@@ -376,12 +376,11 @@ import tinycolor from "tinycolor2";
 import { conexaoBD } from "../../stores/conexaoBD.js";
 import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
 import router from "../../router";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const banco = conexaoBD();
-
-const parametroDoFiltroStatus = ref("Ordenar Por");
-
-const parametroDoFiltroPropriedade = ref("Ordenar Por");
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   for (const propriedadeFor of tarefa.value.propriedades) {
@@ -451,7 +450,7 @@ let corStatus = ref("ff0000");
 //Variaveis utilizadas na hora de criar uma subtarefa
 
 let nomeSubtarefa = ref("");
-let statusSubtarefa = ref("Em Progresso");
+let statusSubtarefa = ref(t('criaTarefa.in_progress'));
 
 function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
@@ -613,9 +612,9 @@ function criaSubtarefa() {
       nomeSubtarefa.value = "";
     }
     let booleanDaSubtarefa = ref();
-    if (statusSubtarefa.value == "Em Progresso") {
+    if (statusSubtarefa.value == t('criaTarefa.in_progress')) {
       booleanDaSubtarefa.value = false;
-    } else if (statusSubtarefa.value == "Concluido") {
+    } else if (statusSubtarefa.value == t('criaTarefa.completed')) {
       booleanDaSubtarefa.value = true;
     }
     let subtarefaNova = {
@@ -962,18 +961,38 @@ const listaFiltradaStatus = computed(() => {
   }
 });
 
+const parametroDoFiltroStatus = ref(); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+
+const parametroDoFiltroPropriedade = ref(); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+//Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
+
 const listaFiltradaPropriedades = computed(() => {
-  if (parametroDoFiltroPropriedade.value === "Ordenar Por") {
+  console.log(parametroDoFiltroPropriedade.value);
+  console.log(t('criaTarefa.sort_by'));
+  if (parametroDoFiltroPropriedade.value === t('criaTarefa.sort_by')) {
     return propriedades.value;
   }
-  for (const propriedade of propriedades.value) {
-  }  
-  return propriedades.value.filter(
-    (propriedade) =>
-    propriedade.propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
-    );
+  const filtro = parametroDoFiltroPropriedade.value;
+  const tipoFiltroTexto = t('criaTarefa.Texto');
+  const tipoFiltroNumero = t('criaTarefa.Numero');
+  const tipoFiltroSelecao = t('criaTarefa.Seleção');
+  const tipoFiltroData = t('criaTarefa.Data');
+
+  return propriedades.value.filter((propriedade) => {
+    switch (filtro) {
+      case tipoFiltroTexto:
+        return propriedade.propriedade.tipo.toUpperCase() === "TEXTO";
+      case tipoFiltroNumero:
+        return propriedade.propriedade.tipo.toUpperCase() === "NUMERO";
+      case tipoFiltroSelecao:
+        return propriedade.propriedade.tipo.toUpperCase() === "SELECAO";
+      case tipoFiltroData:
+        return propriedade.propriedade.tipo.toUpperCase() === "DATA";
+      default:
+        return true;
+    }
+  });
 });
-//Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);
