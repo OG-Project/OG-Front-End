@@ -1,4 +1,5 @@
 {
+  "criaTarefa": {
     "properties": "Propriedades",
     "task_color": "Cor da Tarefa",
     "subtasks": "SubTarefas",
@@ -31,5 +32,26 @@
     "completed": "Completado",
     "attach": "Anexar",
     "in_progress": "Em Progresso",
-    "this_taks_has_no_properties": "Esta tarefa não possui propriedades"
-  }
+    "this_taks_has_no_properties": "Esta tarefa não possui propriedades",
+    "information": "Informação"
+  },
+  "home": {
+    "bemVindoUsuario": "Bem-Vindo {nome}",
+    "tarefasFeitas": "Tarefas Feitas",
+    "tarefasNaoFeitas": "Tarefas Não Feitas",
+    "minhasTarefas": "Minhas Tarefas",
+    "projetosUrgentes": "Projetos Urgentes",
+    "projetosDia": "Projetos do Dia",
+    "projetosSemana": "Projetos da Semana",
+    "projetosMes": "Projetos do Mês",
+    "nomeDoTopico": "Nome do Tópico",
+    "propriedades": "Propriedades",
+    "corDaTarefa": "Cor da Tarefa",
+    "subtarefas": "Subtarefas",
+    "perguntaCorTarefa": "Qual a cor da sua Tarefa?",
+    "nomePropriedade": "Nome Propriedade",
+    "tipo": "Tipo",
+    "status": "Status",
+    "naoPossuiResponsavel": "Não possui responsável"
+  }  
+}

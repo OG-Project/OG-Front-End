@@ -1,4 +1,5 @@
 {
+  "criaTarefa": {
     "properties": "プロパティ",
     "task_color": "タスクの色",
     "subtasks": "サブタスク",
@@ -31,6 +32,27 @@
     "completed": "完了",
     "attach": "添付",
     "in_progress": "進行中",
-    "this_taks_has_no_properties": "このタスクにはプロパティがありません"
+    "this_taks_has_no_properties": "このタスクにはプロパティがありません",
+    "information": "情報"
+  },
+  "home": {
+    "bemVindoUsuario": "ようこそ { nome } さん",
+    "tarefasFeitas": "完了したタスク",
+    "tarefasNaoFeitas": "未完了のタスク",
+    "minhasTarefas": "私のタスク",
+    "projetosUrgentes": "緊急プロジェクト",
+    "projetosDia": "今日のプロジェクト",
+    "projetosSemana": "今週のプロジェクト",
+    "projetosMes": "今月のプロジェクト",
+    "nomeDoTopico": "トピック名",
+    "propriedades": "プロパティ",
+    "corDaTarefa": "タスクの色",
+    "subtarefas": "サブタスク",
+    "perguntaCorTarefa": "あなたのタスクの色は？",
+    "nomePropriedade": "プロパティ名",
+    "tipo": "タイプ",
+    "status": "状態",
+    "naoPossuiResponsavel": "担当者未指定"
   }
   
+}

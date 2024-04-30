@@ -1,4 +1,5 @@
 {
+  "criaTarefa": {
     "properties": "Свойства",
     "task_color": "Цвет задачи",
     "subtasks": "Подзадачи",
@@ -31,6 +32,27 @@
     "completed": "Завершено",
     "attach": "Прикрепить",
     "in_progress": "В процессе",
-    "this_taks_has_no_properties": "У этой задачи нет свойств"
+    "this_taks_has_no_properties": "У этой задачи нет свойств",
+    "information": "Информация"
+  },
+  "home": {
+    "bemVindoUsuario": "Добро пожаловать {nome}",
+    "tarefasFeitas": "Завершенные задачи",
+    "tarefasNaoFeitas": "Незавершенные задачи",
+    "minhasTarefas": "Мои задачи",
+    "projetosUrgentes": "Срочные проекты",
+    "projetosDia": "Проекты дня",
+    "projetosSemana": "Проекты недели",
+    "projetosMes": "Проекты месяца",
+    "nomeDoTopico": "Название темы",
+    "propriedades": "Свойства",
+    "corDaTarefa": "Цвет задачи",
+    "subtarefas": "Подзадачи",
+    "perguntaCorTarefa": "Какой цвет у вашей задачи?",
+    "nomePropriedade": "Название свойства",
+    "tipo": "Тип",
+    "status": "Статус",
+    "naoPossuiResponsavel": "Нет назначенного ответственного"
   }
   
+}
