@@ -3,29 +3,25 @@
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
-        <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px" :funcaoClick="redireciona"
+        <Botao preset="PadraoVazado" :texto="$t('navBar.botaoNovaTarefa')" tamanhoDaBorda="2px" :funcaoClick="redireciona"
           :parametrosFuncao="'/criaTarefa'">
         </Botao>
       </div>
     </div>
     <div class="h-[8vh] w-[35%] flex gap-8"></div>
-    <div class="h-[8vh] w-[50%] flex items-center gap-8 justify-end mr-8">
-      <Input
-        styleInput="input-claro-pequeno"
-        largura="20%"
-        altura="10%"
-        conteudoInput="Pesquisar..."
-      ></Input>
-      <button @click="notificacaoBoolean = true">
+    <div class="h-[8vh] w-[50%] flex gap-8 justify-end mr-8">
+      <div class="flex justify-between pt-3 w-[16vw]">
+        <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10" :conteudoInput="$t('navBar.pesquisar')"
+          :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99999999999999999]"></inputDePesquisa>
+      </div>
+      <div class="flex items-center justify-between w-[14%]">
+        <button @click="notificacaoBoolean = true">
         <notificacao />
       </button>
-      <img
-        @click="redireciona('/perfil/informacoes')"
-        v-if="usuarioCookies"
-        class="shadow-2xl h-[60px] w-[60px] rounded-full"
-        :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
-      />
-
+        <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
+          class="shadow-2xl h-[60px] w-[60px] rounded-full"
+          :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
+      </div>      
     </div>
   </div>
   <div v-if="notificacaoBoolean == true" class="w-full fixed z-50 flex justify-end pr-4">

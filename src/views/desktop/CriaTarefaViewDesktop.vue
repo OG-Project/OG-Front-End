@@ -354,7 +354,9 @@
           </div>
         </div>
       </div>
-      <div class="w-[80%] flex justify-end pt-8">
+      <div class="w-[80%] flex justify-between pt-8">
+        <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px"
+          tamanhoDaFonte="1.5rem"></Botao>
         <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
@@ -514,6 +516,11 @@ let estiloOpcaoClicadoStatus = {
 let numeroDeArquivos = ref(0);
 
 //Variáveis usadas na hora de criar uma propriedade
+
+function deletaTarefa() {
+  banco.deletar(tarefa.value, "/tarefa");
+  router.push("/tarefas");
+}
 
 let nomePropriedade = ref("");
 let tipoPropriedade = computed(() => {

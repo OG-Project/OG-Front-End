@@ -58,5 +58,15 @@
     "tipo": "Tipo",
     "status": "Status",
     "naoPossuiResponsavel": "Não possui responsável"
-  }  
+  },
+  "navBar": {
+    "botaoNovaTarefa": "Nova Tarefa",
+    "pesquisar": "Pesquisar..."
+  },
+  "barraLateral": {
+    "home": "Home",
+    "equipe": "Equipe",
+    "projetos": "Projetos",
+    "sair": "Sair"
+  }
 }

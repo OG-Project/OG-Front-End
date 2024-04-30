@@ -58,6 +58,16 @@
     "tipo": "タイプ",
     "status": "状態",
     "naoPossuiResponsavel": "担当者未指定"
+  },
+  "navBar": {
+    "botaoNovaTarefa": "新しいタスク",
+    "pesquisar": "検索..."
+  },
+  "barraLateral": {
+    "home": "ホーム",
+    "equipe": "チーム",
+    "projetos": "プロジェクト",
+    "sair": "ログアウト"
   }
   
 }
