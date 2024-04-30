@@ -26,7 +26,6 @@
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            
             class="  
             *:fill-[var(--fonteCor)]
             cursor-pointer 
@@ -38,7 +37,6 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual "
-            
             class=" 
             *:fill-[var(--fonteCor)]
             cursor-pointer 
@@ -71,7 +69,6 @@
                 <svgIconMic 
                 @click="mic" 
                 v-show="isVoiceMaker" 
-                
                 class=" 
                 *:fill-[var(--fonteCor)] 
                 cursor-pointer 
@@ -83,7 +80,6 @@
                 <svgIconKeyboard 
                 @click="teclado" 
                 v-show="isTecladoVirtual "
-                
                 class=" 
                 *:fill-[var(--fonteCor)]
                 cursor-pointer 
@@ -137,7 +133,6 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual " 
-            
             class=" 
             *:fill-[var(--fonteCor)]
             cursor-pointer 
@@ -154,7 +149,6 @@
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
-            
             @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
@@ -166,7 +160,6 @@
     :class="styleInputPadraoDireita" 
     v-if="direcao=='direita' && tipoInput!='float'" 
     :style="estilizaDivInput">
-        
             <input 
             :type="tipo" 
             :placeholder=conteudoInput
@@ -176,14 +169,12 @@
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('updateModelValue', $event.target.value)">
-        
         <div 
         class="flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">   
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            
             class="  
             *:fill-[var(--fonteCor)]
             cursor-pointer 
@@ -195,7 +186,6 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual "
-            
             class=" 
             *:fill-[var(--fonteCor)]
             cursor-pointer 
@@ -204,7 +194,6 @@
             flex 
             items-center 
             justify-center" />
-
         </div>
     </div>
     <label v-if="props.isInvalido" class="text-red-600 absolute">{{ props.textoInvalido }}</label>

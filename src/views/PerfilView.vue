@@ -33,9 +33,10 @@
                     />
                     
                     
-                    <div v-if="ishover" class="absolute flex items-center text-white">
+                    <div v-if="ishover" class="absolute flex bg-gray-400 px-2 py-1 rounded-full items-center text-black">
                         <span class=" ">Alterar Foto</span>
                         <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)]
+                         *:fill-black
                          bg-cover 
                          ml-3 
                          w-6 
