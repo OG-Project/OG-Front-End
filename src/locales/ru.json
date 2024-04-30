@@ -58,6 +58,16 @@
     "tipo": "Тип",
     "status": "Статус",
     "naoPossuiResponsavel": "Нет назначенного ответственного"
+  },
+  "navBar":{
+    "botaoNovaTarefa": "Новая задача",
+    "pesquisar": "Поиск..."
+  },
+  "barraLateral": {
+    "home": "Главная",
+    "equipe": "Команда",
+    "projetos": "Проекты",
+    "sair": "Выйти"
   }
   
 }

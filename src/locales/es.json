@@ -58,6 +58,16 @@
     "tipo": "Tipo",
     "status": "Estado",
     "naoPossuiResponsavel": "Sin responsable asignado"
+  },
+  "navBar": {
+    "botaoNovaTarefa": "Nueva Tarea",
+    "pesquisar": "Buscar..."
+  },
+  "barraLateral": {
+    "home": "Inicio",
+    "equipe": "Equipo",
+    "projetos": "Proyectos",
+    "sair": "Salir"
   }
   
 }

@@ -58,6 +58,16 @@
     "tipo": "Type",
     "status": "Status",
     "naoPossuiResponsavel": "No responsible assigned"
+  },
+  "navBar": {
+    "botaoNovaTarefa": "New Task",
+    "pesquisar": "Search..."
+  },
+  "barraLateral": {
+    "home": "Home",
+    "equipe": "Team",
+    "projetos": "Projects",
+    "sair": "Logout"
   }
   
 }

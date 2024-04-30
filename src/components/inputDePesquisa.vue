@@ -58,8 +58,7 @@ const props = defineProps({
   },
   temIcon: Boolean,
   placeHolderPesquisa: {
-    type: String,
-    default: 'Pesquisa'
+    type: String
   },
   fontSize: String,
   tipo: String

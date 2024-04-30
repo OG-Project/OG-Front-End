@@ -3,7 +3,7 @@
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
-        <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px" :funcaoClick="redireciona"
+        <Botao preset="PadraoVazado" :texto="$t('navBar.botaoNovaTarefa')" tamanhoDaBorda="2px" :funcaoClick="redireciona"
           :parametrosFuncao="'/criaTarefa'">
         </Botao>
       </div>
@@ -11,7 +11,7 @@
     <div class="h-[8vh] w-[35%] flex gap-8"></div>
     <div class="h-[8vh] w-[50%] flex gap-8 justify-end mr-8">
       <div class="flex justify-between pt-3 w-[16vw]">
-        <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10" conteudoInput="Pesquisar..."
+        <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10" :conteudoInput="$t('navBar.pesquisar')"
           :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99999999999999999]"></inputDePesquisa>
       </div>
       <div class="flex items-center justify-between w-[14%]">

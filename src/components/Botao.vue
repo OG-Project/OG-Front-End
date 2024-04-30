@@ -146,7 +146,6 @@ switch (Preset) {
     Texto = "Deletar";
     TemIcon = "nao";
     botao = {
-      backgroundColor: "#FFFFFF",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -161,7 +160,7 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #FFFFFF",
+      border: props.tamanhoDaBorda + " solid #CD0000",
       color: "#FFFFFF",
       fontSize: props.tamanhoDaFonte,
       boxShadow: sombras,

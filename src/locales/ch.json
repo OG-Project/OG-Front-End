@@ -58,5 +58,15 @@
     "tipo": "类型",
     "status": "状态",
     "naoPossuiResponsavel": "无责任人指定"
-  }  
+  },
+  "navBar":{
+    "botaoNovaTarefa": "新任务",
+    "pesquisar": "搜索..."
+  },
+  "barraLateral": {
+    "home": "首页",
+    "equipe": "团队",
+    "projetos": "项目",
+    "sair": "退出"
+  }
 }
