@@ -16,12 +16,12 @@
       </div>
       <div class="flex items-center justify-between w-[14%]">
         <button @click="notificacaoBoolean = true">
-          <img :src="notificacao" />
-        </button>
+        <notificacao />
+      </button>
         <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
           class="shadow-2xl h-[60px] w-[60px] rounded-full"
           :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
-      </div>
+      </div>      
     </div>
   </div>
   <div v-if="notificacaoBoolean == true" class="w-full fixed z-50 flex justify-end pr-4">
@@ -32,7 +32,7 @@
 import BarraLateral from "../components/BarraLateral.vue";
 import { onBeforeMount, ref } from "vue";
 import Botao from "../components/Botao.vue";
-import notificacao from "../imagem-vetores/Notificacao.svg";
+import notificacao from "../imagem-vetores/NotificacaoDinamic.vue";
 import UserIcon from "../imagem-vetores/UserIcon.svg";
 import Input from "./Input.vue";
 import router from "@/router";

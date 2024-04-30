@@ -1,6 +1,7 @@
 
 <template>
-<div class="">
+<div class=""
+style="font-family: var(--fonteCorpo);">
     <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipoInput!='float'" 
         :style="estilizaDivInput">
@@ -26,10 +27,8 @@
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
             class="  
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -39,10 +38,8 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual "
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
             class=" 
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -73,10 +70,8 @@
                 <svgIconMic 
                 @click="mic" 
                 v-show="isVoiceMaker" 
-                :class="{'*:fill-black':verificaCorFill(props.styleInput),
-                '*:fill-white':verificaCorFill(props.styleInput),
-                }"
-                class="  
+                class=" 
+                *:fill-[var(--fonteCor)] 
                 cursor-pointer 
                 w-[2.5vw] 
                 h-[2.5vh] 
@@ -86,10 +81,8 @@
                 <svgIconKeyboard 
                 @click="teclado" 
                 v-show="isTecladoVirtual "
-                :class="{'*:fill-black':verificaCorFill(props.styleInput),
-                '*:fill-white':verificaCorFill(props.styleInput),
-                }"
                 class=" 
+                *:fill-[var(--fonteCor)]
                 cursor-pointer 
                 w-[2.5vw] 
                 h-[2.5vh] 
@@ -130,10 +123,8 @@
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
-            class="  
+            class=" 
+            *:fill-[var(--fonteCor)] 
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -143,10 +134,8 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual " 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
             class=" 
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -161,7 +150,6 @@
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
-            
             @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('updateModelValue', $event.target.value)" 
             :placeholder=conteudoInput  > 
@@ -173,7 +161,6 @@
     :class="styleInputPadraoDireita" 
     v-if="direcao=='direita' && tipoInput!='float'" 
     :style="estilizaDivInput">
-        
             <input 
             :type="tipo" 
             :placeholder=conteudoInput
@@ -183,17 +170,14 @@
             :value="modelValue"
             @focus="$emit('clickInput',perfil.el=$event.target)"
             @input="$emit('updateModelValue', $event.target.value)">
-        
         <div 
         class="flex items-center justify-center">
             <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">   
             <svgIconMic 
             @click="mic" 
             v-show="isVoiceMaker" 
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
             class="  
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
@@ -203,17 +187,14 @@
             <svgIconKeyboard 
             @click="teclado" 
             v-show="isTecladoVirtual "
-            :class="{'*:fill-black':verificaCorFill(props.styleInput),
-            '*:fill-white':verificaCorFill(props.styleInput),
-            }"
             class=" 
+            *:fill-[var(--fonteCor)]
             cursor-pointer 
             w-[2.5vw] 
             h-[2.5vh] 
             flex 
             items-center 
             justify-center" />
-
         </div>
     </div>
     <label v-if="props.isInvalido" class="text-red-600 absolute">{{ props.textoInvalido }}</label>
@@ -313,13 +294,13 @@ function teclado(){
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
         color: 'var(--fonteCor)',
-        fontSize: verificaTamanhoFont(),
+        fontSize: 'var(--fonteCorpoTamanho)',
         height: verificaHeigth()+'vh',
         width: verificaWidth()+"vw",
     }
 
     const estilizaDivPlaceHolder= {
-        fontSize: verificaTamanhoFont(),
+        fontSize: 'var(--fonteCorpoTamanho)',
         position: "absolute",
         top: "",
         backgroundColor: ""
@@ -371,24 +352,24 @@ function teclado(){
     }
 
 
-    function verificaTamanhoFont(){
-        //Aumenta o tamanho da font size de acordo com a tela
-        if(props.fontSize == undefined){ 
+    // function {
+    //     //Aumenta o tamanho da font size de acordo com a tela
+    //     if(props.fontSize == undefined){ 
 
-         if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
-        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
-                if(window.innerWidth >= 600 && window.innerWidth <= 850){
-                    console.log(window.innerWidth)
-                    return "0.8rem"
+    //      if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+    //     || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+    //             if(window.innerWidth >= 600 && window.innerWidth <= 850){
+    //                 console.log(window.innerWidth)
+    //                 return "0.8rem"
 
-                }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
-                    return '1.0rem'
-                }
-            }
-             return '1.2rem'
-        }
-     return props.fontSize;
-    }
+    //             }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
+    //                 return '1.0rem'
+    //             }
+    //         }
+    //          return '1.2rem'
+    //     }
+    //  return props.fontSize;
+    // }
 
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
@@ -398,12 +379,7 @@ function teclado(){
             return 'black';
         }
     }
-    function verificaCorFill(a){
-        if(a=="input-escuro" || a=="input-transparente-escuro" || a=="input-transparente-escuro-grande" ){
-            return true
-        }
-        return false
-    }
+    
     function hoverStyle(){
             if(props.corHover=="escuro"){
                 return props.corHover=="#484848"

@@ -2,7 +2,7 @@
     <div class="w-full h-full flex justify-center items-center absolute z-[996] top-0" v-if="funcaoPopUp.variavelModal==true">
         <div class="blur-background" v-if="funcaoPopUp.variavelModal==true" @click=" funcaoPopUp.fechaPopUp()"></div>
             <div class="style-bg-branco" :style="estilizaDivTotal">
-                <img src="../imagem-vetores/botao-x.svg" class="botao-sair" @click=" funcaoPopUp.fechaPopUp()">
+                <botaoX  class="cursor-pointer botao-sair" @click=" funcaoPopUp.fechaPopUp()" />
                 <div class="w-full h-full flex justify-center items-center">
                     <div>
                             <slot>
@@ -16,6 +16,7 @@
 <script setup>
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 const funcaoPopUp = funcaoPopUpStore();
+import botaoX from '../imagem-vetores/botao-xDinamic.vue';
 
 
     const props=defineProps({
@@ -40,7 +41,7 @@ const funcaoPopUp = funcaoPopUpStore();
 @import url(../assets/main.css);
 @layer components{
     .style-bg-branco{
-       @apply  bg-brancoNeve backdrop-blur-xl flex-col-reverse  absolute z-[999] ;
+       @apply  bg-[var(--backgroundItems)] backdrop-blur-xl flex-col-reverse  absolute z-[999] ;
        
        backdrop-filter: blur(10px);
        animation-name: aparecePopUp;
@@ -59,7 +60,7 @@ const funcaoPopUp = funcaoPopUpStore();
     }
     
     .botao-sair{
-        @apply w-[5%] h-[5%] top-3 right-4 absolute text-black
+        @apply w-[5%] h-[5%] top-3 right-4 absolute text-[var(--fonteCor)];
 
     }
 
