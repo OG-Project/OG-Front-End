@@ -22,7 +22,7 @@
         conteudoInput="Pesquisar..."
       ></Input>
       <button @click="notificacaoBoolean = true">
-        <img :src="notificacao" />
+        <notificacao />
       </button>
       <img
         @click="redireciona('/perfil/informacoes')"
@@ -40,7 +40,7 @@
 import BarraLateral from "../components/BarraLateral.vue";
 import { ref } from "vue";
 import Botao from "../components/Botao.vue";
-import notificacao from "../imagem-vetores/Notificacao.svg";
+import notificacao from "../imagem-vetores/NotificacaoDinamic.vue";
 import UserIcon from "../imagem-vetores/UserIcon.svg";
 import Input from "./Input.vue";
 import router from "@/router";

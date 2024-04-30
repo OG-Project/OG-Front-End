@@ -9,6 +9,7 @@
                 @mouseover="()=> ishover=!ishover"
                 @mouseout="()=> ishover=!ishover"
                 class="xl:w-[95%] 
+                cursor-pointer
                 text-center 
                 flex 
                 justify-center 
@@ -33,10 +34,11 @@
                     />
                     
                     
-                    <div v-if="ishover" class="absolute flex bg-gray-400 px-2 py-1 rounded-full items-center text-black">
-                        <span class=" ">Alterar Foto</span>
-                        <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)]
-                         *:fill-black
+                    <div v-if="ishover" 
+                    style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
+                    class="absolute flex bg-gray-400 px-2 py-1 rounded-full items-center text-black">
+                        <span class=" text-[var(--fonteCor)] ">Alterar Foto</span>
+                        <iconLapisDinamic  class="
                          bg-cover 
                          ml-3 
                          w-6 
@@ -121,6 +123,7 @@ import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import Botao from '../components/Botao.vue'
 import router from '../router';
+import iconLapisDinamic from '../imagem-vetores/icon-lapisDinamic..vue';
 
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';

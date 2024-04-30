@@ -1,6 +1,7 @@
 
 <template>
-<div class="">
+<div class=""
+style="font-family: var(--fonteCorpo);">
     <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipoInput!='float'" 
         :style="estilizaDivInput">
@@ -293,13 +294,13 @@ function teclado(){
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
         color: 'var(--fonteCor)',
-        fontSize: verificaTamanhoFont(),
+        fontSize: 'var(--fonteCorpoTamanho)',
         height: verificaHeigth()+'vh',
         width: verificaWidth()+"vw",
     }
 
     const estilizaDivPlaceHolder= {
-        fontSize: verificaTamanhoFont(),
+        fontSize: 'var(--fonteCorpoTamanho)',
         position: "absolute",
         top: "",
         backgroundColor: ""
@@ -351,24 +352,24 @@ function teclado(){
     }
 
 
-    function verificaTamanhoFont(){
-        //Aumenta o tamanho da font size de acordo com a tela
-        if(props.fontSize == undefined){ 
+    // function {
+    //     //Aumenta o tamanho da font size de acordo com a tela
+    //     if(props.fontSize == undefined){ 
 
-         if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
-        || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
-                if(window.innerWidth >= 600 && window.innerWidth <= 850){
-                    console.log(window.innerWidth)
-                    return "0.8rem"
+    //      if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
+    //     || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
+    //             if(window.innerWidth >= 600 && window.innerWidth <= 850){
+    //                 console.log(window.innerWidth)
+    //                 return "0.8rem"
 
-                }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
-                    return '1.0rem'
-                }
-            }
-             return '1.2rem'
-        }
-     return props.fontSize;
-    }
+    //             }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
+    //                 return '1.0rem'
+    //             }
+    //         }
+    //          return '1.2rem'
+    //     }
+    //  return props.fontSize;
+    // }
 
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido

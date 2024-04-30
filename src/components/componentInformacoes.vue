@@ -11,7 +11,7 @@
                 class="flex justify-center w-full  sm:flex-wrap  gap-8">
                         <div class="flex flex-col 2xl:w-max md:w-[493px] sm:w-[493px] gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
-                                        <span class="text-xl">Nome</span>
+                                        <span class="">Nome</span>
                                         <Input 
                                         styleInput="input-transparente-claro" 
                                         conteudoInput="Nome" 
@@ -25,7 +25,7 @@
                                         />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
-                                        <span class="text-xl">Username</span>
+                                        <span class="">Username</span>
                                         <Input 
 
                                         styleInput="input-transparente-claro-grande" 
@@ -57,7 +57,7 @@
                         
                         <div class="flex flex-col 2xl:w-max sm:w-[493px] gap-y-10">
                                 <div class="flex justify-between items-center gap-5">
-                                        <span class="text-xl">Sobrenome</span>
+                                        <span class="">Sobrenome</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Sobrenome"
@@ -72,7 +72,7 @@
                                 </div>
                                 <!-- @updateModelValue -->
                                 <div class="flex justify-between items-center gap-5">
-                                        <span class="text-xl">Data de Nascimento</span>
+                                        <span class="">Data de Nascimento</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Data de Nascimento" 
