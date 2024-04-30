@@ -1,15 +1,10 @@
 <template>
-  <div class="h-[8vh] w-full flex">
+  <div class="h-[8vh] w-full flex z-[99999999999999]">
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
-        <Botao
-          preset="PadraoVazado"
-          texto="Nova Tarefa"
-          tamanhoDaBorda="2px"
-          :funcaoClick="redireciona"
-          :parametrosFuncao="'/criaTarefa'"
-        >
+        <Botao preset="PadraoVazado" texto="Nova Tarefa" tamanhoDaBorda="2px" :funcaoClick="redireciona"
+          :parametrosFuncao="'/criaTarefa'">
         </Botao>
       </div>
     </div>
@@ -30,15 +25,16 @@
         class="shadow-2xl h-[60px] w-[60px] rounded-full"
         :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados"
       />
+
     </div>
   </div>
-  <div v-if="notificacaoBoolean==true" class="w-full fixed z-50 flex justify-end pr-4" >
-    <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean=false"></popUpNotificacao>
+  <div v-if="notificacaoBoolean == true" class="w-full fixed z-50 flex justify-end pr-4">
+    <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean = false"></popUpNotificacao>
   </div>
 </template>
 <script setup>
 import BarraLateral from "../components/BarraLateral.vue";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import Botao from "../components/Botao.vue";
 import notificacao from "../imagem-vetores/NotificacaoDinamic.vue";
 import UserIcon from "../imagem-vetores/UserIcon.svg";
@@ -49,13 +45,62 @@ import VueCookies from "vue-cookies";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
 import popUpNotificacao from "../components/popUpNotificacao.vue";
+import inputDePesquisa from "./inputDePesquisa.vue";
 
 const banco = conexaoBD();
 
 onMounted(async () => {
   usuarioCookies.value = await autenticarUsuario(usuarioId);
-  
 });
+
+onBeforeMount(() => {
+  lista.value = criaListaDePesquisa();
+});
+
+let lista = ref();
+
+function criaListaDePesquisa() {
+  let listaDePesquisa = [];
+  banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie")).then((usuario) => {
+    usuario.equipes.forEach(equipe => {
+      banco.procurar("/projeto/buscarProjetos/" + equipe.id).then((projetos) => {
+        console.log(projetos);
+        projetos.forEach(projeto => {
+          listaDePesquisa.push({
+            id: projeto.id,
+            nome: projeto.nome,
+            tipo: "Projeto",
+          });
+          projeto.tarefas.forEach(tarefa => {
+            if(tarefa.nome){
+              listaDePesquisa.push({
+              id: tarefa.id,
+              nome: tarefa.nome,
+              tipo: "Tarefa",
+            });
+            }
+          });
+        });
+        // projeto.tarefas
+      });
+      listaDePesquisa.push({
+        id: equipe.id,
+        nome: equipe.equipe.nome,
+        tipo: "Equipe",
+      });
+    });
+  });
+  banco.procurar("/usuario").then((usuarios) => {
+    usuarios.forEach(usuario => {
+      listaDePesquisa.push({
+        id: usuario.id,
+        nome: usuario.username,
+        tipo: "Usuario",
+      });
+    });
+  });
+  return listaDePesquisa;
+}
 
 let usuarioId = VueCookies.get("IdUsuarioCookie");
 let usuarioCookies = ref();
@@ -70,7 +115,7 @@ async function autenticarUsuario(id) {
 
 function redireciona(rota) {
   router.push(rota);
-  if(rota == '/criaTarefa'){
+  if (rota == '/criaTarefa') {
     const criaTarefa = criaTarefaEBuscaStore();
     criaTarefa.criaTarefa();
   }

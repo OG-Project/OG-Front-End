@@ -50,10 +50,14 @@ async function fazerLogin() {
         usuarioLogin.value = "";
         senhaUsuarioLogin.value = "";
         VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000);
-        router.push('/home')
+        router.push('/home').then(() => {
+          window.location.reload();
+        });
+        
       }
     }
   });
+  
 }
 
 function trocaDeTela() {

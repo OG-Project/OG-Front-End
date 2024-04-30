@@ -322,20 +322,20 @@ async function enviarFotoParaBackend(id) {
        @apply 
        border-4 
         border-transparent
-        border-b-roxo    
+        border-b-[var(--roxo)]    
         px-2
         max-w-max
         w-min
         border-b-2
         hover:rounded-[4px] hover:border-4
-         focus-within:border-roxo 
+         focus-within:border-[var(--roxo)] 
         focus-within:border-4 focus-within:rounded-[4px]  ;
         
     }
 
     .textArea{
      @apply flex  2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg
-     border-transparent border-b-roxo border-b-2  focus-within:border-roxo focus-within:border-4;
+     border-transparent border-b-[var(--roxo)] border-b-2  focus-within:border-[var(--roxo)] focus-within:border-4;
      border-bottom: 'solid 4px #620BA7' ;
  }
     
@@ -444,7 +444,7 @@ async function enviarFotoParaBackend(id) {
         }
         .textArea{
             @apply flex w-[70vw] h-[20vh] bg-[#D7D7D7] text-black text-lg
-            border-transparent border-b-roxo border-b-2  focus-within:border-roxo focus-within:border-4;
+            border-transparent border-b-[var(--roxo)] border-b-2  focus-within:border-[var(--roxo)] focus-within:border-4;
             border-bottom: 'solid 4px #620BA7' ;
         }
         .nomeEquipe{

@@ -1,33 +1,33 @@
 <template>
-  <div id="bgBranco" class="flex flex-row min-h-[96%] w-full">
+  <div class="bg-[var(--backgroundPuro)]  flex flex-row min-h-[92vh] w-full">
     <div class="w-[40vw] min-h-[96%] flex flex-col">
       <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
-        <Input largura="32" altura="6" fontSize="2rem" conteudoInput="Nome da tarefa"
+        <Input largura="32" altura="6" fontSize="2rem" :conteudoInput="$t('criaTarefa.task_name')"
           styleInput="input-transparente-claro-grande" v-model="tarefa.nome"
           @updateModelValue="(e) => { tarefa.nome = e }"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
-        <TextAreaPadrao width="80%" height="16vh" placeholder="Descrição da tarefa" tamanho-da-fonte="1rem"
+        <TextAreaPadrao width="80%" height="16vh" :placeholder="$t('criaTarefa.task_description')" tamanho-da-fonte="1rem"
           resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
         <div class="flex flex-col justify-center w-[30%]">
-          <p>Propriedades</p>
+          <p>{{ $t('criaTarefa.properties') }}</p>
           <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
-            + Criar
+            {{ $t('criaTarefa.create') }}
           </button>
         </div>
         <div class="flex flex-col justify-center w-[30%]">
-          <p>Cor da Tarefa</p>
+          <p> {{ $t('criaTarefa.task_color') }}</p>
           <button class="flex flex-col justify-center break-keep h-[70%]" @click="abreFechaMudaCor()">
-            + Criar
+            {{ $t('criaTarefa.create') }}
           </button>
         </div>
 
         <div class="flex flex-col justify-center w-[30%]">
-          <p>SubTarefas</p>
+          <p>{{ $t('criaTarefa.subtasks') }}</p>
           <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaSubTarefas()">
-            + Criar
+            {{ $t('criaTarefa.create')}}
           </button>
         </div>
       </div>
@@ -41,7 +41,7 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <p>Qual a cor da sua Tarefa?</p>
+                <p>{{ $t('criaTarefa.task_color_question') }}</p>
               </div>
               <div class="pr-2">
                 <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
@@ -68,11 +68,11 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="3.8" v-model="nomePropriedade"
+                <Input largura="10" :conteudoInput="$t('criaTarefa.property_name')" fontSize="1rem" altura="3.8" v-model="nomePropriedade"
                   @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
-                <selectPadrao placeholderSelect="Tipo" :lista-select="['Texto', 'Data', 'Numero', 'Seleção']"
+                <selectPadrao :placeholderSelect="$t('criaTarefa.type')" :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
                 largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
                 </selectPadrao>
               </div>
@@ -99,10 +99,10 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome SubTarefa" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
+                <Input largura="10" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
                   @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
-              <selectPadrao placeholderSelect="Status" :lista-select="['Em Progresso', 'Concluido']" largura="8"
+              <selectPadrao :placeholderSelect="$t('criaTarefa.status')" :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8"
                 altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
@@ -117,7 +117,7 @@
         </div>
       </div>
 
-      <p class="pl-12 mt-4">Arquivos({{ tarefa.arquivos.length }})...</p>
+      <p class="pl-12 mt-4">{{ $t('criaTarefa.files', { arquivos: tarefa.arquivos.length }) }}...</p>
       <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
         class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
         <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
@@ -138,19 +138,19 @@
       </div>
       <div class="pl-12 mt-4">
         <div class="w-min h-min relative">
-          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" texto="Anexar" tamanhoPadrao="pequeno"
+          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno"
             inverterCorIcon="sim"></Botao>
           <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
         </div>
 
       </div>
       <div class="pl-12 mt-4">
-        <h1>SubTarefas</h1>
+        <h1>{{ $t('criaTarefa.subtasks') }}</h1>
         <div class="flex items-center">
           <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
             <div :style="barraPorcentagem" class="corDaBarraDeProgresso"></div>
           </div>
-          <p class="pl-4">Tarefas Concluidas {{ porcentagemDeTarefasConcluidas.toFixed(2) }}%</p>
+          <p class="pl-4">{{$t('criaTarefa.completed_tasks',{ porcentagem: porcentagemDeTarefasConcluidas.toFixed(2) })}}%</p>
         </div>
       </div>
       <!-- Sub Tarefa -->
@@ -163,12 +163,12 @@
               <p>{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
-              <p>Status:</p>
+              <p>{{ $t('criaTarefa.status') }}:</p>
               <div v-if="subtarefa.concluido">
-                <p class="flex items-center justify-center bg-[#7CC0E5]">Concluído</p>
+                <p class="flex items-center justify-center bg-[#7CC0E5]">{{ $t('criaTarefa.completed') }}</p>
               </div>
               <div v-else>
-                <p class="flex items-center justify-center bg-[#C6B473]">Em Progresso</p>
+                <p class="flex items-center justify-center bg-[#C6B473]">{{ $t('criaTarefa.in_progress') }}</p>
               </div>
             </div>
             <img @click="deletaSubtarefa(subtarefa)" :src="BotaoX" class="h-full mr-8" />
@@ -178,11 +178,11 @@
       <!-- Fazer um v-for de propriedades -->
       <div class="pl-12 mt-8">
         <div class="flex text-xl">
-          <p>Comentarios</p>
+          <p>{{ $t('criaTarefa.comments') }}</p>
           <button class="ml-2" @click="abreFechaComentario()">+</button>
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
-          <div class="w-[100%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
+          <div class="w-[100%] border-2 border-[var(--backgroundItems)] mt-4 mb-4 shadow-lg min-h-[10vh] flex">
 
             <img v-if="usuarioCookies.foto.tipo != null"
               class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
@@ -191,16 +191,16 @@
             usuarioCookies.foto.dados
             " />
             <div class="pb-2 flex flex-col items-end">
-              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4" placeholder="Descrição da tarefa"
+              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4" :placeholder="$t('criaTarefa.task_description')"
                 tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
-              <Botao texto="Enviar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
+              <Botao :texto="$t('criaTarefa.send')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
                 :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
           </div>
         </div>
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
-            <div class="w-[100%] border-2 mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
+            <div class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
                 <div v-if="comentario.autor.username === usuarioCookies.username"
                   class="w-[80%] mt-2 gap-4 flex justify-center">
@@ -222,7 +222,7 @@
                   <div v-if="comentarioSendoEditado &&
             comentario.autor.username === usuarioCookies.username
             ">
-                    <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" placeholder="Descrição da tarefa"
+                    <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4"
                       tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                   </div>
                   <div v-if="!comentarioSendoEditado ||
@@ -236,7 +236,7 @@
                   <div v-if="comentarioSendoEditado &&
             comentario.autor.username === usuarioCookies.username
             ">
-                    <Botao texto="Editar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
+                    <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
                       :parametrosFuncao="comentario"></Botao>
                   </div>
                 </div>
@@ -248,28 +248,28 @@
     </div>
     <!-- Propriedades e Status -->
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
-      <div class="w-[80%] h-[80vh] shadow-xl border-2">
+      <div class="w-[80%] h-[80vh] shadow-xl border-2 border-[var(--backgroundItems)]">
         <div class="flex justify-around h-[4%]">
           <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%;">
-            Propriedades
+            {{ $t('criaTarefa.properties') }}
           </button>
           <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%;">
-            Status
+            {{ $t('criaTarefa.status') }}
           </button>
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroPropriedade">
-              <option selected="selected">Ordenar Por</option>
-              <option>Texto</option>
-              <option>Data</option>
-              <option>Numero</option>
-              <option>Seleção</option>
+              <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
+              <option>{{ $t('criaTarefa.Texto')}}</option>
+              <option>{{$t('criaTarefa.Data')}}</option>
+              <option>{{$t('criaTarefa.Numero')}}</option>
+              <option>{{$t('criaTarefa.Seleção')}}</option>
             </select>
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
-              <option value="Ordenar Por">Ordenar Por</option>
-              <option value="az">A - Z</option>
-              <option value="za">Z - A</option>
+              <option value="Ordenar Por">{{$t('criaTarefa.sort_by')}}</option>
+              <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
+              <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
             </select>
           </div>
         </div>
@@ -285,7 +285,10 @@
                 <p class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
-                <p>Tipo: {{ propriedade.propriedade.tipo }}</p>
+                <p v-if="propriedade.propriedade.tipo=='TEXTO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto') }}</p>
+                <p v-if="propriedade.propriedade.tipo=='DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data') }}</p>
+                <p v-if="propriedade.propriedade.tipo=='NUMERO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero') }}</p>
+                <p v-if="propriedade.propriedade.tipo=='SELEÇÃO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Seleção') }}</p>
               </div>
               <!-- <div class="flex justify-center">
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
@@ -326,7 +329,7 @@
                       :src="BotaoX" />
                   </div>
                   <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
-                    Adicionar +
+                    {{$t('criaTarefa.add')}}
                   </p>
                 </div>
               </div>
@@ -343,28 +346,28 @@
                 </CheckBox>
                 <p class="break-all">{{ statsAdd.nome }}</p>
               </div>
-              <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
-              <div class="w-[40%] flex justify-between">
-                <ColorPicker disabled v-model="statsAdd.cor" class="border-2 rounded-lg ml-16" />
+              <p class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{ statsAdd.cor.toUpperCase() }}</p>
+              <div class="w-[30%] flex justify-between">
+                <ColorPicker disabled v-model="statsAdd.cor" class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="w-[80%] flex justify-end pt-8">
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" texto="Concluído" tamanhoDaBorda="2px"
+        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
 
-    <div id="propriedadesOverflow" class="shadow-xl border-2">
+    <div id="propriedadesOverflow" class="shadow-xl border-2 border-[var(--backgroundItems)]">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
-        <h1 class="min-h-[9%] text-3xl font-semibold">Informações</h1>
+        <h1 class="min-h-[9%] text-3xl font-semibold">{{ $t('criaTarefa.information') }}</h1>
       </div>
       <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
         <div class="flex pl-8">
           <div class="w-[50%] justify-start flex-row">
-            <p>Nome do Projeto</p>
+            <p>{{ $t('criaTarefa.project_name') }}</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
             <p class="w-[100%] text-[var(--roxo)] break-all" v-if="projetoDaTarefa">
@@ -374,7 +377,7 @@
         </div>
         <div class="flex pl-8">
           <div class="w-[50%] justify-start flex-row">
-            <p>Responsáveis do Projeto</p>
+            <p>{{ $t('criaTarefa.project_participants') }}</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
             <p class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
@@ -385,7 +388,7 @@
         </div>
         <div class="flex pl-8" v-if="projetoDaTarefa">
           <div class="w-[50%] justify-start flex-row">
-            <p>Data inicial do Projeto</p>
+            <p>{{ $t('criaTarefa.project_start_date') }}</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
             <p class="text-[var(--roxo)]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
@@ -393,43 +396,43 @@
         </div>
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">Status</h1>
+        <h1 class="text-xl font-semibold">{{ $t('criaTarefa.status') }}</h1>
       </div>
       <div v-if="tarefa.status != null">
         <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
-          <p>Sua tarefa não possui status</p>
+          <p>{{$t('criaTarefa.no_status_message')}}</p>
         </div>
         <div class="min-h-[4%] flex items-center justify-center gap-4">
           <p :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
-            class="flex items-center border-2 shadow-md justify-center px-4">
+            class="flex items-center border-2 border-[var(--backgroundItems)] shadow-md justify-center px-4">
             {{ tarefa.status.nome }}
           </p>
         </div>
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">Propriedades</h1>
+        <h1 class="text-xl font-semibold">{{ $t('criaTarefa.properties') }}</h1>
       </div>
       <div v-if="tarefa.propriedades.length === 0" class="h-[35%] flex flex-col items-center justify-center p-8">
         <NotePad></NotePad>
-        <p class="text-center">Esta tarefa não possui nenhuma propriedade</p>
+        <p class="text-center">{{ $t('criaTarefa.this_taks_has_no_properties') }}</p>
       </div>
       <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
         <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
           <p class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
           <div v-if="propriedade.propriedade.tipo === 'DATA'">
-            <p>Valor: {{ formatarData(propriedade.valor.valor) }}</p>
+            <p>{{ $t('criaTarefa.value') }} {{ formatarData(propriedade.valor.valor) }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'" class="flex">
-            <p>Valor:</p>
+            <p>{{ $t('criaTarefa.value') }}</p>
             <select class="flex text-center w-[80%]">
               <option v-for="valor of propriedade.valor.valor">{{ valor }}</option>
             </select>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-            <p>Valor: {{ propriedade.valor.valor }}</p>
+            <p>{{ $t('criaTarefa.value') }} {{ propriedade.valor.valor }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-            <p>Valor: {{ propriedade.valor.valor }}</p>
+            <p>{{ $t('criaTarefa.value') }} {{ propriedade.valor.valor }}</p>
           </div>
         </div>
       </div>
@@ -458,12 +461,11 @@ import { conexaoBD } from "../../stores/conexaoBD.js";
 import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
 import router from "../../router";
 import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const banco = conexaoBD();
-
-const parametroDoFiltroStatus = ref("Ordenar Por");
-
-const parametroDoFiltroPropriedade = ref("Ordenar Por");
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   for (const propriedadeFor of tarefa.value.propriedades) {
@@ -514,7 +516,20 @@ let numeroDeArquivos = ref(0);
 //Variáveis usadas na hora de criar uma propriedade
 
 let nomePropriedade = ref("");
-let tipoPropriedade = ref("Texto");
+let tipoPropriedade = computed(() => {
+  if (tipoPropriedade.value == t('criaTarefa.Texto')) {
+    return "Texto"
+  }
+  else if (tipoPropriedade.value == t('criaTarefa.Data')) {
+    return "Data"
+  }
+  else if (tipoPropriedade.value == t('criaTarefa.Numero') ) {
+    return "Numero"
+  }
+  else if (tipoPropriedade.value == t('criaTarefa.Seleção')) {
+    return "Seleção"
+  }
+});
 
 //Variáveis utiliazadas na hora de criar um status
 
@@ -524,7 +539,7 @@ let corStatus = ref("ff0000");
 //Variaveis utilizadas na hora de criar uma subtarefa
 
 let nomeSubtarefa = ref("");
-let statusSubtarefa = ref("Em Progresso");
+let statusSubtarefa = ref(t('criaTarefa.in_progress'));
 
 function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
@@ -701,9 +716,9 @@ function criaSubtarefa() {
       nomeSubtarefa.value = "";
     }
     let booleanDaSubtarefa = ref();
-    if (statusSubtarefa.value == "Em Progresso") {
+    if (statusSubtarefa.value == t('criaTarefa.in_progress')) {
       booleanDaSubtarefa.value = false;
-    } else if (statusSubtarefa.value == "Concluido") {
+    } else if (statusSubtarefa.value == t('criaTarefa.completed')) {
       booleanDaSubtarefa.value = true;
     }
     let subtarefaNova = {
@@ -859,6 +874,7 @@ function update() {
 }
 
 onMounted(async () => {
+  const {t} = useI18n();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   procuraProjetosDoBanco();
   reloadSubTarefas();
@@ -882,6 +898,8 @@ onMounted(async () => {
   exibirComentarios();
   autenticaUsuarioCookies();
   atualizaPropriedadesEStatus();
+  parametroDoFiltroStatus.value = t('criaTarefa.sort_by');
+  parametroDoFiltroPropriedade.value = t('criaTarefa.sort_by');
 });
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
@@ -1060,20 +1078,40 @@ const listaFiltradaStatus = computed(() => {
   }
 });
 
+
+const parametroDoFiltroStatus = ref(); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+
+const parametroDoFiltroPropriedade = ref(); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+//Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
+
 const listaFiltradaPropriedades = computed(() => {
   console.log(parametroDoFiltroPropriedade.value);
-  if (parametroDoFiltroPropriedade.value === "Ordenar Por") {
+  console.log(t('criaTarefa.sort_by'));
+  if (parametroDoFiltroPropriedade.value === t('criaTarefa.sort_by')) {
     return propriedades.value;
   }
-  for (const propriedade of propriedades.value) {
-    console.log(propriedade.propriedade.tipo.toUpperCase());
-  }
-  return propriedades.value.filter(
-    (propriedade) =>
-      propriedade.propriedade.tipo.toUpperCase() === parametroDoFiltroPropriedade.value.toUpperCase()
-  );
+  const filtro = parametroDoFiltroPropriedade.value;
+  const tipoFiltroTexto = t('criaTarefa.Texto');
+  const tipoFiltroNumero = t('criaTarefa.Numero');
+  const tipoFiltroSelecao = t('criaTarefa.Seleção');
+  const tipoFiltroData = t('criaTarefa.Data');
+
+  return propriedades.value.filter((propriedade) => {
+    switch (filtro) {
+      case tipoFiltroTexto:
+        return propriedade.propriedade.tipo.toUpperCase() === "TEXTO";
+      case tipoFiltroNumero:
+        return propriedade.propriedade.tipo.toUpperCase() === "NUMERO";
+      case tipoFiltroSelecao:
+        return propriedade.propriedade.tipo.toUpperCase() === "SELECAO";
+      case tipoFiltroData:
+        return propriedade.propriedade.tipo.toUpperCase() === "DATA";
+      default:
+        return true;
+    }
+  });
 });
-//Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
+
 
 function numeroDeSubTarefasConcluidas() {
   let numeroDeSubTarefasC = ref(0);

@@ -16,6 +16,10 @@ import IconNotification from "../assets/NotificacaoIconMobile.svg"
 import IconProfile from "../assets/EquipeIconMobile.svg"
 import router from "@/router";
 import { onMounted, ref } from "vue"
+import VueCookies from "vue-cookies"
+import { conexaoBD } from "../stores/conexaoBD.js"
+
+let conexao = conexaoBD();
 let configuracao = ref()
 let usuario = ref()
 onMounted(()=>{
