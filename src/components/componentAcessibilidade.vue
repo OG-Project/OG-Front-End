@@ -13,7 +13,7 @@
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl ">Alterar Idioma</span>
                         <selectPadrao :lista-select="listaIdiomas"
-                            v-model="idioma" />
+                            v-model="idioma" @click="alterarIdioma(idioma)"/>
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Digitar com a voz</span>
@@ -51,52 +51,100 @@ import VueCookies from "vue-cookies";
 import { storeToRefs } from 'pinia';
 import { conexaoBD } from '../stores/conexaoBD';
 import { watch } from 'vue';
+import { onUnmounted } from 'vue';
 let perfil = perfilStore()
 let conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
 const { fonteCorpo } = storeToRefs(perfil)
-let idioma = ref(VueCookies.get("Idioma") ? VueCookies.get("Idioma") : 'Português')
+
+watch(() => VueCookies.get('Idioma'), (valorIdioma) => {
+    switch (valorIdioma) {
+        case 'pt-BR':
+            idioma.value = 'Português';
+            break;
+        case 'en':
+            idioma.value = 'English';
+            break;
+        case 'es':
+            idioma.value = 'Español';
+            break;
+        case 'zh':
+            idioma.value = '中国人';
+            break;
+        case 'jp':
+            idioma.value = '日本語';
+            break;
+        case 'ru':
+            idioma.value = 'Русский';
+            break;
+        default:
+            idioma.value = 'Português';
+    }
+});
+
+const idioma = ref(pegaALinguagemDosCookies())
+
+function pegaALinguagemDosCookies(){
+    let valorIdioma = VueCookies.get('Idioma')
+    switch (valorIdioma) {
+        case 'pt-BR':
+            return 'Português';
+            break;
+        case 'en':
+            return  'English';
+            break;
+        case 'es':
+            return  'Español';
+            break;
+        case 'zh':
+            return  '中国人';
+            break;
+        case 'jp':
+            return  '日本語';
+            break;
+        case 'ru':
+            return  'Русский';
+            break;
+        default:
+            return  'Português';
+    }
+}
+
 let isVlibra = ref(false)
 let isTecladoVirtual = ref(false)
 let isDigitarVoz = ref(false)
 let usuario = ref({})
 
-const listaIdiomas = ['Português', 'English', 'Español', '中国人', '日本語', 'Русский'];
+onUnmounted(() => {
+    window.location.reload()
+})
 
-watch(() => idioma.value, (value) => {
-    const index = listaIdiomas.indexOf(VueCookies.get("Idioma"));
-    if (index !== -1) {
-        listaIdiomas.splice(index, 1); // Remove o idioma da lista atual
-        listaIdiomas.unshift(VueCookies.get("Idioma")); // Adiciona o idioma no início da lista
-    }
-    
+const listaIdiomas = ref(['Português', 'English', 'Español', '中国人', '日本語', 'Русский']);
+
+function alterarIdioma(value) {
     switch (value) {
         case 'Português':
+            console.log('Português');
             VueCookies.set("Idioma", "pt-BR", 100000000000);
-            window.location.reload();
             break;
         case 'English':
+            console.log('English');
             VueCookies.set("Idioma", "en", 100000000000);
-            window.location.reload();
             break;
         case 'Español':
             VueCookies.set("Idioma", "es", 100000000000);
-            window.location.reload();
             break;
         case '中国人':
             VueCookies.set("Idioma", "zh", 100000000000);
-            window.location.reload();
             break;
         case '日本語':
             VueCookies.set("Idioma", "jp", 100000000000);
-            window.location.reload();
             break;
         case 'Русский':
             VueCookies.set("Idioma", "ru", 100000000000);
-            window.location.reload();
             break;
-    }
-});
+    }// Recarrega a página após alterar o idioma
+};
 
 onBeforeMount(async () => {
 })
@@ -118,13 +166,14 @@ onMounted(async () => {
     // console.log(isTecladoVirtual.value);
     // console.log(isTecladoVirtual.value);
     VueCookies.config('30d')
-    console.log(value);
-    const index = listaIdiomas.indexOf(VueCookies.get("Idioma"));
-    if (index !== -1) {
-        listaIdiomas.splice(index, 1); // Remove o idioma da lista atual
-        listaIdiomas.unshift(VueCookies.get("Idioma")); // Adiciona o idioma no início da lista
-    }
+    arrumaIndexDaListaDeIdiomas()
 })
+
+function arrumaIndexDaListaDeIdiomas(){
+    let index = listaIdiomas.value.indexOf(idioma.value)
+    listaIdiomas.value.splice(index, 1)
+    listaIdiomas.value.unshift(idioma.value)
+}
 
 function gerarBooleano(id) {
     console.log(id);
