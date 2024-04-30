@@ -37,7 +37,8 @@
     "Texto": "Текст",
     "Data": "Дата",
     "Numero": "Число",
-    "Seleção": "Выбор"
+    "Seleção": "Выбор",
+    "color": "цвет"
   },
   "home": {
     "bemVindoUsuario": "Добро пожаловать {nome}",

@@ -341,7 +341,7 @@
                 </CheckBox>
                 <p class="break-all">{{ statsAdd.nome }}</p>
               </div>
-              <p class="w-[30%]">Cor: #{{ statsAdd.cor }}</p>
+              <p class="w-[30%]">{{ $t('criaTarefa.color') }} #{{ statsAdd.cor.toUpperCase() }}</p>
               <div class="w-[40%] flex justify-between">
                 <ColorPicker disabled v-model="statsAdd.cor" class="border-2 rounded-lg ml-16" />
               </div>

@@ -22,11 +22,14 @@ import  VueColor  from '@ckpack/vue-color';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import VueSocketIO from 'vue-socket.io'
 import '@vuepic/vue-datepicker/dist/main.css'
+import VueCookies from "vue-cookies";
+
+
 
 const i18n = createI18n({
     legacy: false,
-    locale: 'jp',
-    fallbackLocale: 'pt-BR',
+    locale: VueCookies.get('Idioma'),
+    fallbackLocale: 'en',
     messages: {
         'pt-BR': Portugues,
         'en': Ingles,

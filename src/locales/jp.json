@@ -37,7 +37,8 @@
     "Texto": "テキスト",
     "Data": "日付",
     "Numero": "番号",
-    "Seleção": "選択"
+    "Seleção": "選択",
+    "color": "色"
   },
   "home": {
     "bemVindoUsuario": "ようこそ { nome } さん",

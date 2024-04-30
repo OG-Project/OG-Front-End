@@ -37,7 +37,8 @@
     "Texto": "Texto",
     "Data": "Fecha",
     "Numero": "Número",
-    "Seleção": "Selección"
+    "Seleção": "Selección",
+    "color": "Color"
   },
   "home": {
     "bemVindoUsuario": "Bienvenido {nome}",

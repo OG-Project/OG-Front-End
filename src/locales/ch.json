@@ -37,7 +37,8 @@
     "Texto": "文本",
     "Data": "日期",
     "Numero": "数量",
-    "Seleção": "选择"
+    "Seleção": "选择",
+    "color": "颜色"
   },
   "home": {
     "bemVindoUsuario": "欢迎 { nome }",
