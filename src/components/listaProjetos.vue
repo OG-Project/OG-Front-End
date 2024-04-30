@@ -59,7 +59,7 @@
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col  mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
                 <div class="meusProjetos">
-                  <h1 class="txl:text-xl sm:text-sm text-white"> MEUS PROJETOS</h1>
+                  <h1 class="xl:text-xl sm:text-sm text-white"> MEUS PROJETOS</h1>
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('meus-projetos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
@@ -270,21 +270,20 @@
 
 
 function obterFotosResponsaveis(projeto) {
-    if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-        const responsaveisComFoto = projeto.responsaveis
-            .filter(responsavel => responsavel && responsavel.foto)
-            .map(responsavel => responsavel.foto);
+        // Percorre os responsáveis do projeto
+      if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
+      let responsaveisComFoto = []
+      for(let responsavel of projeto.responsaveis){
 
-        if (responsaveisComFoto) {
-          console.log(responsaveisComFoto)
-            return responsaveisComFoto;
+        responsaveisComFoto.push(responsavel.responsavel.foto)
+      }
+        if (responsaveisComFoto.length >= 0) {
+          return `data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`;
         } else {
-          console.log("Responsáveis encontrados, mas nenhum deles possui foto.")
-            return "Responsáveis encontrados, mas nenhum deles possui foto.";
+            return '../src/imagem-vetores/userTodoPreto.svg'
         }
     } else {
-        console.log("Não há responsáveis")
-        return "Não há responsáveis";
+        return '../src/imagem-vetores/userTodoPreto.svg';
     }
 }
 
@@ -411,8 +410,7 @@ kanban-board {
 }
 
 .bordaRoxa {
-  border-bottom-width: 2px;
-  border-bottom-color: #8a2be2; /* cor roxa */
+  @apply border-b-2 border-b-[var(--roxo)]; /* cor roxa */
 }
 
 .listaProjetos {

@@ -584,6 +584,6 @@ function click() {
   @apply w-[48vw] h-[5vh]
 }
 .mobilePequenoId{
-  @apply w-[20vw] 2xl:h-[5vh] xl:h-[8vh]
+  @apply w-[20vw] h-[5vh] 2xl:h-[5vh] xl:h-[8vh]
 }
 </style>

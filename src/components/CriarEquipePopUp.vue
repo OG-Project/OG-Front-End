@@ -12,7 +12,7 @@
                 <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome" @updateModelValue="(e)=> {nome=e}" ></Input> 
             </div>
                 <div class=" grid-template  flex w-full">
-                    <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e)=> {usuarioConvidado=e}"  styleInput="input-transparente-claro" :largura="larguraInputConvidado()" icon="../src/imagem-vetores/adicionarPessoa.svg"  conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+                    <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e)=> {usuarioConvidado=e}" icon="../src/imagem-vetores/adicionarPessoa.svg" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
             </div>
             <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
@@ -172,7 +172,7 @@ const screenWidth = window.innerWidth;
     } if (screenWidth > 1024 && screenWidth <= 1440) {
         return '35';
     } if(screenWidth > 1440 && screenWidth < 1920){
-        return '15';
+        return '12';
     }else {
         return '18';
     }
@@ -213,6 +213,8 @@ return;
       colocaMembrosEquipe(equipe)
       enviaParaWebSocket(equipe, membrosEquipe.value);
     });
+
+    window.location.reload();
 };
 
 async function colocaMembrosEquipe(equipe){

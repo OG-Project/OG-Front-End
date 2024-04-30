@@ -332,7 +332,8 @@ async function confirmarConvites() {
 
 
 .corDiv {
-    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[20vw] lg:w-[25vw] md:w-[30vw] border-transparent border-b-roxo border-b-2 items-center focus-within:border-roxo focus-within:border-4;
+    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[20vw] lg:w-[25vw] md:w-[30vw] border-transparent
+     border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
 
 }
 
@@ -345,7 +346,7 @@ async function confirmarConvites() {
 }
 
 .imgDePerfil {
-    @apply rounded-full bg-cover bg-center flex flex-col mt-5 mr-5 2xl:w-[2vw] 2xl:h-[4vh] xl:w-[3vw] xl:h-[4vh] lg:w-[4vw] lg:h-[4vh] md:w-[6vw] md:h-[4vh];
+    @apply rounded-full bg-cover bg-center flex flex-col mt-5 mr-5 2xl:w-[55px] 2xl:h-[55px] xl:w-[50px] xl:h-[50px] lg:w-[45px] lg:h-[45px] md:w-[40px] md:h-[40px];
 }
 
 
@@ -366,59 +367,112 @@ async function confirmarConvites() {
         @apply w-[3vw] h-[4vh]
       }
     }
-    @media(max-width: 620px){
-
-        .divEquipe{
-           @apply flex justify-center w-[100%]
-        }
-        .adiciona-membro{
-            @apply flex justify-end ml-[-5vw];
-        }
-        .divGeral{
-            @apply w-[65vw];
-        }
-        .corDiv{
-            @apply flex ml-5 mr-5 h-20 w-[40vw] 
-            border-transparent
-            border-b-roxo    
-            border-b-2
-            items-center focus-within:border-roxo 
-            focus-within:border-4;
-            
-        }
-        .div-membros{
-            @apply w-[100%];
-        }
-        .equipeNome{
-             @apply flex mt-5;
-        }
-        .styleSelectPadraoBranco{
-            @apply border-4 mt-[1.5vh] ml-3 
-            flex justify-center
-            border-transparent
-            border-b-brancoNeve
-            border-b-2
-            w-max
-            items-center  focus-within:border-white
-            focus-within:border-4 focus-within:rounded-md truncate;
-        }
-        .imgDePerfil{
-            @apply w-[30px] h-[30px]
-        }
-        .imagemEquipe{
-            @apply w-[40px] h-[40px] mt-5 mr-3;
-        }
-        .imgIcon{
-            @apply w-[20px] h-[20px]  bg-center flex mt-8;
-        }
-        .div-lista{
-            @apply w-[200vw] p-2 ml-[-12vw] ;
-            
-        }
-        .botao{
-            @apply flex justify-start mr-[41vw]
-            p-[10vw] mt-[50vh] ;
-        }
-     }
     
+     @media (min-width: 320px) and (max-width: 375px) {
+        .divEquipe{
+            @apply flex justify-center w-[100%]
+         }
+         .adiciona-membro{
+             @apply flex justify-end ml-[-5vw];
+         }
+         .divGeral{
+             @apply w-[65vw];
+         }
+         .corDiv{
+             @apply flex ml-5 mr-5 h-20 w-[100vw] 
+             border-transparent
+             border-b-roxo    
+             border-b-2
+             items-center focus-within:border-roxo 
+             focus-within:border-4;
+             
+         }
+         .div-membros{
+             @apply w-[100%];
+         }
+         .equipeNome{
+              @apply flex text-2xl mt-6;
+         }
+         .styleSelectPadraoBranco{
+             @apply border-4 mt-[1.5vh] ml-3 
+             flex justify-center
+             border-transparent
+             border-b-brancoNeve
+             border-b-2
+             w-max
+             items-center  focus-within:border-white
+             focus-within:border-4 focus-within:rounded-md truncate;
+         }
+         .imgDePerfil{
+             @apply w-[35px] h-[35px]
+         }
+         .imagemEquipe{
+             @apply w-[40px] h-[40px] mt-5 mr-3;
+         }
+         .imgIcon{
+             @apply w-[20px] h-[20px]  bg-center flex mt-8;
+         }
+         .div-lista{
+             @apply w-[200vw] p-2 ml-[-12vw] ;
+             
+         }
+         .botao{
+             @apply flex justify-start mr-[41vw]
+             p-[10vw] mt-[50vh] ;
+         }
+    }
+
+    @media(min-width: 425px) and (max-width: 620px){
+        .divEquipe{
+            @apply flex justify-center w-[100%]
+         }
+         .adiciona-membro{
+             @apply flex justify-end ml-[-5vw];
+         }
+         .divGeral{
+             @apply w-[65vw];
+         }
+         .corDiv{
+             @apply flex ml-5 mr-5 h-20 w-[60vw] 
+             border-transparent
+             border-b-roxo    
+             border-b-2
+             items-center focus-within:border-roxo 
+             focus-within:border-4;
+             
+         }
+         .div-membros{
+             @apply w-[100%];
+         }
+         .equipeNome{
+              @apply flex text-3xl mt-5;
+         }
+         .styleSelectPadraoBranco{
+             @apply border-4 mt-[1.5vh] ml-3 
+             flex justify-center
+             border-transparent
+             border-b-brancoNeve
+             border-b-2
+             w-max
+             items-center  focus-within:border-white
+             focus-within:border-4 focus-within:rounded-md truncate;
+         }
+         .imgDePerfil{
+             @apply w-[30px] h-[30px]
+         }
+         .imagemEquipe{
+             @apply w-[40px] h-[40px] mt-5 mr-3;
+         }
+         .imgIcon{
+             @apply w-[20px] h-[20px]  bg-center flex mt-8;
+         }
+         .div-lista{
+             @apply w-[200vw] p-2 ml-[-12vw] ;
+             
+         }
+         .botao{
+             @apply flex justify-start mr-[41vw]
+             p-[10vw] mt-[50vh] ;
+         }
+    }
 </style>

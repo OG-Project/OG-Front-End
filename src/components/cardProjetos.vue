@@ -159,7 +159,8 @@ function somePopUp() {
     }
 
     .parteDeBaixoCard {
-        @apply flex flex-col h-[76px] items-center justify-evenly bg-[url(../assets/Polygon126footer.png)] w-full;
+        @apply flex flex-col h-[76px] items-center justify-evenly bg-[var(--roxoEscuro)] w-full;
+        clip-path: polygon(10% 0, 90% 0, 100% 34%, 100% 100%, 70% 100%, 30% 100%, 0 100%, 0 35%);
     }
 
     .cardTotal {
@@ -187,16 +188,36 @@ function somePopUp() {
        
     }
 
-    @media(max-width: 620px){
+    @media (min-width: 320px) and (max-width: 375px) {
         .parteDeBaixoCard{
-            @apply flex flex-col h-[76px] items-center  justify-evenly bg-[url(../assets/Polygon126footer.png)];
+            @apply flex flex-col h-[76px] items-center  justify-evenly;
         }
-
         .cardTotal {
-            @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-white overflow-hidden mt-[3vh];
+            @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-white overflow-hidden mt-[3vh] ;
             transition: transform 0.3s ease;
         }
+        .barraCinzaGrafico {
+            @apply relative text-white flex w-[70vw] h-5 justify-start bg-gray-500;
+        }
+        .data{
+            @apply mr-[14vw];
+        }
+        .divInformacoes{
+            @apply flex flex-col justify-evenly w-[80vw] h-[202px] 
+        }
+        .tempoAtuacao{
+            @apply flex justify-end ;
+        }
+    }
 
+    @media(min-width: 425px) and (max-width: 620px){
+        .parteDeBaixoCard{
+            @apply flex flex-col h-[76px] items-center  justify-evenly;
+        }
+        .cardTotal {
+            @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-white overflow-hidden mt-[3vh] ml-3;
+            transition: transform 0.3s ease;
+        }
         .barraCinzaGrafico {
             @apply relative text-white flex w-[70vw] h-5 justify-start bg-gray-500;
         }
