@@ -27,7 +27,10 @@ let conteudoFormulario = {
 };
 
 const banco = conexaoBD();
-
+let usuarioSecurity = {
+  username:"",
+  password:""
+}
 let tipo = ref("login");
 let usuarioLogin = ref("");
 let senhaUsuarioLogin = ref("");
@@ -37,20 +40,24 @@ let senhaCadastro = ref("");
 let confirmarSenhaCadastro = ref("");
 
 async function fazerLogin() {
+  usuarioSecurity.username=usuarioLogin.value
+  usuarioSecurity.password=senhaUsuarioLogin.value
+  let error;
+  await banco.login(usuarioSecurity).catch(e =>{
+    alert("Login invalido")
+     error =e
+  })
+  if(error != null){
+    return
+  }
   let usuarios = banco.procurar("/usuario");
   let listaUsuarios = await usuarios;
   listaUsuarios.forEach((usuario) => {
-     console.log(usuario);
-    console.log(usuarioLogin);
     if (usuarioLogin.value === usuario.username) {
-      if (senhaUsuarioLogin.value === usuario.senha) {
-        console.log("davi");
-        console.log(usuario);
         usuarioLogin.value = "";
         senhaUsuarioLogin.value = "";
         VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000);
         router.push('/home')
-      }
     }
   });
 }
@@ -67,17 +74,17 @@ function trocaDeTela() {
 
 async function cadastraUsuario() {
   const criarUsuario = criaUsuarioStore();
-  let usuarioUnico = true;
-  let usuarios = banco.procurar("/usuario");
-  let listaUsuarios = await usuarios;
-  listaUsuarios.forEach((usuario) => {
-    if (usuario.username != usuarioCadastro.value) {
-      usuarioUnico = true;
-    } else {
-      usuarioUnico = false;
-    }
-  });
-  if (usuarioUnico) {
+  // let usuarioUnico = true;
+  // let usuarios = banco.procurar("/usuario");
+  // let listaUsuarios = await usuarios;
+  // listaUsuarios.forEach((usuario) => {
+  //   if (usuario.username != usuarioCadastro.value) {
+  //     usuarioUnico = true;
+  //   } else {
+  //     usuarioUnico = false;
+  //   }
+  // });
+  // if (usuarioUnico) {
     if (
       emailCadastro.value.indexOf("@") > 0 &&
       emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
@@ -88,7 +95,7 @@ async function cadastraUsuario() {
           usuarioCadastro.value,
           emailCadastro.value,
           senhaCadastro.value
-        );
+        )
         usuarioCadastro.value = "";
         emailCadastro.value = "";
         senhaCadastro.value = "";
@@ -97,7 +104,7 @@ async function cadastraUsuario() {
       }
     }
   }
-}
+// }
 
 
 

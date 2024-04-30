@@ -3,31 +3,37 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { webSocketStore } from "./webSocket.js";
 import { id } from "date-fns/locale";
+import VueCookies  from "vue-cookies";
 
 export const conexaoBD = defineStore('conexaoBD', {
   
     state: () => {
 
-      return {api:axios.get("http://localhost:8082/projeto")
+      return {api:axios.get("http://localhost:8082/usuario", {withCredentials:true})
     }
 
   },
   actions: {
       procurar(textoRequisicao){
-        return axios.get("http://localhost:8082"+ textoRequisicao).then(response => response.data)
+        return axios.get("http://localhost:8082"+ textoRequisicao,{withCredentials:true}).then(response => response.data)
+      },
+      login(usuarioLogin){
+           return axios.post("http://localhost:8082/login", usuarioLogin,{withCredentials:true}).then(response => {
+            VueCookies.set("JWT", response.data.value)
+          })
       },
       cadastrar(objeto, textoRequisicao){
-        return axios.post("http://localhost:8082"+textoRequisicao,objeto).then(response => response)
+        return axios.post("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
       },
       atualizar(objeto,textoRequisicao){
         
-        return axios.put("http://localhost:8082"+textoRequisicao,objeto).then(response => response)
+        return axios.put("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
       },
       adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId,ids)
+        return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId,ids,{withCredentials:true})
       },
       deletar(id,textoRequisicao){
-        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response =>{
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`,{withCredentials:true}).then(response =>{
           
         })
       },
@@ -46,25 +52,25 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarUm(id,textoRequisicao){
 
-        return (await axios.get('http://localhost:8082'+textoRequisicao+'/'+id).then(response => response.data))
+        return (await axios.get('http://localhost:8082'+textoRequisicao+'/'+id,{withCredentials:true}).then(response => response.data))
       },
       async buscarProjetosEquipe(equipeId, textoRequisicao){
-        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
-        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`,{withCredentials:true})).data)
 
 
       },
     adicionarEquipe(equipeId,projetoId, textoRequisicao) {
-      return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId)
+      return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId,{withCredentials:true})
     },
     deletarEquipe(id, textoRequisicao) {
-      return axios.delete('http://localhost:8082'+textoRequisicao+'/'+id)    
+      return axios.delete('http://localhost:8082'+textoRequisicao+'/'+id,{withCredentials:true})    
     },
 
     async deletarTarefa(textoRequisicao, id) {
-      return await axios.delete('http://localhost:8082'+textoRequisicao+'/'+id).then(response => {
+      return await axios.delete('http://localhost:8082'+textoRequisicao+'/'+id,{withCredentials:true}).then(response => {
       })
     },
     async cadastrarFoto(equipeId, foto) {
@@ -80,7 +86,7 @@ export const conexaoBD = defineStore('conexaoBD', {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
-        }).then(response => {
+        },{withCredentials:true}).then(response => {
 
         });
 
@@ -96,13 +102,13 @@ export const conexaoBD = defineStore('conexaoBD', {
     async patchDeArquivosNaTarefa(arquivos, id) {
       try {
         // Deleta os arquivos existentes relacionados à tarefa
-        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`);
+        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`,{withCredentials:true});
     
             const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            }).then(response =>{
+            },{withCredentials:true}).then(response =>{
               return response.data
             });
     
@@ -110,7 +116,7 @@ export const conexaoBD = defineStore('conexaoBD', {
             console.error('Erro ao cadastrar a foto:', error);
             throw error;
         }
-          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
       },
       async cadastrarFotoUsuario(idUsuario, foto) {
         try {
@@ -124,7 +130,7 @@ export const conexaoBD = defineStore('conexaoBD', {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
-            });
+            },{withCredentials:true});
     
             // Retorne os dados da resposta
             return response.data;

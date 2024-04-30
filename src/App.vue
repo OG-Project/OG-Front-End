@@ -53,7 +53,7 @@ const route = useRoute();
 onMounted(async () => {
   let root = document.documentElement.style
   usuario.value =
-    await conexao.buscarUm(
+    await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')),'/usuario')
   configuracao.value=usuario.value.configuracao
