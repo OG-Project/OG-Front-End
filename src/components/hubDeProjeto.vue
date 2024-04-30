@@ -107,6 +107,7 @@ onMounted(async () => {
     }
 
     console.log(visualizacao.value)
+    definePorcentagem()
 })
 
 function atualizaVisualizacao() {
@@ -146,7 +147,7 @@ function definePorcentagem() {
     }
     string = "Progressão " + porcentagem + "%"
     console.log(string)
-    porcentagemDeConclusao = string
+    porcentagemDeConclusao.value = string
 }
 function defineSubTarefasConcluida(tarefas) {
     for (const tarefa of tarefas) {

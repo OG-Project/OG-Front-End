@@ -109,7 +109,9 @@ function verificaCorTexto(tarefa) {
 }
 function enviaCookie(tarefa){
     $cookies.set("IdTarefaCookies",tarefa.id)
-    router.push('/criaTarefa')
+    router.push('/criaTarefa').then(() => {
+        window.location.reload()
+    })
 }
 
 </script>

@@ -9,7 +9,7 @@
         item-key="tarefa.indice"  @start="drag = true" @end="drag = false">
         <template #item="{ element: tarefa }">
           <div class="flex flex-row truncate h-[6vh] bg-[#CCC9CE] py-[1%]" v-if="tarefa.nome != null" @click="trocaRota(tarefa)">
-            <div class="flex justify-center items-center h-full w-[2vw] absolute right-0">
+            <div class="flex justify-center items-center h-full w-[2vw] absolute left-0">
               <svg width="19" height="33" viewBox="0 0 19 33" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect y="0.973145" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
                 <rect x="11.4297" y="0.973145" width="7.42971" height="7.68505" rx="1" fill="#FEFBFF" />
@@ -31,15 +31,18 @@
             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
               <div class="border-r-2 flex h-full items-center justify-center w-[10vw] truncate  h-full"
                 v-if="funcaoVerificaPropriedade(propriedade, tarefa)">
-                <div v-if="propriedade.propriedade.tipo == 'DATA'">
+                <div v-if="propriedade.valor.valor == null" class="border-r-2 flex items-center justify-center w-[10vw]  h-full">
+                  <p>Não Tem Valor</p>
+                </div>
+                <div v-if="propriedade.propriedade.tipo == 'DATA' && propriedade.valor.valor != null">
                   {{ format(new Date(propriedade.valor.valor), 'dd/MM/yyyy hh:mm') }}
                 </div>
-                <div v-else="propriedade.propriedade.tipo != 'DATA'">
+                <div v-else="propriedade.propriedade.tipo == 'TEXTO' && propriedade.valor.valor != null">
                   {{ propriedade.valor.valor.charAt(0).toUpperCase() + propriedade.valor.valor.slice(1) }}
                 </div>
-              </div>
-              <div v-if="propriedade.valor.valor == null" class="border-r-2 flex items-center justify-center w-[10vw]  h-full">
-                <p>Não Tem Valor</p>
+                <div v-else="propriedade.propriedade.tipo != 'DATA' && propriedade.propriedade.tipo != 'TEXTO' && propriedade.valor.valor != null">
+                  {{ propriedade.valor.valor }}
+                </div>
               </div>
             </div>
           </div>
@@ -94,7 +97,10 @@ function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
 
 function trocaRota(tarefa){
     VueCookies.set("IdTarefaCookies",tarefa.id)
-    router.push('/criaTarefa')
+    router.push('/criaTarefa').then(() => {
+        window.location.reload()
+    })
+   
 }
 </script>
 

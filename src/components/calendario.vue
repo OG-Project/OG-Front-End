@@ -185,7 +185,8 @@ async function verificaTarefasDoDia(dia) {
     tarefas2 = tarefas2.sort(sortBy('indice'))
     for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {
-            if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA") {
+            if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA" && propriedade.valor.valor != []) {
+                console.log(propriedade.valor.valor)
                 if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
                     let tarefaObjeto = {
                         tarefa: tarefa,

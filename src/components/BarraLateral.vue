@@ -75,8 +75,11 @@ function openClose() {
 }
 
 function redirecionamento(local) {
-  router.push(local);
+  router.push(local).then(() => {
+        window.location.reload()
+    });
   openClose();
+  
 }
 </script>
 

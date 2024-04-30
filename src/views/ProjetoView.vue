@@ -15,7 +15,11 @@
                     class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto" >
                     <KanbanDeStatus></KanbanDeStatus>
                 </div>
-                <div v-if="defineOpcao(route.path, '/projeto/lista')"
+                <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length < 7"
+                    class="w-full max-w-full h-screen flex justify-center px-4 items-center overflow-x-auto">
+                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
+                </div>
+                <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length >= 7"
                     class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto">
                     <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
                 </div>
