@@ -2,7 +2,10 @@
     <div class="card" :class="{ 'fade-in': show, 'fade-out': !show }" id="messeger">
         <div class="flex justify-center">
             <div class="divCor" :style="{ backgroundColor: cor }"></div>
-            <img src="" alt="">
+            <errorIcon class="flex justify-center items-center mt-[1vh] ml-2 2xl:mt-[0.5vh] xl:mt-[1vh] lg:mt-[1vh] md:mt-[1vh]
+            2xl:mr-2 xl:mr-2 lg:mr-2 md:mr-2 2xl:ml-0 xl:ml-0 lg:ml-0 md:ml-0" v-if="cor == '#CD0000'"></errorIcon>
+            <sucessIcon class="flex justify-center items-center mt-[1vh] ml-2 2xl:mt-[0.5vh] xl:mt-[1vh] lg:mt-[1vh] md:mt-[1vh] 
+            2xl:mr-2 xl:mr-2 lg:mr-2 md:mr-2 2xl:ml-0 xl:ml-0 lg:ml-0 md:ml-0" v-if="cor == '#29CD00'"></sucessIcon>
             <h2 class="card-titulo" :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
         </div>
     </div>
@@ -10,7 +13,10 @@
 
 <script setup>
     import { defineProps, ref, onMounted } from 'vue';
-
+    import { getCurrentInstance } from 'vue';
+    import sucessIcon from '../assets/sucessIcon.vue';
+    import errorIcon from '../assets/errorIcon.vue';
+    const instance = getCurrentInstance();
     const props = defineProps({
         mensagem: String,
         cor: String // Adicionei a propriedade "cor"
@@ -27,13 +33,15 @@
         // Define um timeout para esconder o componente após 5 segundos
         setTimeout(() => {
             show.value = false;
+            limparMensagem();
+             instance.emit('acabouOTempo')
         }, 5000);
     });
 </script>
 
 <style scoped>
     .card {
-        @apply flex flex-wrap justify-start 2xl:w-[15vw] 2xl:h-[6vh] xl:w-[17vw] xl:h-[6vh] lg:w-[18vw] lg:h-[6vh] md:w-[20vw] md:h-[6vh] bg-[var(--brancoNeve)] shadow-md;
+        @apply flex flex-wrap justify-start 2xl:w-[17vw] 2xl:h-[6vh] xl:w-[22vw] xl:h-[6vh] lg:w-[26vw] lg:h-[6vh] md:w-[34vw] md:h-[6vh] bg-[var(--brancoNeve)] shadow-md;
         transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
     }
 
@@ -43,7 +51,7 @@
     }
 
     .card-titulo {
-        @apply truncate flex 2xl:w-[13vw] xl:w-[13vw] lg:w-[14vw] md:w-[14vw] text-base font-semibold items-center justify-start ml-3 mr-[3vw] md:text-sm md:ml-0;
+        @apply truncate flex 2xl:w-[13vw] xl:w-[18vw] lg:w-[18vw] md:w-[24vw] text-base font-semibold items-center justify-start mt-1 ml-3 mr-[3vw] md:text-sm md:ml-0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -79,7 +87,11 @@
 
     @media(max-width: 620px) {
         .card-titulo {
-            @apply ml-5 text-xl w-[60vw];
+            @apply flex-wrap ml-5 text-lg w-[80vw];
+        }
+        .card {
+            @apply w-[90vw] mt-[-20vh];
+            transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
         }
     }
 </style>

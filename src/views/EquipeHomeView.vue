@@ -38,7 +38,7 @@
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
 
-
+            
         </div>
     </div>
 
@@ -70,7 +70,6 @@ const router = useRouter();
 
 onMounted(() => {
     listaUsuarios();
-
 
 })
 

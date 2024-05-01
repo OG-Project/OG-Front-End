@@ -7,7 +7,9 @@
                 <div class=" grid-template  flex w-full mt-[1vh]  p-5">
                     <div class="relative">
                         <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
-                        <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao" alt="Imagem Selecionada" >
+                        <div class="rounded-full bg-[#D7D7D7] flex items-center justify-center 2xl:w-[70px] 2xl:h-[70px] xl:w-[70px] xl:h-[70px] lg:w-[65px] lg:h-[65px] md:w-[60px] md:h-[60px]">
+                            <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao" alt="Imagem Selecionada" > 
+                        </div>
                     </div>
                     <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome" @updateModelValue="(e)=> {nome=e}" ></Input> 
                 </div>
@@ -21,7 +23,7 @@
                     <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilegrande" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
-                    <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
+                    <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao" @updateModelValue="(e)=> {descricao=e}" ></textAreaPadrao>
                 </div> 
                 <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
                     <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
@@ -38,9 +40,10 @@
             </div>  
 
         </fundoPopUp>
-    <div v-if="mensagemError != ''"  class="absolute justify-end h-[95vh] mt-[-25vh] ml-[80vw] z-[9999]">
-        <logsTela  v-if="mensagemError != ''" :mensagem="mensagemError" :key="mensagemError"></logsTela>
-    </div>  
+    <div v-if="mensagem != ''"  class="absolute flex items-start justify-start 2xl:mt-[-25vh] 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh]
+    lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh]  z-[9999]">
+        <alertTela   :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro"></alertTela>
+    </div>
     
     </template>
     <script setup>
@@ -50,10 +53,10 @@
     import textAreaPadrao from './textAreaPadrao.vue';
     import Botao from './Botao.vue';
     import ListaConvidados from './ListaConvidados.vue';
-    import { conexaoBD } from "../stores/conexaoBD.js";
+    import { conexaoBD } from '../stores/conexaoBD';
     import { criaEquipeStore } from "../stores/criarEquipe";
     import VueCookies from "vue-cookies";
-    import logsTela from './logsTela.vue';
+    import alertTela from './alertTela.vue';
 
 
     const banco = conexaoBD();
@@ -68,9 +71,10 @@
     import { webSocketStore } from '../stores/webSocket.js'
     
     function limparMensagemErro() {
-    mensagemError.value = "";
+    mensagem.value = "";
 }
-    let mensagemError = ref("");
+    let mensagem = ref("");
+    let mensagemCor = ref("");
     
     onMounted(()=>{
         conexaoWeb.url= "ws://localhost:8085/og/webSocket/usuario/" +usuarioLogado;
@@ -154,19 +158,19 @@
     function larguraInput(){
     const screenWidth = window.innerWidth;
     if(screenWidth <= 620){
-            return '45'
+            return '48'
         }
         if (screenWidth <= 768) {
-            return '25';
+            return '23';
         } if (screenWidth > 768 && screenWidth <= 1024) {
-            return '28';
+            return '24';
         }if (screenWidth > 1024 && screenWidth <= 1440) {
-            return '25';
+            return '26';
         }if(screenWidth > 1440 && screenWidth < 1920){
             return '10';
         }
         else {
-            return '13';
+            return '11';
         }
     };
 
@@ -176,15 +180,15 @@
             return '70'
         }
         if (screenWidth <= 768) {
-            return '30';
+            return '34';
         } if (screenWidth > 768 && screenWidth <= 1024) {
-            return '35';
+            return '33';
         } if (screenWidth > 1024 && screenWidth <= 1440) {
-            return '35';
+            return '33';
         } if(screenWidth > 1440 && screenWidth < 1920){
-            return '12';
+            return '10';
         }else {
-            return '18';
+            return '16';
         }
     }
 
@@ -195,7 +199,10 @@
         if (!membrosEquipe.value.some((membro) => membro.username === usuario.username || membro.email === usuario.email)) {
             membrosEquipe.value.push(usuario);
         } else {
-            mensagemError.value = "membro já pertence à equipe.";
+            mensagem.value = ""
+            mensagemCor.value = ""
+            mensagem.value = "membro já pertence à equipe.";
+            mensagemCor.value = "#CD0000"
         }
     }
     });
@@ -207,26 +214,28 @@
 
     async function cadastrarEquipe() { 
     limparMensagemErro();
-    console.log(mensagemError.value)
     const cria = criaEquipeStore();
 
     if (!nome.value.trim()) {
-    mensagemError.value = "É obrigatório o nome da equipe";
-    console.log(mensagemError.value)
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "É obrigatório o nome da equipe";
+    mensagemCor.value = "#CD0000"
     return;
     }
 
         equipeCadastrada.nome = nome.value;
         equipeCadastrada.descricao = descricao.value;
-        mensagemError.value = "";
+        mensagem.value = "";
         
         let equipe;
         cria.criaEquipe(equipeCadastrada).then(response =>{
-            equipe = response.data
+        equipe = response.data
         colocaMembrosEquipe(equipe)
         enviaParaWebSocket(equipe, membrosEquipe.value);
+        window.location.reload()
         });
-
+        
     };
 
     async function colocaMembrosEquipe(equipe){
@@ -245,6 +254,7 @@
             ids.push(usuarioLogadoId);
         }
         banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
+       
     }
 
     async function enviaParaWebSocket(equipe,membrosConvidados) {
@@ -299,7 +309,7 @@
     }
 
     .imagem {
-        @apply xl:h-[6vh] xl:w-[3vw];
+        @apply xl:h-[6vh] xl:w-[3vw] mt-1 ml-1;
     }
 
     .mensagem-error {
