@@ -14,7 +14,7 @@ export const criaUsuarioStore = defineStore('criaUsuario', {
       usuarioCriado.username = username;
       usuarioCriado.email = email;
       usuarioCriado.senha = senha;
-      api.cadastrar(usuarioCriado, '/usuario')
+      api.cadastrar(usuarioCriado, '/usuario').then(response =>response.data)
     },
   },
 })
