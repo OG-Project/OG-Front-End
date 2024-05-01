@@ -518,8 +518,11 @@ let numeroDeArquivos = ref(0);
 //Variáveis usadas na hora de criar uma propriedade
 
 function deletaTarefa() {
-  banco.deletar(tarefa.value, "/tarefa");
-  router.push("/tarefas");
+  banco.deletarTarefa("/tarefa",VueCookies.get("IdTarefaCookies"));
+  router.push("/projeto").then(() => {
+    window.location.reload();
+    VueCookies.remove("IdTarefaCookies");
+  });
 }
 
 let nomePropriedade = ref("");

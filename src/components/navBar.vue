@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[8vh] w-full flex z-[99999999999999]">
+  <div class="h-[8vh] w-full flex z-[99]">
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
@@ -12,7 +12,7 @@
     <div class="h-[8vh] w-[50%] flex gap-8 justify-end mr-8">
       <div class="flex justify-between pt-3 w-[16vw]">
         <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10" :conteudoInput="$t('navBar.pesquisar')"
-          :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99999999999999999]"></inputDePesquisa>
+          :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99]"></inputDePesquisa>
       </div>
       <div class="flex items-center justify-between w-[14%]">
         <button @click="notificacaoBoolean = true">
