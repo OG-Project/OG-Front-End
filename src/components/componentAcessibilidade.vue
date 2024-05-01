@@ -17,13 +17,12 @@
                         <selectPadrao :lista-select="listaIdiomas"
                             v-model="idioma" @click="alterarIdioma(idioma)"/>
                     </div>
-                    <div class="flex justify-between items-center gap-5">
+                    <!-- <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Digitar com a voz</span>
                         <CheckBox :key="isDigitarVoz.valueOf()" tipo="toggle" el-id="checkDigitarVoz"
                             :checked="gerarBooleano('checkDigitarVoz')" @envia-valor="digitarVoz($event)">
                         </CheckBox>
-                        <!-- Boolean(1) -->
-                    </div>
+                    </div> -->
                     <div class="flex justify-between items-center gap-5">
                         <span class="text-xl">Libras</span>
                         <CheckBox :key="isVlibra.valueOf()" tipo="toggle" el-id="checkLibras"

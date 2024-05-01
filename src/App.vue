@@ -30,6 +30,28 @@ const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
 webSocket.criaConexaoWebSocket();
+import Shepherd from 'shepherd.js';
+
+const tour = new Shepherd.Tour({
+  useModalOverlay: true,
+  defaultStepOptions: {
+    classes: 'shadow-md bg-purple-dark',
+    scrollTo: true
+  },
+  steps: [
+  {
+  id: 'example-step',
+  title: 'oiiii',
+  text: 'teste 2',
+  attachTo: {
+    // element: '.example-css-selector',
+    on: 'bottom'
+  },
+  
+}
+    ],
+});
+
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto = funcaoPopUpStore();
@@ -51,20 +73,21 @@ let configuracao = ref()
 const route = useRoute();
 
 onMounted(async () => {
+  tour.start()
   let root = document.documentElement.style
   usuario.value =
-    await banco.buscarUm(
-      JSON.parse(
-        VueCookies.get('IdUsuarioCookie')),'/usuario')
-        configuracao.value=usuario.value.configuracao
-    console.log(configuracao.value);
-  perfil.isVlibras=configuracao.value.isLibras
-  perfil.isTecladoVirtual=configuracao.value.isTecladoVirtual
-  perfil.isVoiceMaker=configuracao.value.isDigitarVoz
-  root.setProperty('--hueRoxo',configuracao.value.hueCor)
-  root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
-  root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
-  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho+'vh')
+  await banco.buscarUm(
+    JSON.parse(
+      VueCookies.get('IdUsuarioCookie')),'/usuario')
+      configuracao.value=usuario.value.configuracao
+      console.log(configuracao.value);
+      perfil.isVlibras=configuracao.value.isLibras
+      perfil.isTecladoVirtual=configuracao.value.isTecladoVirtual
+      perfil.isVoiceMaker=configuracao.value.isDigitarVoz
+      root.setProperty('--hueRoxo',configuracao.value.hueCor)
+      root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
+      root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
+      root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho+'vh')
   root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho+'vh')
   console.log(configuracao.value.isDark);
   if(configuracao.value.isDark){
@@ -73,25 +96,7 @@ onMounted(async () => {
     root.setProperty('--fonteCor','#ffffff')
   }
 
-
-  // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
-  // perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
-  // perfil.isTecladoVirtual)
-  // root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
-  // root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
-  // root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
-  // let tamanhoCorpo=JSON.parse(VueCookies.get('fonteCorpoTamanho'))
-  // let tamanhoTitulo=JSON.parse(VueCookies.get('fonteTituloTamanho'))
-  // root.setProperty('--fonteCorpoTamanho',tamanhoCorpo+'vh')
-  // root.setProperty('--fonteTituloTamanho',tamanhoTitulo+'vh')
-  // perfil.hue=JSON.parse(VueCookies.get('matizCor'))
-  // perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
-  // perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
-  // perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
 })
-
-
-
 
 function press(b) {
   let valorElemento = perfil.el.value

@@ -22,7 +22,7 @@
     <popUpNotificacao @fechar-Pop-Up="notificacaoBoolean = false"></popUpNotificacao>
   </div>
 </template>
-<script setup>
+<script setup lang=''>
 import { ref } from "vue";
 import Input from "./Input.vue";
 import router from "@/router";
@@ -52,7 +52,7 @@ function criaListaDePesquisa() {
           listaDePesquisa.push({
             id: projeto.id,
             nome: projeto.nome,
-            tipo: "Projeto",
+            tipo: "Projeto"
           });
           projeto.tarefas.forEach(tarefa => {
             if(tarefa.nome){
@@ -60,7 +60,7 @@ function criaListaDePesquisa() {
               id: tarefa.id,
               nome: tarefa.nome,
               tipo: "Tarefa",
-            });
+              });
             }
           });
         });
