@@ -6,7 +6,7 @@
     </div>
     <div class="flex flex-col w-min h-full justify-strart items-center gap-3">
       <draggable class=" truncate flex flex-col gap-3" v-model="projeto.tarefas" :animation="300" group="tarefa"
-        item-key="tarefa.indice"  @start="drag = true" @end="drag = false">
+        item-key="tarefa.indice"  @start="drag = true" @end="onDragEnd">
         <template #item="{ element: tarefa,index }">
           <div class="flex flex-row truncate h-[6vh] bg-[#CCC9CE] py-[1%]" v-if="tarefa.nome != null" @click="trocaRota(tarefa)">
 
@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, onUnmounted, watch } from 'vue';
 import cabecalhoCardDaLista from './cabecalhoCardDaLista.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import { format } from 'date-fns';
@@ -53,7 +53,7 @@ import  VueCookies  from 'vue-cookies';
 import draggable from "vuedraggable";
 
 let api = conexaoBD()
-let projetoPromise = api.procurar("/projeto/1")
+let projetoId = VueCookies.get("IdProjetoAtual")
 let visualizacaoPromise = {}
 let projeto = ref({})
 let visualizacao = {}
@@ -61,8 +61,10 @@ let lista = ref([])
 
 
 onMounted(() => {
-  transformaEmObject()
-  ordenaTarefas()
+  transformaEmObject().then(()=>{
+    console.log(projeto.value)
+    ordenaTarefas()
+  })
 })
 
 const props = defineProps({
@@ -71,7 +73,7 @@ const props = defineProps({
 })
 
 async function transformaEmObject() {
-  projeto.value = await projetoPromise
+  projeto.value = await api.buscarUm(projetoId, '/projeto')
   // visualizacaoPromise = api.procurar("/visualizacaoEmLista/" + projeto.id)
   visualizacao = await visualizacaoPromise
 }
@@ -88,7 +90,16 @@ function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
 }
 
 function ordenaTarefas(){
-  projeto.tarefas.sort((tarefa, tarefa2) => tarefa.valorPropriedadeTarefa - b.indice)
+  console.log(projeto.value.tarefas)
+  projeto.value.tarefas.sort((tarefa, tarefa2) =>{
+    return tarefa.indice[1].indice - tarefa2.indice[1].indice
+  })
+}
+function onDragEnd(){
+  projeto.value.tarefas.forEach(async (tarefa, index) =>{
+    tarefa.indice[1].indice = projeto.value.tarefas.indexOf(tarefa)
+    await api.atualizar(tarefa, '/tarefa')
+  })
 }
 function trocaRota(tarefa){
     VueCookies.set("IdTarefaCookies",tarefa.id)
