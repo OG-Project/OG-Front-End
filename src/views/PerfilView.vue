@@ -2,13 +2,14 @@
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
-        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
                 <div 
                 @click="open()"
                 @mouseover="()=> ishover=!ishover"
                 @mouseout="()=> ishover=!ishover"
                 class="xl:w-[95%] 
+                cursor-pointer
                 text-center 
                 flex 
                 justify-center 
@@ -33,9 +34,11 @@
                     />
                     
                     
-                    <div v-if="ishover" class="absolute flex items-center text-white">
-                        <span class=" ">Alterar Foto</span>
-                        <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)]
+                    <div v-if="ishover" 
+                    style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
+                    class="absolute flex bg-gray-400 px-2 py-1 rounded-full items-center text-black">
+                        <span class=" text-[var(--fonteCor)] ">Alterar Foto</span>
+                        <iconLapisDinamic  class="
                          bg-cover 
                          ml-3 
                          w-6 
@@ -44,7 +47,9 @@
                 </div>
                 
             </div>
-            <div class="font-[var(--fonteCorpo)] flex flex-col gap-10">
+            <div 
+            style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
+            class=" flex flex-col gap-10">
                 <div @click="informacao()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
@@ -118,6 +123,7 @@ import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import Botao from '../components/Botao.vue'
 import router from '../router';
+import iconLapisDinamic from '../imagem-vetores/icon-lapisDinamic..vue';
 
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';

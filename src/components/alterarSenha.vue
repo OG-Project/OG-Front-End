@@ -3,7 +3,7 @@
         <fundoPopUp largura="77vh" altura="68vh">
             <div class="flex flex-col justify-between  w-[77vh] h-[68vh]">
                 <div class="flex pl-12 pt-12">
-                    <div class="text-3xl text-roxo">
+                    <div class="text-3xl text-[var(--roxo)]">
                         Alterar Senha 
                         <!-- {{ senhaUsuario }} -->
                     </div>    
