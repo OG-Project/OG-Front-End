@@ -53,7 +53,7 @@ defineEmits(['update:modelValue'])
     }
 
     const estilizaSelect={
-        fontSize: props.fonteTamanho 
+        fontSize: 'var(--fonteCorpoTamanho)'
 
     }
     

@@ -1,29 +1,36 @@
 <template>
         <div class="w-[75vw] h-[92vh] flex flex-col  ">
-                <div :style="{fontFamily:fonteTitulo}">
+                <div style="
+                font-family:var(--fonteTitulo);
+                font-size: var(--fonteTituloTamanho);">
                         <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
                 </div>
-                <div :style="{fontFamily:fonteCorpo}" class="flex justify-center w-full  sm:flex-wrap  gap-8">
+                <div style="
+                font-family: var(--fonteCorpo); 
+                font-size: var(--fonteCorpoTamanho);" 
+                class="flex justify-center w-full  sm:flex-wrap  gap-8">
                         <div class="flex flex-col 2xl:w-max md:w-[493px] sm:w-[493px] gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
-                                        <span class="text-xl">Nome</span>
+                                        <span class="">Nome</span>
                                         <Input 
                                         styleInput="input-transparente-claro" 
                                         conteudoInput="Nome" 
                                         v-model="nome"
+                                        :desabilitado="!editar.valueOf()"
                                         tipo="obrigatorio"
                                         @updateModelValue="(e)=> {
                                                 console.log(e)
-                                                nome=e
+                                                nome.value=e
                                         }"
                                         />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
-                                        <span class="text-xl">Username</span>
+                                        <span class="">Username</span>
                                         <Input 
 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Username" 
+                                        conteudoInput="Username"
+                                        :desabilitado="!editar.valueOf()" 
                                         v-model="PerfilStore.username" 
                                         tipo="obrigatorio" 
                                         @updateModelValue="(e)=> {
@@ -36,7 +43,8 @@
                                         <span class="text-xl">E-mail</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="E-mail" 
+                                        conteudoInput="E-mail"
+                                        :desabilitado="!editar.valueOf()" 
                                         v-model="PerfilStore.email" 
                                         tipo="obrigatorio"
                                         @updateModelValue="(e)=> {
@@ -49,11 +57,11 @@
                         
                         <div class="flex flex-col 2xl:w-max sm:w-[493px] gap-y-10">
                                 <div class="flex justify-between items-center gap-5">
-                                        <span class="text-xl">Sobrenome</span>
+                                        <span class="">Sobrenome</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Sobrenome"
-                                        
+                                        :desabilitado="!editar.valueOf()"
                                         v-model="PerfilStore.sobrenome" 
                                         tipo="obrigatorio"
                                         @updateModelValue="(e)=> {
@@ -64,12 +72,13 @@
                                 </div>
                                 <!-- @updateModelValue -->
                                 <div class="flex justify-between items-center gap-5">
-                                        <span class="text-xl">Data de Nascimento</span>
+                                        <span class="">Data de Nascimento</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
                                         conteudoInput="Data de Nascimento" 
                                         v-model="PerfilStore.dataDeNascimento" 
                                         tipo="date"
+                                        :desabilitado="!editar.valueOf()"
                                         @updateModelValue="(e)=> {
                                                 console.log(e)
                                                 PerfilStore.dataDeNascimento=e
@@ -82,13 +91,13 @@
                 <!-- conferir se de fato vamos usar isso de alteração -->
                 <div class="flex justify-end mr-[15%] mt-[23%]">
                         <Botao v-if="!editar" 
-                        :funcaoClick="alterarEmail" 
+                        :funcaoClick="alterarInformacoes" 
                         preset="PadraoRoxo" 
                         texto="Editar E-mail" 
                         tamanhoDaBorda="2px" 
                         tamanhoDaFonte="2.0vh" />
                         <Botao v-else 
-                        :funcaoClick="alterarEmail" 
+                        :funcaoClick="alterarInformacoes" 
                         preset="PadraoRoxo" 
                         texto="Confirmar Edição" 
                         tamanhoDaBorda="2px" 
@@ -113,16 +122,20 @@ const conexao=conexaoBD()
 // console.log(conexao
 
 let nome=ref('')
-
+let usuario=ref({})
 let editar=ref(false)
 
-function alterarEmail(){
+function alterarInformacoes(){
         console.log(nome.value)
-        console.log(PerfilStore.dataDeNascimento)
         console.log(PerfilStore.email)
         console.log(PerfilStore.username)
         console.log(PerfilStore.sobrenome)
         console.log(PerfilStore.dataDeNascimento)
+        usuario.value.email=PerfilStore.email
+        usuario.value.username=PerfilStore.username
+        usuario.value.sobrenome=PerfilStore.sobrenome
+        usuario.value.dataNascimento=PerfilStore.dataDeNascimento
+        editar.value=!editar.value
         // Revisar 
 
         // editar.value=!editar.value
@@ -137,19 +150,18 @@ onBeforeMount(async ()=>{
         // VueCookies.set("IdUsuarioCookie",JSON.stringify(6),"30d")
         let id=JSON.parse(VueCookies.get("IdUsuarioCookie"))
         console.log(id)
-        let usuario = await conexao.buscarUm(id,'/usuario')
+        usuario.value = await conexao.buscarUm(id,'/usuario')
         console.log(usuario)
         // erros pelo fato do cookie
-        PerfilStore.nome=usuario.nome
+        PerfilStore.nome=usuario.value.nome
         nome.value=PerfilStore.nome
-        PerfilStore.sobrenome=usuario.sobrenome
+        PerfilStore.sobrenome=usuario.value.sobrenome
         console.log('oi')
         
-        PerfilStore.email=usuario.email
-        PerfilStore.username=usuario.username
-        let data=new Date(usuario.dataNascimento).toLocaleDateString()
+        PerfilStore.email=usuario.value.email
+        PerfilStore.username=usuario.value.username
+        let data=new Date(usuario.value.dataNascimento).toLocaleDateString()
         data=data.split('/').reverse().join('-')
-        
         PerfilStore.dataDeNascimento=data
 })
 onMounted(()=>{
