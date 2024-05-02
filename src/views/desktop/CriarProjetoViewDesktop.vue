@@ -370,7 +370,9 @@ async function criaProjeto() {
 
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-            router.push('/projeto')
+            router.push('/projeto').then(() => {
+        window.location.reload()
+    });
         restauraCookies();
         
 
@@ -380,7 +382,9 @@ async function criaProjeto() {
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
-        router.push('/projeto')
+        router.push('/projeto').then(() => {
+        window.location.reload()
+    });
     }
 
 }

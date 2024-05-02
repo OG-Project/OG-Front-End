@@ -312,7 +312,9 @@ function colocaCorPadrao() {
 }
 
 function mudaPaginaParaKanban() {
-    router.push('/projeto')
+    router.push('/projeto').then(() => {
+        window.location.reload()
+    });
 }
 
 async function buscandoPor() {

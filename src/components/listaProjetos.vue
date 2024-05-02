@@ -337,7 +337,9 @@ const buscarCorPorCategoria = (categoria) => {
   async function entrarNoProjeto(projeto) {
   console.log(projeto)
   VueCookies.set("IdProjetoAtual", projeto.id, 30000)
-  router.push({ path: '/projeto' })
+  router.push({ path: '/projeto' }).then(() => {
+        window.location.reload()
+    });
 }
 </script>
 <style scoped>
