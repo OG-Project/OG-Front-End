@@ -38,6 +38,7 @@ const tamanhoComClass = ref("medioId");
 const screenWidth = ref(window.innerWidth)
 
 onMounted(()=>{
+
   if(screenWidth < 640){
     'var(--fonteCorpoTamanho)'.value='0.5vh'
   }

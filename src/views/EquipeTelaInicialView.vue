@@ -74,12 +74,16 @@ const router = useRouter();
 async function entrarNoProjeto(projeto) {
   console.log(projeto)
   VueCookies.set("IdProjetoAtual", projeto.id, 30000)
-  router.push({ path: '/projeto' })
+  router.push({ path: '/projeto' }).then(() => {
+        window.location.reload()
+    });
 }
 
 async function criarProjeto() {
-  router.push({ path: '/criaProjeto' })
-  VueCookies.set("projetoCookie");
+  router.push({ path: '/criaProjeto' }).then(() => {
+        window.location.reload()
+    });
+  VueCookies.set("projetoCookie")
 }
 
 function calcularResponsaveis(projeto) {

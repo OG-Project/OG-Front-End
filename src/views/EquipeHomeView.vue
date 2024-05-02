@@ -51,7 +51,7 @@ import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import editarEquipePopUp from "../components/editarEquipePopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import criarEquipePopUp from "../components/criarEquipePopUp.vue";
+import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
 
@@ -74,12 +74,8 @@ onMounted(() => {
 
 })
 
- webSocket.url="ws://localhost:8085/og/webSocket/usuario/" + usuarioLogadoId
+ webSocket.url="ws://localhost:8085/og/webSocket/usuario/1"
 
- webSocket.esperaMensagem((mensagem) =>{
-    console.log(mensagem)
-    listaUsuarios()
- })
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
       
@@ -100,7 +96,9 @@ function abrePaginaEquipe(equipe) {
     const equipeSelecionada = equipe;
     console.log(equipeSelecionada)
     VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
-    router.push({ name: 'telaInicial' })
+    router.push({ name: 'telaInicial' }).then(() => {
+        window.location.reload()
+    });
 
 }
 

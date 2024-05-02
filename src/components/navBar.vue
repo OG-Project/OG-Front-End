@@ -110,8 +110,10 @@ async function autenticarUsuario(id) {
 }
 
 function redireciona(rota) {
-  router.push(rota);
-  if (rota == '/criaTarefa') {
+  router.push(rota).then(() => {
+        window.location.reload()
+    });
+  if(rota == '/criaTarefa'){
     const criaTarefa = criaTarefaEBuscaStore();
     criaTarefa.criaTarefa();
   }

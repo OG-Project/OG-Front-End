@@ -101,7 +101,9 @@ async function autenticarUsuario(id) {
 }
 
 function redireciona(rota) {
-  router.push(rota);
+  router.push(rota).then(() => {
+        window.location.reload()
+    });
   if (rota == '/criaTarefa') {
     const criaTarefa = criaTarefaEBuscaStore();
     criaTarefa.criaTarefa();
