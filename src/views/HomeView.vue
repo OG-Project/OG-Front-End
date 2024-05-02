@@ -81,6 +81,7 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
+          
           tour.next()
         } 
       },
