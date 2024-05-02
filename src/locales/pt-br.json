@@ -57,7 +57,14 @@
     "nomePropriedade": "Nome Propriedade",
     "tipo": "Tipo",
     "status": "Status",
-    "naoPossuiResponsavel": "Não possui responsável"
+    "naoPossuiResponsavel": "Não possui responsável",
+    "dashboard": "Dashboard",
+    "no_subtasks": "Sem Subtarefas",
+    "projects": "Projetos",
+    "main_projects": "Principais Projetos",
+    "daily_projects": "Projetos do Dia",
+    "weekly_projects": "Projetos da Semana",
+    "monthly_projects": "Projetos do Mês"
   },
   "navBar": {
     "botaoNovaTarefa": "Nova Tarefa",

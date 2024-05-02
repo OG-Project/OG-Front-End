@@ -57,7 +57,14 @@
     "nomePropriedade": "Property Name",
     "tipo": "Type",
     "status": "Status",
-    "naoPossuiResponsavel": "No responsible assigned"
+    "naoPossuiResponsavel": "No responsible assigned",
+    "dashboard": "Dashboard",
+    "no_subtasks": "No Subtasks",
+    "projects": "Projects",
+    "main_projects": "Main Projects",
+    "daily_projects": "Daily Projects",
+    "weekly_projects": "Weekly Projects",
+    "monthly_projects": "Monthly Projects"
   },
   "navBar": {
     "botaoNovaTarefa": "New Task",

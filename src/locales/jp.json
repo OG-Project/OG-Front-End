@@ -57,7 +57,14 @@
     "nomePropriedade": "プロパティ名",
     "tipo": "タイプ",
     "status": "状態",
-    "naoPossuiResponsavel": "担当者未指定"
+    "naoPossuiResponsavel": "担当者未指定",
+    "dashboard": "ダッシュボード",
+    "no_subtasks": "サブタスクなし",
+    "projects": "プロジェクト",
+    "main_projects": "主要なプロジェクト",
+    "daily_projects": "当日のプロジェクト",
+    "weekly_projects": "週間プロジェクト",
+    "monthly_projects": "月次プロジェクト"
   },
   "navBar": {
     "botaoNovaTarefa": "新しいタスク",

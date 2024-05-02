@@ -57,7 +57,14 @@
     "nomePropriedade": "Nombre de la Propiedad",
     "tipo": "Tipo",
     "status": "Estado",
-    "naoPossuiResponsavel": "Sin responsable asignado"
+    "naoPossuiResponsavel": "Sin responsable asignado",
+    "dashboard": "Tablero",
+    "no_subtasks": "Sin Subtareas",
+    "projects": "Proyectos",
+    "main_projects": "Proyectos Principales",
+    "daily_projects": "Proyectos del Día",
+    "weekly_projects": "Proyectos de la Semana",
+    "monthly_projects": "Proyectos del Mes"
   },
   "navBar": {
     "botaoNovaTarefa": "Nueva Tarea",

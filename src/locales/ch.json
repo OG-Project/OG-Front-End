@@ -57,7 +57,14 @@
     "nomePropriedade": "属性名称",
     "tipo": "类型",
     "status": "状态",
-    "naoPossuiResponsavel": "无责任人指定"
+    "naoPossuiResponsavel": "无责任人指定",
+    "dashboard": "仪表板",
+    "no_subtasks": "无子任务",
+    "projects": "项目",
+    "main_projects": "主要项目",
+    "daily_projects": "当日项目",
+    "weekly_projects": "本周项目",
+    "monthly_projects": "本月项目"
   },
   "navBar":{
     "botaoNovaTarefa": "新任务",

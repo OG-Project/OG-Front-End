@@ -23,10 +23,10 @@
             </h1>
         </div>
         <div class="h-32 w-full flex items-center justify-around">
-            <EstrelaHomeIcon @click="trocaTopico('Projetos Urgentes')" />
-            <DiaHomeIcon @click="trocaTopico('Projetos do Dia')" />
-            <SemanaHomeIcon @click="trocaTopico('Projetos da Semana')" />
-            <MesHomeIcon @click="trocaTopico('Projetos do Mês')" />
+            <EstrelaHomeIcon @click="trocaTopico($t('home.main_projects'))" />
+            <DiaHomeIcon @click="trocaTopico($t('home.daily_projects'))" />
+            <SemanaHomeIcon @click="trocaTopico($t('home.weekly_projects'))" />
+            <MesHomeIcon @click="trocaTopico($t('home.monthly_projects'))" />
         </div>
         <div class="w-[90%] h-[45vh] flex flex-col items-center"
             style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
@@ -57,6 +57,9 @@ import MesHomeIcon from '../../assets/MesHomeIcon.vue';
 import { conexaoBD } from "../../stores/conexaoBD.js"
 import VueCookies from "vue-cookies";
 import router from "@/router";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const banco = conexaoBD();
 let nomeDoTopico = ref();
@@ -106,31 +109,31 @@ async function verificaTarefasFeitas() {
 
 onMounted(async () => {
     usuarioCookies = await autenticarUsuario(usuarioId);
-    trocaTopico('Projetos Urgentes')
+    trocaTopico(t('home.main_projects'))
     verificaTarefasFeitas();
 });
 
 function trocaTopico(nome) {
-    if (nome === 'Projetos Urgentes') {
-        nomeDoTopico.value = "Projetos Urgentes";
+    if (nome === t('home.main_projects')) {
+        nomeDoTopico.value = t('home.main_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosUrgentes();
     }
-    else if (nome === 'Projetos do Dia') {
-        nomeDoTopico.value = "Projetos do Dia";
+    else if (nome === t('home.daily_projects')) {
+        nomeDoTopico.value = t('home.daily_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosDia();
     }
-    else if (nome === 'Projetos da Semana') {
-        nomeDoTopico.value = "Projetos da Semana";
+    else if (nome === t('home.weekly_projects')) {
+        nomeDoTopico.value = t('home.weekly_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosSemana();
     }
-    else if (nome === 'Projetos do Mês') {
-        nomeDoTopico.value = "Projetos do Mês";
+    else if (nome === t('home.monthly_projects')) {
+        nomeDoTopico.value = t('home.monthly_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosMes();
