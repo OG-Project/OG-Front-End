@@ -8,7 +8,7 @@
           <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid var(--roxo)" @click="redireciona('/projeto/kanban', projeto.id)">
             <p>{{ projeto.nome }}</p>
             <p v-if="projeto.responsaveis[0]">{{ projeto.responsaveis[0].responsavel.username }}</p>
-            <p v-if="!projeto.responsaveis[0]"> Não possui responsável</p>
+            <p v-if="!projeto.responsaveis[0]">{{ $t('home.naoPossuiResponsavel') }}</p>
           </div>
         </div>
       </div>

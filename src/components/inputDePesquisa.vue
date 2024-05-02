@@ -118,6 +118,9 @@ function passaValorProInput(valor) {
 }
 
 function redireciona(rota) {
+  if(rota == '/criaTarefa'){
+    localStorage.removeItem('TarefaNaoFinalizada');
+  }
   router.push(rota);
 }
 
