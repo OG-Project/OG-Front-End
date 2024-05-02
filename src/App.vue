@@ -7,11 +7,9 @@ import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
 import Navbar from '@/components/Navbar.vue';
 import { ref, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
 import router from "@/router";
-
 import { useDraggable } from '@vueuse/core'
 import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
 import listaProjetos from './components/listaProjetos.vue';
@@ -19,6 +17,8 @@ import kanbanProjetos from './components/kanbanProjetos.vue'
 import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
 import { conexaoBD } from "./stores/conexaoBD";
+import { useRoute } from 'vue-router';
+const route = useRoute()
 
 import tabBar from "./components/tabBar.vue";
 import NavBarMobile from "./components/NavBarMobile.vue";
@@ -38,20 +38,53 @@ const tour = new Shepherd.Tour({
     classes: 'shadow-md bg-purple-dark',
     scrollTo: true
   },
-  steps: [
-  {
-  id: 'example-step',
-  title: 'oiiii',
-  text: 'teste 2',
-  attachTo: {
-    // element: '.example-css-selector',
-    on: 'bottom'
-  },
-  
-}
-    ],
 });
+tour.addSteps([
+  {
+    id: 'step-1',
+    title: 'oiiii',
+    text: 'teste 2',
+    attachTo: {
+      element: '#step-1',
+      on: 'bottom'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          tour.next()
+          router.push('/home')
+        } 
+      },
+      {
+        secondary: true,
+        text: 'skip',
+        action: tour.complete
+      }
+    ]
 
+  },
+  {
+    id: 'step-2',
+    title: 'step2',
+    text: 'teste 3',
+    attachTo: {
+      element: '#step-2',
+      on: 'bottom'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: tour.next
+      },
+      {
+        secondary: true,
+        text: 'skip',
+        action: tour.complete
+      }
+    ]
+  }
+])
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto = funcaoPopUpStore();
@@ -69,9 +102,6 @@ const { x, y, style } = useDraggable(el, {
 let url = window.location.href;
 let usuario = ref()
 let configuracao = ref()
-
-const route = useRoute();
-
 onMounted(async () => {
   tour.start()
   let root = document.documentElement.style
@@ -181,31 +211,31 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-<div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
-  <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
+    <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
-    <RouterView />
+    <RouterView  />
   </div>
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
-  class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
-  <div class=" flex flex-col items-center">
-    <div class="flex w-full justify-between px-4 ">
-      <svgIconMove class="w-[1vw] h-[3vh]" />
-      <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
-    </div>
-    <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
-  </div>
-</div>
-<div v-show="isVlibras == true ">
-  <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
+    <div class=" flex flex-col items-center">
+      <div class="flex w-full justify-between px-4 ">
+        <svgIconMove class="w-[1vw] h-[3vh]" />
+        <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
+      </div>
+      <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
     </div>
   </div>
-</div>
+  <div  v-show="isVlibras == true ">
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+  </div>
 
 </template>
 <style scoped></style>
