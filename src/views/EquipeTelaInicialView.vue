@@ -7,16 +7,16 @@
         </div>
         <div class="divCel flex justify-end">
             <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
-                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
+                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"  texto="+ Projeto" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
                 <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilepadrao"   texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
-            <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
-                <img src="../imagem-vetores/engrenagem.svg" alt="" :class="{ 'imagem-hover': hover }">
+            <div class="botaoIcone flex justify-center items-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
+              <engrenagem class="w-[20px] h-[20px]" :class="{ 'imagem-hover': hover }" ></engrenagem>
             </div>
             <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
-                <img src="../imagem-vetores/membrosEquipe.svg" alt="" :class="{ 'imagem-hover-membros': hoverMembros }">
+                <membrosEquipeImagem class=" w-[18px] h-[18px]" :class="{ 'imagem-hover-membros': hoverMembros }"></membrosEquipeImagem>
                 <p v-if="screenWidth >= 620" class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
             </div>
                 <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
@@ -26,7 +26,7 @@
     <div class="flex justify-center">
       <div class="listaProjetos overflow-auto">
         <div class="flex justify-center">
-          <H1 class="text-4xl mt-5 text-black font-semibold">PROJETOS</H1> 
+          <H1 class="text-4xl mt-5 text-[var(--fonteCor)] font-semibold">PROJETOS</H1> 
         </div>
         <div  class="projetos ">
           <div  v-for="projeto of listaProjetos" :key="projeto.id" >
@@ -53,6 +53,8 @@ import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import CardProjetos from "../components/cardProjetos.vue";
 import { useRouter } from 'vue-router'
+import engrenagem from "../imagem-vetores/engrenagem.vue";
+import membrosEquipeImagem from "../imagem-vetores/membrosEquipeImagem.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const funcaoPopUp = funcaoPopUpStore();
@@ -240,14 +242,14 @@ function abrePopUp(equipe, tipo) {
 
 
 .tituloEquipe {
-  @apply text-4xl ml-4 text-[#877E7E] 2xl:mt-5 xl:mt-10 lg:mt-24 md:mt-[12vh];
+  @apply text-4xl ml-4 text-[var(--fonteCor)] 2xl:mt-5 xl:mt-10 lg:mt-24 md:mt-[12vh];
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .listaProjetos {
-  @apply mt-[11vh] w-[95vw] h-[65vh] bg-[#f8f8f8] shadow-md shadow-gray-200;
+  @apply mt-[11vh] w-[95vw] h-[65vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
   flex: 1 1 px;
 }
 

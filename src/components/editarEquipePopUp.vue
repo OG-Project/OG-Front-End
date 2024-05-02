@@ -10,7 +10,7 @@
                     :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
                 <img class="imagem" v-else src="../imagem-vetores/Equipe.svg">
                 <div class="styleH1Padrao">
-                    <h1 class="nomeEquipe flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[#877E7E] "
+                    <h1 class="nomeEquipe flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[var(--fonteCor)] "
                         :title="equipeEditar.nome"> {{ truncarNome(equipeEditar.nome, larguraNomeEquipe()) }}</h1>
                 </div>
             </div>
@@ -57,8 +57,10 @@
             <div class=" grid-template  flex w-full mt-[1vh] p-5">
                 <div class="relative">
                     <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
-                    <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
+                    <div class="rounded-full bg-[#D7D7D7] flex items-center justify-center 2xl:w-[70px] 2xl:h-[70px] xl:w-[70px] xl:h-[70px] lg:w-[65px] lg:h-[65px] md:w-[60px] md:h-[60px]">
+                        <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
                         alt="Imagem Selecionada">
+                    </div>
                 </div>
                 <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
                     :largura="larguraInput()" conteudoInput="Nome da Equipe"  v-model="nome" @updateModelValue="(e)=> {nome=e}"></Input>

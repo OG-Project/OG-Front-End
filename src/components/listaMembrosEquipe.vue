@@ -184,12 +184,12 @@ function larguraInputConvidado(){
     }
     if (screenWidth <= 768) {
         return '24';
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
+    }if (screenWidth > 768 && screenWidth <= 1024) {
         return '22';
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
-        return '19';
-    } else if (screenWidth >= 1920 && screenWidth > 2560) {
+    }if (screenWidth > 1024 && screenWidth < 1920) {
         return '20';
+    }if (screenWidth >= 1920 && screenWidth < 2560) {
+        return '16';
     } else if (screenWidth >= 2560) {
         return '12';
     }

@@ -25,8 +25,8 @@
           <div v-if="kanbanAtivo" >
             <div class="w-full">
               <div class="iconeCard mobile:mt-3 mobile:ml-1 " @click="toggleKanban()">
-              <img  class="icone" src="../imagem-vetores/iconCard.svg">
-            </div>
+                <iconCard></iconCard>
+              </div>
             </div>
             <div class="kanban-board w-full pl-2 2xl:mt-2 xl:mt-3 lg:mt-4 md:mt-5 sm:flex sm:justify-start max-mobile:flex-row  ">
 
@@ -78,10 +78,10 @@
           </div>
          
           <div  v-if="!kanbanAtivo && screenWidth <= 620" class="iconeKanban mobile:ml-[88vw] mobile:mt-[-2.8vh]" @click="toggleKanban()">
-            <img   class="icone" src="../imagem-vetores/iconKanban.svg">
+            <iconKanban class="icone"></iconKanban>
           </div>
           <div  v-if="!kanbanAtivo && screenWidth > 620 " class="iconeKanban mobile:mt-[-2.8vh]" @click="toggleKanban()">
-            <img   class="icone" src="../imagem-vetores/iconKanban.svg">
+            <iconKanban class="icone"></iconKanban>
           </div>
         </div>
         <div v-if="mostrarMensagem || !filtrarPorCategoria(statusBotao).length && statusBotao !== null || projetos.length === 0">
@@ -128,6 +128,8 @@
   import KanbanProjetos from './kanbanProjetos.vue';
   import VueCookies from "vue-cookies";
   import { useRouter } from 'vue-router'
+  import iconCard from '../imagem-vetores/iconCard.vue';
+  import iconKanban from '../imagem-vetores/iconKanban.vue';
   const props = defineProps({
     height: { type: String, required: true },
     width: { type: String, required: true }
@@ -361,18 +363,18 @@ kanban-board {
 }
 
 .urgentes {
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-gray-400;
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
 }
 
 .naoIniciado{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#0034BA] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-gray-400;
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#0034BA] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
 }
 .prontos{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#389300] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-gray-400; 
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#389300] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)]; 
 }
 
 .meusProjetos{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#8E00FF] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-gray-400;
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#8E00FF] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)];
 }
 
 .cardProjetos{
@@ -397,7 +399,7 @@ kanban-board {
 }
 
 .icone{
-  @apply w-[25px] h-[25px];
+  @apply w-[45px] h-[45px] mt-[-1vh] ;
 
 }
 
@@ -414,7 +416,7 @@ kanban-board {
 }
 
 .listaProjetos {
-    @apply bg-[#f8f8f8] shadow-md shadow-gray-200;
+    @apply bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
     flex: 1 1px;
 }
 

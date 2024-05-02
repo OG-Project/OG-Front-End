@@ -30,7 +30,8 @@
                 </div>
                 <div class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
                     @mouseover="expandirCard" @mouseleave="reduzirCard">
-                    <img class="flex w-[8vw] h-[6vh]" src="../imagem-vetores/maisIcon.svg" alt="">
+                    <maisIcon class="flex w-[8vw] h-[6vh] ">
+                    </maisIcon>
                 </div>
             </div>
 
@@ -54,7 +55,7 @@ import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import criarEquipePopUp from "../components/criarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
-
+import maisIcon from "../imagem-vetores/maisIcon.vue";
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
@@ -176,11 +177,12 @@ function limparNomeCompleto() {
 }
 
 .maisEquipes {
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] 
+    md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
 }
 
 .listaEquipes {
-    @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md shadow-gray-200;
+    @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
     flex: 1 1 px;
 }
 
