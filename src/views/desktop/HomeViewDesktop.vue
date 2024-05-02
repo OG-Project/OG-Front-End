@@ -1,10 +1,10 @@
 <template>
   <div class="h-[92vh] w-full flex items-center">
     <div class="flex items-center relative justify-center w-full ml-16 mt-16 h-[35vw]">
-      <div id="poligono"
-        class="h-[95%] w-[38%] shadow-2xl flex justify-center flex-col left-10 absolute overflow-visible"
+      <div id="step-2"
+        class="poligono h-[95%] w-[38%] shadow-2xl flex justify-center flex-col left-10 absolute overflow-visible"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; z-index: 5;">
-        <div id="step-2" class="flex justify-center items-end text-white text-4xl h-[10%]">
+        <div class="flex justify-center items-end text-white text-4xl h-[10%]">
           <p>Dashboard</p>
         </div>
         <div class="flex items-center justify-center mt-8 h-[62%] text-white">
@@ -175,7 +175,7 @@ watch([quantidadeTarefasFeitas, quantidadeNaoTarefasFeitas], () => {
 </script>
 
 <style scoped>
-#poligono {
+.poligono {
   clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
   background-color: var(--roxoEscuro);
 }

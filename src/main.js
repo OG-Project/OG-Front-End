@@ -24,7 +24,6 @@ import VueSocketIO from 'vue-socket.io'
 import '@vuepic/vue-datepicker/dist/main.css'
 import VueCookies from "vue-cookies";
 
-import 'shepherd.js/dist/css/shepherd.css';
 
 
 const i18n = createI18n({
@@ -40,6 +39,7 @@ const i18n = createI18n({
         'ru': Russo
     }
 });
+import 'shepherd.js/dist/css/shepherd.css';
 
 
 const app = createApp(App)

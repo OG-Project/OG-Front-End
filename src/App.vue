@@ -30,61 +30,7 @@ const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
 webSocket.criaConexaoWebSocket();
-import Shepherd from 'shepherd.js';
 
-const tour = new Shepherd.Tour({
-  useModalOverlay: true,
-  defaultStepOptions: {
-    classes: 'shadow-md bg-purple-dark',
-    scrollTo: true
-  },
-});
-tour.addSteps([
-  {
-    id: 'step-1',
-    title: 'oiiii',
-    text: 'teste 2',
-    attachTo: {
-      element: '#step-1',
-      on: 'bottom'
-    },
-    buttons: [
-      {
-        text: 'Next',
-        action: ()=>{
-          tour.next()
-          router.push('/home')
-        } 
-      },
-      {
-        secondary: true,
-        text: 'skip',
-        action: tour.complete
-      }
-    ]
-
-  },
-  {
-    id: 'step-2',
-    title: 'step2',
-    text: 'teste 3',
-    attachTo: {
-      element: '#step-2',
-      on: 'bottom'
-    },
-    buttons: [
-      {
-        text: 'Next',
-        action: tour.next
-      },
-      {
-        secondary: true,
-        text: 'skip',
-        action: tour.complete
-      }
-    ]
-  }
-])
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto = funcaoPopUpStore();
@@ -102,8 +48,9 @@ const { x, y, style } = useDraggable(el, {
 let url = window.location.href;
 let usuario = ref()
 let configuracao = ref()
+
 onMounted(async () => {
-  tour.start()
+  
   let root = document.documentElement.style
   usuario.value =
   await banco.buscarUm(
@@ -238,4 +185,6 @@ watch(() => route.path, () => {
   </div>
 
 </template>
-<style scoped></style>
+<style scoped>
+
+</style>

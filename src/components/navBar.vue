@@ -1,7 +1,7 @@
 <template>
   <div class="h-[8vh] w-full flex z-[99999999999999]">
     <div class="h-[8vh] w-[15%] flex gap-8">
-      <BarraLateral class=" cursor-pointer"></BarraLateral>
+      <BarraLateral id="step-3" class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
         <Botao preset="PadraoVazado" :texto="$t('navBar.botaoNovaTarefa')" tamanhoDaBorda="2px" :funcaoClick="redireciona"
           :parametrosFuncao="'/criaTarefa'">
