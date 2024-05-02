@@ -54,6 +54,9 @@
         </div>
 
     </fundoPopUp>
+    <div v-if="mensagem != ''"  class="alert">
+        <alertTela   :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro"></alertTela>
+    </div>
 </template>
 
 <script setup>
@@ -66,6 +69,7 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
 import {webSocketStore} from "../stores/webSocket.js";
+import alertTela from './alertTela.vue';
 
 onMounted(exibirMembrosNaLista)
 
@@ -87,6 +91,13 @@ let equipeMembros = ref({
     nome: '',
     descricao: ''
 });
+
+function limparMensagemErro() {
+    mensagem.value = "";
+}
+    let mensagem = ref("");
+    let mensagemCor = ref("");
+    
 
 listaUsuarios();
 
@@ -198,11 +209,14 @@ async function listaUsuarios() {
 }
 
 async function adicionarMembro() {
-    
+    limparMensagemErro();
     const membroNaEquipe = listaMembros.value.find(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
 
     if (membroNaEquipe) {
-        console.log("Esse usuário já faz parte da equipe.");
+        mensagem.value = ""
+        mensagemCor.value = ""
+        mensagem.value = "membro já esta na equipe.";
+        mensagemCor.value = "#CD0000"
         return;
     }
     let lista = await banco.procurar('/usuario');
@@ -211,7 +225,10 @@ async function adicionarMembro() {
     const usuarioJaConvidado = membrosConvidados.value.some(membro => membro.username === usuarioConvidado.value || membro.email === usuarioConvidado.value);
     
     if (usuarioJaConvidado) {
-        console.log("Você já convidou essa pessoa.");
+        mensagem.value = ""
+        mensagemCor.value = ""
+        mensagem.value = "Você já convidou essa pessoa.";
+        mensagemCor.value = "#CD0000"
     } else {
         membrosConvidados.value.push(membroConvidado);
         membroParaConvidar.value.push(membroConvidado);
@@ -259,11 +276,17 @@ async function confirmarConvites() {
 
     if (membroRemovido) {
         if (membrosConvidados.value.some((membro) => membro.username == usuarioConvidado.value || membro.email == usuarioConvidado.value)) {
-            console.log("Esse membro ja faz parte da equipe")
+            mensagem.value = ""
+            mensagemCor.value = ""
+            mensagem.value = "membro já esta na equipe.";
+            mensagemCor.value = "#CD0000"
         } else {
             // Se o membro foi removido, adicione-o novamente à equipe
             banco.adicionarUsuarios([membroRemovido.id], equipeSelecionada, "/usuario/add");
-            console.log("Membro reconvidado com sucesso.");
+            mensagem.value = ""
+            mensagemCor.value = ""
+            mensagem.value = "Membro reconvidado com sucesso.";
+            mensagemCor.value = "#29CD00"
         }
 
     } else {
@@ -311,6 +334,11 @@ async function confirmarConvites() {
 
 .listaConvidados {
     @apply w-full;
+}
+
+.alert{
+  @apply absolute flex items-start justify-start 2xl:mt-[-20vh] 2xl:mr-[3vw] xl:mr-[1vw] xl:mt-[-20vh]
+    lg:mr-[4vw] lg:mt-[-15vh] md:mr-[3vw] md:mt-[-15vh]  z-[9999];
 }
 
 .div-membros::-webkit-scrollbar {
@@ -420,6 +448,9 @@ async function confirmarConvites() {
              @apply flex justify-start mr-[41vw]
              p-[10vw] mt-[50vh] ;
          }
+         .alert{
+            @apply mr-[5vw] mt-[-15vh] ;
+          }
     }
 
     @media(min-width: 425px) and (max-width: 620px){
@@ -474,5 +505,8 @@ async function confirmarConvites() {
              @apply flex justify-start mr-[41vw]
              p-[10vw] mt-[50vh] ;
          }
+         .alert{
+            @apply mr-[5vw] mt-[-15vh] ;
+          }
     }
 </style>

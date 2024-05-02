@@ -40,8 +40,7 @@
             </div>  
 
         </fundoPopUp>
-    <div v-if="mensagem != ''"  class="absolute flex items-start justify-start 2xl:mt-[-25vh] 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh]
-    lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh]  z-[9999]">
+    <div v-if="mensagem != ''"  class="alert">
         <alertTela   :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro"></alertTela>
     </div>
     
@@ -72,7 +71,7 @@
     
     function limparMensagemErro() {
     mensagem.value = "";
-}
+    }
     let mensagem = ref("");
     let mensagemCor = ref("");
     
@@ -335,6 +334,11 @@
         clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
     }
 
+    .alert{
+      @apply absolute flex items-start justify-start 2xl:mt-[-25vh] 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh]
+        lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh]  z-[9999];
+    }
+
     .listaConvidados{
         @apply w-full h-full 2xl:w-[100%] 2xl:h-[20%] xl:w-[60%] xl:h-[30%] lg:w-[50%] lg:h-[20%];
     }
@@ -401,20 +405,56 @@
         }
     }
 
-    @media(max-width: 620px){
+    @media(max-width: 320px) {
         .titulo{
-        @apply text-4xl mb-2; 
+            @apply text-4xl mb-2; 
         }
         .botao{
-        @apply flex justify-end mt-10
+            @apply flex justify-end mt-10
         }
         .convidados-div {
-        @apply h-full mt-10;
+            @apply h-full mt-10;
         }
         .imagem{
-        @apply w-[60px] h-[60px]
+            @apply w-[60px] h-[60px]
+        }
+        
+    }
+
+    @media(max-width: 375px) {
+        .titulo{
+            @apply text-4xl mb-2; 
+        }
+        .botao{
+            @apply flex justify-end mt-10
+        }
+        .convidados-div {
+            @apply h-full mt-10;
+        }
+        .imagem{
+            @apply w-[60px] h-[60px]
+        }
+        .alert{
+            @apply mt-[-60vw] text-sm;
         }
     }
 
+    @media(min-width: 425px) and (max-width: 620px){
+        .titulo{
+            @apply text-4xl mb-2; 
+        }
+        .botao{
+            @apply flex justify-end mt-10
+        }
+        .convidados-div {
+            @apply h-full mt-10;
+        }
+        .imagem{
+            @apply w-[60px] h-[60px]
+        }
+        .alert{
+            @apply mt-[-50vw]
+        }
+    }
     }
     </style>
