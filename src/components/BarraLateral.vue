@@ -1,6 +1,5 @@
 <template>
-  <div class="bg-opacity-40 z-[999]"
-  style="font-family: var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">
+  <div class="bg-opacity-40 z-[100]">
     <button v-if="!aberto" @click="openClose()" class="ml-6 h-[8vh] w-[4vw] flex items-center justify-center" >
      <hamburger></hamburger>
     </button>
