@@ -122,6 +122,10 @@ const router = createRouter({
     {
       path:'/perfil/:id',
       component: () => import('../views/PerfilInfoView.vue')
+    },
+    {
+      path: '/projeto/responsavel',
+      component: () => import('../views/AdminHomeView.vue')
     }
     // {
     //   path:'/perfil/:user',
