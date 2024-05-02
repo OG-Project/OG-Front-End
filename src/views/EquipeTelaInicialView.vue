@@ -80,10 +80,10 @@ async function entrarNoProjeto(projeto) {
 }
 
 async function criarProjeto() {
-  router.push({ path: '/criaProjeto' })
-  VueCookies.set("projetoCookie").then(() => {
+  router.push({ path: '/criaProjeto' }).then(() => {
         window.location.reload()
     });
+  VueCookies.set("projetoCookie")
 }
 
 function calcularResponsaveis(projeto) {

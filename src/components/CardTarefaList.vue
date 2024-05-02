@@ -91,18 +91,25 @@ function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
 
 function ordenaTarefas(){
   console.log(projeto.value.tarefas)
+
   projeto.value.tarefas.sort((tarefa, tarefa2) =>{
-    return tarefa.indice[1].indice - tarefa2.indice[1].indice
+    if(tarefa.nome != null && tarefa2.nome != null){
+      console.log(tarefa)
+      return tarefa.indice[1].indice - tarefa2.indice[1].indice
+    }
   })
 }
 function onDragEnd(){
   projeto.value.tarefas.forEach(async (tarefa, index) =>{
-    tarefa.indice[1].indice = projeto.value.tarefas.indexOf(tarefa)
-    await api.atualizar(tarefa, '/tarefa')
+    if(tarefa.nome!=null){
+      tarefa.indice[1].indice = projeto.value.tarefas.indexOf(tarefa)
+      await api.atualizar(tarefa, '/tarefa')
+    }
   })
 }
 function trocaRota(tarefa){
     VueCookies.set("IdTarefaCookies",tarefa.id)
+    localStorage.removeItem("TarefaNaoFinalizada")
     router.push('/criaTarefa').then(() => {
         window.location.reload()
     })
