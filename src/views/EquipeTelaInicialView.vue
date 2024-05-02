@@ -7,9 +7,9 @@
         </div>
         <div class="divCel flex justify-end">
             <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
-                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
+                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"  texto="+ Projetos" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
-                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="#620BA7" corBorda="#620BA7" tamanhoPadrao="mobilepadrao"   texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
+                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilepadrao"   texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
             <div class="botaoIcone flex justify-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
@@ -212,7 +212,7 @@ function abrePopUp(equipe, tipo) {
 }
 
 .botaoIcone:hover {
-  background-color: #620BA7;
+  background-color: var(--roxo);
 
 }
 
@@ -228,7 +228,7 @@ function abrePopUp(equipe, tipo) {
 
 .botaoIcone {
   @apply 2xl:w-[3.5vw] 2xl:h-[4vh] xl:w-[5vw] xl:h-[4vh] lg:w-[7vw] lg:h-[4vh] md:w-[9vw] md:h-[4vh];
-  border: 2px solid #620BA7;
+  border: 2px solid var(--roxo);
   background-color: transparent;
   padding: 8px;
   cursor: pointer;

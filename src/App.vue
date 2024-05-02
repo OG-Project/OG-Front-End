@@ -56,16 +56,22 @@ onMounted(async () => {
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')),'/usuario')
-  configuracao.value=usuario.value.configuracao
+        configuracao.value=usuario.value.configuracao
+    console.log(configuracao.value);
   perfil.isVlibras=configuracao.value.isLibras
   perfil.isTecladoVirtual=configuracao.value.isTecladoVirtual
   perfil.isVoiceMaker=configuracao.value.isDigitarVoz
   root.setProperty('--hueRoxo',configuracao.value.hueCor)
   root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
-  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho)
-  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho)
-  
+  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho+'vh')
+  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho+'vh')
+  console.log(configuracao.value.isDark);
+  if(configuracao.value.isDark){
+    root.setProperty('--backgroundPuro','#0F0F0F')
+    root.setProperty('--backgroundItems','#222222')
+    root.setProperty('--fonteCor','#ffffff')
+  }
 
 
   // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
@@ -170,11 +176,12 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-
+<div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
   <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
-  <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
-  <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
-  <RouterView />
+    <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
+    <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
+    <RouterView />
+  </div>
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
   class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">

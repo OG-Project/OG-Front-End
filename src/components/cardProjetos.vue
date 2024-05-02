@@ -1,7 +1,7 @@
 <template>
     <!-- div maior com os textos e o footer -->
     <div
-        class="cardTotal hover:outline hover:outline-purple-600  hover:outline-4 active:outline active:outline-4 active:outline-purple-200 ">
+        class="cardTotal hover:outline hover:outline-[var(--roxo)]  hover:outline-4 active:outline active:outline-4 active:outline-[var(--roxoClaro)] ">
         <!-- textos  -->
         <div class="flex flex-col items-center ">
             <div class="divInformacoes">
@@ -112,7 +112,7 @@ let barraPorcentagem = ref({
     width: props.feito + "%",
     height: "100%",
     borderRadius: "0px",
-    backgroundColor: "#620BA7",
+    backgroundColor: "var(--roxo)",
     border: "none",
     boxShadow: "none",
 });
@@ -155,7 +155,7 @@ function somePopUp() {
     }
 
     .barraRoxaGrafico {
-        @apply h-4 bg-purple-600 justify-start;
+        @apply h-4 bg-[var(--roxo)] justify-start;
     }
 
     .parteDeBaixoCard {

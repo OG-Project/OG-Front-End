@@ -1,23 +1,26 @@
 <template>
   <!-- Verifica se o botão deve ter um ícone ou não -->
-  <div v-if="TemIcon === 'sim'">
-    <button :class="tamanhoComClass" :style="isClick ? clickBotao : isHovered ? hoverBotao : botao" @mouseover="hover"
-      @mouseout="unhover" @click="click">
-      <p>{{ Texto }}</p>
-      <img :src="icon" @mouseover="hover" @mouseout="unhover" :style="estiloIcone" />
-    </button>
-  </div>
-  <div v-if="TemIcon === 'nao'">
-    
-    <button :class="tamanhoComClass"
+  <div
+  style="font-family: var(--fonteCorpo);">
+      <div v-if="TemIcon === 'sim'">
+        <button :class="tamanhoComClass" :style="isClick ? clickBotao : isHovered ? hoverBotao : botao" @mouseover="hover"
+        @mouseout="unhover" @click="click">
+        <p>{{ Texto }}</p>
+        <img :src="icon" @mouseover="hover" @mouseout="unhover" :style="estiloIcone" />
+      </button>
+    </div>
+    <div v-if="TemIcon === 'nao'">
+      
+      <button :class="tamanhoComClass"
       :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
       @mouseover="hover"
       @mouseout="unhover"
       @click="click"
-    >
-      <p>{{ Texto }}</p>
-    </button>
-  </div>
+      >
+        <p>{{ Texto }}</p>
+      </button>
+    </div>
+</div>
 </template>
 
 <script setup>
@@ -37,7 +40,7 @@ const screenWidth = ref(window.innerWidth)
 onMounted(()=>{
 
   if(screenWidth < 640){
-    props.tamanhoDaFonte.value='0.5vh'
+    'var(--fonteCorpoTamanho)'.value='0.5vh'
   }
 })
 
@@ -147,13 +150,12 @@ switch (Preset) {
     Texto = "Deletar";
     TemIcon = "nao";
     botao = {
-      backgroundColor: "#FFFFFF",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #CD0000",
       color: "#CD0000",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -162,9 +164,9 @@ switch (Preset) {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      border: props.tamanhoDaBorda + " solid #FFFFFF",
+      border: props.tamanhoDaBorda + " solid #CD0000",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -175,7 +177,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -190,7 +192,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #389300",
       color: "#389300",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -201,7 +203,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -212,7 +214,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
     break;
@@ -226,7 +228,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #CD0000",
       color: "#CD0000",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -237,7 +239,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -248,7 +250,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
     break;
@@ -263,7 +265,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: props.roxo,
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -274,7 +276,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -285,7 +287,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -300,7 +302,7 @@ switch (Preset) {
       justifyContent: "center",
       alignItems: "center",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -310,7 +312,7 @@ switch (Preset) {
       justifyContent: "center",
       alignItems: "center",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -321,7 +323,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
     break;
@@ -335,7 +337,7 @@ switch (Preset) {
       justifyContent: "center",
       alignItems: "center",
       color: props.roxo,
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -345,7 +347,7 @@ switch (Preset) {
       justifyContent: "center",
       alignItems: "center",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -356,7 +358,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
     break;
@@ -372,7 +374,7 @@ switch (Preset) {
       border: props.tamanhoDaBorda + " solid var(--roxo)",
       alignItems: "center",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -384,7 +386,7 @@ switch (Preset) {
       alignItems: "center",
       color: "#FFFFFF",
       border: props.tamanhoDaBorda + " solid var(--roxoAtencao)",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
 
     };
@@ -397,7 +399,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
     break;
@@ -413,7 +415,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid #FFFFFF",
       color: props.roxo,
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -425,7 +427,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--roxoAtencao)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -437,7 +439,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
     break;
@@ -453,7 +455,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: props.roxo,
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -465,7 +467,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--roxo)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -477,7 +479,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid var(--clickBorder)",
       color: "#FFFFFF",
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
       boxShadow: sombras,
     };
 
@@ -492,7 +494,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid " + props.corBorda,
       color: props.corDoTexto,
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
     };
 
     hoverBotao = {
@@ -503,7 +505,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid " + props.corBordaHover,
       color: props.cor,
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
     };
 
     clickBotao = {
@@ -514,7 +516,7 @@ switch (Preset) {
       alignItems: "center",
       border: props.tamanhoDaBorda + " solid " + props.corBordaClick,
       color: props.cor,
-      fontSize: props.tamanhoDaFonte,
+      fontSize: 'var(--fonteCorpoTamanho)',
     };
     break;
 }

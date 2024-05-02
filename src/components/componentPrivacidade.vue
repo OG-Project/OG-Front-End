@@ -1,13 +1,15 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col  ">
         <div>
-            <h1 style="font-family:var(--fonteTitulo);" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            <h1 style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" 
+            class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Privacidade
             </h1>
         </div>
         <div class="pl-32 items-center">
             <div class="flex justify-start">
-                <div style="font-family:var(--fonteCorpo);" class="flex flex-col gap-10">
+                <div style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" 
+                class="flex flex-col gap-10">
                     <div class="flex justify-between items-center gap-5">
                         <span 
                         class="text-xl">

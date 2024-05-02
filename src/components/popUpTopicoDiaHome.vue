@@ -42,29 +42,33 @@ function redireciona(rota, id) {
 }
 
 async function pegaListaDeProjetosDia() {
-  try {
-    const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
-    const dataAtual = new Date();
-    const dataAtualSemHora = new Date(dataAtual.getFullYear(), dataAtual.getMonth(), dataAtual.getDate()); // Zerando horas, minutos, segundos e milissegundos
+    try {
+        const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
+        let dataAtual;
+        let dia = new Date().getDate();
+        let mes = new Date().getMonth();
+        let ano = new Date().getFullYear();
+        dataAtual = `${ano}-${'0' + (mes + 1)}-${dia}`;
 
-    for (const equipe of equipeUsuario.equipes) {
-      const projetosDaEquipe = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos");
+        for (const equipe of equipeUsuario.equipes) {
+            const projetosDaEquipe = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos");
 
-      for (const projeto of projetosDaEquipe) {
-        if (projeto.dataFinal) {
-          const dataFinal = new Date(projeto.dataFinal);
-          const dataFinalSemHora = new Date(dataFinal.getFullYear(), dataFinal.getMonth(), dataFinal.getDate()); // Zerando horas, minutos, segundos e milissegundos
+            for (const projeto of projetosDaEquipe) {
+                if (projeto.dataFinal) {
 
-          // Verifica se o projeto termina hoje ou depois
-          if (dataFinalSemHora >= dataAtualSemHora) {
-            listaDeProjetos.value.push(projeto);
-          }
+                    console.log(projeto.dataFinal);
+                    console.log(dataAtual);
+
+                    // Comparando apenas dia, mês e ano das datas
+                    if (projeto.dataFinal == dataAtual) {
+                        listaDeProjetos.value.push(projeto);
+                    }
+                }
+            }
         }
-      }
+    } catch (error) {
+        console.error("Erro ao buscar projetos do dia:", error);
     }
-  } catch (error) {
-    console.error("Erro ao buscar projetos do dia:", error);
-  }
 }
 
 const props = defineProps({

@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full flex items-center">
+  <div class="h-[92vh] w-full flex items-center">
     <div class="flex items-center relative justify-center w-full ml-16 mt-16 h-[35vw]">
       <div id="poligono" 
         class="h-[95%] w-[38%] shadow-2xl flex justify-center flex-col left-10 absolute overflow-visible"
@@ -12,7 +12,7 @@
           <p v-else class="text-2xl">Sem SubTarefas</p>
         </div>
       </div>
-      <div class="bg-[#FBFBFB] ml-12 w-[76%] h-[92%] flex items-center justify-end"
+      <div class="bg-[var(--backgroundItems)] ml-12 w-[76%] h-[92%] flex items-center justify-end"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
         <div class="overflow-y-auto h-[100%] w-[75%] flex items-center flex-col">
           <div class="flex justify-center w-full text-4xl mt-8">
