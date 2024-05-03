@@ -51,7 +51,7 @@ import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import editarEquipePopUp from "../components/editarEquipePopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import criarEquipePopUp from "../components/criarEquipePopUp.vue";
+import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
 

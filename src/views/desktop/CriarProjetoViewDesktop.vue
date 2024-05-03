@@ -100,14 +100,15 @@ import Sair from "../../imagem-vetores/Sair.svg";
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
-import { format } from 'date-fns';
 import router from "@/router";
 import { webSocketStore } from '../../stores/webSocket';
+import { Usuario } from '../../models/usuario';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 var listaSelecao = ref([]);
+let idUsuario = VueCookies.get("IdUsuarioCookie")
 let nomeProjeto = ref("");
 let dataFinalProjeto = ref("");
 let descricaoProjeto = ref("");
@@ -228,7 +229,7 @@ function buscaProjetoCookies() {
     }
 }
 
-function buscaRascunhoCriacaoProjeto() {
+async function  buscaRascunhoCriacaoProjeto() {
     if (VueCookies.get("projetoCookie") != null
         && !projetoEdita.value
         && VueCookies.get("projetoCookie") != undefined
@@ -254,12 +255,18 @@ function buscaRascunhoCriacaoProjeto() {
         if (variavelCookieProjeto.responsaveis != []
             && variavelCookieProjeto.responsaveis != undefined
             && variavelCookieProjeto.responsaveis != "undefined"
-            && variavelCookieProjeto.responsaveis != null) {
+            && variavelCookieProjeto.responsaveis != null && variavelCookieProjeto.responsaveis.length != 0) {
+                console.log(variavelCookieProjeto.responsaveis);
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
+        }else{
+            let usuario= await conexao.buscarUm(idUsuario, "/usuario")
+            responsaveisProjeto.value.push(usuario.username)
+            listaAuxResponsaveisProjeto.push(usuario.username)
+            adicionaResponsaveisProjeto(usuario)
         }
     }
 }
@@ -338,15 +345,12 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 }
 
 async function adicionaResponsaveisProjeto(usuarioRecebe) {
-    console.log(usuarioRecebe)
     if (usuarioRecebe.id == undefined) {
         let listaAux = (await conexao.procurar('/usuario'))
         listaAux.forEach(usuario => {
             if (usuario.username == usuarioRecebe) {
                 let responsavelBanco = {
-                    responsavel: {
-                        id: usuario.id
-                    }
+                    idResponsavel: usuario
                 }
                 listaResponsaveisBack.push(responsavelBanco);
                 return;
@@ -355,9 +359,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 
     } else {
         let responsavelBanco = {
-            responsavel: {
-                id: usuarioRecebe.id
-            }
+            idResponsavel: usuarioRecebe.id
         }
         listaResponsaveisBack.push(responsavelBanco);
     }
@@ -367,13 +369,11 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-
+        
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-            router.push('/projeto')
+            
         restauraCookies();
-        
-
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")

@@ -41,29 +41,37 @@
                 
         </fundoPopUp>
 
-        <fundoPopUp  v-if="editando" largura="" :altura="tamanhoPopUp()">
+        <fundoPopUp v-if="editando" largura="" :altura="tamanhoPopUp()">
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
-                        <h1 class="tituloEditar flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
+                    <h1 class="tituloEditar flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh] p-5">
                     <div class="relative">
-                            <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
-                            <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao" alt="Imagem Selecionada" >
-                        </div>
-                    <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome"  ></Input> 
+                        <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
+                        <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
+                            alt="Imagem Selecionada">
+                    </div>
+                    <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
+                        :largura="larguraInput()" conteudoInput="Nome da Equipe"  v-model="nome" @updateModelValue="(e)=> {nome=e}"></Input>
                 </div>
                 <div class=" grid-template flex w-full mt-[1vh]">
-                    <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="20vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
-                </div> 
-                <div class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
-                        <Botao v-if="screenWidth >= 620" preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
-                        </Botao>
-                        <Botao v-else preset="PadraoRoxo" tamanhoPadrao="mobilepadrao" texto="Salvar alterações" tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
-                        </Botao>
+                    <textAreaPadrao
+                        class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center"
+                        height="20vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"
+                        v-model="descricao" @updateModelValue="(e)=> {descricao=e}"></textAreaPadrao>
+                </div>
+                <div
+                    class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
+                    <Botao v-if="screenWidth >= 620" preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações"
+                        tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
+                    </Botao>
+                    <Botao v-else preset="PadraoRoxo" tamanhoPadrao="mobilepadrao" texto="Salvar alterações"
+                        tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
+                    </Botao>
                 </div>
             </div>
-                
+    
         </fundoPopUp>
 
 </template>
@@ -120,10 +128,6 @@ const fileType = file.type;
 // Criar um blob do arquivo
 const fileBlob = new Blob([file]);
 
-// Agora você pode usar o fileName, fileType e fileBlob conforme necessário
-console.log('Nome do arquivo:', fileName);
-console.log('Tipo do arquivo:', fileType);
-console.log('Blob do arquivo:', fileBlob);
  // Armazena o arquivo na variável reativa
  imagemSelecionada.value = file;
 }
@@ -167,7 +171,6 @@ let equipes = banco.procurar("/equipe");
 const router = useRouter();
 
 async function filtrarEquipe(){
-    console.log(await(banco.buscarUm(equipeSelecionada, "/equipe")))
     equipeEditar.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
 }
 filtrarEquipe();
@@ -244,7 +247,7 @@ async function atualizarEquipe() {
 
             // Verifica se houve alterações nos campos antes de atualizar
             if (equipeAtualizar.nome !== equipe.nome || equipeAtualizar.descricao !== equipe.descricao) {
-                banco.atualizar(equipeAtualizar, "/equipe");
+                banco.atualizar(equipeAtualizar,"/equipe");
             } else {
                 console.log('Nenhuma alteração detectada na equipe.');
             }

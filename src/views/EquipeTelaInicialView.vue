@@ -78,6 +78,7 @@ async function entrarNoProjeto(projeto) {
 }
 
 async function criarProjeto() {
+  VueCookies.set("idAuxEquipe",Number(equipeSelecionada) )
   router.push({ path: '/criaProjeto' })
   VueCookies.set("projetoCookie");
 }

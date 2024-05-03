@@ -25,12 +25,15 @@ export const conexaoBD = defineStore('conexaoBD', {
       cadastrar(objeto, textoRequisicao){
         return axios.post("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
       },
+      cadastrarProjetoEquie(objeto,idEquipe,textoRequisicao){
+        return axios.post("http://localhost:8082"+textoRequisicao+"/"+idEquipe,objeto,{withCredentials:true}).then(response => response)
+      },
       atualizar(objeto,textoRequisicao){
         
         return axios.put("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
       },
-      adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId,ids,{withCredentials:true})
+      adicionarUsuarios(idUser,equipeId,numeroPermissao, textoRequisicao){
+        return axios.patch('http://localhost:8082'+(textoRequisicao+'/'+idUser+"/"+equipeId+"/"+numeroPermissao),"",{withCredentials:true})
       },
       deletar(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`,{withCredentials:true}).then(response =>{

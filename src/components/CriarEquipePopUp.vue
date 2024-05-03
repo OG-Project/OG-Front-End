@@ -24,7 +24,7 @@
                 <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao"></textAreaPadrao>
             </div> 
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
+                <ListaConvidados  @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="listaUsuariosConvidados" ></ListaConvidados>
             </div>
             <div v-if="screenWidth >= 620" class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
                     <Botao  preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
@@ -54,9 +54,10 @@ let nome = ref('');
 let descricao = ref('');
 let usuarioConvidado = ref('');
 let mensagemError = ref("");
-
+let valorSelectSelecionado = ref("Edit")
 let usuarioLogado = VueCookies.get("IdUsuarioCookie")
 let membrosEquipe = ref([]);
+let listaUsuariosConvidados = ref([])
 let conexaoWeb = webSocketStore()
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
@@ -87,6 +88,23 @@ function marginRightConvidado() {
     }
 }
 
+function valorSelect(valor, convidado){
+    valorSelectSelecionado.value = valor
+    usuarioConvidado.value = convidado.username
+    mudaPermissaoUsuario(convidado);
+}
+
+function mudaPermissaoUsuario(usuario){
+   membrosEquipe.value.some((membro) => {
+    if(membro.usuario.username === usuario.username){
+        if(valorSelectSelecionado.value == "View"){
+            membro.permissao = 2
+        }else{
+            membro.permissao =1
+        }
+    }
+})
+}
 
 const imagemSelecionada = ref(null);
 
@@ -182,8 +200,14 @@ async function listaUsuarios() {
 let listaUsuarios = await usuarios;
 listaUsuarios.forEach((usuario) => {
 if (usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email) {
-    if (!membrosEquipe.value.some((membro) => membro.username === usuario.username || membro.email === usuario.email)) {
-        membrosEquipe.value.push(usuario);
+    if (!membrosEquipe.value.some((membro) => membro.usuario.username === usuario.username || membro.usuario.email === usuario.email)) {
+        let usuarioPermissao = {
+            "usuario": usuario,
+            "permissao": 1
+        }
+        console.log(usuarioPermissao)
+        membrosEquipe.value.push(usuarioPermissao);
+        listaUsuariosConvidados.value.push(usuario)
     } else {
         console.log("Esse membro já foi adicionado à equipe.");
     }
@@ -216,8 +240,9 @@ return;
 };
 
 async function colocaMembrosEquipe(equipe){
-    const ids = membrosEquipe.value.map(m => {
-        return Number(m.id);
+    console.log(membrosEquipe.value)
+    const ids = membrosEquipe.value.map(membro => {
+        banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
     });
     await enviarFotoParaBackend(equipe);
     adicionaUsuarioLogado(ids, equipe)
@@ -226,11 +251,7 @@ async function colocaMembrosEquipe(equipe){
 function adicionaUsuarioLogado(ids, equipe){
 // Adicione automaticamente o usuário logado à equipe
 const usuarioLogadoId = Number(usuarioLogado);
-    ids = []
-    if (!ids.includes(usuarioLogadoId)) {
-        ids.push(usuarioLogadoId);
-    }
-    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
+banco.adicionarUsuarios(usuarioLogadoId, equipe.id, 1, "/usuario/add");
 }
 
 async function enviaParaWebSocket(equipe,membrosConvidados) {
