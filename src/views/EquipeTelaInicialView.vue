@@ -7,9 +7,9 @@
         </div>
         <div class="divCel flex justify-end">
             <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
-                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"  texto="+ Projeto" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
+                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"  :texto="'+ ' + $t('equipes.projeto') " tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
                 </Botao>
-                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilepadrao"   texto="+ Projetos" tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
+                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilepadrao"   :texto="'+ ' + $t('equipes.projeto') " tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
                 </Botao>
             </div>
             <div class="botaoIcone flex justify-center items-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
@@ -26,7 +26,7 @@
     <div class="flex justify-center">
       <div class="listaProjetos overflow-auto">
         <div class="flex justify-center">
-          <H1 class="text-4xl mt-5 text-[var(--fonteCor)] font-semibold">PROJETOS</H1> 
+          <H1 class="text-4xl mt-5 text-[var(--fonteCor)] font-semibold">{{ $t('equipes.projetos') }}</H1> 
         </div>
         <div  class="projetos ">
           <div  v-for="projeto of listaProjetos" :key="projeto.id" >
@@ -218,6 +218,7 @@ function abrePopUp(equipe, tipo) {
   @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh] md:ml-[5vw] md:mt-[-5vh] 
   2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw] 
   border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
+
 }
 
 .botaoIcone:hover {

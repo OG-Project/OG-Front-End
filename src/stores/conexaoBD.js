@@ -56,8 +56,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
-
-
+      },
+      async buscarTarefaProjeto(userId, textoRequisicao){
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
       },
       async buscarTarefaProjeto(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
@@ -104,7 +105,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async patchDeArquivosNaTarefa(arquivos, id) {
       try {
         // Deleta os arquivos existentes relacionados à tarefa
-        await axios.delete(`http://localhost:8085/tarefa/arquivos/${id}`);
+        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`);
     
             const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
                 headers: {

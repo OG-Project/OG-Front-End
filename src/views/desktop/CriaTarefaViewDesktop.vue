@@ -870,6 +870,7 @@ async function puxaTarefaDaEdicao() {
     let comentario = await banco.buscarUm(comentarioId, "/comentario");
     tarefa.value.comentarios.push(comentario);
   }
+  tarefa.value.corDaTarefa = tarefaAux.cor;
   tarefa.value.arquivos = tarefaAux.arquivos;
   tarefa.value.comentarios = tarefaAux.comentarios;
   tarefa.value.status = tarefaAux.status;

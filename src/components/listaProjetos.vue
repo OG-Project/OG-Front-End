@@ -4,23 +4,23 @@
         <div class="divGeral sm:flex w-[100%] max-mobile:justify-center">
           <div v-if="!kanbanAtivo && screenWidth > 620" class="flex w-full">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
-             @click="ativarBotao('urgentes')">URGENTES</button>
+             @click="ativarBotao('urgentes')">{{$t('projeto.URGENTES')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
-             @click="ativarBotao('prontos')">PRONTOS</button>
+             @click="ativarBotao('prontos')">{{$t('projeto.PRONTOS')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'nao-iniciados' }"
-             @click="ativarBotao('nao-iniciados')">NÃO INICIADOS</button>
+             @click="ativarBotao('nao-iniciados')">{{$t('projeto.NÃO INICIADOS')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }"
-             @click="ativarBotao('meus-projetos')">MEUS PROJETOS</button>
+             @click="ativarBotao('meus-projetos')">{{$t('projeto.MEUS PROJETOS')}}</button>
           </div>
           <div v-if="!kanbanAtivo && screenWidth <= 620" class="flex w-full mobile:w-[80vw]">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
-             @click="ativarBotao('urgentes')">URGENTES</button>
+             @click="ativarBotao('urgentes')">{{$t('projeto.URGENTES')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
-             @click="ativarBotao('prontos')">PRONTOS</button>
+             @click="ativarBotao('prontos')">{{$t('projeto.PRONTOS')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'nao-iniciados' }"
-             @click="ativarBotao('nao-iniciados')">NÃO INICIADOS</button>
+             @click="ativarBotao('nao-iniciados')">{{$t('projeto.NÃO INICIADOS')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }"
-             @click="ativarBotao('meus-projetos')">MEUS PROJETOS</button>
+             @click="ativarBotao('meus-projetos')">{{$t('projeto.MEUS PROJETOS')}}</button>
           </div>
           <div v-if="kanbanAtivo" >
             <div class="w-full">
@@ -32,7 +32,7 @@
 
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'urgentes','#D27200')">
                 <div class="urgentes">
-                     <h1 class="xl:text-xl sm:text-sm text-white"> URGENTES</h1>
+                     <h1 class="xl:text-xl sm:text-sm text-white"> {{$t('projeto.URGENTES')}}</h1>
                 </div>
                 <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('urgentes')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id"
                 draggable="true" @dragstart="onDragStart($event, projeto)">
@@ -41,7 +41,7 @@
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col  mobile:mt-5" @dragover.prevent @drop.prevent="event => onDrop(event, 'nao-iniciados', '#0034BA')">
                 <div class="naoIniciado">
-                  <h1 class="xl:text-xl sm:text-sm text-white"> NÃO INICIADOS</h1>
+                  <h1 class="xl:text-xl sm:text-sm text-white"> {{$t('projeto.NÃO INICIADOS')}}</h1>
                </div>
                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('nao-iniciados')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                draggable="true" @dragstart="onDragStart($event, projeto)" >
@@ -50,7 +50,7 @@
               </div>
               <div class="kanban-board w-full max-h-max flex min-h-[15vh] flex-col  mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'prontos', '#389300')">
                 <div class="prontos">
-                <h1 class="xl:text-xl sm:text-sm text-white"> PRONTOS</h1>
+                <h1 class="xl:text-xl sm:text-sm text-white"> {{$t('projeto.PRONTOS')}}</h1>
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('prontos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
@@ -59,7 +59,7 @@
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col  mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
                 <div class="meusProjetos">
-                  <h1 class="xl:text-xl sm:text-sm text-white"> MEUS PROJETOS</h1>
+                  <h1 class="txl:text-xl sm:text-sm text-white"> {{$t('projeto.MEUS PROJETOS')}}</h1>
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('meus-projetos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
@@ -69,7 +69,7 @@
             </div>
             <div v-if=" projetos.length === 0">
             <div v-if="kanbanAtivo" class="mensagemKanban">
-              NÃO HÁ NENHUM PROJETO
+              {{$t('projeto.NENHUM PROJETO')}}
             </div>
             <div  v-if="kanbanAtivo" class="flex justify-center mt-10" >
               <img src="../imagem-vetores/pasta.svg" alt="">
@@ -86,7 +86,7 @@
         </div>
         <div v-if="mostrarMensagem || !filtrarPorCategoria(statusBotao).length && statusBotao !== null || projetos.length === 0">
           <div v-if="!kanbanAtivo"  class="mensagem">
-            NÃO HÁ NENHUM PROJETO
+            {{$t('projeto.NENHUM PROJETO')}}
           </div>
           <div v-if="!kanbanAtivo" class="flex justify-center mt-10" >
             <img src="../imagem-vetores/pasta.svg" alt="">
