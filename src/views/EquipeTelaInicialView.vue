@@ -2,7 +2,7 @@
     <div>
         <div class="corDiv">
           <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="expandirImagem" @mouseleave="reduzirImagem">
-          <img class="imagemEquipe" v-else src="../imagem-vetores/imagemEquipePadrao.svg" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
+          <img class="imagemEquipe bg-[#d7d7d7]" v-else src="../imagem-vetores/imagemEquipePadrao.svg" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
             <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
         </div>
         <div class="divCel flex justify-end">
