@@ -3,7 +3,7 @@
       <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
-            <img class="imagemEquipe" v-else src="../imagem-vetores/Equipe.svg">
+            <equipe class="imagemEquipe" v-else></equipe>
              <h1 class="equipeNome xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
@@ -70,6 +70,7 @@ import VueCookies from "vue-cookies";
 import {webSocketStore} from "../stores/webSocket.js";
 import alertTela from './alertTela.vue';
 import sair from '../imagem-vetores/Sair.vue';
+import equipe from '../imagem-vetores/equipe.vue';
 
 onMounted(exibirMembrosNaLista)
 

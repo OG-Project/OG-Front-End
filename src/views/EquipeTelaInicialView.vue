@@ -16,7 +16,7 @@
               <engrenagem class="w-[20px] h-[20px]" :class="{ 'imagem-hover': hover }" ></engrenagem>
             </div>
             <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
-                <membrosEquipeImagem class=" w-[18px] h-[18px]" :class="{ 'imagem-hover-membros': hoverMembros }"></membrosEquipeImagem>
+                <membrosEquipeImagem class="membrosEquipeImagem w-[18px] h-[18px] 2xl:mt-[0vh] xl:mt-[0.2vh] lg:mt-[0.3vh] md:mt-[0.3vh]" :class="{ 'imagem-hover-membros': hoverMembros }"></membrosEquipeImagem>
                 <p v-if="screenWidth >= 620" class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
             </div>
                 <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
@@ -310,7 +310,10 @@ function abrePopUp(equipe, tipo) {
   .listaProjetos{
     @apply h-[65vh];
   }
-  
+  .membrosEquipeImagem{
+    @apply mt-[0.3vh]
+  }
+
 }
 
   @media(max-width: 620px){
@@ -338,6 +341,9 @@ function abrePopUp(equipe, tipo) {
     .cardProjeto{
       @apply mt-10 text-xl;
       max-width: calc(125% - 1px);
+    }
+    .membrosEquipeImagem{
+      @apply mt-[0.6vh] ml-[1.25vw]
     }
   }    
 

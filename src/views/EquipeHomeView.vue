@@ -15,8 +15,7 @@
                         <div class="corDiv">
                             <img class="imagemEquipe" v-if="equipe.equipe.foto" 
                                 :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
-                            <img class="imagemEquipe" v-else 
-                                src="../imagem-vetores/Equipe.svg">
+                            <equipe class="imagemEquipe" v-else></equipe>
                             <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{ truncarNome(equipe.equipe.nome,
                         larguraNomeEquipe()) }}</p>
                         </div>
@@ -57,6 +56,7 @@ import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
 import maisIcon from "../imagem-vetores/maisIcon.vue";
 import engrenagem from "../imagem-vetores/engrenagem.vue";
+import equipe from "../imagem-vetores/equipe.vue";
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
@@ -207,10 +207,10 @@ function limparNomeCompleto() {
 
 @media(max-width: 620px){
     .maisEquipes {
-        @apply flex flex-col ml-[8vw] mt-[5vh] w-[70vw] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
+        @apply flex flex-col ml-[8vw] mt-[5vh] w-[70vw] h-[25vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
     }
     .criarEquipe {
-        @apply flex flex-col ml-[9vw] mr-12 mt-[5vh] w-[100%] h-[25vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
+        @apply flex flex-col ml-[9vw] mr-12 mt-[5vh] w-[100%] h-[25vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)];
     }
     .imagemEquipe {
         @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;
@@ -226,7 +226,7 @@ function limparNomeCompleto() {
         border-bottom: 'solid 4px var(--roxo)';
     }
     .listaEquipes {
-        @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md shadow-gray-200;
+        @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
         flex: 1 1 px;
     }
     

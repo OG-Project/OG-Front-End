@@ -8,7 +8,7 @@
             <div class=" grid-template  flex w-full mt-[1vh] p-5">
                 <img class="imagem" v-if="equipeEditar.foto"
                     :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
-                <img class="imagem" v-else src="../imagem-vetores/Equipe.svg">
+                <equipe class="imagem" v-else></equipe>
                 <div class="styleH1Padrao">
                     <h1 class="nomeEquipe flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[var(--fonteCor)] "
                         :title="equipeEditar.nome"> {{ truncarNome(equipeEditar.nome, larguraNomeEquipe()) }}</h1>
@@ -110,6 +110,7 @@ import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import { useRouter } from 'vue-router'
+import equipe from '../imagem-vetores/equipe.vue';
 const screenWidth = window.innerWidth;
 
 function tamanhoPopUp() {
