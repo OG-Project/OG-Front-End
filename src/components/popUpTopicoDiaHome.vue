@@ -3,13 +3,13 @@
     <div class="h-[80vh] w-[45vw] flex flex-col items-center z-[9999]">
       <h1 class="text-4xl">{{ props.nomeDoTopico }}</h1>
       <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
-        <div v-for="projeto of listaDeProjetos" class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
+        <div v-for="projeto of listaDeProjetos" class="w-[100%] border-2 border-[var(--backgroundPuro)] h-[12%] bg-[var(--backgroundItems)] flex items-center justify-around"
           style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
           <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid var(--roxo)"
             @click="redireciona('/projeto/kanban', projeto.id)">
             <p>{{ projeto.nome }}</p>
             <p v-if="projeto.responsaveis[0]">{{ projeto.responsaveis[0].responsavel.username }}</p>
-            <p v-if="!projeto.responsaveis[0]"> Não possui responsável</p>
+            <p v-if="!projeto.responsaveis[0]">{{ $t('home.naoPossuiResponsavel') }}</p>
           </div>
         </div>
       </div>
@@ -35,34 +35,40 @@ onMounted(() => {
 
 function redireciona(rota, id) {
   VueCookies.set("IdProjetoAtual", id);
-  router.push(rota);
+  router.push(rota).then(() => {
+        window.location.reload()
+    });
   funcaoPopUp.fechaPopUp();
 }
 
 async function pegaListaDeProjetosDia() {
-  try {
-    const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
-    const dataAtual = new Date();
-    const dataAtualSemHora = new Date(dataAtual.getFullYear(), dataAtual.getMonth(), dataAtual.getDate()); // Zerando horas, minutos, segundos e milissegundos
+    try {
+        const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
+        let dataAtual;
+        let dia = new Date().getDate();
+        let mes = new Date().getMonth();
+        let ano = new Date().getFullYear();
+        dataAtual = `${ano}-${'0' + (mes + 1)}-${dia}`;
 
-    for (const equipe of equipeUsuario.equipes) {
-      const projetosDaEquipe = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos");
+        for (const equipe of equipeUsuario.equipes) {
+            const projetosDaEquipe = await banco.buscarProjetosEquipe(equipe.id, "/projeto/buscarProjetos");
 
-      for (const projeto of projetosDaEquipe) {
-        if (projeto.dataFinal) {
-          const dataFinal = new Date(projeto.dataFinal);
-          const dataFinalSemHora = new Date(dataFinal.getFullYear(), dataFinal.getMonth(), dataFinal.getDate()); // Zerando horas, minutos, segundos e milissegundos
+            for (const projeto of projetosDaEquipe) {
+                if (projeto.dataFinal) {
 
-          // Verifica se o projeto termina hoje ou depois
-          if (dataFinalSemHora >= dataAtualSemHora) {
-            listaDeProjetos.value.push(projeto);
-          }
+                    console.log(projeto.dataFinal);
+                    console.log(dataAtual);
+
+                    // Comparando apenas dia, mês e ano das datas
+                    if (projeto.dataFinal == dataAtual) {
+                        listaDeProjetos.value.push(projeto);
+                    }
+                }
+            }
         }
-      }
+    } catch (error) {
+        console.error("Erro ao buscar projetos do dia:", error);
     }
-  } catch (error) {
-    console.error("Erro ao buscar projetos do dia:", error);
-  }
 }
 
 const props = defineProps({

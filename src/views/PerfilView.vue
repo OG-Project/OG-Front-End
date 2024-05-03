@@ -2,28 +2,54 @@
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
     <div class="flex justify-center flex-wrap ">
-        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md bg-[#FEFBFF]">
+        <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
                 <div 
                 @click="open()"
                 @mouseover="()=> ishover=!ishover"
                 @mouseout="()=> ishover=!ishover"
-                class="xl:w-[95%] text-center flex justify-center items-center  sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                class="xl:w-[95%] 
+                cursor-pointer
+                text-center 
+                flex 
+                justify-center 
+                items-center  
+                sm:h-[30%] 
+                sm:w-[30%] 
+                md:w-[70%] 
+                md:h-[70%] 
+                rounded-full 
+                xl:h-[95%]"
                >    
                     <img 
                     :src="Imagem"
-                    class="xl:w-[95%] hover:bg-slate-600 sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
+                    class="xl:w-[95%] 
+                    hover:bg-slate-600 
+                    sm:h-[30%] 
+                    sm:w-[30%] 
+                    md:w-[70%] 
+                    md:h-[70%] 
+                    rounded-full 
+                    xl:h-[95%]"
                     />
                     
                     
-                    <div v-if="ishover" class="absolute flex items-center text-white">
-                        <span class=" ">Alterar Foto</span>
-                        <span  class="bg-[url(../src/imagem-vetores/icon-lapis.svg)] bg-cover ml-3 w-6 h-6"  />
+                    <div v-if="ishover" 
+                    style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
+                    class="absolute flex bg-gray-400 px-2 py-1 rounded-full items-center text-black">
+                        <span class=" text-[var(--fonteCor)] ">Alterar Foto</span>
+                        <iconLapisDinamic  class="
+                         bg-cover 
+                         ml-3 
+                         w-6 
+                         h-6"  />
                     </div> 
                 </div>
                 
             </div>
-            <div class="font-[var(--fonteCorpo)] flex flex-col gap-10">
+            <div 
+            style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
+            class=" flex flex-col gap-10">
                 <div @click="informacao()" class="bg-[var(--roxo)] medioId 
                     text-white 
                     justify-center 
@@ -31,7 +57,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
                     Informações
                 </div>
                 <div @click="seguranca()" class="bg-[var(--roxo)] medioId 
@@ -41,7 +68,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
                     Segurança
                 </div>
                 <div @click="acessibilidade()" class="bg-[var(--roxo)] medioId 
@@ -51,7 +79,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
                     Acessibilidade
                 </div>
                 <div @click="privacidade()" class="bg-[var(--roxo)] medioId 
@@ -61,7 +90,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
                     Privacidade
                 </div>
                 <div @click="aparencia()" class="bg-[var(--roxo)] medioId 
@@ -71,7 +101,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
+                    cursor-pointer" 
+                    :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
                     Aparência
                 </div>
 
@@ -92,6 +123,7 @@ import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import Botao from '../components/Botao.vue'
 import router from '../router';
+import iconLapisDinamic from '../imagem-vetores/icon-lapisDinamic..vue';
 
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
@@ -179,6 +211,7 @@ async function enviarFotoParaBackend() {
 onMounted(async () => {
     usuario.value= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
     console.log(route.path)
+    console.log(usuario.value)
     foto.value=await usuario.value.foto
     
     // if(foto.value==undefined){

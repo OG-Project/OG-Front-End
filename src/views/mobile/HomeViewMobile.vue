@@ -2,31 +2,31 @@
     <div class="w-full h-full flex flex-col items-center justify-center">
         <div class="h-16 flex items-center justify-center">
             <h1 class="text-3xl sm:text-5xl font-bold w-fit border-b-2 border-black" v-if="usuarioCookies">
-                Bem-Vindo {{ usuarioCookies.username }}
+                {{ $t('home.bemVindoUsuario', {nome: usuarioCookies.username}) }}
             </h1>
         </div>
         <div class="h-48 flex items-center justify-around w-full">
             <div class="text-xl flex flex-col items-center">
                 <img :src="VerificadoVerdeIcon" />
-                <p class="text-[#428A6A]">{{ tarefasFeitas }}</p>
-                <p>Tarefas</p>
+                <p class="text-[#428A6A]">{{ $t('home.tarefasFeitas') }}</p>
+                <p>{{ tarefasFeitas }}</p>
             </div>
             <div class="text-xl flex flex-col items-center">
                 <img :src="VerificadoVermelhoIcon" />
-                <p class="text-[#8A4242]">{{ tarefasNaoFeitas }}</p>
-                <p>Tarefas</p>
+                <p class="text-[#8A4242]">{{ $t('home.tarefasNaoFeitas') }}</p>
+                <p>{{ tarefasNaoFeitas }}</p>
             </div>
         </div>
         <div class="h-16 flex items-center justify-center">
             <h1 class="text-3xl sm:text-4xl w-fit font-bold">
-                Minhas Tarefas
+                {{ $t('home.minhasTarefas') }}
             </h1>
         </div>
         <div class="h-32 w-full flex items-center justify-around">
-            <EstrelaHomeIcon @click="trocaTopico('Projetos Urgentes')" />
-            <DiaHomeIcon @click="trocaTopico('Projetos do Dia')" />
-            <SemanaHomeIcon @click="trocaTopico('Projetos da Semana')" />
-            <MesHomeIcon @click="trocaTopico('Projetos do Mês')" />
+            <EstrelaHomeIcon @click="trocaTopico($t('home.main_projects'))" />
+            <DiaHomeIcon @click="trocaTopico($t('home.daily_projects'))" />
+            <SemanaHomeIcon @click="trocaTopico($t('home.weekly_projects'))" />
+            <MesHomeIcon @click="trocaTopico($t('home.monthly_projects'))" />
         </div>
         <div class="w-[90%] h-[45vh] flex flex-col items-center"
             style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
@@ -35,17 +35,16 @@
                 <div v-for="projeto of listaDeProjetos"
                     class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
                     style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
-                    <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid #620ba7"
+                    <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid var(--roxo)"
                         @click="redireciona('/projeto/kanban', projeto.id)">
                         <p>{{ projeto.nome }}</p>
                         <p v-if="projeto.responsaveis[0]">{{ projeto.responsaveis[0].responsavel.username }}</p>
-                        <p v-if="!projeto.responsaveis[0]"> Não possui responsável</p>
+                        <p v-if="!projeto.responsaveis[0]">{{ $t('home.naoPossuiResponsavel') }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -58,6 +57,9 @@ import MesHomeIcon from '../../assets/MesHomeIcon.vue';
 import { conexaoBD } from "../../stores/conexaoBD.js"
 import VueCookies from "vue-cookies";
 import router from "@/router";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const banco = conexaoBD();
 let nomeDoTopico = ref();
@@ -73,15 +75,17 @@ async function pegaUsuario() {
 }
 
 async function autenticarUsuario(id) {
-  let usuarios = banco.procurar("/usuario");
-  let listaUsuarios = await usuarios;
-  let usuario = listaUsuarios.find((usuario) => usuario.id == id);
-  return usuario;
+    let usuarios = banco.procurar("/usuario");
+    let listaUsuarios = await usuarios;
+    let usuario = listaUsuarios.find((usuario) => usuario.id == id);
+    return usuario;
 }
 
 function redireciona(rota, id) {
     VueCookies.set("IdProjetoAtual", id);
-    router.push(rota);
+    router.push(rota).then(() => {
+        window.location.reload()
+    });
 }
 
 async function verificaTarefasFeitas() {
@@ -105,33 +109,33 @@ async function verificaTarefasFeitas() {
     console.log(tarefasNaoFeitas.value);
 }
 
-onMounted( async () =>{
+onMounted(async () => {
     usuarioCookies = await autenticarUsuario(usuarioId);
-    trocaTopico('Projetos Urgentes')
+    trocaTopico(t('home.main_projects'))
     verificaTarefasFeitas();
 });
 
 function trocaTopico(nome) {
-    if (nome === 'Projetos Urgentes') {
-        nomeDoTopico.value = "Projetos Urgentes";
+    if (nome === t('home.main_projects')) {
+        nomeDoTopico.value = t('home.main_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosUrgentes();
     }
-    else if (nome === 'Projetos do Dia') {
-        nomeDoTopico.value = "Projetos do Dia";
+    else if (nome === t('home.daily_projects')) {
+        nomeDoTopico.value = t('home.daily_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosDia();
     }
-    else if (nome === 'Projetos da Semana') {
-        nomeDoTopico.value = "Projetos da Semana";
+    else if (nome === t('home.weekly_projects')) {
+        nomeDoTopico.value = t('home.weekly_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosSemana();
     }
-    else if (nome === 'Projetos do Mês') {
-        nomeDoTopico.value = "Projetos do Mês";
+    else if (nome === t('home.monthly_projects')) {
+        nomeDoTopico.value = t('home.monthly_projects');
         console.log(nomeDoTopico.value);
         listaDeProjetos.value = [];
         pegaListaDeProjetosMes();

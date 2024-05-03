@@ -94,18 +94,18 @@ export const conexaoBD = defineStore('conexaoBD', {
             'Content-Type': 'multipart/form-data'
           }
         },{withCredentials:true}).then(response => {
-
+          return response.data;
         });
 
-        // Retorne os dados da resposta
-        return response.data;
-      } catch (error) {
+    
+        
+      }catch (error) {
         console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
-
       return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
     },
+
     async patchDeArquivosNaTarefa(arquivos, id) {
       try {
         // Deleta os arquivos existentes relacionados à tarefa

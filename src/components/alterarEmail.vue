@@ -2,7 +2,7 @@
     <fundoPopUp largura="77vh" altura="54vh">
         <div class="flex flex-col justify-between w-[740px] h-[515px]">
             <div class="flex pl-12 pt-12">
-                <div class="text-3xl text-roxo">
+                <div class="text-3xl text-[var(--roxo)]">
                     Alterar E-mail
                 </div>
             </div>

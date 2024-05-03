@@ -14,15 +14,15 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
     criaTarefa() {
       let api = conexaoBD();
       
-      localStorage.removeItem("TarefaNaoFinalizada");
+      localStorage.removeItem('TarefaNaoFinalizada');
       // Criar a tarefa e esperar pela resposta
       api.cadastrar({}, '/tarefa/' + VueCookies.get("IdProjetoAtual"))
         .then(async (response) => {
           // Obter o ID da tarefa recém-criada
 
-          let idTarefa = response.id;
+          let idTarefa = response.data.id;
 
-          console.log(response.id);
+          console.log(response.data.id);
           console.log(response);
 
           

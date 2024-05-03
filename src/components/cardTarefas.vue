@@ -19,13 +19,13 @@
                 </div>
    
             </div>
-            <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
+            <!-- <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
                 <div v-if="tarefa.tarefa.id == props.tarefa.id" class="flex justify-end pl-[20%]">
                     <svg width="2vh" height="2vh" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M14.6252 14.3234L0.464865 14.3233L14.6257 0.610178L14.6252 14.3234Z" fill="#620BA7" />
                     </svg>
                 </div>
-            </div>
+            </div> -->
    
         </div>
         <!-- Preset 2 Tira -->
@@ -79,7 +79,7 @@ tira = {
     fontSize: "0.7vw"
 }
 kanban = {
-    width: "12.7vw",
+    width: "100%",
     height: "8vh",
     backgroundColor: "#D9D9D9",
     display: "flex",
@@ -87,7 +87,7 @@ kanban = {
 }
 
 hoverCard = {
-    width: "12.7vw",
+    width: "100%",
     height: "8vh",
     backgroundColor: "#D9D9D9",
     display: "flex",
@@ -109,7 +109,9 @@ function verificaCorTexto(tarefa) {
 }
 function enviaCookie(tarefa){
     $cookies.set("IdTarefaCookies",tarefa.id)
-    router.push('/criaTarefa')
+    router.push('/criaTarefa').then(() => {
+        window.location.reload()
+    })
 }
 
 </script>

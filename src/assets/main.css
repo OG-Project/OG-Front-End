@@ -31,6 +31,8 @@
     --fonteCorpoTamanho:2vh;
     --backgroundPuro: #ffffff;
     --backgroundItems: #f8f8f8; 
+    --backgroundItemsClaros: #f1f1f1; 
+    --fonteCor:#000000;
 }
 
 html{

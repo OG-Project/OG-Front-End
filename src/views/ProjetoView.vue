@@ -12,11 +12,15 @@
                     <timeLine></timeLine>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/kanban')"
-                    class="w-[100%] h-screen flex justify-center items-center">
+                    class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto" >
                     <KanbanDeStatus></KanbanDeStatus>
                 </div>
-                <div v-if="defineOpcao(route.path, '/projeto/lista')"
-                    class="w-[100%] h-screen flex justify-center items-center">
+                <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length < 7"
+                    class="w-full max-w-full h-screen flex justify-center px-4 items-center overflow-x-auto">
+                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
+                </div>
+                <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length >= 7"
+                    class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto">
                     <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
                 </div>
             </div>
