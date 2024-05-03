@@ -29,8 +29,8 @@ export const conexaoBD = defineStore('conexaoBD', {
         
         return axios.put("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
       },
-      adicionarUsuarios(ids,equipeId,textoRequisicao){
-        return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId,ids,{withCredentials:true})
+      adicionarUsuarios(idUser,equipeId,numeroPermissao, textoRequisicao){
+        return axios.patch('http://localhost:8082'+(textoRequisicao+'/'+idUser+"/"+equipeId+"/"+numeroPermissao),"",{withCredentials:true})
       },
       deletar(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`,{withCredentials:true}).then(response =>{
@@ -38,15 +38,15 @@ export const conexaoBD = defineStore('conexaoBD', {
         })
       },
       deletarProjetoEquipe(id,idProjeto,textoRequisicao){
-        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`).then(response =>{
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`,{withCredentials:true}).then(response =>{
           
         })
       },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
-          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
       },
       removerUsuarioDaEquipe(equipeId,userId,textoRequisicao){
-          return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`).then(response =>{
+          return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`,{withCredentials:true}).then(response =>{
            
           })
       },
