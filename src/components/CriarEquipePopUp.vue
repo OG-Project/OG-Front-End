@@ -76,9 +76,9 @@
     let mensagemCor = ref("");
     
     onMounted(()=>{
-        conexaoWeb.url= "ws://localhost:8085/og/webSocket/usuario/" +usuarioLogado;
-        conexaoWeb.criaConexaoWebSocket()
-    })
+    conexaoWeb.url= "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado;
+    conexaoWeb.criaConexaoWebSocket()
+})
 
     function marginRightConvidado() {
         if(screenWidth <= 620){
@@ -228,10 +228,10 @@
         
         let equipe;
         cria.criaEquipe(equipeCadastrada).then(response =>{
-        equipe = response.data
-        colocaMembrosEquipe(equipe)
+        equipe = response.data;
+        colocaMembrosEquipe(equipe);
         enviaParaWebSocket(equipe, membrosEquipe.value);
-        window.location.reload()
+        window.location.reload();
         });
         
     };
@@ -244,16 +244,13 @@
         adicionaUsuarioLogado(ids, equipe)
     }
 
-    function adicionaUsuarioLogado(ids, equipe){
+    async function adicionaUsuarioLogado(ids, equipe) {
     // Adicione automaticamente o usuário logado à equipe
     const usuarioLogadoId = Number(usuarioLogado);
-        ids = []
-        if (!ids.includes(usuarioLogadoId)) {
-            ids.push(usuarioLogadoId);
-        }
-        banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
-       
-    }
+    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
+    
+    banco.adicionarCriador(usuarioLogadoId,equipe.id)
+}
 
     async function enviaParaWebSocket(equipe,membrosConvidados) {
         let equipeAux = {
@@ -273,6 +270,7 @@
         }
         console.log(teste)
         console.log(equipeAux)
+        
         const webSocket = webSocketStore();
         webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
         await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))

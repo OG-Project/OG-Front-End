@@ -254,7 +254,7 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
 
     }
     const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8085/og/webSocket/usuario/" +usuarioLogado
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
@@ -293,6 +293,8 @@ async function confirmarConvites() {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
     enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
+
+    window.location.reload();
 }
 
 </script>
