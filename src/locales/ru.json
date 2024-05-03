@@ -57,7 +57,14 @@
     "nomePropriedade": "Название свойства",
     "tipo": "Тип",
     "status": "Статус",
-    "naoPossuiResponsavel": "Нет назначенного ответственного"
+    "naoPossuiResponsavel": "Нет назначенного ответственного",
+    "dashboard": "Панель инструментов",
+    "no_subtasks": "Нет подзадач",
+    "projects": "Проекты",
+    "main_projects": "Основные проекты",
+    "daily_projects": "Проекты на день",
+    "weekly_projects": "Проекты на неделю",
+    "monthly_projects": "Проекты на месяц"
   },
   "navBar":{
     "botaoNovaTarefa": "Новая задача",
@@ -65,9 +72,27 @@
   },
   "barraLateral": {
     "home": "Главная",
-    "equipe": "Команда",
+    "equipe": "Команды",
     "projetos": "Проекты",
     "sair": "Выйти"
+  },
+  "projeto": {
+    "URGENTES": "СРОЧНЫЙ",
+    "PRONTOS": "ГОТОВО",
+    "NÃO INICIADOS": "НЕ НАЧАТО",
+    "MEUS PROJETOS": "МОИ ПРОЕКТЫ",
+    "URGENTES_TITLE": "СРОЧНЫЙ",
+    "NÃO INICIADOS_TITLE": "НЕ НАЧАТО",
+    "PRONTOS_TITLE": "ГОТОВО",
+    "MEUS PROJETOS_TITLE": "МОИ ПРОЕКТЫ",
+    "NENHUM PROJETO": "НЕТ ПРОЕКТОВ",
+    "PROJETOS": "ПРОЕКТЫ",
+    "NOVO PROJETO": "НОВЫЙ ПРОЕКТ"
+  },
+  "equipes": {
+    "equipes": "Команды",
+    "projetos": "Проекты",
+    "projeto": "Проект"
   }
   
 }

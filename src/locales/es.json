@@ -57,7 +57,14 @@
     "nomePropriedade": "Nombre de la Propiedad",
     "tipo": "Tipo",
     "status": "Estado",
-    "naoPossuiResponsavel": "Sin responsable asignado"
+    "naoPossuiResponsavel": "Sin responsable asignado",
+    "dashboard": "Tablero",
+    "no_subtasks": "Sin Subtareas",
+    "projects": "Proyectos",
+    "main_projects": "Proyectos Principales",
+    "daily_projects": "Proyectos del Día",
+    "weekly_projects": "Proyectos de la Semana",
+    "monthly_projects": "Proyectos del Mes"
   },
   "navBar": {
     "botaoNovaTarefa": "Nueva Tarea",
@@ -65,9 +72,27 @@
   },
   "barraLateral": {
     "home": "Inicio",
-    "equipe": "Equipo",
+    "equipe": "Equipos",
     "projetos": "Proyectos",
     "sair": "Salir"
+  },
+  "projeto": {
+    "URGENTES": "URGENTES",
+    "PRONTOS": "LISTOS",
+    "NÃO INICIADOS": "NO INICIADOS",
+    "MEUS PROJETOS": "MIS PROYECTOS",
+    "URGENTES_TITLE": "URGENTES",
+    "NÃO INICIADOS_TITLE": "NO INICIADOS",
+    "PRONTOS_TITLE": "LISTOS",
+    "MEUS PROJETOS_TITLE": "MIS PROYECTOS",
+    "NENHUM PROJETO": "NO HAY PROYECTOS",
+    "PROJETOS": "PROYECTOS",
+    "NOVO PROJETO": "NUEVO PROYECTO"
+  },
+  "equipes": {
+    "equipes": "Equipos",
+    "projetos": "Proyectos",
+    "projeto": "Proyecto"
   }
   
 }
