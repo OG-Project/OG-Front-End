@@ -297,8 +297,7 @@
                 </p>
                 <p v-if="propriedade.propriedade.tipo == 'NUMERO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero')
                   }}</p>
-                <p v-if="propriedade.propriedade.tipo == 'SELEÇÃO'">{{ $t('criaTarefa.type') }}: {{
-          $t('criaTarefa.Seleção') }}</p>
+                <p v-if="propriedade.propriedade.tipo == 'SELECAO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Seleção') }}</p>
               </div>
               <!-- <div class="flex justify-center">
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
@@ -329,7 +328,7 @@
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'">
+                <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
                   <div v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
                     <Input altura="2" largura="27" conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
@@ -341,6 +340,7 @@
                   <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
                     {{ $t('criaTarefa.add') }}
                   </p>
+                  {{ console.log(propriedade.valor) }}
                 </div>
               </div>
             </div>

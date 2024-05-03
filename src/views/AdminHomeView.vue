@@ -12,19 +12,20 @@
             <div class="bg-[var(--backgroundItems)] ml-8 w-[90%] h-[92%] flex items-center justify-end"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
-                    <div class="flex gap-12 mt-6 flex-wrap justify-center w-[100%] text-md">
-                        <div class="flex gap-14 w-[90%] items-center justify-center">
-                            <p class="w-[16%] flex items-center">Nome da tarefa</p>
-                            <p class="w-[16%] flex items-center">Lider</p>
-                            <p class="w-[16%] flex items-center">Membros</p>
-                            <p class="w-[16%] flex items-center">Status</p>
-                            <p class="w-[16%] flex items-center">Tempo trabalhado</p>
-                            <p class="w-[16%] flex items-center">Entrega</p>
+                    <div class="flex gap-4 mt-6 flex-wrap justify-center w-[100%] text-md">
+                        <div class="flex gap-8 pb-8 w-[90%] items-center justify-center">
+                            <p class="w-[16%] flex items-center justify-center">Nome da tarefa</p>
+                            <p class="w-[16%] flex items-center justify-center">Lider</p>
+                            <p class="w-[16%] flex items-center justify-center">Membros</p>
+                            <p class="w-[16%] flex items-center justify-center">Status</p>
+                            <p class="w-[16%] flex items-center justify-center">Tempo trabalhado</p>
+                            <p class="w-[16%] flex items-center justify-center">Entrega</p>
                         </div>
-                        <div v-for="tarefa of tarefas" class="w-[90%] text-sm" >
+                        <div v-for="tarefa of tarefas" class="w-[90%] text-sm pb-8">
                             <div v-if="tarefa.nome">
-                                <div class="flex gap-14">
-                                    <p class="w-[16%] truncate flex items-center justify-center h-10 bg-[#B488D7]">{{ tarefa.nome }}</p>
+                                <div class="flex gap-8">
+                                    {{ console.log(tarefa) }}
+                                    <p class="w-[16%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer" @click="redirecionamento('/criaTarefa', tarefa.id)">{{ tarefa.nome }}</p>
                                     <p class="w-[16%] flex items-center justify-center h-10" v-if="tarefa.lider">{{ tarefa.lider }}</p>
                                     <p class="w-[16%] flex items-center justify-center h-10" v-else>Não possui</p>
                                     <p class="w-[16%] flex items-center justify-center h-10 bg-[#8A59B1]" v-if="tarefa.membros">{{ tarefa.membros.length }}</p>
@@ -92,11 +93,19 @@ let chart = null
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 
+import router from '@/router';
+
 import tinycolor from "tinycolor2";
 
 function corDaFonte(backgroundColor) {
   const isLight = tinycolor(backgroundColor).isLight();
   return isLight ? "#000" : "#fff";
+}
+
+function redirecionamento(local, id){
+    localStorage.removeItem('TarefaNaoFinalizada')
+    VueCookies.set('IdTarefaCookies', id, 100000000)
+    router.push(local)
 }
 
 const banco = conexaoBD();
@@ -105,6 +114,11 @@ let projeto = ref({})
 
 async function pegaTarefasDoProjeto() {
     banco.buscarTarefaProjeto(VueCookies.get('IdProjetoAtual'), '/projeto').then((projeto) => {
+        projeto.tarefas.forEach(tarefa => {
+            if(tarefa.nome == null){
+                tarefa.nome = "Tarefa sem nome"
+            }
+        });
         projeto.value = projeto
         tarefas.value = projeto.tarefas
         console.log(tarefas.value);
