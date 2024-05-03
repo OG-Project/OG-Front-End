@@ -32,6 +32,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         
         return axios.put("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
       },
+      atualizaProjetoEquipe(objeto,idEquipe,textoRequisicao){
+        
+        return axios.put("http://localhost:8082"+textoRequisicao+'/'+idEquipe,objeto,{withCredentials:true}).then(response => response)
+      },
       adicionarUsuarios(idUser,equipeId,numeroPermissao, textoRequisicao){
         return axios.patch('http://localhost:8082'+(textoRequisicao+'/'+idUser+"/"+equipeId+"/"+numeroPermissao),"",{withCredentials:true})
       },

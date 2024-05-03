@@ -25,8 +25,10 @@
 import Botao from '../components/Botao.vue';
 import listaProjetos from '../components/listaProjetos.vue';
 import router from "@/router";
+import VueCookies from 'vue-cookies';
 const screenWidth = window.innerWidth;
 function enviaTelaCriaProjeto(){
+    VueCookies.set("idAuxEquipe")
     router.push('/criaProjeto')
 }
 </script>

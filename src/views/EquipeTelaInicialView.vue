@@ -72,7 +72,7 @@ let projetosEquipe = ref([]);
 const router = useRouter();
 
 async function entrarNoProjeto(projeto) {
-  console.log(projeto)
+  VueCookies.set("idAuxEquipe",equipeSelecionada,30000)
   VueCookies.set("IdProjetoAtual", projeto.id, 30000)
   router.push({ path: '/projeto' })
 }

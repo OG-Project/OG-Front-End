@@ -374,6 +374,7 @@ async function criaProjeto() {
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
             
         restauraCookies();
+        router.push('/projeto')
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
