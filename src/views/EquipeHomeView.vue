@@ -178,6 +178,7 @@ function limparNomeCompleto() {
 }
 
 .maisEquipes {
+
     @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] 
     md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
 }

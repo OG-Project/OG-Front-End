@@ -61,6 +61,11 @@ export const conexaoBD = defineStore('conexaoBD', {
 
 
       },
+      async buscarTarefaProjeto(userId, textoRequisicao){
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+
+
+      },
     adicionarEquipe(equipeId,projetoId, textoRequisicao) {
       return axios.patch('http://localhost:8085' + textoRequisicao + '/' + projetoId + '/' + equipeId)
     },
