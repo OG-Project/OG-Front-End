@@ -83,7 +83,9 @@ async function autenticarUsuario(id) {
 
 function redireciona(rota, id) {
     VueCookies.set("IdProjetoAtual", id);
-    router.push(rota);
+    router.push(rota).then(() => {
+        window.location.reload()
+    });
 }
 
 async function verificaTarefasFeitas() {

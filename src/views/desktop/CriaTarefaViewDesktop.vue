@@ -647,6 +647,7 @@ async function criaTarefaNoConcluido() {
     nome: null,
     valorPropriedadeTarefas: [],
     dataCriacao: null,
+    indice: []
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
@@ -693,16 +694,17 @@ async function criaTarefaNoConcluido() {
   });
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
+  tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  console.log(tarefaCriando);
-  console.log(tarefa.value.arquivos);
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
-  router.push("/projeto")
+  router.push("/projeto").then(() => {
+        window.location.reload()
+    });
 }
 
 //Função que deleta status

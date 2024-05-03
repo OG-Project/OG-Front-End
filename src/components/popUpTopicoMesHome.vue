@@ -34,7 +34,9 @@ onMounted(() => {
 
 function redireciona(rota,id) {
   VueCookies.set("IdProjetoAtual", id);
-  router.push(rota);
+  router.push(rota).then(() => {
+        window.location.reload()
+    });
   funcaoPopUp.fechaPopUp();
 }
 

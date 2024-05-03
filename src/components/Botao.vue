@@ -38,6 +38,7 @@ const tamanhoComClass = ref("medioId");
 const screenWidth = ref(window.innerWidth)
 
 onMounted(()=>{
+
   if(screenWidth < 640){
     'var(--fonteCorpoTamanho)'.value='0.5vh'
   }
@@ -586,6 +587,6 @@ function click() {
   @apply w-[48vw] h-[5vh]
 }
 .mobilePequenoId{
-  @apply w-[20vw] 2xl:h-[5vh] xl:h-[8vh]
+  @apply w-[20vw] h-[5vh] 2xl:h-[5vh] xl:h-[8vh]
 }
 </style>

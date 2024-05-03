@@ -27,7 +27,9 @@ import listaProjetos from '../components/listaProjetos.vue';
 import router from "@/router";
 const screenWidth = window.innerWidth;
 function enviaTelaCriaProjeto(){
-    router.push('/criaProjeto')
+    router.push('/criaProjeto').then(() => {
+        window.location.reload()
+    });
 }
 </script>
 <style scoped>
