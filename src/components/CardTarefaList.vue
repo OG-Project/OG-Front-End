@@ -66,7 +66,6 @@ let lista = ref([])
 
 onMounted(() => {
   transformaEmObject().then(() => {
-    console.log(projeto.value)
     ordenaTarefas()
   })
 })
@@ -87,18 +86,15 @@ function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
     if (valorPropriedadeTarefa.propriedade.id == propriedadeVisivel.id) {
       tarefa.valorPropriedadeTarefas.splice(tarefa.valorPropriedadeTarefas.indexOf(valorPropriedadeTarefa), 1, tarefa.valorPropriedadeTarefas[props.listaDePropriedadesVisiveis.indexOf(propriedadeVisivel)])
       tarefa.valorPropriedadeTarefas.splice(props.listaDePropriedadesVisiveis.indexOf(propriedadeVisivel), 1, valorPropriedadeTarefa)
-      console.log(tarefa.valorPropriedadeTarefas)
       return true
     }
   }
 }
 
 function ordenaTarefas() {
-  console.log(projeto.value.tarefas)
 
   projeto.value.tarefas.sort((tarefa, tarefa2) => {
     if (tarefa.nome != null && tarefa2.nome != null) {
-      console.log(tarefa)
       return tarefa.indice[1].indice - tarefa2.indice[1].indice
     }
   })
@@ -108,47 +104,48 @@ function onDragEnd() {
   projeto.value.tarefas.forEach(async (tarefa, index) => {
     if (tarefa.nome != null) {
       tarefa.indice[1].indice = projeto.value.tarefas.indexOf(tarefa)
-        tarefaPut = {
-          id: tarefa.id,
-          nome: tarefa.nome,
-          descricao: tarefa.descricao,
-          status: tarefa.status,
-          cor: tarefa.cor,
-          status: tarefa.status,
-          valorPropriedadeTarefas: tarefa.valorPropriedadeTarefas,
-          comentarios: tarefa.comentarios,
-          arquivos: tarefa.arquivos,
-          indice: tarefa.indice,
-        }
-        for (const valorPropriedadeTarefaPut of tarefaPut.valorPropriedadeTarefas) {
-          if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
-            console.log("AAAAAAAAA")
-            valorPropriedadeTarefaPut.valor = {
-              id: valorPropriedadeTarefaPut.valor.id,
-              texto: valorPropriedadeTarefaPut.valor.valor
-            }
-            console.log(valorPropriedadeTarefaPut.valor);
-          } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
-            valorPropriedadeTarefaPut.valor = {
-              id: valorPropriedadeTarefaPut.valor.id,
-              data: valorPropriedadeTarefaPut.valor.valor
-            }
-          } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-            valorPropriedadeTarefaPutPut.valor = {
-              id: valorPropriedadeTarefaPut.valor.id,
-              numero: valorPropriedadeTarefaPut.valor.valor
-            }
-          } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-            valorPropriedadeTarefaPutPut.valor = {
-              id: valorPropriedadeTarefaPut.valor.id,
-              valores: valorPropriedadeTarefaPut.valor.valor
-            }
+      tarefaPut = {
+        id: tarefa.id,
+        nome: tarefa.nome,
+        descricao: tarefa.descricao,
+        status: tarefa.status,
+        cor: tarefa.cor,
+        status: tarefa.status,
+        valorPropriedadeTarefas: [...tarefa.valorPropriedadeTarefas],
+        comentarios: tarefa.comentarios,
+        arquivos: tarefa.arquivos,
+        indice: tarefa.indice,
+      }
+      for (let valorPropriedadeTarefaPut of tarefaPut.valorPropriedadeTarefas) {
+        if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
+          valorPropriedadeTarefaPut.valor = {
+            id: valorPropriedadeTarefaPut.valor.id,
+            texto: valorPropriedadeTarefaPut.valor.valor ?? null,
+          }
+        } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
+          valorPropriedadeTarefaPut.valor = {
+            id: valorPropriedadeTarefaPut.valor.id,
+            data: valorPropriedadeTarefaPut.valor.valor ?? null,
+
+          }
+        } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
+          valorPropriedadeTarefaPutPut.valor = {
+            id: valorPropriedadeTarefaPut.valor.id,
+            numero: valorPropriedadeTarefaPut.valor.valor ?? null,
+
+          }
+        } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
+          valorPropriedadeTarefaPutPut.valor = {
+            id: valorPropriedadeTarefaPut.valor.id,
+            valores: valorPropriedadeTarefaPut.valor.valor ?? null,
+
           }
         }
+      }
       console.log(tarefaPut)
-      await api.atualizar(tarefaPut, '/tarefa').then(() => {
-        console.log(tarefaPut)
-      })
+        await api.atualizar(tarefaPut, '/tarefa').then((response) => {
+          transformaEmObject()
+        })
     }
   })
 }
