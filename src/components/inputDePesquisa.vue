@@ -80,36 +80,39 @@ function verificaSeSaoIguais() {
   }
 }
 
-function passaValorProInput(valor) {
+async function passaValorProInput(valor) {
   if (props.tipo == 'NavBar') {
     conteudoDaPesquisa.value = valor.nome;
     switch (valor.tipo) {
       case "Projeto":
         conteudoDaPesquisa.value = "";
         VueCookies.set("IdProjetoAtual", valor.id);
-        redireciona("/projeto").then(() => {
-          window.location.reload();
-          conteudoDaPesquisa.value = "";
-        });
+        redireciona("/projeto")
+        await new Promise(r => setTimeout(r, 100));
+        // window.location.reload();
+        conteudoDaPesquisa.value = "";
         break;
       case "Equipe":
         conteudoDaPesquisa.value = "";
         VueCookies.set("equipeSelecionada", valor.id);
-        redireciona("/equipe/telaInicial").then(() => {
-          window.location.reload();
-        });
+        await new Promise(r => setTimeout(r, 100));
+        redireciona("/equipe/telaInicial")
+        // window.location.reload();
+        conteudoDaPesquisa.value = "";
         break;
       case "Usuario":
         conteudoDaPesquisa.value = "";
-        redireciona("/perfil/" + valor.id).then(() => {
-          window.location.reload();
-        });
+        redireciona("/perfil/" + valor.id)
+        await new Promise(r => setTimeout(r, 100));
+        // window.location.reload();
+        conteudoDaPesquisa.value = "";
         break;
       case "Tarefa":
         VueCookies.set("IdTarefaCookies", valor.id);
-        redireciona("/criaTarefa").then(() => {
-          window.location.reload();
-        });
+        redireciona("/criaTarefa")
+        await new Promise(r => setTimeout(r, 100));
+        // window.location.reload();
+        conteudoDaPesquisa.value = "";
         break;
     }
   } else {
@@ -118,10 +121,10 @@ function passaValorProInput(valor) {
 }
 
 function redireciona(rota) {
-  if(rota == '/criaTarefa'){
+  router.push(rota);
+  if (rota == '/criaTarefa') {
     localStorage.removeItem('TarefaNaoFinalizada');
   }
-  router.push(rota);
 }
 
 watch(() => {

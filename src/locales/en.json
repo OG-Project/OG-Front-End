@@ -72,9 +72,22 @@
   },
   "barraLateral": {
     "home": "Home",
-    "equipe": "Team",
+    "equipe": "Teams",
     "projetos": "Projects",
     "sair": "Logout"
+  },
+  "projeto": {
+    "URGENTES": "URGENT",
+    "PRONTOS": "READY",
+    "NÃO INICIADOS": "NOT STARTED",
+    "MEUS PROJETOS": "MY PROJECTS",
+    "URGENTES_TITLE": "URGENT",
+    "NÃO INICIADOS_TITLE": "NOT STARTED",
+    "PRONTOS_TITLE": "READY",
+    "MEUS PROJETOS_TITLE": "MY PROJECTS",
+    "NENHUM PROJETO": "THERE ARE NO PROJECTS",
+    "PROJETOS": "PROJECTS",
+    "NOVO PROJETO": "NEW PROJECT"
   }
   
 }

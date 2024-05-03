@@ -72,9 +72,22 @@
   },
   "barraLateral": {
     "home": "Главная",
-    "equipe": "Команда",
+    "equipe": "Команды",
     "projetos": "Проекты",
     "sair": "Выйти"
+  },
+  "projeto": {
+    "URGENTES": "СРОЧНЫЙ",
+    "PRONTOS": "ГОТОВО",
+    "NÃO INICIADOS": "НЕ НАЧАТО",
+    "MEUS PROJETOS": "МОИ ПРОЕКТЫ",
+    "URGENTES_TITLE": "СРОЧНЫЙ",
+    "NÃO INICIADOS_TITLE": "НЕ НАЧАТО",
+    "PRONTOS_TITLE": "ГОТОВО",
+    "MEUS PROJETOS_TITLE": "МОИ ПРОЕКТЫ",
+    "NENHUM PROJETO": "НЕТ ПРОЕКТОВ",
+    "PROJETOS": "ПРОЕКТЫ",
+    "NOVO PROJETO": "НОВЫЙ ПРОЕКТ"
   }
   
 }

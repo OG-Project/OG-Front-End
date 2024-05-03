@@ -75,5 +75,18 @@
     "equipe": "团队",
     "projetos": "项目",
     "sair": "退出"
+  },
+  "projeto": {
+    "URGENTES": "紧急",
+    "PRONTOS": "准备好",
+    "NÃO INICIADOS": "未开始",
+    "MEUS PROJETOS": "我的项目",
+    "URGENTES_TITLE": "紧急",
+    "NÃO INICIADOS_TITLE": "未开始",
+    "PRONTOS_TITLE": "准备好",
+    "MEUS PROJETOS_TITLE": "我的项目",
+    "NENHUM PROJETO": "没有项目",
+    "PROJETOS": "项目",
+    "NOVO PROJETO": "新项目"
   }
 }
