@@ -24,7 +24,9 @@ import VueSocketIO from 'vue-socket.io'
 import '@vuepic/vue-datepicker/dist/main.css'
 import VueCookies from "vue-cookies";
 
-
+// import VueShepherd from 'vue-shepherd/dist/vue-shepherd.ssr.js';
+// import VueShepherdPlugin from 'vue-shepherd';
+import 'shepherd.js/dist/css/shepherd.css';
 
 const i18n = createI18n({
     legacy: false,
@@ -39,13 +41,13 @@ const i18n = createI18n({
         'ru': Russo
     }
 });
-import 'shepherd.js/dist/css/shepherd.css';
 
 
 const app = createApp(App)
 export const pinia = createPinia()
 setActivePinia(pinia)
 app.use(VueColor)
+// app.use(VueShepherdPlugin)
 app.use(pinia)
 app.use(router)
 app.use(PrimeVue);

@@ -28,7 +28,7 @@
                         <p class="descricao">{{ equipe.equipe.descricao }}</p>
                     </div>
                 </div>
-                <div class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
+                <div id="step-5" class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
                     @mouseover="expandirCard" @mouseleave="reduzirCard">
                     <img class="flex w-[8vw] h-[6vh]" src="../imagem-vetores/maisIcon.svg" alt="">
                 </div>

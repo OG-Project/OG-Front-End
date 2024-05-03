@@ -12,7 +12,7 @@
 
           <div class="flex-col h-full flex gap-6 ml-4 mt-10 items-start">
             <!-- home -->
-            <div class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/home')">
+            <div  class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/home')">
               <svg
                 width="44"
                 height="44"
@@ -37,7 +37,7 @@
               <div>{{ $t('barraLateral.equipe') }}</div>
             </div>
             <!-- pronetos -->
-            <div class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/projetos')">
+            <div  class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/projetos')">
               <svg width="44" height="41" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M2.00195 13.7727H46.002M42.0734 39H5.93052C4.8886 39 3.88936 38.557 3.15261 37.7685C2.41585 36.98 2.00195 35.9106 2.00195 34.7955V6.20455C2.00195 5.08943 2.41585 4.01999 3.15261 3.23148C3.88936 2.44298 4.8886 2 5.93052 2H13.384C14.1597 2.00002 14.918 2.2458 15.5634 2.70636L18.2977 4.65727C18.943 5.11783 19.7014 5.36361 20.477 5.36364H42.0734C43.1153 5.36364 44.1146 5.80661 44.8513 6.59512C45.5881 7.38362 46.002 8.45307 46.002 9.56818V34.7955C46.002 35.9106 45.5881 36.98 44.8513 37.7685C44.1146 38.557 43.1153 39 42.0734 39Z"
