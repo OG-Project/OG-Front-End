@@ -2,7 +2,7 @@
         <fundoPopUp  largura="" altura="95vh">
             <div class="divGeral">
                 <div class=" grid-template flex w-full">
-                        <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe</h1>
+                        <h1 class="titulo mt-5 flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe</h1>
                 </div>
                 <div class=" grid-template  flex w-full mt-[1vh]  p-5">
                     <div class="relative">
@@ -26,7 +26,7 @@
                     <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao" @updateModelValue="(e)=> {descricao=e}" ></textAreaPadrao>
                 </div> 
                 <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                    <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg" caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosEquipe" ></ListaConvidados>
+                    <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" :listaConvidados="membrosEquipe" ></ListaConvidados>
                 </div>
                 <div v-if="screenWidth >= 620" class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
                         <Botao  preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
@@ -46,7 +46,7 @@
     
     </template>
     <script setup>
-    import { ref, computed, onMounted, watch} from 'vue';
+    import { ref, computed, onMounted} from 'vue';
     import fundoPopUp from './fundoPopUp.vue';
     import Input from './Input.vue';
     import textAreaPadrao from './textAreaPadrao.vue';
@@ -99,7 +99,6 @@
             return '1.5vw';
         }
     }
-
 
     const imagemSelecionada = ref(null);
 
@@ -441,7 +440,7 @@
 
     @media(min-width: 425px) and (max-width: 620px){
         .titulo{
-            @apply text-4xl mb-2; 
+            @apply text-4xl mb-8; 
         }
         .botao{
             @apply flex justify-end mt-10

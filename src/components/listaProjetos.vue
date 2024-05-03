@@ -282,10 +282,10 @@ function obterFotosResponsaveis(projeto) {
         if (responsaveisComFoto.length >= 0) {
           return `data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`;
         } else {
-            return '../src/imagem-vetores/userTodoPreto.svg'
+            return ''
         }
     } else {
-        return '../src/imagem-vetores/userTodoPreto.svg';
+        return '';
     }
 }
 
@@ -339,7 +339,9 @@ const buscarCorPorCategoria = (categoria) => {
   async function entrarNoProjeto(projeto) {
   console.log(projeto)
   VueCookies.set("IdProjetoAtual", projeto.id, 30000)
-  router.push({ path: '/projeto' })
+  router.push({ path: '/projeto' }).then(() => {
+        window.location.reload()
+    });
 }
 </script>
 <style scoped>

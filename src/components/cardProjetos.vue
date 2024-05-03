@@ -164,7 +164,7 @@ function somePopUp() {
     }
 
     .cardTotal {
-        @apply flex flex-col items-center justify-between relative w-[394px] h-[289px] bg-white overflow-hidden;
+        @apply flex flex-col items-center justify-between relative w-[394px] h-[289px] bg-[var(--backgroundItemsClaros)] overflow-hidden;
         transition: transform 0.3s ease;
 
     }

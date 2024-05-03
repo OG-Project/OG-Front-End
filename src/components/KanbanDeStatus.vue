@@ -1,6 +1,6 @@
 <template>
-    <div class="w-[89%] h-[40%] flex flex-row gap-[7%]">
-        <div v-for="propriedade of lista" class="w-[20%]">
+    <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
+        <div v-for="propriedade of lista" class="w-auto flex h-full">
             <div :style="propriedade.style">
 
                 <div class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
@@ -13,26 +13,31 @@
                 </div>
                 <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
                     v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
-                    @end="drag = false" item-key="tarefa.indice">
+                    @end="onDragEnd(propriedade)" item-key="tarefa.indice">
                     <template #item="{ element: tarefa }">
-                        <div class="w-full h-full flex items-center justify-center">
+                        <div class="w-full h-full flex items-center justify-center"
+                            :on-drop="mudaStatus(propriedade, tarefa)">
                             <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
                                 <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                             </div>
                         </div>
                     </template>
                 </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]"  @click="store.criaTarefa(), router.push('/criaTarefa')">
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]" @click="store.criaTarefa(), router.push('/criaTarefa').then(() => {
+            window.location.reload()
+        });">
                     <p :style="corDoTexto(propriedade.propriedade)">+ Nova</p>
                 </button>
             </div>
         </div>
-        <button class="novaPropriedade" @click="popUpStatus = true">
-            {{ console.log(popUpStatus) }}
-            <h1>+Novo</h1>
-        </button>
+        <span class="pr-4">
+
+            <button class="novaPropriedade " @click="popUpStatus = true">
+                <h1>+Novo</h1>
+            </button>
+        </span>
     </div>
-    <div v-if="popUpStatus==true">
+    <div v-if="popUpStatus == true">
         <div class="flex justify-end">
             <img src="../imagem-vetores/triangulo.svg">
         </div>
@@ -48,7 +53,7 @@
         </div>
         <div class="flex justify-between">
             <div class="pl-2 pt-2 pb-2">
-                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="popUpStatus=false"></Botao>
+                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="popUpStatus = false"></Botao>
             </div>
             <div class="pr-2 pt-2 pb-2">
 
@@ -75,17 +80,22 @@ import router from '@/router'
 
 let api = conexaoBD()
 let projetoApi = api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
+let projeto = ref({})
 let lista = ref([]);
 let listaStyle = ''
 let store = criaTarefaEBuscaStore()
 let popUpStatus = ref(false);
+let isFirstLoad = ref(true);
 const propriedadeAtual = ref("STATUS");
 const funcaoPopUp = funcaoPopUpStore()
 
 
 onMounted(() => {
     cookies()
-    defineListaDePropriedades()
+    defineListaDePropriedades().then(() => {
+        ordenaTarefas()
+        isFirstLoad.value = false;
+    })
 })
 
 watch(propriedadeAtual, async () => {
@@ -93,7 +103,7 @@ watch(propriedadeAtual, async () => {
 })
 
 async function cookies() {
-    let usuario = await api.procurar("/usuario/"+VueCookies.get("IdUsuarioCookie"))
+    let usuario = await api.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"))
 }
 
 function verificaCorTexto(status) {
@@ -105,10 +115,37 @@ function verificaCorTexto(status) {
 }
 
 function corDoTexto(status) {
-    console.log(status)
     return {
         color: verificaCorTexto(status)
     }
+}
+
+function mudaStatus(propriedade) {
+    
+    if (!isFirstLoad.value) {
+        propriedade.tarefas.forEach(async (tarefa, index) => {
+            if (tarefa.nome != null) {
+                tarefa.status = propriedade.propriedade;
+                tarefa.indice[1].indice = propriedade.tarefas.indexOf(tarefa);
+                await api.atualizar(tarefa, '/tarefa')
+            }
+        });
+    }
+}
+
+
+function ordenaTarefas() {
+    for (const propriedade of lista.value) {
+        propriedade.tarefas.sort((tarefa, tarefa2) => {
+            if (tarefa.nome != null && tarefa2.nome != null) {
+                return tarefa.indice[1].indice - tarefa2.indice[1].indice
+            }
+        })
+    }
+
+}
+function onDragEnd(propriedade) {
+
 }
 
 function fechaPopUp() {
@@ -116,12 +153,11 @@ function fechaPopUp() {
 }
 async function defineListaDePropriedades() {
     let listaDePropriedades = []
-    let projetoTeste = (await (projetoApi))
+    projeto.value = (await (projetoApi))
     if (propriedadeAtual.value == "STATUS") {
-        console.log(projetoTeste)
-        for (const status of projetoTeste.statusList) {
+        for (const status of projeto.value.statusList) {
             let listaDeTarefas = []
-            for (const tarefa of projetoTeste.tarefas) {
+            for (const tarefa of projeto.value.tarefas) {
                 if (tarefa.status != null && status.id == tarefa.status.id) {
                     listaDeTarefas.push(tarefa)
                 }
@@ -130,7 +166,7 @@ async function defineListaDePropriedades() {
                 propriedade: status,
                 tarefas: listaDeTarefas,
                 style: listaStyle = {
-                    width: "100%",
+                    width: "15vw",
                     height: "max-content",
                     display: "flex",
                     alignItems: "center",
@@ -140,8 +176,6 @@ async function defineListaDePropriedades() {
                     boxShadow: " 0px 5px 7px rgb(99, 99, 99)"
                 }
             }
-            tarefa2.tarefas.sort(sortBy('nome'))
-            console.log(tarefa2.tarefas)
             listaDePropriedades.push(tarefa2)
 
         };
@@ -176,7 +210,7 @@ function verificaListaVaziaBoolean(tarefas) {
 }
 
 .novaPropriedade {
-    @apply w-[20%] h-[50%] flex-col bg-[#A79DB0] pt-[5px] flex justify-center items-center text-[2vw];
+    @apply w-[15vw] h-[50%] bg-[#A79DB0] flex justify-center items-center text-[2vw] p-[3.2vw];
     box-shadow: 0px 5px 7px rgb(99, 99, 99);
 
 }

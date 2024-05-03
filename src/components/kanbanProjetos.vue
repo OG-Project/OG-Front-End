@@ -6,7 +6,8 @@
       </div>
       <div class="flex justify-center">
         <div>
-          <img class="imagem" :src="imagem" alt="">
+          <img v-if="imagem != ''" class="imagem" :src="imagem" alt="">
+          <userTodoPreto v-else class="imagem"></userTodoPreto>
         </div>
       </div>
      
@@ -15,6 +16,7 @@
     </template>
     <script setup>
   import {onMounted} from 'vue';
+  import userTodoPreto from '../imagem-vetores/userTodoPreto.vue'
     const props = defineProps({
     cor: String,
     nome: String,
@@ -47,7 +49,7 @@
     </script>
     <style scoped>
     .card {
-      @apply flex flex-wrap justify-start 2xl:w-[15vw] 2xl:h-[6vh] xl:w-[17vw] xl:h-[6vh] lg:w-[18vw] lg:h-[6vh] md:w-[20vw] md:h-[6vh] bg-[#f2f2f2] shadow-md;
+      @apply flex flex-wrap justify-start 2xl:w-[15vw] 2xl:h-[6vh] xl:w-[17vw] xl:h-[6vh] lg:w-[18vw] lg:h-[6vh] md:w-[20vw] md:h-[6vh] bg-[var(--backgroundItemsClaros)] shadow-md;
 
     }
     .divCor {

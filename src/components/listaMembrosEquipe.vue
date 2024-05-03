@@ -8,7 +8,7 @@
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
-                    <img  v-if="membro.id != usuarioLogado"  class="imgIcon" src="../imagem-vetores/Sair.svg" alt="" @click="removerMembro(membro)"/>
+                    <sair v-if="membro.id != usuarioLogado"  class="imgIcon"  @click="removerMembro(membro)"></sair>
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                         <img class="imgDePerfil" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
@@ -36,8 +36,7 @@
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()"
                 texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh"
-                caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg"
-                caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="membrosConvidados">
+                 :listaConvidados="membrosConvidados">
             </ListaConvidados>
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
@@ -70,6 +69,7 @@ import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
 import {webSocketStore} from "../stores/webSocket.js";
 import alertTela from './alertTela.vue';
+import sair from '../imagem-vetores/Sair.vue';
 
 onMounted(exibirMembrosNaLista)
 
