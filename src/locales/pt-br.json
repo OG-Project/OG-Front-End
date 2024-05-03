@@ -88,5 +88,10 @@
     "NENHUM PROJETO": "NÃO HÁ NENHUM PROJETO",
     "PROJETOS": "PROJETOS",
     "NOVO PROJETO": "NOVO PROJETO"
+  },
+  "equipes": {
+    "equipes": "Equipes",
+    "projetos": "Projetos",
+    "projeto": "Projeto"
   }
 }

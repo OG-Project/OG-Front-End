@@ -88,6 +88,11 @@
     "NENHUM PROJETO": "THERE ARE NO PROJECTS",
     "PROJETOS": "PROJECTS",
     "NOVO PROJETO": "NEW PROJECT"
+  },
+  "equipes": {
+    "equipes": "Teams",
+    "projetos": "Projects",
+    "projeto": "Project"
   }
   
 }

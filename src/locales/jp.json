@@ -88,6 +88,11 @@
     "NENHUM PROJETO": "プロジェクトがありません",
     "PROJETOS": "プロジェクト",
     "NOVO PROJETO": "新しいプロジェクト"
+  },
+  "equipes": {
+    "equipes": "チーム",
+    "projetos": "プロジェクト",
+    "projeto": "プロジェクト"
   }
   
 }

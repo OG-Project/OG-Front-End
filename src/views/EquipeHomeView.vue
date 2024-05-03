@@ -3,7 +3,7 @@
     <div>
         <div class="flex justify-center mt-20 p-6 text-5xl">
             <h1>
-                Equipes
+                {{ $t('equipes.equipes') }}
             </h1>
         </div>
         <div class="flex justify-center ">
