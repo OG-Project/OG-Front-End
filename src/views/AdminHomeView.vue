@@ -14,12 +14,12 @@
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col">
                     <div class="flex gap-12 mt-6 flex-wrap justify-center w-[100%] text-md">
                         <div class="flex gap-14 w-[80%] items-center justify-center">
-                            <p class="w-[16%] flex items-center" >Nome da tarefa</p>
-                            <p class="w-[16%] flex items-center" >Lider</p>
-                            <p class="w-[16%] flex items-center" >Membros</p>
-                            <p class="w-[16%] flex items-center" >Status</p>
-                            <p class="w-[16%] flex items-center" >Tempo trabalhado</p>
-                            <p class="w-[16%] flex items-center" >Entrega</p>
+                            <p class="w-[16%] flex items-center justify-center" >Nome da tarefa</p>
+                            <p class="w-[16%] flex items-center justify-center" >Lider</p>
+                            <p class="w-[16%] flex items-center justify-center" >Membros</p>
+                            <p class="w-[16%] flex items-center justify-center" >Status</p>
+                            <p class="w-[16%] flex items-center justify-center" >Tempo trabalhado</p>
+                            <p class="w-[16%] flex items-center justify-center" >Entrega</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[80%] text-md">
                             <div class="flex gap-14">
@@ -58,8 +58,8 @@
                     <img src="../assets/GraficoDeLinha.svg" />
                 </button>
             </div>
-            <div class="flex flex-col w-[60%] h-full">
-                <canvas id="chart" class="h-full"></canvas>
+            <div class="flex flex-col w-[60%] h-[100%]">
+                <canvas id="chart"></canvas>
             </div>
         </div>
         <div class="flex items-center justify-center">
@@ -83,68 +83,20 @@ import { ref, onMounted, computed } from 'vue'
 import Chart from 'chart.js/auto'
 let chart = null
 
+async function getProjeto() {
+    const response = await fetch('http://localhost:8082/projeto')
+    const data = await response.json()
+    console.log(data);
+    tarefas.value = data.tarefas
+    console.log(tarefas.value);
+}
+
 onMounted(() => {
+    getProjeto()
     renderChart('line')
 })
 
-let tarefas = ref([
-    {
-        nome: 'Tarefa 1',
-        lider: 'João',
-        membros: ['Maria', 'Pedro'],
-        horas: 3,
-        status: 'Pronta',
-        diaCompleto: new Date('2021-10-10')
-    },
-    {
-        nome: 'Tarefa 2',
-        lider: 'Ana',
-        membros: ['Carlos', 'Lúcia'],
-        horas: 1,
-        status: 'Pronta',
-        diaCompleto: new Date('2021-10-10')
-    },
-    {
-        nome: 'Tarefa 3',
-        lider: 'José',
-        membros: ['Fernanda', 'Rafael'],
-        horas: 4,
-        status: 'Em progresso',
-        diaCompleto: new Date('2021-10-10')
-    },
-    {
-        nome: 'Tarefa 4',
-        lider: 'Paula',
-        membros: ['Daniel', 'Juliana'],
-        horas: 2,
-        status: 'Em progresso',
-        diaCompleto: new Date('2021-10-10')
-    },
-    {
-        nome: 'Tarefa 5',
-        lider: 'Lucas',
-        membros: ['Camila', 'Thiago'],
-        horas: 3,
-        status: 'Pronta',
-        diaCompleto: new Date('2021-10-10')
-    },
-    {
-        nome: 'Tarefa 6',
-        lider: 'Carla',
-        membros: ['Gustavo', 'Amanda'],
-        horas: 1,
-        status: 'Pronta',
-        diaCompleto: new Date('2021-10-10')
-    },
-    {
-        nome: 'Tarefa 7',
-        lider: 'Roberto',
-        membros: ['Patrícia', 'Eduardo'],
-        horas: 4,
-        status: 'Em progresso',
-        diaCompleto: new Date('2021-10-10')
-    },
-]);
+let tarefas = ref([]);
 
 function renderChart(type) {
     let options
