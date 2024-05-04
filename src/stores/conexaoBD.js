@@ -26,6 +26,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       adicionarUsuarios(ids,equipeId,textoRequisicao){
         return axios.patch('http://localhost:8082'+textoRequisicao+'/'+equipeId,ids)
       },
+      adicionarCriador(userId,equipeId){
+        return axios.patch('http://localhost:8082/usuario/criador/'+userId+'/'+equipeId)
+      },
       deletar(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`).then(response =>{
           
@@ -53,13 +56,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
-
-
       },
       async buscarTarefaProjeto(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
-
-
       },
       async buscarTarefaProjeto(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
