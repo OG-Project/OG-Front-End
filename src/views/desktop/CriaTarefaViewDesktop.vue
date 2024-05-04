@@ -316,12 +316,10 @@
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'DATA'">
-                  <Input @input="patchDaListaDePropriedades()" styleInput="input-transparente-claro-pequeno"
+                  <input @input="patchDaListaDePropriedades()"
                     v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    class="border-2 rounded-lg border-[var(--roxo)]" type="datetime-local"
-                    v-model="propriedadeForTarefa.valor.valor">
-                  </Input>
-
+                    class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent" type="datetime-local"
+                    v-model="propriedadeForTarefa.valor.valor" />
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">

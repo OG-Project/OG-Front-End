@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-brancoNeve shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
+    <div class="bg-[var(--backgroundItems)] shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
         <div>
             <div class="flex flex-row justify-between items-center border-b-2 border-[var(--roxo)]" @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades
@@ -257,9 +257,9 @@ function verificaStyleNavTabela(nomeGuia) {
 
 function verificaQualBackGround(nomeGuia) {
     if (nomeGuia == "propriedade" && opcaoSelecionadaNaTabela.value == "propriedade") {
-        return "#DBB3FF"
+        return "var(--roxo)"
     } else if (nomeGuia == "status" && opcaoSelecionadaNaTabela.value == "status") {
-        return "#DBB3FF"
+        return "var(--roxo)"
     }
 }
 
