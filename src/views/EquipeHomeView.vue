@@ -51,7 +51,7 @@ import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import editarEquipePopUp from "../components/editarEquipePopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
+import criarEquipePopUp from "../components/criarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
 import maisIcon from "../imagem-vetores/maisIcon.vue";
@@ -104,20 +104,20 @@ function abrePaginaEquipe(equipe) {
 }
 
 async function abrePopUp(equipe, tipo) {
-
     if (tipo == 'engrenagem') {
         variavelCria = false;
         variavelEngrenagem = true;
         const equipeSelecionada = equipe;
         VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
         funcaoPopUp.abrePopUp()
-    } else {
+    }else{
         variavelEngrenagem = false;
         variavelCria = true;
         funcaoPopUp.abrePopUp()
     }
-
 }
+
+
 
 function larguraNomeEquipe() {
     const screenWidth = window.innerWidth;
