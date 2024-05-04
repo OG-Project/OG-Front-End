@@ -7,36 +7,43 @@
             <div id="poligono"
                 class="h-[100%] w-[40vh] shadow-2xl flex justify-center flex-col left-[-0.50rem] absolute overflow-visible"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; z-index: 5;">
-                <p class="flex justify-center items-center text-2xl">Tarefas do seu projeto</p>
+                <p class="flex justify-center items-center text-2xl text-white">Tarefas do seu projeto</p>
             </div>
             <div class="bg-[var(--backgroundItems)] ml-8 w-[90%] h-[92%] flex items-center justify-end"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
-                <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col">
+                <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
                     <div class="flex gap-12 mt-6 flex-wrap justify-center w-[100%] text-md">
                         <div class="flex gap-14 w-[80%] items-center justify-center">
-                            <p class="w-[16%] flex items-center justify-center" >Nome da tarefa</p>
-                            <p class="w-[16%] flex items-center justify-center" >Lider</p>
-                            <p class="w-[16%] flex items-center justify-center" >Membros</p>
-                            <p class="w-[16%] flex items-center justify-center" >Status</p>
-                            <p class="w-[16%] flex items-center justify-center" >Tempo trabalhado</p>
-                            <p class="w-[16%] flex items-center justify-center" >Entrega</p>
+                            <p class="w-[16%] flex items-center" >Nome da tarefa</p>
+                            <p class="w-[16%] flex items-center" >Lider</p>
+                            <p class="w-[16%] flex items-center" >Membros</p>
+                            <p class="w-[16%] flex items-center" >Status</p>
+                            <p class="w-[16%] flex items-center" >Tempo trabalhado</p>
+                            <p class="w-[16%] flex items-center" >Entrega</p>
                         </div>
-                        <div v-for="tarefa of tarefas" class="w-[80%] text-md">
-                            <div class="flex gap-14">
-                                <p class="w-[16%] truncate flex items-center justify-center h-8 bg-[#B488D7]" >{{ tarefa.nome }}</p>
-                                <p class="w-[16%] flex items-center justify-center h-8" >{{ tarefa.lider }}</p>
-                                <p class="w-[16%] flex items-center justify-center h-8 bg-[#8A59B1]" >{{ tarefa.membros.length }}</p>
-                                <p class="w-[16%] flex items-center justify-center h-8 bg-[#C6B473]" v-if="tarefa.status == 'Em progresso'">{{ tarefa.status }}</p>
-                                <p class="w-[16%] flex items-center justify-center h-8 bg-[#7CC0E5]" v-if="tarefa.status == 'Pronta'">{{ tarefa.status }}</p>
-                                <p class="w-[16%] flex items-center justify-center h-8 bg-[#93E28D]" >{{ tarefa.horas }}</p>
-                                <p class="w-[16%] flex items-center justify-center h-8 bg-[#EF8F7A]">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy") }}</p>
+                        <div v-for="tarefa of tarefas" class="w-[90%] text-sm" >
+                            <div v-if="tarefa.nome">
+                                <div class="flex gap-14">
+                                    <p class="w-[16%] truncate flex items-center justify-center h-10 bg-[#B488D7]">{{ tarefa.nome }}</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10" v-if="tarefa.lider">{{ tarefa.lider }}</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10" v-else>Não possui</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#8A59B1]" v-if="tarefa.membros">{{ tarefa.membros.length }}</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#8A59B1]" v-else>Não possui</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10" :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }" 
+                                    v-if="tarefa.status">{{tarefa.status.nome }}</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não possui</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-if="tarefa.horas">{{ tarefa.horas }}</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não possui</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#EF8F7A]" v-if="tarefa.diaCompleto">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy") }}</p>
+                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não possui</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="flex items-center relative justify-center mt-16 h-[38%]">
+        <div class="flex items-center relative w-full gap-4 justify-center mt-16 h-[38%]">
             <div class="flex pl-12 flex-col justify-center w-[15%] h-[85%] border-r-2 border-black">
                 <p class="text-2xl">Tarefas</p>
                 <p>Total: {{ totalDeTarefas }}</p>
@@ -58,8 +65,8 @@
                     <img src="../assets/GraficoDeLinha.svg" />
                 </button>
             </div>
-            <div class="flex flex-col w-[60%] h-[100%]">
-                <canvas id="chart"></canvas>
+            <div class="flex flex-col w-[60%] h-full">
+                <canvas id="chart" class="h-full"></canvas>
             </div>
         </div>
         <div class="flex items-center justify-center">
@@ -72,8 +79,8 @@
                             <p>{{ tarefa.nome }}</p>
                         </div>
                     </template>
-                </Carousel>
-            </div> -->
+</Carousel>
+</div> -->
         </div>
     </div>
 </template>
@@ -83,16 +90,7 @@ import { ref, onMounted, computed } from 'vue'
 import Chart from 'chart.js/auto'
 let chart = null
 
-async function getProjeto() {
-    const response = await fetch('http://localhost:8082/projeto')
-    const data = await response.json()
-    console.log(data);
-    tarefas.value = data.tarefas
-    console.log(tarefas.value);
-}
-
 onMounted(() => {
-    getProjeto()
     renderChart('line')
 })
 
@@ -166,7 +164,6 @@ function renderChart(type) {
 function changeChart(type) {
     renderChart(type)
 }
-//aqui é onde eu faço a contagem de tarefas, horas trabalhadas, tarefas em progresso e prontas
 let totalDeTarefas = computed(() => tarefas.value.length)
 let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em progresso').length)
 let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronta').length)
@@ -176,5 +173,18 @@ let totalHorasTrabalhadas = computed(() => tarefas.value.reduce((acc, tarefa) =>
 #poligono {
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     background-color: var(--roxoEscuro);
+}
+#scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 3px rgba(117, 117, 117, 0.3);
+  width: 6px;
+}
+
+#scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+#scrollbar::-webkit-scrollbar-thumb {
+  width: 6px;
+  -webkit-box-shadow: inset 0 0 3px rgba(117, 117, 117, 0.3);
 }
 </style>

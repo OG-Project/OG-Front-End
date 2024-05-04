@@ -182,6 +182,7 @@ function temaDoSite(e) {
     if(!isDark.value){
         root.style.setProperty('--backgroundPuro','#0F0F0F')
         root.style.setProperty('--backgroundItems','#222222')
+        root.style.setProperty('--backgroundItemsClaros','#363636')
         root.style.setProperty('--fonteCor','#ffffff')
         isDark.value=!isDark.value
         usuario.value.configuracao.isDark=isDark.value
@@ -189,6 +190,7 @@ function temaDoSite(e) {
     }else if(isDark.value){
         root.style.setProperty('--backgroundPuro','#ffffff')
         root.style.setProperty('--backgroundItems','#f8f8f8')
+        root.style.setProperty('--backgroundItemsClaros','#f1f1f1')
         root.style.setProperty('--fonteCor','#000000')
         isDark.value=!isDark.value
         usuario.value.configuracao.isDark=isDark.value
@@ -283,10 +285,10 @@ function defineSelect(configuracao) {
     if (configuracao.fonteTituloTamanho == "6") {
         tamanhoTitulos.value.splice(0, 0, tamanhoTitulos.value.splice(1, 1)[0]);
     }
-    if (configuracao.fonteCorpoTamanho == "7") {
+    if (configuracao.fonteCorpoTamanho == "2.5") {
         tamanhoCorpos.value.splice(0, 0, tamanhoCorpos.value.splice(2, 1)[0]);
     }
-    if (configuracao.fonteCorpoTamanho == "6") {
+    if (configuracao.fonteCorpoTamanho == "2") {
         tamanhoCorpos.value.splice(0, 0, tamanhoCorpos.value.splice(1, 1)[0]);
     }
     fontFamily(fontsCorpo.value, configuracao.fonteCorpo)
@@ -308,11 +310,7 @@ async function buscaConfiguracaoesPadrao() {
             JSON.parse(
                 VueCookies.get('IdUsuarioCookie')), '/usuario')
     configuracao.value = usuario.value.configuracao
-    // root.setProperty('--hueRoxo', configuracao.value.hueCor)
-    // root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
-    // root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
-    // root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + "vh")
-    // root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + "vh")
+
     defineSelect(usuario.value.configuracao)
 }
 

@@ -57,7 +57,14 @@
     "nomePropriedade": "Property Name",
     "tipo": "Type",
     "status": "Status",
-    "naoPossuiResponsavel": "No responsible assigned"
+    "naoPossuiResponsavel": "No responsible assigned",
+    "dashboard": "Dashboard",
+    "no_subtasks": "No Subtasks",
+    "projects": "Projects",
+    "main_projects": "Main Projects",
+    "daily_projects": "Daily Projects",
+    "weekly_projects": "Weekly Projects",
+    "monthly_projects": "Monthly Projects"
   },
   "navBar": {
     "botaoNovaTarefa": "New Task",
@@ -65,9 +72,27 @@
   },
   "barraLateral": {
     "home": "Home",
-    "equipe": "Team",
+    "equipe": "Teams",
     "projetos": "Projects",
     "sair": "Logout"
+  },
+  "projeto": {
+    "URGENTES": "URGENT",
+    "PRONTOS": "READY",
+    "NÃO INICIADOS": "NOT STARTED",
+    "MEUS PROJETOS": "MY PROJECTS",
+    "URGENTES_TITLE": "URGENT",
+    "NÃO INICIADOS_TITLE": "NOT STARTED",
+    "PRONTOS_TITLE": "READY",
+    "MEUS PROJETOS_TITLE": "MY PROJECTS",
+    "NENHUM PROJETO": "THERE ARE NO PROJECTS",
+    "PROJETOS": "PROJECTS",
+    "NOVO PROJETO": "NEW PROJECT"
+  },
+  "equipes": {
+    "equipes": "Teams",
+    "projetos": "Projects",
+    "projeto": "Project"
   }
   
 }

@@ -2,14 +2,14 @@
     <div>
         <div>
             <div class="tituloProjeto">
-                <h1 class="flex text-6xl font-semibold ">PROJETOS</h1>
+                <h1 class="flex text-6xl font-semibold ">{{ $t('projeto.PROJETOS') }}</h1>
                 <p class="bordaTitulo"></p>    
             </div>
             <div v-if="screenWidth >= 620" class="flex justify-end mx-10 mt-[-5vh] mb-5">
-                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="medio"  texto="Novo Projetos" tamanhoDaFonte="1rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
+                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="medio"  :texto="$t('projeto.NOVO PROJETO')" tamanhoDaFonte="1rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
             </div>  
             <div v-else class="flex justify-center mx-10 mt-[2vh] mb-10">
-                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilegrande"  texto="Novo Projetos" tamanhoDaFonte="1.5rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
+                <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilegrande"  :texto="$t('projeto.NOVO PROJETO')" tamanhoDaFonte="1.5rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
             </div> 
         </div>
         
@@ -27,7 +27,9 @@ import listaProjetos from '../components/listaProjetos.vue';
 import router from "@/router";
 const screenWidth = window.innerWidth;
 function enviaTelaCriaProjeto(){
-    router.push('/criaProjeto')
+    router.push('/criaProjeto').then(() => {
+        window.location.reload()
+    });
 }
 </script>
 <style scoped>

@@ -41,7 +41,9 @@ async function buscaConfiguracaoesPadrao(){
  
 }
 function redireciona(caminho){
-    router.push(caminho)
+    router.push(caminho).then(() => {
+        window.location.reload()
+    });
 }
 
 </script>

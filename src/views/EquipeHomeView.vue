@@ -3,7 +3,7 @@
     <div>
         <div class="flex justify-center mt-20 p-6 text-5xl">
             <h1>
-                Equipes
+                {{ $t('equipes.equipes') }}
             </h1>
         </div>
         <div class="flex justify-center ">
@@ -17,11 +17,11 @@
                                 :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
                             <img class="imagemEquipe" v-else 
                                 src="../imagem-vetores/Equipe.svg">
-                            <p class=" text-2xl mt-5 ml-4 text-[#877E7E] ">{{ truncarNome(equipe.equipe.nome,
+                            <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{ truncarNome(equipe.equipe.nome,
                         larguraNomeEquipe()) }}</p>
                         </div>
                         <div @click.stop="abrePopUp(equipe, 'engrenagem')">
-                            <img class="imgIcon " src="../imagem-vetores/engrenagem.svg" alt="">
+                            <engrenagem class="imgIcon"></engrenagem>
                         </div>
                     </div>
                     <div class="textArea">
@@ -30,7 +30,8 @@
                 </div>
                 <div class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
                     @mouseover="expandirCard" @mouseleave="reduzirCard">
-                    <img class="flex w-[8vw] h-[6vh]" src="../imagem-vetores/maisIcon.svg" alt="">
+                    <maisIcon class="flex w-[8vw] h-[6vh] ">
+                    </maisIcon>
                 </div>
             </div>
 
@@ -38,7 +39,7 @@
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
 
-
+            
         </div>
     </div>
 
@@ -51,10 +52,11 @@ import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import editarEquipePopUp from "../components/editarEquipePopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import criarEquipePopUp from "../components/criarEquipePopUp.vue";
+import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
-
+import maisIcon from "../imagem-vetores/maisIcon.vue";
+import engrenagem from "../imagem-vetores/engrenagem.vue";
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
@@ -71,15 +73,10 @@ const router = useRouter();
 onMounted(() => {
     listaUsuarios();
 
-
 })
 
- webSocket.url="ws://localhost:8085/og/webSocket/usuario/" + usuarioLogadoId
+ webSocket.url="ws://localhost:8085/og/webSocket/usuario/1"
 
- webSocket.esperaMensagem((mensagem) =>{
-    console.log(mensagem)
-    listaUsuarios()
- })
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
       
@@ -100,7 +97,9 @@ function abrePaginaEquipe(equipe) {
     const equipeSelecionada = equipe;
     console.log(equipeSelecionada)
     VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
-    router.push({ name: 'telaInicial' })
+    router.push({ name: 'telaInicial' }).then(() => {
+        window.location.reload()
+    });
 
 }
 
@@ -167,7 +166,9 @@ function limparNomeCompleto() {
 }
 
 .textArea {
-    @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+    @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full 
+    bg-[#D7D7D7] text-black text-lg text-left 
+    border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
     border-bottom: 'solid 4px var(--roxo)';
 }
 
@@ -177,11 +178,13 @@ function limparNomeCompleto() {
 }
 
 .maisEquipes {
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400 justify-center items-center;
+
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] 
+    md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
 }
 
 .listaEquipes {
-    @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[#f8f8f8] shadow-md shadow-gray-200;
+    @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
     flex: 1 1 px;
 }
 
@@ -190,7 +193,9 @@ function limparNomeCompleto() {
 }
 
 .criarEquipe {
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[#f8f8f8] shadow-md shadow-gray-400;
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] 
+    lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] 
+    md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] ;
 }
 
 .imagemEquipe {
