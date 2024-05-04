@@ -307,25 +307,34 @@
             <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                  <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor"
-                    class="h-8 border-2 rounded-lg border-[var(--roxo)]">
+                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" 
+                  styleInput="input-transparente-claro-pequeno"
+                  v-model="propriedadeForTarefa.valor.valor"
+                  @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                  </Input>
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'DATA'">
-                  <input @input="patchDaListaDePropriedades()"
+                  <Input @input="patchDaListaDePropriedades()" styleInput="input-transparente-claro-pequeno"
                     v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     class="border-2 rounded-lg border-[var(--roxo)]" type="datetime-local"
-                    v-model="propriedadeForTarefa.valor.valor" />
+                    v-model="propriedadeForTarefa.valor.valor">
+                  </Input>
+
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-                  <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" 
+                  styleInput="input-transparente-claro-pequeno"
+                  v-model="propriedadeForTarefa.valor.valor"
+                  @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                  </Input>
+                  <!-- <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     class="border-2 rounded-lg border-[var(--roxo)]" showIcon iconDisplay="input"
                     v-model="propriedadeForTarefa.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
-                    maxFractionDigits="2" @input="patchDaListaDePropriedades()" />
+                    maxFractionDigits="2" @input="patchDaListaDePropriedades()" /> -->
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
@@ -875,7 +884,9 @@ async function puxaTarefaDaEdicao() {
   tarefa.value.comentarios = tarefaAux.comentarios;
   tarefa.value.status = tarefaAux.status;
   for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
+    console.log(propriedade);
     veSeAPropriedadeTaNaTarefa(propriedade.propriedade)
+    tarefa.value.propriedades.push(propriedade);
   }
 }
 
@@ -1319,6 +1330,8 @@ function clicouOpcaoStatus() {
     transform: translateY(0);
   }
 }
+
+
 
 #exploradorDeArquivos::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);

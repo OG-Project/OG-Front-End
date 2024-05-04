@@ -13,15 +13,15 @@
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
                     <div class="flex gap-12 mt-6 flex-wrap justify-center w-[100%] text-md">
-                        <div class="flex gap-14 w-[80%] items-center justify-center">
-                            <p class="w-[16%] flex items-center" >Nome da tarefa</p>
-                            <p class="w-[16%] flex items-center" >Lider</p>
-                            <p class="w-[16%] flex items-center" >Membros</p>
-                            <p class="w-[16%] flex items-center" >Status</p>
-                            <p class="w-[16%] flex items-center" >Tempo trabalhado</p>
-                            <p class="w-[16%] flex items-center" >Entrega</p>
+                        <div class="flex gap-14 w-[90%] items-center justify-center">
+                            <p class="w-[16%] flex items-center">Nome da tarefa</p>
+                            <p class="w-[16%] flex items-center">Lider</p>
+                            <p class="w-[16%] flex items-center">Membros</p>
+                            <p class="w-[16%] flex items-center">Status</p>
+                            <p class="w-[16%] flex items-center">Tempo trabalhado</p>
+                            <p class="w-[16%] flex items-center">Entrega</p>
                         </div>
-                        <div v-for="tarefa of tarefas" class="w-[90%] text-sm" >
+                        <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
                                 <div class="flex gap-14">
                                     <p class="w-[16%] truncate flex items-center justify-center h-10 bg-[#B488D7]">{{ tarefa.nome }}</p>
@@ -65,8 +65,8 @@
                     <img src="../assets/GraficoDeLinha.svg" />
                 </button>
             </div>
-            <div class="flex flex-col w-[60%] h-full">
-                <canvas id="chart" class="h-full"></canvas>
+            <div class="flex flex-col h-full justify-center">
+                <canvas id="chart"></canvas>
             </div>
         </div>
         <div class="flex items-center justify-center">
@@ -89,8 +89,30 @@ import { format } from "date-fns";
 import { ref, onMounted, computed } from 'vue'
 import Chart from 'chart.js/auto'
 let chart = null
+import { conexaoBD } from "../stores/conexaoBD.js";
+import VueCookies from "vue-cookies";
+
+import tinycolor from "tinycolor2";
+
+function corDaFonte(backgroundColor) {
+  const isLight = tinycolor(backgroundColor).isLight();
+  return isLight ? "#000" : "#fff";
+}
+
+const banco = conexaoBD();
+
+let projeto = ref({})
+
+async function pegaTarefasDoProjeto() {
+    banco.buscarTarefaProjeto(VueCookies.get('IdProjetoAtual'), '/projeto').then((projeto) => {
+        projeto.value = projeto
+        tarefas.value = projeto.tarefas
+        console.log(tarefas.value);
+    })
+}
 
 onMounted(() => {
+    pegaTarefasDoProjeto()
     renderChart('line')
 })
 
