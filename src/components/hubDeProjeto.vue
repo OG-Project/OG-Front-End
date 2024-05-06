@@ -4,7 +4,7 @@
     <div v-if="funcaoPopUp.variavelModal == true" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
-    <div class="w-full h-[30%] flex  items-center ">
+    <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
             <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
                 <div class="h-[45%]">
@@ -41,7 +41,7 @@
         </div>
 
     </div>
-    <div class="w-[80%] h-[3.5%] flex flex-row justify-between align-bottom">
+    <div class="w-[80%] h-[3.5vh] flex flex-row justify-between align-bottom">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
             <button @click="router.push('/projeto/kanban')" class="bg-[#CECCCE] px-[1%]">
                 Kanban
@@ -57,11 +57,11 @@
             </button>
         </div>
         <div v-if="$route.path === '/projeto/lista'"
-            class="flex justify-center items-center bg-[#CECCCE] px-2 w-[15%] h-[100%]">
+            class="flex justify-center items-center bg-[#CECCCE] px-2 w-[17%] h-[3.5vh]">
             <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" placeholder="Propriedades Visiveis" filter
                 optionLabel="nome" :options="projeto.propriedades"
                 :pt="{ root: 'select', labelContainer: 'labelContainer' }"
-                class="bg-[#CECCCE] h-[75%] w-full flex justify-center items-center"
+                class="bg-[#CECCCE] h-[3vh] w-[110%] flex justify-center items-center"
                 :onclick="atualizaVisualizacao()"></MultiSelect>
         </div>
     </div>
