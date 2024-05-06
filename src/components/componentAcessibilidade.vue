@@ -167,6 +167,7 @@ onMounted(async () => {
     // console.log(isTecladoVirtual.value);
     // console.log(isTecladoVirtual.value);
     VueCookies.config('30d')
+    VueCookies.set("Idioma", "pt-BR", 100000000000);
     arrumaIndexDaListaDeIdiomas()
 })
 

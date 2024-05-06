@@ -71,6 +71,7 @@ onMounted(async () => {
     root.setProperty('--backgroundPuro','#0F0F0F')
     root.setProperty('--backgroundItems','#222222')
     root.setProperty('--fonteCor','#ffffff')
+    root.setProperty('--backgroundItemsClaros', '#363636')
   }
 
 })

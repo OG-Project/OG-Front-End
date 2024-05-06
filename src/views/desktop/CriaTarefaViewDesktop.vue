@@ -7,8 +7,8 @@
           @updateModelValue="(e) => { tarefa.nome = e }"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
-        <TextAreaPadrao width="80%" height="16vh" :placeholder="$t('criaTarefa.task_description')" tamanho-da-fonte="1rem"
-          resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
+        <TextAreaPadrao width="80%" height="16vh" :placeholder="$t('criaTarefa.task_description')"
+          tamanho-da-fonte="1rem" resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
         <div class="flex flex-col justify-center w-[30%]">
@@ -27,7 +27,7 @@
         <div class="flex flex-col justify-center w-[30%]">
           <p>{{ $t('criaTarefa.subtasks') }}</p>
           <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaSubTarefas()">
-            {{ $t('criaTarefa.create')}}
+            {{ $t('criaTarefa.create') }}
           </button>
         </div>
       </div>
@@ -68,12 +68,13 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" :conteudoInput="$t('criaTarefa.property_name')" fontSize="1rem" altura="3.8" v-model="nomePropriedade"
-                  @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
+                <Input largura="10" :conteudoInput="$t('criaTarefa.property_name')" fontSize="1rem" altura="3.8"
+                  v-model="nomePropriedade" @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
-                <selectPadrao :placeholderSelect="$t('criaTarefa.type')" :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
-                largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
+                <selectPadrao :placeholderSelect="$t('criaTarefa.type')"
+                  :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
+                  largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
                 </selectPadrao>
               </div>
             </div>
@@ -99,11 +100,12 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="10" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
-                  @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
+                <Input largura="10" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8"
+                  v-model="nomeSubtarefa" @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
-              <selectPadrao :placeholderSelect="$t('criaTarefa.status')" :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8"
-                altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
+              <selectPadrao :placeholderSelect="$t('criaTarefa.status')"
+                :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8" altura="3.8"
+                fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
@@ -138,8 +140,8 @@
       </div>
       <div class="pl-12 mt-4">
         <div class="w-min h-min relative">
-          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno"
-            inverterCorIcon="sim"></Botao>
+          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')"
+            tamanhoPadrao="pequeno" inverterCorIcon="sim"></Botao>
           <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
         </div>
 
@@ -150,7 +152,9 @@
           <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
             <div :style="barraPorcentagem" class="corDaBarraDeProgresso"></div>
           </div>
-          <p class="pl-4">{{$t('criaTarefa.completed_tasks',{ porcentagem: porcentagemDeTarefasConcluidas.toFixed(2) })}}%</p>
+          <p class="pl-4">{{ $t('criaTarefa.completed_tasks', {
+          porcentagem: porcentagemDeTarefasConcluidas.toFixed(2)
+        }) }}%</p>
         </div>
       </div>
       <!-- Sub Tarefa -->
@@ -186,21 +190,23 @@
 
             <img v-if="usuarioCookies.foto.tipo != null"
               class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
-            usuarioCookies.foto.tipo +
-            ';base64,' +
-            usuarioCookies.foto.dados
-            " />
+          usuarioCookies.foto.tipo +
+          ';base64,' +
+          usuarioCookies.foto.dados
+          " />
             <div class="pb-2 flex flex-col items-end">
-              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4" :placeholder="$t('criaTarefa.task_description')"
-                tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
-              <Botao :texto="$t('criaTarefa.send')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
-                :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
+              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4"
+                :placeholder="$t('criaTarefa.task_description')" tamanho-da-fonte="1rem" resize="vertical"
+                v-model="comentarioSendoEnviado"></TextAreaPadrao>
+              <Botao :texto="$t('criaTarefa.send')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
+                :funcaoClick="enviaComentario" :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
           </div>
         </div>
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
-            <div class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
+            <div
+              class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
                 <div v-if="comentario.autor.username === usuarioCookies.username"
                   class="w-[80%] mt-2 gap-4 flex justify-center">
@@ -213,31 +219,31 @@
               </div>
               <div class="flex w-[100%] mb-2">
                 <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-            " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+          " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
                   </p>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor.username === usuarioCookies.username
-            ">
-                    <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4"
-                      tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
+          comentario.autor.username === usuarioCookies.username
+          ">
+                    <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" tamanho-da-fonte="1rem"
+                      resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                   </div>
                   <div v-if="!comentarioSendoEditado ||
-            comentario.autor.username != usuarioCookies.username
-            ">
+          comentario.autor.username != usuarioCookies.username
+          ">
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.conteudo }}
                     </p>
                   </div>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor.username === usuarioCookies.username
-            ">
-                    <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
-                      :parametrosFuncao="comentario"></Botao>
+          comentario.autor.username === usuarioCookies.username
+          ">
+                    <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
+                      :funcaoClick="editarComentario" :parametrosFuncao="comentario"></Botao>
                   </div>
                 </div>
               </div>
@@ -259,15 +265,15 @@
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroPropriedade">
               <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
-              <option>{{ $t('criaTarefa.Texto')}}</option>
-              <option>{{$t('criaTarefa.Data')}}</option>
-              <option>{{$t('criaTarefa.Numero')}}</option>
-              <option>{{$t('criaTarefa.Seleção')}}</option>
+              <option>{{ $t('criaTarefa.Texto') }}</option>
+              <option>{{ $t('criaTarefa.Data') }}</option>
+              <option>{{ $t('criaTarefa.Numero') }}</option>
+              <option>{{ $t('criaTarefa.Seleção') }}</option>
             </select>
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
-              <option value="Ordenar Por">{{$t('criaTarefa.sort_by')}}</option>
+              <option value="Ordenar Por">{{ $t('criaTarefa.sort_by') }}</option>
               <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
               <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
             </select>
@@ -285,10 +291,14 @@
                 <p class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[30%]">
-                <p v-if="propriedade.propriedade.tipo=='TEXTO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto') }}</p>
-                <p v-if="propriedade.propriedade.tipo=='DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data') }}</p>
-                <p v-if="propriedade.propriedade.tipo=='NUMERO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero') }}</p>
-                <p v-if="propriedade.propriedade.tipo=='SELEÇÃO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Seleção') }}</p>
+                <p v-if="propriedade.propriedade.tipo == 'TEXTO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto')
+                  }}</p>
+                <p v-if="propriedade.propriedade.tipo == 'DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data') }}
+                </p>
+                <p v-if="propriedade.propriedade.tipo == 'NUMERO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero')
+                  }}</p>
+                <p v-if="propriedade.propriedade.tipo == 'SELEÇÃO'">{{ $t('criaTarefa.type') }}: {{
+          $t('criaTarefa.Seleção') }}</p>
               </div>
               <!-- <div class="flex justify-center">
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
@@ -297,25 +307,32 @@
             <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                  <input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    @input="patchDaListaDePropriedades()" v-model="propriedadeForTarefa.valor.valor"
-                    class="h-8 border-2 rounded-lg border-[var(--roxo)]">
+                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" 
+                  styleInput="input-transparente-claro-pequeno"
+                  v-model="propriedadeForTarefa.valor.valor"
+                  @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                  </Input>
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'DATA'">
                   <input @input="patchDaListaDePropriedades()"
                     v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    class="border-2 rounded-lg border-[var(--roxo)]" type="datetime-local"
+                    class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent" type="datetime-local"
                     v-model="propriedadeForTarefa.valor.valor" />
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-                  <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" 
+                  styleInput="input-transparente-claro-pequeno"
+                  v-model="propriedadeForTarefa.valor.valor"
+                  @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                  </Input>
+                  <!-- <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     class="border-2 rounded-lg border-[var(--roxo)]" showIcon iconDisplay="input"
                     v-model="propriedadeForTarefa.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
-                    maxFractionDigits="2" @input="patchDaListaDePropriedades()" />
+                    maxFractionDigits="2" @input="patchDaListaDePropriedades()" /> -->
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
@@ -329,7 +346,7 @@
                       :src="BotaoX" />
                   </div>
                   <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
-                    {{$t('criaTarefa.add')}}
+                    {{ $t('criaTarefa.add') }}
                   </p>
                 </div>
               </div>
@@ -348,17 +365,17 @@
               </div>
               <p class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{ statsAdd.cor.toUpperCase() }}</p>
               <div class="w-[30%] flex justify-between">
-                <ColorPicker disabled v-model="statsAdd.cor" class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
+                <ColorPicker disabled v-model="statsAdd.cor"
+                  class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="w-[80%] flex justify-between pt-8">
-        <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px"
-          tamanhoDaFonte="1.5rem"></Botao>
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px"
-          tamanhoDaFonte="1.5rem"></Botao>
+        <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')"
+          tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
 
@@ -402,7 +419,7 @@
       </div>
       <div v-if="tarefa.status != null">
         <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
-          <p>{{$t('criaTarefa.no_status_message')}}</p>
+          <p>{{ $t('criaTarefa.no_status_message') }}</p>
         </div>
         <div class="min-h-[4%] flex items-center justify-center gap-4">
           <p :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
@@ -518,7 +535,7 @@ let numeroDeArquivos = ref(0);
 //Variáveis usadas na hora de criar uma propriedade
 
 function deletaTarefa() {
-  banco.deletarTarefa("/tarefa",VueCookies.get("IdTarefaCookies"));
+  banco.deletarTarefa("/tarefa", VueCookies.get("IdTarefaCookies"));
   router.push("/projeto").then(() => {
     window.location.reload();
     VueCookies.remove("IdTarefaCookies");
@@ -533,7 +550,7 @@ let tipoPropriedade = computed(() => {
   else if (tipoPropriedade.value == t('criaTarefa.Data')) {
     return "Data"
   }
-  else if (tipoPropriedade.value == t('criaTarefa.Numero') ) {
+  else if (tipoPropriedade.value == t('criaTarefa.Numero')) {
     return "Numero"
   }
   else if (tipoPropriedade.value == t('criaTarefa.Seleção')) {
@@ -849,21 +866,25 @@ let tarefa = ref({
 });
 
 async function puxaTarefaDaEdicao() {
+  console.log("Ta puxando");
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
-  if (tarefaAux.nome == null) {
-    tarefa.value.nome = tarefaAux.nome;
-    tarefa.value.descricao = tarefaAux.descricao;
-    for (const comentarioId of tarefaAux.comentarios) {
-      let comentario = await banco.buscarUm(comentarioId, "/comentario");
-      tarefa.value.comentarios.push(comentario);
-    }
-    tarefa.value.arquivos = tarefaAux.arquivos;
-    tarefa.value.comentarios = tarefaAux.comentarios;
-    tarefa.value.status = tarefaAux.status;
-    for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
-      veSeAPropriedadeTaNaTarefa(propriedade.propriedade)
-    }
+  console.log(tarefaAux);
+  console.log("Ta puxando e entrou");
+  tarefa.value.nome = tarefaAux.nome;
+  tarefa.value.descricao = tarefaAux.descricao;
+  for (const comentarioId of tarefaAux.comentarios) {
+    let comentario = await banco.buscarUm(comentarioId, "/comentario");
+    tarefa.value.comentarios.push(comentario);
+  }
+  tarefa.value.corDaTarefa = tarefaAux.cor;
+  tarefa.value.arquivos = tarefaAux.arquivos;
+  tarefa.value.comentarios = tarefaAux.comentarios;
+  tarefa.value.status = tarefaAux.status;
+  for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
+    console.log(propriedade);
+    veSeAPropriedadeTaNaTarefa(propriedade.propriedade)
+    tarefa.value.propriedades.push(propriedade);
   }
 }
 
@@ -886,12 +907,12 @@ function update() {
 }
 
 onMounted(async () => {
-  const {t} = useI18n();
+  puxaTarefaDaEdicao();
+  const { t } = useI18n();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();
-  puxaTarefaDaEdicao();
   tarefa.value = {
     nome: "",
     descricao: "",
@@ -1072,7 +1093,7 @@ function editarComentario(comentario) {
 
 const listaFiltradaStatus = computed(() => {
   if (
-    parametroDoFiltroStatus.value === "Ordenar Por" ||
+    parametroDoFiltroStatus.value === 'Ordenar Por' ||
     parametroDoFiltroStatus.value === ""
   ) {
     // Check for empty string
@@ -1091,9 +1112,9 @@ const listaFiltradaStatus = computed(() => {
 });
 
 
-const parametroDoFiltroStatus = ref(); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+const parametroDoFiltroStatus = ref('Ordenar Por'); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
 
-const parametroDoFiltroPropriedade = ref(); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+const parametroDoFiltroPropriedade = ref(t('criaTarefa.sort_by')); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 const listaFiltradaPropriedades = computed(() => {
@@ -1205,33 +1226,33 @@ function formatarData(data) {
 }
 
 function clicouOpcaoPropriedades() {
-    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
-    const opcaoStatus = document.getElementById('opcaoStatus');
+  const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+  const opcaoStatus = document.getElementById('opcaoStatus');
 
-    if (!opcaoEstaClicadaPropriedades.value) {
-        opcaoEstaClicadaPropriedades.value = true;
-        opcaoEstaClicadaStatus.value = false;
+  if (!opcaoEstaClicadaPropriedades.value) {
+    opcaoEstaClicadaPropriedades.value = true;
+    opcaoEstaClicadaStatus.value = false;
 
-        opcaoPropriedades.classList.add('opcaoClicada');
-        opcaoPropriedades.classList.remove('opcaoNaoClicada');
-        opcaoStatus.classList.add('opcaoNaoClicada');
-        opcaoStatus.classList.remove('opcaoClicada');
-    }
+    opcaoPropriedades.classList.add('opcaoClicada');
+    opcaoPropriedades.classList.remove('opcaoNaoClicada');
+    opcaoStatus.classList.add('opcaoNaoClicada');
+    opcaoStatus.classList.remove('opcaoClicada');
+  }
 }
 
 function clicouOpcaoStatus() {
-    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
-    const opcaoStatus = document.getElementById('opcaoStatus');
+  const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+  const opcaoStatus = document.getElementById('opcaoStatus');
 
-    if (!opcaoEstaClicadaStatus.value) {
-        opcaoEstaClicadaStatus.value = true;
-        opcaoEstaClicadaPropriedades.value = false;
+  if (!opcaoEstaClicadaStatus.value) {
+    opcaoEstaClicadaStatus.value = true;
+    opcaoEstaClicadaPropriedades.value = false;
 
-        opcaoStatus.classList.add('opcaoClicada');
-        opcaoStatus.classList.remove('opcaoNaoClicada');
-        opcaoPropriedades.classList.add('opcaoNaoClicada');
-        opcaoPropriedades.classList.remove('opcaoClicada');
-    }
+    opcaoStatus.classList.add('opcaoClicada');
+    opcaoStatus.classList.remove('opcaoNaoClicada');
+    opcaoPropriedades.classList.add('opcaoNaoClicada');
+    opcaoPropriedades.classList.remove('opcaoClicada');
+  }
 }
 
 </script>
@@ -1307,6 +1328,8 @@ function clicouOpcaoStatus() {
     transform: translateY(0);
   }
 }
+
+
 
 #exploradorDeArquivos::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);

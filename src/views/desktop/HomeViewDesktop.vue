@@ -5,27 +5,27 @@
         class="poligono h-[95%] w-[38%] shadow-2xl flex justify-center flex-col left-10 absolute overflow-visible"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; z-index: 5;">
         <div class="flex justify-center items-end text-white text-4xl h-[10%]">
-          <p>Dashboard</p>
+          <p>{{ $t('home.dashboard') }}</p>
         </div>
         <div class="flex items-center justify-center mt-8 h-[62%] text-white">
           <canvas id="tabela" v-if="tarefasFeitas > 0 || tarefasNaoFeitas > 0"></canvas>
-          <p v-else class="text-2xl">Sem SubTarefas</p>
+          <p v-else class="text-2xl">{{ $t('home.no_subtasks') }}</p>
         </div>
       </div>
       <div class="bg-[var(--backgroundItems)] ml-12 w-[76%] h-[92%] flex items-center justify-end"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
         <div class="overflow-y-auto h-[100%] w-[75%] flex items-center flex-col">
           <div class="flex justify-center w-full text-4xl mt-8">
-            <p>Projetos</p>
+            <p>{{ $t('home.projects') }}</p>
           </div>
           <div class="flex gap-12 mt-16 flex-wrap justify-center w-[70%] text-4xl">
-            <topicosHome @click="enviaParaTarefasPrincipais()" nomeDoTopico="Principais Projetos">
+            <topicosHome @click="enviaParaTarefasPrincipais()" :nomeDoTopico="$t('home.main_projects')">
             </topicosHome>
-            <topicosHome nomeDoTopico="Projetos do Dia" @click="enviaParaTarefasDoDia()">
+            <topicosHome :nomeDoTopico="$t('home.daily_projects')" @click="enviaParaTarefasDoDia()">
             </topicosHome>
-            <topicosHome nomeDoTopico="Projetos da Semana" @click="enviaParaTarefasDaSemana()">
+            <topicosHome :nomeDoTopico="$t('home.weekly_projects')" @click="enviaParaTarefasDaSemana()">
             </topicosHome>
-            <topicosHome nomeDoTopico="Projetos do Mês" @click="enviaParaTarefasDoMes()">
+            <topicosHome :nomeDoTopico="$t('home.monthly_projects')" @click="enviaParaTarefasDoMes()">
             </topicosHome>
           </div>
         </div>
@@ -33,12 +33,12 @@
     </div>
   </div>
   <PopUpTopicoPrincipaisHome v-if="funcaoPopUp.variavelModal && mostraTarefasPrincipais == true"
-    nomeDoTopico="Principais Projetos"></PopUpTopicoPrincipaisHome>
-  <PopUpTopicoDiaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoDia == true" nomeDoTopico="Projetos Do Dia">
+  :nomeDoTopico="$t('home.main_projects')"></PopUpTopicoPrincipaisHome>
+  <PopUpTopicoDiaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoDia == true" :nomeDoTopico="$t('home.daily_projects')">
   </PopUpTopicoDiaHome>
   <PopUpTopicoSemanaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDaSemana == true"
-    nomeDoTopico="Projetos Da Semana"></PopUpTopicoSemanaHome>
-  <PopUpTopicoMesHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true" nomeDoTopico="Projetos Do Mês">
+  :nomeDoTopico="$t('home.weekly_projects')"></PopUpTopicoSemanaHome>
+  <PopUpTopicoMesHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true" :nomeDoTopico="$t('home.monthly_projects')">
   </PopUpTopicoMesHome>
 </template>
 

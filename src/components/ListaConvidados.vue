@@ -1,6 +1,6 @@
 <template>
   <div class="grid-template flex">
-    <div class="convites-bg flex-col w-full bg-[#FEFBFF] shadow-md  shadow-gray-200 overflow-y-auto scrollbar-thin"
+    <div class="convites-bg flex-col w-full bg-[[var(--backgroundItemsClaros)]] shadow-md  shadow-[var(--backgroundItemsClaros)] overflow-y-auto scrollbar-thin"
       :style="{ height: altura }">
       <div class="flex justify-center overfloow-y:auto">
 
@@ -12,12 +12,12 @@
         <div class="w-full flex items-center justify-center mt-5 mb-2" v-for="convidado in listaConvidados" :key="convidado.name" :style="{'margin-left':marginLeft, 'margin-right': marginRight}">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
         <template v-if="listaConvidados.length > 0">
-          <img class="imgDePerfil" :src="caminhoDaImagemPerfil" :style="altDaImagemPerfil" />
+          <img class="imgDePerfil" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`" :style="altDaImagemPerfil" />
           
         </template>
         <h2  class="nome-convidado w-[4vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1 truncate">{{ convidado.username == null ? convidado.nome : convidado.username  }}</h2>
         <template v-if="listaConvidados.length > 0">
-          <img class="imgIcon" :src="caminhoDaImagemIcon" :style="altDaImagem"  @click="$emit('foiClicado',convidado)"/>
+          <sair class="imgIcon"  @click="$emit('foiClicado',convidado)"></sair>
         </template>
         
         <!-- Renderiza o SelectPadrao apenas se houver usuários convidados -->
@@ -39,6 +39,7 @@
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
 import { defineProps } from 'vue';
+import sair from '../imagem-vetores/Sair.vue'
 
 defineEmits(['foiClicado'])
 
@@ -96,7 +97,7 @@ const imagemIcon = {
     .imgDePerfil {
         @apply rounded-full bg-cover bg-center flex justify-center  
         flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw]
-        2xl:w-[3vw] 2xl:h-[5vh] xl:w-[3vw] xl:h-[6vh] lg:w-[4vw] lg:h-[8vh] md:w-[5vw] md:h-[10vh];
+        2xl:w-[60px] 2xl:h-[60px] xl:w-[60px] xl:h-[60px] lg:w-[55px] lg:h-[55px] md:w-[50px] md:h-[50px];
     }
 
     .selectEdit {
