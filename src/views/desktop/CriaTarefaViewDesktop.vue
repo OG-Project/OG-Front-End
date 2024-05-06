@@ -273,7 +273,7 @@
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
-              <option value="Ordenar Por">{{ $t('criaTarefa.sort_by') }}</option>
+              <option :value="$t('criaTarefa.sort_by')">{{ $t('criaTarefa.sort_by') }}</option>
               <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
               <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
             </select>
@@ -881,10 +881,11 @@ async function puxaTarefaDaEdicao() {
   tarefa.value.arquivos = tarefaAux.arquivos;
   tarefa.value.comentarios = tarefaAux.comentarios;
   tarefa.value.status = tarefaAux.status;
+  tarefa.value.subtarefas = tarefaAux.subTarefas;
   for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
-    console.log(propriedade);
-    veSeAPropriedadeTaNaTarefa(propriedade.propriedade)
-    tarefa.value.propriedades.push(propriedade);
+    if(veSeAPropriedadeTaNaTarefa(propriedade.propriedade)){
+      tarefa.value.propriedades.push(propriedade);
+    }
   }
 }
 
@@ -1093,7 +1094,7 @@ function editarComentario(comentario) {
 
 const listaFiltradaStatus = computed(() => {
   if (
-    parametroDoFiltroStatus.value === 'Ordenar Por' ||
+    parametroDoFiltroStatus.value === t('criaTarefa.sort_by') ||
     parametroDoFiltroStatus.value === ""
   ) {
     // Check for empty string
