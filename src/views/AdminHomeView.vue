@@ -21,7 +21,7 @@
                             <p class="w-[16%] flex items-center justify-center">Tempo trabalhado</p>
                             <p class="w-[16%] flex items-center justify-center">Entrega</p>
                         </div>
-                        <div v-for="tarefa of tarefas" class="w-[90%] text-sm pb-8">
+                        <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
                                 <div class="flex gap-8">
                                     {{ console.log(tarefa) }}
