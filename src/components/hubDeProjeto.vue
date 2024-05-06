@@ -19,19 +19,19 @@
             </div>
         </div>
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
-            <button class="w-[20%] border-2 border-[#620BA7] flex justify-center items-center"
+            <button class="w-[20%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="enviaCookieTarefaNova()">
                 +Tarefa
             </button>
-            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
+            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="abreModalMensagem()">
                 <iconMensagem></iconMensagem>
             </button>
-            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
+            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="enviaCookieProjeto()">
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
-            <button class="w-[7%] border-2 border-[#620BA7] flex justify-center items-center"
+            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
