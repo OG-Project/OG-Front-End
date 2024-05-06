@@ -208,9 +208,7 @@ function mudaPermissaoUsuario(usuario){
         }
     }
 
-    const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+   
 
     async function listaUsuarios() {
     let listaUsuarios = await usuarios;
