@@ -293,11 +293,14 @@
               <div class="w-[30%]">
                 <p v-if="propriedade.propriedade.tipo == 'TEXTO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto')
                   }}</p>
-                <p v-if="propriedade.propriedade.tipo == 'DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data') }}
+                <p v-if="propriedade.propriedade.tipo == 'DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data')
+                  }}
                 </p>
-                <p v-if="propriedade.propriedade.tipo == 'NUMERO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero')
-                  }}</p>
-                <p v-if="propriedade.propriedade.tipo == 'SELECAO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Seleção') }}</p>
+                <p v-if="propriedade.propriedade.tipo == 'NUMERO'">{{ $t('criaTarefa.type') }}: {{
+          $t('criaTarefa.Numero')
+        }}</p>
+                <p v-if="propriedade.propriedade.tipo == 'SELECAO'">{{ $t('criaTarefa.type') }}: {{
+          $t('criaTarefa.Seleção') }}</p>
               </div>
               <!-- <div class="flex justify-center">
                 <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
@@ -306,10 +309,9 @@
             <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" 
-                  styleInput="input-transparente-claro-pequeno"
-                  v-model="propriedadeForTarefa.valor.valor"
-                  @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                    styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
+                    @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                   </Input>
                 </div>
               </div>
@@ -317,16 +319,15 @@
                 <div v-if="propriedade.propriedade.tipo === 'DATA'">
                   <input @input="patchDaListaDePropriedades()"
                     v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent" type="datetime-local"
-                    v-model="propriedadeForTarefa.valor.valor" />
+                    class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
+                    type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
                 <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id" 
-                  styleInput="input-transparente-claro-pequeno"
-                  v-model="propriedadeForTarefa.valor.valor"
-                  @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                    styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
+                    @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                   </Input>
                   <!-- <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     class="border-2 rounded-lg border-[var(--roxo)]" showIcon iconDisplay="input"
@@ -495,6 +496,10 @@ function veSeAPropriedadeTaNaTarefa(propriedade) {
   return false
 }
 
+let tempoAtuado;
+let horaEntrada;
+let horaSaida;
+
 //Variavel utilizada para armazenar os comentarios da tarefa
 
 const Comentarios = ref([]);
@@ -589,6 +594,11 @@ function getIconSrc(arquivo) {
   return `data:image/jpg;base64, ${arquivo.dados}`;
 }
 
+function timerTempoAtuacao() {
+  horaEntrada = new Date().getTime()
+  console.log(horaEntrada);
+}
+
 async function patchDaListaDePropriedades() {
   let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   for (const props of tarefa2.valorPropriedadeTarefas) {
@@ -654,7 +664,8 @@ async function criaTarefaNoConcluido() {
     nome: null,
     valorPropriedadeTarefas: [],
     dataCriacao: null,
-    indice: []
+    indice: [],
+    tempoAtuacao: 0
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
@@ -693,7 +704,7 @@ async function criaTarefaNoConcluido() {
       }
     }
   }
-  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas;
+  tarefaCriando.valorPropriedadeTarefas = tarefa.valorPropriedadeTarefas;
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
 
@@ -701,17 +712,18 @@ async function criaTarefaNoConcluido() {
   });
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
-  tarefaCriando.indice = tarefa2.indice;
+  tarefaCriando.indice = tarefa.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefaCriando.tempoAtuacao = tarefa.tempoAtuacao;
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto").then(() => {
-        window.location.reload()
-    });
+    window.location.reload()
+  });
 }
 
 //Função que deleta status
@@ -825,6 +837,42 @@ async function criaPropriedade() {
   console.log(propriedades.value);
   propriedadeSendoCriada.value = false;
 }
+async function calculaTempoAtuacao() {
+  let segundos
+  let minutos
+  let horas
+  let segundosSoma = 0
+  let minutosSoma = 0
+  let horasSoma = 0
+  if (tarefa.value.tempoAtuacao != null && tarefa.value.tempoAtuacao != undefined && tarefa.value.tempoAtuacao != 0 && tarefa.value.tempoAtuacao != "") {
+    [horasSoma, minutosSoma, segundosSoma] = tarefa.value.tempoAtuacao.split(":").map(Number);
+    console.log(horasSoma)
+  }
+  const horaSaida = new Date().getTime();
+  const diferenca = horaSaida - horaEntrada;
+  segundos = Math.floor((diferenca / 1000) % 60);
+  minutos = Math.floor((diferenca / (1000 * 60)) % 60);
+  horas = Math.floor(diferenca / (1000 * 60 * 60));
+
+  segundos += segundosSoma;
+  minutos += minutosSoma;
+  horas += horasSoma;
+  console.log(horasSoma)
+  minutos += Math.floor(segundos / 60);
+  segundos = segundos % 60;
+
+  horas += Math.floor(minutos / 60);
+  minutos = minutos % 60;
+
+  segundos = segundos < 10 ? `0${segundos}` : segundos;
+  minutos = minutos < 10 ? `0${minutos}` : minutos;
+  horas = horas < 10 ? `0${horas}` : horas;
+
+  tempoAtuado = `${horas}:${minutos}:${segundos}`;
+  console.log(tempoAtuado)
+  tarefa.value.tempoAtuacao = tempoAtuado;
+  criaTarefaNoConcluido();
+}
 
 
 function deletaPropriedade(propriedade) {
@@ -882,8 +930,9 @@ async function puxaTarefaDaEdicao() {
   tarefa.value.comentarios = tarefaAux.comentarios;
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
+  tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
   for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
-    if(veSeAPropriedadeTaNaTarefa(propriedade.propriedade)){
+    if (veSeAPropriedadeTaNaTarefa(propriedade.propriedade)) {
       tarefa.value.propriedades.push(propriedade);
     }
   }
@@ -908,6 +957,7 @@ function update() {
 }
 
 onMounted(async () => {
+  timerTempoAtuacao();
   puxaTarefaDaEdicao();
   const { t } = useI18n();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
@@ -935,6 +985,9 @@ onMounted(async () => {
   parametroDoFiltroStatus.value = t('criaTarefa.sort_by');
   parametroDoFiltroPropriedade.value = t('criaTarefa.sort_by');
 });
+onUnmounted(() => {
+  calculaTempoAtuacao()
+})
 //Variaveis utilizadas para verificar se o popup abre ou fecha
 
 // Supondo que você tenha um array chamado comentarios no seu componente

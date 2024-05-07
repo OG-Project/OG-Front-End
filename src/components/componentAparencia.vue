@@ -4,7 +4,7 @@
         <div>
             <h1 style="font-family: var(--fonteTitulo); font-size: var(--fonteTituloTamanho);"
                 class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-                Aparência
+                {{ $t('aparencia.Aparência') }}
             </h1>
         </div>
         <div style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
@@ -25,7 +25,7 @@
                 <div class="flex gap-4">
                     <div class="w-full flex flex-col gap-4  items-center">
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
-                            Titulo
+                            {{ $t('aparencia.Titulo') }}
                         </div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao class="w-max" @update:model-value="tamanhoFontTitulo"
@@ -37,7 +37,7 @@
                     </div>
                     <div class="w-full flex flex-col gap-4  items-center">
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
-                            Corpo de Texto
+                            {{ $t('aparencia.Corpo de Texto') }}
                         </div>
                         <!-- <div>Tamanho</div> -->
                         <selectPadrao class="w-max" @update:model-value="tamanhoFontCorpo" :listaSelect="tamanhoCorpos">
@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="flex flex-col justify-center items-center gap-3">
-                    <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">Cores</div>
+                    <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">{{ $t('aparencia.Cores') }}</div>
                     <div class="flex flex-wrap justify-center w-96 gap-5">
                         <div @click="corEscolhida(cores[1])" :style="{ backgroundColor: '#' + cores[1] }"
                             class="cores cursor-pointer w-10 h-10">
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="flex justify-between items-center gap-5">
-                    <span class="text-[var(--fonteCorpoTamanho)]">Modo Claro</span>
+                    <span class="text-[var(--fonteCorpoTamanho)]">{{ $t('aparencia.Modo Claro') }}</span>
                     <CheckBox 
                     :key="isDark.valueOf()"
                     tipo="toggle" 
@@ -99,7 +99,7 @@
                     el-id="checkDarkMode" 
                     @envia-valor="temaDoSite($event)">
                     </CheckBox>
-                    <span class="text-[var(--fonteCorpoTamanho)]">Modo Escuro</span>
+                    <span class="text-[var(--fonteCorpoTamanho)]">{{ $t('aparencia.Modo Escuro') }}</span>
                 </div>
             </div>
 

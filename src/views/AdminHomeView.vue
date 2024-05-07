@@ -14,56 +14,54 @@
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
                     <div class="flex gap-4 mt-6 flex-wrap justify-center w-[100%] text-md">
                         <div class="flex gap-8 pb-8 w-[90%] items-center justify-center">
-                            <p class="w-[14%] flex items-center justify-center">Nome da tarefa</p>
-                            <p class="w-[14%] flex items-center justify-center">Lider</p>
-                            <p class="w-[14%] flex items-center justify-center">Membros</p>
-                            <p class="w-[14%] flex items-center justify-center">Status</p>
-                            <p class="w-[14%] flex items-center justify-center">Tempo trabalhado</p>
-                            <p class="w-[14%] flex items-center justify-center">Entrega</p>
-                            <p class="w-[14%] flex items-center justify-center">Concluida</p>
+                            <p class="w-[25%] flex items-center justify-center">Nome da tarefa</p>
+                            <!-- <p class="w-[25%] flex items-center justify-center">Lider</p> -->
+                            <!-- <p class="w-[25%] flex items-center justify-center">Membros</p> -->
+                            <p class="w-[25%] flex items-center justify-center">Status</p>
+                            <p class="w-[25%] flex items-center justify-center">Tempo trabalhado</p>
+                            <!-- <p class="w-[25%] flex items-center justify-center">Entrega</p> -->
+                            <p class="w-[25%] flex items-center justify-center">Concluida</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
                                 <div class="flex gap-8">
                                     {{ console.log(tarefa) }}
-                                    <p class="w-[14%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer"
-                                        :style="{ color: corDaFonte(tarefa.status.cor) }"
+                                    <p class="w-[25%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer"
                                         @click="redirecionamento('/criaTarefa', tarefa.id)">{{ tarefa.nome }}</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10" v-if="tarefa.lider"
+                                    <!-- <p class="w-[25%] flex items-center justify-center h-10" v-if="tarefa.lider"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }">
                                         {{
                             tarefa.lider }}</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10"
-                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não possui</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10 bg-[#8A59B1]"
+                                    <p class="w-[25%] flex items-center justify-center h-10"
+                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não possui</p> -->
+                                    <!-- <p class="w-[25%] flex items-center justify-center h-10 bg-[#8A59B1]"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }" v-if="tarefa.membros">{{
                             tarefa.membros.length }}</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10 bg-[#8A59B1]"
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#8A59B1]"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não
+                                        possui</p> -->
+
+                                    <p class="w-[25%] flex items-center justify-center h-10" v-if="tarefa.status"
+                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }">
+                                        {{ tarefa.status.nome }}</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10"
-                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
-                                        v-if="tarefa.status">{{ tarefa.status.nome }}</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10 bg-[#93E28D]"
-                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não
-                                        possui</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10 bg-[#93E28D]"
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }" v-if="tarefa.horas">{{
                             tarefa.horas }}</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10 bg-[#93E28D]"
-                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10 bg-[#EF8F7A]"
+                                    <!-- <p class="w-[25%] flex items-center justify-center h-10 bg-[#EF8F7A]"
                                         v-if="tarefa.diaCompleto">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy")
                                         }}</p>
-                                    <p class="w-[14%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
-                                        possui</p>
-                                    <div class="w-[14%] flex items-center justify-around h-10 bg-[#B488D7]">
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                        possui</p> -->
+                                    <div class="w-[25%] flex items-center justify-around h-10 bg-[#B488D7]">
                                         <p>Concluir: </p>
                                         <checkBox @click="deixaTarefaConcluida(tarefa)" :checked="tarefa.concluida"
-                                        v-model="tarefa.concluida"></checkBox>
+                                            v-model="tarefa.concluida"></checkBox>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
