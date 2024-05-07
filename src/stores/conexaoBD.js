@@ -39,6 +39,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       adicionarUsuarios(idUser,equipeId,numeroPermissao, textoRequisicao){
         return axios.patch('http://localhost:8082'+(textoRequisicao+'/'+idUser+"/"+equipeId+"/"+numeroPermissao),"",{withCredentials:true})
       },
+      adicionarCriador(userId,equipeId){
+        return axios.patch('http://localhost:8082/usuario/criador/'+userId+'/'+equipeId)
+      },
       deletar(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`,{withCredentials:true}).then(response =>{
           
@@ -65,7 +68,12 @@ export const conexaoBD = defineStore('conexaoBD', {
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
-        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`,{withCredentials:true})).data)
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+
+
+      },
+      async buscarTarefaProjeto(userId, textoRequisicao){
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
 
 
       },

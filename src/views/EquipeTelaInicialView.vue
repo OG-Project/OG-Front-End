@@ -1,40 +1,56 @@
 <template>
-    <div>
-        <div class="corDiv">
-          <img class="imagemEquipe" v-if="equipeEditar.foto" :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="expandirImagem" @mouseleave="reduzirImagem">
-          <img class="imagemEquipe" v-else src="../imagem-vetores/imagemEquipePadrao.svg" @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') ">
-            <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
-        </div>
-        <div class="divCel flex justify-end">
-            <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
-                <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"  :texto="'+ ' + $t('equipes.projeto') " tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
-                </Botao>
-                <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilepadrao"   :texto="'+ ' + $t('equipes.projeto') " tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
-                </Botao>
-            </div>
-            <div class="botaoIcone flex justify-center items-center mt-[-3vh] mr-[1vw] shadow-xl " @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem') " @mouseover="hover = true" @mouseleave="hover = false">
-              <engrenagem class="w-[20px] h-[20px]" :class="{ 'imagem-hover': hover }" ></engrenagem>
-            </div>
-            <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  " @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true" @mouseleave="hoverMembros = false">
-                <membrosEquipeImagem class=" w-[18px] h-[18px]" :class="{ 'imagem-hover-membros': hoverMembros }"></membrosEquipeImagem>
-                <p v-if="screenWidth >= 620" class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md" :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
-            </div>
-                <editarEquipePopUp  v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"  ></editarEquipePopUp>
-                <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true">  </ListaMembrosEquipe>
-        </div>
-    </div>  
-    <div class="flex justify-center">
-      <div class="listaProjetos overflow-auto">
-        <div class="flex justify-center">
-          <H1 class="text-4xl mt-5 text-[var(--fonteCor)] font-semibold">{{ $t('equipes.projetos') }}</H1> 
-        </div>
-        <div  class="projetos ">
-          <div  v-for="projeto of listaProjetos" :key="projeto.id" >
-            <div class="flex w-[100%]">
-              <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"  
-              :feito="calcularProgresso(projeto)" :name="projeto.nome" :descricao="projeto.descricao" 
-              :comeco="formatarData(projeto.dataCriacao)" :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :reponsavel="obterNomesResponsaveis(projeto)" :tempoAtuacao="projeto.tempoAtuacao">
+  <div>
+    <div class="corDiv">
+      <img class="imagemEquipe" v-if="equipeEditar.foto"
+        :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados"
+        @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')" @mouseover="expandirImagem"
+        @mouseleave="reduzirImagem">
+      <img class="imagemEquipe bg-[#d7d7d7]" v-else src="../imagem-vetores/imagemEquipePadrao.svg"
+        @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')">
+      <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
+    </div>
+    <div class="divCel flex justify-end">
+      <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
+        <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim"
+          corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"
+          :texto="'+ ' + $t('equipes.projeto')" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
+        </Botao>
+        <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)"
+          corBorda="var(--roxo)" tamanhoPadrao="mobilepadrao" :texto="'+ ' + $t('equipes.projeto')"
+          tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">
+        </Botao>
+      </div>
+      <div class="botaoIcone flex justify-center items-center mt-[-3vh] mr-[1vw] shadow-xl "
+        @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')" @mouseover="hover = true"
+        @mouseleave="hover = false">
+        <engrenagem class="w-[20px] h-[20px]" :class="{ 'imagem-hover': hover }"></engrenagem>
+      </div>
+      <div class="botaoIcone flex mt-[-3vh] 2xl:mr-[2.5vw] xl:mr-[2.5vw] lg:mr-[2.5vw] md:mr-[2.5vw]  shadow-xl  "
+        @click="abrePopUp(equipeSelecionada, 'membros')" @mouseover="hoverMembros = true"
+        @mouseleave="hoverMembros = false">
+        <membrosEquipeImagem
+          class="membrosEquipeImagem w-[18px] h-[18px] 2xl:mt-[0vh] xl:mt-[0.2vh] lg:mt-[0.3vh] md:mt-[0.3vh]"
+          :class="{ 'imagem-hover-membros': hoverMembros }"></membrosEquipeImagem>
+        <p v-if="screenWidth >= 620"
+          class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md"
+          :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
+      </div>
+      <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
+      <ListaMembrosEquipe v-if="funcaoPopUp.variavelModal && variavelMembros == true"> </ListaMembrosEquipe>
+    </div>
+  </div>
+  <div class="flex justify-center">
+    <div class="listaProjetos overflow-auto">
+      <div class="flex justify-center">
+        <H1 class="text-4xl mt-5 text-[var(--fonteCor)] font-semibold">{{ $t('equipes.projetos') }}</H1>
+      </div>
+      <div class="projetos ">
+        <div v-for="projeto of listaProjetos" :key="projeto.id">
+          <div class="flex w-[100%]">
+            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
+              :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
+              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
+              :responsavel="listaResponsaveis" :tempoAtuacao="projeto.tempoAtuacao">
             </CardProjetos>
           </div>
         </div>
@@ -64,7 +80,20 @@ let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal = false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
+let listaResponsaveis = ref([])
 const banco = conexaoBD();
+
+onMounted(() => {
+  buscaProjeto()
+})
+
+async function buscaProjeto() {
+  let projeto = await banco.procurar("/projeto")
+  projeto.forEach((projeto) => {
+    obterNomesResponsaveis(projeto)
+  })
+}
+
 let equipeEditar = ref({
   nome: '',
   descricao: ''
@@ -74,36 +103,41 @@ let projetosEquipe = ref([]);
 const router = useRouter();
 
 async function entrarNoProjeto(projeto) {
-  VueCookies.set("idAuxEquipe",equipeSelecionada,30000)
+  VueCookies.set("idAuxEquipe", equipeSelecionada, 30000)
   VueCookies.set("IdProjetoAtual", projeto.id, 30000)
   router.push({ path: '/projeto' }).then(() => {
-        window.location.reload()
-    });
+    window.location.reload()
+  });
 }
 
 async function criarProjeto() {
-  VueCookies.set("idAuxEquipe",Number(equipeSelecionada) )
+  VueCookies.set("idAuxEquipe", Number(equipeSelecionada))
   router.push({ path: '/criaProjeto' }).then(() => {
-        window.location.reload()
-    });
+    window.location.reload()
+  });
   VueCookies.set("projetoCookie");
 }
 
-function obterNomesResponsaveis(projeto) {
-    if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-      let responsaveisComNome = []
-      for(let responsavel of projeto.responsaveis){
 
-        responsaveisComNome.push(responsavel.responsavel.username)
+async function obterNomesResponsaveis(projeto) {
+  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
+    let responsaveisComNome = []
+    for (let responsavel of projeto.responsaveis) {
+      let responsavelAtual = await buscaResponsaveis(responsavel)
+      responsaveisComNome.push(responsavelAtual.username)
+      listaResponsaveis.value = responsaveisComNome
+      if (responsaveisComNome.length >= 0) {
+        listaResponsaveis.value = responsaveisComNome.join(', ');
       }
-        if (responsaveisComNome.length >= 0) {
-          return responsaveisComNome.join(', ');
-        } else {
-            return "Responsáveis encontrados, mas nenhum deles possui nome.";
-        }
-    } else {
-        return "Não há responsáveis";
     }
+  } else {
+    return "Não há responsáveis";
+  }
+}
+
+async function buscaResponsaveis(responsavel) {
+  return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
+
 }
 
 function formatarData(data) {
@@ -117,7 +151,7 @@ function formatarData(data) {
 
 async function buscarProjetosEquipe() {
   // Chama a função do banco de dados para buscar os membros da equipe
-  console.log(await( await banco.buscarProjetosEquipe(Number(equipeSelecionada), "/projeto/buscarProjetos")));
+  console.log(await (await banco.buscarProjetosEquipe(Number(equipeSelecionada), "/projeto/buscarProjetos")));
   projetosEquipe.value = await (banco.buscarProjetosEquipe(equipeSelecionada, "/projeto/buscarProjetos"));
   if (Array.isArray(projetosEquipe.value)) {
     // Filtrar espaços nulos (null) da lista de membros da equipe
@@ -216,9 +250,7 @@ function abrePopUp(equipe, tipo) {
 }
 
 .corDiv {
-  @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh] md:ml-[5vw] md:mt-[-5vh] 
-  2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw] 
-  border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
+  @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh] md:ml-[5vw] md:mt-[-5vh] 2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
 
 }
 
@@ -274,7 +306,8 @@ function abrePopUp(equipe, tipo) {
     @apply ml-[20vw] mt-10;
     max-width: calc(100% - 1px);
   }
-  .listaProjetos{
+
+  .listaProjetos {
     @apply h-[57vh];
   }
 }
@@ -284,7 +317,8 @@ function abrePopUp(equipe, tipo) {
     @apply ml-[4.5vw];
     max-width: calc(100% - 1px);
   }
-  .listaProjetos{
+
+  .listaProjetos {
     @apply h-[65vh];
   }
 }
@@ -294,7 +328,8 @@ function abrePopUp(equipe, tipo) {
     @apply ml-[2vw];
     max-width: calc(100% - 1px);
   }
-  .listaProjetos{
+
+  .listaProjetos {
     @apply h-[65vh];
   }
 }
@@ -303,44 +338,61 @@ function abrePopUp(equipe, tipo) {
   .botaoIcone {
     @apply w-[3vw] h-[4vh]
   }
+
   .cardProjeto {
     max-width: calc(68% - 1px);
   }
+
   .projetos {
     @apply ml-16
   }
-  .listaProjetos{
+
+  .listaProjetos {
     @apply h-[65vh];
   }
-  
+
+  .membrosEquipeImagem {
+    @apply mt-[0.3vh]
+  }
+
 }
 
-  @media(max-width: 620px){
-    .botaoIcone{
-      @apply w-[50px] h-[50px] mt-[8vh] mr-4
-    }
-    .listaProjetos{
-      @apply mt-0 h-[60vh];
-    }
-    .botaoProjetos{
-      @apply flex mt-[8vh] mr-[14vw];
-    }
-    .tituloEquipe{
-      @apply w-[60vw]
-    }
-    .corDiv{
-      @apply w-[80vw] ml-[10vw] mt-[5vh]
-    }
-    .imagemEquipe{
-      @apply w-[60px] h-[60px]
-    }
-    .divCel{
-      @apply mt-0;
-    }
-    .cardProjeto{
-      @apply mt-10 text-xl;
-      max-width: calc(125% - 1px);
-    }
-  }    
+@media(max-width: 620px) {
+  .botaoIcone {
+    @apply w-[50px] h-[50px] mt-[8vh] mr-4
+  }
 
+  .listaProjetos {
+    @apply mt-0 h-[60vh];
+  }
+
+  .botaoProjetos {
+    @apply flex mt-[8vh] mr-[14vw];
+  }
+
+  .tituloEquipe {
+    @apply w-[60vw]
+  }
+
+  .corDiv {
+    @apply w-[80vw] ml-[10vw] mt-[5vh]
+  }
+
+  .imagemEquipe {
+    @apply w-[60px] h-[60px]
+  }
+
+  .divCel {
+    @apply mt-0;
+  }
+
+  .cardProjeto {
+    @apply mt-10 text-xl;
+    max-width: calc(125% - 1px);
+  }
+
+  .membrosEquipeImagem {
+    @apply mt-[0.6vh] ml-[1.25vw]
+  }
+}
 </style>

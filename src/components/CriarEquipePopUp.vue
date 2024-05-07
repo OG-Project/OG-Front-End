@@ -2,17 +2,14 @@
     <fundoPopUp largura="" altura="95vh">
         <div class="divGeral">
             <div class=" grid-template flex w-full">
-                <h1 class="titulo mt-5 flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">
-                    Equipe</h1>
+                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe
+                </h1>
             </div>
             <div class=" grid-template  flex w-full mt-[1vh]  p-5">
                 <div class="relative">
                     <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
-                    <div
-                        class="rounded-full bg-[#D7D7D7] flex items-center justify-center 2xl:w-[70px] 2xl:h-[70px] xl:w-[70px] xl:h-[70px] lg:w-[65px] lg:h-[65px] md:w-[60px] md:h-[60px]">
-                        <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }"
-                            :src="imagemExibicao" alt="Imagem Selecionada">
-                    </div>
+                    <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
+                        alt="Imagem Selecionada">
                 </div>
                 <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
                     :largura="larguraInput()" conteudoInput="Nome da Equipe" v-model="nome"
@@ -20,8 +17,8 @@
             </div>
             <div class=" grid-template  flex w-full">
                 <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e) => { usuarioConvidado = e }"
-                    icon="../src/imagem-vetores/adicionarPessoa.svg" styleInput="input-transparente-claro"
-                    :largura="larguraInputConvidado()" conteudoInput="Adicionar Membro"
+                    styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
+                    icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
                     v-model="usuarioConvidado"></Input>
             </div>
             <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
@@ -37,12 +34,13 @@
                 <textAreaPadrao
                     class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center"
                     height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"
-                    v-model="descricao" @updateModelValue="(e) => { descricao = e }"></textAreaPadrao>
+                    v-model="descricao"></textAreaPadrao>
             </div>
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                <ListaConvidados @opcaoSelecionada="valorSelect" :margin-right="marginRightConvidado()" texto="Convites"
-                    mostrar-select="true" class="listaConvidados" altura="40vh" :listaConvidados="membrosEquipe">
-                </ListaConvidados>
+                <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
+                    class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg"
+                    caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg"
+                    :listaConvidados="listaUsuariosConvidados"></ListaConvidados>
             </div>
             <div v-if="screenWidth >= 620"
                 class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
@@ -57,13 +55,7 @@
             </div>
 
         </div>
-
     </fundoPopUp>
-    <div v-if="mensagem != ''" class="alert">
-        <alertTela :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro">
-        </alertTela>
-    </div>
-
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
@@ -72,18 +64,18 @@ import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
 import Botao from './Botao.vue';
 import ListaConvidados from './ListaConvidados.vue';
-import { conexaoBD } from '../stores/conexaoBD';
+import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
-import alertTela from './alertTela.vue';
-
 
 const banco = conexaoBD();
 let nome = ref('');
 let descricao = ref('');
 let usuarioConvidado = ref('');
 let usuarioLogado = VueCookies.get("IdUsuarioCookie")
+let valorSelectSelecionado = ref("Edit")
 let membrosEquipe = ref([]);
+let listaUsuariosConvidados = ref([])
 let conexaoWeb = webSocketStore()
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
@@ -120,7 +112,6 @@ function marginRightConvidado() {
     }
 }
 
-
 function valorSelect(valor, convidado) {
     valorSelectSelecionado.value = valor
     usuarioConvidado.value = convidado.username
@@ -138,6 +129,7 @@ function mudaPermissaoUsuario(usuario) {
         }
     })
 }
+
 const imagemSelecionada = ref(null);
 
 // Função para lidar com o upload de arquivos
@@ -194,19 +186,19 @@ console.log(usuarioLogado)
 function larguraInput() {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 620) {
-        return '48'
+        return '45'
     }
     if (screenWidth <= 768) {
-        return '23';
+        return '25';
     } if (screenWidth > 768 && screenWidth <= 1024) {
-        return '24';
+        return '28';
     } if (screenWidth > 1024 && screenWidth <= 1440) {
-        return '26';
+        return '25';
     } if (screenWidth > 1440 && screenWidth < 1920) {
         return '10';
     }
     else {
-        return '11';
+        return '13';
     }
 };
 
@@ -238,7 +230,6 @@ async function listaUsuarios() {
                     "usuario": usuario,
                     "permissao": 1
                 }
-                console.log(usuarioPermissao)
                 membrosEquipe.value.push(usuarioPermissao);
                 listaUsuariosConvidados.value.push(usuario)
             } else {
@@ -256,14 +247,13 @@ async function adicionarMembro() {
 }
 
 async function cadastrarEquipe() {
-    limparMensagemErro();
     const cria = criaEquipeStore();
-
+    limparMensagemErro();
     if (!nome.value.trim()) {
         mensagem.value = ""
-        mensagemCor.value = ""
-        mensagem.value = "É obrigatório o nome da equipe";
-        mensagemCor.value = "#CD0000"
+    mensagemCor.value = ""
+    mensagem.value = "É obrigatório o nome da equipe";
+    mensagemCor.value = "#CD0000";
         return;
     }
 
@@ -282,8 +272,9 @@ async function cadastrarEquipe() {
 };
 
 async function colocaMembrosEquipe(equipe) {
-    const ids = membrosEquipe.value.map(m => {
-        return Number(m.id);
+    console.log(membrosEquipe.value)
+    const ids = membrosEquipe.value.map(membro => {
+        banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
     });
     await enviarFotoParaBackend(equipe);
     adicionaUsuarioLogado(ids, equipe)
@@ -292,11 +283,8 @@ async function colocaMembrosEquipe(equipe) {
 function adicionaUsuarioLogado(ids, equipe) {
     // Adicione automaticamente o usuário logado à equipe
     const usuarioLogadoId = Number(usuarioLogado);
-    ids = []
-    if (!ids.includes(usuarioLogadoId)) {
-        ids.push(usuarioLogadoId);
-    }
-    banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
+    banco.adicionarUsuarios(usuarioLogadoId, equipe.id, 1, "/usuario/add");
+    banco.adicionarCriador(usuarioLogadoId,equipe.id)
 
 }
 
@@ -316,8 +304,6 @@ async function enviaParaWebSocket(equipe, membrosConvidados) {
             }
         }
     }
-    console.log(teste)
-    console.log(equipeAux)
     const webSocket = webSocketStore();
     webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
@@ -328,14 +314,15 @@ async function enviarFotoParaBackend(equipe) {
     try {
         if (!imagemSelecionada.value) {
             // Verifica se uma imagem foi selecionada
+            console.error('Nenhuma imagem selecionada.');
             return;
         }
 
         const equipeId = equipe.id;
         await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
-        mensagemError.value = 'Foto enviada com sucesso para o backend.';
+        console.log('Foto enviada com sucesso para o backend.');
     } catch (error) {
-        mensagemError.value = 'Erro ao enviar a foto para o backend:';
+        console.error('Erro ao enviar a foto para o backend:', error);
     }
 }
 
@@ -352,7 +339,7 @@ async function enviarFotoParaBackend(equipe) {
     }
 
     .imagem {
-        @apply xl:h-[6vh] xl:w-[3vw] mt-1 ml-1;
+        @apply xl:h-[6vh] xl:w-[3vw];
     }
 
     .mensagem-error {
@@ -377,10 +364,6 @@ async function enviarFotoParaBackend(equipe) {
 
     #convites-bg {
         clip-path: polygon(20% 0, 80% 0, 100% 15%, 100% 100%, 0 100%, 0 15%);
-    }
-
-    .alert {
-        @apply absolute flex items-start justify-start 2xl:mt-[-25vh] 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
     }
 
     .listaConvidados {
@@ -457,7 +440,7 @@ async function enviarFotoParaBackend(equipe) {
         }
     }
 
-    @media(max-width: 320px) {
+    @media(max-width: 620px) {
         .titulo {
             @apply text-4xl mb-2;
         }
@@ -473,51 +456,7 @@ async function enviarFotoParaBackend(equipe) {
         .imagem {
             @apply w-[60px] h-[60px]
         }
-
     }
 
-    @media(max-width: 375px) {
-        .titulo {
-            @apply text-4xl mb-2;
-        }
-
-        .botao {
-            @apply flex justify-end mt-10
-        }
-
-        .convidados-div {
-            @apply h-full mt-10;
-        }
-
-        .imagem {
-            @apply w-[60px] h-[60px]
-        }
-
-        .alert {
-            @apply mt-[-60vw] text-sm;
-        }
-    }
-
-    @media(min-width: 425px) and (max-width: 620px) {
-        .titulo {
-            @apply text-4xl mb-8;
-        }
-
-        .botao {
-            @apply flex justify-end mt-10
-        }
-
-        .convidados-div {
-            @apply h-full mt-10;
-        }
-
-        .imagem {
-            @apply w-[60px] h-[60px]
-        }
-
-        .alert {
-            @apply mt-[-50vw]
-        }
-    }
 }
 </style>
