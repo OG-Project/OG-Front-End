@@ -26,7 +26,8 @@
                     <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao" @updateModelValue="(e)=> {descricao=e}" ></textAreaPadrao>
                 </div> 
                 <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                    <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh" :listaConvidados="membrosEquipe" ></ListaConvidados>
+                    <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados"
+                     altura="40vh" :listaConvidados="membrosEquipe" @foi-clicado="removeListaMembrosConvidados" ></ListaConvidados>
                 </div>
                 <div v-if="screenWidth >= 620" class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
                         <Botao  preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
@@ -79,6 +80,15 @@
     conexaoWeb.url= "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado;
     conexaoWeb.criaConexaoWebSocket()
 })
+
+async function removeListaMembrosConvidados(membroEquipe){
+    const index = membrosEquipe.value.findIndex(convidado => convidado == membroEquipe);
+    console.log(index)
+      // Remova o convidado da lista de convidados se encontrado
+      if (index != -1) {
+        membrosEquipe.value.splice(index, 1);
+      }
+}
 
     function marginRightConvidado() {
         if(screenWidth <= 620){
@@ -235,8 +245,10 @@
         equipe = response.data;
         colocaMembrosEquipe(equipe);
         enviaParaWebSocket(equipe, membrosEquipe.value);
+        enviarFotoParaBackend(equipe);
         window.location.reload();
         });
+        
         
     };
 
@@ -244,7 +256,7 @@
         const ids = membrosEquipe.value.map(m => {
             return Number(m.id);
         });
-        await enviarFotoParaBackend(equipe);
+       
         adicionaUsuarioLogado(ids, equipe)
     }
 

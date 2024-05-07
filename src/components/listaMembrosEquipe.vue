@@ -36,7 +36,7 @@
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()"
                 texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh"
-                 :listaConvidados="membrosConvidados">
+                 :listaConvidados="membrosConvidados" @foi-clicado="removeListaMembrosConvidados">
             </ListaConvidados>
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
@@ -121,6 +121,15 @@ async function removerMembro(membro) {
     } else {
         console.error('O membro ou sua propriedade id não estão definidos.');
     }
+}
+
+async function removeListaMembrosConvidados(membroConvidado){
+    const index = membrosConvidados.value.findIndex(convidado => convidado == membroConvidado);
+    console.log(index)
+      // Remova o convidado da lista de convidados se encontrado
+      if (index != -1) {
+        membrosConvidados.value.splice(index, 1);
+      }
 }
 
 async function buscarMembrosEquipe() {
