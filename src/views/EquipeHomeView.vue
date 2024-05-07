@@ -37,9 +37,8 @@
 
             <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
 
-            <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
-
-            
+            <CriarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></CriarEquipePopUp>
+            <CriarEquipePopUp></CriarEquipePopUp>
         </div>
     </div>
 
@@ -57,6 +56,7 @@ import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
 import maisIcon from "../imagem-vetores/maisIcon.vue";
 import engrenagem from "../imagem-vetores/engrenagem.vue";
+import CriarEquipePopUp from "../components/CriarEquipePopUp.vue";
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
@@ -65,7 +65,7 @@ const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 let usuarios;
 const funcaoPopUp = funcaoPopUpStore();
 funcaoPopUp.variavelModal = false;
-let variavelCria = false;
+let variavelCria = ref(false);
 let variavelEngrenagem = false;
 const nomeCompleto = ref('');
 const router = useRouter();
@@ -106,15 +106,17 @@ function abrePaginaEquipe(equipe) {
 async function abrePopUp(equipe, tipo) {
 
     if (tipo == 'engrenagem') {
-        variavelCria = false;
+        variavelCria.value = false;
         variavelEngrenagem = true;
         const equipeSelecionada = equipe;
         VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
         funcaoPopUp.abrePopUp()
     } else {
         variavelEngrenagem = false;
-        variavelCria = true;
+        variavelCria.value = true;
         funcaoPopUp.abrePopUp()
+        
+       
     }
 
 }
