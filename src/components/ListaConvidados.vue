@@ -11,7 +11,7 @@
         {{ console.log(convidado) }}
         <div class="w-full flex items-center justify-center mt-5 mb-2" v-for="convidado in listaConvidados" :key="convidado.name" :style="{'margin-left':marginLeft, 'margin-right': marginRight}">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
-        <template v-if="listaConvidados.length > 0">
+        <template v-if="listaConvidados.length > 0 && convidado.foto!=null">
           <img class="imgDePerfil" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`" :style="altDaImagemPerfil" />
           
         </template>

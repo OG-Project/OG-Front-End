@@ -8,7 +8,7 @@
             <div class=" grid-template  flex w-full mt-[1vh] p-5">
                 <img class="imagem" v-if="equipeEditar.foto"
                     :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
-                <img class="imagem" v-else src="../imagem-vetores/Equipe.svg">
+                <equipe class="imagem" v-else></equipe>
                 <div class="styleH1Padrao">
                     <h1 class="nomeEquipe flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[var(--fonteCor)] "
                         :title="equipeEditar.nome"> {{ truncarNome(equipeEditar.nome, larguraNomeEquipe()) }}</h1>
@@ -21,16 +21,31 @@
             </div>
             <div>
                 <div class="botao">
-                    <div v-if="screenWidth >= 620"
-                        class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
-                        <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem"
-                            :funcaoClick="deletarEquipe">
-                        </Botao>
+                    <div v-if="usuarioECriadorEquipe">
+                        <div v-if="screenWidth >= 620"
+                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
+                            <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem"
+                                :funcaoClick="deletarEquipe">
+                            </Botao>
+                        </div>
+                        <div v-else class="flex mt-20">
+                            <Botao preset="Deletar" tamanhoPadrao="mobilemedio" texto="Deletar" tamanhoDaFonte="1rem"
+                                :funcaoClick="deletarEquipe">
+                            </Botao>
+                        </div>
                     </div>
-                    <div v-else class="flex mt-20">
-                        <Botao preset="Deletar" tamanhoPadrao="mobilemedio" texto="Deletar" tamanhoDaFonte="1rem"
-                            :funcaoClick="deletarEquipe">
-                        </Botao>
+                    <div v-else-if="!usuarioECriadorEquipe">
+                        <div v-if="screenWidth >= 620"
+                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
+                            <Botao preset="Sair" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem"
+                                :funcaoClick="removesse">
+                            </Botao>
+                        </div>
+                        <div v-else class="flex mt-20">
+                            <Botao preset="Sair" tamanhoPadrao="mobilemedio" texto="Deletar" tamanhoDaFonte="1rem"
+                                :funcaoClick="removesse">
+                            </Botao>
+                        </div>
                     </div>
                     <div v-if="screenWidth >= 620"
                         class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
@@ -86,7 +101,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -94,6 +109,7 @@ import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import { useRouter } from 'vue-router'
+import equipe from '../imagem-vetores/equipe.vue';
 const screenWidth = window.innerWidth;
 
 function tamanhoPopUp() {
@@ -105,6 +121,10 @@ function tamanhoPopUp() {
         return '60vh'
     }
 }
+
+onMounted(()=>{
+   equipeDoUsuarioLogado();
+})
 
 
 function larguraNomeEquipe() {
@@ -168,6 +188,9 @@ const imagemExibicao = computed(() => {
 
 const banco = conexaoBD();
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
+let idUsuarioLogado = VueCookies.get("IdUsuarioCookie")
+let usuarioLogado = banco.buscarUm(idUsuarioLogado,"/usuario")
+console.log(usuarioLogado)
 let equipeEditar = ref({
     nome: '',
     descricao: '',
@@ -178,7 +201,33 @@ let descricao = ref('');
 let mensagemError = ref("");
 let editando = ref(false);
 let equipes = banco.procurar("/equipe");
+let usuarios = banco.procurar("/usuario");
+let usuarioFazParteEquipe = false;
+let usuarioECriadorEquipe = false;
 const router = useRouter();
+
+async function equipeDoUsuarioLogado (){
+    let listaUsuarios = await usuarios;
+    const logadoId = Number(idUsuarioLogado);
+
+    listaUsuarios.forEach((usuario) => {
+        // Verifica se o usuário atual é o usuário logado
+        if (logadoId == usuario.id) {
+            // Itera sobre as equipes do usuário logado
+            usuario.equipes.forEach((equipeUsuario) => {
+                // Verifica se a equipe do usuário é a mesma que foi criada
+                if (equipeUsuario.equipe.id == equipeSelecionada) {
+                     console.log(1)
+                     usuarioFazParteEquipe = true;
+                    if(equipeUsuario.criador == true){
+                     console.log(2)
+                     usuarioECriadorEquipe = true;
+                    }
+                }
+            });
+        }
+    });
+};
 
 async function filtrarEquipe(){
     equipeEditar.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
@@ -209,6 +258,17 @@ function larguraInput() {
         return '13';
     }
 };
+
+async function removesse() {
+    await banco.removerUsuarioDaEquipe(equipeSelecionada,idUsuarioLogado, "/usuario/removerUsuarioEquipe").then(response => {
+            if (router.currentRoute.value.path == '/equipe') {
+                window.location.reload();
+            } else {
+                router.push({ path: '/equipe' });
+            }
+        }
+    )
+}
 
 async function deletarEquipe() {
 
@@ -293,7 +353,6 @@ async function atualizarEquipe() {
         console.log('Nenhuma imagem selecionada. A equipe será atualizada sem uma nova imagem.');
     }
 
- window.location.reload()
 }
 
 // Função para converter o arquivo para base64

@@ -25,7 +25,7 @@ const router = createRouter({
     {
           path:'/projeto',
           name:'Projeto',
-          redirect:'/projeto/kanban',
+          redirect:'/projeto/lista',
           component: () => import('../views/ProjetoView.vue'),
           children:[
             {
