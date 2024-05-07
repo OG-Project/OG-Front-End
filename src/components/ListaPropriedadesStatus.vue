@@ -226,8 +226,13 @@ onMounted(() => {
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
     tarefasAtribuidas = false
-    console.log(document.documentElement.style.getPropertyValue('--hueRoxo'));
+    console.log(document.documentElement.style.getPropertyValue('--hueRoxoEscuro'));
     buscaConfiguracaoesPadrao();
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+
+    criaStatusPadrao()
 }
 )
 
@@ -239,6 +244,7 @@ async function buscaConfiguracaoesPadrao(){
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   configuracao.value = usuario.value.configuracao
   root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
   root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
@@ -257,24 +263,15 @@ function verificaStyleNavTabela(nomeGuia) {
 
 function verificaQualBackGround(nomeGuia) {
     if (nomeGuia == "propriedade" && opcaoSelecionadaNaTabela.value == "propriedade") {
-        return "var(--roxo)"
+        return "var(--roxoClaro)"
     } else if (nomeGuia == "status" && opcaoSelecionadaNaTabela.value == "status") {
-        return "var(--roxo)"
+        return "var(--roxoClaro)"
     }
 }
 
 
-
-onMounted(() => {
-    window.addEventListener('resize', () => {
-        screenWidth.value = window.innerWidth
-    })
-
-    criaStatusPadrao()
-})
-
 function criaStatusPadrao() {
-    if (!projetoEdita.value && VueCookies.get("statusCookie") == null) {
+    if (!projetoEdita.value && VueCookies.get("statusCookie") == null || VueCookies.get("statusCookie") == "undefined") {
         let statusPronto = {
             nome: "Pronto",
             cor: '38a31a'

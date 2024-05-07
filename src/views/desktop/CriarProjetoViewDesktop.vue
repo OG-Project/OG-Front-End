@@ -485,7 +485,7 @@ async function removeResponsavel(responsavelRemover) {
 .gridTotal {
     display: grid;
     width: 100%;
-    height: 100%;
+    height: 90%;
     grid-template-columns: 41.175% 41.175% 17.65%;
     ;
 }
