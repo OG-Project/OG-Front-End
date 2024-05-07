@@ -253,7 +253,7 @@
     const usuarioLogadoId = Number(usuarioLogado);
     banco.adicionarUsuarios(ids, equipe.id, "/usuario/add");
     
-    banco.adicionarCriador(usuarioLogadoId,equipe.id)
+    banco.adicionarCriador(usuarioLogadoId,equipe.id);
 }
 
     async function enviaParaWebSocket(equipe,membrosConvidados) {

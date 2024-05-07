@@ -10,7 +10,7 @@
                 <div class="h-[45%]">
                     {{ projeto.nome }}
                 </div>
-                <div class="flex items-end">
+                <div class="flex items-end" v-if="verificaSeEResponsavel() == true">
                     <Dashboard></Dashboard>
                 </div>
             </div>
@@ -109,6 +109,23 @@ onMounted(async () => {
     console.log(visualizacao.value)
     definePorcentagem()
 })
+
+async function verificaSeEResponsavel(){
+    let usuario = VueCookies.get('IdUsuarioCookie')
+    let responsaveis = projeto.value.responsaveis
+    console.log(responsaveis)
+    console.log(usuario)
+
+    if(responsaveis!=null){
+        for (const responsavel of responsaveis) {
+            if (responsavel.responsavel.id == usuario) {
+                return true
+            }
+        }
+    }
+    return false
+
+}
 
 function atualizaVisualizacao() {
     setTimeout(() => {

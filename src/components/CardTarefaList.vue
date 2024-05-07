@@ -92,7 +92,6 @@ function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
 }
 
 function ordenaTarefas() {
-
   projeto.value.tarefas.sort((tarefa, tarefa2) => {
     if (tarefa.nome != null && tarefa2.nome != null) {
       return tarefa.indice[1].indice - tarefa2.indice[1].indice
@@ -121,30 +120,69 @@ function onDragEnd() {
           valorPropriedadeTarefaPut.valor = {
             id: valorPropriedadeTarefaPut.valor.id,
             texto: valorPropriedadeTarefaPut.valor.valor ?? null,
+            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
           }
         } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
           valorPropriedadeTarefaPut.valor = {
             id: valorPropriedadeTarefaPut.valor.id,
             data: valorPropriedadeTarefaPut.valor.valor ?? null,
-
+            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
           }
         } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
           valorPropriedadeTarefaPutPut.valor = {
             id: valorPropriedadeTarefaPut.valor.id,
             numero: valorPropriedadeTarefaPut.valor.valor ?? null,
-
+            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
           }
         } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
           valorPropriedadeTarefaPutPut.valor = {
             id: valorPropriedadeTarefaPut.valor.id,
             valores: valorPropriedadeTarefaPut.valor.valor ?? null,
-
+            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
           }
         }
       }
       console.log(tarefaPut)
-        await api.atualizar(tarefaPut, '/tarefa').then((response) => {
-          transformaEmObject()
+      await api.atualizar(tarefaPut, '/tarefa').then((response) => {
+        console.log(response)
+        tarefa = {
+          id: response.data.id,
+          nome: response.data.nome,
+          descricao: response.data.descricao,
+          status: response.data.status,
+          cor: response.data.cor,
+          status: response.data.status,
+          valorPropriedadeTarefas: response.data.valorPropriedadeTarefas,
+          comentarios: response.data.comentarios,
+          arquivos: response.data.arquivos,
+          indice: response.data.indice,
+        }
+        // for (let valorPropriedadeTarefaPut of tarefa.valorPropriedadeTarefas) {
+        //   if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
+        //     valorPropriedadeTarefaPut.valor = {
+        //       id: valorPropriedadeTarefaPut.valor.id,
+        //       valor: valorPropriedadeTarefaPut.valor.texto ?? null,
+        //     }
+        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
+        //     valorPropriedadeTarefaPut.valor = {
+        //       id: valorPropriedadeTarefaPut.valor.id,
+        //       valor: valorPropriedadeTarefaPut.valor.data ?? null,
+
+        //     }
+        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
+        //     valorPropriedadeTarefaPutPut.valor = {
+        //       id: valorPropriedadeTarefaPut.valor.id,
+        //       valor: valorPropriedadeTarefaPut.valor.numero ?? null,
+
+        //     }
+        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
+        //     valorPropriedadeTarefaPutPut.valor = {
+        //       id: valorPropriedadeTarefaPut.valor.id,
+        //       valor: valorPropriedadeTarefaPut.valor.valores ?? null,
+
+        //     }
+        //   }
+        // }
         })
     }
   })
