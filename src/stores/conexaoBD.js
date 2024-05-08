@@ -40,7 +40,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.patch('http://localhost:8082'+(textoRequisicao+'/'+idUser+"/"+equipeId+"/"+numeroPermissao),"",{withCredentials:true})
       },
       adicionarCriador(userId,equipeId){
-        return axios.patch('http://localhost:8082/usuario/criador/'+userId+'/'+equipeId)
+        return axios.patch('http://localhost:8082/usuario/criador/'+userId+'/'+equipeId,"",{withCredentials:true})
       },
       deletar(id,textoRequisicao){
         return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`,{withCredentials:true}).then(response =>{
@@ -68,17 +68,17 @@ export const conexaoBD = defineStore('conexaoBD', {
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
       },
       async buscarProjetosUsuario(userId, textoRequisicao){
-        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`,{withCredentials:true})).data)
 
 
       },
       async buscarTarefaProjeto(userId, textoRequisicao){
-        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`)).data)
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`,{withCredentials:true})).data)
 
 
       },
     adicionarEquipe(equipeId,projetoId, textoRequisicao) {
-      return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId,{withCredentials:true})
+      return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId,"",{withCredentials:true})
     },
     deletarEquipe(id, textoRequisicao) {
       return axios.delete('http://localhost:8082'+textoRequisicao+'/'+id,{withCredentials:true})    
@@ -111,7 +111,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
+      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
     },
 
     async patchDeArquivosNaTarefa(arquivos, id) {

@@ -260,13 +260,14 @@ async function cadastrarEquipe() {
     equipeCadastrada.nome = nome.value;
     equipeCadastrada.descricao = descricao.value;
     mensagem.value = "";
-
     let equipe;
     cria.criaEquipe(equipeCadastrada).then(response => {
         equipe = response.data
-        colocaMembrosEquipe(equipe)
         enviaParaWebSocket(equipe, membrosEquipe.value);
-        window.location.reload()
+        colocaMembrosEquipe(equipe).then(res =>{
+           
+        })
+       
     });
 
 };
