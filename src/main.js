@@ -29,7 +29,7 @@ import VueCookies from "vue-cookies";
 const i18n = createI18n({
     legacy: false,
     locale: VueCookies.get('Idioma'),
-    fallbackLocale: 'en',
+    fallbackLocale: 'pt-BR',
     messages: {
         'pt-BR': Portugues,
         'en': Ingles,

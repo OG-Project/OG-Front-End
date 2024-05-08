@@ -1,7 +1,7 @@
 <template>
   <div class="h-[92vh] w-full flex items-center">
     <div class="flex items-center relative justify-center w-full ml-16 mt-16 h-[35vw]">
-      <div id="poligono" 
+      <div id="poligono"
         class="h-[95%] w-[38%] shadow-2xl flex justify-center flex-col left-10 absolute overflow-visible"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; z-index: 5;">
         <div class="flex justify-center items-end text-white text-4xl h-[10%]">
@@ -33,12 +33,14 @@
     </div>
   </div>
   <PopUpTopicoPrincipaisHome v-if="funcaoPopUp.variavelModal && mostraTarefasPrincipais == true"
-  :nomeDoTopico="$t('home.main_projects')"></PopUpTopicoPrincipaisHome>
-  <PopUpTopicoDiaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoDia == true" :nomeDoTopico="$t('home.daily_projects')">
+    :nomeDoTopico="$t('home.main_projects')"></PopUpTopicoPrincipaisHome>
+  <PopUpTopicoDiaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoDia == true"
+    :nomeDoTopico="$t('home.daily_projects')">
   </PopUpTopicoDiaHome>
   <PopUpTopicoSemanaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDaSemana == true"
-  :nomeDoTopico="$t('home.weekly_projects')"></PopUpTopicoSemanaHome>
-  <PopUpTopicoMesHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true" :nomeDoTopico="$t('home.monthly_projects')">
+    :nomeDoTopico="$t('home.weekly_projects')"></PopUpTopicoSemanaHome>
+  <PopUpTopicoMesHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true"
+    :nomeDoTopico="$t('home.monthly_projects')">
   </PopUpTopicoMesHome>
 </template>
 
@@ -140,34 +142,30 @@ function enviaParaTarefasDoMes() {
   funcaoPopUp.abrePopUp();
 }
 
-const data = {
-  labels: ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"],
-  datasets: [
-    {
-      data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
-      backgroundColor: ["#428A6A", "#8A4242"],
-    },
-  ],
-};
-const config = {
-  type: "doughnut",
-  data: data,
-  options: {
-    borderWidth: 0,
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "bottom",
-      },
-    },
-  },
-};
-
 onMounted(() => {
   verificaTarefasFeitas();
-});
-
-watch([quantidadeTarefasFeitas, quantidadeNaoTarefasFeitas], () => {
+  const data = {
+    labels: ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"],
+    datasets: [
+      {
+        data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
+        backgroundColor: ["#428A6A", "#8A4242"],
+      },
+    ],
+  };
+  const config = {
+    type: "doughnut",
+    data: data,
+    options: {
+      borderWidth: 0,
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+        },
+      },
+    },
+  };
   data.labels = ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"];
   data.datasets[0].data = [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value];
   new Chart(document.getElementById("tabela"), config);

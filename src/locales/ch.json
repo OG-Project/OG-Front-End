@@ -66,7 +66,7 @@
     "weekly_projects": "本周项目",
     "monthly_projects": "本月项目"
   },
-  "navBar":{
+  "navBar": {
     "botaoNovaTarefa": "新任务",
     "pesquisar": "搜索..."
   },
@@ -91,7 +91,51 @@
   },
   "equipes": {
     "equipes": "团队",
-    "projetos":"项目",
+    "projetos": "项目",
     "projeto": "项目"
+  },
+  "acessibilidade": {
+    "Acessibilidade": "无障碍",
+    "Alterar Idioma": "更改语言",
+    "Digitar com a voz": "语音输入",
+    "Libras": "手语",
+    "Teclado Virtual": "虚拟键盘"
+  },
+  "aparencia": {
+    "Aparência": "外观",
+    "Titulo": "标题",
+    "Corpo de Texto": "正文",
+    "Cores": "颜色",
+    "Modo Claro": "明亮模式",
+    "Modo Escuro": "暗黑模式"
+  },
+  "informacoes":{
+    "Informações": "信息",
+    "Nome": "姓名",
+    "Username": "用户名",
+    "E-mail": "电子邮件",
+    "Sobrenome": "姓",
+    "Data de Nascimento": "出生日期",
+    "Editar E-mail": "编辑电子邮件",
+    "Confirmar Edição": "确认编辑"
+  },
+  "privacidade": {
+    "Privacidade": "隐私",
+    "Permitir que visualizem seus projetos": "允许查看您的项目",
+    "Permitir que visualizem seu email": "允许查看您的电子邮件",
+    "Permitir que visualizem suas equipes": "允许查看您的团队",
+    "Permitir que visualizem seu perfil": "允许查看您的个人资料"
+  },
+  "seguranca": {
+    "安全": "安全",
+    "senhaCaracteres": " * 具有8个或更多字符的密码。",
+    "senhaConteudo": " * 包含字母、数字和特殊字符的密码。",
+    "senhaPalavrasComuns": " * 不要使用常见词。",
+    "seuEmailAtual": "您当前的电子邮件地址是",
+    "loginGoogleAtivado": "已激活使用Google帐户登录",
+    "contaConectadaGoogle": "连接的帐户。您的帐户已连接到Google帐户。在此更改电子邮件地址将断开与Google帐户的连接。",
+    "alterarSenha": "更改密码",
+    "alterarEmail": "更改电子邮件",
+    "deletarConta": "您是否要删除您的账户？"
   }
 }

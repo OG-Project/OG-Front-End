@@ -93,6 +93,50 @@
     "equipes": "Teams",
     "projetos": "Projects",
     "projeto": "Project"
+  },
+  "acessibilidade":{
+    "Acessibilidade": "Accessibility",
+    "Alterar Idioma": "Change Language",
+    "Digitar com a voz": "Type with Voice",
+    "Libras": "Sign Language",
+    "Teclado Virtual": "Virtual Keyboard"
+  },
+  "aparencia": {
+    "Aparência": "Appearance",
+    "Titulo": "Title",
+    "Corpo de Texto": "Body Text",
+    "Cores": "Colors",
+    "Modo Claro": "Light Mode",
+    "Modo Escuro": "Dark Mode"
+  },
+  "informacoes":{
+    "Informações": "Information",
+    "Nome": "Name",
+    "Username": "Username",
+    "E-mail": "E-mail",
+    "Sobrenome": "Last Name",
+    "Data de Nascimento": "Date of Birth",
+    "Editar E-mail": "Edit E-mail",
+    "Confirmar Edição": "Confirm Edit"
+  },
+  "privacidade": {
+    "Privacidade": "Privacy",
+    "Permitir que visualizem seus projetos": "Allow viewing your projects",
+    "Permitir que visualizem seu email": "Allow viewing your email",
+    "Permitir que visualizem suas equipes": "Allow viewing your teams",
+    "Permitir que visualizem seu perfil": "Allow viewing your profile"
+  },
+  "seguranca": {
+    "Segurança": "Security",
+    "senhaCaracteres": "* Password with 8 or more characters.",
+    "senhaConteudo": "* Password containing letters, numbers, and special characters.",
+    "senhaPalavrasComuns": "* Do not use common words.",
+    "seuEmailAtual": "Your current email address is",
+    "loginGoogleAtivado": "Login with Google account activated",
+    "contaConectadaGoogle": "Connected account. Your account is connected to a Google account. Changing the email address here will disconnect the Google account.",
+    "alterarSenha": "Change Password",
+    "alterarEmail": "Change Email",
+    "deletarConta": "Do you want to delete your Account?"
   }
   
 }
