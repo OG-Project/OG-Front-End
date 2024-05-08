@@ -11,7 +11,7 @@
         {{ console.log(convidado) }}
         <div class="w-full flex items-center justify-center mt-5 mb-2" v-for="convidado in listaConvidados" :key="convidado.name" :style="{'margin-left':marginLeft, 'margin-right': marginRight}">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
-        <template v-if="listaConvidados.length > 0">
+        <template v-if="listaConvidados.length > 0 && convidado.foto!=null">
           <img class="imgDePerfil" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`" :style="altDaImagemPerfil" />
           
         </template>
@@ -28,6 +28,8 @@
               class="selectEdit" 
              styleSelect="select-cinza" 
               :listaSelect="opcoesSelect"
+              v-model="opcaoEscolhida"
+              @update:modelValue="enviaOpcao(convidado)"
             ></SelectPadrao>
           </template>
         </template>
@@ -38,8 +40,9 @@
 </template>
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
-import { defineProps } from 'vue';
-import sair from '../imagem-vetores/Sair.vue'
+import { defineProps, onUpdated, ref } from 'vue';
+import { getCurrentInstance } from 'vue';
+const instance = getCurrentInstance();
 
 defineEmits(['foiClicado'])
 
@@ -59,7 +62,12 @@ const props = defineProps({
   }
 })
 
+let opcaoEscolhida = ref("")
 
+
+function enviaOpcao(convidado){
+  instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
+}
 const opcoesSelect = ['Edit', 'View'];
 
 const imagemIcon = {

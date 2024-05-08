@@ -93,6 +93,50 @@
     "equipes": "チーム",
     "projetos": "プロジェクト",
     "projeto": "プロジェクト"
+  },
+  "acessibilidade":{
+    "Acessibilidade": "アクセシビリティ",
+    "Alterar Idioma": "言語を変更する",
+    "Digitar com a voz": "音声入力",
+    "Libras": "手話",
+    "Teclado Virtual": "仮想キーボード"
+  },
+  "aparencia":{
+    "Aparência": "外観",
+    "Titulo": "タイトル",
+    "Corpo de Texto": "本文",
+    "Cores": "色",
+    "Modo Claro": "ライトモード",
+    "Modo Escuro": "ダークモード"
+  },
+  "informacoes":{
+    "Informações": "情報",
+    "Nome": "名前",
+    "Username": "ユーザー名",
+    "E-mail": "メールアドレス",
+    "Sobrenome": "姓",
+    "Data de Nascimento": "誕生日",
+    "Editar E-mail": "メールアドレスを編集",
+    "Confirmar Edição": "編集を確認"
+  },
+  "privacidade": {
+    "Privacidade": "プライバシー",
+    "Permitir que visualizem seus projetos": "プロジェクトを表示することを許可する",
+    "Permitir que visualizem seu email": "メールアドレスを表示することを許可する",
+    "Permitir que visualizem suas equipes": "チームを表示することを許可する",
+    "Permitir que visualizem seu perfil": "プロフィールを表示することを許可する"
+  },
+  "seguranca": {
+    "セキュリティ": "セキュリティ",
+    "senhaCaracteres": "* 8文字以上のパスワード。",
+    "senhaConteudo": "* 文字、数字、および特殊文字を含むパスワード。",
+    "senhaPalavrasComuns": "* 一般的な単語を使用しないでください。",
+    "seuEmailAtual": "現在のメールアドレスは",
+    "loginGoogleAtivado": "Googleアカウントでのログインが有効になっています",
+    "contaConectadaGoogle": "接続されたアカウント。 あなたのアカウントはGoogleアカウントに接続されています。 ここでメールアドレスを変更すると、Googleアカウントとの接続が解除されます。",
+    "alterarSenha": "パスワードを変更する",
+    "alterarEmail": "メールアドレスを変更する",
+    "deletarConta": "アカウントを削除しますか？"
   }
   
 }

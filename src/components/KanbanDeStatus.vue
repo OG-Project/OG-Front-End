@@ -4,7 +4,7 @@
             statusNovo = propriedade.propriedade})">
             <div :style="propriedade.style">
 
-                <div class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
+                <div class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
                     <div class="w-[90%] flex justify-center">
                         {{ propriedade.propriedade.nome }}
                     </div>

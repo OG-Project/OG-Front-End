@@ -55,22 +55,23 @@ onMounted(async () => {
   usuario.value =
     await banco.buscarUm(
       JSON.parse(
-        VueCookies.get('IdUsuarioCookie')),'/usuario')
-        configuracao.value=usuario.value.configuracao
-    console.log(configuracao.value);
-  perfil.isVlibras=configuracao.value.isLibras
-  perfil.isTecladoVirtual=configuracao.value.isTecladoVirtual
-  perfil.isVoiceMaker=configuracao.value.isDigitarVoz
-  root.setProperty('--hueRoxo',configuracao.value.hueCor)
-  root.setProperty('--fonteCorpo',configuracao.value.fonteCorpo)
-  root.setProperty('--fonteTitulo',configuracao.value.fonteTitulo)
-  root.setProperty('--fonteTituloTamanho',configuracao.value.fonteTituloTamanho+'vh')
-  root.setProperty('--fonteCorpoTamanho',configuracao.value.fonteCorpoTamanho+'vh')
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  console.log(configuracao.value);
+  perfil.isVlibras = configuracao.value.isLibras
+  perfil.isTecladoVirtual = configuracao.value.isTecladoVirtual
+  perfil.isVoiceMaker = configuracao.value.isDigitarVoz
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + 'vh')
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
   console.log(configuracao.value.isDark);
-  if(configuracao.value.isDark){
-    root.setProperty('--backgroundPuro','#0F0F0F')
-    root.setProperty('--backgroundItems','#222222')
-    root.setProperty('--fonteCor','#ffffff')
+  if (configuracao.value.isDark) {
+    root.setProperty('--backgroundPuro', '#0F0F0F')
+    root.setProperty('--backgroundItems', '#222222')
+    root.setProperty('--fonteCor', '#ffffff')
     root.setProperty('--backgroundItemsClaros', '#363636')
   }
 
@@ -177,31 +178,31 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-<div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
-  <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
+    <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
     <RouterView />
   </div>
   <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
   <div ref="el" :style="style" style="position: fixed"
-  class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
-  <div class=" flex flex-col items-center">
-    <div class="flex w-full justify-between px-4 ">
-      <svgIconMove class="w-[1vw] h-[3vh]" />
-      <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
-    </div>
-    <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
-  </div>
-</div>
-<div v-show="isVlibras == true ">
-  <div vw class="enabled">
-    <div vw-access-button class="active"></div>
-    <div vw-plugin-wrapper>
-      <div class="vw-plugin-top-wrapper"></div>
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
+    <div class=" flex flex-col items-center">
+      <div class="flex w-full justify-between px-4 ">
+        <svgIconMove class="w-[1vw] h-[3vh]" />
+        <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
+      </div>
+      <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
     </div>
   </div>
-</div>
+  <div v-show="isVlibras == true">
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+  </div>
 
 </template>
 <style scoped></style>
