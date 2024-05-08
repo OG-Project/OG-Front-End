@@ -401,7 +401,7 @@
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
             <p class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-              {{ responsavel.responsavel.username }}
+         
             </p>
 
           </div>

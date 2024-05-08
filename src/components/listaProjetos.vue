@@ -153,10 +153,18 @@
     })
   }
 
-  onMounted(() => {
-    buscarProjetos();
-    
-  });
+  
+onMounted(() => {
+  buscaProjetoBanco()
+  buscarProjetos();
+})
+
+async function buscaProjetoBanco() {
+  let projeto = await banco.procurar("/projeto")
+  projeto.forEach((projeto) => {
+    obterNomesResponsaveis(projeto)
+  })
+}
 
   const ativarBotao = (botao) => {
 
@@ -253,31 +261,34 @@
     }
 }
 
-  function obterNomesResponsaveis(projeto) {
-    if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-      let responsaveisComNome = []
-      for(let responsavel of projeto.responsaveis){
-
-        responsaveisComNome.push(responsavel.responsavel.username)
+async function obterNomesResponsaveis(projeto) {
+  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
+    let responsaveisComNome = []
+    for (let responsavel of projeto.responsaveis) {
+      let responsavelAtual = await buscaResponsaveis(responsavel)
+      responsaveisComNome.push(responsavelAtual.username)
+      listaResponsaveis.value = responsaveisComNome
+      if (responsaveisComNome.length >= 0) {
+        listaResponsaveis.value = responsaveisComNome.join(', ');
       }
-        if (responsaveisComNome.length >= 0) {
-          return responsaveisComNome.join(', ');
-        } else {
-            return "Responsáveis encontrados, mas nenhum deles possui nome.";
-        }
-    } else {
-        return "Não há responsáveis";
     }
+  } else {
+    return "Não há responsáveis";
+  }
+}
+async function buscaResponsaveis(responsavel) {
+  return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
+
 }
 
 
-function obterFotosResponsaveis(projeto) {
+async function obterFotosResponsaveis(projeto) {
         // Percorre os responsáveis do projeto
       if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
       let responsaveisComFoto = []
       for(let responsavel of projeto.responsaveis){
-
-        responsaveisComFoto.push(responsavel.responsavel.foto)
+        let usuario = await buscaResponsaveis(responsavel)
+        responsaveisComNome.push(usuario.foto)
       }
         if (responsaveisComFoto.length >= 0) {
           return `data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`;
