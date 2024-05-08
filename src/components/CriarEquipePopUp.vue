@@ -284,9 +284,9 @@ async function colocaMembrosEquipe(equipe) {
 function adicionaUsuarioLogado(ids, equipe) {
     // Adicione automaticamente o usuário logado à equipe
     const usuarioLogadoId = Number(usuarioLogado);
+
     banco.adicionarUsuarios(usuarioLogadoId, equipe.id, 1, "/usuario/add");
     banco.adicionarCriador(usuarioLogadoId,equipe.id)
-
 }
 
 async function enviaParaWebSocket(equipe, membrosConvidados) {
