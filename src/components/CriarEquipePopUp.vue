@@ -1,5 +1,5 @@
 <template>
-    <fundoPopUp  largura="" altura="95vh">
+    <fundoPopUp largura="" altura="95vh">
         <div id="step-6" class="divGeral">
             <div class=" grid-template flex w-full">
                     <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe</h1>
@@ -31,7 +31,7 @@
                     </Botao>
             </div>
             <div  v-else class="mt-10 ml-2" >
-                <Botao id="step-7" preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                <Botao  preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
                 </Botao>
             </div>
             
@@ -59,7 +59,6 @@ import { webSocketStore } from '../stores/webSocket.js'
     let conexaoWeb = webSocketStore()
     const screenWidth = window.innerWidth;
     let usuarios = banco.procurar("/usuario");
-    import { webSocketStore } from '../stores/webSocket.js'
     
     function limparMensagemErro() {
     mensagem.value = "";
@@ -227,9 +226,9 @@ import { webSocketStore } from '../stores/webSocket.js'
         equipe = response.data;
         colocaMembrosEquipe(equipe);
         enviaParaWebSocket(equipe, membrosEquipe.value);
-        window.location.reload();
+        // window.location.reload();
         });
-        
+        console.log(banco.buscarUm(equipe.id,'/equipes'))
     };
 
     async function colocaMembrosEquipe(equipe){

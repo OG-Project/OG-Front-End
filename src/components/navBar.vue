@@ -42,6 +42,8 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
 import popUpNotificacao from "../components/popUpNotificacao.vue";
 import inputDePesquisa from "./inputDePesquisa.vue";
+import { inject } from "vue";
+const tour=inject('tour')
 
 const banco = conexaoBD();
 
@@ -55,6 +57,9 @@ onBeforeMount(() => {
 
 let lista = ref();
 
+// tour.addSteps([
+// ])
+// tour.cancel()
 function criaListaDePesquisa() {
   let listaDePesquisa = [];
   banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie")).then((usuario) => {

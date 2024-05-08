@@ -72,7 +72,6 @@ const router = useRouter();
 
 onMounted(() => {
     listaUsuarios();
-
 })
 
  webSocket.url="ws://localhost:8085/og/webSocket/usuario/1"
@@ -98,7 +97,8 @@ function abrePaginaEquipe(equipe) {
     console.log(equipeSelecionada)
     VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
     router.push({ name: 'telaInicial' }).then(() => {
-        window.location.reload()
+        // windowtion.reload()
+        ///aqui
     });
 
 }

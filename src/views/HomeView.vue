@@ -13,19 +13,11 @@ import { ref, onMounted,watch } from 'vue'
 import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
 import router from '../router';
-import Shepherd from 'shepherd.js';
 
 // https://dontpad.com/02-05-2024gks
 // import { useShepherd } from 'vue-shepherd'
-
-const tour = new Shepherd.Tour({
-    useModalOverlay: {enabled:true},
-    defaultStepOptions: {
-      cancelIcon:{enabled: true},
-      classes: '',
-      scrollTo: true
-    },
-  });
+import { inject } from 'vue'
+const tour = inject('tour')
 
 tour.addSteps([
   {
@@ -97,7 +89,7 @@ tour.addSteps([
         action: tour.complete
       }
     ]
-  },
+  },  
   {
     id: 'step-4',
     title: 'Partes importantes',
@@ -149,7 +141,7 @@ tour.addSteps([
       element: '#step-6',
       on: 'right'
     },
-    buttons: [
+    buttons:[
       {
         text: 'Next',
         action: ()=>{
@@ -207,8 +199,6 @@ tour.addSteps([
   }
 ])
 const screenWidth = ref(window.innerWidth)
-let usuario=ref()
-let configuracao=ref()
 
 watch(() => window.innerWidth, () => {
   screenWidth.value = window.innerWidth
