@@ -20,7 +20,7 @@
                             <p class="w-[25%] flex items-center justify-center">Status</p>
                             <p class="w-[25%] flex items-center justify-center">Tempo trabalhado</p>
                             <!-- <p class="w-[25%] flex items-center justify-center">Entrega</p> -->
-                            <p class="w-[25%] flex items-center justify-center">Concluida</p>
+                            <p class="w-[25%] flex items-center justify-center">Aprovado</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
@@ -46,9 +46,8 @@
                                         {{ tarefa.status.nome }}</p>
                                     <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]"
-                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-if="tarefa.horas">{{
-                            tarefa.horas }}</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-if="tarefa.tempoAtuacao">{{
+                            tarefa.tempoAtuacao }}</p>
                                     <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
                                     <!-- <p class="w-[25%] flex items-center justify-center h-10 bg-[#EF8F7A]"
@@ -57,8 +56,10 @@
                                     <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p> -->
                                     <div class="w-[25%] flex items-center justify-center gap-10 h-10">
-                                        <RejectedIcon class="w-[25%] h-[85%]" @click="deixaTarefaConcluida(tarefa, 'Rejeitado')"></RejectedIcon>
-                                        <AprovedIcon class="w-[20%] h-[60%]" @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
+                                        <RejectedIcon class="w-[25%] h-[85%]"
+                                            @click="deixaTarefaConcluida(tarefa, 'Rejeitado')"></RejectedIcon>
+                                        <AprovedIcon class="w-[20%] h-[60%]"
+                                            @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
                                     </div>
 
                                 </div>
@@ -69,12 +70,12 @@
             </div>
         </div>
         <div class="flex relative w-full gap-4 pl-24 mt-16 h-[38%]">
-            <div class="flex pl-12 flex-col justify-center w-[15%] h-[85%] border-r-2 border-black">
+            <div class="flex pl-12 flex-col justify-center w-[22%] h-[85%] border-r-2 border-black">
                 <p class="text-2xl">Tarefas</p>
                 <p>Total: {{ totalDeTarefas }}</p>
                 <p>Em progresso: {{ totalEmProgresso }}</p>
                 <p>Prontas: {{ totalProntas }}</p>
-                <p>Horas trabalhadas: {{ totalHorasTrabalhadas }}</p>
+                <p>Total minutos trabalhados: {{ totalHorasTrabalhadas }}</p>
             </div>
             <div class="flex flex-col w-[5%] h-full items-center justify-center gap-4">
                 <button @click="changeChart('bar')"
@@ -195,7 +196,7 @@ function renderChart(type) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Horas'
+                        text: 'Minutos'
                     }
                 }
             },
@@ -212,7 +213,7 @@ function renderChart(type) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Horas'
+                        text: 'Minutos'
                     }
                 }
             },
@@ -230,8 +231,8 @@ function renderChart(type) {
         data: {
             labels: tarefas.value.map(tarefa => tarefa.nome),
             datasets: [{
-                label: 'Horas por Tarefa',
-                data: tarefas.value.map(tarefa => tarefa.horas),
+                label: 'Minutos por Tarefa',
+                data: tarefas.value.map(tarefa => separaOsMinutos(tarefa)),
                 backgroundColor: tarefas.value.map((tarefa, index) => {
                     return tarefa.status === 'Pronta' ? 'rgba(54, 162, 235, 0.2)' : 'rgba(255, 99, 132, 0.2)';
                 }),
@@ -246,13 +247,26 @@ function renderChart(type) {
     );
 }
 
+function separaOsMinutos(tarefa){
+    const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
+    return minutos;
+}
+
+
+
 function changeChart(type) {
     renderChart(type)
 }
 let totalDeTarefas = computed(() => tarefas.value.length)
 let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em progresso').length)
 let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronta').length)
-let totalHorasTrabalhadas = computed(() => tarefas.value.reduce((acc, tarefa) => acc + tarefa.tempoAtuacao, 0))
+let totalHorasTrabalhadas = computed(() => {
+    return tarefas.value.reduce((acc, tarefa) => {
+        // Divida a string do tempo de atuação em horas, minutos e segundos
+        const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
+        return acc + minutos;
+    }, 0);
+});
 </script>
 <style scoped>
 #poligono {
