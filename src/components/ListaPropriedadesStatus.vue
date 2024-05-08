@@ -271,7 +271,7 @@ function verificaQualBackGround(nomeGuia) {
 
 
 function criaStatusPadrao() {
-    if (!projetoEdita.value && VueCookies.get("statusCookie") == null || VueCookies.get("statusCookie") == "undefined") {
+    if (projetoEdita.value == false && (VueCookies.get("statusCookie") == null || VueCookies.get("statusCookie") == "undefined")) {
         let statusPronto = {
             nome: "Pronto",
             cor: '38a31a'

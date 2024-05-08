@@ -288,12 +288,13 @@ async function buscaProjetoEditar() {
 }
 
 async function buscaListaResponsaveisBack(projeto) {
-    projeto.responsaveis.forEach((responsavelAtual) => {
-        let username = responsavelAtual.responsavel.username
+    projeto.responsaveis.forEach(async (responsavelAtual) => {
+        let responsavel= await conexao.buscarUm(responsavelAtual.idResponsavel,"/usuario")
+        let username = responsavel.username
         if (verificaTemEsseResponsavelProjeto(username)) {
             responsaveisProjeto.value.push(username)
             listaAuxResponsaveisProjeto.push(username)
-            adicionaResponsaveisProjeto(responsavelAtual.responsavel)
+            adicionaResponsaveisProjeto(responsavel)
         }
     })
 
@@ -350,7 +351,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
         listaAux.forEach(usuario => {
             if (usuario.username == usuarioRecebe) {
                 let responsavelBanco = {
-                    idResponsavel: usuario
+                    idResponsavel: usuario.id
                 }
                 listaResponsaveisBack.push(responsavelBanco);
                 return;
