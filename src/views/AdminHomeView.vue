@@ -56,10 +56,9 @@
                                         }}</p>
                                     <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p> -->
-                                    <div class="w-[25%] flex items-center justify-around h-10 bg-[#B488D7]">
-                                        <p>Concluir: </p>
-                                        <checkBox @click="deixaTarefaConcluida(tarefa)" :checked="tarefa.concluida"
-                                            v-model="tarefa.concluida"></checkBox>
+                                    <div class="w-[25%] flex items-center justify-center gap-10 h-10">
+                                        <RejectedIcon class="w-[25%] h-[85%]" @click="deixaTarefaConcluida(tarefa, 'Rejeitado')"></RejectedIcon>
+                                        <AprovedIcon class="w-[20%] h-[60%]" @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
                                     </div>
 
                                 </div>
@@ -118,6 +117,8 @@ let chart = null
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import checkBox from "../components/checkBox.vue";
+import AprovedIcon from "../assets/AprovadoAdm.vue";
+import RejectedIcon from "../assets/VoltaAdm.vue";
 
 import router from '@/router';
 
@@ -135,8 +136,8 @@ function redirecionamento(local, id) {
     router.push(local)
 }
 
-function deixaTarefaConcluida(tarefa) {
-    if (tarefa.concluida) {
+function deixaTarefaConcluida(tarefa, status) {
+    if (status == 'Rejeitado') {
         tarefa.concluida = false
         tarefa.status = {
             id: 2,
@@ -251,7 +252,7 @@ function changeChart(type) {
 let totalDeTarefas = computed(() => tarefas.value.length)
 let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em progresso').length)
 let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronta').length)
-let totalHorasTrabalhadas = computed(() => tarefas.value.reduce((acc, tarefa) => acc + tarefa.horas, 0))
+let totalHorasTrabalhadas = computed(() => tarefas.value.reduce((acc, tarefa) => acc + tarefa.tempoAtuacao, 0))
 </script>
 <style scoped>
 #poligono {

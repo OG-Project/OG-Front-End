@@ -722,7 +722,7 @@ async function criaTarefaNoConcluido() {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto").then(() => {
-    window.location.reload()
+    
   });
 }
 
@@ -973,6 +973,7 @@ onMounted(async () => {
     status: [],
     subtarefas: [],
     corDaTarefa: "ffffff",
+    tempoAtuacao: "00:00:00"
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
