@@ -39,7 +39,6 @@
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
 
-            <historicoPopUp></historicoPopUp>
         </div>
     </div>
 
