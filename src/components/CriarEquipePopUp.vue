@@ -11,77 +11,73 @@
                     <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
                         alt="Imagem Selecionada">
                 </div>
-                <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
-                    :largura="larguraInput()" conteudoInput="Nome da Equipe" v-model="nome"
-                    @updateModelValue="(e) => { nome = e }"></Input>
-            </div>
-            <div class=" grid-template  flex w-full">
-                <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e) => { usuarioConvidado = e }"
-                    styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                    icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
-                    v-model="usuarioConvidado"></Input>
-            </div>
-            <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
-                <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
-                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
-            </div>
-            <div v-else class="grid-template flex w-full mt-[1vh]">
-                <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px"
-                    tamanhoPadrao="mobilegrande" texto="convidar" tamanhoDaFonte="0.9rem"
-                    :funcaoClick="adicionarMembro"></Botao>
-            </div>
-            <div class=" grid-template flex w-full mt-[1vh]">
-                <textAreaPadrao
-                    class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center"
-                    height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"
-                    v-model="descricao"></textAreaPadrao>
-            </div>
-            <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
-                    class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg"
-                    caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg"
-                    :listaConvidados="listaUsuariosConvidados"></ListaConvidados>
-            </div>
-            <div v-if="screenWidth >= 620"
-                class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem"
-                    :funcaoClick="cadastrarEquipe">
-                </Botao>
-            </div>
-            <div v-else class="mt-10 ml-2">
-                <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem"
-                    :funcaoClick="cadastrarEquipe">
-                </Botao>
-            </div>
+                <div class=" grid-template  flex w-full mt-[1vh]  p-5">
+                    <div class="relative">
+                        <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
+                        <div class="rounded-full bg-[#D7D7D7] flex items-center justify-center 2xl:w-[70px] 2xl:h-[70px] xl:w-[70px] xl:h-[70px] lg:w-[65px] lg:h-[65px] md:w-[60px] md:h-[60px]">
+                            <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao" alt="Imagem Selecionada" > 
+                        </div>
+                    </div>
+                    <Input :class="{ 'computedClasses': someCondition }"  styleInput="input-transparente-claro" :largura="larguraInput()"  conteudoInput="Nome da Equipe" v-model="nome" @updateModelValue="(e)=> {nome=e}" ></Input> 
+                </div>
+                    <div class=" grid-template  flex w-full">
+                        <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e)=> {usuarioConvidado=e}" icon="../src/imagem-vetores/adicionarPessoa.svg" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"   conteudoInput="Adicionar Membro" v-model="usuarioConvidado"></Input>
+                </div>
+                <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
+                    <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                </div>
+                <div v-else class="grid-template flex w-full mt-[1vh]">
+                    <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilegrande" texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                </div>
+                <div class=" grid-template flex w-full mt-[1vh]">
+                    <textAreaPadrao class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center" height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)" v-model="descricao" @updateModelValue="(e)=> {descricao=e}" ></textAreaPadrao>
+                </div> 
+                <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
+                    <ListaConvidados :margin-right="marginRightConvidado()" texto="Convites" mostrar-select="true" class="listaConvidados"
+                     altura="40vh" :listaConvidados="membrosEquipe" @foi-clicado="removeListaMembrosConvidados" ></ListaConvidados>
+                </div>
+                <div v-if="screenWidth >= 620" class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+                        <Botao  preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                        </Botao>
+                </div>
+                <div v-else class="mt-10 ml-2" >
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem" :funcaoClick="cadastrarEquipe">
+                    </Botao>
+                </div> 
+                
+            </div>  
 
-        </div>
-    </fundoPopUp>
-</template>
-<script setup>
-import { ref, computed, onMounted } from 'vue';
-import fundoPopUp from './fundoPopUp.vue';
-import Input from './Input.vue';
-import textAreaPadrao from './textAreaPadrao.vue';
-import Botao from './Botao.vue';
-import ListaConvidados from './ListaConvidados.vue';
-import { conexaoBD } from "../stores/conexaoBD.js";
-import { criaEquipeStore } from "../stores/criarEquipe";
-import VueCookies from "vue-cookies";
+        </fundoPopUp>
+    <div v-if="mensagem != ''"  class="alert">
+        <alertTela   :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro"></alertTela>
+    </div>
+    
+    </template>
+    <script setup>
+    import { ref, computed, onMounted} from 'vue';
+    import fundoPopUp from './fundoPopUp.vue';
+    import Input from './Input.vue';
+    import textAreaPadrao from './textAreaPadrao.vue';
+    import Botao from './Botao.vue';
+    import ListaConvidados from './ListaConvidados.vue';
+    import { conexaoBD } from '../stores/conexaoBD';
+    import { criaEquipeStore } from "../stores/criarEquipe";
+    import VueCookies from "vue-cookies";
+    import alertTela from './alertTela.vue';
 
-const banco = conexaoBD();
-let nome = ref('');
-let descricao = ref('');
-let usuarioConvidado = ref('');
-let usuarioLogado = VueCookies.get("IdUsuarioCookie")
-let valorSelectSelecionado = ref("Edit")
-let membrosEquipe = ref([]);
-let listaUsuariosConvidados = ref([])
-let conexaoWeb = webSocketStore()
-const screenWidth = window.innerWidth;
-let usuarios = banco.procurar("/usuario");
-import { webSocketStore } from '../stores/webSocket.js'
 
-function limparMensagemErro() {
+    const banco = conexaoBD();
+    let nome = ref('');
+    let descricao = ref('');
+    let usuarioConvidado = ref('');
+    let usuarioLogado = VueCookies.get("IdUsuarioCookie")
+    let membrosEquipe = ref([]);
+    let conexaoWeb = webSocketStore()
+    const screenWidth = window.innerWidth;
+    let usuarios = banco.procurar("/usuario");
+    import { webSocketStore } from '../stores/webSocket.js'
+    
+    function limparMensagemErro() {
     mensagem.value = "";
 }
 let mensagem = ref("");
@@ -92,25 +88,35 @@ onMounted(() => {
     conexaoWeb.criaConexaoWebSocket()
 })
 
-function marginRightConvidado() {
-    if (screenWidth <= 620) {
-        return '7vw'
-    }
-    if (screenWidth <= 768) {
-        return '1vw';
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
-        return '4vw';
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
-        return '5vw';
-    } else if (screenWidth > 1920 && screenWidth < 2560) {
-        return '4vw';
-    } else if (screenWidth == 1920) {
-        return '2vw';
-    }
-    else if (screenWidth >= 2560) {
-        return '1.5vw';
-    }
+async function removeListaMembrosConvidados(membroEquipe){
+    const index = membrosEquipe.value.findIndex(convidado => convidado == membroEquipe);
+    console.log(index)
+      // Remova o convidado da lista de convidados se encontrado
+      if (index != -1) {
+        membrosEquipe.value.splice(index, 1);
+      }
 }
+
+    function marginRightConvidado() {
+        if(screenWidth <= 620){
+            return '7vw'
+        }
+        if (screenWidth <= 768) {
+            return '1vw';
+        } else if (screenWidth > 768 && screenWidth <= 1024) {
+            return '4vw';
+        } else if (screenWidth > 1024 && screenWidth < 1920) {
+            return '5vw';
+        } else if (screenWidth > 1920 && screenWidth < 2560) {
+            return '4vw';
+        } else if (screenWidth == 1920) {
+            return '2vw';
+        }
+        else if (screenWidth >= 2560) {
+            return '1.5vw';
+        }
+
+
 
 function valorSelect(valor, convidado) {
     valorSelectSelecionado.value = valor
@@ -264,13 +270,16 @@ async function cadastrarEquipe() {
     cria.criaEquipe(equipeCadastrada).then(response => {
         equipe = response.data
         enviaParaWebSocket(equipe, membrosEquipe.value);
-        colocaMembrosEquipe(equipe).then(res =>{
-           
-        })
-       
-    });
-
+        enviarFotoParaBackend(equipe);
+        colocaMembrosEquipe(equipe).then(res=>{
+        
+        }
+        window.location.reload();
+        });
+        
+        
 };
+
 
 async function colocaMembrosEquipe(equipe) {
     console.log(membrosEquipe.value)

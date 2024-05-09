@@ -27,6 +27,7 @@
                         <p class="descricao">{{ equipe.equipe.descricao }}</p>
                     </div>
                 </div>
+                
                 <div class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
                     @mouseover="expandirCard" @mouseleave="reduzirCard">
                     <maisIcon class="flex w-[8vw] h-[6vh] ">
@@ -37,7 +38,6 @@
             <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
-         
         </div>
     </div>
 
@@ -56,6 +56,7 @@ import { webSocketStore } from '../stores/webSocket.js'
 import maisIcon from "../imagem-vetores/maisIcon.vue";
 import engrenagem from "../imagem-vetores/engrenagem.vue";
 import equipe from "../imagem-vetores/equipe.vue";
+import historicoPopUp from "../components/HistoricoPopUp.vue";
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
