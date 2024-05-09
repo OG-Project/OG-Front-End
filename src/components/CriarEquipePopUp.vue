@@ -265,7 +265,8 @@ async function cadastrarEquipe() {
         equipe = response.data
         enviaParaWebSocket(equipe, membrosEquipe.value);
         colocaMembrosEquipe(equipe).then(res =>{
-           
+        //    fechar popUp e envia um instance.emit para a 
+        // tela de equipe e na tela de equipe quando eu recebo esse emit atualiza a tela
         })
        
     });

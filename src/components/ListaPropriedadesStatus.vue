@@ -221,12 +221,10 @@ onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
     buscarStatusCookies();
-    
     buscandoPor();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
     tarefasAtribuidas = false
-    console.log(document.documentElement.style.getPropertyValue('--hueRoxoEscuro'));
     buscaConfiguracaoesPadrao();
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
@@ -361,8 +359,9 @@ function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux1 = []
     listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
-        if (opcaoAtual.tipo != "" && opcaoAtual.tipo != undefined) {
-            if (opcaoAtual.tipo.toLowerCase() == buscarPor.toLowerCase()) {
+       
+        if (opcaoAtual.propriedade.tipo != "" && opcaoAtual.propriedade.tipo != undefined) {
+            if (opcaoAtual.propriedade.tipo.toLowerCase() == buscarPor.toLowerCase()) {
                 listaAux1.push(opcaoAtual)
             }
         }
@@ -450,7 +449,6 @@ function mandaProrpiedadesBack(listaPropriedadesRecebida) {
         return objetoModificado;
     });
     buscandoPor();
-    console.log(propriedadesParaback)
     instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
@@ -527,7 +525,6 @@ function atualizaStatus(statusRecebido) {
     });
 
     auxRenderizaStatusTela = statusAtulizados;
-    console.log(statusAtulizados)
     criaStatusCookies();
     mandaStatusBack();
 }
@@ -575,7 +572,6 @@ function buscaRascunhoStatus() {
         && VueCookies.get("statusCookie") != ""
         && VueCookies.get("statusCookie") != undefined) {
         listaStatus.value = VueCookies.get("statusCookie");
-        console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
         mandaStatusBack();
     }
@@ -598,7 +594,6 @@ function startTimer(objeto) {
     timeoutId = setTimeout(() => {
         if (listaStatus.value.includes(objeto)) {
             if (objeto.status.nome.length > 10) {
-                console.log('Hover ativado por 2 segundos');
                 objeto.verNomeCompleto = true;
             }
             return;
