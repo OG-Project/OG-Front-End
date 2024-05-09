@@ -136,13 +136,7 @@ function alterarInformacoes(){
         usuario.value.sobrenome=PerfilStore.sobrenome
         usuario.value.dataNascimento=PerfilStore.dataDeNascimento
         editar.value=!editar.value
-        // Revisar 
 
-        // editar.value=!editar.value
-        // if(editar.value){
-        //         PerfilStore.alteraInformacoes(PerfilStore.email)
-        // }
-        // console.log("altera")
 }
 onBeforeMount(async ()=>{
         // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE
