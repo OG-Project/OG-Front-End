@@ -46,6 +46,7 @@
                 </div> 
                 
             </div>  
+        </div>
 
         </fundoPopUp>
     <div v-if="mensagem != ''"  class="alert">
@@ -116,7 +117,7 @@ async function removeListaMembrosConvidados(membroEquipe){
             return '1.5vw';
         }
 
-
+    }
 
 function valorSelect(valor, convidado) {
     valorSelectSelecionado.value = valor
@@ -211,7 +212,7 @@ function larguraInput() {
 function larguraInputConvidado() {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 620) {
-        return '70'
+        return '70';
     }
     if (screenWidth <= 768) {
         return '34';
@@ -273,7 +274,7 @@ async function cadastrarEquipe() {
         enviarFotoParaBackend(equipe);
         colocaMembrosEquipe(equipe).then(res=>{
         
-        }
+        })
         window.location.reload();
         });
         
@@ -327,7 +328,6 @@ async function enviarFotoParaBackend(equipe) {
             console.error('Nenhuma imagem selecionada.');
             return;
         }
-
         const equipeId = equipe.id;
         await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
         console.log('Foto enviada com sucesso para o backend.');
@@ -335,9 +335,6 @@ async function enviarFotoParaBackend(equipe) {
         console.error('Erro ao enviar a foto para o backend:', error);
     }
 }
-
-
-
 </script>
 <style scoped>
 @import url(../assets/main.css);

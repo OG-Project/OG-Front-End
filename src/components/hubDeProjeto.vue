@@ -10,7 +10,7 @@
                 <div class="h-[45%]">
                     {{ projeto.nome }}
                 </div>
-                <div class="flex items-end" v-if="verificaSeEResponsavel() == true" @click="router.push('responsavel')">
+                <div class="flex items-end" v-if="verificaSeEResponsavel() == true" @click="router.push('/responsavel')">
                     <Dashboard></Dashboard>
                 </div>
             </div>
@@ -118,7 +118,9 @@ async function verificaSeEResponsavel(){
 
     if(responsaveis!=null){
         for (const responsavel of responsaveis) {
-            if (responsavel.responsavel.id == usuario) {
+            console.log(responsaveis.responsavelId);
+            console.log(usuario.id);
+            if (responsavel.responsavel.id == usuario.id) {
                 return true
             }
         }

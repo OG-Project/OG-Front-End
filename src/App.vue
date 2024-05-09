@@ -178,7 +178,7 @@ watch(() => route.path, () => {
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]l">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
