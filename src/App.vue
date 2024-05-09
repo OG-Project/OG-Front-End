@@ -60,7 +60,7 @@ onMounted(async () => {
 
     }else if(route.path=='/'){
       console.log(route.path);
-      tour.start()
+      // tour.start()
     }
 
   }
