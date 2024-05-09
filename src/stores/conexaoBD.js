@@ -29,7 +29,11 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.post("http://localhost:8082"+textoRequisicao+"/"+idEquipe,objeto,{withCredentials:true}).then(response => response)
       },
       atualizar(objeto,textoRequisicao){
-
+        console.log(textoRequisicao)
+        if(textoRequisicao="/usuario"){
+          const idUsuario = VueCookies.get("IdUsuarioCookie")
+        return axios.put("http://localhost:8082"+textoRequisicao+"/"+idUsuario,objeto,{withCredentials:true}).then(response => response)
+        }
         
         return axios.put("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
       },

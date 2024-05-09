@@ -679,6 +679,7 @@ async function criaTarefaNoConcluido() {
             texto: propsComValor.valor.valor
           }
           props.valor = valor
+         
         }
         else if (props.propriedade.tipo == "NUMERO") {
           let valor = {
@@ -686,6 +687,7 @@ async function criaTarefaNoConcluido() {
             numero: propsComValor.valor.valor
           }
           props.valor = valor
+        
         }
         else if (props.propriedade.tipo == "SELECAO") {
           let valor = {
@@ -693,24 +695,25 @@ async function criaTarefaNoConcluido() {
             selecao: propsComValor.valor.valor
           }
           props.valor = valor
+         
         }
         else if (props.propriedade.tipo == "DATA") {
           let valor = {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
+         
         }
       }
     }
   }
-  tarefaCriando.valorPropriedadeTarefas = tarefa.valorPropriedadeTarefas;
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
 
     comentario.push(comentarioFor);
   });
+  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
   tarefaCriando.indice = tarefa.indice;
@@ -723,7 +726,7 @@ async function criaTarefaNoConcluido() {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto").then(() => {
-    
+    window.location.reload()
   });
 }
 
@@ -916,11 +919,10 @@ let tarefa = ref({
 });
 
 async function puxaTarefaDaEdicao() {
-  console.log("Ta puxando");
+  
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   console.log(tarefaAux);
-  console.log("Ta puxando e entrou");
   tarefa.value.nome = tarefaAux.nome;
   tarefa.value.descricao = tarefaAux.descricao;
   for (const comentarioId of tarefaAux.comentarios) {
