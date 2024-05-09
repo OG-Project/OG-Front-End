@@ -309,7 +309,6 @@ async function colocaMembrosEquipe(equipe) {
         banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
     });
     await enviarFotoParaBackend(equipe);
-
 }
 
 function adicionaUsuarioLogado(equipe) {

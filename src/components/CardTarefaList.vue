@@ -8,7 +8,7 @@
       <draggable class=" truncate flex flex-col gap-3" v-model="projeto.tarefas" :animation="300" group="tarefa"
         item-key="tarefa.indice" @start="drag = true" @end="onDragEnd">
         <template #item="{ element: tarefa, index }">
-          <div class="flex flex-row truncate h-[6vh] bg-[#CCC9CE] py-[1%]" v-if="tarefa.nome != null"
+          <div class="flex flex-row truncate h-[6vh] bg-[#CCC9CE] py-[1%] select-none" v-if="tarefa.nome != null"
             @click="trocaRota(tarefa)">
 
             <div class="border-r-2 flex items-center justify-center w-[10vw] truncate h-full">
@@ -24,7 +24,7 @@
             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
               <div class="border-r-2 flex h-full items-center justify-center w-[10vw] truncate  h-full"
                 v-if="funcaoVerificaPropriedade(propriedade, tarefa)">
-                <div v-if="propriedade.valor.valor == null"
+                <div v-if="propriedade.valor.valor == null || propriedade.valor.valor == ''"
                   class="border-r-2 flex items-center justify-center w-[10vw]  h-full">
                   <p>Não Tem Valor</p>
                 </div>
