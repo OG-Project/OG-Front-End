@@ -35,7 +35,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.put("http://localhost:8082"+textoRequisicao+"/"+idUsuario,objeto,{withCredentials:true}).then(response => response)
         }
         
-        return axios.put("http://localhost:8082"+textoRequisicao,objeto,{withCredentials:true}).then(response => response)
+        return axios.put("http://localhost:8082"+textoRequisicao+'/'+VueCookies.get('IdUsuarioCookie'),objeto,{withCredentials:true}).then(response => response)
       },
       atualizaProjetoEquipe(objeto,idEquipe,textoRequisicao){
         

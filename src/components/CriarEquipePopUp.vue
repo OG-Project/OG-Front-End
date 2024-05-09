@@ -1,6 +1,6 @@
 <template>
     <fundoPopUp largura="" altura="95vh">
-        <div class="divGeral">
+        <div class="divGeral" id="step-6">
             <div class=" grid-template flex w-full">
                 <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe
                 </h1>
@@ -44,18 +44,19 @@
                     class="listaConvidados" altura="40vh" :listaConvidados="listaUsuariosConvidados"
                     @foi-clicado="removeListaMembrosConvidados"></ListaConvidados>
             </div>
-            <div v-if="screenWidth >= 620"
-                class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem"
-                    :funcaoClick="cadastrarEquipe">
-                </Botao>
+            <div id="step-7">
+                <div v-if="screenWidth >= 620"
+                    class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem"
+                        :funcaoClick="cadastrarEquipe">
+                    </Botao>
+                </div>
+                <div v-else class="mt-10 ml-2">
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem"
+                        :funcaoClick="cadastrarEquipe">
+                    </Botao>
+                </div>
             </div>
-            <div v-else class="mt-10 ml-2">
-                <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem"
-                    :funcaoClick="cadastrarEquipe">
-                </Botao>
-            </div>
-
         </div>
     </fundoPopUp>
     <div v-if="mensagem != ''" class="alert">
@@ -75,6 +76,7 @@ import { conexaoBD } from '../stores/conexaoBD';
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
 import alertTela from './alertTela.vue';
+
 
 
 const banco = conexaoBD();
@@ -294,6 +296,8 @@ async function cadastrarEquipe() {
         equipe = response.data
         enviaParaWebSocket(equipe, membrosEquipe.value);
         enviarFotoParaBackend(equipe);
+        colocaMembrosEquipe(equipe).then(res =>{
+        })
         adicionaUsuarioLogado(equipe)
     });
 };
