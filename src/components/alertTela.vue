@@ -37,11 +37,11 @@
         // Exibe o componente ao ser montado
         show.value = true;
         // Define um timeout para esconder o componente após 5 segundos
-        // setTimeout(() => {
-        //     show.value = false;
-        //     limparMensagem();
-        //      instance.emit('acabouOTempo')
-        // }, 5000);
+        setTimeout(() => {
+            show.value = false;
+            limparMensagem();
+             instance.emit('acabouOTempo')
+        }, 5000);
     });
 </script>
 
