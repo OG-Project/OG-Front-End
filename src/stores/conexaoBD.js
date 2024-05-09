@@ -104,8 +104,8 @@ export const conexaoBD = defineStore('conexaoBD', {
         const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
-          }
-        },{withCredentials:true}).then(response => {
+          },withCredentials:true
+        }).then(response => {
           return response.data;
         });
 
@@ -126,8 +126,8 @@ export const conexaoBD = defineStore('conexaoBD', {
             const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
-                }
-            },{withCredentials:true}).then(response =>{
+                },withCredentials:true
+            }).then(response =>{
               return response.data
             });
     
@@ -148,8 +148,8 @@ export const conexaoBD = defineStore('conexaoBD', {
 
                 headers: {
                     'Content-Type': 'multipart/form-data'
-                }
-            },{withCredentials:true});
+                },withCredentials:true
+            });
     
             // Retorne os dados da resposta
             return response.data;
