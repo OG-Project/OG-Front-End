@@ -7,14 +7,14 @@
           @updateModelValue="(e) => { tarefa.nome = e }"></Input>
       </div>
       <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
-        <TextAreaPadrao width="100%" height="16vh" :placeholder="$t('criaTarefa.task_description')" tamanho-da-fonte="1rem"
-          resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
+        <TextAreaPadrao width="100%" height="16vh" :placeholder="$t('criaTarefa.task_description')"
+          tamanho-da-fonte="1rem" resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[100%]">
         <div class="flex flex-col justify-center w-[30%]">
           <p>{{ $t('criaTarefa.properties') }}</p>
           <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
-             {{ $t('criaTarefa.create') }}
+            {{ $t('criaTarefa.create') }}
           </button>
         </div>
         <div class="flex flex-col justify-center w-[30%]">
@@ -68,12 +68,13 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="22" :conteudoInput="$t('criaTarefa.property_name')" fontSize="1rem" altura="3.8" v-model="nomePropriedade"
-                  @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
+                <Input largura="22" :conteudoInput="$t('criaTarefa.property_name')" fontSize="1rem" altura="3.8"
+                  v-model="nomePropriedade" @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
               </div>
               <div class="pr-2">
-                <selectPadrao :placeholderSelect="$t('criaTarefa.type')" :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
-                largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
+                <selectPadrao :placeholderSelect="$t('criaTarefa.type')"
+                  :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
+                  largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
                 </selectPadrao>
               </div>
             </div>
@@ -99,11 +100,12 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <Input largura="22" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8" v-model="nomeSubtarefa"
-                  @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
+                <Input largura="22" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8"
+                  v-model="nomeSubtarefa" @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
               </div>
-              <selectPadrao :placeholderSelect="$t('criaTarefa.status')" :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8"
-                altura="3.8" fonteTamanho="0.8rem" v-model="statusSubtarefa" />
+              <selectPadrao :placeholderSelect="$t('criaTarefa.status')"
+                :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8" altura="3.8"
+                fonteTamanho="0.8rem" v-model="statusSubtarefa" />
             </div>
             <div class="flex felx-row justify-between">
               <div class="pl-2 pt-2 pb-2">
@@ -138,18 +140,21 @@
       </div>
       <div class="pl-12 mt-4">
         <div class="w-min h-min relative cursor-pointer">
-          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" :icon="iconAnexo" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno"
-            inverterCorIcon="sim"></Botao>
-          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer" @change="e => gerarArquivo(e)">
+          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" :icon="iconAnexo" tamanhoDaBorda="2px"
+            :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno" inverterCorIcon="sim"></Botao>
+          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
+            @change="e => gerarArquivo(e)">
         </div>
       </div>
       <div class="pl-12 mt-4">
-        <h1>{{$t('criaTarefa.subtasks')}}</h1>
+        <h1>{{ $t('criaTarefa.subtasks') }}</h1>
         <div class="flex items-center">
           <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
             <div :style="barraPorcentagem"></div>
           </div>
-          <p class="pl-4">{{$t('criaTarefa.completed_tasks',{ porcentagem: porcentagemDeTarefasConcluidas.toFixed(2) })}}%</p>
+          <p class="pl-4">{{ $t('criaTarefa.completed_tasks', {
+          porcentagem: porcentagemDeTarefasConcluidas.toFixed(2)
+        }) }}%</p>
         </div>
       </div>
       <!-- Sub Tarefa -->
@@ -184,15 +189,15 @@
           <div class="w-[70%] border-2 mt-4 mb-4 shadow-lg min-h-[10vh] flex">
             <img v-if="usuarioCookies.foto.tipo != null" class="shadow-2xl h-[7vw] w-[7vw] mt-4 mr-4 ml-4 rounded-full"
               :src="'data:' +
-            usuarioCookies.foto.tipo +
-            ';base64,' +
-            usuarioCookies.foto.dados
-            " />
+          usuarioCookies.foto.tipo +
+          ';base64,' +
+          usuarioCookies.foto.dados
+          " />
             <div class="pb-2 flex flex-col items-end w-[70%]">
               <TextAreaPadrao width="38vw" height="10vh" class="pt-6 pb-4" placeholder="Descrição da tarefa"
                 tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
-              <Botao :texto="$t('criaTarefa.send')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
-                :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
+              <Botao :texto="$t('criaTarefa.send')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
+                :funcaoClick="enviaComentario" :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
           </div>
         </div>
@@ -211,31 +216,31 @@
               </div>
               <div class="flex w-[100%] mb-6">
                 <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-            " class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
+          " class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
                   </p>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor.username === usuarioCookies.username
-            ">
+          comentario.autor.username === usuarioCookies.username
+          ">
                     <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" placeholder="Descrição da tarefa"
                       tamanho-da-fonte="1rem" resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                   </div>
                   <div v-if="!comentarioSendoEditado ||
-            comentario.autor.username != usuarioCookies.username
-            ">
+          comentario.autor.username != usuarioCookies.username
+          ">
                     <p class="pt-4 pb-4 pr-4 break-all">
                       {{ comentario.conteudo }}
                     </p>
                   </div>
 
                   <div v-if="comentarioSendoEditado &&
-            comentario.autor.username === usuarioCookies.username
-            ">
-                    <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="editarComentario"
-                      :parametrosFuncao="comentario"></Botao>
+          comentario.autor.username === usuarioCookies.username
+          ">
+                    <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
+                      :funcaoClick="editarComentario" :parametrosFuncao="comentario"></Botao>
                   </div>
                 </div>
               </div>
@@ -249,7 +254,7 @@
       <div class="w-[95%] h-[80vh] shadow-xl border-2">
         <div class="flex justify-around h-[4%]">
           <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%;">
-            {{  $t('criaTarefa.properties')  }}
+            {{ $t('criaTarefa.properties') }}
           </button>
           <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%;">
             {{ $t('criaTarefa.status') }}
@@ -257,22 +262,20 @@
           <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroPropriedade">
               <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
-              <option>{{ $t('criaTarefa.Texto')}}</option>
-              <option>{{$t('criaTarefa.Data')}}</option>
-              <option>{{$t('criaTarefa.Numero')}}</option>
-              <option>{{$t('criaTarefa.Seleção')}}</option>
+              <option>{{ $t('criaTarefa.Texto') }}</option>
+              <option>{{ $t('criaTarefa.Data') }}</option>
+              <option>{{ $t('criaTarefa.Numero') }}</option>
+              <option>{{ $t('criaTarefa.Seleção') }}</option>
             </select>
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
             <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
-              <option value="Ordenar Por">{{$t('criaTarefa.sort_by')}}</option>
+              <option value="Ordenar Por">{{ $t('criaTarefa.sort_by') }}</option>
               <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
               <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
             </select>
           </div>
         </div>
-        </div>
-
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
           <div v-for="propriedade in listaFiltradaPropriedades"
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
@@ -337,7 +340,8 @@
             class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
             <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
               <div class="w-[35%] flex gap-2 items-center pl-4">
-                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)" tipo="radio">
+                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)"
+                  tipo="radio">
                 </CheckBox>
                 <p class="break-all">{{ statsAdd.nome }}</p>
               </div>
@@ -349,11 +353,14 @@
           </div>
         </div>
       </div>
-      <div class="fixed bottom-24 right-4 pt-8">
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
-          tamanhoDaFonte="1.5rem"></Botao>
-      </div>
     </div>
+
+
+    <div class="fixed bottom-24 right-4 pt-8">
+      <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
+        tamanhoDaFonte="1.5rem"></Botao>
+    </div>
+  </div>
 </template>
 <script setup>
 import { format } from "date-fns";
@@ -579,8 +586,8 @@ async function criaTarefaNoConcluido() {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto").then(() => {
-        window.location.reload()
-    });
+    window.location.reload()
+  });
 }
 
 //Função que deleta status
@@ -862,7 +869,7 @@ function adicionaExcluiStatusNaTarefa(status) {
     }
   }
   else {
-      tarefa.value.status = status;
+    tarefa.value.status = status;
   }
   veSeOStatusTaNaTarefa(status)
 }
@@ -1060,33 +1067,33 @@ let opcaoEstaClicadaStatus = ref(false);
 //Função que troca qual é o display onde mostra os status e as propriedades que pode adicionar na tarefa
 
 function clicouOpcaoPropriedades() {
-    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
-    const opcaoStatus = document.getElementById('opcaoStatus');
+  const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+  const opcaoStatus = document.getElementById('opcaoStatus');
 
-    if (!opcaoEstaClicadaPropriedades.value) {
-        opcaoEstaClicadaPropriedades.value = true;
-        opcaoEstaClicadaStatus.value = false;
+  if (!opcaoEstaClicadaPropriedades.value) {
+    opcaoEstaClicadaPropriedades.value = true;
+    opcaoEstaClicadaStatus.value = false;
 
-        opcaoPropriedades.classList.add('opcaoClicada');
-        opcaoPropriedades.classList.remove('opcaoNaoClicada');
-        opcaoStatus.classList.add('opcaoNaoClicada');
-        opcaoStatus.classList.remove('opcaoClicada');
-    }
+    opcaoPropriedades.classList.add('opcaoClicada');
+    opcaoPropriedades.classList.remove('opcaoNaoClicada');
+    opcaoStatus.classList.add('opcaoNaoClicada');
+    opcaoStatus.classList.remove('opcaoClicada');
+  }
 }
 
 function clicouOpcaoStatus() {
-    const opcaoPropriedades = document.getElementById('opcaoPropriedades');
-    const opcaoStatus = document.getElementById('opcaoStatus');
+  const opcaoPropriedades = document.getElementById('opcaoPropriedades');
+  const opcaoStatus = document.getElementById('opcaoStatus');
 
-    if (!opcaoEstaClicadaStatus.value) {
-        opcaoEstaClicadaStatus.value = true;
-        opcaoEstaClicadaPropriedades.value = false;
+  if (!opcaoEstaClicadaStatus.value) {
+    opcaoEstaClicadaStatus.value = true;
+    opcaoEstaClicadaPropriedades.value = false;
 
-        opcaoStatus.classList.add('opcaoClicada');
-        opcaoStatus.classList.remove('opcaoNaoClicada');
-        opcaoPropriedades.classList.add('opcaoNaoClicada');
-        opcaoPropriedades.classList.remove('opcaoClicada');
-    }
+    opcaoStatus.classList.add('opcaoClicada');
+    opcaoStatus.classList.remove('opcaoNaoClicada');
+    opcaoPropriedades.classList.add('opcaoNaoClicada');
+    opcaoPropriedades.classList.remove('opcaoClicada');
+  }
 }
 </script>
 <style scoped>

@@ -1,6 +1,6 @@
 <template>
     <fundoPopUp largura="" altura="95vh">
-        <div class="divGeral">
+        <div class="divGeral" id="step-6">
             <div class=" grid-template flex w-full">
                 <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe
                 </h1>
@@ -8,8 +8,11 @@
             <div class=" grid-template  flex w-full mt-[1vh]  p-5">
                 <div class="relative">
                     <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
-                    <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
-                        alt="Imagem Selecionada">
+                    <div class="rounded-full bg-[#D7D7D7] flex items-center justify-center 2xl:w-[70px] 2xl:h-[70px] xl:w-[70px] xl:h-[70px] 
+                    lg:w-[65px] lg:h-[65px] md:w-[60px] md:h-[60px]">
+                        <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
+                            alt="Imagem Selecionada">
+                    </div>
                 </div>
                 <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
                     :largura="larguraInput()" conteudoInput="Nome da Equipe" v-model="nome"
@@ -38,22 +41,22 @@
             </div>
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
                 <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
-                    class="listaConvidados" altura="40vh" caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg"
-                    caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg"
-                    :listaConvidados="listaUsuariosConvidados"></ListaConvidados>
+                    class="listaConvidados" altura="40vh" :listaConvidados="listaUsuariosConvidados"
+                    @foi-clicado="removeListaMembrosConvidados"></ListaConvidados>
             </div>
-            <div v-if="screenWidth >= 620"
-                class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem"
-                    :funcaoClick="cadastrarEquipe">
-                </Botao>
+            <div id="step-7">
+                <div v-if="screenWidth >= 620"
+                    class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem"
+                        :funcaoClick="cadastrarEquipe">
+                    </Botao>
+                </div>
+                <div v-else class="mt-10 ml-2">
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem"
+                        :funcaoClick="cadastrarEquipe">
+                    </Botao>
+                </div>
             </div>
-            <div v-else class="mt-10 ml-2">
-                <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem"
-                    :funcaoClick="cadastrarEquipe">
-                </Botao>
-            </div>
-
         </div>
     </fundoPopUp>
     <div v-if="mensagem != ''" class="alert">
@@ -73,6 +76,7 @@ import { conexaoBD } from '../stores/conexaoBD';
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
 import alertTela from './alertTela.vue';
+
 
 
 const banco = conexaoBD();
@@ -99,12 +103,12 @@ onMounted(() => {
     conexaoWeb.criaConexaoWebSocket()
 })
 
-async function removeListaMembrosConvidados(membroEquipe) {
-    const index = membrosEquipe.value.findIndex(convidado => convidado == membroEquipe);
-    console.log(index)
+async function removeListaMembrosConvidados(usuarioConvidado) {
+    const index = listaUsuariosConvidados.value.findIndex(convidado => convidado == usuarioConvidado);
     // Remova o convidado da lista de convidados se encontrado
     if (index != -1) {
-        membrosEquipe.value.splice(index, 1);
+        listaUsuariosConvidados.value.splice(index, 1);
+        membrosEquipe.value.splice(index,1);
     }
 }
 
@@ -222,7 +226,7 @@ function larguraInput() {
 function larguraInputConvidado() {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 620) {
-        return '70'
+        return '70';
     }
     if (screenWidth <= 768) {
         return '34';
@@ -291,6 +295,9 @@ async function cadastrarEquipe() {
     cria.criaEquipe(equipeCadastrada).then(response => {
         equipe = response.data
         enviaParaWebSocket(equipe, membrosEquipe.value);
+        enviarFotoParaBackend(equipe);
+        colocaMembrosEquipe(equipe).then(res =>{
+        })
         adicionaUsuarioLogado(equipe)
     });
 };
@@ -302,7 +309,6 @@ async function colocaMembrosEquipe(equipe) {
         banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
     });
     await enviarFotoParaBackend(equipe);
-
 }
 
 function adicionaUsuarioLogado(equipe) {
@@ -344,7 +350,6 @@ async function enviarFotoParaBackend(equipe) {
             console.error('Nenhuma imagem selecionada.');
             return;
         }
-
         const equipeId = equipe.id;
         await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
         console.log('Foto enviada com sucesso para o backend.');
@@ -352,9 +357,6 @@ async function enviarFotoParaBackend(equipe) {
         console.error('Erro ao enviar a foto para o backend:', error);
     }
 }
-
-
-
 </script>
 <style scoped>
 @import url(../assets/main.css);

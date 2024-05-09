@@ -126,7 +126,13 @@ const router = createRouter({
     {
       path: '/projeto/responsavel',
       component: () => import('../views/AdminHomeView.vue')
-    }
+    },
+    // {
+    //   path: '/404',
+    //   name: 'notFound.index',
+    //   component: () => import( '../components/404.vue' ),
+    // },
+    // { path: '*', redirect: '/404' }
     // {
     //   path:'/perfil/:user',
     //   name:'PerfilUsuario',

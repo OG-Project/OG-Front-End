@@ -371,6 +371,7 @@ function teclado(){
     //  return props.fontSize;
     // }
 
+    
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-transparente-escuro" || props.styleInput=="input-transparente-escuro-grande" ){

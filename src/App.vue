@@ -7,11 +7,9 @@ import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
 import Navbar from '@/components/Navbar.vue';
 import { ref, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
 import router from "@/router";
-
 import { useDraggable } from '@vueuse/core'
 import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
 import listaProjetos from './components/listaProjetos.vue';
@@ -19,6 +17,8 @@ import kanbanProjetos from './components/kanbanProjetos.vue'
 import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
 import { conexaoBD } from "./stores/conexaoBD";
+import { useRoute } from 'vue-router';
+const route = useRoute()
 
 import tabBar from "./components/tabBar.vue";
 import NavBarMobile from "./components/NavBarMobile.vue";
@@ -30,6 +30,7 @@ const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
 webSocket.criaConexaoWebSocket();
+
 
 const funcaoPopUpPropriedade = funcaoPopUpStore();
 const funcaoPopUpProjeto = funcaoPopUpStore();
@@ -48,14 +49,22 @@ let url = window.location.href;
 let usuario = ref()
 let configuracao = ref()
 
-const route = useRoute();
-
 onMounted(async () => {
-  let root = document.documentElement.style
   usuario.value =
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
+  
+  if(route.path!='/login' ){
+    if(tour.isActive()){
+
+    }else if(route.path=='/'){
+      console.log(route.path);
+      // tour.start()
+    }
+
+  }
+  let root = document.documentElement.style
   configuracao.value = usuario.value.configuracao
   console.log(configuracao.value);
   perfil.isVlibras = configuracao.value.isLibras
@@ -75,25 +84,7 @@ onMounted(async () => {
     root.setProperty('--backgroundItemsClaros', '#363636')
   }
 
-
-  // perfil.isVoiceMaker=JSON.parse(VueCookies.get('isVoiceMaker'))
-  // perfil.isTecladoVirtual=JSON.parse(VueCookies.get('isTecladovirtual'))
-  // perfil.isTecladoVirtual)
-  // root.setProperty('--hueRoxo',JSON.parse(VueCookies.get('matizCor')))
-  // root.setProperty('--fonteCorpo',JSON.parse(VueCookies.get('fonteCorpo')))
-  // root.setProperty('--fonteTitulo',JSON.parse(VueCookies.get('fonteTitulo')))
-  // let tamanhoCorpo=JSON.parse(VueCookies.get('fonteCorpoTamanho'))
-  // let tamanhoTitulo=JSON.parse(VueCookies.get('fonteTituloTamanho'))
-  // root.setProperty('--fonteCorpoTamanho',tamanhoCorpo+'vh')
-  // root.setProperty('--fonteTituloTamanho',tamanhoTitulo+'vh')
-  // perfil.hue=JSON.parse(VueCookies.get('matizCor'))
-  // perfil.fonteTitulo= JSON.parse(VueCookies.get('fonteTitulo'))
-  // perfil.fonteCorpo=JSON.parse(VueCookies.get('fonteCorpo'))
-  // perfil.isVlibras=JSON.parse(VueCookies.get('isVlibras'))
 })
-
-
-
 
 function press(b) {
   let valorElemento = perfil.el.value
@@ -175,17 +166,220 @@ watch(() => route.path, () => {
     estaNoLogin.value = false
   }
 });
+import { inject } from 'vue'
+const tour = inject('tour')
+
+tour.addSteps([
+  {
+    id: 'step-1',
+    title: 'Home',
+    text: 'Aqui mostra suas atividades mais importantes',
+    attachTo: {
+      element: '#step-1',
+      on: 'top'
+    },
+    buttons: [
+      {
+        classes: 'button',
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          tour.next()
+          banco.atualizar(usuario.value,'/usuario')
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Finalizar',
+        action: ()=>{
+
+        }
+      }
+    ]
+
+  },
+  {
+    id: 'step-2',
+    title: 'Dashboard',
+    text: 'Informações para gerenciar suas tarefas feitas e não feitas',
+    attachTo: {
+      element: '#step-2',
+      on: 'top'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      }
+    ]
+  },
+  {
+    id: 'step-3',
+    title: 'Menu',
+    text: 'Clique para acessar o fluxo do sistema',
+    attachTo: {
+      element: '#step-3',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      }
+    ]
+  },  
+  {
+    id: 'step-4',
+    title: 'Partes importantes',
+    text: 'Equipe, aqui pode visualizar suas equipes e cria-las. Clique para ver',
+    attachTo: {
+      element: '#step-4',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      }
+    ]
+  },
+  {
+    id: 'step-5',
+    title: 'Crie uma Equipe ',
+    text: 'Clique aqui para criar novas equipes ',
+    attachTo: {
+      element: '#step-5',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      }
+    ]
+  },
+  {
+    id: 'step-6',
+    text: 'Preencha os campos',
+    attachTo: {
+      element: '#step-6',
+      on: 'right'
+    },
+    buttons:[
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      }
+    ]
+  },
+  {
+    id: 'step-7',
+    text: 'Crie a Equipe',
+    attachTo: {
+      element: '#step-7',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      }
+    ]
+  },
+  {
+    id: 'step-8',
+    text: 'Entre na equipe criada',
+    attachTo: {
+      element: '#step-8',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      }
+    ]
+  }
+])
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
-    <RouterView />
+    <RouterView  />
   </div>
-  <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
-  <div ref="el" :style="style" style="position: fixed"
+    <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
+    <div ref="el" :style="style" style="position: fixed"
     class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">
@@ -203,6 +397,8 @@ watch(() => route.path, () => {
       </div>
     </div>
   </div>
-
+  
 </template>
-<style scoped></style>
+<style scoped>
+
+</style>
