@@ -74,11 +74,15 @@
                 :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
     </div>
-    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
+    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 gap-6">
+        <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita"></Botao>
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
         <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita"></Botao>
+
+            
     </div>
 </template>
 
@@ -165,6 +169,13 @@ function fazPlaceHolderDataFinalProjeto() {
         dataFinalFormatada.value = `${dia}/${mes}/${ano}`
         placeHolderDataFinalProjeto.value = "Data Final: " + dataFinalFormatada.value;
     }
+}
+
+
+function excluiProjeto(){
+    conexao.deletar(idProjeto,"/projeto").then(()=>{
+        router.push("/home")
+    })
 }
 
 function fazHoverPlaceHolder() {
@@ -288,12 +299,13 @@ async function buscaProjetoEditar() {
 }
 
 async function buscaListaResponsaveisBack(projeto) {
-    projeto.responsaveis.forEach((responsavelAtual) => {
-        let username = responsavelAtual.responsavel.username
+    projeto.responsaveis.forEach(async (responsavelAtual) => {
+        let responsavel= await conexao.buscarUm(responsavelAtual.idResponsavel,"/usuario")
+        let username = responsavel.username
         if (verificaTemEsseResponsavelProjeto(username)) {
             responsaveisProjeto.value.push(username)
             listaAuxResponsaveisProjeto.push(username)
-            adicionaResponsaveisProjeto(responsavelAtual.responsavel)
+            adicionaResponsaveisProjeto(responsavel)
         }
     })
 
@@ -350,7 +362,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
         listaAux.forEach(usuario => {
             if (usuario.username == usuarioRecebe) {
                 let responsavelBanco = {
-                    idResponsavel: usuario
+                    idResponsavel: usuario.id
                 }
                 listaResponsaveisBack.push(responsavelBanco);
                 return;
