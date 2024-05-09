@@ -1,7 +1,7 @@
 <template>
     <div @click="enviaCookie(tarefa)">
         <!-- Preset 1 Kanban -->
-        <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1" >
+        <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1">
             <div :style="tarefa1"> </div>
             <div class="w-[60%] m-[5%] font-Poppins font-medium text-[1vw]">
                 <p class="truncate text-[2vh] select-none">{{ props.tarefa.nome }}</p>
@@ -17,7 +17,7 @@
                 <div class="h-[50%] flex justify-center">
                     <div class="bola"></div>
                 </div>
-   
+
             </div>
             <!-- <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
                 <div v-if="tarefa.tarefa.id == props.tarefa.id" class="flex justify-end pl-[20%]">
@@ -26,7 +26,7 @@
                     </svg>
                 </div>
             </div> -->
-   
+
         </div>
         <!-- Preset 2 Tira -->
         <div :style="tira" v-if="preset == 2" id="draggableElement" draggable="true">
@@ -45,7 +45,7 @@
 <script setup>
 
 import { Tarefa } from '../models/Tarefa.js';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import tinycolor from "tinycolor2";
 import VueCookies from "vue-cookies";
 import router from '@/router'
@@ -58,26 +58,35 @@ const props = defineProps({
     altura: String,
     preset: String
 })
-let tarefa1
+
+const tarefa = ref(props.tarefa)
+
+watch(() => props.tarefa, (tarefa) => {
+    tira.value = {
+        width: "7vw",
+        height: "1vh",
+        backgroundColor: ("#" + tarefa.cor),
+        color: verificaCorTexto(tarefa),
+        display: "flex",
+        alignItems: "center",
+        padding: "1.4vh",
+        fontSize: "0.7vw"
+    }
+
+
+    tarefa1.value = {
+        backgroundColor: ("#" + tarefa.cor),
+        width: "6%",
+        height: "100%"
+    }
+})
+
+let tarefa1 = ref({})
 let kanban
 let hoverCard
-let tira
+let tira = ref({})
 let usuarioLogado = $cookies.get("usuarioCookie");
-tarefa1 = {
-    backgroundColor:("#"+ props.tarefa.cor),
-    width: "6%",
-    height: "100%"
-}
-tira = {
-    width: "7vw",
-    height: "1vh",
-    backgroundColor:("#"+ props.tarefa.cor),
-    color: verificaCorTexto(props.tarefa),
-    display: "flex",
-    alignItems: "center",
-    padding: "1.4vh",
-    fontSize: "0.7vw"
-}
+
 kanban = {
     width: "100%",
     height: "8vh",
@@ -85,6 +94,24 @@ kanban = {
     display: "flex",
 
 }
+
+tira.value = {
+        width: "7vw",
+        height: "1vh",
+        backgroundColor: ("#" + props.tarefa.cor),
+        color: verificaCorTexto(tarefa),
+        display: "flex",
+        alignItems: "center",
+        padding: "1.4vh",
+        fontSize: "0.7vw"
+    }
+
+
+    tarefa1.value = {
+        backgroundColor: ("#" + props.tarefa.cor),
+        width: "6%",
+        height: "100%"
+    }
 
 hoverCard = {
     width: "100%",
@@ -107,15 +134,15 @@ function verificaCorTexto(tarefa) {
         return "black"
     }
 }
-function enviaCookie(tarefa){
-    $cookies.set("IdTarefaCookies",tarefa.id)
+function enviaCookie(tarefa) {
+    $cookies.set("IdTarefaCookies", tarefa.id)
     router.push('/criaTarefa').then(() => {
         window.location.reload()
     })
 }
 
 </script>
-<style >
+<style>
 @import url(../assets/main.css);
 
 @layer components {
@@ -141,15 +168,16 @@ function enviaCookie(tarefa){
     }
 
     #draggableElement {
-  background-color: blue;
-  color: white;
-  transition: transform 0.3s ease; /* Adicionando uma transição para suavizar o movimento */
-}
+        background-color: blue;
+        color: white;
+        transition: transform 0.3s ease;
+        /* Adicionando uma transição para suavizar o movimento */
+    }
 
-#draggableElement:active {
-  transform: scale(1.1); /* Aumenta um pouco o tamanho quando arrastado */
-}
+    #draggableElement:active {
+        transform: scale(1.1);
+        /* Aumenta um pouco o tamanho quando arrastado */
+    }
 
 }
 </style>
-

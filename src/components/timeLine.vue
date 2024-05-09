@@ -79,16 +79,15 @@
                                         (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
                             {{ hora }}
                         </div>
-
-
                         <div
                             class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
                             <div v-for="(tarefa, indice) of diaSelecionado.listaDeTarefas.value" class=" flex flex-row "
                                 @dragover="retornaHoraEIndice(hora, indice)">
-                                <div v-for="propriedade of listaDePropriedades">
-                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
+                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                    <div v-if="propriedade.propriedade.tipo == 'DATA' && (format(new Date(propriedade.valor.valor), 'HH') + (':00')) == hora"
                                         class=" pl-[5%] pt-[5%]">
-                                        <div class="mr-2">
+                                        <div class="mr-2" v-bind="tarefaAnterior = tarefa"
+                                            @dragend="trocaHoraEIndice(tarefa, diaSelecionado, indiceNovo, propriedade, horaNova)">
                                             <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
                                             </cardTarefas>
                                         </div>
@@ -109,10 +108,12 @@
                             class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
                             <div v-for="(tarefa, indice) of diaSelecionado.listaDeTarefas.value" class="flex flex-row"
                                 @dragover="retornaHoraEIndice(hora, indice)">
-                                <div v-for="propriedade of listaDePropriedades">
-                                    <div v-if="(format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
+                                <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
+                                    <div v-if="propriedade.propriedade.tipo == 'DATA' && (format(new Date(propriedade.valor.valor), 'HH') + (getMinutes(new Date(propriedade.valor.valor)) >= 30 ? ':30' : ':00')) == hora"
                                         class="pl-[5%] pt-[5%]">
-                                        <div class="mr-2" @dragend="mudaHoraPropriedade(propriedade, tarefa)">
+                                        <div class="mr-2"
+                                            @dragend="trocaHoraEIndice(tarefa, horaNova, indiceNovo, propriedade, horaNova)"
+                                            v-bind="tarefaAnterior = tarefa">
                                             <cardTarefas :tarefa=tarefa altura="1vw" largura="7vw" preset="2">
                                             </cardTarefas>
                                         </div>
@@ -149,7 +150,7 @@ let visualizacao = ref()
 defineVizualizacao()
 let diaSelecionado =
 {
-    dia: ref(new Date(Date.now())),
+    dia: ref(funcao()),
     listaDeHoras: ref([]),
     listaDeTarefas: ref([])
 }
@@ -158,6 +159,7 @@ let diaNovo = ref()
 let calendario = ref();
 let abrePopup = ref(false)
 let api = conexaoBD()
+let tarefaAnterior = {}
 let index = 0;
 let indiceNovo = ref()
 let listaDePropriedades = ref([])
@@ -166,15 +168,17 @@ let listaDeTarefasTeste = []
 onMounted(async () => {
     projeto = await api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
     listaDeTarefasTeste = projeto.tarefas
-    getCalendario();
-    adicionaNaLista();
+    getCalendario()
+    adicionaNaLista().then(() => {
+        ordenaTarefas()
+    })
     defineListaDeHoras()
-
 })
 
 watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
     adicionaNaLista();
 });
+
 
 function retornaHoraEIndice(hora, indice) {
     horaNova = hora;
@@ -182,6 +186,14 @@ function retornaHoraEIndice(hora, indice) {
         indiceNovo = indice;
     }
 
+}
+
+function funcao() {
+    if (localStorage.getItem('diaSelecionado') != null) {
+        let data = new Date(localStorage.getItem('diaSelecionado'))
+        return data
+    }
+    return new Date(Date.now())
 }
 
 function gerarDiaSelecionado(dia) {
@@ -196,14 +208,14 @@ function gerarDiaSelecionado(dia) {
 }
 
 async function adicionaNaLista() {
-    let lista = diaSelecionado.listaDeTarefas.value
+    let lista = []
     listaDeTarefasTeste.forEach(tarefa => {
         tarefa.valorPropriedadeTarefas.forEach(propriedade => {
             if (propriedade.propriedade.tipo == "DATA") {
                 if (propriedade.valor.valor != "") {
                     const dataFormatada = format(new Date(propriedade.valor.valor), 'yyyy-MM-dd');
                     if (format(diaSelecionado.dia.value, 'yyyy-MM-dd') == dataFormatada) {
-                        if(!lista.includes(tarefa)){
+                        if (!lista.includes(tarefa)) {
                             lista.push(tarefa)
                         }
                         if (!listaDePropriedades.value.includes(propriedade)) {
@@ -214,25 +226,125 @@ async function adicionaNaLista() {
             }
         });
     });
-    console.log(lista);
     diaSelecionado.listaDeTarefas.value = lista;
-    console.log(diaSelecionado.listaDeTarefas.value)
     getCalendario()
 };
 
 function defineDiaSelecionado(dia) {
     diaSelecionado.dia.value = dia;
+    localStorage.setItem('diaSelecionado', dia)
     getCalendario();
 }
 
-async function trocaHoraEIndice(tarefa, hora, indice) {
-    console.log(dia.listaDeTarefas)
-    tarefa.propriedade.valor.valor = format(new Date(tarefa.propriedade.valor.valor), "yyyy-MM-dd") + "T" + new Date(tarefa.propriedade.valor.valor).toLocaleTimeString()
-    let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
-    dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
-    dia.listaDeTarefas.splice(indice, 0, tarefa)
-    console.log(dia.listaDeTarefas)
-    onDragEnd(dia.listaDeTarefas)
+async function trocaHoraEIndice(tarefa, diaSelecionado, indice, propriedade, hora) {
+    propriedade.valor.valor = format(new Date(propriedade.valor.valor), "yyyy-MM-dd") + "T" + hora
+    let indiceDaTarefaAtual = diaSelecionado.listaDeTarefas.value.indexOf(tarefa)
+    diaSelecionado.listaDeTarefas.value.splice(indiceDaTarefaAtual, 1)
+    diaSelecionado.listaDeTarefas.value.splice(indice, 0, tarefa)
+    onDragEnd(diaSelecionado.listaDeTarefas.value)
+}
+
+function onDragEnd(tarefas) {
+    console.log(tarefas)
+    let tarefaPut = {}
+    tarefas.forEach(async (tarefa, index) => {
+        if (tarefa.nome != null) {
+            tarefa.indice[2].indice = tarefas.indexOf(tarefa)
+            tarefaPut = {
+                id: tarefa.id,
+                nome: tarefa.nome,
+                descricao: tarefa.descricao,
+                status: tarefa.status,
+                cor: tarefa.cor,
+                status: tarefa.status,
+                valorPropriedadeTarefas: [...tarefa.valorPropriedadeTarefas],
+                comentarios: tarefa.comentarios,
+                arquivos: tarefa.arquivos,
+                indice: tarefa.indice,
+            }
+            for (let valorPropriedadeTarefaPut of tarefaPut.valorPropriedadeTarefas) {
+                if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
+                    valorPropriedadeTarefaPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        texto: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
+                    valorPropriedadeTarefaPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        data: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
+                    valorPropriedadeTarefaPutPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        numero: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
+                    valorPropriedadeTarefaPutPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        valores: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                }
+            }
+            console.log(tarefaPut)
+            await api.atualizar(tarefaPut, '/tarefa').then((response) => {
+                console.log(response)
+                tarefa = {
+                    id: response.data.id,
+                    nome: response.data.nome,
+                    descricao: response.data.descricao,
+                    status: response.data.status,
+                    cor: response.data.cor,
+                    status: response.data.status,
+                    valorPropriedadeTarefas: response.data.valorPropriedadeTarefas,
+                    comentarios: response.data.comentarios,
+                    arquivos: response.data.arquivos,
+                    indice: response.data.indice,
+                }
+                getCalendario()
+                // for (let valorPropriedadeTarefaPut of tarefa.valorPropriedadeTarefas) {
+                //   if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
+                //     valorPropriedadeTarefaPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.texto ?? null,
+                //     }
+                //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
+                //     valorPropriedadeTarefaPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.data ?? null,
+
+                //     }
+                //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
+                //     valorPropriedadeTarefaPutPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.numero ?? null,
+
+                //     }
+                //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
+                //     valorPropriedadeTarefaPutPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.valores ?? null,
+
+                //     }
+                //   }
+                // }
+            })
+        }
+    })
+}
+
+function ordenaTarefas() {
+    console.log(diaSelecionado);
+    if (diaSelecionado.listaDeTarefas.value != null) {
+        diaSelecionado.listaDeTarefas.value.sort((tarefa, tarefa2) => {
+            if (tarefa.nome != null && tarefa2.nome != null) {
+                return tarefa.indice[2].indice - tarefa2.indice[2].indice
+            }
+        })
+    }
 }
 
 async function mudaHoraPropriedade(propriedade, tarefa) {
@@ -266,9 +378,6 @@ async function mudaHoraPropriedade(propriedade, tarefa) {
             tarefaNova.valorPropriedadeTarefas.push(propriedadeNova)
         });
     }
-
-    console.log(tarefa)
-    console.log(await tarefaNova)
 }
 
 function defineHora() {
@@ -312,7 +421,6 @@ function getCalendario() {
         listaDeDias.push(dia1)
     });
     calendario.value = listaDeDias;
-
 }
 
 
