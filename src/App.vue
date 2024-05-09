@@ -55,15 +55,7 @@ onMounted(async () => {
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   
-  if(route.path!='/login' ){
-    if(tour.isActive()){
 
-    }else if(route.path=='/'){
-      console.log(route.path);
-      tour.start()
-    }
-
-  }
   let root = document.documentElement.style
   configuracao.value = usuario.value.configuracao
   console.log(configuracao.value);
@@ -84,6 +76,25 @@ onMounted(async () => {
     root.setProperty('--backgroundItemsClaros', '#363636')
   }
 
+})
+
+onUpdated(()=>{
+  if(route.path!='/login' ){
+   console.log('oi aqui');
+    if(usuario.value.configuracao.isTutorial){
+      if(usuario.value.configuracao.ultimoPassoId!='step-1'
+        && usuario.value.configuracao.ultimoPassoId!=null){
+          console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
+          tour.show(usuario.value.configuracao.ultimoPassoId,true)
+
+      }else{
+        console.log(route.path);
+        tour.start()
+      }
+    }else if(route.path=='/home'){
+    }
+
+  }
 })
 
 function press(b) {
@@ -167,6 +178,7 @@ watch(() => route.path, () => {
   }
 });
 import { inject } from 'vue'
+import { onUpdated } from "vue";
 const tour = inject('tour')
 
 tour.addSteps([
@@ -192,13 +204,6 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
-      },
-      {
-        secondary: true,
-        text: 'Finalizar',
-        action: ()=>{
-
-        }
       }
     ]
 
@@ -335,6 +340,7 @@ tour.addSteps([
         action: ()=>{
           usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
           banco.atualizar(usuario.value,'/usuario')
+          router.push
           tour.next()
         } 
       },
