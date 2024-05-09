@@ -105,8 +105,8 @@ export const conexaoBD = defineStore('conexaoBD', {
         const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
-          }
-        }, { withCredentials: true }).then(response => {
+          },withCredentials:true
+        }).then(response => {
           return response.data;
         });
 
@@ -122,19 +122,43 @@ export const conexaoBD = defineStore('conexaoBD', {
     async patchDeArquivosNaTarefa(arquivos, id) {
       try {
         // Deleta os arquivos existentes relacionados à tarefa
-        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`, { withCredentials: true });
+        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`,{withCredentials:true});
+    
+            const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },withCredentials:true
+            }).then(response =>{
+              return response.data
+            });
+    
+        } catch (error) {
+            console.error('Erro ao cadastrar a foto:', error);
+            throw error;
+        }
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
+      },
+      async cadastrarFotoUsuario(idUsuario, foto) {
+        try {
+            // Crie um FormData e adicione a imagem a ele
+            const formData = new FormData();
+            formData.append('foto', foto);
+    
+            // Faça a requisição PATCH para enviar a imagem
+            const response = await axios.patch(`http://localhost:8082/usuario/${idUsuario}`, formData, {
 
-        const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }, { withCredentials: true }).then(response => {
-          return response.data
-        });
-
-      } catch (error) {
-        console.error('Erro ao cadastrar a foto:', error);
-        throw error;
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },withCredentials:true
+            });
+    
+            // Retorne os dados da resposta
+            return response.data;
+        } catch (error) {
+            console.error('Erro ao cadastrar a foto:', error);
+            throw error;
+        }
+          return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       }
       return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
     },
