@@ -4,7 +4,7 @@
         <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1" >
             <div :style="tarefa1"> </div>
             <div class="w-[60%] m-[5%] font-Poppins font-medium text-[1vw]">
-                <p class="truncate text-[2vh]">{{ props.tarefa.nome }}</p>
+                <p class="truncate text-[2vh] select-none">{{ props.tarefa.nome }}</p>
             </div>
             <div class="teste2">
                 <div class="h-[50%] flex items-center">

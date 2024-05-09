@@ -235,7 +235,7 @@
         equipe = response.data;
         colocaMembrosEquipe(equipe);
         enviaParaWebSocket(equipe, membrosEquipe.value);
-        window.location.reload();
+        
         });
         
     };
