@@ -30,7 +30,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       atualizar(objeto,textoRequisicao){
         console.log(textoRequisicao)
-        if(textoRequisicao="/usuario"){
+        if(textoRequisicao=="/usuario"){
           const idUsuario = VueCookies.get("IdUsuarioCookie")
         return axios.put("http://localhost:8082"+textoRequisicao+"/"+idUsuario,objeto,{withCredentials:true}).then(response => response)
         }
@@ -103,9 +103,11 @@ export const conexaoBD = defineStore('conexaoBD', {
 
         const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        },{withCredentials:true}).then(response => {
+            'Content-Type': 'multipart/form-data',
+            
+          },
+          withCredentials:true
+        }).then(response => {
           return response.data;
         });
 
@@ -126,8 +128,9 @@ export const conexaoBD = defineStore('conexaoBD', {
             const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
-                }
-            },{withCredentials:true}).then(response =>{
+                },
+                withCredentials:true
+            }).then(response =>{
               return response.data
             });
     
@@ -144,12 +147,13 @@ export const conexaoBD = defineStore('conexaoBD', {
             formData.append('foto', foto);
     
             // Faça a requisição PATCH para enviar a imagem
-            const response = await axios.patch(`http://localhost:8082/usuario/${idUsuario}`, formData, {
-
+            const response = await axios.patch(`http://localhost:8082/usuario/${idUsuario}`, formData,{
+                
                 headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            },{withCredentials:true});
+                    'Content-Type': 'multipart/form-data',
+                },
+                withCredentials:true
+            });
     
             // Retorne os dados da resposta
             return response.data;
