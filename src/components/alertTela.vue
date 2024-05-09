@@ -2,9 +2,17 @@
     <div class="card" :class="{ 'fade-in': show, 'fade-out': !show }" id="messeger">
         <div class="flex justify-center">
             <div class="divCor" :style="{ backgroundColor: cor }"></div>
-            <errorIcon class="icon" v-if="cor == '#CD0000'"></errorIcon>
-            <sucessIcon class=" icon" v-if="cor == '#29CD00'"></sucessIcon>
-            <h2 class="card-titulo" :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
+            <div class="gap-[1%] flex flex-row">
+                <div class="icon">
+                    <errorIcon  v-if="cor == '#CD0000'"></errorIcon>
+                </div>
+                <div class=" icon">
+                    <sucessIcon  v-if="cor == '#29CD00'"></sucessIcon>
+                </div>
+                <div class="card-titulo" >
+                    <h2 :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -44,8 +52,7 @@
     }
 
     .icon{
-        @apply flex justify-center items-center mt-[1vh] ml-2 2xl:mt-[0.5vh] xl:mt-[1vh] lg:mt-[1vh] md:mt-[1vh]
-        2xl:mr-2 xl:mr-2 lg:mr-2 md:mr-2 2xl:ml-0 xl:ml-0 lg:ml-0 md:ml-0;
+        @apply flex justify-center items-center h-full;
     }
 
     .divCor {
@@ -54,7 +61,7 @@
     }
 
     .card-titulo {
-        @apply truncate flex 2xl:w-[13vw] xl:w-[18vw] lg:w-[18vw] md:w-[24vw] text-base font-semibold items-center justify-start mt-1 ml-3 mr-[3vw] md:text-sm  md:ml-0;
+        @apply truncate flex 2xl:w-[13vw] xl:w-[18vw] lg:w-[18vw] md:w-[24vw] text-base font-semibold items-center justify-start md:text-sm  md:ml-0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;

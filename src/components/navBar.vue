@@ -1,7 +1,7 @@
 <template>
   <div class="h-[8vh] w-full flex z-[99]">
     <div class="h-[8vh] w-[15%] flex gap-8">
-      <BarraLateral class=" cursor-pointer"></BarraLateral>
+      <BarraLateral id="step-3" class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
         <Botao preset="PadraoVazado" :texto="$t('navBar.botaoNovaTarefa')" tamanhoDaBorda="2px" :funcaoClick="redireciona"
           :parametrosFuncao="'/criaTarefa'">
@@ -42,6 +42,8 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
 import popUpNotificacao from "../components/popUpNotificacao.vue";
 import inputDePesquisa from "./inputDePesquisa.vue";
+import { inject } from "vue";
+const tour=inject('tour')
 
 const banco = conexaoBD();
 
@@ -55,6 +57,9 @@ onBeforeMount(() => {
 
 let lista = ref();
 
+// tour.addSteps([
+// ])
+// tour.cancel()
 function criaListaDePesquisa() {
   let listaDePesquisa = [];
   banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie")).then((usuario) => {

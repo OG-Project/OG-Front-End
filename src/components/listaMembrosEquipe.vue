@@ -8,7 +8,7 @@
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
-                    <sair v-if="membro.id != usuarioLogado"  class="imgIcon"  @click="removerMembro(membro)"></sair>
+                    <sair v-if="membro.id != usuarioLogado && verificaCriador(membro)"  class="imgIcon"  @click="removerMembro(membro)"></sair>
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                         <img class="imgDePerfil" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
@@ -36,7 +36,7 @@
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()"
                 texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh"
-                 :listaConvidados="membrosConvidados">
+                 :listaConvidados="membrosConvidados" @foi-clicado="removeListaMembrosConvidados">
             </ListaConvidados>
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
@@ -109,18 +109,48 @@ async function filtrarEquipe() {
 
 filtrarEquipe();
 
+function verificaCriador(membro){
+    let retorno = true;
+    membro.equipes.forEach((equipeUsuario) =>{
+        if(equipeUsuario.equipe.id == equipeSelecionada){
+            if(equipeUsuario.criador == true){
+                  console.error('Você não pode remover o criador'); 
+                  retorno = false;
+            }
+        } 
+    })
+    return retorno;
+    
+}
+
 async function removerMembro(membro) {
+
     if (membro && membro.id) {
+        console.log(verificaCriador(membro))
+        if(verificaCriador(membro) == true){
         if (membro.id === usuarioLogado.id) {
             console.error('Você não pode remover a si mesmo da equipe.');
             return; // Impede a remoção
-        }
+        }else if(verificaCriador(membro) == true){
         // Adicione o usuário à lista de usuários a serem removidos
         usuariosRemover.value.push(membro);
         listaMembros.value = listaMembros.value.filter(m => m.id !== membro.id);
-    } else {
+        }
+    }
+    } 
+    else {
         console.error('O membro ou sua propriedade id não estão definidos.');
     }
+    
+}
+
+async function removeListaMembrosConvidados(membroConvidado){
+    const index = membrosConvidados.value.findIndex(convidado => convidado == membroConvidado);
+    console.log(index)
+      // Remova o convidado da lista de convidados se encontrado
+      if (index != -1) {
+        membrosConvidados.value.splice(index, 1);
+      }
 }
 
 async function buscarMembrosEquipe() {

@@ -14,7 +14,7 @@ style="font-family: var(--fonteCorpo);">
         </div>
             <input 
             :type="tipo" 
-            :style="estilizaInput" 
+            :style="{ ...estilizaInput, 'max-width': '100%' }" 
             id="inputStyle" 
             :disabled=desabilitado 
             :value="modelValue"
@@ -371,6 +371,7 @@ function teclado(){
     //  return props.fontSize;
     // }
 
+    
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-transparente-escuro" || props.styleInput=="input-transparente-escuro-grande" ){
@@ -389,17 +390,7 @@ function teclado(){
     
 </script>
 <style lang="scss">
-    .styleInputPadraoIcon{
-       @apply bg-transparent
-        border-b-[var(--roxo)]
-        max-w-max
-        w-min
-        border-b-2 border-transparent 
-        items-center focus-within:outline-[var(--roxo)] 
-        focus-within:outline focus-within:outline-4 focus-within:border-none focus-within:rounded-sm;
-        display: grid;
-        grid-template-columns: 20% 80%;  
-    }
+ 
 
     .Invalido{
         @apply
@@ -464,12 +455,13 @@ function teclado(){
         pb-2
         px-2
         max-w-max
+        w-min
         border-b-4
         hover:rounded-[4px] hover:border-4
          focus-within:border-[var(--roxo)] 
         focus-within:border-4 focus-within:rounded-[4px];
         display: grid;
-        grid-template-columns: 10% 70% 10%;
+        grid-template-columns: 10% 90%;
         align-content: center;
     }
     .styleInputPadraoIcon:hover{

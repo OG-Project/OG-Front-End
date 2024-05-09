@@ -3,7 +3,7 @@
                 <div style="
                 font-family:var(--fonteTitulo);
                 font-size: var(--fonteTituloTamanho);">
-                        <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">Informações</h1>
+                        <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">{{ $t('informacoes.Informações') }}</h1>
                 </div>
                 <div style="
                 font-family: var(--fonteCorpo); 
@@ -11,10 +11,10 @@
                 class="flex justify-center w-full  sm:flex-wrap  gap-8">
                         <div class="flex flex-col 2xl:w-max md:w-[493px] sm:w-[493px] gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
-                                        <span class="">Nome</span>
+                                        <span class="">{{ $t('informacoes.Nome') }}</span>
                                         <Input 
                                         styleInput="input-transparente-claro" 
-                                        conteudoInput="Nome" 
+                                        :conteudoInput="$t('informacoes.Nome')" 
                                         v-model="nome"
                                         :desabilitado="!editar.valueOf()"
                                         tipo="obrigatorio"
@@ -25,11 +25,11 @@
                                         />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
-                                        <span class="">Username</span>
+                                        <span class="">{{ $t('informacoes.Username') }}</span>
                                         <Input 
 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Username"
+                                        :conteudoInput="$t('informacoes.Username')"
                                         :desabilitado="!editar.valueOf()" 
                                         v-model="PerfilStore.username" 
                                         tipo="obrigatorio" 
@@ -40,10 +40,10 @@
                                          />
                                 </div>
                                 <div class="flex items-center justify-between gap-5">
-                                        <span class="text-xl">E-mail</span>
+                                        <span class="text-xl">{{ $t('informacoes.E-mail') }}</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="E-mail"
+                                        :conteudoInput="$t('informacoes.E-mail')"
                                         :desabilitado="!editar.valueOf()" 
                                         v-model="PerfilStore.email" 
                                         tipo="obrigatorio"
@@ -57,10 +57,10 @@
                         
                         <div class="flex flex-col 2xl:w-max sm:w-[493px] gap-y-10">
                                 <div class="flex justify-between items-center gap-5">
-                                        <span class="">Sobrenome</span>
+                                        <span class="">{{ $t('informacoes.Sobrenome') }}</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Sobrenome"
+                                        :conteudoInput="$t('informacoes.Sobrenome')"
                                         :desabilitado="!editar.valueOf()"
                                         v-model="PerfilStore.sobrenome" 
                                         tipo="obrigatorio"
@@ -72,10 +72,10 @@
                                 </div>
                                 <!-- @updateModelValue -->
                                 <div class="flex justify-between items-center gap-5">
-                                        <span class="">Data de Nascimento</span>
+                                        <span class="">{{ $t('informacoes.Data de Nascimento') }}</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
-                                        conteudoInput="Data de Nascimento" 
+                                        :conteudoInput="$t('informacoes.Data de Nascimento')" 
                                         v-model="PerfilStore.dataDeNascimento" 
                                         tipo="date"
                                         :desabilitado="!editar.valueOf()"
@@ -93,13 +93,13 @@
                         <Botao v-if="!editar" 
                         :funcaoClick="alterarInformacoes" 
                         preset="PadraoRoxo" 
-                        texto="Editar E-mail" 
+                        :texto="$t('informacoes.Editar E-mail')" 
                         tamanhoDaBorda="2px" 
                         tamanhoDaFonte="2.0vh" />
                         <Botao v-else 
                         :funcaoClick="alterarInformacoes" 
                         preset="PadraoRoxo" 
-                        texto="Confirmar Edição" 
+                        :texto="$t('informacoes.Confirmar Edição')" 
                         tamanhoDaBorda="2px" 
                         tamanhoDaFonte="2.0vh" />
                 </div>
@@ -136,13 +136,7 @@ function alterarInformacoes(){
         usuario.value.sobrenome=PerfilStore.sobrenome
         usuario.value.dataNascimento=PerfilStore.dataDeNascimento
         editar.value=!editar.value
-        // Revisar 
 
-        // editar.value=!editar.value
-        // if(editar.value){
-        //         PerfilStore.alteraInformacoes(PerfilStore.email)
-        // }
-        // console.log("altera")
 }
 onBeforeMount(async ()=>{
         // usuarioCookie DE TESTE, DESCOMENTAR PARA SETAR NO COOKIE

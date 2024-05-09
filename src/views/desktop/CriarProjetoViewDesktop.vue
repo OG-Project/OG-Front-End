@@ -60,7 +60,7 @@
             <div class=" w-[96%] ">
                 <ListaConvidados altura="30vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
                     :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]"
-                    :caminho-da-imagem-icon=srcIconListaEquipes @foi-clicado="removeListaEquipeConvidadas">
+                     @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>
         </div>
@@ -74,11 +74,15 @@
                 :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
     </div>
-    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 ">
+    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 gap-6">
+        <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita"></Botao>
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
         <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita"></Botao>
+
+            
     </div>
 </template>
 
@@ -100,14 +104,15 @@ import Sair from "../../imagem-vetores/Sair.svg";
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
-import { format } from 'date-fns';
 import router from "@/router";
 import { webSocketStore } from '../../stores/webSocket';
+import { Usuario } from '../../models/usuario';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 var listaSelecao = ref([]);
+let idUsuario = VueCookies.get("IdUsuarioCookie")
 let nomeProjeto = ref("");
 let dataFinalProjeto = ref("");
 let descricaoProjeto = ref("");
@@ -164,6 +169,13 @@ function fazPlaceHolderDataFinalProjeto() {
         dataFinalFormatada.value = `${dia}/${mes}/${ano}`
         placeHolderDataFinalProjeto.value = "Data Final: " + dataFinalFormatada.value;
     }
+}
+
+
+function excluiProjeto(){
+    conexao.deletar(idProjeto,"/projeto").then(()=>{
+        router.push("/home")
+    })
 }
 
 function fazHoverPlaceHolder() {
@@ -228,7 +240,7 @@ function buscaProjetoCookies() {
     }
 }
 
-function buscaRascunhoCriacaoProjeto() {
+async function  buscaRascunhoCriacaoProjeto() {
     if (VueCookies.get("projetoCookie") != null
         && !projetoEdita.value
         && VueCookies.get("projetoCookie") != undefined
@@ -254,12 +266,18 @@ function buscaRascunhoCriacaoProjeto() {
         if (variavelCookieProjeto.responsaveis != []
             && variavelCookieProjeto.responsaveis != undefined
             && variavelCookieProjeto.responsaveis != "undefined"
-            && variavelCookieProjeto.responsaveis != null) {
+            && variavelCookieProjeto.responsaveis != null && variavelCookieProjeto.responsaveis.length != 0) {
+                console.log(variavelCookieProjeto.responsaveis);
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
+        }else{
+            let usuario= await conexao.buscarUm(idUsuario, "/usuario")
+            responsaveisProjeto.value.push(usuario.username)
+            listaAuxResponsaveisProjeto.push(usuario.username)
+            adicionaResponsaveisProjeto(usuario)
         }
     }
 }
@@ -281,12 +299,13 @@ async function buscaProjetoEditar() {
 }
 
 async function buscaListaResponsaveisBack(projeto) {
-    projeto.responsaveis.forEach((responsavelAtual) => {
-        let username = responsavelAtual.responsavel.username
+    projeto.responsaveis.forEach(async (responsavelAtual) => {
+        let responsavel= await conexao.buscarUm(responsavelAtual.idResponsavel,"/usuario")
+        let username = responsavel.username
         if (verificaTemEsseResponsavelProjeto(username)) {
             responsaveisProjeto.value.push(username)
             listaAuxResponsaveisProjeto.push(username)
-            adicionaResponsaveisProjeto(responsavelAtual.responsavel)
+            adicionaResponsaveisProjeto(responsavel)
         }
     })
 
@@ -338,15 +357,12 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 }
 
 async function adicionaResponsaveisProjeto(usuarioRecebe) {
-    console.log(usuarioRecebe)
     if (usuarioRecebe.id == undefined) {
         let listaAux = (await conexao.procurar('/usuario'))
         listaAux.forEach(usuario => {
             if (usuario.username == usuarioRecebe) {
                 let responsavelBanco = {
-                    responsavel: {
-                        id: usuario.id
-                    }
+                    idResponsavel: usuario.id
                 }
                 listaResponsaveisBack.push(responsavelBanco);
                 return;
@@ -355,9 +371,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 
     } else {
         let responsavelBanco = {
-            responsavel: {
-                id: usuarioRecebe.id
-            }
+            idResponsavel: usuarioRecebe.id
         }
         listaResponsaveisBack.push(responsavelBanco);
     }
@@ -367,24 +381,20 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-
+        
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
             router.push('/projeto').then(() => {
-        window.location.reload()
+       
     });
         restauraCookies();
-        
-
+        router.push('/projeto')
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
-        router.push('/projeto').then(() => {
-        window.location.reload()
-    });
     }
 
 }
@@ -487,7 +497,7 @@ async function removeResponsavel(responsavelRemover) {
 .gridTotal {
     display: grid;
     width: 100%;
-    height: 100%;
+    height: 90%;
     grid-template-columns: 41.175% 41.175% 17.65%;
     ;
 }

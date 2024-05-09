@@ -1,4 +1,3 @@
-
 <template>
     <div>
         <div class="flex justify-center mt-20 p-6 text-5xl">
@@ -27,7 +26,7 @@
                         <p class="descricao">{{ equipe.equipe.descricao }}</p>
                     </div>
                 </div>
-                <div class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
+                <div id="step-5" class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
                     @mouseover="expandirCard" @mouseleave="reduzirCard">
                     <maisIcon class="flex w-[8vw] h-[6vh] ">
                     </maisIcon>
@@ -37,8 +36,6 @@
             <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
-
-            
         </div>
     </div>
 
@@ -51,12 +48,43 @@ import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import editarEquipePopUp from "../components/editarEquipePopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
-import criarEquipePopUp from "../components/criarEquipePopUp.vue";
+import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
 import maisIcon from "../imagem-vetores/maisIcon.vue";
 import engrenagem from "../imagem-vetores/engrenagem.vue";
 import equipe from "../imagem-vetores/equipe.vue";
+import historicoPopUp from "../components/HistoricoPopUp.vue";
+
+import { inject } from "vue";
+const tour =inject('tour')
+// tour.show('step-5',true)
+// tour.addSteps([
+//   {
+//     id: 'step-1',
+//     title: 'teste',
+//     text: 'teste',
+//     attachTo: {
+//       element: '#step-1',
+//       on: 'top'
+//     },
+//     buttons: [
+//       {
+//         classes: 'button',
+//         text: 'Next',
+//         action: ()=>{
+//           tour.next()
+//         } 
+//       },
+//       {
+//         secondary: true,
+//         text: 'Skip',
+//         action: tour.complete
+//       }
+//     ]
+//   }
+// ])
+// tour.start()
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
@@ -65,14 +93,13 @@ const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 let usuarios;
 const funcaoPopUp = funcaoPopUpStore();
 funcaoPopUp.variavelModal = false;
-let variavelCria = false;
+let variavelCria = ref(false);
 let variavelEngrenagem = false;
 const nomeCompleto = ref('');
 const router = useRouter();
 
 onMounted(() => {
     listaUsuarios();
-
 })
 
  webSocket.url="ws://localhost:8085/og/webSocket/usuario/1"
@@ -98,22 +125,25 @@ function abrePaginaEquipe(equipe) {
     console.log(equipeSelecionada)
     VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
     router.push({ name: 'telaInicial' }).then(() => {
-        window.location.reload()
+        // windowtion.reload()
+        ///aqui
     });
 
 }
 
 async function abrePopUp(equipe, tipo) {
     if (tipo == 'engrenagem') {
-        variavelCria = false;
+        variavelCria.value = false;
         variavelEngrenagem = true;
         const equipeSelecionada = equipe;
         VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
         funcaoPopUp.abrePopUp()
     }else{
         variavelEngrenagem = false;
-        variavelCria = true;
+        variavelCria.value = true;
         funcaoPopUp.abrePopUp()
+        
+       
     }
 }
 

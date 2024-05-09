@@ -61,7 +61,6 @@
                 </div>
             </div>
         </div>
-
     </fundoPopUp>
 
     <fundoPopUp v-if="editando" largura="" :altura="tamanhoPopUp()">
@@ -158,12 +157,9 @@ function handleFileUpload(event) {
     // Criar um blob do arquivo
     const fileBlob = new Blob([file]);
 
-    // Agora você pode usar o fileName, fileType e fileBlob conforme necessário
-    console.log('Nome do arquivo:', fileName);
-    console.log('Tipo do arquivo:', fileType);
-    console.log('Blob do arquivo:', fileBlob);
-    // Armazena o arquivo na variável reativa
-    imagemSelecionada.value = file;
+ // Armazena o arquivo na variável reativa
+ imagemSelecionada.value = file;
+
 }
 
 // Computed property para retornar a URL da imagem selecionada
@@ -233,9 +229,9 @@ async function equipeDoUsuarioLogado (){
     });
 };
 
-async function filtrarEquipe() {
-    console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
-    equipeEditar.value = await (banco.buscarUm(equipeSelecionada, "/equipe"))
+async function filtrarEquipe(){
+    equipeEditar.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
+
 }
 filtrarEquipe();
 
@@ -357,7 +353,6 @@ async function atualizarEquipe() {
         console.log('Nenhuma imagem selecionada. A equipe será atualizada sem uma nova imagem.');
     }
 
- window.location.reload()
 }
 
 // Função para converter o arquivo para base64

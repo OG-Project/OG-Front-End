@@ -23,7 +23,7 @@
 
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>Responsavel:</b> {{ reponsavel }}
+                    <b>Responsavel:</b> {{ responsavel }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -74,7 +74,7 @@ const props = defineProps({
     descricao: {
         type: String,
     },
-    reponsavel: {
+    responsavel: {
         type: String,
     },
     feito: {

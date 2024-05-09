@@ -23,13 +23,25 @@ import VueDatePicker from '@vuepic/vue-datepicker';
 import VueSocketIO from 'vue-socket.io'
 import '@vuepic/vue-datepicker/dist/main.css'
 import VueCookies from "vue-cookies";
+import Shepherd from 'shepherd.js';
 
+// import VueShepherd from 'vue-shepherd/dist/vue-shepherd.ssr.js';
+// import VueShepherdPlugin from 'vue-shepherd';
+import 'shepherd.js/dist/css/shepherd.css';
 
+const tour = new Shepherd.Tour({
+    useModalOverlay: {enabled:true},
+    defaultStepOptions: {
+      cancelIcon:{enabled: true},
+      classes: '',
+      scrollTo: true
+    },
+  });
 
 const i18n = createI18n({
     legacy: false,
     locale: VueCookies.get('Idioma'),
-    fallbackLocale: 'en',
+    fallbackLocale: 'pt-BR',
     messages: {
         'pt-BR': Portugues,
         'en': Ingles,
@@ -42,9 +54,11 @@ const i18n = createI18n({
 
 
 const app = createApp(App)
+app.provide('tour',tour)
 export const pinia = createPinia()
 setActivePinia(pinia)
 app.use(VueColor)
+// app.use(VueShepherdPlugin)
 app.use(pinia)
 app.use(router)
 app.use(PrimeVue);
@@ -54,4 +68,5 @@ app.use(i18n);
 app.component('VueDatePicker', VueDatePicker);
 app.component('Button', Button);
 app.component('Calendar', Calendar);
+app.mixin(tour)
 app.mount('#app')

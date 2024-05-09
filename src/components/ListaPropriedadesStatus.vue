@@ -221,13 +221,16 @@ onMounted(() => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
     buscarStatusCookies();
-    
     buscandoPor();
     navegaPelaTabela("");
     funcaoPopUp.variavelModal = false
     tarefasAtribuidas = false
-    console.log(document.documentElement.style.getPropertyValue('--hueRoxo'));
     buscaConfiguracaoesPadrao();
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+
+    criaStatusPadrao()
 }
 )
 
@@ -239,6 +242,7 @@ async function buscaConfiguracaoesPadrao(){
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   configuracao.value = usuario.value.configuracao
   root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
   root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
@@ -257,24 +261,15 @@ function verificaStyleNavTabela(nomeGuia) {
 
 function verificaQualBackGround(nomeGuia) {
     if (nomeGuia == "propriedade" && opcaoSelecionadaNaTabela.value == "propriedade") {
-        return "var(--roxo)"
+        return "var(--roxoClaro)"
     } else if (nomeGuia == "status" && opcaoSelecionadaNaTabela.value == "status") {
-        return "var(--roxo)"
+        return "var(--roxoClaro)"
     }
 }
 
 
-
-onMounted(() => {
-    window.addEventListener('resize', () => {
-        screenWidth.value = window.innerWidth
-    })
-
-    criaStatusPadrao()
-})
-
 function criaStatusPadrao() {
-    if (!projetoEdita.value && VueCookies.get("statusCookie") == null) {
+    if (projetoEdita.value == false && (VueCookies.get("statusCookie") == null || VueCookies.get("statusCookie") == "undefined")) {
         let statusPronto = {
             nome: "Pronto",
             cor: '38a31a'
@@ -364,8 +359,9 @@ function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux1 = []
     listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
-        if (opcaoAtual.tipo != "" && opcaoAtual.tipo != undefined) {
-            if (opcaoAtual.tipo.toLowerCase() == buscarPor.toLowerCase()) {
+       
+        if (opcaoAtual.propriedade.tipo != "" && opcaoAtual.propriedade.tipo != undefined) {
+            if (opcaoAtual.propriedade.tipo.toLowerCase() == buscarPor.toLowerCase()) {
                 listaAux1.push(opcaoAtual)
             }
         }
@@ -453,7 +449,6 @@ function mandaProrpiedadesBack(listaPropriedadesRecebida) {
         return objetoModificado;
     });
     buscandoPor();
-    console.log(propriedadesParaback)
     instance.emit('mandaListaPropriedade', propriedadesParaback)
 }
 
@@ -530,7 +525,6 @@ function atualizaStatus(statusRecebido) {
     });
 
     auxRenderizaStatusTela = statusAtulizados;
-    console.log(statusAtulizados)
     criaStatusCookies();
     mandaStatusBack();
 }
@@ -578,7 +572,6 @@ function buscaRascunhoStatus() {
         && VueCookies.get("statusCookie") != ""
         && VueCookies.get("statusCookie") != undefined) {
         listaStatus.value = VueCookies.get("statusCookie");
-        console.log(VueCookies.get("statusCookie"))
         auxRenderizaStatusTela = listaStatus.value;
         mandaStatusBack();
     }
@@ -601,7 +594,6 @@ function startTimer(objeto) {
     timeoutId = setTimeout(() => {
         if (listaStatus.value.includes(objeto)) {
             if (objeto.status.nome.length > 10) {
-                console.log('Hover ativado por 2 segundos');
                 objeto.verNomeCompleto = true;
             }
             return;

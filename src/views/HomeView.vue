@@ -12,15 +12,18 @@
 import { ref, onMounted,watch } from 'vue'
 import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
+import router from '../router';
+
+// https://dontpad.com/02-05-2024gks
+// import { useShepherd } from 'vue-shepherd'
 
 const screenWidth = ref(window.innerWidth)
-let usuario=ref()
-let configuracao=ref()
 
 watch(() => window.innerWidth, () => {
   screenWidth.value = window.innerWidth
 })
 onMounted(() => {
+  
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
@@ -28,3 +31,8 @@ onMounted(() => {
 
 })
 </script>
+<style scoped>
+.button{
+  @apply hover:bg-[var(--roxo)] bg-[var(--roxo)];
+}
+</style>
