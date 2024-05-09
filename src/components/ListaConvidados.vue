@@ -11,10 +11,11 @@
         {{ console.log(convidado) }}
         <div class="w-full flex items-center justify-center mt-5 mb-2" v-for="convidado in listaConvidados" :key="convidado.name" :style="{'margin-left':marginLeft, 'margin-right': marginRight}">
              <!-- Renderiza as imagens apenas se houver usuários convidados -->
-        <template v-if="listaConvidados.length > 0 && convidado.foto!=null">
+        <template v-if="listaConvidados.length > 0 && convidado.foto != null">
           <img class="imgDePerfil" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`" :style="altDaImagemPerfil" />
           
         </template>
+        <userTodoPreto v-else class="imgPerfilPadrao"></userTodoPreto>
         <h2  class="nome-convidado w-[4vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1 truncate">{{ convidado.username == null ? convidado.nome : convidado.username  }}</h2>
         <template v-if="listaConvidados.length > 0">
           <sair class="imgIcon"  @click="$emit('foiClicado',convidado)"></sair>
@@ -40,6 +41,9 @@
 </template>
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
+import sair from '../imagem-vetores/Sair.vue'
+import userTodoPreto from '../imagem-vetores/userTodoPreto.vue'
+
 import { defineProps, onUpdated, ref } from 'vue';
 import { getCurrentInstance } from 'vue';
 const instance = getCurrentInstance();
@@ -72,6 +76,11 @@ const opcoesSelect = ['Edit', 'View'];
 
 const imagemIcon = {
   height: props.altDaImagemIcon,
+}
+
+const removerConvidado = (convidado) => {
+  // Emitir um evento para notificar o componente pai sobre a exclusão do convidado
+  emit('foiClicado', convidado);
 }
 </script>
 
@@ -106,6 +115,11 @@ const imagemIcon = {
         @apply rounded-full bg-cover bg-center flex justify-center  
         flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw]
         2xl:w-[60px] 2xl:h-[60px] xl:w-[60px] xl:h-[60px] lg:w-[55px] lg:h-[55px] md:w-[50px] md:h-[50px];
+    }
+    .imgPerfilPadrao{
+      @apply rounded-full bg-cover bg-center flex justify-center  
+        flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw]
+        2xl:w-[50px] 2xl:h-[50px] xl:w-[50px] xl:h-[50px] lg:w-[45px] lg:h-[45px] md:w-[40px] md:h-[40px];
     }
 
     .selectEdit {

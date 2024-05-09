@@ -34,7 +34,7 @@
       <!-- Pop-Up utilizado para criar status -->
       <div v-if="corSendoMudada">
         <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
-          <div class="animation">
+          <div class="animation bg-[(var(--backgorundItems)]">
             <div class="flex justify-start">
               <TrianguloStart></TrianguloStart>
             </div>
@@ -59,7 +59,8 @@
       <!-- Pop-araaaaa criar uma propriedade -->
 
       <div v-if="propriedadeSendoCriada">
-        <div v-if="propriedadeSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
+        <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
+          
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
@@ -92,8 +93,8 @@
       </div>
 
       <div v-if="subtarefaSendoCriada">
-        <div v-if="subtarefaSendoCriada" class="h-full flex flex-row pl-12 pt-6 pb-6">
-          <div class="animation">
+        <div v-if="subtarefaSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6">
+          <div class="animation bg-[(var(--backgorundItems)]">
             <div class="flex justify-start">
               <TrianguloStart></TrianguloStart>
             </div>
@@ -665,7 +666,7 @@ async function criaTarefaNoConcluido() {
     valorPropriedadeTarefas: [],
     dataCriacao: null,
     indice: [],
-    tempoAtuacao: 0
+    tempoAtuacao: "00:00:00"
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
@@ -678,6 +679,7 @@ async function criaTarefaNoConcluido() {
             texto: propsComValor.valor.valor
           }
           props.valor = valor
+         
         }
         else if (props.propriedade.tipo == "NUMERO") {
           let valor = {
@@ -685,6 +687,7 @@ async function criaTarefaNoConcluido() {
             numero: propsComValor.valor.valor
           }
           props.valor = valor
+        
         }
         else if (props.propriedade.tipo == "SELECAO") {
           let valor = {
@@ -692,31 +695,32 @@ async function criaTarefaNoConcluido() {
             selecao: propsComValor.valor.valor
           }
           props.valor = valor
+         
         }
         else if (props.propriedade.tipo == "DATA") {
           let valor = {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
+         
         }
       }
     }
   }
-  tarefaCriando.valorPropriedadeTarefas = tarefa.valorPropriedadeTarefas;
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
 
     comentario.push(comentarioFor);
   });
+  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
   tarefaCriando.indice = tarefa.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  tarefaCriando.tempoAtuacao = tarefa.tempoAtuacao;
+  tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
@@ -911,14 +915,14 @@ let tarefa = ref({
   status: [],
   subtarefas: [],
   corDaTarefa: "ffffff",
+  tempoAtuacao: "00:00:00"
 });
 
 async function puxaTarefaDaEdicao() {
-  console.log("Ta puxando");
+  
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   console.log(tarefaAux);
-  console.log("Ta puxando e entrou");
   tarefa.value.nome = tarefaAux.nome;
   tarefa.value.descricao = tarefaAux.descricao;
   for (const comentarioId of tarefaAux.comentarios) {
@@ -973,6 +977,7 @@ onMounted(async () => {
     status: [],
     subtarefas: [],
     corDaTarefa: "ffffff",
+    tempoAtuacao: "00:00:00"
   };
   const localStorageData = localStorage.getItem("TarefaNaoFinalizada");
   if (localStorageData) {
@@ -1362,7 +1367,7 @@ function clicouOpcaoStatus() {
 }
 
 .animation {
-  @apply w-[60%] bg-brancoNeve shadow-md flex justify-around flex-col;
+  @apply w-[60%] bg-[var(--backgorundItems)] shadow-md flex justify-around flex-col;
   animation: myAnim 0.15s ease 0s 1 normal none;
   /*isso é opcional */
 }

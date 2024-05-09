@@ -34,7 +34,7 @@
 
         </div>
         <div class="w-[100%]  mt-4  shadow-lg min-h-[50%] max-h-[100%] flex flex-col justify-end">
-            <div class=" w-full flex flex-row">
+            <div class=" w-full flex flex-row justify-around">
                 <img v-if="usuarioCookies != verificacao"
                     class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
             usuarioCookies.foto.tipo +

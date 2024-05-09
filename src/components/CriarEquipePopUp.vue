@@ -57,6 +57,11 @@
             </div>
         </div>
     </fundoPopUp>
+    <div v-if="mensagem != ''" class="alert">
+        <alertTela :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro">
+        </alertTela>
+    </div>
+
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue';
@@ -65,9 +70,11 @@ import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
 import Botao from './Botao.vue';
 import ListaConvidados from './ListaConvidados.vue';
-import { conexaoBD } from "../stores/conexaoBD.js";
+import { conexaoBD } from '../stores/conexaoBD';
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
+import alertTela from './alertTela.vue';
+
 
 
 const banco = conexaoBD();
@@ -94,6 +101,15 @@ onMounted(() => {
     conexaoWeb.criaConexaoWebSocket()
 })
 
+async function removeListaMembrosConvidados(membroEquipe) {
+    const index = membrosEquipe.value.findIndex(convidado => convidado == membroEquipe);
+    console.log(index)
+    // Remova o convidado da lista de convidados se encontrado
+    if (index != -1) {
+        membrosEquipe.value.splice(index, 1);
+    }
+}
+
 function marginRightConvidado() {
     if (screenWidth <= 620) {
         return '7vw'
@@ -112,6 +128,7 @@ function marginRightConvidado() {
     else if (screenWidth >= 2560) {
         return '1.5vw';
     }
+
 }
 
 function valorSelect(valor, convidado) {
@@ -225,19 +242,29 @@ function larguraInputConvidado() {
 
 async function listaUsuarios() {
     let listaUsuarios = await usuarios;
+    let usuarioCriador = await banco.buscarUm(usuarioLogado, "/usuario")
     listaUsuarios.forEach((usuario) => {
+
         if (usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email) {
-            if (!membrosEquipe.value.some((membro) => membro.usuario.username === usuario.username || membro.usuario.email === usuario.email)) {
-                let usuarioPermissao = {
-                    "usuario": usuario,
-                    "permissao": 1
+            let teste = membrosEquipe.value.some((membro) => (membro.usuario.username == usuario.username))
+            if (usuarioConvidado.value != usuarioCriador.username) {
+                if (!membrosEquipe.value.some((membro) => membro.usuario.username == usuario.username || membro.usuario.email == usuario.email)) {
+                    let usuarioPermissao = {
+                        "usuario": usuario,
+                        "permissao": 1
+                    }
+                    membrosEquipe.value.push(usuarioPermissao);
+                    listaUsuariosConvidados.value.push(usuario)
+                } else {
+                    mensagem.value = ""
+                    mensagemCor.value = ""
+                    mensagem.value = "membro já pertence à equipe.";
+                    mensagemCor.value = "#CD0000"
                 }
-                membrosEquipe.value.push(usuarioPermissao);
-                listaUsuariosConvidados.value.push(usuario)
             } else {
                 mensagem.value = ""
                 mensagemCor.value = ""
-                mensagem.value = "membro já pertence à equipe.";
+                mensagem.value = "Você já pertence à equipe.";
                 mensagemCor.value = "#CD0000"
             }
         }
@@ -253,9 +280,9 @@ async function cadastrarEquipe() {
     limparMensagemErro();
     if (!nome.value.trim()) {
         mensagem.value = ""
-    mensagemCor.value = ""
-    mensagem.value = "É obrigatório o nome da equipe";
-    mensagemCor.value = "#CD0000";
+        mensagemCor.value = ""
+        mensagem.value = "É obrigatório o nome da equipe";
+        mensagemCor.value = "#CD0000";
         return;
     }
 
@@ -269,10 +296,11 @@ async function cadastrarEquipe() {
         colocaMembrosEquipe(equipe).then(res =>{
             window.location.reload()
         })
-       
-    });
+        adicionaUsuarioLogado(equipe)
 
+    });
 };
+
 
 async function colocaMembrosEquipe(equipe) {
     console.log(membrosEquipe.value)
@@ -280,15 +308,17 @@ async function colocaMembrosEquipe(equipe) {
         banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
     });
     await enviarFotoParaBackend(equipe);
-    adicionaUsuarioLogado(ids, equipe)
+
 }
 
-function adicionaUsuarioLogado(ids, equipe) {
-    // Adicione automaticamente o usuário logado à equipe
+function adicionaUsuarioLogado(equipe) {
     const usuarioLogadoId = Number(usuarioLogado);
-    banco.adicionarUsuarios(usuarioLogadoId, equipe.id, 1, "/usuario/add");
-    banco.adicionarCriador(usuarioLogadoId,equipe.id)
-
+    banco.adicionarCriador(usuarioLogadoId, equipe.id).then(() => {
+        colocaMembrosEquipe(equipe).then(res => {
+            //    fechar popUp e envia um instance.emit para a 
+            // tela de equipe e na tela de equipe quando eu recebo esse emit atualiza a tela
+        })
+    })
 }
 
 async function enviaParaWebSocket(equipe, membrosConvidados) {
@@ -336,6 +366,10 @@ async function enviarFotoParaBackend(equipe) {
 @import url(../assets/main.css);
 
 @layer components {
+
+    .alert {
+        @apply absolute flex items-start justify-start 2xl:mt-[-25vh] 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
+    }
 
     .imagem-arredondada {
         border-radius: 50%;

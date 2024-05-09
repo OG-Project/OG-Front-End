@@ -29,6 +29,11 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.post("http://localhost:8082"+textoRequisicao+"/"+idEquipe,objeto,{withCredentials:true}).then(response => response)
       },
       atualizar(objeto,textoRequisicao){
+        console.log(textoRequisicao)
+        if(textoRequisicao="/usuario"){
+          const idUsuario = VueCookies.get("IdUsuarioCookie")
+        return axios.put("http://localhost:8082"+textoRequisicao+"/"+idUsuario,objeto,{withCredentials:true}).then(response => response)
+        }
         
         return axios.put("http://localhost:8082"+textoRequisicao+'/'+VueCookies.get('IdUsuarioCookie'),objeto,{withCredentials:true}).then(response => response)
       },
@@ -52,6 +57,9 @@ export const conexaoBD = defineStore('conexaoBD', {
           
         })
       },
+      async buscarHistorico(id, textoRequisicao){
+        return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`)).data)
+      },
       async buscarMembrosEquipe(equipeId,textoRequisicao){
           return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`,{withCredentials:true})).data)
       },
@@ -61,7 +69,6 @@ export const conexaoBD = defineStore('conexaoBD', {
           })
       },
       async buscarUm(id,textoRequisicao){
-
         return (await axios.get('http://localhost:8082'+textoRequisicao+'/'+id,{withCredentials:true}).then(response => response.data))
       },
       async buscarProjetosEquipe(equipeId, textoRequisicao){
@@ -74,8 +81,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       },
       async buscarTarefaProjeto(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`,{withCredentials:true})).data)
-
-
       },
     adicionarEquipe(equipeId,projetoId, textoRequisicao) {
       return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId,"",{withCredentials:true})
@@ -83,7 +88,6 @@ export const conexaoBD = defineStore('conexaoBD', {
     deletarEquipe(id, textoRequisicao) {
       return axios.delete('http://localhost:8082'+textoRequisicao+'/'+id,{withCredentials:true})    
     },
-
     async deletarTarefa(textoRequisicao, id) {
       return await axios.delete('http://localhost:8082'+textoRequisicao+'/'+id,{withCredentials:true}).then(response => {
       })
