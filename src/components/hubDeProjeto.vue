@@ -10,7 +10,7 @@
                 <div class="h-[45%]">
                     {{ projeto.nome }}
                 </div>
-                <div class="flex items-end" v-if="verificaSeEResponsavel() == true" @click="router.push('responsavel')">
+                <div class="flex items-end" v-if="verificaSeEResponsavel() == true" @click="router.push('/responsavel')">
                     <Dashboard></Dashboard>
                 </div>
             </div>

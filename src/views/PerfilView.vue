@@ -23,14 +23,14 @@
                >    
                     <img 
                     :src="Imagem"
-                    class="xl:w-[95%] 
+                    class="xl:w-[85%] 
                     hover:bg-slate-600 
                     sm:h-[30%] 
                     sm:w-[30%] 
                     md:w-[70%] 
                     md:h-[70%] 
                     rounded-full 
-                    xl:h-[95%]"
+                    xl:h-[85%]"
                     />
                     
                     
