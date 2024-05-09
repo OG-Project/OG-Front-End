@@ -14,9 +14,9 @@ export const criaEquipeStore = defineStore('criaEquipe',{
             return api.cadastrar(equipe,"/equipe");
         },
         
-        adicionaUsuarioAEquipe(userId, equipeId) {
+        adicionaUsuarioAEquipe(userId, equipeId, numeroPermissao) {
             let api = conexaoBD();
-            api.adicionaUsuarioAEquipe(userId,equipeId,"/usuario/add");   
+            api.adicionarUsuarios(userId,equipeId,numeroPermissao, "/usuario/add");   
             
         }
     }

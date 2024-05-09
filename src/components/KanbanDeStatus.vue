@@ -3,7 +3,7 @@
         <div v-for="propriedade of lista" class="w-auto flex h-full">
             <div :style="propriedade.style">
 
-                <div class="w-[80%] p-[1%] flex bg-white justify-center font-Poppins font-medium text-[1vw] rounded-md">
+                <div class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
                     <div class="w-[90%] flex justify-center">
                         {{ propriedade.propriedade.nome }}
                     </div>
@@ -121,13 +121,49 @@ function corDoTexto(status) {
 }
 
 function mudaStatus(propriedade) {
-    
+    let tarefaPut = {}
     if (!isFirstLoad.value) {
         propriedade.tarefas.forEach(async (tarefa, index) => {
             if (tarefa.nome != null) {
                 tarefa.status = propriedade.propriedade;
                 tarefa.indice[1].indice = propriedade.tarefas.indexOf(tarefa);
-                await api.atualizar(tarefa, '/tarefa')
+                for (const valorPropriedadeTarefa of tarefa.valorPropriedadeTarefas) {
+                    tarefaPut = {
+                        id: tarefa.id,
+                        nome: tarefa.nome,
+                        descricao: tarefa.descricao,
+                        status: tarefa.status,
+                        cor: tarefa.cor,
+                        status: tarefa.status,
+                        valorPropriedadeTarefa: tarefa.valorPropriedadeTarefa,
+                        comentarios: tarefa.comentarios,
+                        arquivos: tarefa.arquivos,
+                        indice: tarefa.indice,
+                    }
+                    if (valorPropriedadeTarefa.propriedade.tipo == "TEXTO") {
+                        tarefaPut.valorPropriedadeTarefa.valor = {
+                            id: valorPropriedadeTarefa.valor.id,
+                            texto: valorPropriedadeTarefa.valor.valor
+                        }
+                    } if (valorPropriedadeTarefa.propriedade.tipo == "DATA") {
+                        tarefaPut.valorPropriedadeTarefa.valor = {
+                            id: valorPropriedadeTarefa.valor.id,
+                            data: valorPropriedadeTarefa.valor.valor
+                        }
+                    } if (valorPropriedadeTarefa.propriedade.tipo == "NUMERO") {
+                        tarefaPut.valorPropriedadeTarefa.valor = {
+                            id: valorPropriedadeTarefa.valor.id,
+                            numero: valorPropriedadeTarefa.valor.valor
+                        }
+                    } if (valorPropriedadeTarefa.propriedade.tipo == "SELECAO") {
+                        tarefaPut.valorPropriedadeTarefa.valor = {
+                            id: valorPropriedadeTarefa.valor.id,
+                            valores: valorPropriedadeTarefa.valor.valor
+                        }
+                    }
+                }
+                await api.atualizar(tarefaPut, '/tarefa')
+
             }
         });
     }

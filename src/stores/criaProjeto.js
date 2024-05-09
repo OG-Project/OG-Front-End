@@ -26,11 +26,19 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       projetoCriado.statusList = status;
       projetoCriado.responsaveis = responsaveis;
       projetoCriado.dataFinal = dataFinal
+      if(VueCookies.get("idAuxEquipe") != null && VueCookies.get("idAuxEquipe") != undefined && VueCookies.get("idAuxEquipe") != ""){
+        api.cadastrarProjetoEquie(projetoCriado,VueCookies.get("idAuxEquipe") ,'/projeto').then((res) => {
+          projetoAux = res.data;
+          VueCookies.set("IdProjetoAtual", res.data.id)
+          this.enviaParaWebSocket(equipes, projetoAux)
+        })
+      }else{
       api.cadastrar(projetoCriado, '/projeto').then((res) => {
         projetoAux = res.data;
         VueCookies.set("IdProjetoAtual", res.data.id)
         this.enviaParaWebSocket(equipes, projetoAux)
       })
+    }
 
     },
     enviaParaWebSocket(equipesAux, projetoAux) {

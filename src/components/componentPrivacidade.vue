@@ -3,7 +3,7 @@
         <div>
             <h1 style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" 
             class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-                Privacidade
+            {{ $t('privacidade.Privacidade') }}
             </h1>
         </div>
         <div class="pl-32 items-center">
@@ -13,7 +13,7 @@
                     <div class="flex justify-between items-center gap-5">
                         <span 
                         class="text-xl">
-                        Permitir que visualizem seus projetos
+                        {{ $t('privacidade.Permitir que visualizem seus projetos') }}
                         </span>
                         <CheckBox 
                         :key="isVisualizaProjetos.valueOf()"
@@ -25,7 +25,7 @@
                     <div class="flex justify-between items-center gap-5">
                         <span 
                         class="text-xl">
-                        Permitir que visualizem seu email
+                        {{ $t('privacidade.Permitir que visualizem seu email') }}
                         </span>
                         <CheckBox 
                         :key="isVisualizaEmail.valueOf()"
@@ -37,7 +37,7 @@
                     <div class="flex justify-between items-center gap-5">
                         <span 
                         class="text-xl">
-                        Permitir que visualizem suas equipes
+                        {{ $t('privacidade.Permitir que visualizem suas equipes') }}
                         </span>
                         <CheckBox 
                         :key=" isVisualizaEquipes.valueOf()" 
@@ -49,7 +49,7 @@
                     <div class="flex justify-between items-center gap-5">
                         <span 
                         class="text-xl">
-                        Permitir que visualizem seu perfil
+                        {{ $t('privacidade.Permitir que visualizem seu perfil') }}
                         </span>
                         <CheckBox 
                         :key="isVisualizaPerfil.valueOf()"
@@ -58,7 +58,7 @@
                         el-id="visualizacaoPerfil" 
                         @envia-valor="visualizacaoPerfil($event)" />
                     </div>
-                    
+                    "permitir Notificação a fazer"
                 </div>
             </div>
         </div>

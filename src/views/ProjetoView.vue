@@ -1,7 +1,7 @@
 <template>
     <div class="w-full h-full flex flex-col items-center justify-end overflow-hidden">
         <hubDeProjeto @trocaValor="(event) => opcao = event" @atualizaPropriedadesVisiveis="atualizaValorDaLista($event)"></hubDeProjeto>
-        <div class="w-full h-[72%] flex justify-center items-end">
+        <div class="w-full h-[63vh] flex justify-center items-end">
             <div class="divMaior ">
                 <div v-if="defineOpcao(route.path, '/projeto/calendario')"
                     class="w-[100%] h-screen flex justify-center items-center">
@@ -10,7 +10,7 @@
                 <div v-if="defineOpcao(route.path, '/projeto/timeline')"
                     class="w-[100%] h-screen flex justify-center items-center">
                     <timeLine></timeLine>
-                </div>
+                </div> 
                 <div v-if="defineOpcao(route.path, '/projeto/kanban')"
                     class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto" >
                     <KanbanDeStatus></KanbanDeStatus>
@@ -127,10 +127,10 @@ async function atualizaProjetoBanco() {
     height: 100%;
     align-items: center;
     justify-content: center;
-    background-color: #FBFBFB;
+    background-color: var(--backgroundItems);
     clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
     position: relative;
-    border: 2px solid rgb(235, 235, 235);border-top: none;
+    border: 2px solid var(--backgroundItems);border-top: none;
 
 }
 </style>

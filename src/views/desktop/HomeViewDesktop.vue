@@ -33,12 +33,14 @@
     </div>
   </div>
   <PopUpTopicoPrincipaisHome v-if="funcaoPopUp.variavelModal && mostraTarefasPrincipais == true"
-  :nomeDoTopico="$t('home.main_projects')"></PopUpTopicoPrincipaisHome>
-  <PopUpTopicoDiaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoDia == true" :nomeDoTopico="$t('home.daily_projects')">
+    :nomeDoTopico="$t('home.main_projects')"></PopUpTopicoPrincipaisHome>
+  <PopUpTopicoDiaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoDia == true"
+    :nomeDoTopico="$t('home.daily_projects')">
   </PopUpTopicoDiaHome>
   <PopUpTopicoSemanaHome v-if="funcaoPopUp.variavelModal && mostraTarefasDaSemana == true"
-  :nomeDoTopico="$t('home.weekly_projects')"></PopUpTopicoSemanaHome>
-  <PopUpTopicoMesHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true" :nomeDoTopico="$t('home.monthly_projects')">
+    :nomeDoTopico="$t('home.weekly_projects')"></PopUpTopicoSemanaHome>
+  <PopUpTopicoMesHome v-if="funcaoPopUp.variavelModal && mostraTarefasDoMes == true"
+    :nomeDoTopico="$t('home.monthly_projects')">
   </PopUpTopicoMesHome>
 </template>
 
@@ -140,34 +142,30 @@ function enviaParaTarefasDoMes() {
   funcaoPopUp.abrePopUp();
 }
 
-const data = {
-  labels: ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"],
-  datasets: [
-    {
-      data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
-      backgroundColor: ["#428A6A", "#8A4242"],
-    },
-  ],
-};
-const config = {
-  type: "doughnut",
-  data: data,
-  options: {
-    borderWidth: 0,
-    responsive: true,
-    plugins: {
-      legend: {
-        position: "bottom",
-      },
-    },
-  },
-};
-
 onMounted(() => {
   verificaTarefasFeitas();
-});
-
-watch([quantidadeTarefasFeitas, quantidadeNaoTarefasFeitas], () => {
+  const data = {
+    labels: ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"],
+    datasets: [
+      {
+        data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
+        backgroundColor: ["#428A6A", "#8A4242"],
+      },
+    ],
+  };
+  const config = {
+    type: "doughnut",
+    data: data,
+    options: {
+      borderWidth: 0,
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+        },
+      },
+    },
+  };
   data.labels = ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"];
   data.datasets[0].data = [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value];
   new Chart(document.getElementById("tabela"), config);
