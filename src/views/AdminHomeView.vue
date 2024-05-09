@@ -12,30 +12,56 @@
             <div class="bg-[var(--backgroundItems)] ml-8 w-[90%] h-[92%] flex items-center justify-end"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
-                    <div class="flex gap-12 mt-6 flex-wrap justify-center w-[100%] text-md">
-                        <div class="flex gap-14 w-[90%] items-center justify-center">
-                            <p class="w-[16%] flex items-center">Nome da tarefa</p>
-                            <p class="w-[16%] flex items-center">Lider</p>
-                            <p class="w-[16%] flex items-center">Membros</p>
-                            <p class="w-[16%] flex items-center">Status</p>
-                            <p class="w-[16%] flex items-center">Tempo trabalhado</p>
-                            <p class="w-[16%] flex items-center">Entrega</p>
+                    <div class="flex gap-4 mt-6 flex-wrap justify-center w-[100%] text-md">
+                        <div class="flex gap-8 pb-8 w-[90%] items-center justify-center">
+                            <p class="w-[25%] flex items-center justify-center">Nome da tarefa</p>
+                            <!-- <p class="w-[25%] flex items-center justify-center">Lider</p> -->
+                            <!-- <p class="w-[25%] flex items-center justify-center">Membros</p> -->
+                            <p class="w-[25%] flex items-center justify-center">Status</p>
+                            <p class="w-[25%] flex items-center justify-center">Tempo trabalhado</p>
+                            <!-- <p class="w-[25%] flex items-center justify-center">Entrega</p> -->
+                            <p class="w-[25%] flex items-center justify-center">Aprovado</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
-                                <div class="flex gap-14">
-                                    <p class="w-[16%] truncate flex items-center justify-center h-10 bg-[#B488D7]">{{ tarefa.nome }}</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10" v-if="tarefa.lider">{{ tarefa.lider }}</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10" v-else>Não possui</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#8A59B1]" v-if="tarefa.membros">{{ tarefa.membros.length }}</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#8A59B1]" v-else>Não possui</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10" :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }" 
-                                    v-if="tarefa.status">{{tarefa.status.nome }}</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não possui</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-if="tarefa.horas">{{ tarefa.horas }}</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não possui</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#EF8F7A]" v-if="tarefa.diaCompleto">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy") }}</p>
-                                    <p class="w-[16%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não possui</p>
+                                <div class="flex gap-8">
+                                    {{ console.log(tarefa) }}
+                                    <p class="w-[25%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer"
+                                        @click="redirecionamento('/criaTarefa', tarefa.id)">{{ tarefa.nome }}</p>
+                                    <!-- <p class="w-[25%] flex items-center justify-center h-10" v-if="tarefa.lider"
+                                        :style="{ color: corDaFonte(tarefa.status.cor) }">
+                                        {{
+                            tarefa.lider }}</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10"
+                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não possui</p> -->
+                                    <!-- <p class="w-[25%] flex items-center justify-center h-10 bg-[#8A59B1]"
+                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-if="tarefa.membros">{{
+                            tarefa.membros.length }}</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#8A59B1]"
+                                        :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não
+                                        possui</p> -->
+
+                                    <p class="w-[25%] flex items-center justify-center h-10" v-if="tarefa.status"
+                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }">
+                                        {{ tarefa.status.nome }}</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                        possui</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-if="tarefa.tempoAtuacao">{{
+                            tarefa.tempoAtuacao }}</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                        possui</p>
+                                    <!-- <p class="w-[25%] flex items-center justify-center h-10 bg-[#EF8F7A]"
+                                        v-if="tarefa.diaCompleto">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy")
+                                        }}</p>
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                        possui</p> -->
+                                    <div class="w-[25%] flex items-center justify-center gap-10 h-10">
+                                        <RejectedIcon class="w-[25%] h-[85%]"
+                                            @click="deixaTarefaConcluida(tarefa, 'Rejeitado')"></RejectedIcon>
+                                        <AprovedIcon class="w-[20%] h-[60%]"
+                                            @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -43,13 +69,13 @@
                 </div>
             </div>
         </div>
-        <div class="flex items-center relative w-full gap-4 justify-center mt-16 h-[38%]">
-            <div class="flex pl-12 flex-col justify-center w-[15%] h-[85%] border-r-2 border-black">
+        <div class="flex relative w-full gap-4 pl-24 mt-16 h-[38%]">
+            <div class="flex pl-12 flex-col justify-center w-[22%] h-[85%] border-r-2 border-black">
                 <p class="text-2xl">Tarefas</p>
                 <p>Total: {{ totalDeTarefas }}</p>
                 <p>Em progresso: {{ totalEmProgresso }}</p>
                 <p>Prontas: {{ totalProntas }}</p>
-                <p>Horas trabalhadas: {{ totalHorasTrabalhadas }}</p>
+                <p>Total minutos trabalhados: {{ totalHorasTrabalhadas }}</p>
             </div>
             <div class="flex flex-col w-[5%] h-full items-center justify-center gap-4">
                 <button @click="changeChart('bar')"
@@ -91,12 +117,45 @@ import Chart from 'chart.js/auto'
 let chart = null
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
+import checkBox from "../components/checkBox.vue";
+import AprovedIcon from "../assets/AprovadoAdm.vue";
+import RejectedIcon from "../assets/VoltaAdm.vue";
+
+import router from '@/router';
 
 import tinycolor from "tinycolor2";
+import CheckBox from "../components/checkBox.vue";
 
 function corDaFonte(backgroundColor) {
-  const isLight = tinycolor(backgroundColor).isLight();
-  return isLight ? "#000" : "#fff";
+    const isLight = tinycolor(backgroundColor).isLight();
+    return isLight ? "#000" : "#fff";
+}
+
+function redirecionamento(local, id) {
+    localStorage.removeItem('TarefaNaoFinalizada')
+    VueCookies.set('IdTarefaCookies', id, 100000000)
+    router.push(local)
+}
+
+function deixaTarefaConcluida(tarefa, status) {
+    if (status == 'Rejeitado') {
+        tarefa.concluida = false
+        tarefa.status = {
+            id: 2,
+            nome: "Em Progresso",
+            cor: "17179c"
+        }
+        banco.atualizar(tarefa, "/tarefa")
+    }
+    else {
+        tarefa.concluida = true
+        tarefa.status = {
+            id: 1,
+            nome: 'Pronto',
+            cor: '38a31a'
+        }
+        banco.atualizar(tarefa, "/tarefa")
+    }
 }
 
 const banco = conexaoBD();
@@ -105,6 +164,11 @@ let projeto = ref({})
 
 async function pegaTarefasDoProjeto() {
     banco.buscarTarefaProjeto(VueCookies.get('IdProjetoAtual'), '/projeto').then((projeto) => {
+        projeto.tarefas.forEach(tarefa => {
+            if (tarefa.nome == null) {
+                tarefa.nome = "Tarefa sem nome"
+            }
+        });
         projeto.value = projeto
         tarefas.value = projeto.tarefas
         console.log(tarefas.value);
@@ -132,7 +196,7 @@ function renderChart(type) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Horas'
+                        text: 'Minutos'
                     }
                 }
             },
@@ -149,7 +213,7 @@ function renderChart(type) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Horas'
+                        text: 'Minutos'
                     }
                 }
             },
@@ -167,8 +231,8 @@ function renderChart(type) {
         data: {
             labels: tarefas.value.map(tarefa => tarefa.nome),
             datasets: [{
-                label: 'Horas por Tarefa',
-                data: tarefas.value.map(tarefa => tarefa.horas),
+                label: 'Minutos por Tarefa',
+                data: tarefas.value.map(tarefa => separaOsMinutos(tarefa)),
                 backgroundColor: tarefas.value.map((tarefa, index) => {
                     return tarefa.status === 'Pronta' ? 'rgba(54, 162, 235, 0.2)' : 'rgba(255, 99, 132, 0.2)';
                 }),
@@ -183,30 +247,44 @@ function renderChart(type) {
     );
 }
 
+function separaOsMinutos(tarefa){
+    const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
+    return minutos;
+}
+
+
+
 function changeChart(type) {
     renderChart(type)
 }
 let totalDeTarefas = computed(() => tarefas.value.length)
 let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em progresso').length)
 let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronta').length)
-let totalHorasTrabalhadas = computed(() => tarefas.value.reduce((acc, tarefa) => acc + tarefa.horas, 0))
+let totalHorasTrabalhadas = computed(() => {
+    return tarefas.value.reduce((acc, tarefa) => {
+        // Divida a string do tempo de atuação em horas, minutos e segundos
+        const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
+        return acc + minutos;
+    }, 0);
+});
 </script>
 <style scoped>
 #poligono {
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
     background-color: var(--roxoEscuro);
 }
+
 #scrollbar::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 3px rgba(117, 117, 117, 0.3);
-  width: 6px;
+    -webkit-box-shadow: inset 0 0 3px rgba(117, 117, 117, 0.3);
+    width: 6px;
 }
 
 #scrollbar::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 #scrollbar::-webkit-scrollbar-thumb {
-  width: 6px;
-  -webkit-box-shadow: inset 0 0 3px rgba(117, 117, 117, 0.3);
+    width: 6px;
+    -webkit-box-shadow: inset 0 0 3px rgba(117, 117, 117, 0.3);
 }
 </style>

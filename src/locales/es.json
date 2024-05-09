@@ -93,6 +93,50 @@
     "equipes": "Equipos",
     "projetos": "Proyectos",
     "projeto": "Proyecto"
+  },
+  "acessibilidade":{
+    "Acessibilidade": "Accesibilidad",
+    "Alterar Idioma": "Cambiar Idioma",
+    "Digitar com a voz": "Escribir con voz",
+    "Libras": "Lenguaje de Señas",
+    "Teclado Virtual": "Teclado Virtual"
+  },
+  "aparencia": {
+    "Aparência": "Apariencia",
+    "Titulo": "Título",
+    "Corpo de Texto": "Cuerpo del Texto",
+    "Cores": "Colores",
+    "Modo Claro": "Modo Claro",
+    "Modo Escuro": "Modo Oscuro"
+  },
+  "informacoes":{
+    "Informações": "Información",
+    "Nome": "Nombre",
+    "Username": "Nombre de Usuario",
+    "E-mail": "Correo Electrónico",
+    "Sobrenome": "Apellido",
+    "Data de Nascimento": "Fecha de Nacimiento",
+    "Editar E-mail": "Editar Correo Electrónico",
+    "Confirmar Edição": "Confirmar Edición"
+  },
+  "privacidade": {
+    "Privacidade": "Privacidad",
+    "Permitir que visualizem seus projetos": "Permitir ver tus proyectos",
+    "Permitir que visualizem seu email": "Permitir ver tu correo electrónico",
+    "Permitir que visualizem suas equipes": "Permitir ver tus equipos",
+    "Permitir que visualizem seu perfil": "Permitir ver tu perfil"
+  },
+  "seguranca": {
+    "Seguridad": "Seguridad",
+    "senhaCaracteres": "* Contraseña con 8 o más caracteres.",
+    "senhaConteudo": "* Contraseña que contiene letras, números y caracteres especiales.",
+    "senhaPalavrasComuns": "* No utilice palabras comunes.",
+    "seuEmailAtual": "Su dirección de correo electrónico actual es",
+    "loginGoogleAtivado": "Inicio de sesión con cuenta de Google activado",
+    "contaConectadaGoogle": "Cuenta conectada. Su cuenta está conectada a una cuenta de Google. Cambiar la dirección de correo electrónico aquí desconectará la cuenta de Google.",
+    "alterarSenha": "Cambiar Contraseña",
+    "alterarEmail": "Cambiar Correo Electrónico",
+    "deletarConta": "¿Desea eliminar su Cuenta?"
   }
   
 }

@@ -38,7 +38,6 @@
             <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
-
         </div>
     </div>
 
@@ -66,7 +65,7 @@ const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 let usuarios;
 const funcaoPopUp = funcaoPopUpStore();
 funcaoPopUp.variavelModal = false;
-let variavelCria = false;
+let variavelCria = ref(false);
 let variavelEngrenagem = false;
 const nomeCompleto = ref('');
 const router = useRouter();
@@ -106,15 +105,17 @@ function abrePaginaEquipe(equipe) {
 
 async function abrePopUp(equipe, tipo) {
     if (tipo == 'engrenagem') {
-        variavelCria = false;
+        variavelCria.value = false;
         variavelEngrenagem = true;
         const equipeSelecionada = equipe;
         VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
         funcaoPopUp.abrePopUp()
     }else{
         variavelEngrenagem = false;
-        variavelCria = true;
+        variavelCria.value = true;
         funcaoPopUp.abrePopUp()
+        
+       
     }
 }
 

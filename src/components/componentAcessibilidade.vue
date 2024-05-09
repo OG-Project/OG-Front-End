@@ -3,7 +3,7 @@
         <div>
             <h1 style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" 
             class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-                Acessibilidade
+                {{ $t('acessibilidade.Acessibilidade') }}
                 <!-- {{ configuracao }} -->
             </h1>
         </div>
@@ -13,26 +13,26 @@
                 <div style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" 
                 class="flex flex-col gap-10">
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl ">Alterar Idioma</span>
+                        <span class="text-xl ">{{ $t('acessibilidade.Alterar Idioma') }}</span>
                         <selectPadrao :lista-select="listaIdiomas"
                             v-model="idioma" @click="alterarIdioma(idioma)"/>
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Digitar com a voz</span>
+                        <span class="text-xl">{{ $t('acessibilidade.Digitar com a voz') }}</span>
                         <CheckBox :key="isDigitarVoz.valueOf()" tipo="toggle" el-id="checkDigitarVoz"
                             :checked="gerarBooleano('checkDigitarVoz')" @envia-valor="digitarVoz($event)">
                         </CheckBox>
                         <!-- Boolean(1) -->
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Libras</span>
+                        <span class="text-xl">{{ $t('acessibilidade.Libras') }}</span>
                         <CheckBox :key="isVlibra.valueOf()" tipo="toggle" el-id="checkLibras"
                             :checked="gerarBooleano('checkLibras')" @envia-valor="libras($event)">
                         </CheckBox>
                         <!-- Boolean(1) -->
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Teclado Virtual</span>
+                        <span class="text-xl">{{ $t('acessibilidade.Teclado Virtual') }}</span>
                         <CheckBox :key="isTecladoVirtual.valueOf()" tipo="toggle" el-id="checkTecladoVirtual"
                             :checked="gerarBooleano('checkTecladoVirtual')" @envia-valor="tecladoVirtual($event)">
                         </CheckBox>

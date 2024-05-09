@@ -29,6 +29,8 @@
               class="selectEdit" 
              styleSelect="select-cinza" 
               :listaSelect="opcoesSelect"
+              v-model="opcaoEscolhida"
+              @update:modelValue="enviaOpcao(convidado)"
             ></SelectPadrao>
           </template>
         </template>
@@ -39,9 +41,12 @@
 </template>
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
-import { defineProps } from 'vue';
 import sair from '../imagem-vetores/Sair.vue'
 import userTodoPreto from '../imagem-vetores/userTodoPreto.vue'
+
+import { defineProps, onUpdated, ref } from 'vue';
+import { getCurrentInstance } from 'vue';
+const instance = getCurrentInstance();
 
 defineEmits(['foiClicado'])
 
@@ -61,7 +66,12 @@ const props = defineProps({
   }
 })
 
+let opcaoEscolhida = ref("")
 
+
+function enviaOpcao(convidado){
+  instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
+}
 const opcoesSelect = ['Edit', 'View'];
 
 const imagemIcon = {

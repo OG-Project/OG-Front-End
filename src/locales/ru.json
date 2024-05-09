@@ -93,6 +93,50 @@
     "equipes": "Команды",
     "projetos": "Проекты",
     "projeto": "Проект"
+  },
+  "acessibilidade":{
+    "Acessibilidade": "доступность",
+    "Alterar Idioma": "Изменить язык",
+    "Digitar com a voz": "Ввод с голосом",
+    "Libras": "Язык жестов",
+    "Teclado Virtual": "Виртуальная клавиатура"
+  },
+  "aparencia": {
+    "Aparência": "Внешний вид",
+    "Titulo": "Заголовок",
+    "Corpo de Texto": "Текст",
+    "Cores": "Цвета",
+    "Modo Claro": "Светлый режим",
+    "Modo Escuro": "Темный режим"
+  },
+  "informacoes":{
+    "Informações": "Информация",
+    "Nome": "Имя",
+    "Username": "Имя пользователя",
+    "E-mail": "Электронная почта",
+    "Sobrenome": "Фамилия",
+    "Data de Nascimento": "Дата рождения",
+    "Editar E-mail": "Редактировать электронную почту",
+    "Confirmar Edição": "Подтвердить редактирование"
+  },
+  "privacidade": {
+    "Privacidade": "Конфиденциальность",
+    "Permitir que visualizem seus projetos": "Разрешить просматривать ваши проекты",
+    "Permitir que visualizem seu email": "Разрешить просматривать ваш электронный адрес",
+    "Permitir que visualizem suas equipes": "Разрешить просматривать ваши команды",
+    "Permitir que visualizem seu perfil": "Разрешить просматривать ваш профиль"
+  },
+  "seguranca": {
+    "Безопасность": "Безопасность",
+    "senhaCaracteres": "* Пароль из 8 или более символов.",
+    "senhaConteudo": "* Пароль, содержащий буквы, цифры и специальные символы.",
+    "senhaPalavrasComuns": "* Не используйте общие слова.",
+    "seuEmailAtual": "Ваш текущий адрес электронной почты",
+    "loginGoogleAtivado": "Вход в аккаунт Google активирован",
+    "contaConectadaGoogle": "Подключенный аккаунт. Ваш аккаунт подключен к аккаунту Google. Изменение адреса электронной почты здесь отключит аккаунт Google.",
+    "alterarSenha": "Изменить пароль",
+    "alterarEmail": "Изменить адрес электронной почты",
+    "deletarConta": "Хотите удалить свою учетную запись?"
   }
   
 }

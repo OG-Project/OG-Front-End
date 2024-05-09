@@ -127,10 +127,10 @@ async function atualizaProjetoBanco() {
     height: 100%;
     align-items: center;
     justify-content: center;
-    background-color: #FBFBFB;
+    background-color: var(--backgroundItems);
     clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
     position: relative;
-    border: 2px solid rgb(235, 235, 235);border-top: none;
+    border: 2px solid var(--backgroundItems);border-top: none;
 
 }
 </style>
