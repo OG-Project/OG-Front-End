@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full">
+    <div class="h-[90%]">
         <div v-if="screenWidth >= 1024" class="h-[90%]">
             <CriaTarefaViewDesktop></CriaTarefaViewDesktop>
         </div>
