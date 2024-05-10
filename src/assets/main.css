@@ -24,7 +24,7 @@
     --brancoNeve: #FBFBFB;
     --clickBorder: hsl(var(--hueRoxo) 100 88);
     --roxoAtencao: hsl(var(--hueRoxo) 100 50);
-    --roxoClaro: hsl(var(var(--hueRoxo)) 100 85);
+    --roxoClaro: hsl(var(--hueRoxo) 100 85);
     --fonteTitulo:'Source Sans 3';
     --fonteCorpo:'Poppins';
     --fonteTituloTamanho:6vh ;

@@ -293,7 +293,7 @@ function teclado(){
     const estilizaInput={
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
-        color: 'var(--fonteCor)',
+        color: props.styleInput == "input-transparente-escuro" ? '#ffffff' : 'var(--fonteCor)',
         fontSize: 'var(--fonteCorpoTamanho)',
         height: verificaHeigth()+'vh',
         width: verificaWidth()+"vw",

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-[20vw] max-h-max h-[92vh] flex flex-col border-2 gap-8 shadow-xl border-b-0 overflow-y-auto overflow-x-hidden ">
+    <div class="scrollBarInfo">
         <div class="h-[6%] pt-8 flex items-end justify-center">
             <h1 class="text-3xl font-semibold">Informações</h1>
         </div>
@@ -43,15 +43,15 @@
         <div class="h-max flex items-center justify-center">
             <div class="flex flex-col items-center justify-center h-[80%] w-[80%] gap-3" v-if="temLista(listaStatus)">
                 <div v-for="status of listaStatus">
-                    <p  :style="styleStatus(status)">
+                    <p :style="styleStatus(status)">
                         {{ status.nome }}
                     </p>
                 </div>
             </div>
             <div class="flex items-center justify-center h-[80%] w-[100%]" v-if="!temLista(listaStatus)">
-                    <p>
-                        -----------
-                    </p>
+                <p>
+                    -----------
+                </p>
             </div>
         </div>
         <div class="h-[4%] flex items-center justify-center p-6">
@@ -73,20 +73,26 @@
 <script setup>
 import { onMounted } from 'vue';
 import NotePad from '../imagem-vetores/NotePad.vue'
+
 const props = defineProps({
     nomeProjeto: String,
     DataInicialProjeto: String,
-    DataFinalProjeto:String,
+    DataFinalProjeto: String,
     listaPropriedades: [],
     listaStatus: []
 })
 
+
 onMounted(() => {
+
 
 })
 
+
+
+
 function temLista(lista) {
-    if (lista.length != 0 && lista!=null && lista!=undefined) {
+    if (lista.length != 0 && lista != null && lista != undefined) {
         return true
     }
     return false;
@@ -97,10 +103,10 @@ function styleStatus(statusRecebido) {
         height: '100%',
         width: '8vw',
         display: 'flex',
-        padding:'0.6vh',
+        padding: '0.6vh',
         alignItems: 'center',
         justifyContent: 'center',
-        wordBreak:"break-all",
+        wordBreak: "break-all",
         backgroundColor: corBackgroundStatus(statusRecebido),
         color: verificaCorFonte(statusRecebido)
     }
@@ -108,21 +114,21 @@ function styleStatus(statusRecebido) {
 }
 
 function corBackgroundStatus(statusRecebido) {
-    let cor=""
+    let cor = ""
     props.listaStatus.forEach((status) => {
-        if (status.nome == statusRecebido.nome && status.cor==statusRecebido.cor) {
-            cor= "#"+status.cor;
+        if (status.nome == statusRecebido.nome && status.cor == statusRecebido.cor) {
+            cor = "#" + status.cor;
         }
     })
     return cor;
 }
 
-function verificaCorFonte(statusRecebido){
-    let cor=""
+function verificaCorFonte(statusRecebido) {
+    let cor = ""
     props.listaStatus.forEach((status) => {
-        if (status.nome == statusRecebido.nome && status.cor==statusRecebido.cor) {
-            cor="#"+contraste(statusRecebido.cor)
-           
+        if (status.nome == statusRecebido.nome && status.cor == statusRecebido.cor) {
+            cor = "#" + contraste(statusRecebido.cor)
+
         }
     })
     return cor;
@@ -137,4 +143,37 @@ function contraste(cor) {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+.scrollBarInfo::-webkit-scrollbar {
+    width: 0.7vw;
+    height: 40px;
+}
+
+.scrollBarInfo::-webkit-scrollbar-thumb {
+    @apply bg-[var(--backgroundItems)];
+    border-radius: 10px;
+    height: 10px;
+}
+
+.scrollBarInfo::-webkit-scrollbar-thumb:hover {
+    @apply bg-[var(--backgroundItemsClaros)];
+    border-radius: 10px;
+    height: 10px;
+
+}
+
+.scrollBarInfo::-webkit-scrollbar-track {
+    @apply bg-[var(--backgroundPuro)]
+}
+
+.scrollBarInfo::-webkit-scrollbar-button {
+    display: none;
+}
+
+.scrollBarInfo {
+    position: relative;
+    overflow: hidden;
+    transition: overflow-y 0.3s ease;
+    @apply overflow-y-auto max-h-max h-[92vh] flex flex-col border-2 gap-8 shadow-xl border-[var(--backgroundItemsClaros)] border-b-0;
+}
+</style>
