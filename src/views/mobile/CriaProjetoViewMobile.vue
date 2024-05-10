@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col items-center w-full h-[90%]">
-        <div class=" flex flex-col  mt-[3%] overflow-hidden gap-20">
+    <div class="flex flex-col items-center w-full h-[80%]">
+        <div class=" flex flex-col  mt-[3%] gap-20">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
                     largura="80" altura="6" fontSize="1.5rem" v-model="nomeProjeto" :modelValue="nomeProjeto"
@@ -13,23 +13,22 @@
                     tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
             <div class="w-max h-max" @mouseenter="fazHoverPlaceHolder()" @mouseleave="fazBackPadraoPlaceHolder()">
-                <Input altura="2" fontSize="1rem" largura="50" tipo="date" v-model="dataFinalProjeto" tipoInput="float" conteudoInput="Data Final: "
-                    :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
+                <Input altura="2" fontSize="1rem" largura="50" tipo="date" v-model="dataFinalProjeto" tipoInput="float"
+                    conteudoInput="Data Final: " :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
                         dataFinalProjeto = e
                     }" />
 
             </div>
             <div class="">
                 <div class="  flex flex-col gap-10">
-                        <div class="w-[50%] grid grid-cols-2 gap-[100%]">
-                            <selectPadrao altura="4" largura="30" :listaSelect="listaSelecao"
-                                placeholder-select="Equipes" v-model="equipesRelacionadasProjeto"
-                                fonte-tamanho="0.9rem"></selectPadrao>
+                    <div class="w-[50%] grid grid-cols-2 gap-[100%]">
+                        <selectPadrao altura="4" largura="30" :listaSelect="listaSelecao" placeholder-select="Equipes"
+                            v-model="equipesRelacionadasProjeto" fonte-tamanho="0.9rem"></selectPadrao>
 
-                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
-                                :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
-                            </Botao>
-                        </div>
+                        <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="mobilePequeno"
+                            :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
+                        </Botao>
+                    </div>
                     <div class="flex flex-col  items-start justify-start gap-3 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             place-holder-pesquisa="Responsáveis pelo projeto"
@@ -63,14 +62,17 @@
             <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"
                 @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
         </div>
+        <div class="h-[10%] w-full flex items-center justify-center  pr-4 pb-28 ">
+            <Botao preset="PadraoRoxo" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
+                height="5vh" width="79vw" tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
+                v-if="!projetoEdita"></Botao>
+            <Botao preset="PadraoRoxo" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
+                height="5vh" width="79vw" tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
+                v-if="projetoEdita"></Botao>
+
+        </div>
     </div>
-    <div class="h-[10%] w-full flex items-center justify-center  pr-4 pb-4 ">
-        <Botao preset="PadraoRoxo" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="personalizado" height="5vh" width="79vw"
-            tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"  v-if="!projetoEdita"></Botao>
-            <Botao preset="PadraoRoxo" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="personalizado" height="5vh" width="79vw"
-            tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"  v-if="projetoEdita"></Botao>
-            
-    </div>
+
 </template>
 
 <script setup>
@@ -220,7 +222,7 @@ function buscaProjetoCookies() {
     }
 }
 
-async function  buscaRascunhoCriacaoProjeto() {
+async function buscaRascunhoCriacaoProjeto() {
     if (VueCookies.get("projetoCookie") != null
         && !projetoEdita.value
         && VueCookies.get("projetoCookie") != undefined
@@ -247,14 +249,14 @@ async function  buscaRascunhoCriacaoProjeto() {
             && variavelCookieProjeto.responsaveis != undefined
             && variavelCookieProjeto.responsaveis != "undefined"
             && variavelCookieProjeto.responsaveis != null && variavelCookieProjeto.responsaveis.length != 0) {
-                console.log(variavelCookieProjeto.responsaveis);
+            console.log(variavelCookieProjeto.responsaveis);
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
-        }else{
-            let usuario= await conexao.buscarUm(idUsuario, "/usuario")
+        } else {
+            let usuario = await conexao.buscarUm(idUsuario, "/usuario")
             responsaveisProjeto.value.push(usuario.username)
             listaAuxResponsaveisProjeto.push(usuario.username)
             adicionaResponsaveisProjeto(usuario)
@@ -280,7 +282,7 @@ async function buscaProjetoEditar() {
 
 async function buscaListaResponsaveisBack(projeto) {
     projeto.responsaveis.forEach(async (responsavelAtual) => {
-        let responsavel= await conexao.buscarUm(responsavelAtual.idResponsavel,"/usuario")
+        let responsavel = await conexao.buscarUm(responsavelAtual.idResponsavel, "/usuario")
         let username = responsavel.username
         if (verificaTemEsseResponsavelProjeto(username)) {
             responsaveisProjeto.value.push(username)
@@ -361,19 +363,19 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-        
+
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-            router.push('/projeto').then(() => {
-       
-    });
+        router.push('/projeto').then(() => {
+
+        });
         restauraCookies();
         router.push('/projeto')
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
+            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
     }
 
@@ -410,15 +412,15 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     let idProjetoEquipe = ""
     let equipeBack;
     let projeto
-    if(projetoEdita.value){
-         projeto = await conexao.buscarUm(idProjeto, '/projeto')
+    if (projetoEdita.value) {
+        projeto = await conexao.buscarUm(idProjeto, '/projeto')
     }
-    let listaBackEquipe =  listaEquipeFront.map((equipeFront) => {
+    let listaBackEquipe = listaEquipeFront.map((equipeFront) => {
         if (projetoEdita.value) {
-             idProjetoEquipe =  verificaIdProjetoEquipe(equipeFront,projeto)   
+            idProjetoEquipe = verificaIdProjetoEquipe(equipeFront, projeto)
         }
-         return equipeBack = {
-             id:  idProjetoEquipe,
+        return equipeBack = {
+            id: idProjetoEquipe,
             equipe: {
                 id: equipeFront.id
             }
@@ -428,18 +430,18 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     listaEquipeEnviaBack = listaBackEquipe;
 }
 
- function verificaIdProjetoEquipe(equipe,projeto){
+function verificaIdProjetoEquipe(equipe, projeto) {
     let idRetorno;
-    projeto.projetoEquipes.forEach((projetoEquipe) =>{
-        if(projetoEquipe.equipe.id == equipe.id){
-            idRetorno=  projetoEquipe.id
+    projeto.projetoEquipes.forEach((projetoEquipe) => {
+        if (projetoEquipe.equipe.id == equipe.id) {
+            idRetorno = projetoEquipe.id
         }
     })
     return idRetorno;
 }
 
 async function removeListaEquipeConvidadas(equipeRemover) {
-    
+
     let listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeRemover.nome);
     let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
@@ -448,7 +450,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         listaEquipesSelecionadas.value.splice(indice, 1);
     }
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
-    if(projetoEdita.value){
+    if (projetoEdita.value) {
         console.log("vai deletar")
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
@@ -474,7 +476,6 @@ async function removeResponsavel(responsavelRemover) {
 </script>
 
 <style lang="scss">
-
 .scrollListaResponsaveis::-webkit-scrollbar {
     height: 0.3vw;
 }
