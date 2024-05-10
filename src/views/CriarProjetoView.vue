@@ -1,5 +1,5 @@
 <template>
-    <div class="h-[90%]">
+    <div class="h-[98%]">
         <div v-if="screenWidth >= 768" class="h-full">
             <CriarProjetoViewDesktop></CriarProjetoViewDesktop>
         </div>

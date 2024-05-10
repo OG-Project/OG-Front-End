@@ -372,7 +372,7 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
