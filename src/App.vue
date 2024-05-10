@@ -72,13 +72,14 @@ onMounted(async () => {
   perfil.isVoiceMaker = configuracao.value.isDigitarVoz
   root.setProperty('--hueRoxo', configuracao.value.hueCor)
   root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+
   root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + 'vh')
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
   console.log(configuracao.value.isDark);
   if (configuracao.value.isDark) {
-    root.setProperty('--backgroundPuro', '#0F0F0F')
+    root.setProperty('--backgroundPuro', '#150f17')
     root.setProperty('--backgroundItems', '#222222')
     root.setProperty('--fonteCor', '#ffffff')
     root.setProperty('--backgroundItemsClaros', '#363636')
@@ -372,7 +373,7 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
