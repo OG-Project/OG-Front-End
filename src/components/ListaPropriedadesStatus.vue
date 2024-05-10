@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-[var(--backgroundItems)] shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
+    <div class="bg-[var(--backgroundItemsClaros)] shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
         <div>
             <div class="flex flex-row justify-between items-center border-b-2 border-[var(--roxo)]" @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades
@@ -21,7 +21,7 @@
 
                         <div class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4"
                             v-if="propriedade.verNomeCompleto == true">
-                            <p class="w-[50%]  h-max break-words  bg-brancoNeve ">
+                            <p class="w-[50%]  h-max break-words  bg-[var(--backgroundItemsClaros)] ">
                                 {{ propriedade.propriedade.nome }}</p>
                             <p class="w-[50%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
                         </div>
@@ -37,7 +37,7 @@
                                 Tarefas Atribuidas
                             </div>
                             <div v-if="!tarefasAtribuidas"
-                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                class="bg-[var(--backgroundItems)] rounded-md w-full p-1 flex justify-center items-center">
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
 
                         <div v-if="status.verNomeCompleto == true"
                             class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4">
-                            <p class="w-[50%] h-max break-words bg-brancoNeve">{{ status.status.nome }}</p>
+                            <p class="w-[50%] h-max break-words bg-[var(--backgroundItemsClaros)]">{{ status.status.nome }}</p>
                             <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         </div>
                         <div v-if="status.verNomeCompleto == false" class="w-[50%] flex flex-row pb-4 pt-4 gap-8">
@@ -68,11 +68,11 @@
                                 Tarefas Atribuidas
                             </div>
                             <div v-if="!tarefasAtribuidas"
-                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                class="bg-[var(--backgroundItems)] rounded-md w-full p-1 flex justify-center items-center">
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
-                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removeStatus(status)">
+                        <img class="w-[5%] h-[20%] " :src="botaoSair" @click="removeStatus(status)">
 
                     </div>
                 </div>

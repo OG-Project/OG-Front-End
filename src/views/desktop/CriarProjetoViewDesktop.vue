@@ -42,14 +42,18 @@
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
-                                class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
+                                class=" bg-[var(--backgroundItems)] p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
                                 <div v-for="responsavel of responsaveisProjeto ">
                                     <div
-                                        class="bg-roxo-claro rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
-                                        <img src="../imagem-vetores/userTodoPreto.svg">
+                                        class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
+                                        <img src="../../imagem-vetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
-                                        <img src="../imagem-vetores/X-preto.svg"
-                                            @click="removeResponsavel(responsavel)">
+                                        <div class="w-full flex justify-end pr-2">
+                                            <div class="w-[40%]">
+                                                <img  src="../../imagem-vetores/botao-x.svg"
+                                                @click="removeResponsavel(responsavel)">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -154,10 +158,10 @@ onUpdated(() => {
 stylePlaceHolder.value = {
     position: "absolute",
     left: "2.7%",
-    width: "12%",
+    width: "8%",
     height: "2.5%",
     zIndex: "10",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "var(--backgroundPuro)",
     marginTop: "0.35%",
     display: "flex",
     alingItems: "center"
@@ -179,11 +183,11 @@ function excluiProjeto(){
 }
 
 function fazHoverPlaceHolder() {
-    stylePlaceHolder.value.backgroundColor = "#D7D7D7"
+    stylePlaceHolder.value.backgroundColor = "var(--backgroundItemsClaros)"
 }
 
 function fazBackPadraoPlaceHolder() {
-    stylePlaceHolder.value.backgroundColor = "#FFFFFF"
+    stylePlaceHolder.value.backgroundColor = "var(--backgroundPuro)"
 }
 
 async function mandaDataInformacoes() {

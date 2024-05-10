@@ -1,7 +1,6 @@
 
 <template>
-<div class=""
-style="font-family: var(--fonteCorpo);">
+<div  style="font-family: var(--fonteCorpo);">
     <div class="styleInputPadraoIcon" 
         v-if="icon!='null' && direcao!='direita' && tipoInput!='float'" 
         :style="estilizaDivInput">
@@ -293,7 +292,7 @@ function teclado(){
     const estilizaInput={
         // faz as estilizações do input verificando se a cor vai ser preta ou branca de acordo com o style recebido e de acordo com o tamanho recebid
         backgroundColor:"inherit",
-        color: 'var(--fonteCor)',
+        color: props.styleInput == "input-transparente-escuro" ? '#ffffff' : 'var(--fonteCor)',
         fontSize: 'var(--fonteCorpoTamanho)',
         height: verificaHeigth()+'vh',
         width: verificaWidth()+"vw",
@@ -348,7 +347,7 @@ function teclado(){
         if(props.corHover=="escuro"){
             return "#484848"
         }
-        return "#D7D7D7"
+        return "var(--backgroundItemsClaros)"
     }
 
 
@@ -479,8 +478,5 @@ function teclado(){
     .estiloPlaceHolder label{
         @apply absolute flex items-center;
     }
-    // <div class="relative">
-//     <input type="text" id="floating_filled" class="block rounded-t-lg px-2.5 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 dark:bg-gray-700 border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-//     <label for="floating_filled" class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto">Floating filled</label>
-// </div>
+ 
 </style>

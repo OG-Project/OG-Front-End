@@ -72,6 +72,7 @@ onMounted(async () => {
   perfil.isVoiceMaker = configuracao.value.isDigitarVoz
   root.setProperty('--hueRoxo', configuracao.value.hueCor)
   root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+
   root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + 'vh')
