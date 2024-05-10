@@ -6,14 +6,10 @@ import KeyBoard from './components/Keyboard.vue'
 import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
 import Navbar from '@/components/Navbar.vue';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted , onUpdated } from 'vue';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
-import router from "@/router";
 import { useDraggable } from '@vueuse/core'
-import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
-import listaProjetos from './components/listaProjetos.vue';
-import kanbanProjetos from './components/kanbanProjetos.vue'
 import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
 import { conexaoBD } from "./stores/conexaoBD";
@@ -31,9 +27,6 @@ const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
 webSocket.criaConexaoWebSocket();
 
-
-const funcaoPopUpPropriedade = funcaoPopUpStore();
-const funcaoPopUpProjeto = funcaoPopUpStore();
 const perfil = perfilStore()
 const { isVlibras } = storeToRefs(perfil);
 
@@ -86,7 +79,6 @@ onUpdated(()=>{
         && usuario.value.configuracao.ultimoPassoId!=null){
           console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
           tour.show(usuario.value.configuracao.ultimoPassoId,true)
-
       }else{
         console.log(route.path);
         tour.start()
@@ -178,13 +170,12 @@ watch(() => route.path, () => {
   }
 });
 import { inject } from 'vue'
-import { onUpdated } from "vue";
 const tour = inject('tour')
 
 tour.addSteps([
   {
     id: 'step-1',
-    title: 'Home',
+    title: 'Bem Vindo!!',
     text: 'Aqui mostra suas atividades mais importantes',
     attachTo: {
       element: '#step-1',
@@ -229,6 +220,11 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -253,6 +249,11 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },  
@@ -277,6 +278,11 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -301,6 +307,11 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -324,6 +335,11 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -340,7 +356,7 @@ tour.addSteps([
         action: ()=>{
           usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
           banco.atualizar(usuario.value,'/usuario')
-          router.push
+          // router.push
           tour.next()
         } 
       },
@@ -348,6 +364,11 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -371,6 +392,95 @@ tour.addSteps([
         secondary: true,
         text: 'Skip',
         action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-9',
+    text: 'Aqui pode-se ver projetos da equipe ',
+    attachTo: {
+      element: '#step-9',
+      on: 'center'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-10',
+    text: 'Clique para criar um projeto',
+    attachTo: {
+      element: '#step-10',
+      on: 'left'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-11',
+    text: 'Prencha os campos',
+    attachTo: {
+      element: '#step-11',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   }
