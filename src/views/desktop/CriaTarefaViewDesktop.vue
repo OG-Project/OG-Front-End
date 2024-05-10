@@ -310,7 +310,7 @@
             <div class="w-[100%] h-[5vh] flex items-center justify-center ">
               <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
                 <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
+                  <Input v-if="propriedade.propriedade.id == propriedade.propriedade.id"
                     styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
                     @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                   </Input>
@@ -489,12 +489,11 @@ const { t } = useI18n();
 const banco = conexaoBD();
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
-  for (const propriedadeFor of tarefa.value.propriedades) {
-    if (propriedadeFor.id == propriedade.id) {
-      return true
-    }
-  }
+  if (propriedade.valor.valor != []) {
+    return true
+  }else{
   return false
+  }
 }
 
 let tempoAtuado;
@@ -935,11 +934,7 @@ async function puxaTarefaDaEdicao() {
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
   tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
-  for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
-    if (veSeAPropriedadeTaNaTarefa(propriedade.propriedade)) {
-      tarefa.value.propriedades.push(propriedade);
-    }
-  }
+  tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
 }
 
 async function atualizaPropriedadesEStatus() {

@@ -78,14 +78,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       async buscarProjetosUsuario(userId, textoRequisicao){
         return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`,{withCredentials:true})).data)
       },
-    atualizar(objeto, textoRequisicao) {
-      console.log(textoRequisicao)
-      if (textoRequisicao = "/usuario") {
-        const idUsuario = VueCookies.get("IdUsuarioCookie")
-        return axios.put("http://localhost:8082" + textoRequisicao + "/" + idUsuario, objeto, { withCredentials: true }).then(response => response)
-      }
-     return axios.put("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
-    },
     atualizaProjetoEquipe(objeto, idEquipe, textoRequisicao) {
 
       return axios.put("http://localhost:8082" + textoRequisicao + '/' + idEquipe, objeto, { withCredentials: true }).then(response => response)
@@ -213,7 +205,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         }
           return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
       }
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
     },
     async cadastrarFotoUsuario(idUsuario, foto) {
       try {
@@ -235,6 +226,4 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
       return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
     }
-
-  }
-})
+  })

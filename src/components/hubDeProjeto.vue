@@ -10,7 +10,7 @@
                 <div class="h-[45%]">
                     {{ projeto.nome }}
                 </div>
-                <div class="flex items-end" v-if="verificaSeEResponsavel() == true" @click="router.push('/responsavel')">
+                <div class="flex items-end" v-if="verificaSeEResponsavel()" @click="router.push('/projeto/responsavel')">
                     <Dashboard></Dashboard>
                 </div>
             </div>
@@ -113,6 +113,7 @@ onMounted(async () => {
 async function verificaSeEResponsavel(){
     let usuario = VueCookies.get('IdUsuarioCookie')
     let responsaveis = projeto.value.responsaveis
+    console.log(responsaveis)
     if(responsaveis!=null){
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {

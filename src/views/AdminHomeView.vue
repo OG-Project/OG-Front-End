@@ -91,7 +91,7 @@
                     <img src="../assets/GraficoDeLinha.svg" />
                 </button>
             </div>
-            <div class="flex flex-col h-full justify-center">
+            <div class="flex flex-col h-[90%] w-[50%] justify-center">
                 <canvas id="chart"></canvas>
             </div>
         </div>
