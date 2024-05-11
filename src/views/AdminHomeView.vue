@@ -173,11 +173,13 @@ async function pegaTarefasDoProjeto() {
         tarefas.value = projeto.tarefas
         console.log(tarefas.value);
     })
+    renderChart('bar');
 }
 
 onMounted(() => {
     pegaTarefasDoProjeto()
-    renderChart('line')
+    renderChart('bar')
+    changeChart('bar')
 })
 
 let tarefas = ref([]);
@@ -251,15 +253,12 @@ function separaOsMinutos(tarefa){
     const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
     return minutos;
 }
-
-
-
 function changeChart(type) {
     renderChart(type)
 }
 let totalDeTarefas = computed(() => tarefas.value.length)
 let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em progresso').length)
-let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronta').length)
+let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronto').length)
 let totalHorasTrabalhadas = computed(() => {
     return tarefas.value.reduce((acc, tarefa) => {
         // Divida a string do tempo de atuação em horas, minutos e segundos

@@ -109,7 +109,10 @@ function geraTutorial() {
     if(usuario.value.configuracao.ultimoPassoId!='step-1'
       && usuario.value.configuracao.ultimoPassoId!=null){
         console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
+        openClose()
+        router.push(usuario.value.configuracao.rotaDoPasso)
         tour.show(usuario.value.configuracao.ultimoPassoId,true)
+        // window.location.reload()
 
     }else{
       // console.log(route.path);

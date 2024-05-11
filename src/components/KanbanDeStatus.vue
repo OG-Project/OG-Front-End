@@ -1,7 +1,8 @@
 <template>
     <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
-        <div v-for="propriedade of lista" class="w-auto flex h-full" @dragover="(()=>{
-            statusNovo = propriedade.propriedade})">
+        <div v-for="propriedade of lista" class="w-auto flex h-full" @dragover="(() => {
+            statusNovo = propriedade.propriedade
+        })">
             <div :style="propriedade.style">
 
                 <div class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
@@ -13,19 +14,20 @@
                     </div>
                 </div>
                 <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
-                    v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true" @end="()=> mudaStatus(propriedade)"
-                    item-key="tarefa.indice">
+                    v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
+                    @end="() => mudaStatus(propriedade)" item-key="tarefa.indice">
                     <template #item="{ element: tarefa }">
-                        <div class="w-full h-full flex items-center justify-center" @dragstart="(()=> {
-                            tarefaDrag = tarefa
-                        })">
+                        <div class="w-full h-full flex items-center justify-center" @dragstart="(() => {
+            tarefaDrag = tarefa
+        })">
                             <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
+                                {{ console.log(tarefa) }}
                                 <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                             </div>
                         </div>
                     </template>
                 </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh]" @click="store.criaTarefa(), router.push('/criaTarefa').then(() => {
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none" @click="store.criaTarefa(), router.push('/criaTarefa').then(() => {
             window.location.reload()
         });">
                     <p :style="corDoTexto(propriedade.propriedade)">+ Nova</p>
@@ -123,14 +125,12 @@ function corDoTexto(status) {
     }
 }
 
-function mudaStatus(propriedade ) {
-    console.log(statusNovo)
-    console.log(tarefaDrag)
+function mudaStatus() {
     let tarefaPut = {}
-    for(const propriedade of lista.value){
+    for (const propriedade of lista.value) {
         propriedade.tarefas.forEach(async (tarefa, index) => {
             if (tarefa.nome != null) {
-                if(tarefa.id == tarefaDrag.id){
+                if (tarefa.id == tarefaDrag.id) {
                     tarefa.status = statusNovo;
                 }
                 tarefa.indice[3].indice = propriedade.tarefas.indexOf(tarefa);
@@ -146,79 +146,53 @@ function mudaStatus(propriedade ) {
                     arquivos: tarefa.arquivos,
                     indice: tarefa.indice,
                 }
-                console.log(tarefaPut)
                 for (let valorPropriedadeTarefaPut of tarefaPut.valorPropriedadeTarefas) {
                     if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
                         valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             texto: valorPropriedadeTarefaPut.valor.valor ?? null,
+                            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
                         valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             data: valorPropriedadeTarefaPut.valor.valor ?? null,
-    
+                            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
                         valorPropriedadeTarefaPutPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             numero: valorPropriedadeTarefaPut.valor.valor ?? null,
-    
+                            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
                         valorPropriedadeTarefaPutPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             valores: valorPropriedadeTarefaPut.valor.valor ?? null,
-    
+                            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     }
                 }
+                console.log(tarefaPut)
                 await api.atualizar(tarefaPut, '/tarefa').then((response) => {
                     console.log(response)
                     tarefa = {
-                        id: tarefa.id,
-                        nome: tarefa.nome,
-                        descricao: tarefa.descricao,
-                        status: tarefa.status,
-                        cor: tarefa.cor,
-                        status: tarefa.status,
-                        valorPropriedadeTarefas: tarefa.valorPropriedadeTarefas,
-                        comentarios: tarefa.comentarios,
-                        arquivos: tarefa.arquivos,
-                        indice: tarefa.indice,
-                    }
-                    for (let valorPropriedadeTarefaPut of tarefa.valorPropriedadeTarefas) {
-                        if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
-                            valorPropriedadeTarefaPut.valor = {
-                                id: valorPropriedadeTarefaPut.valor.id,
-                                valor: valorPropriedadeTarefaPut.valor.texto ?? null,
-                            }
-                        } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
-                            valorPropriedadeTarefaPut.valor = {
-                                id: valorPropriedadeTarefaPut.valor.id,
-                                valor: valorPropriedadeTarefaPut.valor.data ?? null,
-    
-                            }
-                        } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-                            valorPropriedadeTarefaPutPut.valor = {
-                                id: valorPropriedadeTarefaPut.valor.id,
-                                valor: valorPropriedadeTarefaPut.valor.numero ?? null,
-    
-                            }
-                        } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-                            valorPropriedadeTarefaPutPut.valor = {
-                                id: valorPropriedadeTarefaPut.valor.id,
-                                valor: valorPropriedadeTarefaPut.valor.valores ?? null,
-    
-                            }
-                        }
+                        id: response.data.id,
+                        nome: response.data.nome,
+                        descricao: response.data.descricao,
+                        status: response.data.status,
+                        cor: response.data.cor,
+                        status: response.data.status,
+                        valorPropriedadeTarefas: response.data.valorPropriedadeTarefas,
+                        comentarios: response.data.comentarios,
+                        arquivos: response.data.arquivos,
+                        indice: response.data.indice,
                     }
                 })
-    
             }
         });
     }
-
+    defineListaDePropriedades()
 }
 
 
@@ -232,9 +206,7 @@ function ordenaTarefas() {
     }
 
 }
-function onDragEnd(propriedade) {
 
-}
 
 function fechaPopUp() {
     popUpStatus = false
@@ -271,6 +243,7 @@ async function defineListaDePropriedades() {
     lista.value = []
     lista.value = listaDePropriedades
     listaDePropriedades = null;
+    ordenaTarefas()
 }
 function verificaListaVaziaBoolean(tarefas) {
     if (tarefas, length == 0) {

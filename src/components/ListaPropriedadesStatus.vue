@@ -1,5 +1,5 @@
 <template>
-    <div class="bg-[var(--backgroundItems)] shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
+    <div class="bg-[var(--backgroundItemsClaros)] shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
         <div>
             <div class="flex flex-row justify-between items-center border-b-2 border-[var(--roxo)]" @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades
@@ -37,7 +37,7 @@
                                 Tarefas Atribuidas
                             </div>
                             <div v-if="!tarefasAtribuidas"
-                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                class="bg-[var(--backgroundItems)] rounded-md w-full p-1 flex justify-center items-center">
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
@@ -68,11 +68,11 @@
                                 Tarefas Atribuidas
                             </div>
                             <div v-if="!tarefasAtribuidas"
-                                class="bg-cinza-claro rounded-md w-full p-1 flex justify-center items-center">
+                                class="bg-[var(--backgroundItems)] rounded-md w-full p-1 flex justify-center items-center">
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
-                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removeStatus(status)">
+                        <img class="w-[5%] h-[20%] " :src="botaoSair" @click="removeStatus(status)">
 
                     </div>
                 </div>

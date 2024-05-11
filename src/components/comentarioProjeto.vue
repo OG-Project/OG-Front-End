@@ -1,21 +1,21 @@
 <template>
-    <div class="w-full h-full flex flex-col overflow-y-auto">
-        <div v-if="comentariosProjeto.length != 0" class="w-full h-full">
-            <div class="w-[100%]  mt-4 min-h-[5vh] flex flex-col border-b-[1px] border-roxo "
-                v-for="comentario of comentariosProjeto">
+    <div class=" bg-[var(--backgroundItemsClaros)] h-full flex flex-col">
+        <div v-if="comentariosProjetoFront.length != 0" class="w-full h-[70%] overflow-y-auto ">
+            <div class="w-[100%]  mt-4 max-h-[15%] flex flex-col border-b-[1px] border-[var(--roxo)]"
+                v-for="comentario of comentariosProjetoFront">
                 <div class=" w-full flex flex-row">
                     <div class="flex items-center h-full">
                         <img v-if="usuarioCookies != verificacao"
                             class="shadow-2xl h-[60px] min-w-[60px]  mr-4 ml-4 rounded-full" :src="'data:' +
-            comentario.autor.foto.tipo +
-            ';base64,' +
-            comentario.autor.foto.dados
-            " />
+                    comentario.autor.foto.tipo +
+                    ';base64,' +
+                    comentario.autor.foto.dados
+                     " />
                     </div>
                     <div class="w-full pb-2 pr-2 flex justify-end max-w-full">
                         <div class="w-full flex pt-2">
                             <p class="pr-2"> {{ comentario.autor.username }}</p> comentou: <p
-                                class="text-roxo pl-2 break-all w-[100%]"> {{ comentario.conteudo }}</p>
+                                class="text-[var(--roxoClaro)] pl-2 break-all w-[100%]"> {{ comentario.conteudo }}</p>
                         </div>
                     </div>
                     <div class="w-[20%] flex items-start">
@@ -26,14 +26,13 @@
                 </div>
             </div>
         </div>
-        <div v-else class="w-full h-full ">
+        <div v-else class="w-full h-[70%] ">
             <div class="w-full h-full flex flex-col justify-center items-center ">
                 <iconMensagem class=" w-[60%] h-[50%]"></iconMensagem>
                 <p class="w-[70%] h-max">Esse projeto ainda não tem comentarios</p>
             </div>
-
         </div>
-        <div class="w-[100%]  mt-4  shadow-lg min-h-[50%] max-h-[100%] flex flex-col justify-end">
+        <div class="w-[100%]  mt-4  shadow-lg min-h-[30%] max-h-[30%] flex flex-col justify-end">
             <div class=" w-full flex flex-row justify-around">
                 <img v-if="usuarioCookies != verificacao"
                     class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
@@ -42,7 +41,7 @@
             usuarioCookies.foto.dados
             " />
                 <div class="w-full pb-2 pr-2 pl-2 flex justify-end items-end">
-                    <TextAreaPadrao width="29vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
+                    <TextAreaPadrao width="20vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
                         tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
                 </div>
             </div>
@@ -70,30 +69,40 @@ const IdProjetoAtual = VueCookies.get("IdProjetoAtual")
 let usuarioCookies = ref();
 let comentarioSendoEnviado = ref("");
 let verificacao = ref()
-let comentariosProjeto = ref([]);
+let comentariosProjetoBack = ref([]);
+let comentariosProjetoFront = ref([]);
 let projeto;
 onMounted(() => {
     buscaUsuario()
     parametrosProjeto();
+    
 })
+
+
 
 async function buscaUsuario() {
     usuarioCookies.value = await conexao.buscarUm(idUsuarioCookie, "/usuario")
 }
 async function parametrosProjeto() {
     projeto = await conexao.buscarUm(IdProjetoAtual, "/projeto")
-    comentariosProjeto.value = projeto.comentarios
-    console.log(comentariosProjeto.value)
+    comentariosProjetoFront.value =  projeto.comentarios
+    
 }
 function enviaComentario(comentario) {
-    comentariosProjeto.value.push({
+    comentariosProjetoBack.value.push({
         autor: comentario[1],
         conteudo: comentario[0]
+    }); 
+    comentariosProjetoFront.value.push({
+        autor: comentario[1],
+        conteudo: comentario[0],
+        data: new Date()
     });
-    console.log(projeto)
+    VueCookies.set("idAuxEquipe");
     editaProjeto.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes, projeto.propriedades
-        , projeto.statusList, projeto.responsaveis, projeto.dataFinal
-        , projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, comentariosProjeto.value, projeto.tarefas) // passar todos os dados do projeto 
+        ,projeto.statusList, projeto.responsaveis, projeto.dataFinal
+        ,projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, comentariosProjetoFront.value, projeto.tarefas)
+         // passar todos os dados do projeto 
 }
 function formatarData(data) {
     let dataFormatada = new Date(data)

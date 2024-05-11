@@ -57,13 +57,14 @@ onMounted(async () => {
   perfil.isVoiceMaker = configuracao.value.isDigitarVoz
   root.setProperty('--hueRoxo', configuracao.value.hueCor)
   root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+
   root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + 'vh')
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
   console.log(configuracao.value.isDark);
   if (configuracao.value.isDark) {
-    root.setProperty('--backgroundPuro', '#0F0F0F')
+    root.setProperty('--backgroundPuro', '#150f17')
     root.setProperty('--backgroundItems', '#222222')
     root.setProperty('--fonteCor', '#ffffff')
     root.setProperty('--backgroundItemsClaros', '#363636')
@@ -186,7 +187,11 @@ tour.addSteps([
         classes: 'button',
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           tour.next()
           banco.atualizar(usuario.value,'/usuario')
         } 
@@ -211,7 +216,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -240,7 +249,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -269,7 +282,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -298,7 +315,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -326,7 +347,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -354,7 +379,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           // router.push
           tour.next()
@@ -383,7 +412,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -411,7 +444,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -439,7 +476,11 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -467,7 +508,43 @@ tour.addSteps([
       {
         text: 'Next',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Skip',
+        action: tour.complete
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-12',
+    text: 'Crie Um Projeto',
+    attachTo: {
+      element: '#step-12',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Next',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso=route.path
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -488,7 +565,7 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full" >
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />

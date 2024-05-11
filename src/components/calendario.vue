@@ -7,16 +7,16 @@
                         <button @click="setaEsquerda()" class="w-[5%]">
                             <div
                                 class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
-    
+
                                 <div class="setaEsquerda"></div>
-    
+
                             </div>
                         </button>
                         <div class="text-[28px] w-[17%]">
                             {{ format(new Date(data), "MMMM", {
-                                locale: ptBR
-                            }).charAt(0).toUpperCase() +
-                                format(new Date(data), "MMMM", { locale: ptBR }).slice(1) }}
+                            locale: ptBR
+                        }).charAt(0).toUpperCase() +
+                            format(new Date(data), "MMMM", { locale: ptBR }).slice(1) }}
                         </div>
                         <button @click="setaDireita()" class="w-[5%]">
                             <div
@@ -56,11 +56,12 @@
         </div>
         <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
             <div class="calendario">
-                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia" @dragover="retornaDiaEIndice(dia)"
-                    @mouseenter="hover(dia)" @mouseleave="getCalendario()">
-                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[5%]">{{ format(new Date(dia.dia), 'd') }}</h1>
+                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia"
+                    @dragover="retornaDiaEIndice(dia)" @mouseenter="hover(dia)" @mouseleave="getCalendario()">
+                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[5%]">{{ format(new Date(dia.dia), 'd') }}
+                    </h1>
                     <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[5%] text-[#9C9494]">{{ format(new
-                        Date(dia.dia), 'd') }}</h1>
+                            Date(dia.dia), 'd') }}</h1>
                     <div :style="dia.style">
                         <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort(sortBy('indice'))">
                             <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row h-full"
@@ -86,7 +87,7 @@ import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, 
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import sortBy from 'sort-by'
-import  VueCookies  from 'vue-cookies';
+import VueCookies from 'vue-cookies';
 
 let data = Date.now()
 let diaNovo = ref()
@@ -101,11 +102,21 @@ let border = "none"
 
 getCalendario();
 
-onMounted( async () => {
-    projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),'/projeto')
+onMounted(async () => {
+    projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'), '/projeto')
     tarefas = projeto.tarefas;
     getCalendario();
 })
+
+function ordenaTarefas() {
+    calendario.value.forEach(dia => {
+        dia.listaDeTarefas.sort((tarefa, tarefa2) => {
+          if (tarefa.tarefa.nome != null && tarefa2.tarefa.nome != null) {
+            return tarefa.tarefa.indice[0].indice - tarefa2.tarefa.indice[0].indice
+          }
+        })
+    })
+}
 
 function estilizaDia(dia) {
     if (getDate(dia.dia) == getDate(Date.now()) && getMonth(dia.dia) == getMonth(Date.now()) && getYear(dia.dia) == getYear(Date.now())) {
@@ -154,6 +165,7 @@ async function getCalendario() {
     listaDeDias = await adicionaDiasALista(dias)
     calendario.value = listaDeDias;
     listaDeDias = null
+    ordenaTarefas()
 }
 
 async function adicionaDiasALista(dias) {
@@ -185,7 +197,7 @@ async function verificaTarefasDoDia(dia) {
     tarefas2 = tarefas2.sort(sortBy('indice'))
     for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {
-            if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA" && tarefa.nome!=null) {
+            if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA" && tarefa.nome != null) {
                 if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
                     let tarefaObjeto = {
                         tarefa: tarefa,
@@ -237,24 +249,19 @@ function setaDireita() {
     getCalendario()
 }
 async function trocaDiaEIndice(tarefa, dia, indice) {
-     let data = format(new Date(dia.dia),"yyyy-MM-dd ") + format(new Date(tarefa.propriedade.valor.valor),"hh:mm:ss")
-     tarefa.propriedade.valor.valor = data
+    console.log(dia.listaDeTarefas)
+    tarefa.propriedade.valor.valor = format(new Date(dia.dia), "yyyy-MM-dd")+"T"+ new Date(tarefa.propriedade.valor.valor).toLocaleTimeString()
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
-    for (const tarefa2 of dia.listaDeTarefas) {
-        let indiceTeste = dia.listaDeTarefas.indexOf(tarefa2)
-        tarefa2.tarefa.indice = indiceTeste
-    }
+    console.log(dia.listaDeTarefas)
     onDragEnd(dia.listaDeTarefas)
-    getCalendario()
 }
 function retornaDiaEIndice(dia, indice) {
     diaNovo = dia;
     if (indice != undefined) {
         indiceNovo = indice;
     }
-
 }
 function verificaQauntidadetarefa(dia) {
     if (dia.listaDeTarefas.length >= 3) {
@@ -265,93 +272,96 @@ function verificaQauntidadetarefa(dia) {
 }
 
 function onDragEnd(tarefas) {
-  let tarefaPut = {}
-  tarefas.forEach(async (tarefa, index) => {
-    if (tarefa.nome != null) {
-      tarefa.indice[0].indice = projeto.value.tarefas.indexOf(tarefa)
-      tarefaPut = {
-        id: tarefa.id,
-        nome: tarefa.nome,
-        descricao: tarefa.descricao,
-        status: tarefa.status,
-        cor: tarefa.cor,
-        status: tarefa.status,
-        valorPropriedadeTarefas: [...tarefa.valorPropriedadeTarefas],
-        comentarios: tarefa.comentarios,
-        arquivos: tarefa.arquivos,
-        indice: tarefa.indice,
-      }
-      for (let valorPropriedadeTarefaPut of tarefaPut.valorPropriedadeTarefas) {
-        if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
-          valorPropriedadeTarefaPut.valor = {
-            id: valorPropriedadeTarefaPut.valor.id,
-            texto: valorPropriedadeTarefaPut.valor.valor ?? null,
-            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
-          }
-        } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
-          valorPropriedadeTarefaPut.valor = {
-            id: valorPropriedadeTarefaPut.valor.id,
-            data: valorPropriedadeTarefaPut.valor.valor ?? null,
-            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
-          }
-        } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-          valorPropriedadeTarefaPutPut.valor = {
-            id: valorPropriedadeTarefaPut.valor.id,
-            numero: valorPropriedadeTarefaPut.valor.valor ?? null,
-            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
-          }
-        } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-          valorPropriedadeTarefaPutPut.valor = {
-            id: valorPropriedadeTarefaPut.valor.id,
-            valores: valorPropriedadeTarefaPut.valor.valor ?? null,
-            valor: valorPropriedadeTarefaPut.valor.valor ?? null,
-          }
+console.log(tarefas)
+    let tarefaPut = {}
+    tarefas.forEach(async (tarefaAux, index) => {
+        let tarefa = tarefaAux.tarefa
+        if (tarefa.nome != null) {
+            tarefa.indice[0].indice = tarefas.indexOf(tarefaAux)
+            tarefaPut = {
+                id: tarefa.id,
+                nome: tarefa.nome,
+                descricao: tarefa.descricao,
+                status: tarefa.status,
+                cor: tarefa.cor,
+                status: tarefa.status,
+                valorPropriedadeTarefas: [...tarefa.valorPropriedadeTarefas],
+                comentarios: tarefa.comentarios,
+                arquivos: tarefa.arquivos,
+                indice: tarefa.indice,
+            }
+            for (let valorPropriedadeTarefaPut of tarefaPut.valorPropriedadeTarefas) {
+                if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
+                    valorPropriedadeTarefaPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        texto: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
+                    valorPropriedadeTarefaPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        data: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
+                    valorPropriedadeTarefaPutPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        numero: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
+                    valorPropriedadeTarefaPutPut.valor = {
+                        id: valorPropriedadeTarefaPut.valor.id,
+                        valores: valorPropriedadeTarefaPut.valor.valor ?? null,
+                        valor: valorPropriedadeTarefaPut.valor.valor ?? null,
+                    }
+                }
+            }
+            console.log(tarefaPut)
+            await api.atualizar(tarefaPut, '/tarefa').then((response) => {
+                console.log(response)
+                tarefa = {
+                    id: response.data.id,
+                    nome: response.data.nome,
+                    descricao: response.data.descricao,
+                    status: response.data.status,
+                    cor: response.data.cor,
+                    status: response.data.status,
+                    valorPropriedadeTarefas: response.data.valorPropriedadeTarefas,
+                    comentarios: response.data.comentarios,
+                    arquivos: response.data.arquivos,
+                    indice: response.data.indice,
+                }
+                getCalendario()
+                // for (let valorPropriedadeTarefaPut of tarefa.valorPropriedadeTarefas) {
+                //   if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
+                //     valorPropriedadeTarefaPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.texto ?? null,
+                //     }
+                //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
+                //     valorPropriedadeTarefaPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.data ?? null,
+
+                //     }
+                //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
+                //     valorPropriedadeTarefaPutPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.numero ?? null,
+
+                //     }
+                //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
+                //     valorPropriedadeTarefaPutPut.valor = {
+                //       id: valorPropriedadeTarefaPut.valor.id,
+                //       valor: valorPropriedadeTarefaPut.valor.valores ?? null,
+
+                //     }
+                //   }
+                // }
+            })
         }
-      }
-      console.log(tarefaPut)
-      await api.atualizar(tarefaPut, '/tarefa').then((response) => {
-        console.log(response)
-        tarefa = {
-          id: response.data.id,
-          nome: response.data.nome,
-          descricao: response.data.descricao,
-          status: response.data.status,
-          cor: response.data.cor,
-          status: response.data.status,
-          valorPropriedadeTarefas: response.data.valorPropriedadeTarefas,
-          comentarios: response.data.comentarios,
-          arquivos: response.data.arquivos,
-          indice: response.data.indice,
-        }
-        // for (let valorPropriedadeTarefaPut of tarefa.valorPropriedadeTarefas) {
-        //   if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
-        //     valorPropriedadeTarefaPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.texto ?? null,
-        //     }
-        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
-        //     valorPropriedadeTarefaPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.data ?? null,
-
-        //     }
-        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-        //     valorPropriedadeTarefaPutPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.numero ?? null,
-
-        //     }
-        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-        //     valorPropriedadeTarefaPutPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.valores ?? null,
-
-        //     }
-        //   }
-        // }
-        })
-    }
-  })
+    })
 }
 
 </script>

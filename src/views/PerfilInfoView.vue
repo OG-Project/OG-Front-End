@@ -1,139 +1,88 @@
 <template class="">
     <div class=" flex justify-center flex-wrap">
-        <div class="flex  flex-col items-center w-[20%] h-[877px] drop-shadow-md bg-[#FEFBFF]">
+        <div class="flex flex-col items-center w-[20%] h-[92vh] drop-shadow-md bg-[var(--backgroundItems)]"
+            v-if="isVisualizaPerfil == true">
             <div class=" flex justify-center w-[329px] h-[329px]">
-                <img 
-                    :src="Imagem"
-                    class="xl:w-[95%] sm:h-[30%] sm:w-[30%] md:w-[70%] md:h-[70%] rounded-full  xl:h-[95%]"
-                    />
-                
+                <img :src="Imagem" class="xl:w-[85%]
+                    mt-2 
+                    sm:h-[30%] 
+                    sm:w-[30%] 
+                    md:w-[70%] 
+                    md:h-[70%] 
+                    rounded-full 
+                    xl:h-[85%]" />
             </div>
-            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2 ">
+            <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2">
                 <div class="flex flex-col items-center gap-9">
-                    <div v-for="i in equipes"
-                        class="cardEquipe cursor-pointer shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-brancoNeve">
-                        <img v-if="i.equipe.foto!=null"
-                        class="w-[2vw] h-[50%] 2xl:ml-6 " 
-                        :src="'data:' + i.equipe.foto.tipo + ';base64,' + i.equipe.foto.dados" alt="">
+                    <p>Equipes de {{ perfil.username }}</p>
+                    <div v-for="i in equipes" v-if="isVisualizaEquipes"
+                        class="cardEquipe shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-[var(--backgroundItemsClaros)]">
+                        <img v-if="i.equipe.foto != null" class="w-[2vw] h-[50%] 2xl:ml-6 "
+                            :src="'data:' + i.equipe.foto.tipo + ';base64,' + i.equipe.foto.dados" alt="">
                         <svgEquipe v-else class="2xl:ml-6" />
-                        <div class="truncate w-[60%] flex xl:justify-start sm:justify-center border-b-2 border-roxo pb-1">
+                        <div
+                            class="truncate w-[60%] flex xl:justify-start sm:justify-center border-b-2 border-[var(--roxo)] pb-1">
                             {{ i.equipe.nome }}
                         </div>
                     </div>
-
+                    <p class="w-[80%] text-center" v-if="!isVisualizaEquipes">As equipes do usuário são privadas</p>
                 </div>
-
             </div>
             <!-- <div v-else class="scroll w-[80%] h-[45%] py-2 " >
                 Sem Equipes
             </div> -->
         </div>
-        <div class="w-[75vw] h-[92vh] flex flex-col  ">
-            <div class="flex flex-col justify-around">
+        <div class="w-[75vw] h-[92vh] flex flex-col">
+            <div v-if="isVisualizaPerfil == false" class="flex h-full items-center justify-center">
+                <p class="text-4xl">O usuário possui o perfil privado</p>
+            </div>
+            <div class="flex flex-col justify-around" v-if="isVisualizaPerfil == true">
                 <h1 :style="{ fontFamily: fonteTitulo }"
                     class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
-                    {{perfil.username}}
+                    {{ perfil.username }}
                 </h1>
                 <div :style="{ fontFamily: fonteCorpo }" class="flex sm:flex-wrap justify-center gap-8">
                     <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
                         <div class="flex items-center justify-between gap-5 ">
                             <span class="text-xl">Nome</span>
-                            <Input 
-                            styleInput="input-transparente-claro-grande" 
-                            conteudoInput="Nome" 
-                            v-model="perfil.nome"
-                            :desabilitado="true"
-                            tipo="obrigatorio" />
+                            <Input styleInput="input-transparente-claro-grande" conteudoInput="Nome"
+                                v-model="perfil.nome" :desabilitado="true" tipo="obrigatorio" />
                         </div>
                         <div class="flex items-center justify-between gap-5">
                             <span class="text-xl">Username</span>
-                            <Input 
-                            styleInput="input-transparente-claro-grande" 
-                            conteudoInput="Username"
-                            v-model="perfil.username" 
-                            :desabilitado="true"
-                            tipo="obrigatorio" />
+                            <Input styleInput="input-transparente-claro-grande" conteudoInput="Username"
+                                v-model="perfil.username" :desabilitado="true" tipo="obrigatorio" />
                         </div>
-                        <div class="flex items-center justify-between gap-5">
+                        <div class="flex items-center justify-between gap-5" v-show="isVisualizaEmail">
                             <span class="text-xl">E-mail</span>
-                            <Input 
-                            styleInput="input-transparente-claro-grande" 
-                            conteudoInput="E-mail"
-                            v-model="perfil.email" 
-                            :desabilitado="true"
-                            tipo="obrigatorio" />
+                            <Input styleInput="input-transparente-claro-grande" conteudoInput="E-mail"
+                                v-model="perfil.email" :desabilitado="true" tipo="obrigatorio" />
                         </div>
                     </div>
 
                     <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
                         <div class="flex justify-between items-center gap-5">
                             <span class="text-xl">Sobrenome</span>
-                            <Input 
-                            styleInput="input-transparente-claro-grande" 
-                            conteudoInput="Sobrenome"
-                            v-model="perfil.sobrenome"
-                            :desabilitado="true"
-                            tipo="obrigatorio"
-                             />
+                            <Input styleInput="input-transparente-claro-grande" conteudoInput="Sobrenome"
+                                v-model="perfil.sobrenome" :desabilitado="true" tipo="obrigatorio" />
                         </div>
                         <div class="flex  justify-between items-center gap-5">
-                            
-                            <span class="text-xl">Data de Nascimento</span>
-                            <Input 
-                            styleInput="input-transparente-claro-grande" 
-                            conteudoInput="Data de Nascimento"
-                            v-model="dataNascimento"
-                            :modelValue="dataNascimento.value"
-                            :desabilitado="true" 
-                            tipo="date" />
-                        </div>
-                    </div>
-                </div>
-                <div >
-                    
-                    <Carousel 
-                    v-if="width>958 " 
-                    :value="projetos" 
-                    :numVisible="3" 
-                    containerClass="" 
-                    contentClass="sm:pt-1 xl:pt-9 " 
-                    indicatorsContentClass=" mx-auto *:bg-gray-300 active:*:bg-roxo w-max"
-                    :showNavigators="true"
-                    :showIndicators="true"
-                    verticalViewPortHeight="500px"
-                    :numScroll=" 3"
-                    :responsiveOptions="projetos">
-                        <template #item="slotProps">
-                            <!-- {{ slotProps.index }} -->
-                            <cardProjetos class="my-4 mx-auto"></cardProjetos>
-                            <!-- {{ slotProps.index }} -->
-                        </template>
-                    </Carousel>
 
-                    <Carousel 
-                    v-if="width<958"
-                    :value="projetos" 
-                    :numVisible="1" 
-                    containerClass="" 
-                    contentClass="sm:pt-1 xl:pt-9 " 
-                    indicatorsContentClass=" mx-auto *:bg-gray-300 active:*:bg-roxo w-max"
-                    :showNavigators="true"
-                    :showIndicators="true"
-                    verticalViewPortHeight="500px"
-                    :numScroll="1"
-                    :responsiveOptions="projetos">
-                        <template #item="slotProps">
-                            
-                            <!-- {{ slotProps.index }} -->
-                            <cardProjetos class="my-4 mx-auto"></cardProjetos>
-                            <!-- {{ slotProps.index }} -->
-                        </template>
-                    </Carousel>
-                    <div v-else>
-                        oi
+                            <span class="text-xl">Data de Nascimento</span>
+                            <Input styleInput="input-transparente-claro-grande" conteudoInput="Data de Nascimento"
+                                v-model="dataNascimento" :modelValue="dataNascimento.value" :desabilitado="true"
+                                tipo="date" />
+                        </div>
                     </div>
                 </div>
             </div>
+            <Carousel :value="projetosEquipes" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
+                <template #item="projetosEquipe">
+                    <div class="border-1 surface-border border-round m-2 p-3">
+                        <p>{{ console.log(projetosEquipe) }}</p>
+                    </div>
+                </template>
+            </Carousel>
         </div>
     </div>
 </template>
@@ -149,73 +98,86 @@ import Carousel from 'primevue/carousel';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
-import { onMounted,computed, ref, onUpdated, onBeforeUnmount } from 'vue';
-import {useRoute} from 'vue-router';
+import { onMounted, computed, ref, onUpdated, onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
 import { useMouseInElement, useWindowSize } from '@vueuse/core'
 
-const route=useRoute()
+const route = useRoute()
 
 const conexao = conexaoBD()
 
 const perfil = perfilStore()
-const windowSize=useWindowSize()
+const windowSize = useWindowSize()
 const { width, height } = storeToRefs(windowSize)
 const { fonteCorpo } = storeToRefs(perfil)
 const { fonteTitulo } = storeToRefs(perfil)
 let equipes = ref([])
-let projetos =ref([])
-let dataNascimento=ref('')
-let usuario=ref({})
-let foto=ref(null)
+let projetos = ref([])
+let dataNascimento = ref('')
+let usuario = ref({})
+let foto = ref(null)
+let isVisualizaPerfil = ref(true)
+let isVisualizaEmail = ref(true)
+let isVisualizaEquipes = ref(true)
+let isVisualizaProjetos = ref(true)
+let projetosEquipes = ref([])
+
 
 onMounted(async () => {
-    
-    let id=route.params.id
+
+    let id = route.params.id
     console.log(id)
-    usuario.value=await conexao.buscarUm(id,'/usuario')
+    usuario.value = await conexao.buscarUm(id, '/usuario')
     console.log(usuario)
-    equipes.value=usuario.value.equipes
-    if(projetos.value==undefined){
-        projetos.value=[]
+    equipes.value = usuario.value.equipes
+    if (projetos.value == undefined) {
+        projetos.value = []
     }
-    if(equipes.value==undefined){
-        equipes.value=[]
+    if (equipes.value == undefined) {
+        equipes.value = []
     }
 
-
-    let projetosEquipes=[]
-    equipes.value.forEach(async (element) => {
-        console.log(element.equipe.id)
-        projetosEquipes.push(await conexao.buscarProjetosEquipe('/equipe',element.equipe.id))
+    console.log(equipes.value);
+    equipes.value.forEach(async element => {
+        projetosEquipes.value.push(await conexao.buscarProjetosEquipe('/projeto/buscarProjetos', element.equipe.id))
     });
+    console.log(projetosEquipes.value)
 
     console.log(projetos.value)
     console.log(equipes.value)
-    dataNascimento.value = new Date(usuario.value.dataNascimento).toLocaleDateString() 
-    dataNascimento.value=dataNascimento.value.split('/').reverse().join('-')
+    dataNascimento.value = new Date(usuario.value.dataNascimento).toLocaleDateString()
+    dataNascimento.value = dataNascimento.value.split('/').reverse().join('-')
     console.log(dataNascimento.value);
-    perfil.nome=usuario.value.nome
-    perfil.sobrenome=usuario.value.sobrenome
-    perfil.email=usuario.value.email
-    perfil.username=usuario.value.username
-    perfil.dataDeNascimento=usuario.value.dataNascimento
-    projetos.value=usuario.value.projetos
-    foto.value=usuario.value.foto
+    perfil.nome = usuario.value.nome
+    perfil.sobrenome = usuario.value.sobrenome
+    perfil.email = usuario.value.email
+    perfil.username = usuario.value.username
+    perfil.dataDeNascimento = usuario.value.dataNascimento
+    projetos.value = usuario.value.projetos
+    foto.value = usuario.value.foto
+    isVisualizaPerfil.value = usuario.value.configuracao.isVisualizaPerfil
+    isVisualizaEmail.value = usuario.value.configuracao.isVisualizaEmail
+    isVisualizaEquipes.value = usuario.value.configuracao.isVisualizaEquipes
+    isVisualizaProjetos.value = usuario.value.configuracao.isVisualizaProjetos
+    console.log(isVisualizaPerfil.value);
+    console.log(isVisualizaEmail.value);
+    console.log(isVisualizaEquipes.value);
+    console.log(isVisualizaProjetos.value);
     // alert(height.value)
     // alert(width.value)
 });
 
-function verificaTemEquipe(equipes){
-    if(equipes.length!=0){
+function verificaTemEquipe(equipes) {
+    if (equipes.length != 0) {
         return true
     }
     return false
 }
 
-let Imagem=computed(()=>{
-    if(foto.value!=null){
+let Imagem = computed(() => {
+    if (foto.value != null) {
         console.log(foto.value);
-        return 'data:' +foto.value.tipo + ';base64,' + foto.value.dados
+        return 'data:' + foto.value.tipo + ';base64,' + foto.value.dados
     }
     return
 })
@@ -244,14 +206,12 @@ function temMaisDeQuatro(lista) {
     .scroll::-webkit-scrollbar-thumb {
         @apply bg-[#D9D9D9]
     }
-    .p-carousel-indicator{
+
+    .p-carousel-indicator {
         @apply border-yellow-300;
     }
-    .cardEquipe:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-    }
-    body{
+
+    body {
         @apply overflow-y-hidden;
     }
 }

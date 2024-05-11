@@ -28,19 +28,18 @@ export const editaProjetoStore = defineStore('editaProjeto', {
       projetoCriado.indexLista = indexLista;
       projetoCriado.comentarios = comentarios;
       projetoCriado.categoria = categoria;
-      console.log()
       if (VueCookies.get("idAuxEquipe") != null && VueCookies.get("idAuxEquipe") != undefined && VueCookies.get("idAuxEquipe") != "" && VueCookies.get("idAuxEquipe") != "undefined") {
         api.atualizaProjetoEquipe(projetoCriado, VueCookies.get("idAuxEquipe"), '/projeto').then((res) => {
-          console.log(res.data)
+          
           VueCookies.set("IdProjetoAtual", res.data.id)
           this.enviaParaWebSocket(equipes, res.data)
         })
 
       } else {
         api.atualizar(projetoCriado, '/projeto').then((res) => {
-          console.log(res.data)
           VueCookies.set("IdProjetoAtual", res.data.id)
           this.enviaParaWebSocket(equipes, res.data)
+          return res
         })
       }
 
