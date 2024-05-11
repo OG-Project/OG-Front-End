@@ -158,7 +158,7 @@ onUpdated(() => {
 stylePlaceHolder.value = {
     position: "absolute",
     left: "2.7%",
-    width: "8%",
+    width: "11%",
     height: "2.5%",
     zIndex: "10",
     backgroundColor: "var(--backgroundPuro)",
