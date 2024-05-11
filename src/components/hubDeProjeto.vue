@@ -214,7 +214,8 @@ function abreModalMensagem() {
 }
 
 .animation {
-    @apply absolute w-[30%] h-[70%] z-10;
+    @apply absolute  2xl:w-[30%] xl:w-[30%] lg:w-[30%]
+     md:w-[80%] h-[70%] z-10 mobile:w-full miniMobile:w-full;
     animation: myAnim 0.15s ease 0s 1 normal none;
 }
 

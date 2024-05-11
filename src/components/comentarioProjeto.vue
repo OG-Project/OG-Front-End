@@ -1,9 +1,9 @@
 <template>
-    <div class=" bg-[var(--backgroundItemsClaros)] h-full flex flex-col">
+    <div class=" bg-[var(--backgroundItemsClaros)]  h-full flex flex-col mobile:w-full miniMobile:w-full">
         <div v-if="comentariosProjetoFront.length != 0" class="w-full h-[70%] overflow-y-auto ">
-            <div class="w-[100%]  mt-4 max-h-[15%] flex flex-col border-b-[1px] border-[var(--roxo)]"
+            <div class="w-[100%]  mt-4 min-h-[15%] flex flex-col border-b-[1px] border-[var(--roxo)]"
                 v-for="comentario of comentariosProjetoFront">
-                <div class=" w-full flex flex-row">
+                <div class="h-max w-full flex flex-row">
                     <div class="flex items-center h-full">
                         <img v-if="usuarioCookies != verificacao"
                             class="shadow-2xl h-[60px] min-w-[60px]  mr-4 ml-4 rounded-full" :src="'data:' +
@@ -15,7 +15,7 @@
                     <div class="w-full pb-2 pr-2 flex justify-end max-w-full">
                         <div class="w-full flex pt-2">
                             <p class="pr-2"> {{ comentario.autor.username }}</p> comentou: <p
-                                class="text-[var(--roxoClaro)] pl-2 break-all w-[100%]"> {{ comentario.conteudo }}</p>
+                                class="text-[var(--roxoClaro)] pl-2 break-all w-[100%] "> {{ comentario.conteudo }}</p>
                         </div>
                     </div>
                     <div class="w-[20%] flex items-start">
@@ -42,7 +42,9 @@
             " />
                 <div class="w-full pb-2 pr-2 pl-2 flex justify-end items-end">
                     <TextAreaPadrao width="20vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
-                        tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado"></TextAreaPadrao>
+                        tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado" v-if="screenWidth >= 700"></TextAreaPadrao>
+                        <TextAreaPadrao width="70vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
+                        tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado" v-else></TextAreaPadrao>
                 </div>
             </div>
             <div class=" w-full pb-2 pr-2 flex justify-end">
@@ -75,10 +77,13 @@ let projeto;
 onMounted(() => {
     buscaUsuario()
     parametrosProjeto();
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
     
 })
 
-
+const screenWidth = ref(window.innerWidth);
 
 async function buscaUsuario() {
     usuarioCookies.value = await conexao.buscarUm(idUsuarioCookie, "/usuario")
