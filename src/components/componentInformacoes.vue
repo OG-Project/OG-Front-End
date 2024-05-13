@@ -89,7 +89,7 @@
                         </div>
                 </div>
                 <!-- conferir se de fato vamos usar isso de alteração -->
-                <div class="flex justify-end mr-[15%] mt-[23%]">
+                <div class="flex justify-end mr-[15%] mt-[20%]">
                         <Botao v-if="!editar" 
                         :funcaoClick="alterarInformacoes" 
                         preset="PadraoRoxo" 

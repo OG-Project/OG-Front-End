@@ -174,7 +174,7 @@ function limparNomeCompleto() {
 }
 
 .textArea {
-    @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full 
+    @apply truncate flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full 
     bg-[#D7D7D7] text-black text-lg text-left 
     border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
     border-bottom: 'solid 4px var(--roxo)';
