@@ -22,7 +22,7 @@
               <p>Não Tem Valor</p>
             </div>
             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-              <div class="border-r-2 flex h-full items-center justify-center w-[10vw] truncate  h-full"
+              <div class="border-r-2 flex items-center justify-center w-[10vw] truncate  h-full"
                 v-if="funcaoVerificaPropriedade(propriedade, tarefa)">
                 <div v-if="propriedade.valor.valor == null || propriedade.valor.valor == ''"
                   class="border-r-2 flex items-center justify-center w-[10vw]  h-full">
@@ -143,47 +143,7 @@ function onDragEnd() {
         }
       }
       console.log(tarefaPut)
-      await api.atualizar(tarefaPut, '/tarefa').then((response) => {
-        console.log(response)
-        tarefa = {
-          id: response.data.id,
-          nome: response.data.nome,
-          descricao: response.data.descricao,
-          status: response.data.status,
-          cor: response.data.cor,
-          status: response.data.status,
-          valorPropriedadeTarefas: response.data.valorPropriedadeTarefas,
-          comentarios: response.data.comentarios,
-          arquivos: response.data.arquivos,
-          indice: response.data.indice,
-        }
-        // for (let valorPropriedadeTarefaPut of tarefa.valorPropriedadeTarefas) {
-        //   if (valorPropriedadeTarefaPut.propriedade.tipo == "TEXTO") {
-        //     valorPropriedadeTarefaPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.texto ?? null,
-        //     }
-        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "DATA") {
-        //     valorPropriedadeTarefaPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.data ?? null,
-
-        //     }
-        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-        //     valorPropriedadeTarefaPutPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.numero ?? null,
-
-        //     }
-        //   } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-        //     valorPropriedadeTarefaPutPut.valor = {
-        //       id: valorPropriedadeTarefaPut.valor.id,
-        //       valor: valorPropriedadeTarefaPut.valor.valores ?? null,
-
-        //     }
-        //   }
-        // }
-        })
+      await api.atualizar(tarefaPut, '/tarefa')
     }
   })
 }
