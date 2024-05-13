@@ -46,7 +46,8 @@
                                         {{ tarefa.status.nome }}</p>
                                     <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-if="tarefa.tempoAtuacao">{{
+                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]"
+                                        v-if="tarefa.tempoAtuacao">{{
                             tarefa.tempoAtuacao }}</p>
                                     <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
@@ -249,7 +250,7 @@ function renderChart(type) {
     );
 }
 
-function separaOsMinutos(tarefa){
+function separaOsMinutos(tarefa) {
     const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
     return minutos;
 }
@@ -260,11 +261,19 @@ let totalDeTarefas = computed(() => tarefas.value.length)
 let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em progresso').length)
 let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronto').length)
 let totalHorasTrabalhadas = computed(() => {
-    return tarefas.value.reduce((acc, tarefa) => {
-        // Divida a string do tempo de atuação em horas, minutos e segundos
-        const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
-        return acc + minutos;
-    }, 0);
+    if (tarefas) {
+        return tarefas.value.reduce((acc, tarefa) => {
+            if(tarefa.tempoAtuacao){
+                const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
+            return acc + minutos;
+            }else{
+                return 0
+            }
+        }, 0);
+    }else{
+        return 0
+    }
+
 });
 </script>
 <style scoped>

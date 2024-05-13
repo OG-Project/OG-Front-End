@@ -60,7 +60,7 @@
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
-          
+
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
@@ -219,8 +219,9 @@
                 </div>
               </div>
               <div class="flex w-[100%] mb-2">
-                <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-          " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+                <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados"
+                  @click="router.push(`/perfil/${comentario.autor.id}`)"
+                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
@@ -286,12 +287,12 @@
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
             <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
               <div class="flex gap-2 items-center w-[40%]">
-                <CheckBox
+                <!-- <CheckBox
                   @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
-                  :checked="veSeAPropriedadeTaNaTarefa(propriedade)"></CheckBox>
+                  :checked="veSeAPropriedadeTaNaTarefa(propriedade)"></CheckBox> -->
                 <p class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
-              <div class="w-[30%]">
+              <div class="w-[25%]">
                 <p v-if="propriedade.propriedade.tipo == 'TEXTO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto')
                   }}</p>
                 <p v-if="propriedade.propriedade.tipo == 'DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data')
@@ -308,9 +309,9 @@
               </div> -->
             </div>
             <div class="w-[100%] h-[5vh] flex items-center justify-center ">
-              <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-                <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                  <Input v-if="propriedade.propriedade.id == propriedade.propriedade.id"
+              <div v-for="propriedadeForTarefa of tarefa.propriedades">
+                <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
+                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
                     @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                   </Input>
@@ -402,7 +403,7 @@
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
             <p class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-         
+
             </p>
 
           </div>
@@ -489,10 +490,12 @@ const { t } = useI18n();
 const banco = conexaoBD();
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
-  if (propriedade.valor.valor != []) {
+  console.log(propriedade);
+  if (propriedade.valor.valor != '') {
     return true
-  }else{
-  return false
+  }
+  else{
+    return false
   }
 }
 
@@ -678,7 +681,7 @@ async function criaTarefaNoConcluido() {
             texto: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
         else if (props.propriedade.tipo == "NUMERO") {
           let valor = {
@@ -686,7 +689,7 @@ async function criaTarefaNoConcluido() {
             numero: propsComValor.valor.valor
           }
           props.valor = valor
-        
+
         }
         else if (props.propriedade.tipo == "SELECAO") {
           let valor = {
@@ -694,7 +697,7 @@ async function criaTarefaNoConcluido() {
             selecao: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
         else if (props.propriedade.tipo == "DATA") {
           let valor = {
@@ -702,7 +705,7 @@ async function criaTarefaNoConcluido() {
             data: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
       }
     }
@@ -719,13 +722,12 @@ async function criaTarefaNoConcluido() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto").then(() => {
-    window.location.reload()
+    window.location.reload();
   });
 }
 
@@ -873,8 +875,79 @@ async function calculaTempoAtuacao() {
 
   tempoAtuado = `${horas}:${minutos}:${segundos}`;
   console.log(tempoAtuado)
-  tarefa.value.tempoAtuacao = tempoAtuado;
-  criaTarefaNoConcluido();
+  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  let tarefaCriando = {
+    id: JSON.parse(VueCookies.get("IdTarefaCookies")),
+    responsaveis: [],
+    status: [],
+    subTarefas: [],
+    comentarios: [],
+    valorPropriedadeTarefas: [],
+    cor: "FFFFFF",
+    descricao: null,
+    nome: null,
+    valorPropriedadeTarefas: [],
+    dataCriacao: null,
+    indice: [],
+    tempoAtuacao: "00:00:00"
+  }
+  tarefaCriando.nome = tarefa.value.nome;
+  tarefaCriando.descricao = tarefa.value.descricao;
+  for (const props of tarefa2.valorPropriedadeTarefas) {
+    for (const propsComValor of tarefa.value.propriedades) {
+      if (propsComValor.propriedade.id == props.propriedade.id) {
+        if (props.propriedade.tipo == "TEXTO") {
+          let valor = {
+            id: props.valor.id,
+            texto: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+        else if (props.propriedade.tipo == "NUMERO") {
+          let valor = {
+            id: props.valor.id,
+            numero: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+        else if (props.propriedade.tipo == "SELECAO") {
+          let valor = {
+            id: props.valor.id,
+            selecao: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+        else if (props.propriedade.tipo == "DATA") {
+          let valor = {
+            id: props.valor.id,
+            data: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+      }
+    }
+  }
+  let comentario = [];
+  tarefa.value.comentarios.forEach((comentarioFor) => {
+
+    comentario.push(comentarioFor);
+  });
+  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
+  tarefaCriando.comentarios = comentario;
+  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  tarefaCriando.indice = tarefa.indice;
+  // tarefaCriando.responsaveis = tarefa.value.responsaveis;
+  tarefaCriando.status = tarefa.value.status;
+  tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefaCriando.tempoAtuacao = tempoAtuado;
+  banco.atualizar(tarefaCriando, "/tarefa")
+  if (tarefa.value.arquivos.length != 0) {
+    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+  }
 }
 
 
@@ -918,7 +991,7 @@ let tarefa = ref({
 });
 
 async function puxaTarefaDaEdicao() {
-  
+
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   console.log(tarefaAux);
@@ -1074,7 +1147,9 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
     console.log("antes de começar o for");
     for (let propriedadeForTarefa of tarefa.value.propriedades) {
       console.log("começou o for");
-      if (propriedadeForTarefa.id == propriedade.id) {
+      console.log(propriedade.id);
+      console.log(propriedadeForTarefa.id);
+      if (propriedadeForTarefa.propriedade.id == propriedade.propriedade.id) {
         console.log("entrou pra deletar a propriedade ", propriedade);
         propriedade.valor.valor = propriedadeForTarefa.valor.valor
         tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);
