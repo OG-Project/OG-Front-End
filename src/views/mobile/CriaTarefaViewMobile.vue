@@ -216,7 +216,7 @@
               </div>
               <div class="flex w-[100%] mb-6">
                 <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-          " class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
+          " @click="router.push(`/perfil/${comentario.autor.id}`)" class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}

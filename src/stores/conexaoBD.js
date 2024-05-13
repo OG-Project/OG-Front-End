@@ -180,7 +180,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
     },
     async cadastrarFotoUsuario(idUsuario, foto) {
       try {
@@ -226,6 +225,3 @@ export const conexaoBD = defineStore('conexaoBD', {
     }
     return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
   }
-
-})
-

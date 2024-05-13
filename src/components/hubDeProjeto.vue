@@ -113,6 +113,7 @@ onMounted(async () => {
 async function verificaSeEResponsavel(){
     let usuario = VueCookies.get('IdUsuarioCookie')
     let responsaveis = projeto.value.responsaveis
+    console.log(responsaveis)
     if(responsaveis!=null){
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
