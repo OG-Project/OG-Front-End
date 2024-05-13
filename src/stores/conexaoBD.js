@@ -225,3 +225,4 @@ export const conexaoBD = defineStore('conexaoBD', {
     }
     return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
   }
+})

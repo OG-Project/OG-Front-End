@@ -377,8 +377,8 @@
         </div>
       </div>
       <div id=""  class="w-[80%] flex justify-between pt-8">
-        <Botao id="step-15" preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')"
+        <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')"
           tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>

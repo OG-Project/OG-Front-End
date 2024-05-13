@@ -189,7 +189,7 @@ tour.addSteps([
     buttons: [
       {
         classes: 'button',
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -202,7 +202,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -222,7 +222,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -235,7 +235,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -259,7 +259,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -272,7 +272,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -296,7 +296,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -310,7 +310,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -334,7 +334,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -347,7 +347,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -370,7 +370,7 @@ tour.addSteps([
     },
     buttons:[
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -383,7 +383,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -406,7 +406,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -420,7 +420,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -443,7 +443,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -456,7 +456,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -479,7 +479,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -492,7 +492,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -515,7 +515,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -528,7 +528,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -551,7 +551,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -564,7 +564,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -587,7 +587,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -600,7 +600,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -623,7 +623,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -636,7 +636,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -659,7 +659,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -672,7 +672,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -695,7 +695,7 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -708,12 +708,109 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Skip',
+        text: 'Pular',
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
           tour.complete()
         }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-16',
+    text: 'Clique aqui para completar.',
+    attachTo: {
+      element: '#step-16',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/criaTarefa'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-17',
+    text: 'Há formas diferentes de visualizar suas tarefas como Kanban, Lista, Calendario e Linha do Tempo.',
+    attachTo: {
+      element: '#step-17',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/projeto'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-18',
+    text: 'Existem mais funcionalidades no site, mas o essencial é isso.',
+    attachTo: {
+      element: '#step-18',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: 'Finalizar',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          usuario.value.configuracao.ultimoPassoId='step-1'
+          usuario.value.configuracao.rotaDoPasso='/home'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        } 
       },
       {
         secondary: true,

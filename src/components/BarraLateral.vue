@@ -78,6 +78,12 @@ const banco = conexaoBD()
 let usuario=ref({})
 
 function openClose() {
+  // if(tour.isActive()){
+  //   if(tour.getCurrentStep().id=='step-3'){
+  //     console.log(tour.getCurrentStep().id);
+  //     tour.next()
+  //   }
+  // }
   aberto.value = !aberto.value;
 }
 
@@ -113,12 +119,10 @@ async function geraTutorial() {
         router.push(usuario.value.configuracao.rotaDoPasso)
         tour.show(usuario.value.configuracao.ultimoPassoId,true)
         openClose()
-      
-        // window.location.reload()
-
     }else{
       // console.log(route.path);
       tour.start()
+      openClose()
     }
   }else{
     usuario.value.configuracao.isTutorial=true
