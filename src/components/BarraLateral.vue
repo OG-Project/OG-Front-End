@@ -103,23 +103,30 @@ function redirecionamento(local) {
 
 }
 
-function geraTutorial() {
+async function geraTutorial() {
   console.log(usuario);
   if(usuario.value.configuracao.isTutorial){
     if(usuario.value.configuracao.ultimoPassoId!='step-1'
       && usuario.value.configuracao.ultimoPassoId!=null){
         console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
-        openClose()
+        console.log(usuario.value.configuracao.rotaDoPasso);
         router.push(usuario.value.configuracao.rotaDoPasso)
         tour.show(usuario.value.configuracao.ultimoPassoId,true)
+        openClose()
+      
         // window.location.reload()
 
     }else{
       // console.log(route.path);
       tour.start()
     }
-  }else if(route.path=='/home'){
-      
+  }else{
+    usuario.value.configuracao.isTutorial=true
+    banco.atualizar(usuario.value,'/usuario')
+    console.log(usuario.value.configuracao.rotaDoPasso);
+    router.push(usuario.value.configuracao.rotaDoPasso)
+    tour.show(usuario.value.configuracao.ultimoPassoId,true)
+    openClose()
   }
 }
 
