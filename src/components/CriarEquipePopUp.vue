@@ -41,7 +41,7 @@
             </div>
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
                 <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
-                    class="listaConvidados" altura="40vh" :listaConvidados="listaUsuariosConvidados"
+                    class="listaConvidados" altura="40vh" :margin-right="marginRightConvidado()" :listaConvidados="listaUsuariosConvidados"
                     @foi-clicado="removeListaMembrosConvidados"></ListaConvidados>
             </div>
             <div id="step-7">
@@ -66,7 +66,7 @@
 
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -102,6 +102,20 @@ onMounted(() => {
     conexaoWeb.url = "ws://localhost:8082/og/webSocket/usuario/" + usuarioLogado;
     conexaoWeb.criaConexaoWebSocket()
 })
+
+watch(() => descricao.value, () => {
+    verificaTamanho();
+})
+
+function verificaTamanho(){
+    console.log(descricao.value)
+ if(descricao.value.length > 255){
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "Máximo de 255 caracteres";
+    mensagemCor.value = "#CD0000"
+ }
+}
 
 async function removeListaMembrosConvidados(usuarioConvidado) {
     const index = listaUsuariosConvidados.value.findIndex(convidado => convidado == usuarioConvidado);
@@ -295,17 +309,14 @@ async function cadastrarEquipe() {
     cria.criaEquipe(equipeCadastrada).then(response => {
         equipe = response.data
         enviaParaWebSocket(equipe, membrosEquipe.value);
-        enviarFotoParaBackend(equipe);
-        colocaMembrosEquipe(equipe).then(res =>{
-        })
-        adicionaUsuarioLogado(equipe)
+        adicionaUsuarioLogado(equipe);
+        window.location.reload();
     });
 };
 
 
 async function colocaMembrosEquipe(equipe) {
-    console.log(membrosEquipe.value)
-    const ids = membrosEquipe.value.map(membro => {
+    membrosEquipe.value.map(membro => {
         banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
     });
     await enviarFotoParaBackend(equipe);
@@ -477,7 +488,9 @@ async function enviarFotoParaBackend(equipe) {
         .titulo {
             @apply text-4xl mb-2;
         }
-
+        .alert{
+            @apply ml-10
+        }
         .botao {
             @apply flex justify-end mt-10
         }
