@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <!-- Pop-araaaaa criar uma propriedade -->
+      <!-- Pop-araaaaa criar uma propariedade -->
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
@@ -347,10 +347,11 @@
                     <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor.valor, index)"
                       :src="BotaoX" />
                   </div>
-                  <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
-                    {{ $t('criaTarefa.add') }}
-                  </p>
-                  {{ console.log(propriedade.valor) }}
+                  <div v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id">
+                    <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
+                      {{ $t('criaTarefa.add') }}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -494,7 +495,7 @@ function veSeAPropriedadeTaNaTarefa(propriedade) {
   if (propriedade.valor.valor != '') {
     return true
   }
-  else{
+  else {
     return false
   }
 }
