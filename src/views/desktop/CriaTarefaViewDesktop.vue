@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <!-- Pop-araaaaa criar uma propariedade -->
+      <!-- Popaaa-araaaaa criar uma propariedade -->
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
