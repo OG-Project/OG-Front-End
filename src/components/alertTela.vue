@@ -134,7 +134,7 @@
             transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
         }
         .icon{
-            @apply flex justify-center items-center ml-2 2xl:mt-[1vh];
+            @apply flex justify-center items-center ml-2 2xl:mt-[0vh];
         }
     }
 </style>
