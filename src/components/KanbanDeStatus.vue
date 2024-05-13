@@ -1,11 +1,12 @@
 <template>
     <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
-        <div v-for="propriedade of lista" class="w-auto flex h-full" @dragover="(() => {
+        <div v-for="propriedade of lista" class="w-auto flex h-full">
+            <div :style="propriedade.style"  @dragover="(() => {
             statusNovo = propriedade.propriedade
         })">
-            <div :style="propriedade.style">
 
-                <div class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
+                <div
+                    class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
                     <div class="w-[90%] flex justify-center">
                         {{ propriedade.propriedade.nome }}
                     </div>
@@ -17,11 +18,8 @@
                     v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
                     @end="() => mudaStatus(propriedade)" item-key="tarefa.indice">
                     <template #item="{ element: tarefa }">
-                        <div class="w-full h-full flex items-center justify-center" @dragstart="(() => {
-            tarefaDrag = tarefa
-        })">
+                        <div class="w-full h-full flex items-center justify-center" @dragstart="(() => {tarefaDrag = tarefa})">
                             <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
-                                {{ console.log(tarefa) }}
                                 <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                             </div>
                         </div>
