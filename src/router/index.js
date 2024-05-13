@@ -124,6 +124,10 @@ const router = createRouter({
       component: () => import('../views/PerfilInfoView.vue')
     },
     {
+      path:'/chat',
+      component: () => import('../views/desktop/ChatView.vue')
+    },
+    {
       path: '/projeto/responsavel',
       component: () => import('../views/AdminHomeView.vue')
     },

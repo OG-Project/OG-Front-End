@@ -60,7 +60,7 @@
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
-          
+
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
@@ -402,7 +402,7 @@
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
             <p class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-         
+
             </p>
 
           </div>
@@ -679,7 +679,7 @@ async function criaTarefaNoConcluido() {
             texto: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
         else if (props.propriedade.tipo == "NUMERO") {
           let valor = {
@@ -687,7 +687,7 @@ async function criaTarefaNoConcluido() {
             numero: propsComValor.valor.valor
           }
           props.valor = valor
-        
+
         }
         else if (props.propriedade.tipo == "SELECAO") {
           let valor = {
@@ -695,7 +695,7 @@ async function criaTarefaNoConcluido() {
             selecao: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
         else if (props.propriedade.tipo == "DATA") {
           let valor = {
@@ -703,7 +703,7 @@ async function criaTarefaNoConcluido() {
             data: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
       }
     }
@@ -716,18 +716,22 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
-  tarefaCriando.indice = tarefa.indice;
+  tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
-  banco.atualizar(tarefaCriando, "/tarefa")
-  if (tarefa.value.arquivos.length != 0) {
-    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
-  }
-  router.push("/projeto").then(() => {
-    window.location.reload()
+  console.log(tarefaCriando)
+  banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
+    console.log(response)
+    if (tarefa.value.arquivos.length != 0) {
+      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+    }
+    router.push("/projeto").then(() => {
+      window.location.reload();
+    });
   });
+
 }
 
 //Função que deleta status
@@ -919,7 +923,7 @@ let tarefa = ref({
 });
 
 async function puxaTarefaDaEdicao() {
-  
+
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   console.log(tarefaAux);

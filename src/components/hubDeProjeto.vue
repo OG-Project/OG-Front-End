@@ -7,10 +7,10 @@
     <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
             <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
-                <div class="h-[45%]">
-                    {{ projeto.nome }}
+                <div class="h-[100%] flex items-end truncate">
+                   <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
                 </div>
-                <div class="flex items-end" v-if="verificaSeEResponsavel() == true" @click="router.push('/responsavel')">
+                <div class="flex items-end" v-if="verificaSeEResponsavel()" @click="router.push('/projeto/responsavel')">
                     <Dashboard></Dashboard>
                 </div>
             </div>
