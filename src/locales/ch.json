@@ -109,7 +109,7 @@
     "Modo Claro": "明亮模式",
     "Modo Escuro": "暗黑模式"
   },
-  "informacoes":{
+  "informacoes": {
     "Informações": "信息",
     "Nome": "姓名",
     "Username": "用户名",
@@ -137,5 +137,18 @@
     "alterarSenha": "更改密码",
     "alterarEmail": "更改电子邮件",
     "deletarConta": "您是否要删除您的账户？"
+  },
+  "paginaAdm": {
+    "listaDeTarefas": "任务清单",
+    "tarefasDoSeuProjeto": "您的项目任务",
+    "nomeDaTarefa": "任务名称",
+    "status": "状态",
+    "tempoTrabalhado": "工作时间",
+    "aprovado": "已批准",
+    "tarefas": "任务",
+    "total": "总计",
+    "emProgresso": "进行中",
+    "prontas": "准备就绪",
+    "totalMinutosTrabalhados": "总工作分钟数"
   }
 }

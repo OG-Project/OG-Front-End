@@ -1,26 +1,26 @@
 <template>
     <div class="h-[92vh] w-full">
         <div class="flex p-2 text-4xl justify-center">
-            <h1>Lista de Tarefas</h1>
+            <h1>{{ $t('paginaAdm.listaDeTarefas') }}</h1>
         </div>
         <div class="flex items-center relative justify-center mt-4 h-[38%] ml-16">
             <div id="poligono"
                 class="h-[100%] w-[40vh] shadow-2xl flex justify-center flex-col left-[-0.50rem] absolute overflow-visible"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; z-index: 5;">
-                <p class="flex justify-center items-center text-2xl text-white">Tarefas do seu projeto</p>
+                <p class="flex justify-center items-center text-2xl text-white">{{ $t('paginaAdm.tarefasDoSeuProjeto') }}</p>
             </div>
             <div class="bg-[var(--backgroundItems)] ml-8 w-[90%] h-[92%] flex items-center justify-end"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
                     <div class="flex gap-4 mt-6 flex-wrap justify-center w-[100%] text-md">
                         <div class="flex gap-8 pb-8 w-[90%] items-center justify-center">
-                            <p class="w-[25%] flex items-center justify-center">Nome da tarefa</p>
+                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.nomeDaTarefa') }}</p>
                             <!-- <p class="w-[25%] flex items-center justify-center">Lider</p> -->
                             <!-- <p class="w-[25%] flex items-center justify-center">Membros</p> -->
-                            <p class="w-[25%] flex items-center justify-center">Status</p>
-                            <p class="w-[25%] flex items-center justify-center">Tempo trabalhado</p>
+                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.status') }}</p>
+                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.tempoTrabalhado') }}</p>
                             <!-- <p class="w-[25%] flex items-center justify-center">Entrega</p> -->
-                            <p class="w-[25%] flex items-center justify-center">Aprovado</p>
+                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.aprovado') }}</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
@@ -72,11 +72,11 @@
         </div>
         <div class="flex relative w-full gap-4 pl-24 mt-16 h-[38%]">
             <div class="flex pl-12 flex-col justify-center w-[22%] h-[85%] border-r-2 border-black">
-                <p class="text-2xl">Tarefas</p>
-                <p>Total: {{ totalDeTarefas }}</p>
-                <p>Em progresso: {{ totalEmProgresso }}</p>
-                <p>Prontas: {{ totalProntas }}</p>
-                <p>Total minutos trabalhados: {{ totalHorasTrabalhadas }}</p>
+                <p class="text-2xl">{{ $t('paginaAdm.tarefas') }}</p>
+                <p>{{ $t('paginaAdm.total') }}: {{ totalDeTarefas }}</p>
+                <p>{{ $t('paginaAdm.emProgresso') }}: {{ totalEmProgresso }}</p>
+                <p>{{ $t('paginaAdm.prontas') }}: {{ totalProntas }}</p>
+                <p>{{ $t('paginaAdm.totalMinutosTrabalhados') }}: {{ totalHorasTrabalhadas }}</p>
             </div>
             <div class="flex flex-col w-[5%] h-full items-center justify-center gap-4">
                 <button @click="changeChart('bar')"
@@ -258,7 +258,7 @@ function changeChart(type) {
     renderChart(type)
 }
 let totalDeTarefas = computed(() => tarefas.value.length)
-let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em progresso').length)
+let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em Progresso').length)
 let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronto').length)
 let totalHorasTrabalhadas = computed(() => {
     if (tarefas) {

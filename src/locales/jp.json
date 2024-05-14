@@ -94,14 +94,14 @@
     "projetos": "プロジェクト",
     "projeto": "プロジェクト"
   },
-  "acessibilidade":{
+  "acessibilidade": {
     "Acessibilidade": "アクセシビリティ",
     "Alterar Idioma": "言語を変更する",
     "Digitar com a voz": "音声入力",
     "Libras": "手話",
     "Teclado Virtual": "仮想キーボード"
   },
-  "aparencia":{
+  "aparencia": {
     "Aparência": "外観",
     "Titulo": "タイトル",
     "Corpo de Texto": "本文",
@@ -109,7 +109,7 @@
     "Modo Claro": "ライトモード",
     "Modo Escuro": "ダークモード"
   },
-  "informacoes":{
+  "informacoes": {
     "Informações": "情報",
     "Nome": "名前",
     "Username": "ユーザー名",
@@ -137,6 +137,18 @@
     "alterarSenha": "パスワードを変更する",
     "alterarEmail": "メールアドレスを変更する",
     "deletarConta": "アカウントを削除しますか？"
+  },
+  "paginaAdm": {
+    "listaDeTarefas": "タスクリスト",
+    "tarefasDoSeuProjeto": "プロジェクトのタスク",
+    "nomeDaTarefa": "タスク名",
+    "status": "ステータス",
+    "tempoTrabalhado": "作業時間",
+    "aprovado": "承認済み",
+    "tarefas": "タスク",
+    "total": "合計",
+    "emProgresso": "進行中",
+    "prontas": "完了",
+    "totalMinutosTrabalhados": "総作業時間"
   }
-  
 }

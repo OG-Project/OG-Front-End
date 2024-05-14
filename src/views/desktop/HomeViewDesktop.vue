@@ -168,7 +168,11 @@ onMounted(() => {
   };
   data.labels = ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"];
   data.datasets[0].data = [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value];
-  new Chart(document.getElementById("tabela"), config);
+  const chartCanvas = document.getElementById('tabela');
+  if (chartCanvas) {
+    const ctx = chartCanvas.getContext('2d');
+    new Chart(ctx, config);
+  }
 });
 </script>
 
