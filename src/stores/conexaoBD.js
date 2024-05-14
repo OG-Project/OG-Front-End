@@ -72,14 +72,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = false;
       }
     },
-    adicionarUsuarios(idUser, equipeId, numeroPermissao, textoRequisicao) {
-      this.loading = true;
-      try{
-      return axios.patch('http://localhost:8082' + (textoRequisicao + '/' + idUser + "/" + equipeId + "/" + numeroPermissao), "", { withCredentials: true })
-      }finally {
-      this.loading = false;
-      }
-    },
     adicionarCriador(userId, equipeId) {
       this.loading = true;
       try{
@@ -88,48 +80,10 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = false;
       }
     },
-    deletar(id, textoRequisicao) {
-      this.loading = true;
-      try{
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
-
-      })
-      }finally {
-      this.loading = false;
-      }
-    },
-    deletarProjetoEquipe(id, idProjeto, textoRequisicao) {
-      this.loading = true;
-      try{
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`, { withCredentials: true }).then(response => {
-
-      })
-      }finally {
-      this.loading = false;
-      }
-    },
-    async buscarHistorico(id, textoRequisicao) {
-      this.loading = true;
-      try{
-      return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`)).data)
-      }finally {
-      this.loading = false;
-      }
-    },
     async buscarMembrosEquipe(equipeId, textoRequisicao) {
       this.loading = true;
       try{
       return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
-      }finally {
-      this.loading = false;
-      }
-    },
-    removerUsuarioDaEquipe(equipeId, userId, textoRequisicao) {
-      this.loading = true;
-      try{
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`, { withCredentials: true }).then(response => {
-
-      })
       }finally {
       this.loading = false;
       }
@@ -174,14 +128,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = false;
       }
     },
-    adicionarCriador(userId, equipeId) {
-      this.loading = true;
-      try{
-      return axios.patch('http://localhost:8082/usuario/criador/' + userId + '/' + equipeId, "", { withCredentials: true })
-      }finally {
-      this.loading = false;
-      }
-    },
     deletar(id, textoRequisicao) {
       this.loading = true;
       try{
@@ -208,43 +154,11 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = false;
       }
     },
-    async buscarMembrosEquipe(equipeId, textoRequisicao) {
-      this.loading = true;
-      try{
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
-      }finally {
-      this.loading = false;
-      }
-    },
     removerUsuarioDaEquipe(equipeId, userId, textoRequisicao) {
       this.loading = true;
       try{
       return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`, { withCredentials: true }).then(response => {
       })
-      }finally {
-      this.loading = false;
-      }
-    },
-    async buscarUm(id, textoRequisicao) {
-      this.loading = true;
-      try{
-      return (await axios.get('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
-      }finally {
-      this.loading = false;
-      }
-    },
-    async buscarProjetosEquipe(equipeId, textoRequisicao) {
-      this.loading = true;
-      try{
-      return await ((await axios.get("http://localhost:8082" + textoRequisicao + "/" + equipeId, { withCredentials: true })).data)
-      }finally {
-      this.loading = false;
-      }
-    },
-    async buscarProjetosUsuario(userId, textoRequisicao) {
-      this.loading = true;
-      try{
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`, { withCredentials: true })).data)
       }finally {
       this.loading = false;
       }
