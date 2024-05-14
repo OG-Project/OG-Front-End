@@ -171,9 +171,8 @@ function contraste(cor) {
 }
 
 .scrollBarInfo {
-    position: relative;
     overflow: hidden;
-    transition: overflow-y 0.3s ease;
-    @apply overflow-y-auto max-h-max h-[92vh] flex flex-col border-2 gap-8 shadow-xl border-[var(--backgroundItemsClaros)] border-b-0;
+    transition: overflow-y ;
+    @apply overflow-y-auto max-h-max h-[87vh] flex flex-col border-2 gap-8 shadow-xl border-[var(--backgroundItemsClaros)] border-b-0;
 }
 </style>

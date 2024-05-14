@@ -116,6 +116,7 @@ async function criarProjeto() {
     window.location.reload()
   });
   VueCookies.set("projetoCookie");
+  VueCookies.set("IdProjetoAtual")
 }
 
 

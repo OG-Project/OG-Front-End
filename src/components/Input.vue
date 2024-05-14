@@ -283,6 +283,7 @@ function teclado(){
         } 
         return "6vh"   
     }
+
    const tamanhoIcon={
         width:"50%",
         height:"50%",
@@ -337,15 +338,15 @@ function teclado(){
          // só muda a cor de fundo da div do input de acordo com o style recebido
         if(props.styleInput=="input-escuro" || props.styleInput=="input-grande-escuro" || 
         props.styleInput=="input-escuro-grande" || props.styleInput=="input-escuro-grande" ){
-            return "#484848"
+            return "var(--backgroundItems)"
         }else if(props.styleInput=="input-claro" || props.styleInput=="input-grande-claro" || 
         props.styleInput=="input-claro-grande" || props.styleInput=="input-claro-grande"){
-            return "#D7D7D7"
+            return "var(--backgroundItemsClaros)"
         }
     }
     function verificaCorHover(){
         if(props.corHover=="escuro"){
-            return "#484848"
+            return "var(--backgroundItems)"
         }
         return "var(--backgroundItemsClaros)"
     }
