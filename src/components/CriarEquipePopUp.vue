@@ -76,6 +76,8 @@ import { conexaoBD } from '../stores/conexaoBD';
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
 import alertTela from './alertTela.vue';
+import { webSocketStore } from '../stores/webSocket.js'
+import { apple } from 'color-convert/conversions';
 
 
 
@@ -87,11 +89,8 @@ let usuarioLogado = VueCookies.get("IdUsuarioCookie")
 let valorSelectSelecionado = ref("Edit")
 let membrosEquipe = ref([]);
 let listaUsuariosConvidados = ref([])
-let conexaoWeb = webSocketStore()
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
-import { webSocketStore } from '../stores/webSocket.js'
-import { apple } from 'color-convert/conversions';
 
 function limparMensagemErro() {
     mensagem.value = "";
@@ -99,10 +98,6 @@ function limparMensagemErro() {
 let mensagem = ref("");
 let mensagemCor = ref("");
 
-onMounted(() => {
-    conexaoWeb.url = "ws://localhost:8082/og/webSocket/usuario/1";
-    conexaoWeb.criaConexaoWebSocket()
-})
 
 async function removeListaMembrosConvidados(usuarioConvidado) {
     const index = listaUsuariosConvidados.value.findIndex(convidado => convidado == usuarioConvidado);
@@ -297,7 +292,7 @@ async function cadastrarEquipe() {
         equipe = response.data
         enviarFotoParaBackend(equipe);
         adicionaUsuarioLogado(equipe)
-        enviaParaWebSocket(equipe, membrosEquipe.value);
+        enviaParaWebSocket(response.data, listaUsuariosConvidados.value);
     });
 };
 
@@ -336,7 +331,9 @@ async function enviaParaWebSocket(equipe, membrosConvidados) {
             }
         }
     }
-    await conexaoWeb.enviaMensagemWebSocket(JSON.stringify(teste))
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 function funcaoPermissao(convidados){
