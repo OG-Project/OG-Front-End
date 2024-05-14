@@ -41,7 +41,7 @@
             </div>
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
                 <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
-                    class="listaConvidados" altura="40vh" :listaConvidados="listaUsuariosConvidados"
+                    class="listaConvidados" altura="40vh" :margin-right="marginRightConvidado()" :listaConvidados="listaUsuariosConvidados"
                     @foi-clicado="removeListaMembrosConvidados"></ListaConvidados>
             </div>
             <div id="step-7">
@@ -66,7 +66,7 @@
 
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -98,6 +98,20 @@ function limparMensagemErro() {
 let mensagem = ref("");
 let mensagemCor = ref("");
 
+
+watch(() => descricao.value, () => {
+    verificaTamanho();
+})
+
+function verificaTamanho(){
+    console.log(descricao.value)
+ if(descricao.value.length > 255){
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "Máximo de 255 caracteres";
+    mensagemCor.value = "#CD0000"
+ }
+}
 
 async function removeListaMembrosConvidados(usuarioConvidado) {
     const index = listaUsuariosConvidados.value.findIndex(convidado => convidado == usuarioConvidado);
@@ -300,9 +314,9 @@ async function cadastrarEquipe() {
 async function colocaMembrosEquipe(equipe,idUsuarioLogado) {
     console.log(membrosEquipe.value)
     banco.adicionarUsuarios(idUsuarioLogado, equipe.id, "2", "/usuario/add");
+
     await enviarFotoParaBackend(equipe);
 }
-
 function adicionaUsuarioLogado(equipe) {
     const usuarioLogadoId = Number(usuarioLogado);
     banco.adicionarCriador(usuarioLogadoId, equipe.id).then(() => {
@@ -482,7 +496,9 @@ async function enviarFotoParaBackend(equipe) {
         .titulo {
             @apply text-4xl mb-2;
         }
-
+        .alert{
+            @apply ml-10
+        }
         .botao {
             @apply flex justify-end mt-10
         }

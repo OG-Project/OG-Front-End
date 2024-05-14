@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
-            <button class="w-[20%] border-2 border-[var(--roxo)] flex justify-center items-center"
+            <button id="step-14" class="w-[20%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="enviaCookieTarefaNova()">
                 +Tarefa
             </button>
@@ -113,6 +113,7 @@ onMounted(async () => {
 async function verificaSeEResponsavel(){
     let usuario = VueCookies.get('IdUsuarioCookie')
     let responsaveis = projeto.value.responsaveis
+    console.log(responsaveis)
     if(responsaveis!=null){
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {

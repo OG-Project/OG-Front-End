@@ -6,6 +6,7 @@
                 <div class=" w-full flex flex-row">
                     <div class="flex items-center h-full">
                         <img v-if="usuarioCookies != verificacao"
+                        @click="router.push(`/perfil/${comentario.autor.id}`)"
                             class="shadow-2xl h-[60px] min-w-[60px]  mr-4 ml-4 rounded-full" :src="'data:' +
                     comentario.autor.foto.tipo +
                     ';base64,' +
@@ -34,7 +35,7 @@
         </div>
         <div class="w-[100%]  mt-4  shadow-lg min-h-[30%] max-h-[30%] flex flex-col justify-end">
             <div class=" w-full flex flex-row justify-around">
-                <img v-if="usuarioCookies != verificacao"
+                <img v-if="usuarioCookies != verificacao" @click="router.push(`/perfil/${comentario.autor.id}`)"
                     class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
             usuarioCookies.foto.tipo +
             ';base64,' +
@@ -62,6 +63,7 @@ import { onMounted, ref, watch } from "vue";
 import { conexaoBD } from "../stores/conexaoBD";
 import { editaProjetoStore } from "../stores/editaProjeto";
 import iconMensagem from "../assets/iconMensagem.vue";
+import router from "../router";
 const conexao = conexaoBD();
 const editaProjeto = editaProjetoStore();
 const idUsuarioCookie = VueCookies.get("IdUsuarioCookie")

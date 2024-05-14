@@ -76,13 +76,13 @@
                     </div>
                 </div>
             </div>
-            <Carousel :value="projetosEquipes" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
+            <!-- <Carousel :value="projetosEquipes" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions">
                 <template #item="projetosEquipe">
                     <div class="border-1 surface-border border-round m-2 p-3">
                         <p>{{ console.log(projetosEquipe) }}</p>
                     </div>
                 </template>
-            </Carousel>
+            </Carousel> -->
         </div>
     </div>
 </template>

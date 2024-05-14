@@ -40,6 +40,10 @@
               </svg>
               <div>{{ $t('barraLateral.projetos') }}</div>
             </div>
+            <div  class="flex gap-6 justify-center items-center text-white " @click="geraTutorial()">
+              <tutorial-icon ></tutorial-icon>
+              <div>{{ 'Tutorial' }}</div>
+            </div>
           </div>
           <div class="w-full flex-col flex gap-6 ml-4 mb-4 justify-end items-start" @click="redirecionamento('/login')">
             <div class="flex gap-6 justify-center items-center text-white ">
@@ -61,14 +65,35 @@
 
 <script setup>
 import router from '@/router';
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import hamburger from '../imagem-vetores/haburguer.vue'
 import VueCookies from "vue-cookies";
+import { conexaoBD } from '../stores/conexaoBD';
+import tutorialIcon from '../assets/tutorialIcon.vue';
+import { inject } from 'vue'
+
+const tour = inject('tour')
 const aberto = ref(false);
+const banco = conexaoBD()
+let usuario=ref({})
 
 function openClose() {
+  // if(tour.isActive()){
+  //   if(tour.getCurrentStep().id=='step-3'){
+  //     console.log(tour.getCurrentStep().id);
+  //     tour.next()
+  //   }
+  // }
   aberto.value = !aberto.value;
 }
+
+onMounted(async ()=>{
+  usuario.value =
+    await banco.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  console.log(usuario.value);
+})
 
 function redirecionamento(local) {
   router.push(local).then(() => {
@@ -83,6 +108,32 @@ function redirecionamento(local) {
   });
 
 }
+
+async function geraTutorial() {
+  console.log(usuario);
+  if(usuario.value.configuracao.isTutorial){
+    if(usuario.value.configuracao.ultimoPassoId!='step-1'
+      && usuario.value.configuracao.ultimoPassoId!=null){
+        console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
+        console.log(usuario.value.configuracao.rotaDoPasso);
+        router.push(usuario.value.configuracao.rotaDoPasso)
+        tour.show(usuario.value.configuracao.ultimoPassoId,true)
+        openClose()
+    }else{
+      // console.log(route.path);
+      tour.start()
+      openClose()
+    }
+  }else{
+    usuario.value.configuracao.isTutorial=true
+    banco.atualizar(usuario.value,'/usuario')
+    console.log(usuario.value.configuracao.rotaDoPasso);
+    router.push(usuario.value.configuracao.rotaDoPasso)
+    tour.show(usuario.value.configuracao.ultimoPassoId,true)
+    openClose()
+  }
+}
+
 </script>
 
 <style scoped>
