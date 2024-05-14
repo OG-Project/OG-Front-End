@@ -53,8 +53,8 @@ defineEmits(['update:modelValue'])
     }
 
     const estilizaSelect={
-        fontSize: 'var(--fonteCorpoTamanho)'
-
+        fontSize: 'var(--fonteCorpoTamanho)',
+        backgroundColor: verificaCorBack()
     }
     
     const selectButton = document.querySelector('.inline-flex button');
@@ -68,18 +68,18 @@ defineEmits(['update:modelValue'])
          console.log(props.altura)
         if(props.styleSelect=="select-escuro" || props.styleSelect=="select-grande-escuro" || 
         props.styleSelect=="select-escuro-grande" || props.styleSelect=="select-escuro-grande"){
-            return "#484848"
+            return "var(--backgroundItems)"
         }else if(props.styleSelect=="select-claro" || props.styleSelect=="select-grande-claro" || 
         props.styleSelect=="select-claro-grande" || props.styleSelect=="select-claro-grande"){
-            return "#D7D7D7"
+            return "var(--backgroundItems)"
         }
         else if (props.styleSelect=="select-cinza" || props.styleSelect=="select-grande-cinza" ||
         props.styleSelect=="select-cinza-grande"){
-            return "#787878"
+            return "var(--backgroundItems)"
         }
         else if (props.styleSelect=="select-branco" || props.styleSelect=="select-grande-cinza" ||
         props.styleSelect=="select-branco-grande"){
-            return "var(--backgroundItems)"
+            return "var(--backgroundPuro)"
         }
     }
 
@@ -101,7 +101,7 @@ defineEmits(['update:modelValue'])
         if(props.corHover=="escuro"){
             return "#484848"
         }
-        return "#D7D7D7"
+        return "var(--backgroundItems)"
     }
 </script>
 
@@ -143,11 +143,11 @@ defineEmits(['update:modelValue'])
     }
 
     select option:checked{
-        background-color: rgba(220, 179, 255, 0.192)
+        background-color: var(--backgroundItems)
     }
 
     option{
-        @apply flex justify-center items-center;
+        @apply flex justify-center items-center bg-[var(--backgroundItems)];
     }
    
 }

@@ -109,7 +109,7 @@
     "Modo Claro": "Modo Claro",
     "Modo Escuro": "Modo Escuro"
   },
-  "informacoes":{
+  "informacoes": {
     "Informações": "Informações",
     "Nome": "Nome",
     "Username": "Nome de Usuário",
@@ -137,5 +137,19 @@
     "alterarSenha": "Alterar Senha",
     "alterarEmail": "Alterar E-mail",
     "deletarConta": "Deseja deletar sua Conta?"
+  },
+  "paginaAdm": {
+    "listaDeTarefas": "Lista de Tarefas",
+    "tarefasDoSeuProjeto": "Tarefas do seu Projeto",
+    "nomeDaTarefa": "Nome da Tarefa",
+    "status": "Status",
+    "tempoTrabalhado": "Tempo Trabalhado",
+    "aprovado": "Aprovado",
+    "tarefas": "Tarefas",
+    "total": "Total",
+    "emProgresso": "Em Progresso",
+    "prontas": "Prontas",
+    "totalMinutosTrabalhados": "Total de Minutos Trabalhados",
+    "historico": "Histórico"
   }
 }

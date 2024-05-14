@@ -1,34 +1,29 @@
 <template>
   <!-- Verifica se o botão deve ter um ícone ou não -->
-  <div
-  style="font-family: var(--fonteCorpo);">
-      <div v-if="TemIcon === 'sim'">
-        <button :class="tamanhoComClass" :style="isClick ? clickBotao : isHovered ? hoverBotao : botao" @mouseover="hover"
+  <div style="font-family: var(--fonteCorpo);">
+    <div v-if="TemIcon === 'sim'">
+      <button :class="tamanhoComClass" :style="isClick ? clickBotao : isHovered ? hoverBotao : botao" @mouseover="hover"
         @mouseout="unhover" @click="click">
         <p>{{ Texto }}</p>
         <img :src="icon" @mouseover="hover" @mouseout="unhover" :style="estiloIcone" />
       </button>
     </div>
     <div v-if="TemIcon === 'nao'">
-      
-      <button :class="tamanhoComClass"
-      :style="isClick ? clickBotao : isHovered ? hoverBotao : botao"
-      @mouseover="hover"
-      @mouseout="unhover"
-      @click="click"
-      >
+
+      <button :class="tamanhoComClass" :style="isClick ? clickBotao : isHovered ? hoverBotao : botao" @mouseover="hover"
+        @mouseout="unhover" @click="click">
         <p>{{ Texto }}</p>
       </button>
     </div>
-</div>
+  </div>
 </template>
 
 <script setup>
 import { ref, onMounted, defineProps, watch, computed, onUpdated } from "vue";
 import { perfilStore } from "../stores/perfilStore";
-let perfil=perfilStore()
+let perfil = perfilStore()
 import { storeToRefs } from 'pinia';
-const {hue} =storeToRefs(perfil)
+const { hue } = storeToRefs(perfil)
 const isHovered = ref(false);
 const isClick = ref(false);
 // 
@@ -37,26 +32,26 @@ const tamanhoComClass = ref("medioId");
 
 const screenWidth = ref(window.innerWidth)
 
-onMounted(()=>{
+onMounted(() => {
   props.roxo;
   hue.value;
-  if(screenWidth < 640){
-    'var(--fonteCorpoTamanho)'.value='0.5vh'
+  if (screenWidth < 640) {
+    'var(--fonteCorpoTamanho)'.value = '0.5vh'
   }
 })
 
-watch(hue,(newValue) => {
+watch(hue, (newValue) => {
   newValue
-  hue.value=newValue
-  
+  hue.value = newValue
+
 })
-onUpdated(()=>{
- hue.value;
+onUpdated(() => {
+  hue.value;
 
 })
 
 const props = defineProps({
-  roxo:String,
+  roxo: String,
   texto: String,
   cor: String,
   corHover: String,
@@ -114,27 +109,27 @@ let estiloIcone = {
 
 switch (props.tamanhoPadrao) {
 
-case 'medio':
-  tamanhoComClass.value = "medioId"
-  break;
-case 'pequeno':
-  tamanhoComClass.value = "pequenoId"
-  break;
-case 'grande':
-  tamanhoComClass.value = "grandeId"
-  break;
-case 'mobilegrande':
-  tamanhoComClass.value = "mobileGrandeId"
-  break;
-case 'mobilemedio':
-  tamanhoComClass.value = "mobileMedioId"
-  break;
-case 'mobilepequeno':
-  tamanhoComClass.value = "mobilePequenoId"
-  break;
-case 'mobilepadrao':
-  tamanhoComClass.value = "mobilePadraoId"
-  break;
+  case 'medio':
+    tamanhoComClass.value = "medioId"
+    break;
+  case 'pequeno':
+    tamanhoComClass.value = "pequenoId"
+    break;
+  case 'grande':
+    tamanhoComClass.value = "grandeId"
+    break;
+  case 'mobilegrande':
+    tamanhoComClass.value = "mobileGrandeId"
+    break;
+  case 'mobilemedio':
+    tamanhoComClass.value = "mobileMedioId"
+    break;
+  case 'mobilepequeno':
+    tamanhoComClass.value = "mobilePequenoId"
+    break;
+  case 'mobilepadrao':
+    tamanhoComClass.value = "mobilePadraoId"
+    break;
 }
 
 let sombras = ""
@@ -185,11 +180,47 @@ switch (Preset) {
     };
 
     break;
+  case "DeletarMobile":
+    Texto = "Deletar";
+    TemIcon = "nao";
+    botao = {
+      display: "flex",
+      backgroundColor: "#CD0000",
+      justifyContent: "center",
+      alignItems: "center",
+      border: props.tamanhoDaBorda + " solid #CD0000",
+      color: "#FFFFFF",
+      fontSize: 'var(--fonteCorpoTamanho)',
+      boxShadow: sombras,
+    };
+
+    hoverBotao = {
+      backgroundColor: "#CD0000",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      border: props.tamanhoDaBorda + " solid #CD0000",
+      color: "#FFFFFF",
+      fontSize: 'var(--fonteCorpoTamanho)',
+      boxShadow: sombras,
+    };
+
+    clickBotao = {
+      backgroundColor: "#E67373",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      border: props.tamanhoDaBorda + " solid #FFFFFF",
+      color: "#FFFFFF",
+      fontSize: 'var(--fonteCorpoTamanho)',
+      boxShadow: sombras,
+    };
+
+    break;
   case "Confirmar":
     Texto = "Confirmar";
     TemIcon = "nao";
     botao = {
-      backgroundColor: "#FFFFFF",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -225,7 +256,6 @@ switch (Preset) {
     Texto = "Sair";
     TemIcon = "nao";
     botao = {
-      backgroundColor: "#FFFFFF",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -567,7 +597,6 @@ function click() {
 </script>
 
 <style lang="scss">
-
 .medioId {
   @apply 2xl:w-[10vw] 2xl:h-[5h] lg:w-[15vw] lg:h-[5vh] xl:w-[14vw] xl:h-[5h] md:w-[18vw] md:h-[5vh] sm:w-[20vw] sm:h-[5vh]
 }
@@ -580,16 +609,19 @@ function click() {
   @apply 2xl:w-[12vw] 2xl:h-[5h] lg:w-[20vw] lg:h-[5vh] xl:w-[16vw] xl:h-[5h] md:w-[23vw] md:h-[5vh] sm:w-[25vw] sm:h-[5vh]
 }
 
-.mobileGrandeId{
+.mobileGrandeId {
   @apply w-[80vw] h-[5vh]
 }
-.mobileMedioId{
+
+.mobileMedioId {
   @apply w-[42vw] h-[5vh]
 }
-.mobilePadraoId{
+
+.mobilePadraoId {
   @apply w-[48vw] h-[5vh]
 }
-.mobilePequenoId{
+
+.mobilePequenoId {
   @apply w-[20vw] h-[5vh] 2xl:h-[5vh] xl:h-[8vh]
 }
 </style>

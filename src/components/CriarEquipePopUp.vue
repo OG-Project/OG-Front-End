@@ -329,7 +329,6 @@ function adicionaUsuarioLogado(equipe) {
 }
 
 async function enviaParaWebSocket(equipe, membrosConvidados) {
-    console.log(membrosConvidados)
     let equipeAux = {
         id: equipe.id,
         nome: equipe.nome,

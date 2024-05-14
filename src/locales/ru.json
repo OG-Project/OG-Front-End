@@ -66,7 +66,7 @@
     "weekly_projects": "Проекты на неделю",
     "monthly_projects": "Проекты на месяц"
   },
-  "navBar":{
+  "navBar": {
     "botaoNovaTarefa": "Новая задача",
     "pesquisar": "Поиск..."
   },
@@ -94,7 +94,7 @@
     "projetos": "Проекты",
     "projeto": "Проект"
   },
-  "acessibilidade":{
+  "acessibilidade": {
     "Acessibilidade": "доступность",
     "Alterar Idioma": "Изменить язык",
     "Digitar com a voz": "Ввод с голосом",
@@ -109,7 +109,7 @@
     "Modo Claro": "Светлый режим",
     "Modo Escuro": "Темный режим"
   },
-  "informacoes":{
+  "informacoes": {
     "Informações": "Информация",
     "Nome": "Имя",
     "Username": "Имя пользователя",
@@ -137,6 +137,19 @@
     "alterarSenha": "Изменить пароль",
     "alterarEmail": "Изменить адрес электронной почты",
     "deletarConta": "Хотите удалить свою учетную запись?"
-  }
-  
+  },
+    "paginaAdm": {
+      "listaDeTarefas": "Список задач",
+      "tarefasDoSeuProjeto": "Задачи вашего проекта",
+      "nomeDaTarefa": "Название задачи",
+      "status": "Статус",
+      "tempoTrabalhado": "Время работы",
+      "aprovado": "Утверждено",
+      "tarefas": "Задачи",
+      "total": "Всего",
+      "emProgresso": "В процессе",
+      "prontas": "Готово",
+      "totalMinutosTrabalhados": "Всего минут работы",
+      "historico": "История"
+    }
 }
