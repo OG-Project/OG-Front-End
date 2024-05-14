@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full h-full flex flex-col items-center justify-end overflow-hidden">
+    <div class="w-full  flex flex-col items-center justify-end overflow-hidden">
         <hubDeProjeto @trocaValor="(event) => opcao = event" @atualizaPropriedadesVisiveis="atualizaValorDaLista($event)"></hubDeProjeto>
         <div id="step-17" class="w-full h-[63vh] flex justify-center items-end">
             <div class="divMaior ">

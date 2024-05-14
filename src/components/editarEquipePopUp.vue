@@ -282,12 +282,32 @@ function larguraInput() {
 async function removesse() {
     await banco.removerUsuarioDaEquipe(equipeSelecionada,idUsuarioLogado, "/usuario/removerUsuarioEquipe").then(response => {
             if (router.currentRoute.value.path == '/equipe') {
-                window.location.reload();
             } else {
                 router.push({ path: '/equipe' });
             }
         }
     )
+}
+
+async function enviaParaWebSocket(equipe, membrosConvidados) {
+    let equipeAux = {
+        id: equipe.id,
+        nome: equipe.nome,
+        descricao: equipe.descricao,
+        membros: membrosConvidados
+    }
+    let teste = {
+        equipes: [{ equipe: equipeAux }],
+        notificao: {
+            mensagem: "Te Convidou para a Equipe",
+            conviteParaEquipe: {
+                equipe: equipe
+            }
+        }
+    }
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 async function deletarEquipe() {
@@ -339,7 +359,7 @@ async function atualizarEquipe() {
 
             // Verifica se houve alterações nos campos antes de atualizar
             if (equipeAtualizar.nome != equipe.nome || equipeAtualizar.descricao != equipe.descricao) {
-                banco.atualizar(equipeAtualizar, "/equipe");
+                banco.atualizar(equipeAtualizar, "/equipe")
             } else {
                 mensagem.value = ""
                 mensagemCor.value = ""
@@ -390,6 +410,7 @@ async function toBase64(file) {
         reader.onerror = error => reject(error);
     });
 }
+
 
 
 async function enviarFotoParaBackend(id) {

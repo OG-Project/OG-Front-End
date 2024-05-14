@@ -154,9 +154,11 @@ function clearTimer(objeto) {
 
 }
 
-function adicionaUsuarioALista(notificacao) {
+async function adicionaUsuarioALista(notificacao) {
+    let usuario = await api.buscarUm(usuarioId,"/usuario")
+    console.log(usuario);
     if (notificacao.conviteParaEquipe != null) {
-        api.adicionarUsuarios([usuarioId], notificacao.conviteParaEquipe.equipe.id, '/usuario/add')
+        api.adicionarUsuarios(usuarioId, notificacao.conviteParaEquipe.equipe.id,retornaPermissao(usuario,notificacao.conviteParaEquipe.permissoes),'/usuario/add')
         notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito) => {
             if (usuarioAceito.usuario.id == usuarioId) {
                 usuarioAceito.aceito = true
@@ -190,6 +192,13 @@ function removerUsuarioALista(notificacao) {
     })
 }
 
+function retornaPermissao(usuario,permissoes) {
+    for (const permissao of permissoes) {
+        if (usuario.id == permissao.usuarioId) {
+            return permissao.permissao
+        }
+    }
+}
 
 function trocarRota(idProjeto, rota, propriedadeCookie) {
     VueCookies.set(propriedadeCookie, idProjeto)

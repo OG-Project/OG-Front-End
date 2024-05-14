@@ -533,6 +533,7 @@ async function criaTarefaNoConcluido() {
     nome: null,
     valorPropriedadeTarefas: [],
     dataCriacao: null,
+    indice:[]
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
@@ -578,6 +579,7 @@ async function criaTarefaNoConcluido() {
   });
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
+  tarefaCriando.indice = tarefa2.indice
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;

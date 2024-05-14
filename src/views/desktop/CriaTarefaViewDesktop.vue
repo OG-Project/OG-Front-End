@@ -723,12 +723,17 @@ async function criaTarefaNoConcluido() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  banco.atualizar(tarefaCriando, "/tarefa")
-  if (tarefa.value.arquivos.length != 0) {
-    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
-  }
-  router.push("/projeto").then(() => {
-    window.location.reload();
+  tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
+  console.log(tarefaCriando)
+  banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
+    console.log(response)
+    if (tarefa.value.arquivos.length != 0) {
+      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+    }
+      router.push("/projeto").then(() => {
+        window.location.reload();
+      });
+
   });
 
 }
