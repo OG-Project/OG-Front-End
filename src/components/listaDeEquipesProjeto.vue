@@ -7,7 +7,8 @@
             <div class="div-membros flex flex-col items-center overflow-y-auto scrollbar-thin">
                 <div class="flex justify-center w-full" v-for="equipe in projetoAtual.projetoEquipes">
                     <div class="corDiv">
-                        <img v-if="equipe.equipe.foto != null" class="imgDePerfil" :src="'data:' +
+                        <img v-if="equipe.equipe.foto != null"
+                            class="imgDePerfil" :src="'data:' +
                     equipe.equipe.foto.tipo +
                     ';base64,' +
                     equipe.equipe.foto.dados
@@ -196,16 +197,16 @@ async function enviaParaWebSocket(projeto, equipesConvidadas) {
 async function confirmarConvites() {
     let membros = []
     let equipes = []
-    
+
     for (const equipe of equipesParaConvidar.value) {
         membros.push(await banco.buscarUm(equipe.id, "/equipe/criador"))
         let equipeAux = {
             equipe: {
-                id:equipe.id,
+                id: equipe.id,
                 nome: equipe.nome,
-                descricao:equipe.descricao,
-                foto:equipe.foto,
-                membros:membros
+                descricao: equipe.descricao,
+                foto: equipe.foto,
+                membros: membros
             },
         }
         equipes.push(equipeAux)

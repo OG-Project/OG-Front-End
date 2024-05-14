@@ -137,6 +137,20 @@
     "alterarSenha": "Cambiar Contraseña",
     "alterarEmail": "Cambiar Correo Electrónico",
     "deletarConta": "¿Desea eliminar su Cuenta?"
+  },
+  "paginaAdm":{
+    "listaDeTarefas": "Lista de Tareas",
+    "tarefasDoSeuProjeto": "Tareas de tu Proyecto",
+    "nomeDaTarefa": "Nombre de la Tarea",
+    "status": "Estado",
+    "tempoTrabalhado": "Tiempo Trabajado",
+    "aprovado": "Aprobado",
+    "tarefas": "Tareas",
+    "total": "Total",
+    "emProgresso": "En Progreso",
+    "prontas": "Listas",
+    "totalMinutosTrabalhados": "Total de Minutos Trabajados",
+    "historico": "Histórico"   
   }
   
 }

@@ -10,7 +10,7 @@
       <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
     </div>
     <div class="divCel flex justify-end">
-      <div class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
+      <div id="step-10" class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
         <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim"
           corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"
           :texto="'+ ' + $t('equipes.projeto')" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">

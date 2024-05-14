@@ -41,7 +41,7 @@
             </div>
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
                 <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
-                    class="listaConvidados" altura="40vh" :listaConvidados="listaUsuariosConvidados"
+                    class="listaConvidados" altura="40vh" :margin-right="marginRightConvidado()" :listaConvidados="listaUsuariosConvidados"
                     @foi-clicado="removeListaMembrosConvidados"></ListaConvidados>
             </div>
             <div id="step-7">
@@ -66,7 +66,7 @@
 
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -76,6 +76,8 @@ import { conexaoBD } from '../stores/conexaoBD';
 import { criaEquipeStore } from "../stores/criarEquipe";
 import VueCookies from "vue-cookies";
 import alertTela from './alertTela.vue';
+import { webSocketStore } from '../stores/webSocket.js'
+import { apple } from 'color-convert/conversions';
 
 
 
@@ -87,10 +89,8 @@ let usuarioLogado = VueCookies.get("IdUsuarioCookie")
 let valorSelectSelecionado = ref("Edit")
 let membrosEquipe = ref([]);
 let listaUsuariosConvidados = ref([])
-let conexaoWeb = webSocketStore()
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
-import { webSocketStore } from '../stores/webSocket.js'
 
 function limparMensagemErro() {
     mensagem.value = "";
@@ -98,10 +98,20 @@ function limparMensagemErro() {
 let mensagem = ref("");
 let mensagemCor = ref("");
 
-onMounted(() => {
-    conexaoWeb.url = "ws://localhost:8082/og/webSocket/usuario/" + usuarioLogado;
-    conexaoWeb.criaConexaoWebSocket()
+
+watch(() => descricao.value, () => {
+    verificaTamanho();
 })
+
+function verificaTamanho(){
+    console.log(descricao.value)
+ if(descricao.value.length > 255){
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "Máximo de 255 caracteres";
+    mensagemCor.value = "#CD0000"
+ }
+}
 
 async function removeListaMembrosConvidados(usuarioConvidado) {
     const index = listaUsuariosConvidados.value.findIndex(convidado => convidado == usuarioConvidado);
@@ -294,23 +304,19 @@ async function cadastrarEquipe() {
     let equipe;
     cria.criaEquipe(equipeCadastrada).then(response => {
         equipe = response.data
-        enviaParaWebSocket(equipe, membrosEquipe.value);
         enviarFotoParaBackend(equipe);
-        colocaMembrosEquipe(equipe).then(res =>{
-        })
         adicionaUsuarioLogado(equipe)
+        enviaParaWebSocket(response.data, listaUsuariosConvidados.value);
     });
 };
 
 
-async function colocaMembrosEquipe(equipe) {
+async function colocaMembrosEquipe(equipe,idUsuarioLogado) {
     console.log(membrosEquipe.value)
-    const ids = membrosEquipe.value.map(membro => {
-        banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
-    });
+    banco.adicionarUsuarios(idUsuarioLogado, equipe.id, "2", "/usuario/add");
+
     await enviarFotoParaBackend(equipe);
 }
-
 function adicionaUsuarioLogado(equipe) {
     const usuarioLogadoId = Number(usuarioLogado);
     banco.adicionarCriador(usuarioLogadoId, equipe.id).then(() => {
@@ -333,15 +339,27 @@ async function enviaParaWebSocket(equipe, membrosConvidados) {
         notificao: {
             mensagem: "Te Convidou para a Equipe",
             conviteParaEquipe: {
-                equipe: equipe
+                equipe: equipe,
+                permissoes: funcaoPermissao(membrosConvidados)
             }
         }
     }
     const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
+function funcaoPermissao(convidados){
+    let permissoes = []
+    convidados.forEach((convidado) =>{
+        if(convidado.permissao == 1){
+            permissoes.push({usuarioId: convidado.id, permissao: 1})
+        }else{
+            permissoes.push({usuarioId: convidado.id, permissao: 2})
+        }
+    })
+    return permissoes;
+}
 
 async function enviarFotoParaBackend(equipe) {
     try {
@@ -477,7 +495,9 @@ async function enviarFotoParaBackend(equipe) {
         .titulo {
             @apply text-4xl mb-2;
         }
-
+        .alert{
+            @apply ml-10
+        }
         .botao {
             @apply flex justify-end mt-10
         }

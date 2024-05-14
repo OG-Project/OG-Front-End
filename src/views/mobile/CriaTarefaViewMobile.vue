@@ -216,7 +216,7 @@
               </div>
               <div class="flex w-[100%] mb-6">
                 <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-          " class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
+          " @click="router.push(`/perfil/${comentario.autor.id}`)" class="shadow-2xl h-[8vw] w-[8vw] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
@@ -318,7 +318,7 @@
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'">
+                <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
                   <div v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
                     <Input altura="2" largura="27" conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
@@ -533,6 +533,7 @@ async function criaTarefaNoConcluido() {
     nome: null,
     valorPropriedadeTarefas: [],
     dataCriacao: null,
+    indice:[]
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
@@ -578,6 +579,7 @@ async function criaTarefaNoConcluido() {
   });
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
+  tarefaCriando.indice = tarefa2.indice
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;

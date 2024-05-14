@@ -83,7 +83,7 @@
                 <textAreaPadrao
                     class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center"
                     height="20vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"
-                    v-model="descricao" @updateModelValue="(e)=> {descricao=e}"></textAreaPadrao>
+                    v-model="descricao" @updateModelValue="(e)=> {descricao= e}"></textAreaPadrao>
             </div>
             <div
                 class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
@@ -97,11 +97,14 @@
         </div>
 
     </fundoPopUp>
-
+    <div v-if="mensagem != ''" class="alert">
+        <alertTela :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro">
+        </alertTela>
+    </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
 import fundoPopUp from './fundoPopUp.vue';
 import Input from './Input.vue';
 import textAreaPadrao from './textAreaPadrao.vue';
@@ -110,7 +113,33 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import { useRouter } from 'vue-router'
 import equipe from '../imagem-vetores/equipe.vue';
+import alertTela from './alertTela.vue';
 const screenWidth = window.innerWidth;
+const router = useRouter();
+const banco = conexaoBD();
+const equipeSelecionada = VueCookies.get('equipeSelecionada')
+let idUsuarioLogado = VueCookies.get("IdUsuarioCookie")
+let usuarioLogado = banco.buscarUm(idUsuarioLogado,"/usuario")
+console.log(usuarioLogado)
+let equipeEditar = ref({
+    nome: '',
+    descricao: '',
+    foto: null
+});
+let nome = ref('');
+let descricao = ref('');
+let mensagemError = ref("");
+let editando = ref(false);
+let equipes = banco.procurar("/equipe");
+let usuarios = banco.procurar("/usuario");
+let usuarioFazParteEquipe = false;
+let usuarioECriadorEquipe = false;
+function limparMensagemErro() {
+    mensagem.value = "";
+}
+let mensagem = ref("");
+let mensagemCor = ref("");
+
 
 function tamanhoPopUp() {
     const screenWidth = window.innerWidth;
@@ -126,6 +155,18 @@ onMounted(()=>{
    equipeDoUsuarioLogado();
 })
 
+watch(() => descricao.value, () => {
+    verificaTamanho();
+})
+
+function verificaTamanho(){
+ if(descricao.value.length > 255){
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "Máximo de 255 caracteres";
+    mensagemCor.value = "#CD0000"
+ }
+}
 
 function larguraNomeEquipe() {
     const screenWidth = window.innerWidth;
@@ -185,27 +226,6 @@ const imagemExibicao = computed(() => {
     }
 });
 
-
-const banco = conexaoBD();
-const equipeSelecionada = VueCookies.get('equipeSelecionada')
-let idUsuarioLogado = VueCookies.get("IdUsuarioCookie")
-let usuarioLogado = banco.buscarUm(idUsuarioLogado,"/usuario")
-console.log(usuarioLogado)
-let equipeEditar = ref({
-    nome: '',
-    descricao: '',
-    foto: null
-});
-let nome = ref('');
-let descricao = ref('');
-let mensagemError = ref("");
-let editando = ref(false);
-let equipes = banco.procurar("/equipe");
-let usuarios = banco.procurar("/usuario");
-let usuarioFazParteEquipe = false;
-let usuarioECriadorEquipe = false;
-const router = useRouter();
-
 async function equipeDoUsuarioLogado (){
     let listaUsuarios = await usuarios;
     const logadoId = Number(idUsuarioLogado);
@@ -262,12 +282,32 @@ function larguraInput() {
 async function removesse() {
     await banco.removerUsuarioDaEquipe(equipeSelecionada,idUsuarioLogado, "/usuario/removerUsuarioEquipe").then(response => {
             if (router.currentRoute.value.path == '/equipe') {
-                window.location.reload();
             } else {
                 router.push({ path: '/equipe' });
             }
         }
     )
+}
+
+async function enviaParaWebSocket(equipe, membrosConvidados) {
+    let equipeAux = {
+        id: equipe.id,
+        nome: equipe.nome,
+        descricao: equipe.descricao,
+        membros: membrosConvidados
+    }
+    let teste = {
+        equipes: [{ equipe: equipeAux }],
+        notificao: {
+            mensagem: "Te Convidou para a Equipe",
+            conviteParaEquipe: {
+                equipe: equipe
+            }
+        }
+    }
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 async function deletarEquipe() {
@@ -304,7 +344,6 @@ async function atualizarEquipe() {
             // Verificar se o nome foi alterado
             if (nome.value.trim() != '') {
                 equipeAtualizar.nome = nome.value;
-                console.log("cassio")
             } else {
                 equipeAtualizar.nome = equipe.nome; // Mantém o nome original se não foi alterado
             }
@@ -320,9 +359,12 @@ async function atualizarEquipe() {
 
             // Verifica se houve alterações nos campos antes de atualizar
             if (equipeAtualizar.nome != equipe.nome || equipeAtualizar.descricao != equipe.descricao) {
-                banco.atualizar(equipeAtualizar, "/equipe");
+                banco.atualizar(equipeAtualizar, "/equipe")
             } else {
-                console.log('Nenhuma alteração detectada na equipe.');
+                mensagem.value = ""
+                mensagemCor.value = ""
+                mensagem.value = "Nenhuma alteração detectada";
+                mensagemCor.value = "#CD0000"
             }
 
             // Verificar se houve uma nova foto selecionada
@@ -350,9 +392,13 @@ async function atualizarEquipe() {
         // Envia a foto para o backend apenas se houver uma nova foto ou a foto anterior foi mantida
         enviarFotoParaBackend(equipeSelecionada);
     } else {
-        console.log('Nenhuma imagem selecionada. A equipe será atualizada sem uma nova imagem.');
+        mensagem.value = ""
+        mensagemCor.value = ""
+        mensagem.value = "Nenhuma imagem detectada";
+        mensagemCor.value = "#CD0000"
     }
 
+   window.location.reload();
 }
 
 // Função para converter o arquivo para base64
@@ -366,19 +412,17 @@ async function toBase64(file) {
 }
 
 
+
 async function enviarFotoParaBackend(id) {
     try {
         if (!imagemSelecionada.value) {
             // Verifica se uma imagem foi selecionada
-            console.error('Nenhuma imagem selecionada.');
             return;
         }
 
         const equipeId = id;
         await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
-        console.log('Foto enviada com sucesso para o backend.');
     } catch (error) {
-        console.error('Erro ao enviar a foto para o backend:', error);
     }
 }
 
@@ -387,6 +431,10 @@ async function enviarFotoParaBackend(id) {
 @import url(../assets/main.css);
 
 @layer components {
+
+    .alert {
+        @apply absolute flex items-start justify-start 2xl:mt-[-20vh] mr-10 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
+    }
 
     .descricao {
         white-space: pre-wrap;
@@ -399,7 +447,7 @@ async function enviarFotoParaBackend(id) {
     }
 
     .textArea {
-        @apply flex 2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+        @apply truncate flex 2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
         border-bottom: 'solid 4px #620BA7';
     }
 
@@ -452,6 +500,9 @@ async function enviarFotoParaBackend(id) {
 
         .imagem {
             @apply h-[6vh] w-[3vw];
+        }
+        .alert{
+            @apply mr-4 mt-[-15vh]
         }
 
     }
@@ -515,7 +566,9 @@ async function enviarFotoParaBackend(id) {
         .titulo {
             @apply text-4xl;
         }
-
+        .alert{
+            @apply mr-4
+        }
         .textArea {
             @apply flex w-[70vw] h-[20vh] bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
             border-bottom: 'solid 4px #620BA7';

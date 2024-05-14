@@ -56,11 +56,11 @@
         </div>
       </div>
 
-      <!-- Pop-araaaaa criar uma propriedade -->
+      <!-- Popaaa-araaaaa criar uma propariedade -->
 
       <div v-if="propriedadeSendoCriada">
         <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
-          
+
           <!-- fiz como um popUp, tem um botão que abre o popUp -->
           <div class="animation">
             <div class="flex justify-start">
@@ -219,8 +219,9 @@
                 </div>
               </div>
               <div class="flex w-[100%] mb-2">
-                <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados
-          " class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+                <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados"
+                  @click="router.push(`/perfil/${comentario.autor.id}`)"
+                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
                 <div class="w-[80%]">
                   <p>
                     {{ comentario.autor.username }}
@@ -282,74 +283,49 @@
         </div>
 
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
-          <div v-for="propriedade in listaFiltradaPropriedades"
+          <div v-for="propriedade in listaFiltradaPropriedades" :key="propriedade.propriedade.id"
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
             <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
               <div class="flex gap-2 items-center w-[40%]">
-                <CheckBox
-                  @click="adicionaExcluiPropriedadeNaTarefa(propriedade, veSeAPropriedadeTaNaTarefa(propriedade))"
-                  :checked="veSeAPropriedadeTaNaTarefa(propriedade)"></CheckBox>
                 <p class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
-              <div class="w-[30%]">
-                <p v-if="propriedade.propriedade.tipo == 'TEXTO'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto')
-                  }}</p>
-                <p v-if="propriedade.propriedade.tipo == 'DATA'">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data')
-                  }}
-                </p>
-                <p v-if="propriedade.propriedade.tipo == 'NUMERO'">{{ $t('criaTarefa.type') }}: {{
-          $t('criaTarefa.Numero')
-        }}</p>
-                <p v-if="propriedade.propriedade.tipo == 'SELECAO'">{{ $t('criaTarefa.type') }}: {{
-          $t('criaTarefa.Seleção') }}</p>
+              <div class="w-[25%]">
+                <p>{{ $t('criaTarefa.type') }}: {{ propriedade.propriedade.tipo }}</p>
               </div>
-              <!-- <div class="flex justify-center">
-                <img class="w-[100%] mr-4" @click="deletaPropriedade(propriedade)" :src="BotaoX" />
-              </div> -->
             </div>
-            <div class="w-[100%] h-[5vh] flex items-center justify-center ">
-              <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-                <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
-                    @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
-                  </Input>
-                </div>
-              </div>
+            <div class="w-[100%] min-h-[5vh] flex justify-center flex-wrap">
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'DATA'">
-                  <input @input="patchDaListaDePropriedades()"
-                    v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
-                    type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
-                </div>
-              </div>
-              <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-                  <Input v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
-                    @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
-                  </Input>
-                  <!-- <InputNumber v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    class="border-2 rounded-lg border-[var(--roxo)]" showIcon iconDisplay="input"
-                    v-model="propriedadeForTarefa.valor.valor" inputId="minmaxfraction" minFractionDigits="0"
-                    maxFractionDigits="2" @input="patchDaListaDePropriedades()" /> -->
-                </div>
-              </div>
-              <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
-                  <div v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
-                    v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
-                    <Input altura="2" largura="27" conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
-                      width="60%" @input="patchDaListaDePropriedades()">
+                <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id">
+                  <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
+                    <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
+                      @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                     </Input>
-                    <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor.valor, index)"
-                      :src="BotaoX" />
                   </div>
-                  <p class="pl-2 pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
-                    {{ $t('criaTarefa.add') }}
-                  </p>
-                  {{ console.log(propriedade.valor) }}
+                  <div v-if="propriedade.propriedade.tipo === 'DATA'">
+                    <input @input="patchDaListaDePropriedades()"
+                      class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
+                      type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
+                  </div>
+                  <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
+                    <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
+                      @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                    </Input>
+                  </div>
+                  <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
+                    <div v-for="(valor, index) in propriedade.valor.valor" class="mb-4 mt-4 h-8 items-center flex"
+                      :key="index">
+                      <Input conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
+                        width="60%" @input="patchDaListaDePropriedades()">
+                      </Input>
+                      <img class="w-[100%] ml-2" @click="deletaValorSelect(propriedade.valor.valor, index)"
+                        :src="BotaoX" />
+                    </div>
+                    <div>
+                      <p class="pl-2 pb-8 flex items-center justify-center pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
+                        {{ $t('criaTarefa.add') }}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -374,9 +350,9 @@
           </div>
         </div>
       </div>
-      <div class="w-[80%] flex justify-between pt-8">
+      <div id=""  class="w-[80%] flex justify-between pt-8">
         <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')"
+        <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')"
           tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
@@ -402,7 +378,7 @@
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
             <p class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-         
+
             </p>
 
           </div>
@@ -443,7 +419,7 @@
           <div v-if="propriedade.propriedade.tipo === 'DATA'">
             <p>{{ $t('criaTarefa.value') }} {{ formatarData(propriedade.valor.valor) }}</p>
           </div>
-          <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'" class="flex">
+          <div v-if="propriedade.propriedade.tipo === 'SELECAO'" class="flex">
             <p>{{ $t('criaTarefa.value') }}</p>
             <select class="flex text-center w-[80%]">
               <option v-for="valor of propriedade.valor.valor">{{ valor }}</option>
@@ -489,12 +465,13 @@ const { t } = useI18n();
 const banco = conexaoBD();
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
-  for (const propriedadeFor of tarefa.value.propriedades) {
-    if (propriedadeFor.id == propriedade.id) {
-      return true
-    }
+  console.log(propriedade);
+  if (propriedade.valor.valor != '') {
+    return true
   }
-  return false
+  else {
+    return false
+  }
 }
 
 let tempoAtuado;
@@ -679,7 +656,7 @@ async function criaTarefaNoConcluido() {
             texto: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
         else if (props.propriedade.tipo == "NUMERO") {
           let valor = {
@@ -687,7 +664,7 @@ async function criaTarefaNoConcluido() {
             numero: propsComValor.valor.valor
           }
           props.valor = valor
-        
+
         }
         else if (props.propriedade.tipo == "SELECAO") {
           let valor = {
@@ -695,7 +672,7 @@ async function criaTarefaNoConcluido() {
             selecao: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
         else if (props.propriedade.tipo == "DATA") {
           let valor = {
@@ -703,7 +680,7 @@ async function criaTarefaNoConcluido() {
             data: propsComValor.valor.valor
           }
           props.valor = valor
-         
+
         }
       }
     }
@@ -716,18 +693,23 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
   tarefaCriando.cor = tarefa.value.corDaTarefa;
-  tarefaCriando.indice = tarefa.indice;
+  tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
-  banco.atualizar(tarefaCriando, "/tarefa")
-  if (tarefa.value.arquivos.length != 0) {
-    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
-  }
-  router.push("/projeto").then(() => {
-    window.location.reload()
+  console.log(tarefaCriando)
+  banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
+    console.log(response)
+    if (tarefa.value.arquivos.length != 0) {
+      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+    }
+      router.push("/projeto").then(() => {
+        window.location.reload();
+      });
+
   });
+
 }
 
 //Função que deleta status
@@ -874,8 +856,79 @@ async function calculaTempoAtuacao() {
 
   tempoAtuado = `${horas}:${minutos}:${segundos}`;
   console.log(tempoAtuado)
-  tarefa.value.tempoAtuacao = tempoAtuado;
-  criaTarefaNoConcluido();
+  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  let tarefaCriando = {
+    id: JSON.parse(VueCookies.get("IdTarefaCookies")),
+    responsaveis: [],
+    status: [],
+    subTarefas: [],
+    comentarios: [],
+    valorPropriedadeTarefas: [],
+    cor: "FFFFFF",
+    descricao: null,
+    nome: null,
+    valorPropriedadeTarefas: [],
+    dataCriacao: null,
+    indice: [],
+    tempoAtuacao: "00:00:00"
+  }
+  tarefaCriando.nome = tarefa.value.nome;
+  tarefaCriando.descricao = tarefa.value.descricao;
+  for (const props of tarefa2.valorPropriedadeTarefas) {
+    for (const propsComValor of tarefa.value.propriedades) {
+      if (propsComValor.propriedade.id == props.propriedade.id) {
+        if (props.propriedade.tipo == "TEXTO") {
+          let valor = {
+            id: props.valor.id,
+            texto: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+        else if (props.propriedade.tipo == "NUMERO") {
+          let valor = {
+            id: props.valor.id,
+            numero: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+        else if (props.propriedade.tipo == "SELECAO") {
+          let valor = {
+            id: props.valor.id,
+            selecao: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+        else if (props.propriedade.tipo == "DATA") {
+          let valor = {
+            id: props.valor.id,
+            data: propsComValor.valor.valor
+          }
+          props.valor = valor
+
+        }
+      }
+    }
+  }
+  let comentario = [];
+  tarefa.value.comentarios.forEach((comentarioFor) => {
+
+    comentario.push(comentarioFor);
+  });
+  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
+  tarefaCriando.comentarios = comentario;
+  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  tarefaCriando.indice = tarefa2.indice;
+  // tarefaCriando.responsaveis = tarefa.value.responsaveis;
+  tarefaCriando.status = tarefa.value.status;
+  tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefaCriando.tempoAtuacao = tempoAtuado;
+  banco.atualizar(tarefaCriando, "/tarefa")
+  if (tarefa.value.arquivos.length != 0) {
+    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+  }
 }
 
 
@@ -919,7 +972,7 @@ let tarefa = ref({
 });
 
 async function puxaTarefaDaEdicao() {
-  
+
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   console.log(tarefaAux);
@@ -929,17 +982,19 @@ async function puxaTarefaDaEdicao() {
     let comentario = await banco.buscarUm(comentarioId, "/comentario");
     tarefa.value.comentarios.push(comentario);
   }
+  for (const props of tarefaAux.valorPropriedadeTarefas) {
+    if (props.propriedade.tipo == "SELECAO" && props.valor.valor == null) {
+      console.log("entrou no if");
+      props.valor.selecao = []
+    }
+  }
   tarefa.value.corDaTarefa = tarefaAux.cor;
   tarefa.value.arquivos = tarefaAux.arquivos;
   tarefa.value.comentarios = tarefaAux.comentarios;
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
   tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
-  for (const propriedade of tarefaAux.valorPropriedadeTarefas) {
-    if (veSeAPropriedadeTaNaTarefa(propriedade.propriedade)) {
-      tarefa.value.propriedades.push(propriedade);
-    }
-  }
+  tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
 }
 
 async function atualizaPropriedadesEStatus() {
@@ -1079,7 +1134,9 @@ function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
     console.log("antes de começar o for");
     for (let propriedadeForTarefa of tarefa.value.propriedades) {
       console.log("começou o for");
-      if (propriedadeForTarefa.id == propriedade.id) {
+      console.log(propriedade.id);
+      console.log(propriedadeForTarefa.id);
+      if (propriedadeForTarefa.propriedade.id == propriedade.propriedade.id) {
         console.log("entrou pra deletar a propriedade ", propriedade);
         propriedade.valor.valor = propriedadeForTarefa.valor.valor
         tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);

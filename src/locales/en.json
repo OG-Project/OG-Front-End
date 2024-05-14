@@ -94,7 +94,7 @@
     "projetos": "Projects",
     "projeto": "Project"
   },
-  "acessibilidade":{
+  "acessibilidade": {
     "Acessibilidade": "Accessibility",
     "Alterar Idioma": "Change Language",
     "Digitar com a voz": "Type with Voice",
@@ -109,7 +109,7 @@
     "Modo Claro": "Light Mode",
     "Modo Escuro": "Dark Mode"
   },
-  "informacoes":{
+  "informacoes": {
     "Informações": "Information",
     "Nome": "Name",
     "Username": "Username",
@@ -137,6 +137,19 @@
     "alterarSenha": "Change Password",
     "alterarEmail": "Change Email",
     "deletarConta": "Do you want to delete your Account?"
+  },
+  "paginaAdm": {
+    "listaDeTarefas": "Task List",
+    "tarefasDoSeuProjeto": "Tasks of Your Project",
+    "nomeDaTarefa": "Task Name",
+    "status": "Status",
+    "tempoTrabalhado": "Worked Time",
+    "aprovado": "Approved",
+    "tarefas": "Tasks",
+    "total": "Total",
+    "emProgresso": "In Progress",
+    "prontas": "Ready",
+    "totalMinutosTrabalhados": "Total Worked Minutes",
+    "historico": "History"
   }
-  
 }
