@@ -14,8 +14,10 @@
                         <img class="imgDePerfil" @click="router.push(`/perfil/${membro.id}`)" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
-                    <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
-                    <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
+                    <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
+                         :listaSelect="opcoesSelect" ></SelectPadrao>
+                    <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
+                    :listaSelect="opcoesSelect" ></SelectPadrao>
              </div>
             </div>
         </div>  
@@ -84,9 +86,11 @@ let membrosEquipe = ref([]);
 let membrosConvidados = ref([]);
 let usuarioConvidado = ref('');
 let membroParaConvidar = ref([]);
+let opcaoEscolhida = ref()
 const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
 let usuarios = banco.procurar('/usuario');
+
 
 let equipeMembros = ref({
     nome: '',
@@ -101,6 +105,24 @@ function limparMensagemErro() {
     
 
 listaUsuarios();
+
+function editaSelect(valor, convidado) {
+    valorSelectSelecionado.value = valor
+    usuarioConvidado.value = convidado.username
+    mudaPermissaoMembroEquipe(convidado);
+}
+
+function mudaPermissaoMembroEquipe(usuario) {
+    membrosEquipe.value.some((membro) => {
+        if (membro.usuario.username === usuario.username) {
+            if (valorSelectSelecionado.value == "View") {
+                membro.permissao = 2
+            } else {
+                membro.permissao = 1
+            }
+        }
+    })
+}
 
 async function filtrarEquipe() {
     console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
