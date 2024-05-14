@@ -251,7 +251,6 @@ function larguraInputConvidado(){
 async function listaUsuarios() {
     let convites = await banco.buscarUm(equipeSelecionada, "/notificacao/conviteEquipe");
     convites.forEach((convite) => {
-        console.log(convite)
         for(const usuarioAceito of convite.conviteParaEquipe.usuarioAceito){
             if(usuarioAceito.aceito==false){
                 membrosConvidados.value.push(usuarioAceito.usuario);
@@ -309,7 +308,7 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
 
     }
     const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/2"
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
