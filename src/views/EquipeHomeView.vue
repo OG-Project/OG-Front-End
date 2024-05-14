@@ -36,6 +36,7 @@
             <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
+            
         </div>
     </div>
 
@@ -54,7 +55,7 @@ import { webSocketStore } from '../stores/webSocket.js'
 import maisIcon from "../imagem-vetores/maisIcon.vue";
 import engrenagem from "../imagem-vetores/engrenagem.vue";
 import equipe from "../imagem-vetores/equipe.vue";
-import historicoPopUp from "../components/HistoricoPopUp.vue";
+import TelaLoad from "../components/TelaLoad.vue";
 
 import { inject } from "vue";
 const tour =inject('tour')

@@ -1,4 +1,3 @@
-
 import { defineStore } from "pinia";
 import axios from "axios";
 import { webSocketStore } from "./webSocket.js";
@@ -8,11 +7,9 @@ import VueCookies from "vue-cookies";
 export const conexaoBD = defineStore('conexaoBD', {
 
   state: () => {
-
     return {
       api: axios.get("http://localhost:8082/usuario", { withCredentials: true })
     }
-
   },
   actions: {
     procurar(textoRequisicao) {
@@ -225,7 +222,11 @@ export const conexaoBD = defineStore('conexaoBD', {
       throw error;
     }
     return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+  },
+  load(loading){
+    loading = false;
   }
 
 }
+
 )
