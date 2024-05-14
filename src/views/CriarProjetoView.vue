@@ -1,6 +1,6 @@
 <template>
-    <div class="h-[90%]">
-        <div v-if="screenWidth >= 768" class="h-full">
+    <div class="h-[90%] overflow-hidden">
+        <div v-if="screenWidth >= 768" class="h-full overflow-hidden">
             <CriarProjetoViewDesktop></CriarProjetoViewDesktop>
         </div>
         <div v-else>

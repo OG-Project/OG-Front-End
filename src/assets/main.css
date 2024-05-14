@@ -40,6 +40,10 @@ html{
     font-family: var(--fonteCorpo);
 }
 
+#app{
+    max-height:100% ;
+}
+
 
 
 

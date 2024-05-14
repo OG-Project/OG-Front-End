@@ -373,7 +373,7 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-screen">
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] max-h-full overflow-hidden">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
@@ -381,7 +381,7 @@ tour.addSteps([
   </div>
     <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
     <div ref="el" :style="style" style="position: fixed"
-    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max h-full" v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">
         <svgIconMove class="w-[1vw] h-[3vh]" />
