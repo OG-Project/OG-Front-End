@@ -1,7 +1,7 @@
 <template>
     <div style="font-family: var(--fonteCorpo);" @mouseenter="trocaCorFonte()" @mouseleave="voltaCorNormalFonte() ">
         <div class="styleInputPadraoIcon" v-if="icon != 'null' && direcao != 'direita' && tipoInput != 'float'"
-            :style="estilizaDivInput">
+            :style="estilizaDivInput" :class="{ 'Invalido': props.isInvalido }">
             <div class=" cursor-pointer flex items-center justify-center">
                 <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
             </div>
@@ -33,7 +33,7 @@
         <!-- fazer input com botão com um ou dois -->
 
 
-        <div class="styleInputPadrao flex items-center" v-if="icon == 'null' & tipoInput == 'float'">
+        <div class="styleInputPadrao flex items-center" v-if="icon == 'null' & tipoInput == 'float'" :class="{ 'Invalido': props.isInvalido }">
             <div class="estiloPlaceHolder">
 
                 <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
@@ -78,7 +78,7 @@
                 </label>
             </div>
         </div>
-        <div class="styleInputPadrao flex flex-row-reverse items-center" :class="{ 'Invalido': props.isInvalido }"
+        <div class="styleInputPadrao flex flex-row-reverse items-center" :class="{ 'Invalido': props.isInvalido}"
             v-if="icon == 'null' && tipoInput != 'float'">
             <div class="flex items-center justify-center">
                 <svgIconMic @click="mic" v-show="isVoiceMaker" class=" 
@@ -337,8 +337,10 @@ function hoverStyle() {
 
 </script>
 <style lang="scss">
-.Invalido {
-    @apply border-4 border-transparent *:*:text-red-600 border-b-red-600 px-2 max-w-max w-min border-b-4 hover:rounded-[4px] hover:border-4 focus-within:border-red-600 focus-within:border-4 focus-within:rounded-[4px];
+.Invalido  {
+    @apply  border-4 border-transparent *:*:text-red-600 border-b-red-600 
+    px-2 max-w-max w-min border-b-4 hover:rounded-[4px] hover:border-4
+     focus-within:border-red-600 focus-within:border-4 focus-within:rounded-[4px] #{!important};
 }
 
 .styleInputPadrao {

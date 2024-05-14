@@ -2,9 +2,9 @@
     <div class="gridTotal mt-[2%] overflow-hidden">
         <div class=" flex flex-col pl-[5%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
-                    largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto" :modelValue="nomeProjeto"
-                    @updateModelValue="(e) => {
+                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio" conteudoInput="Nome Projeto"
+                    :isInvalido="semNome" textoInvalido="O Nome é obrigatorio" largura="30" altura="6" fontSize="1.5rem"
+                    v-model="nomeProjeto" :modelValue="nomeProjeto" @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
             </div>
@@ -35,10 +35,10 @@
 
                         </div>
                     </div>
-                    <div class="flex flex-col  items-start justify-start gap-3 w-full ">
+                    <div class="flex flex-col  items-start justify-start gap-6 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             place-holder-pesquisa="Responsáveis pelo projeto"
-                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem">
+                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem" :is-invalido="semResponsavel" :texto-invalido="'Responsável é obrigatório'">
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
@@ -90,6 +90,11 @@
                 :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada"
                 :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
+
+    </div>
+    <div v-if="mensagem != ''" class="alert">
+        <alertTela :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro">
+        </alertTela>
     </div>
 
 </template>
@@ -113,6 +118,7 @@ import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
 import router from "@/router";
+import alertTela from '../../components/alertTela.vue';
 import { webSocketStore } from '../../stores/webSocket';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
@@ -141,7 +147,10 @@ let placeHolderDataFinalProjeto = ref("")
 let stylePlaceHolder = ref({});
 let dataFinalFormatada = ref("");
 let projeto = ref({});
-
+let mensagem = ref("");
+let mensagemCor = ref("");
+let semNome = ref(false);
+let semResponsavel = ref(false)
 onMounted(async () => {
     if (idProjeto != undefined) {
         projeto.value = await conexao.buscarUm(idProjeto, '/projeto')
@@ -162,6 +171,10 @@ onUpdated(() => {
     fazPlaceHolderDataFinalProjeto()
 })
 
+
+function limparMensagemErro() {
+    mensagem.value = "";
+}
 
 function voltaPagina() {
     router.go(-1)
@@ -411,23 +424,34 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 }
 
 async function criaProjeto() {
-    if (!projetoEdita.value) {
-        const criaProjeto = criaProjetoStore()
-        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-        router.push('/projeto').then(() => {
-
-        });
-        restauraCookies();
-        router.push('/projeto')
-    } else {
-        const editaProjeto = editaProjetoStore()
-        let projeto = await conexao.buscarUm(idProjeto, "/projeto")
-        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
-        restauraCookies();
+    if (nomeProjeto.value == "") {
+        semResponsavel.value = false
+        semNome.value = true
+        mensagem.value = "Projeto com dados faltando"
+        mensagemCor.value = "#CD0000"
+        return
+    }else if(responsaveisProjeto.value == ""){
+        mensagem.value = "Projeto com dados faltando"
+        mensagemCor.value = "#CD0000"
+        semResponsavel.value = true
+        semNome.value = false
+        return
     }
+        if (!projetoEdita.value) {
+            const criaProjeto = criaProjetoStore()
+            criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+                , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
 
+            restauraCookies();
+            router.push("/projeto");
+        } else {
+            const editaProjeto = editaProjetoStore()
+            let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+            editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+                , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
+            restauraCookies();
+            router.push("/projeto");
+        }
 }
 
 

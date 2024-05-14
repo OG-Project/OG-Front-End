@@ -1,16 +1,18 @@
 <template>
-    <div class="card" :class="{ 'fade-in': show, 'fade-out': !show }" id="messeger">
-        <div class="flex justify-center">
-            <div class="divCor" :style="{ backgroundColor: cor }"></div>
-            <div class="gap-[1%] flex flex-row">
-                <div class="icon">
-                    <errorIcon  v-if="cor == '#CD0000'"></errorIcon>
-                </div>
-                <div class=" icon">
-                    <sucessIcon  v-if="cor == '#29CD00'"></sucessIcon>
-                </div>
-                <div class="card-titulo" >
-                    <h2 :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
+    <div class="fixed w-screen h-screen z-[9999] top-8 flex justify-end right-4">
+        <div class="card" :class="{ 'fade-in': show, 'fade-out': !show }" id="messeger">
+            <div class="flex justify-center">
+                <div class="divCor" :style="{ backgroundColor: cor }"></div>
+                <div class="gap-[1%] flex flex-row">
+                    <div class="icon">
+                        <errorIcon  v-if="cor == '#CD0000'"></errorIcon>
+                    </div>
+                    <div class=" icon">
+                        <sucessIcon  v-if="cor == '#29CD00'"></sucessIcon>
+                    </div>
+                    <div class="card-titulo" >
+                        <h2 :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
+                    </div>
                 </div>
             </div>
         </div>
