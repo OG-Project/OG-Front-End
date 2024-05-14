@@ -6,14 +6,10 @@ import KeyBoard from './components/Keyboard.vue'
 import svgIconMove from './assets/svgIconMove.vue'
 import svgIconX from './assets/svgIconX.vue'
 import Navbar from '@/components/Navbar.vue';
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch, onMounted , onUpdated } from 'vue';
 import { storeToRefs } from 'pinia';
 import { perfilStore } from './stores/perfilStore';
-import router from "@/router";
 import { useDraggable } from '@vueuse/core'
-import ListaPropriedadesStatus from './components/ListaPropriedadesStatus.vue';
-import listaProjetos from './components/listaProjetos.vue';
-import kanbanProjetos from './components/kanbanProjetos.vue'
 import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
 import { conexaoBD } from "./stores/conexaoBD";
@@ -33,9 +29,6 @@ const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
 webSocket.criaConexaoWebSocket();
 
-
-const funcaoPopUpPropriedade = funcaoPopUpStore();
-const funcaoPopUpProjeto = funcaoPopUpStore();
 const perfil = perfilStore()
 const { isVlibras } = storeToRefs(perfil);
 
@@ -57,15 +50,7 @@ onMounted(async () => {
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   
-  if(route.path!='/login' ){
-    if(tour.isActive()){
 
-    }else if(route.path=='/'){
-      console.log(route.path);
-      // tour.start()
-    }
-
-  }
   let root = document.documentElement.style
   configuracao.value = usuario.value.configuracao
   console.log(configuracao.value);
@@ -74,18 +59,41 @@ onMounted(async () => {
   perfil.isVoiceMaker = configuracao.value.isDigitarVoz
   root.setProperty('--hueRoxo', configuracao.value.hueCor)
   root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+
   root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + 'vh')
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
   console.log(configuracao.value.isDark);
   if (configuracao.value.isDark) {
-    root.setProperty('--backgroundPuro', '#0F0F0F')
+    root.setProperty('--backgroundPuro', '#150f17')
     root.setProperty('--backgroundItems', '#222222')
     root.setProperty('--fonteCor', '#ffffff')
     root.setProperty('--backgroundItemsClaros', '#363636')
   }
 
+})
+
+onUpdated(async ()=>{
+  usuario.value =
+    await banco.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  if(route.path!='/login' ){
+   console.log('oi aqui');
+    if(usuario.value.configuracao.isTutorial){
+      if(usuario.value.configuracao.ultimoPassoId!='step-1'
+        && usuario.value.configuracao.ultimoPassoId!=null){
+          console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
+          tour.show(usuario.value.configuracao.ultimoPassoId,true)
+      }else{
+        console.log(route.path);
+        tour.start()
+      }
+    }else if(route.path=='/home'){
+    }
+
+  }
 })
 
 function press(b) {
@@ -174,7 +182,7 @@ const tour = inject('tour')
 tour.addSteps([
   {
     id: 'step-1',
-    title: 'Home',
+    title: 'Bem Vindo!!',
     text: 'Aqui mostra suas atividades mais importantes',
     attachTo: {
       element: '#step-1',
@@ -183,24 +191,25 @@ tour.addSteps([
     buttons: [
       {
         classes: 'button',
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/home'
           tour.next()
           banco.atualizar(usuario.value,'/usuario')
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
-      },
-      {
-        secondary: true,
-        text: 'Finalizar',
+        text: 'Pular',
         action: ()=>{
-
-        }
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        } 
       }
     ]
 
@@ -215,17 +224,30 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/home'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -235,21 +257,34 @@ tour.addSteps([
     text: 'Clique para acessar o fluxo do sistema',
     attachTo: {
       element: '#step-3',
-      on: 'right'
+      on: 'right-end'
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/home'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },  
@@ -259,21 +294,35 @@ tour.addSteps([
     text: 'Equipe, aqui pode visualizar suas equipes e cria-las. Clique para ver',
     attachTo: {
       element: '#step-4',
-      on: 'right'
+      on: 'right-end'
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          
+          usuario.value.configuracao.rotaDoPasso='/home'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -287,17 +336,30 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/equipe'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -310,17 +372,30 @@ tour.addSteps([
     },
     buttons:[
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/equipe'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -333,17 +408,31 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/equipe'
           banco.atualizar(usuario.value,'/usuario')
+          // router.push
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   },
@@ -356,25 +445,388 @@ tour.addSteps([
     },
     buttons: [
       {
-        text: 'Next',
+        text: 'Próximo',
         action: ()=>{
-          usuario.value.configuracao.ultimoPassoId=(tour.getCurrentStep().id)
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/equipe'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Skip',
-        action: tour.complete
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-9',
+    text: 'Aqui pode-se ver projetos da equipe ',
+    attachTo: {
+      element: '#step-9',
+      on: 'center'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/equipe/telaInicial'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-10',
+    text: 'Clique para criar um projeto',
+    attachTo: {
+      element: '#step-10',
+      on: 'left'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/equipe/telaInicial'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-11',
+    text: 'Prencha os campos',
+    attachTo: {
+      element: '#step-11',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/criaProjeto'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-12',
+    text: 'Crie Um Projeto',
+    attachTo: {
+      element: '#step-12',
+      on: 'right'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/criaProjeto'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-13',
+    text: 'Aqui vai gerenciar as tarefas do projeto em questão.',
+    attachTo: {
+      element: '#step-13',
+      on: 'center'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/projeto/lista'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-14',
+    text: 'Crie a primeira tarefa.',
+    attachTo: {
+      element: '#step-14',
+      on: 'left-end'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/projeto'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-15',
+    text: 'Prencha os campos para poder criar a tarefa.',
+    attachTo: {
+      element: '#step-15',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/criaTarefa'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-16',
+    text: 'Clique aqui para completar.',
+    attachTo: {
+      element: '#step-16',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/criaTarefa'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-17',
+    text: 'Há formas diferentes de visualizar suas tarefas como Kanban, Lista, Calendario e Linha do Tempo.',
+    attachTo: {
+      element: '#step-17',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: 'Próximo',
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/projeto'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Pular',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-18',
+    text: 'Existem mais funcionalidades no site, mas o essencial é isso.',
+    attachTo: {
+      element: '#step-18',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: 'Finalizar',
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          usuario.value.configuracao.ultimoPassoId='step-1'
+          usuario.value.configuracao.rotaDoPasso='/home'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        } 
+      },
+      {
+        secondary: true,
+        text: 'Voltar',
+        action: tour.back
       }
     ]
   }
 ])
+
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)]">
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />

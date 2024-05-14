@@ -3,25 +3,26 @@
     <div class="h-[8vh] w-[15%] flex gap-8">
       <BarraLateral id="step-3" class=" cursor-pointer"></BarraLateral>
       <div class="h-[8vh] w-[15%] flex items-center">
-        <Botao preset="PadraoVazado" :texto="$t('navBar.botaoNovaTarefa')" tamanhoDaBorda="2px" :funcaoClick="redireciona"
-          :parametrosFuncao="'/criaTarefa'">
+        <Botao preset="PadraoVazado" :texto="$t('navBar.botaoNovaTarefa')" tamanhoDaBorda="2px"
+          :funcaoClick="redireciona" :parametrosFuncao="'/criaTarefa'">
         </Botao>
       </div>
     </div>
     <div class="h-[8vh] w-[35%] flex gap-8"></div>
     <div class="h-[8vh] w-[50%] flex gap-8 justify-end mr-8">
       <div class="flex justify-between pt-3 w-[16vw]">
-        <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10" :conteudoInput="$t('navBar.pesquisar')"
-          :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99]"></inputDePesquisa>
+        <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10"
+          :conteudoInput="$t('navBar.pesquisar')" :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99]">
+        </inputDePesquisa>
       </div>
-      <div class="flex items-center justify-between w-[14%]">
+      <div class="flex items-center gap-8 w-[16%]">
         <button @click="notificacaoBoolean = true">
-        <notificacao />
-      </button>
+          <notificacao />
+        </button>
         <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
           class="shadow-2xl h-[60px] w-[60px] rounded-full"
           :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
-      </div>      
+      </div>
     </div>
   </div>
   <div v-if="notificacaoBoolean == true" class="w-full fixed z-50 flex justify-end pr-4">
@@ -43,7 +44,7 @@ import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
 import popUpNotificacao from "../components/popUpNotificacao.vue";
 import inputDePesquisa from "./inputDePesquisa.vue";
 import { inject } from "vue";
-const tour=inject('tour')
+const tour = inject('tour')
 
 const banco = conexaoBD();
 
@@ -73,12 +74,12 @@ function criaListaDePesquisa() {
             tipo: "Projeto",
           });
           projeto.tarefas.forEach(tarefa => {
-            if(tarefa.nome){
+            if (tarefa.nome) {
               listaDePesquisa.push({
-              id: tarefa.id,
-              nome: tarefa.nome,
-              tipo: "Tarefa",
-            });
+                id: tarefa.id,
+                nome: tarefa.nome,
+                tipo: "Tarefa",
+              });
             }
           });
         });
@@ -116,9 +117,9 @@ async function autenticarUsuario(id) {
 
 function redireciona(rota) {
   router.push(rota).then(() => {
-        window.location.reload()
-    });
-  if(rota == '/criaTarefa'){
+    window.location.reload()
+  });
+  if (rota == '/criaTarefa') {
     const criaTarefa = criaTarefaEBuscaStore();
     criaTarefa.criaTarefa();
   }

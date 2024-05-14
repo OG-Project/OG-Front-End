@@ -42,13 +42,13 @@
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
-                                class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
+                                class=" bg-[var(--backgroundItems)] p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
                                 <div v-for="responsavel of responsaveisProjeto ">
                                     <div
-                                        class="bg-roxo-claro rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
-                                        <img src="../imagem-vetores/userTodoPreto.svg">
+                                        class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
+                                        <img src="../../imagem-vetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
-                                        <img src="../imagem-vetores/X-preto.svg"
+                                        <img src="../../imagem-vetores/X-preto.svg"
                                             @click="removeResponsavel(responsavel)">
                                     </div>
                                 </div>
@@ -74,7 +74,7 @@
                 :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
     </div>
-    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 gap-6">
+    <div id="step-12"class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 gap-6">
         <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita"></Botao>
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"

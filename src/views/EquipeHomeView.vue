@@ -10,20 +10,22 @@
                 <div class="criarEquipe " @click="abrePaginaEquipe(equipe)" href="#/equipe/telaInicial"
                     :class="'mao-clique'" @mouseover="mostrarNomeCompleto(equipe.equipe.nome)"
                     @mouseleave="limparNomeCompleto()" :title="nomeCompleto" v-for="equipe in equipesUsuario">
-                    <div class="flex justify-center">
-                        <div class="corDiv">
-                            <img class="imagemEquipe" v-if="equipe.equipe.foto" 
+                    <div :id="temId(equipe)">
+                        <div class="flex justify-center">
+                            <div class="corDiv">
+                                <img class="imagemEquipe" v-if="equipe.equipe.foto" 
                                 :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
-                            <equipe class="imagemEquipe" v-else></equipe>
-                            <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{ truncarNome(equipe.equipe.nome,
+                                <equipe class="imagemEquipe" v-else></equipe>
+                                <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{ truncarNome(equipe.equipe.nome,
                         larguraNomeEquipe()) }}</p>
                         </div>
                         <div @click.stop="abrePopUp(equipe, 'engrenagem')">
                             <engrenagem class="imgIcon"></engrenagem>
                         </div>
-                    </div>
-                    <div class="textArea">
-                        <p class="descricao">{{ equipe.equipe.descricao }}</p>
+                        </div>
+                        <div class="textArea">
+                            <p class="descricao">{{ equipe.equipe.descricao }}</p>
+                        </div>
                     </div>
                 </div>
                 <div id="step-5" class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
@@ -59,33 +61,9 @@ import TelaLoad from "../components/TelaLoad.vue";
 
 import { inject } from "vue";
 const tour =inject('tour')
-// tour.show('step-5',true)
-// tour.addSteps([
-//   {
-//     id: 'step-1',
-//     title: 'teste',
-//     text: 'teste',
-//     attachTo: {
-//       element: '#step-1',
-//       on: 'top'
-//     },
-//     buttons: [
-//       {
-//         classes: 'button',
-//         text: 'Next',
-//         action: ()=>{
-//           tour.next()
-//         } 
-//       },
-//       {
-//         secondary: true,
-//         text: 'Skip',
-//         action: tour.complete
-//       }
-//     ]
-//   }
-// ])
-// tour.start()
+function temId(a) {
+    return equipesUsuario.value.indexOf(a)==equipesUsuario.value.length-1? 'step-8':''
+}
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();

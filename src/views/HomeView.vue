@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div class="h-[90%]">
       <div v-if="screenWidth >= 1024" class="h-[90%]">
       <HomeViewDesktop></HomeViewDesktop>
       </div>
@@ -28,8 +28,23 @@ onMounted(() => {
       screenWidth.value = window.innerWidth
   })
 
-
+  buscaConfiguracaoesPadrao();
 })
+
+async function buscaConfiguracaoesPadrao(){
+    let root = document.documentElement.style
+  usuario.value =await conexao.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
+ 
+}
 </script>
 <style scoped>
 .button{

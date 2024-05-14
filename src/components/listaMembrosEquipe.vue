@@ -11,7 +11,7 @@
                     <sair v-if="membro.id != usuarioLogado && verificaCriador(membro)"  class="imgIcon"  @click="removerMembro(membro)"></sair>
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
-                        <img class="imgDePerfil" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
+                        <img class="imgDePerfil" @click="router.push(`/perfil/${membro.id}`)" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
                     <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
