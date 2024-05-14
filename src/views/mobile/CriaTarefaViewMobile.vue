@@ -318,7 +318,7 @@
                 </div>
               </div>
               <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedade.propriedade.tipo === 'SELEÇÃO'">
+                <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
                   <div v-if="propriedadeForTarefa.propriedade.id == propriedade.propriedade.id"
                     v-for="(valor, index) in propriedade.valor.valor" class="pt-4 flex">
                     <Input altura="2" largura="27" conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
