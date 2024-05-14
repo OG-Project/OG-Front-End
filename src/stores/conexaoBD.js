@@ -50,7 +50,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = false;
       }
     },
-    atualizar(objeto, textoRequisicao) {
+    async atualizar(objeto, textoRequisicao) {
       console.log(textoRequisicao)
       this.loading = true;
       try{

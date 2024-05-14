@@ -35,7 +35,7 @@
         </div>
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()"
-                texto="Convites" mostrar-select="true" class="listaConvidados" altura="40vh"
+                texto="Convites" mostrar-select="true" @opcaoSelecionada="valorSelect" class="listaConvidados" altura="40vh"
                  :listaConvidados="membrosConvidados" @foi-clicado="removeListaMembrosConvidados">
             </ListaConvidados>
         </div>
@@ -81,6 +81,7 @@ const banco = conexaoBD();
 let listaMembros = ref([]);
 let usuariosRemover = ref([]);
 let membrosEquipe = ref([]);
+let valorSelectSelecionado = ref("Edit")
 let membrosConvidados = ref([]);
 let usuarioConvidado = ref('');
 let membroParaConvidar = ref([]);
@@ -105,6 +106,27 @@ listaUsuarios();
 async function filtrarEquipe() {
     console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
     equipeMembros.value = await (banco.buscarUm(equipeSelecionada, "/equipe"))
+}
+
+function valorSelect(valor, convidado) {
+    console.log(convidado);
+    console.log(valor);
+    valorSelectSelecionado.value = valor
+    usuarioConvidado.value = convidado.username
+    mudaPermissaoUsuario(convidado);
+}
+
+function mudaPermissaoUsuario(usuario) {
+    console.log(membrosConvidados.value);
+    membrosConvidados.value.some((membro) => {
+        if (membro.username === usuario.username) {
+            if (valorSelectSelecionado.value == "View") {
+                membro.permissao = 2
+            } else {
+                membro.permissao = 1
+            }
+        }
+    })
 }
 
 filtrarEquipe();
@@ -279,14 +301,28 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
         notificao: {
             mensagem: "Te Convidou para a Equipe",
             conviteParaEquipe: {
-                equipe: equipe
+                equipe: equipe,
+                permissoes: funcaoPermissao(membrosConvidados)
             }
+            
         }
 
     }
     const webSocket = webSocketStore();
     webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+}
+
+function funcaoPermissao(convidados){
+    let permissoes = []
+    convidados.forEach((convidado) =>{
+        if(convidado.permissao == 1){
+            permissoes.push({usuarioId: convidado.id, permissao: 1})
+        }else{
+            permissoes.push({usuarioId: convidado.id, permissao: 2})
+        }
+    })
+    return permissoes;
 }
 
 async function confirmarConvites() {
@@ -324,8 +360,6 @@ async function confirmarConvites() {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
     enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
-
-    window.location.reload();
 }
 
 </script>

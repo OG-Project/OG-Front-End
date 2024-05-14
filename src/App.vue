@@ -111,6 +111,7 @@ function press(b) {
 
 }
 webSocket.esperaMensagem((mensagem) => {
+  console.log("a")
   teste(JSON.parse(mensagem))
 });
 

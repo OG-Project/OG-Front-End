@@ -1,24 +1,24 @@
 <template>
     <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
-        <div v-for="propriedade of lista" class="w-auto flex h-full">
-            <div :style="propriedade.style"  @dragover="(() => {
-            statusNovo = propriedade.propriedade
-        })">
+        {{ console.log(lista) }}
+        <div v-for="status of lista" class="w-auto flex h-full">
+            <div :style="status.style"  @dragover="retornaStatusNovo(status.propriedade)">
 
                 <div
                     class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
                     <div class="w-[90%] flex justify-center">
-                        {{ propriedade.propriedade.nome }}
+                        {{ status.propriedade.nome }}
                     </div>
                     <div class="w-[10%]">
                         <img src="../assets/image 3.png">
                     </div>
                 </div>
                 <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
-                    v-model="propriedade.tarefas" :animation="300" group="tarefa" @start="drag = true"
-                    @end="() => mudaStatus(propriedade)" item-key="tarefa.indice">
+                    v-model="status.tarefas" :animation="300" group="tarefa" @start="drag = true"
+                    @end="() => mudaStatus(status)" item-key="tarefa.indice">
                     <template #item="{ element: tarefa }">
-                        <div class="w-full h-full flex items-center justify-center" @dragstart="(() => {tarefaDrag = tarefa})">
+                        <div class="w-full h-full flex items-center justify-center"
+                            @dragstart="(() => { tarefaDrag = tarefa })">
                             <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
                                 <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
                             </div>
@@ -28,7 +28,7 @@
                 <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none" @click="store.criaTarefa(), router.push('/criaTarefa').then(() => {
             window.location.reload()
         });">
-                    <p :style="corDoTexto(propriedade.propriedade)">+ Nova</p>
+                    <p :style="corDoTexto(status.propriedade)">+ Nova</p>
                 </button>
             </div>
         </div>
@@ -121,6 +121,11 @@ function corDoTexto(status) {
     return {
         color: verificaCorTexto(status)
     }
+}
+
+function retornaStatusNovo(status) {
+    statusNovo = status
+    console.log(status);
 }
 
 function mudaStatus() {
