@@ -33,8 +33,7 @@ onMounted(() => {
 
 async function buscaConfiguracaoesPadrao(){
     let root = document.documentElement.style
-  usuario.value =
-    await conexao.buscarUm(
+  usuario.value =await conexao.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   configuracao.value = usuario.value.configuracao

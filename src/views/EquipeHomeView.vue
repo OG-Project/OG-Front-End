@@ -10,20 +10,22 @@
                 <div class="criarEquipe " @click="abrePaginaEquipe(equipe)" href="#/equipe/telaInicial"
                     :class="'mao-clique'" @mouseover="mostrarNomeCompleto(equipe.equipe.nome)"
                     @mouseleave="limparNomeCompleto()" :title="nomeCompleto" v-for="equipe in equipesUsuario">
-                    <div class="flex justify-center">
-                        <div class="corDiv">
-                            <img class="imagemEquipe" v-if="equipe.equipe.foto" 
+                    <div :id="temId(equipe)">
+                        <div class="flex justify-center">
+                            <div class="corDiv">
+                                <img class="imagemEquipe" v-if="equipe.equipe.foto" 
                                 :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
-                            <equipe class="imagemEquipe" v-else></equipe>
-                            <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{ truncarNome(equipe.equipe.nome,
+                                <equipe class="imagemEquipe" v-else></equipe>
+                                <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{ truncarNome(equipe.equipe.nome,
                         larguraNomeEquipe()) }}</p>
                         </div>
                         <div @click.stop="abrePopUp(equipe, 'engrenagem')">
                             <engrenagem class="imgIcon"></engrenagem>
                         </div>
-                    </div>
-                    <div class="textArea">
-                        <p class="descricao">{{ equipe.equipe.descricao }}</p>
+                        </div>
+                        <div class="textArea">
+                            <p class="descricao">{{ equipe.equipe.descricao }}</p>
+                        </div>
                     </div>
                 </div>
                 <div id="step-5" class="maisEquipes" :class="'mao-clique'" @click="abrePopUp(equipe, 'criar')"
@@ -58,33 +60,9 @@ import historicoPopUp from "../components/HistoricoPopUp.vue";
 
 import { inject } from "vue";
 const tour =inject('tour')
-// tour.show('step-5',true)
-// tour.addSteps([
-//   {
-//     id: 'step-1',
-//     title: 'teste',
-//     text: 'teste',
-//     attachTo: {
-//       element: '#step-1',
-//       on: 'top'
-//     },
-//     buttons: [
-//       {
-//         classes: 'button',
-//         text: 'Next',
-//         action: ()=>{
-//           tour.next()
-//         } 
-//       },
-//       {
-//         secondary: true,
-//         text: 'Skip',
-//         action: tour.complete
-//       }
-//     ]
-//   }
-// ])
-// tour.start()
+function temId(a) {
+    return equipesUsuario.value.indexOf(a)==equipesUsuario.value.length-1? 'step-8':''
+}
 
 let equipesUsuario = ref([]);
 const banco = conexaoBD();
@@ -196,7 +174,7 @@ function limparNomeCompleto() {
 }
 
 .textArea {
-    @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full 
+    @apply truncate flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full 
     bg-[#D7D7D7] text-black text-lg text-left 
     border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
     border-bottom: 'solid 4px var(--roxo)';

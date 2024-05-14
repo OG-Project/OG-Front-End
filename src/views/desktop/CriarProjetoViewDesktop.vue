@@ -74,7 +74,7 @@
                 :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
     </div>
-    <div class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 gap-6">
+    <div id="step-12"class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 gap-6">
         <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
             tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita"></Botao>
         <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
