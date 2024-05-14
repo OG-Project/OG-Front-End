@@ -15,12 +15,10 @@ export const conexaoBD = defineStore('conexaoBD', {
   actions: {
     procurar(textoRequisicao) {
       this.loading = true;
-      console.log('Loading:', this.loading);
       try{
         return axios.get("http://localhost:8082" + textoRequisicao, { withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
-        console.log('Loading:', this.loading);
       }
       
     },
@@ -51,7 +49,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async atualizar(objeto, textoRequisicao) {
-      console.log(textoRequisicao)
       this.loading = true;
       try{
       if (textoRequisicao == "/usuario") {
@@ -305,7 +302,6 @@ export const conexaoBD = defineStore('conexaoBD', {
 
 
       } catch (error) {
-        console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
       return await ((await axios.get(`http://localhost:8082/equipe/${equipeId}`, { withCredentials: true })).data)
@@ -326,7 +322,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         });
 
       } catch (error) {
-        console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
     },
@@ -348,7 +343,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         // Retorne os dados da resposta
         return response.data;
       } catch (error) {
-        console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
     }
@@ -368,7 +362,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         return response.data
       });
     } catch (error) {
-      console.error('Erro ao cadastrar a foto:', error);
       throw error;
     }
     return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
