@@ -14,6 +14,8 @@ import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
 import { conexaoBD } from "./stores/conexaoBD";
 import { useRoute } from 'vue-router';
+import TelaLoad from "./components/TelaLoad.vue";
+
 const route = useRoute()
 
 import tabBar from "./components/tabBar.vue";
@@ -850,6 +852,7 @@ tour.addSteps([
     </div>
   </div>
   
+  <TelaLoad></TelaLoad>
 </template>
 <style scoped>
 
