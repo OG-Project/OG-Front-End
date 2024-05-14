@@ -149,6 +149,7 @@
       "total": "Всего",
       "emProgresso": "В процессе",
       "prontas": "Готово",
-      "totalMinutosTrabalhados": "Всего минут работы"
+      "totalMinutosTrabalhados": "Всего минут работы",
+      "historico": "История"
     }
 }

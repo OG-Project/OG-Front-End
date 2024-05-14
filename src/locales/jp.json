@@ -149,6 +149,7 @@
     "total": "合計",
     "emProgresso": "進行中",
     "prontas": "完了",
-    "totalMinutosTrabalhados": "総作業時間"
+    "totalMinutosTrabalhados": "総作業時間",
+    "historico": "履歴"
   }
 }

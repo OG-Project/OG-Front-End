@@ -149,6 +149,7 @@
     "total": "Total",
     "emProgresso": "In Progress",
     "prontas": "Ready",
-    "totalMinutosTrabalhados": "Total Worked Minutes"
+    "totalMinutosTrabalhados": "Total Worked Minutes",
+    "historico": "History"
   }
 }

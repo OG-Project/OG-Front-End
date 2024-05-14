@@ -149,6 +149,7 @@
     "total": "总计",
     "emProgresso": "进行中",
     "prontas": "准备就绪",
-    "totalMinutosTrabalhados": "总工作分钟数"
+    "totalMinutosTrabalhados": "总工作分钟数",
+    "historico": "历史"
   }
 }

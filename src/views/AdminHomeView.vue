@@ -7,62 +7,66 @@
             <div id="poligono"
                 class="h-[100%] w-[40vh] shadow-2xl flex justify-center flex-col left-[-0.50rem] absolute overflow-visible"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; z-index: 5;">
-                <p class="flex justify-center items-center text-2xl text-white">{{ $t('paginaAdm.tarefasDoSeuProjeto') }}</p>
+                <!-- <p class="flex justify-center items-center text-2xl text-white">{{ $t('paginaAdm.tarefasDoSeuProjeto') }}</p> -->
             </div>
             <div class="bg-[var(--backgroundItems)] ml-8 w-[90%] h-[92%] flex items-center justify-end"
                 style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
                     <div class="flex gap-4 mt-6 flex-wrap justify-center w-[100%] text-md">
                         <div class="flex gap-8 pb-8 w-[90%] items-center justify-center">
-                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.nomeDaTarefa') }}</p>
-                            <!-- <p class="w-[25%] flex items-center justify-center">Lider</p> -->
-                            <!-- <p class="w-[25%] flex items-center justify-center">Membros</p> -->
-                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.status') }}</p>
-                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.tempoTrabalhado') }}</p>
-                            <!-- <p class="w-[25%] flex items-center justify-center">Entrega</p> -->
-                            <p class="w-[25%] flex items-center justify-center">{{ $t('paginaAdm.aprovado') }}</p>
+                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.nomeDaTarefa') }}</p>
+                            <!-- <p class="w-[20%] flex items-center justify-center">Lider</p> -->
+                            <!-- <p class="w-[20%] flex items-center justify-center">Membros</p> -->
+                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.status') }}</p>
+                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.tempoTrabalhado') }}
+                            </p>
+                            <!-- <p class="w-[20%] flex items-center justify-center">Entrega</p> -->
+                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.aprovado') }}</p>
+                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.historico') }}</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
                                 <div class="flex gap-8">
                                     {{ console.log(tarefa) }}
-                                    <p class="w-[25%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer"
+                                    <p class="w-[20%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer"
                                         @click="redirecionamento('/criaTarefa', tarefa.id)">{{ tarefa.nome }}</p>
-                                    <!-- <p class="w-[25%] flex items-center justify-center h-10" v-if="tarefa.lider"
+                                    <!-- <p class="w-[20%] flex items-center justify-center h-10" v-if="tarefa.lider"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }">
                                         {{
                             tarefa.lider }}</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10"
+                                    <p class="w-[20%] flex items-center justify-center h-10"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não possui</p> -->
-                                    <!-- <p class="w-[25%] flex items-center justify-center h-10 bg-[#8A59B1]"
+                                    <!-- <p class="w-[20%] flex items-center justify-center h-10 bg-[#8A59B1]"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }" v-if="tarefa.membros">{{
                             tarefa.membros.length }}</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#8A59B1]"
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#8A59B1]"
                                         :style="{ color: corDaFonte(tarefa.status.cor) }" v-else>Não
                                         possui</p> -->
 
-                                    <p class="w-[25%] flex items-center justify-center h-10" v-if="tarefa.status"
+                                    <p class="w-[20%] flex items-center justify-center h-10" v-if="tarefa.status"
                                         :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }">
                                         {{ tarefa.status.nome }}</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]"
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]"
                                         v-if="tarefa.tempoAtuacao">{{
-                            tarefa.tempoAtuacao }}</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                tarefa.tempoAtuacao }}</p>
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p>
-                                    <!-- <p class="w-[25%] flex items-center justify-center h-10 bg-[#EF8F7A]"
+                                    <!-- <p class="w-[20%] flex items-center justify-center h-10 bg-[#EF8F7A]"
                                         v-if="tarefa.diaCompleto">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy")
                                         }}</p>
-                                    <p class="w-[25%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
                                         possui</p> -->
-                                    <div class="w-[25%] flex items-center justify-center gap-10 h-10">
-                                        <RejectedIcon class="w-[25%] h-[85%]"
+                                    <div class="w-[20%] flex items-center justify-center gap-10 h-10">
+                                        <RejectedIcon class="w-[20%] h-[85%] cursor-pointer"
                                             @click="deixaTarefaConcluida(tarefa, 'Rejeitado')"></RejectedIcon>
-                                        <AprovedIcon class="w-[20%] h-[60%]"
+                                        <AprovedIcon class="w-[20%] h-[60%] cursor-pointer"
                                             @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
                                     </div>
-
+                                    <div class="w-[20%] flex items-center justify-center gap-10 h-10">
+                                        <IconeHistorico class="w-[20%] h-[85%] cursor-pointer"></IconeHistorico>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -121,6 +125,7 @@ import VueCookies from "vue-cookies";
 import checkBox from "../components/checkBox.vue";
 import AprovedIcon from "../assets/AprovadoAdm.vue";
 import RejectedIcon from "../assets/VoltaAdm.vue";
+import IconeHistorico from "../assets/Historico.vue";
 
 import router from '@/router';
 
@@ -258,19 +263,19 @@ function changeChart(type) {
     renderChart(type)
 }
 let totalDeTarefas = computed(() => tarefas.value.length)
-let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Em Progresso').length)
-let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status === 'Pronto').length)
+let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status.nome === 'Em Progresso').length)
+let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status.nome === 'Pronto').length)
 let totalHorasTrabalhadas = computed(() => {
     if (tarefas) {
         return tarefas.value.reduce((acc, tarefa) => {
-            if(tarefa.tempoAtuacao){
+            if (tarefa.tempoAtuacao) {
                 const [horas, minutos, segundos] = tarefa.tempoAtuacao.split(':').map(Number);
-            return acc + minutos;
-            }else{
+                return acc + minutos;
+            } else {
                 return 0
             }
         }, 0);
-    }else{
+    } else {
         return 0
     }
 
