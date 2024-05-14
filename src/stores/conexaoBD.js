@@ -29,7 +29,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     cadastrarProjetoEquie(objeto, idEquipe, textoRequisicao) {
       return axios.post("http://localhost:8082" + textoRequisicao + "/" + idEquipe, objeto, { withCredentials: true }).then(response => response)
     },
-    atualizar(objeto, textoRequisicao) {
+    async atualizar(objeto, textoRequisicao) {
       console.log(textoRequisicao)
       if (textoRequisicao == "/usuario") {
         const idUsuario = VueCookies.get("IdUsuarioCookie")

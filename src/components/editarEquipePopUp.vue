@@ -262,12 +262,32 @@ function larguraInput() {
 async function removesse() {
     await banco.removerUsuarioDaEquipe(equipeSelecionada,idUsuarioLogado, "/usuario/removerUsuarioEquipe").then(response => {
             if (router.currentRoute.value.path == '/equipe') {
-                window.location.reload();
             } else {
                 router.push({ path: '/equipe' });
             }
         }
     )
+}
+
+async function enviaParaWebSocket(equipe, membrosConvidados) {
+    let equipeAux = {
+        id: equipe.id,
+        nome: equipe.nome,
+        descricao: equipe.descricao,
+        membros: membrosConvidados
+    }
+    let teste = {
+        equipes: [{ equipe: equipeAux }],
+        notificao: {
+            mensagem: "Te Convidou para a Equipe",
+            conviteParaEquipe: {
+                equipe: equipe
+            }
+        }
+    }
+    const webSocket = webSocketStore();
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
+    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 async function deletarEquipe() {
@@ -320,7 +340,7 @@ async function atualizarEquipe() {
 
             // Verifica se houve alterações nos campos antes de atualizar
             if (equipeAtualizar.nome != equipe.nome || equipeAtualizar.descricao != equipe.descricao) {
-                banco.atualizar(equipeAtualizar, "/equipe");
+                banco.atualizar(equipeAtualizar, "/equipe")
             } else {
                 console.log('Nenhuma alteração detectada na equipe.');
             }
@@ -363,23 +383,6 @@ async function toBase64(file) {
         reader.onload = () => resolve(reader.result.split(',')[1]);
         reader.onerror = error => reject(error);
     });
-}
-
-
-async function enviarFotoParaBackend(id) {
-    try {
-        if (!imagemSelecionada.value) {
-            // Verifica se uma imagem foi selecionada
-            console.error('Nenhuma imagem selecionada.');
-            return;
-        }
-
-        const equipeId = id;
-        await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
-        console.log('Foto enviada com sucesso para o backend.');
-    } catch (error) {
-        console.error('Erro ao enviar a foto para o backend:', error);
-    }
 }
 
 </script>

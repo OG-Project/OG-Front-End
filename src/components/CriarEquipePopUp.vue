@@ -91,6 +91,7 @@ let conexaoWeb = webSocketStore()
 const screenWidth = window.innerWidth;
 let usuarios = banco.procurar("/usuario");
 import { webSocketStore } from '../stores/webSocket.js'
+import { apple } from 'color-convert/conversions';
 
 function limparMensagemErro() {
     mensagem.value = "";
@@ -99,7 +100,7 @@ let mensagem = ref("");
 let mensagemCor = ref("");
 
 onMounted(() => {
-    conexaoWeb.url = "ws://localhost:8082/og/webSocket/usuario/" + usuarioLogado;
+    conexaoWeb.url = "ws://localhost:8082/og/webSocket/usuario/1";
     conexaoWeb.criaConexaoWebSocket()
 })
 
@@ -294,20 +295,16 @@ async function cadastrarEquipe() {
     let equipe;
     cria.criaEquipe(equipeCadastrada).then(response => {
         equipe = response.data
-        enviaParaWebSocket(equipe, membrosEquipe.value);
         enviarFotoParaBackend(equipe);
-        colocaMembrosEquipe(equipe).then(res =>{
-        })
         adicionaUsuarioLogado(equipe)
+        enviaParaWebSocket(equipe, membrosEquipe.value);
     });
 };
 
 
-async function colocaMembrosEquipe(equipe) {
+async function colocaMembrosEquipe(equipe,idUsuarioLogado) {
     console.log(membrosEquipe.value)
-    const ids = membrosEquipe.value.map(membro => {
-        banco.adicionarUsuarios(membro.usuario.id, equipe.id, membro.permissao, "/usuario/add");
-    });
+    banco.adicionarUsuarios(idUsuarioLogado, equipe.id, "2", "/usuario/add");
     await enviarFotoParaBackend(equipe);
 }
 
@@ -322,6 +319,7 @@ function adicionaUsuarioLogado(equipe) {
 }
 
 async function enviaParaWebSocket(equipe, membrosConvidados) {
+    console.log(membrosConvidados)
     let equipeAux = {
         id: equipe.id,
         nome: equipe.nome,
@@ -333,15 +331,25 @@ async function enviaParaWebSocket(equipe, membrosConvidados) {
         notificao: {
             mensagem: "Te Convidou para a Equipe",
             conviteParaEquipe: {
-                equipe: equipe
+                equipe: equipe,
+                permissoes: funcaoPermissao(membrosConvidados)
             }
         }
     }
-    const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+    await conexaoWeb.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
+function funcaoPermissao(convidados){
+    let permissoes = []
+    convidados.forEach((convidado) =>{
+        if(convidado.permissao == 1){
+            permissoes.push({usuarioId: convidado.id, permissao: 1})
+        }else{
+            permissoes.push({usuarioId: convidado.id, permissao: 2})
+        }
+    })
+    return permissoes;
+}
 
 async function enviarFotoParaBackend(equipe) {
     try {

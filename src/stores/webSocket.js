@@ -22,7 +22,6 @@ export const webSocketStore = defineStore('webSocket', {
 
         esperaMensagem(retorno) {
             this.socket.onmessage = function (event) {
-                console.log(event.data)
                 retorno(event.data);
             }
 
