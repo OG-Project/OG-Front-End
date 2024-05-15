@@ -53,7 +53,7 @@
             </div>
             <div class=" w-full ">
                 <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-full"
+                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas"
                     :caminho-da-imagem-icon=srcIconListaEquipes @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>

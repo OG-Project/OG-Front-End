@@ -147,7 +147,6 @@
   let usuarioLogado = ref();
   const router = useRouter();
   let listaResponsaveis = ref([])
-  
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;
@@ -272,6 +271,7 @@ async function obterNomesResponsaveis(projeto) {
       if (responsaveisComNome.length >= 0) {
         listaResponsaveis.value = responsaveisComNome.join(', ');
       }
+      
     }
   } else {
     return "Não há responsáveis";

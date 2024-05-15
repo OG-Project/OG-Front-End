@@ -99,7 +99,9 @@ let alinhamento = ref(43)
 const screenWidth = window.innerWidth;
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-
+onMounted(() =>{
+    console.log(props.responsavel);
+})
 
 const grafico = {
     display: "flex",
