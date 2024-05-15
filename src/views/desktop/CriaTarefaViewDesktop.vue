@@ -11,22 +11,25 @@
           tamanho-da-fonte="1rem" resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
-        <div class="flex flex-col justify-center w-[30%]">
+        <!-- <div class="flex flex-col justify-center w-[30%]">
           <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.properties') }}</p>
-          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
+          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]"
+            @click="abreFechaCriaPropriedades()">
             {{ $t('criaTarefa.create') }}
           </button>
-        </div>
-        <div class="flex flex-col justify-center w-[30%]">
+        </div> -->
+        <div class="flex flex-col justify-center w-[50%]">
           <p style="font-family:var(--fonteCorpo);"> {{ $t('criaTarefa.task_color') }}</p>
-          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center break-keep h-[70%]" @click="abreFechaMudaCor()">
+          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center break-keep h-[70%]"
+            @click="abreFechaMudaCor()">
             {{ $t('criaTarefa.create') }}
           </button>
         </div>
 
-        <div class="flex flex-col justify-center w-[30%]">
+        <div class="flex flex-col justify-center w-[50%]">
           <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.subtasks') }}</p>
-          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaSubTarefas()">
+          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]"
+            @click="abreFechaCriaSubTarefas()">
             {{ $t('criaTarefa.create') }}
           </button>
         </div>
@@ -120,9 +123,12 @@
         </div>
       </div>
 
-      <p class="pl-12 mt-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.files', { arquivos: tarefa.arquivos.length }) }}...</p>
+      <p class="pl-12 mt-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.files', {
+          arquivos:
+            tarefa.arquivos.length
+        }) }}</p>
       <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
-        class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
+        class="flex h-[18vh] w-[80%] bg-[var(--backgroundItems)] ml-12 mt-4 overflow-auto">
         <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
           v-for="arquivo in tarefa.arquivos">
           <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
@@ -133,15 +139,15 @@
               <img class="h-[65%]" :src='getIconSrc(arquivo)' />
             </div>
           </a>
-          <div class="bg-[#F6F6F6] w-[100%] h-[15%] items-center flex justify-around">
-            <p class="truncate w-[100px] text-xs">{{ arquivo.nome }}</p>
+          <div class="bg-[var(--backgroundItemsClaros)] w-[100%] h-[15%] items-center flex justify-around">
+            <p class="truncate w-[100px] text-xs text-[var(--fonteCor)]">{{ arquivo.nome }}</p>
             <img @click="deletaArquivo(arquivo)" :src="BotaoX">
           </div>
         </div>
       </div>
       <div class="pl-12 mt-4">
         <div class="w-min h-min relative">
-          <Botao preset="PadraoVazadoIcon" :icon="iconAnexo" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')"
+          <Botao preset="PadraoVazado" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')"
             tamanhoPadrao="pequeno" inverterCorIcon="sim"></Botao>
           <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
         </div>
@@ -170,10 +176,12 @@
             <div class="flex gap-2 justify-center">
               <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.status') }}:</p>
               <div v-if="subtarefa.concluido">
-                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#7CC0E5]">{{ $t('criaTarefa.completed') }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#7CC0E5]">{{
+          $t('criaTarefa.completed') }}</p>
               </div>
               <div v-else>
-                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#C6B473]">{{ $t('criaTarefa.in_progress') }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#C6B473]">{{
+          $t('criaTarefa.in_progress') }}</p>
               </div>
             </div>
             <img @click="deletaSubtarefa(subtarefa)" :src="BotaoX" class="h-full mr-8" />
@@ -206,8 +214,7 @@
         </div>
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
-            <div
-              class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
+            <div v-if="comentario.autor" class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
                 <div v-if="comentario.autor.username === usuarioCookies.username"
                   class="w-[80%] mt-2 gap-4 flex justify-center">
@@ -258,23 +265,30 @@
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
       <div class="w-[80%] h-[80vh] shadow-xl border-2 border-[var(--backgroundItems)]">
         <div class="flex justify-around h-[4%]">
-          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%; font-family:var(--fonteCorpo);">
+          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades"
+            style="width: 33%; font-family:var(--fonteCorpo);">
             {{ $t('criaTarefa.properties') }}
           </button>
-          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%; font-family:var(--fonteCorpo);">
+          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus"
+            style="width: 33%; font-family:var(--fonteCorpo);">
             {{ $t('criaTarefa.status') }}
           </button>
-          <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center bg -" style=" font-family:var(--fonteCorpo);">
-            <select class="flex text-center w-[100%] text-[var(--roxo)]" v-model="parametroDoFiltroPropriedade">
-              <option class="bg-transparent" selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
-              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Texto') }}</option>
-              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Data') }}</option>
-              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Numero') }}</option>
-              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Seleção') }}</option>
+          <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center"
+            style=" font-family:var(--fonteCorpo);">
+            <select class="flex text-center w-[100%] text-[var(--fonteCor)]" v-model="parametroDoFiltroPropriedade">
+              <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
+              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Texto') }}
+              </option>
+              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Data') }}
+              </option>
+              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Numero') }}
+              </option>
+              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Seleção') }}
+              </option>
             </select>
           </div>
-          <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
-            <select class="flex text-center w-[100%]" v-model="parametroDoFiltroStatus">
+          <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center" style=" font-family:var(--fonteCorpo);">
+            <select class="flex text-center w-[100%] text-[var(--fonteCor)]" v-model="parametroDoFiltroStatus">
               <option :value="$t('criaTarefa.sort_by')">{{ $t('criaTarefa.sort_by') }}</option>
               <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
               <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
@@ -285,33 +299,54 @@
         <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
           <div v-for="propriedade in listaFiltradaPropriedades" :key="propriedade.propriedade.id"
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
-            <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
-              <div class="flex gap-2 items-center w-[40%]">
+            <!-- <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between"> -->
+            <!-- <div class="flex gap-2 items-center w-[40%]">
                 <p style="font-family:var(--fonteCorpo);" class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[25%]">
                 <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.type') }}: {{ propriedade.propriedade.tipo }}</p>
-              </div>
-            </div>
+              </div> -->
+            <!-- </div> -->
             <div class="w-[100%] min-h-[5vh] flex justify-center flex-wrap">
-              <div v-for="propriedadeForTarefa of tarefa.propriedades">
-                <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id">
-                  <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-                    <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
-                      @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
-                    </Input>
-                  </div>
-                  <div v-if="propriedade.propriedade.tipo === 'DATA'">
-                    <input @input="patchDaListaDePropriedades()"
-                      class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
-                      type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
-                  </div>
-                  <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-                    <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
-                      @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
-                    </Input>
-                  </div>
-                  <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
+              <div v-for="propriedadeForTarefa of tarefa.propriedades" class="w-full">
+                <div v-if="propriedade.propriedade.tipo != 'SELECAO'" class="w-full">
+                  <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id" class="w-full">
+                    <div v-if="propriedade.propriedade.tipo === 'TEXTO'"
+                      class="flex items-center justify-start">
+                      <div class="w-[15%] pl-4 flex items-center justify-start">
+                        <p class="truncate" >{{ propriedade.propriedade.nome }}: </p>
+                      </div>
+                      <div class="w-[58%] flex items-center justify-start">
+                        <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
+                          @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                        </Input>
+                      </div>
+                      <p class="w-[27%] pr-7 flex items-start justify-end">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                    </div>
+                    <div v-if="propriedade.propriedade.tipo === 'DATA'" class="flex items-center justify-around w-full">
+                      <div class="w-[15%] pl-4 flex items-center justify-start">
+                        <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
+                      </div>
+                      <div class="w-[58%] flex items-center justify-start">
+                        <input @input="patchDaListaDePropriedades()"
+                          class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
+                          type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
+                      </div>
+                      <p class="w-[27%] pr-2 flex items-start justify-end">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                    </div>
+                    <div v-if="propriedade.propriedade.tipo === 'NUMERO'"
+                      class="flex items-center justify-start w-full">
+                      <div class="w-[15%] pl-4 flex items-center justify-start">
+                        <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
+                      </div>
+                      <div class="w-[58%] flex items-center justify-start"> 
+                        <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
+                          @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                        </Input>
+                      </div>
+                      <p class="w-[27%] pr-2 flex items-start justify-end">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                    </div>
+                    <!-- <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
                     <div v-for="(valor, index) in propriedade.valor.valor" class="mb-4 mt-4 h-8 items-center flex"
                       :key="index">
                       <Input conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
@@ -325,6 +360,7 @@
                         {{ $t('criaTarefa.add') }}
                       </p>
                     </div>
+                  </div> -->
                   </div>
                 </div>
               </div>
@@ -341,7 +377,8 @@
                 </CheckBox>
                 <p style="font-family:var(--fonteCorpo);" class="break-all">{{ statsAdd.nome }}</p>
               </div>
-              <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{ statsAdd.cor.toUpperCase() }}</p>
+              <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{
+          statsAdd.cor.toUpperCase() }}</p>
               <div class="w-[30%] flex justify-between">
                 <ColorPicker disabled v-model="statsAdd.cor"
                   class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
@@ -350,16 +387,17 @@
           </div>
         </div>
       </div>
-      <div id=""  class="w-[80%] flex justify-between pt-8">
+      <div id="" class="w-[80%] flex justify-between pt-8">
         <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-        <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado" :texto="$t('criaTarefa.completed')"
-          tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado"
+          :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
 
     <div id="propriedadesOverflow" class="shadow-xl border-2 border-[var(--backgroundItems)]">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
-        <h1 style="font-family:var(--fonteTitulo);" class="min-h-[9%] text-3xl font-semibold">{{ $t('criaTarefa.information') }}</h1>
+        <h1 style="font-family:var(--fonteTitulo);" class="min-h-[9%] text-3xl font-semibold">{{
+          $t('criaTarefa.information') }}</h1>
       </div>
       <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
         <div class="flex pl-8">
@@ -367,25 +405,28 @@
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.project_name') }}</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p style="font-family:var(--fonteCorpo);" class="w-[100%] text-[var(--roxo)] break-all" v-if="projetoDaTarefa">
+            <p style="font-family:var(--fonteCorpo);" class="w-[100%] text-[var(--roxo)] break-all"
+              v-if="projetoDaTarefa">
               {{ projetoDaTarefa.nome }}
             </p>
           </div>
         </div>
         <div class="flex pl-8">
-          <div class="w-[50%] justify-start flex-row">
+          <!-- <div class="w-[50%] justify-start flex-row">
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.project_participants') }}</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
-            <p style="font-family:var(--fonteCorpo);" class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis"></p>
-          </div>
+            <p style="font-family:var(--fonteCorpo);" class="truncate text-[var(--roxo)] break-all"
+              v-for="responsavel of projetoDaTarefa.responsaveis"></p>
+          </div> -->
         </div>
         <div class="flex pl-8" v-if="projetoDaTarefa">
           <div class="w-[50%] justify-start flex-row">
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.project_start_date') }}</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p style="font-family:var(--fonteCorpo);" class="text-[var(--roxo)]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
+            <p style="font-family:var(--fonteCorpo);" class="text-[var(--roxo)]"> {{ format(new
+          Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
           </div>
         </div>
       </div>
@@ -397,24 +438,28 @@
           <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.no_status_message') }}</p>
         </div>
         <div class="min-h-[4%] flex items-center justify-center gap-4">
-          <p style="font-family:var(--fonteCorpo);" :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
+          <p style="font-family:var(--fonteCorpo);"
+            :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
             class="flex items-center border-2 border-[var(--backgroundItems)] shadow-md justify-center px-4">
             {{ tarefa.status.nome }}
           </p>
         </div>
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 style="font-family:var(--fonteTitulo);" class="text-2xl font-semibold">{{ $t('criaTarefa.properties') }}</h1>
+        <h1 style="font-family:var(--fonteTitulo);" class="text-2xl font-semibold">{{ $t('criaTarefa.properties') }}
+        </h1>
       </div>
       <div v-if="tarefa.propriedades.length === 0" class="h-[35%] flex flex-col items-center justify-center p-8">
         <NotePad></NotePad>
-        <p style="font-family:var(--fonteCorpo);" class="text-center">{{ $t('criaTarefa.this_taks_has_no_properties') }}</p>
+        <p style="font-family:var(--fonteCorpo);" class="text-center">{{ $t('criaTarefa.this_taks_has_no_properties') }}
+        </p>
       </div>
       <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
         <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
           <p style="font-family:var(--fonteCorpo);" class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
           <div v-if="propriedade.propriedade.tipo === 'DATA'">
-            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }} {{ formatarData(propriedade.valor.valor) }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }} {{
+          formatarData(propriedade.valor.valor) }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'SELECAO'" class="flex">
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }}</p>
@@ -456,6 +501,9 @@ import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
 import router from "../../router";
 import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
 import { useI18n } from 'vue-i18n';
+import { criaHistoricoStore } from '../../stores/criaHistorico.js'
+
+const criaHistorico = criaHistoricoStore();
 
 const { t } = useI18n();
 
@@ -626,6 +674,7 @@ function veSeOStatusTaNaTarefa(status) {
 }
 
 async function criaTarefaNoConcluido() {
+
   let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   let tarefaCriando = {
     id: JSON.parse(VueCookies.get("IdTarefaCookies")),
@@ -684,7 +733,6 @@ async function criaTarefaNoConcluido() {
   }
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
-
     comentario.push(comentarioFor);
   });
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
@@ -693,17 +741,19 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
+  tarefaCriando.arquivos = tarefa.value.arquivos;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
   console.log(tarefaCriando)
+  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, VueCookies.get("IdProjetoAtual"))
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(response)
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
     }
-      router.push("/projeto").then(() => {
-        window.location.reload();
-      });
+    // router.push("/projeto").then(() => {
+    //   window.location.reload();
+    // });
 
   });
 
@@ -911,7 +961,6 @@ async function calculaTempoAtuacao() {
   }
   let comentario = [];
   tarefa.value.comentarios.forEach((comentarioFor) => {
-
     comentario.push(comentarioFor);
   });
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
@@ -921,6 +970,7 @@ async function calculaTempoAtuacao() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefaCriando.arquivos = tarefa.value.arquivos;
   tarefaCriando.tempoAtuacao = tempoAtuado;
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
@@ -977,6 +1027,7 @@ async function puxaTarefaDaEdicao() {
   tarefa.value.descricao = tarefaAux.descricao;
   for (const comentarioId of tarefaAux.comentarios) {
     let comentario = await banco.buscarUm(comentarioId, "/comentario");
+    console.log(comentario);
     tarefa.value.comentarios.push(comentario);
   }
   for (const props of tarefaAux.valorPropriedadeTarefas) {
@@ -987,7 +1038,6 @@ async function puxaTarefaDaEdicao() {
   }
   tarefa.value.corDaTarefa = tarefaAux.cor;
   tarefa.value.arquivos = tarefaAux.arquivos;
-  tarefa.value.comentarios = tarefaAux.comentarios;
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
   tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
@@ -1066,7 +1116,7 @@ function gerarArquivo(e) {
     tarefa.value.arquivos.push(arquivoParaOBanco);
     update()
   }
-
+  console.log(tarefa.value.arquivos);
 }
 
 function deletaArquivo(arquivo) {
