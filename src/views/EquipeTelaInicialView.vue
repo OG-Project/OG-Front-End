@@ -15,6 +15,10 @@
           corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"
           :texto="'+ ' + $t('equipes.projeto')" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
         </Botao>
+        <Botao v-else-if="screenWidth <= 320" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim"
+          corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilemedio"
+          :texto="'+ ' + $t('equipes.projeto')" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
+        </Botao>
         <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)"
           corBorda="var(--roxo)" tamanhoPadrao="mobilepadrao" :texto="'+ ' + $t('equipes.projeto')"
           tamanhoDaFonte="2rem" :funcaoClick="criarProjeto">

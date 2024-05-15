@@ -8,20 +8,23 @@
           </div>
           <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
              <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
-                    <sair v-if="membro.id != usuarioLogado && verificaCriador(membro)"  class="imgIcon"  @click="removerMembro(membro)"></sair>
+                    <sair v-if="membro.id != usuarioLogado && verificaCriador(membro) && retornoPermissao "  class="imgIcon"  @click="removerMembro(membro)"></sair>
                     <div v-else class="imgIcon"></div>
                     <div class="corDiv">
                         <img class="imgDePerfil" @click="router.push(`/perfil/${membro.id}`)" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
-                    <div v-if="verificaCriador(membro)">
+                    <div v-if="verificaCriador(membro) && retornoPermissao">
                          <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
                          :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)" ></SelectPadrao>
                          <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
-                         :listaSelect="opcoesSelect" @change="editaSelect(opcaoEscolhida, membro)"></SelectPadrao>
+                         :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)"></SelectPadrao>
                     </div>
-                    <div v-else class="styleSelectPadraoBranco  md:ml-5 2xl:ml-10">
-
+                    <div v-else >
+                        <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
+                            @change="editaSelect(opcaoEscolhida, membro)" :placeholderSelect="opcoesSelectPlaceholder(membro)"  :disable="true" ></SelectPadrao>
+                            <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
+                            :placeholderSelect="opcoesSelectPlaceholder(membro)" @change="editaSelect(opcaoEscolhida, membro)" :disable="true"></SelectPadrao>
                     </div> 
              </div>
             </div>
@@ -79,7 +82,10 @@ import alertTela from './alertTela.vue';
 import sair from '../imagem-vetores/Sair.vue';
 import equipe from '../imagem-vetores/equipe.vue';
 
-onMounted(exibirMembrosNaLista)
+onMounted (() =>{
+    exibirMembrosNaLista();
+    verificaMembroPermissao();
+}) 
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('IdUsuarioCookie')
@@ -95,8 +101,10 @@ let usuarioConvidado = ref('');
 let membroParaConvidar = ref([]);
 let opcaoEscolhida = ref("");
 let listaMembrosEditados = ref ([]);
+let retornoPermissao = ref(false);
 const screenWidth = window.innerWidth;
 let select = [];
+let selectDisable = '';
 let usuarios = banco.procurar('/usuario');
 
 
@@ -119,7 +127,7 @@ function opcoesSelect(membro){
         if(equipeUsuario.equipe.id == equipeSelecionada){
             if(equipeUsuario.permissao == 'VER'){
                 select = ['View', 'Edit']  
-            }else{
+            }else if(equipeUsuario.permissao == 'VER','EDITAR',"CRIAR","PATCH"){
                 select = ['Edit', 'View']
             }
         }
@@ -127,9 +135,21 @@ function opcoesSelect(membro){
     return select;
 }
 
+function opcoesSelectPlaceholder(membro){
+    membro.equipes.forEach((equipeUsuario)=>{
+        if(equipeUsuario.equipe.id == equipeSelecionada){
+            if(equipeUsuario.permissao == 'VER'){
+                selectDisable = 'View';  
+            }else if(equipeUsuario.permissao == 'VER','EDITAR',"CRIAR","PATCH"){
+                selectDisable = 'Edit';
+            }
+        }
+    })
+    return selectDisable;
+}
 
 function editaSelect(valor, membro) {
-    
+    console.log(membro)
     valorSelectEdita.value = valor
     mudaPermissaoMembroEquipe(membro);
 }
@@ -142,12 +162,13 @@ function mudaPermissaoMembroEquipe(usuario) {
             } else {
                 membro.permissao = 1
             }
-        }
-        let membroPermissao = {
+            let membroPermissao = {
                         "usuario": membro,
                         "permissao": membro.permissao,
         }
         listaMembrosEditados.value.push(membroPermissao);
+        }
+        
     })
 }
 
@@ -188,6 +209,28 @@ function verificaCriador(membro){
     return retorno;
     
 }
+
+async function verificaMembroPermissao(){
+     
+     const usuario = await banco.buscarUm(usuarioLogado,"/usuario")
+     console.log(usuario.equipes)
+     usuario.equipes.forEach((equipeUsuario) =>{
+        if(equipeUsuario.equipe.id == equipeSelecionada){
+            console.log(usuario);
+            if(equipeUsuario.criador){
+                retornoPermissao.value = true;
+                  return;
+            }
+            else if(equipeUsuario.permissao.length > 1){
+                  retornoPermissao.value = true;
+                  return;
+            }
+        } 
+    })
+    
+}
+   
+
 
 async function removerMembro(membro) {
 
@@ -377,6 +420,7 @@ async function confirmarConvites() {
     usuariosRemover.value = [];
 
     for (const membroEquipeEditado of listaMembrosEditados.value){
+        console.log(listaMembrosEditados.value)
         await banco.removerUsuarioDaEquipe(equipeSelecionada, membroEquipeEditado.usuario.id, "/usuario/removerUsuarioEquipe");
         banco.adicionarUsuarios(membroEquipeEditado.usuario.id, equipeSelecionada, membroEquipeEditado.permissao, "/usuario/add");
     }
@@ -415,7 +459,7 @@ async function confirmarConvites() {
 
 <style scoped>
 .styleSelectPadraoBranco{
-        @apply border-4 mt-[3vh]
+        @apply border-4 mt-[4vh]
         flex justify-center
         border-transparent
         border-b-brancoNeve

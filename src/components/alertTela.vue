@@ -7,11 +7,14 @@
                     <div class="icon">
                         <errorIcon  v-if="cor == '#CD0000'"></errorIcon>
                     </div>
+                    <div>
+                        <alert v-if="cor == '#8E00FF'"></alert>
+                    </div>
                     <div class=" icon">
                         <sucessIcon  v-if="cor == '#29CD00'"></sucessIcon>
                     </div>
                     <div class="card-titulo" >
-                        <h2 :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
+                        <h2 class="text-black" :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
                     </div>
                 </div>
             </div>
@@ -24,6 +27,7 @@
     import { getCurrentInstance } from 'vue';
     import sucessIcon from '../assets/sucessIcon.vue';
     import errorIcon from '../assets/errorIcon.vue';
+    import alert from '../assets/alert.vue';
     const instance = getCurrentInstance();
     const props = defineProps({
         mensagem: String,
@@ -63,7 +67,7 @@
     }
 
     .card-titulo {
-        @apply truncate flex 2xl:w-[13vw] xl:w-[18vw] lg:w-[18vw] md:w-[24vw] text-base font-semibold items-center justify-start md:text-sm  md:ml-0;
+        @apply truncate  flex 2xl:w-[13vw] xl:w-[18vw] lg:w-[18vw] md:w-[24vw] text-base text-[var(--fonteCor)] font-semibold items-center justify-start md:text-sm  md:ml-0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -99,20 +103,30 @@
 
     @media(max-width: 320px) {
         .card-titulo {
-            @apply flex-wrap ml-0 text-sm w-[55vw];
+            @apply truncate flex-wrap ml-0 text-sm w-[70vw];
         }
         .card {
-            @apply w-[90vw];
+            @apply w-[92vw] h-[6vh];
             transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
         }
     }
 
-    @media(max-width: 375px) {
+    @media(min-width:330px) and (max-width: 350px){
         .card-titulo {
-            @apply flex-wrap ml-0 text-lg w-[80vw];
+            @apply truncate flex-wrap ml-0 text-lg w-[82vw];
         }
         .card {
-            @apply w-[90vw];
+            @apply mr-[-3.5vw] w-[98vw] h-[6vh];
+            transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
+        }
+    }
+
+    @media(min-width:355px) and(max-width: 375px) {
+        .card-titulo {
+            @apply truncate flex-wrap ml-0 text-lg w-[80vw];
+        }
+        .card {
+            @apply w-[90vw] h-[6vh];
             transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
         }
     }
@@ -122,7 +136,7 @@
             @apply flex-wrap ml-5 text-lg w-[80vw];
         }
         .card {
-            @apply w-[90vw];
+            @apply w-[90vw] h-[6vh];
             transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
         }
     }
