@@ -93,7 +93,7 @@ defineEmits(['update:modelValue'])
         }
         else if(props.styleSelect=="select-cinza" || props.styleSelect=="select-grande-cinza" ||
         props.styleSelect=="select-cinza-grande"){
-            return "#FFFFFF"
+            return "var(--fonteCor)"
         }
     }
 

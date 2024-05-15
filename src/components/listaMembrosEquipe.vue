@@ -157,15 +157,12 @@ async function filtrarEquipe() {
 }
 
 function valorSelect(valor, convidado) {
-    console.log(convidado);
-    console.log(valor);
     valorSelectSelecionado.value = valor
     usuarioConvidado.value = convidado.username
     mudaPermissaoUsuario(convidado);
 }
 
 function mudaPermissaoUsuario(usuario) {
-    console.log(membrosConvidados.value);
     membrosConvidados.value.some((membro) => {
         if (membro.username === usuario.username) {
             if (valorSelectSelecionado.value == "View") {
