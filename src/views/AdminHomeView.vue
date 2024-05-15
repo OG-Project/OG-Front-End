@@ -1,7 +1,7 @@
 <template>
     <div class="h-[92vh] w-full">
         <div class="flex p-2 text-4xl justify-center">
-            <h1>{{ $t('paginaAdm.listaDeTarefas') }}</h1>
+            <h1 style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" >{{ $t('paginaAdm.listaDeTarefas') }}</h1>
         </div>
         <div class="flex items-center relative justify-center mt-4 h-[38%] ml-16">
             <div id="poligono"
@@ -14,20 +14,19 @@
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
                     <div class="flex gap-4 mt-6 flex-wrap justify-center w-[100%] text-md">
                         <div class="flex gap-8 pb-8 w-[90%] items-center justify-center">
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.nomeDaTarefa') }}</p>
+                            <p class="w-[20%] flex items-center justify-center" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" >{{ $t('paginaAdm.nomeDaTarefa') }}</p>
                             <!-- <p class="w-[20%] flex items-center justify-center">Lider</p> -->
                             <!-- <p class="w-[20%] flex items-center justify-center">Membros</p> -->
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.status') }}</p>
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.tempoTrabalhado') }}
+                            <p class="w-[20%] flex items-center justify-center" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" >{{ $t('paginaAdm.status') }}</p>
+                            <p class="w-[20%] flex items-center justify-center" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" >{{ $t('paginaAdm.tempoTrabalhado') }}
                             </p>
                             <!-- <p class="w-[20%] flex items-center justify-center">Entrega</p> -->
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.aprovado') }}</p>
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.historico') }}</p>
+                            <p class="w-[20%] flex items-center justify-center" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" >{{ $t('paginaAdm.aprovado') }}</p>
+                            <p class="w-[20%] flex items-center justify-center" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" >{{ $t('paginaAdm.historico') }}</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
                                 <div class="flex gap-8">
-                                    {{ console.log(tarefa) }}
                                     <p class="w-[20%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer"
                                         @click="redirecionamento('/criaTarefa', tarefa.id)">{{ tarefa.nome }}</p>
                                     <!-- <p class="w-[20%] flex items-center justify-center h-10" v-if="tarefa.lider"
@@ -44,14 +43,14 @@
                                         possui</p> -->
 
                                     <p class="w-[20%] flex items-center justify-center h-10" v-if="tarefa.status"
-                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }">
+                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) } + 'font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);'">
                                         {{ tarefa.status.nome }}</p>
-                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" v-else>Não
                                         possui</p>
-                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]"
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
                                         v-if="tarefa.tempoAtuacao">{{
                 tarefa.tempoAtuacao }}</p>
-                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" v-else>Não
                                         possui</p>
                                     <!-- <p class="w-[20%] flex items-center justify-center h-10 bg-[#EF8F7A]"
                                         v-if="tarefa.diaCompleto">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy")
@@ -76,11 +75,11 @@
         </div>
         <div class="flex relative w-full gap-4 pl-24 mt-16 h-[38%]">
             <div class="flex pl-12 flex-col justify-center w-[22%] h-[85%] border-r-2 border-black">
-                <p class="text-2xl">{{ $t('paginaAdm.tarefas') }}</p>
-                <p>{{ $t('paginaAdm.total') }}: {{ totalDeTarefas }}</p>
-                <p>{{ $t('paginaAdm.emProgresso') }}: {{ totalEmProgresso }}</p>
-                <p>{{ $t('paginaAdm.prontas') }}: {{ totalProntas }}</p>
-                <p>{{ $t('paginaAdm.totalMinutosTrabalhados') }}: {{ totalHorasTrabalhadas }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="text-2xl">{{ $t('paginaAdm.tarefas') }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.total') }}: {{ totalDeTarefas }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.emProgresso') }}: {{ totalEmProgresso }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.prontas') }}: {{ totalProntas }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.totalMinutosTrabalhados') }}: {{ totalHorasTrabalhadas }}</p>
             </div>
             <div class="flex flex-col w-[5%] h-full items-center justify-center gap-4">
                 <button @click="changeChart('bar')"
