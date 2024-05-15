@@ -307,6 +307,7 @@ async function cadastrarEquipe() {
         enviarFotoParaBackend(equipe);
         adicionaUsuarioLogado(equipe)
         enviaParaWebSocket(response.data, listaUsuariosConvidados.value);
+        window.location.reload();
     });
 };
 
