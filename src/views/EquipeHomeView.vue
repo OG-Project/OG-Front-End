@@ -193,7 +193,7 @@ function limparNomeCompleto() {
 }
 
 .listaEquipes {
-    @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
+    @apply flex flex-wrap justify-start w-[88vw] h-[71.2vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
     flex: 1 1 px;
 }
 
@@ -226,10 +226,10 @@ function limparNomeCompleto() {
         @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;
     }
     .imgIcon {
-        @apply flex ml-[1vw] mt-4 h-[25px] w-[25px];
+        @apply flex ml-[3vw] mt-4 h-[25px] w-[25px];
     }
     .corDiv {
-        @apply flex ml-[5vw] h-20 w-[45vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
+        @apply flex ml-[5vw] h-20 w-[50vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
     }
     .textArea {
         @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[60vw] h-[10vh]  bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;

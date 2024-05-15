@@ -100,7 +100,7 @@
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :reponsavel="obterNomesResponsaveis(projeto)"
+              :responsavel="listaResponsaveis"
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
@@ -109,7 +109,7 @@
                 :descricao="projeto.descricao" 
                 :comeco="formatarData(projeto.dataCriacao)" 
                 :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-                :reponsavel="obterNomesResponsaveis(projeto)"
+                :responsavel="listaResponsaveis"
                 :feito="calcularProgressoProjeto(projeto)"
                 :tempo-atuacao="projeto.tempoAtuacao"
                 @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
@@ -146,6 +146,7 @@
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
   const router = useRouter();
+  let listaResponsaveis = ref([])
   
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
@@ -288,9 +289,12 @@ async function obterFotosResponsaveis(projeto) {
       let responsaveisComFoto = []
       for(let responsavel of projeto.responsaveis){
         let usuario = await buscaResponsaveis(responsavel)
-        responsaveisComNome.push(usuario.foto)
+        console.log(usuario)
+        responsaveisComFoto.push(usuario.foto)
       }
         if (responsaveisComFoto.length >= 0) {
+          console.log(responsaveisComFoto)
+          console.log(`data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`)
           return `data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`;
         } else {
             return ''
