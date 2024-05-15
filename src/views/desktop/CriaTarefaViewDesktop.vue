@@ -12,21 +12,21 @@
       </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
         <div class="flex flex-col justify-center w-[30%]">
-          <p>{{ $t('criaTarefa.properties') }}</p>
-          <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
+          <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.properties') }}</p>
+          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaPropriedades()">
             {{ $t('criaTarefa.create') }}
           </button>
         </div>
         <div class="flex flex-col justify-center w-[30%]">
-          <p> {{ $t('criaTarefa.task_color') }}</p>
-          <button class="flex flex-col justify-center break-keep h-[70%]" @click="abreFechaMudaCor()">
+          <p style="font-family:var(--fonteCorpo);"> {{ $t('criaTarefa.task_color') }}</p>
+          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center break-keep h-[70%]" @click="abreFechaMudaCor()">
             {{ $t('criaTarefa.create') }}
           </button>
         </div>
 
         <div class="flex flex-col justify-center w-[30%]">
-          <p>{{ $t('criaTarefa.subtasks') }}</p>
-          <button class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaSubTarefas()">
+          <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.subtasks') }}</p>
+          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]" @click="abreFechaCriaSubTarefas()">
             {{ $t('criaTarefa.create') }}
           </button>
         </div>
@@ -41,7 +41,7 @@
 
             <div class="flex flex-row justify-between items-end">
               <div class="pl-2">
-                <p>{{ $t('criaTarefa.task_color_question') }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.task_color_question') }}</p>
               </div>
               <div class="pr-2">
                 <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
@@ -120,7 +120,7 @@
         </div>
       </div>
 
-      <p class="pl-12 mt-4">{{ $t('criaTarefa.files', { arquivos: tarefa.arquivos.length }) }}...</p>
+      <p class="pl-12 mt-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.files', { arquivos: tarefa.arquivos.length }) }}...</p>
       <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
         class="flex h-[18vh] w-[80%] bg-[#D7D7D7] ml-12 mt-4 overflow-auto">
         <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
@@ -148,12 +148,12 @@
 
       </div>
       <div class="pl-12 mt-4">
-        <h1>{{ $t('criaTarefa.subtasks') }}</h1>
+        <h1 style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.subtasks') }}</h1>
         <div class="flex items-center">
           <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
             <div :style="barraPorcentagem" class="corDaBarraDeProgresso"></div>
           </div>
-          <p class="pl-4">{{ $t('criaTarefa.completed_tasks', {
+          <p class="pl-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.completed_tasks', {
           porcentagem: porcentagemDeTarefasConcluidas.toFixed(2)
         }) }}%</p>
         </div>
@@ -165,15 +165,15 @@
             <div class="flex gap-2 items-center">
               <CheckBox :checked="subtarefa.concluido" tipo="checkbox"
                 @click="trocaStatusDaSubTarefa(subtarefa, index)" />
-              <p>{{ subtarefa.nome }}</p>
+              <p style="font-family:var(--fonteCorpo);">{{ subtarefa.nome }}</p>
             </div>
             <div class="flex gap-2 justify-center">
-              <p>{{ $t('criaTarefa.status') }}:</p>
+              <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.status') }}:</p>
               <div v-if="subtarefa.concluido">
-                <p class="flex items-center justify-center bg-[#7CC0E5]">{{ $t('criaTarefa.completed') }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#7CC0E5]">{{ $t('criaTarefa.completed') }}</p>
               </div>
               <div v-else>
-                <p class="flex items-center justify-center bg-[#C6B473]">{{ $t('criaTarefa.in_progress') }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#C6B473]">{{ $t('criaTarefa.in_progress') }}</p>
               </div>
             </div>
             <img @click="deletaSubtarefa(subtarefa)" :src="BotaoX" class="h-full mr-8" />
@@ -183,7 +183,7 @@
       <!-- Fazer um v-for de propriedades -->
       <div class="pl-12 mt-8">
         <div class="flex text-xl">
-          <p>{{ $t('criaTarefa.comments') }}</p>
+          <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.comments') }}</p>
           <button class="ml-2" @click="abreFechaComentario()">+</button>
         </div>
         <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
@@ -258,19 +258,19 @@
     <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
       <div class="w-[80%] h-[80vh] shadow-xl border-2 border-[var(--backgroundItems)]">
         <div class="flex justify-around h-[4%]">
-          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%;">
+          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades" style="width: 33%; font-family:var(--fonteCorpo);">
             {{ $t('criaTarefa.properties') }}
           </button>
-          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%;">
+          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus" style="width: 33%; font-family:var(--fonteCorpo);">
             {{ $t('criaTarefa.status') }}
           </button>
-          <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center">
-            <select class="flex text-center w-[100%]" v-model="parametroDoFiltroPropriedade">
-              <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
-              <option>{{ $t('criaTarefa.Texto') }}</option>
-              <option>{{ $t('criaTarefa.Data') }}</option>
-              <option>{{ $t('criaTarefa.Numero') }}</option>
-              <option>{{ $t('criaTarefa.Seleção') }}</option>
+          <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center bg -" style=" font-family:var(--fonteCorpo);">
+            <select class="flex text-center w-[100%] text-[var(--roxo)]" v-model="parametroDoFiltroPropriedade">
+              <option class="bg-transparent" selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
+              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Texto') }}</option>
+              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Data') }}</option>
+              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Numero') }}</option>
+              <option class="bg-transparent" style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Seleção') }}</option>
             </select>
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center">
@@ -287,10 +287,10 @@
             class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
             <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between">
               <div class="flex gap-2 items-center w-[40%]">
-                <p class="break-all">{{ propriedade.propriedade.nome }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[25%]">
-                <p>{{ $t('criaTarefa.type') }}: {{ propriedade.propriedade.tipo }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.type') }}: {{ propriedade.propriedade.tipo }}</p>
               </div>
             </div>
             <div class="w-[100%] min-h-[5vh] flex justify-center flex-wrap">
@@ -321,7 +321,7 @@
                         :src="BotaoX" />
                     </div>
                     <div>
-                      <p class="pl-2 pb-8 flex items-center justify-center pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
+                      <p style="font-family:var(--fonteCorpo);" class="pl-2 pb-8 flex items-center justify-center pt-2" @click="adicionaValorSelect(propriedade.valor.valor)">
                         {{ $t('criaTarefa.add') }}
                       </p>
                     </div>
@@ -339,9 +339,9 @@
                 <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)"
                   tipo="radio">
                 </CheckBox>
-                <p class="break-all">{{ statsAdd.nome }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="break-all">{{ statsAdd.nome }}</p>
               </div>
-              <p class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{ statsAdd.cor.toUpperCase() }}</p>
+              <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{ statsAdd.cor.toUpperCase() }}</p>
               <div class="w-[30%] flex justify-between">
                 <ColorPicker disabled v-model="statsAdd.cor"
                   class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
@@ -359,77 +359,74 @@
 
     <div id="propriedadesOverflow" class="shadow-xl border-2 border-[var(--backgroundItems)]">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
-        <h1 class="min-h-[9%] text-3xl font-semibold">{{ $t('criaTarefa.information') }}</h1>
+        <h1 style="font-family:var(--fonteTitulo);" class="min-h-[9%] text-3xl font-semibold">{{ $t('criaTarefa.information') }}</h1>
       </div>
       <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
         <div class="flex pl-8">
           <div class="w-[50%] justify-start flex-row">
-            <p>{{ $t('criaTarefa.project_name') }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.project_name') }}</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="w-[100%] text-[var(--roxo)] break-all" v-if="projetoDaTarefa">
+            <p style="font-family:var(--fonteCorpo);" class="w-[100%] text-[var(--roxo)] break-all" v-if="projetoDaTarefa">
               {{ projetoDaTarefa.nome }}
             </p>
           </div>
         </div>
         <div class="flex pl-8">
           <div class="w-[50%] justify-start flex-row">
-            <p>{{ $t('criaTarefa.project_participants') }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.project_participants') }}</p>
           </div>
           <div class="w-[40%] ml-2 justify-end flex-row" v-if="projetoDaTarefa">
-            <p class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis">
-
-            </p>
-
+            <p style="font-family:var(--fonteCorpo);" class="truncate text-[var(--roxo)] break-all" v-for="responsavel of projetoDaTarefa.responsaveis"></p>
           </div>
         </div>
         <div class="flex pl-8" v-if="projetoDaTarefa">
           <div class="w-[50%] justify-start flex-row">
-            <p>{{ $t('criaTarefa.project_start_date') }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.project_start_date') }}</p>
           </div>
           <div class="w-[40%] justify-end flex-row">
-            <p class="text-[var(--roxo)]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
+            <p style="font-family:var(--fonteCorpo);" class="text-[var(--roxo)]"> {{ format(new Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
           </div>
         </div>
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">{{ $t('criaTarefa.status') }}</h1>
+        <h1 style="font-family:var(--fonteTitulo);" class="text-2xl font-semibold">{{ $t('criaTarefa.status') }}</h1>
       </div>
       <div v-if="tarefa.status != null">
         <div v-if="tarefa.status.length == 0" class="flex items-center justify-center">
-          <p>{{ $t('criaTarefa.no_status_message') }}</p>
+          <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.no_status_message') }}</p>
         </div>
         <div class="min-h-[4%] flex items-center justify-center gap-4">
-          <p :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
+          <p style="font-family:var(--fonteCorpo);" :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }"
             class="flex items-center border-2 border-[var(--backgroundItems)] shadow-md justify-center px-4">
             {{ tarefa.status.nome }}
           </p>
         </div>
       </div>
       <div class="min-h-[4%] flex items-center justify-center p-8">
-        <h1 class="text-xl font-semibold">{{ $t('criaTarefa.properties') }}</h1>
+        <h1 style="font-family:var(--fonteTitulo);" class="text-2xl font-semibold">{{ $t('criaTarefa.properties') }}</h1>
       </div>
       <div v-if="tarefa.propriedades.length === 0" class="h-[35%] flex flex-col items-center justify-center p-8">
         <NotePad></NotePad>
-        <p class="text-center">{{ $t('criaTarefa.this_taks_has_no_properties') }}</p>
+        <p style="font-family:var(--fonteCorpo);" class="text-center">{{ $t('criaTarefa.this_taks_has_no_properties') }}</p>
       </div>
       <div v-if="tarefa.propriedades.length != 0" class="min-h-[35%] flex flex-col items-center">
         <div v-for="propriedade of tarefa.propriedades" class="flex flex-col justify-around py-4 w-[80%]">
-          <p class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
+          <p style="font-family:var(--fonteCorpo);" class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
           <div v-if="propriedade.propriedade.tipo === 'DATA'">
-            <p>{{ $t('criaTarefa.value') }} {{ formatarData(propriedade.valor.valor) }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }} {{ formatarData(propriedade.valor.valor) }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'SELECAO'" class="flex">
-            <p>{{ $t('criaTarefa.value') }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }}</p>
             <select class="flex text-center w-[80%]">
               <option v-for="valor of propriedade.valor.valor">{{ valor }}</option>
             </select>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'NUMERO'">
-            <p>{{ $t('criaTarefa.value') }} {{ propriedade.valor.valor }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }} {{ propriedade.valor.valor }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'TEXTO'">
-            <p>{{ $t('criaTarefa.value') }} {{ propriedade.valor.valor }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }} {{ propriedade.valor.valor }}</p>
           </div>
         </div>
       </div>
