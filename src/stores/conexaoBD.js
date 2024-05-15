@@ -48,11 +48,6 @@ export const conexaoBD = defineStore('conexaoBD', {
     adicionarCriador(userId, equipeId) {
       return axios.patch('http://localhost:8082/usuario/criador/' + userId + '/' + equipeId, "", { withCredentials: true })
     },
-    deletar(id, textoRequisicao) {
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
-
-      })
-    },
     deletarProjetoEquipe(id, idProjeto, textoRequisicao) {
       return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`, { withCredentials: true }).then(response => {
 

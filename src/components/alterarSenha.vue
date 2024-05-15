@@ -3,15 +3,15 @@
         <fundoPopUp largura="77vh" altura="68vh">
             <div class="flex flex-col justify-between  w-[77vh] h-[68vh]">
                 <div class="flex pl-12 pt-12">
-                    <div class="text-3xl text-[var(--roxo)]">
+                    <div style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class=" text-[var(--roxo)]">
                         Alterar Senha 
                         <!-- {{ senhaUsuario }} -->
                     </div>    
                 </div>
-                <div class="flex justify-center items-center">
+                <div style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" class="flex justify-center items-center">
                     <div class="flex flex-col gap-16">
                         <div class="flex justify-between items-center gap-5">
-                            <span class="text-xl font-semibold">Insira a senha antiga</span>
+                            <span class="font-semibold">Insira a senha antiga</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Antiga" 
                             v-model="senhaAntiga" 
@@ -23,7 +23,7 @@
                             />
                         </div>
                         <div class="flex justify-between items-center gap-5">
-                            <span class="text-xl font-semibold">Insira uma senha nova</span>
+                            <span class="font-semibold">Insira uma senha nova</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Senha Nova" 
                             v-model="senhaNova" 
@@ -36,7 +36,7 @@
                             />
                         </div>
                         <div class="flex justify-between items-center gap-5">
-                            <span class="text-xl font-semibold">Confirme a nova senha</span>
+                            <span class="font-semibold">Confirme a nova senha</span>
                             <Input styleInput="input-transparente-claro-grande" 
                             conteudoInput="Confirmar Senha" 
                             v-model="senhaConfirmada" 

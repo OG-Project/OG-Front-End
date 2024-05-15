@@ -2,14 +2,14 @@
     <fundoPopUp largura="60vh" altura="54vh">
         <div class="flex flex-col justify-between w-[60vh] h-[54vh]">
             <div class="flex pl-12 pt-12">
-                <div class="text-3xl text-[var(--roxo)]">
+                <div style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class=" text-[var(--roxo)]">
                     Alterar E-mail
                 </div>
             </div>
-            <div class="flex justify-center items-center">
+            <div style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" class="flex justify-center items-center">
                 <div class="flex flex-col gap-16">
                     <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl font-semibold">Novo E-mail</span>
+                        <span class=" ">Novo E-mail</span>
                         <Input 
                         styleInput="input-transparente-claro-grande" 
                         conteudoInput="Novo E-mail" 

@@ -2,7 +2,7 @@
     <div class="w-[75vw] h-[92vh] flex flex-col  ">
         <div>
             <h1 style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" 
-            class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
             {{ $t('privacidade.Privacidade') }}
             </h1>
         </div>
@@ -12,7 +12,7 @@
                 class="flex flex-col gap-10">
                     <div class="flex justify-between items-center gap-5">
                         <span 
-                        class="text-xl">
+                        class="">
                         {{ $t('privacidade.Permitir que visualizem seus projetos') }}
                         </span>
                         <CheckBox 
@@ -24,7 +24,7 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span 
-                        class="text-xl">
+                        class="">
                         {{ $t('privacidade.Permitir que visualizem seu email') }}
                         </span>
                         <CheckBox 
@@ -36,7 +36,7 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span 
-                        class="text-xl">
+                        class="">
                         {{ $t('privacidade.Permitir que visualizem suas equipes') }}
                         </span>
                         <CheckBox 
@@ -48,7 +48,7 @@
                     </div>
                     <div class="flex justify-between items-center gap-5">
                         <span 
-                        class="text-xl">
+                        class="">
                         {{ $t('privacidade.Permitir que visualizem seu perfil') }}
                         </span>
                         <CheckBox 
@@ -58,7 +58,6 @@
                         el-id="visualizacaoPerfil" 
                         @envia-valor="visualizacaoPerfil($event)" />
                     </div>
-                    "permitir Notificação a fazer"
                 </div>
             </div>
         </div>

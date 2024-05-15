@@ -728,7 +728,7 @@ async function criaTarefaNoConcluido() {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
   }
   router.push("/projeto").then(() => {
-    window.location.reload();
+    // window.location.reload();
   });
 
 }
