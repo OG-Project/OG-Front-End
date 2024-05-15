@@ -13,15 +13,17 @@
                     <div :id="temId(equipe)">
                         <div class="flex justify-center">
                             <div class="corDiv">
-                                <img class="imagemEquipe" v-if="equipe.equipe.foto" 
-                                :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
+                                <img class="imagemEquipe" v-if="equipe.equipe.foto"
+                                    :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
                                 <equipe class="imagemEquipe" v-else></equipe>
-                                <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{ truncarNome(equipe.equipe.nome,
-                        larguraNomeEquipe()) }}</p>
-                        </div>
-                        <div @click.stop="abrePopUp(equipe, 'engrenagem')">
-                            <engrenagem class="imgIcon"></engrenagem>
-                        </div>
+                                <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{
+                    truncarNome(equipe.equipe.nome,
+                        larguraNomeEquipe()) }}
+                                </p>
+                            </div>
+                            <div @click.stop="abrePopUp(equipe, 'engrenagem')">
+                                <engrenagem class="imgIcon"></engrenagem>
+                            </div>
                         </div>
                         <div class="textArea">
                             <p class="descricao">{{ equipe.equipe.descricao }}</p>
@@ -38,7 +40,7 @@
             <editarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelEngrenagem == true"></editarEquipePopUp>
 
             <criarEquipePopUp v-if="funcaoPopUp.variavelModal && variavelCria == true"></criarEquipePopUp>
-            
+
         </div>
     </div>
 
@@ -60,9 +62,9 @@ import equipe from "../imagem-vetores/equipe.vue";
 import TelaLoad from "../components/TelaLoad.vue";
 
 import { inject } from "vue";
-const tour =inject('tour')
+const tour = inject('tour')
 function temId(a) {
-    return equipesUsuario.value.indexOf(a)==equipesUsuario.value.length-1? 'step-8':''
+    return equipesUsuario.value.indexOf(a) == equipesUsuario.value.length - 1 ? 'step-8' : ''
 }
 
 let equipesUsuario = ref([]);
@@ -81,22 +83,32 @@ onMounted(() => {
     listaUsuarios();
 })
 
- webSocket.url="ws://localhost:8085/og/webSocket/usuario/1"
+webSocket.url = "ws://localhost:8085/og/webSocket/usuario/1"
 
 
 const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-      
+
 async function listaUsuarios() {
     usuarios = banco.procurar("/usuario");
     let listaUsuarios = await usuarios;
-    console.log(listaUsuarios)
+    banco.loading = true
+    let totalUsuarios = listaUsuarios.length;
+    let usuariosProcessados = 0;
     listaUsuarios.forEach((usuario) => {
         if (usuarioLogadoId == usuario.id) {
-            console.log(usuario.equipes)
             equipesUsuario.value = usuario.equipes;
-            console.log(equipesUsuario.value)
-           }
-        })
+            usuariosProcessados++;
+            console.log(equipesUsuario.value.length)
+            if (equipesUsuario.value.length != 0) {
+                if (usuariosProcessados === 1 && equipesUsuario.value[0].id == usuario.equipes[0].id) {
+                    banco.loading = false
+                }
+            }
+        }
+    });
+
+    banco.loading= false
+
 }
 
 function abrePaginaEquipe(equipe) {
@@ -117,12 +129,12 @@ async function abrePopUp(equipe, tipo) {
         const equipeSelecionada = equipe;
         VueCookies.set("equipeSelecionada", equipeSelecionada.equipe.id, 30000)
         funcaoPopUp.abrePopUp()
-    }else{
+    } else {
         variavelEngrenagem = false;
         variavelCria.value = true;
         funcaoPopUp.abrePopUp()
-        
-       
+
+
     }
 }
 
@@ -145,14 +157,14 @@ function larguraNomeEquipe() {
 
 function mostrarNomeCompleto(nome) {
     nomeCompleto.value = nome;
-  }
+}
 
 
 function limparNomeCompleto() {
     nomeCompleto.value = '';
 
-  }
- </script>
+}
+</script>
 
 <style scoped>
 .descricao {
@@ -175,9 +187,7 @@ function limparNomeCompleto() {
 }
 
 .textArea {
-    @apply truncate flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full 
-    bg-[#D7D7D7] text-black text-lg text-left 
-    border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+    @apply truncate flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
     border-bottom: 'solid 4px var(--roxo)';
 }
 
@@ -188,8 +198,7 @@ function limparNomeCompleto() {
 
 .maisEquipes {
 
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] 
-    md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
 }
 
 .listaEquipes {
@@ -202,9 +211,7 @@ function limparNomeCompleto() {
 }
 
 .criarEquipe {
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] 
-    lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] 
-    md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] ;
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)];
 }
 
 .imagemEquipe {
@@ -215,30 +222,36 @@ function limparNomeCompleto() {
     @apply flex 2xl:ml-8 2xl:mt-2 lg:ml-4 lg:mt-2 md:ml-2 md:mt-0 2xl:h-[4vh] 2xl:w-[2vw] lg:h-[4vh] lg:w-[3vw] md:h-[6vh] md:w-[4vw];
 }
 
-@media(max-width: 620px){
+@media(max-width: 620px) {
     .maisEquipes {
         @apply flex flex-col ml-[8vw] mt-[5vh] w-[70vw] h-[25vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
     }
+
     .criarEquipe {
         @apply flex flex-col ml-[9vw] mr-12 mt-[5vh] w-[100%] h-[25vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)];
     }
+
     .imagemEquipe {
         @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;
     }
+
     .imgIcon {
         @apply flex ml-[1vw] mt-4 h-[25px] w-[25px];
     }
+
     .corDiv {
         @apply flex ml-[5vw] h-20 w-[45vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
     }
+
     .textArea {
-        @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[60vw] h-[10vh]  bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+        @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[60vw] h-[10vh] bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
         border-bottom: 'solid 4px var(--roxo)';
     }
+
     .listaEquipes {
         @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
         flex: 1 1 px;
     }
-    
+
 }
 </style>

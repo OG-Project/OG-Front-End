@@ -6,11 +6,11 @@
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
-            <div class="w-[60%] h-[50%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
+            <div class="w-[60%] h-[60%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
                 <div class="h-[100%] flex items-end truncate">
                    <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
                 </div>
-                <div class="flex items-end" v-if="verificaSeEResponsavel()" @click="router.push('/projeto/responsavel')">
+                <div class="flex items-end" v-if="isResponsavel" @click="router.push('/projeto/responsavel')">
                     <Dashboard></Dashboard>
                 </div>
             </div>
@@ -97,7 +97,7 @@ let listaDeEquipes = ref(false)
 let funcaoPopUp = funcaoPopUpStore()
 let visualizacao = ref({})
 let enviandoMensagem = ref(false)
-
+let isResponsavel = ref(false)
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
     console.log(projeto.value)
@@ -107,6 +107,7 @@ onMounted(async () => {
     }
 
     console.log(visualizacao.value)
+    verificaSeEResponsavel()
     definePorcentagem()
 })
 
@@ -117,12 +118,13 @@ async function verificaSeEResponsavel(){
     if(responsaveis!=null){
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
-                return true
+                isResponsavel.value= true
+                return
             }
         }
     }
-    return false
-
+    isResponsavel.value = false
+    return
 }
 
 function atualizaVisualizacao() {

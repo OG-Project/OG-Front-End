@@ -1,5 +1,5 @@
 <template>
-  <div class="grid-template flex">
+  <div class="grid-template ">
     <div class="convites-bg flex-col w-full bg-[[var(--backgroundItemsClaros)]] shadow-md  shadow-[var(--backgroundItemsClaros)] overflow-y-auto scrollbar-thin"
       :style="{ height: altura }">
       <div class="flex justify-center overfloow-y:auto">

@@ -51,7 +51,7 @@
                                         <div class="w-full flex justify-end pr-2">
                                             <div class="w-[40%]">
                                                 <img src="../../imagem-vetores/botao-x.svg"
-                                                    @click="removeResponsavel(responsavel)">
+                                                    @click="removeResponsavel(responsavel)" v-if="responsaveisProjeto.length!=1">
                                             </div>
                                         </div>
                                     </div>
@@ -76,11 +76,11 @@
 
             <div id="step-12" class="h-[10%] w-[90%] flex items-end justify-end pr-4 gap-6">
                 <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita"></Botao>
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita && isResponsavel && responsaveisProjeto.length==1 && !naoPodeDeletar"></Botao>
                 <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita" ></Botao>
                 <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita"></Botao>
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita && isResponsavel"></Botao>
 
 
             </div>
@@ -151,10 +151,16 @@ let mensagem = ref("");
 let mensagemCor = ref("");
 let semNome = ref(false);
 let semResponsavel = ref(false)
+let isResponsavel = ref(false)
+let naoPodeDeletar = ref(false)
+let usuario;
+let usuarioId = VueCookies.get('IdUsuarioCookie')
 onMounted(async () => {
     if (idProjeto != undefined) {
         projeto.value = await conexao.buscarUm(idProjeto, '/projeto')
     }
+
+     usuario=await  conexao.buscarUm(usuarioId, "/usuario")
     verificaEdicaoProjeto();
     defineSelect()
     pesquisaBancoUserName();
@@ -170,6 +176,8 @@ onUpdated(() => {
     criarProjetoCookies();
     fazPlaceHolderDataFinalProjeto()
 })
+
+
 
 
 function limparMensagemErro() {
@@ -192,19 +200,23 @@ stylePlaceHolder.value = {
     alingItems: "center"
 }
 
-function verificaResponsavel() {
-    let usuario = VueCookies.get('IdUsuarioCookie')
+
+async function verificaResponsavel() {
+  
+    
     if (projeto.value != undefined) {
-        let responsaveis = projeto.value.responsaveis
+        let responsaveis = responsaveisProjeto.value
         if (responsaveis != null) {
             for (const responsavel of responsaveis) {
-                if (responsavel.idResponsavel == usuario) {
-                    return true
+                if (responsavel == usuario.username) {
+                    isResponsavel.value = true
+                    return 
                 }
             }
         }
     }
-    return false;
+    isResponsavel.value = false
+    return  
 
 }
 
@@ -344,6 +356,7 @@ async function buscaProjetoEditar() {
 }
 
 async function buscaListaResponsaveisBack(projeto) {
+    console.log(projeto)
     projeto.responsaveis.forEach(async (responsavelAtual) => {
         let responsavel = await conexao.buscarUm(responsavelAtual.idResponsavel, "/usuario")
         let username = responsavel.username
@@ -410,6 +423,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
                     idResponsavel: usuario.id
                 }
                 listaResponsaveisBack.push(responsavelBanco);
+                verificaResponsavel();
                 return;
             }
         })
@@ -419,6 +433,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
             idResponsavel: usuarioRecebe.id
         }
         listaResponsaveisBack.push(responsavelBanco);
+        verificaResponsavel();
     }
 
 }
@@ -532,7 +547,6 @@ async function removeListaEquipeConvidadas(equipeRemover) {
 }
 
 async function removeResponsavel(responsavelRemover) {
-    let listaUsuarios = await conexao.procurar('/usuario');
     responsaveisProjeto.value.forEach((objetoAtual) => {
         if (objetoAtual.username == responsavelRemover.username) {
             let index = responsaveisProjeto.value.indexOf(responsavelRemover)
@@ -544,6 +558,9 @@ async function removeResponsavel(responsavelRemover) {
     )
     if (!projetoEdita) {
         criarProjetoCookies();
+    }
+    if(responsavelRemover == usuario.username){
+        naoPodeDeletar.value = true;
     }
 }
 </script>
