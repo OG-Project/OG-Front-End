@@ -117,7 +117,7 @@ async function verificaSeEResponsavel(){
     if(responsaveis!=null){
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
-                return true
+                return false
             }
         }
     }

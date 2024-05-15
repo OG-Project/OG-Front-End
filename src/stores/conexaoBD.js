@@ -32,7 +32,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = false;
       }
     },
-    asastrar(objeto, textoRequisicao) {
+    cadastrar(objeto, textoRequisicao) {
       this.loading = true;
       try{
       return axios.post("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
@@ -148,14 +148,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = false;
       }
     },
-    async buscarProjetosUsuario(userId, textoRequisicao) {
-      this.loading = true;
-      try{
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`, { withCredentials: true })).data)
-      }finally {
-      this.loading = false;
-      }
-    },
     atualizaProjetoEquipe(objeto, idEquipe, textoRequisicao) {
       this.loading = true;
       try{
@@ -219,14 +211,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       try{
       return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`, { withCredentials: true }).then(response => {
       })
-      }finally {
-      this.loading = false;
-      }
-    },
-    async buscarUm(id, textoRequisicao) {
-      this.loading = true;
-      try{
-      return (await axios.get('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
       }finally {
       this.loading = false;
       }

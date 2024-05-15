@@ -100,7 +100,7 @@
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :reponsavel="obterNomesResponsaveis(projeto)"
+              :responsavel="listaResponsaveis"
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
@@ -109,7 +109,7 @@
                 :descricao="projeto.descricao" 
                 :comeco="formatarData(projeto.dataCriacao)" 
                 :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-                :reponsavel="obterNomesResponsaveis(projeto)"
+                :responsavel="listaResponsaveis"
                 :feito="calcularProgressoProjeto(projeto)"
                 :tempo-atuacao="projeto.tempoAtuacao"
                 @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
@@ -146,7 +146,7 @@
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
   const router = useRouter();
-  
+  let listaResponsaveis = ref([])
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;
@@ -271,6 +271,7 @@ async function obterNomesResponsaveis(projeto) {
       if (responsaveisComNome.length >= 0) {
         listaResponsaveis.value = responsaveisComNome.join(', ');
       }
+      
     }
   } else {
     return "Não há responsáveis";

@@ -51,7 +51,7 @@
                                         <div class="w-full flex justify-end pr-2">
                                             <div class="w-[40%]">
                                                 <img src="../../imagem-vetores/botao-x.svg"
-                                                    @click="removeResponsavel(responsavel)">
+                                                    @click="removeResponsavel(responsavel)" v-if="responsaveisProjeto.length!=1">
                                             </div>
                                         </div>
                                     </div>
@@ -78,7 +78,7 @@
                 <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita"></Botao>
                 <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita" ></Botao>
                 <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita"></Botao>
 
