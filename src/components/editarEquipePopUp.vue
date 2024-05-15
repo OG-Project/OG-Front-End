@@ -36,7 +36,7 @@
                     </div>
                     <div v-else-if="!usuarioECriadorEquipe">
                         <div v-if="screenWidth >= 620"
-                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
+                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-[10.5vw] xl:ml-[27vw] lg:ml-[29vw] md:ml-[26vw]">
                             <Botao preset="Sair" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem"
                                 :funcaoClick="removesse">
                             </Botao>
@@ -47,16 +47,18 @@
                             </Botao>
                         </div>
                     </div>
-                    <div v-if="screenWidth >= 620"
-                        class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem"
+                    <div v-if="usuarioECriadorEquipe || usuarioResponsavelEquipe">
+                        <div v-if="screenWidth >= 620"
+                            class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
+                            <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem"
                             :funcaoClick="editarEquipe">
-                        </Botao>
-                    </div>
-                    <div v-else class="flex justify-end mt-20">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilemedio" texto="Editar" tamanhoDaFonte="1rem"
+                             </Botao>
+                        </div>
+                        <div v-else class="flex justify-end mt-20">
+                            <Botao preset="PadraoRoxo" tamanhoPadrao="mobilemedio" texto="Editar" tamanhoDaFonte="1rem"
                             :funcaoClick="editarEquipe">
-                        </Botao>
+                            </Botao>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -134,6 +136,7 @@ let equipes = banco.procurar("/equipe");
 let usuarios = banco.procurar("/usuario");
 let usuarioFazParteEquipe = false;
 let usuarioECriadorEquipe = false;
+let usuarioResponsavelEquipe = false;
 function limparMensagemErro() {
     mensagem.value = "";
 }
@@ -237,11 +240,12 @@ async function equipeDoUsuarioLogado (){
             usuario.equipes.forEach((equipeUsuario) => {
                 // Verifica se a equipe do usuário é a mesma que foi criada
                 if (equipeUsuario.equipe.id == equipeSelecionada) {
-                     console.log(1)
                      usuarioFazParteEquipe = true;
                     if(equipeUsuario.criador == true){
-                     console.log(2)
                      usuarioECriadorEquipe = true;
+                    }
+                    if(equipeUsuario.permissao != 'VER'){
+                        usuarioResponsavelEquipe = true;
                     }
                 }
             });
