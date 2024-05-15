@@ -64,7 +64,7 @@
                                             @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
                                     </div>
                                     <div class="w-[20%] flex items-center justify-center gap-10 h-10">
-                                        <IconeHistorico class="w-[20%] h-[85%] cursor-pointer"></IconeHistorico>
+                                        <IconeHistorico @click="funcao" class="w-[20%] h-[85%] cursor-pointer"></IconeHistorico>
                                     </div>
                                 </div>
                             </div>
@@ -113,6 +113,7 @@
 </div> -->
         </div>
     </div>
+    <HistoricoPopUp></HistoricoPopUp>
 </template>
 <script setup>
 import { format } from "date-fns";
@@ -125,6 +126,8 @@ import checkBox from "../components/checkBox.vue";
 import AprovedIcon from "../assets/AprovadoAdm.vue";
 import RejectedIcon from "../assets/VoltaAdm.vue";
 import IconeHistorico from "../assets/Historico.vue";
+import HistoricoPopUp from "../components/HistoricoPopUp.vue";
+import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 
 import router from '@/router';
 

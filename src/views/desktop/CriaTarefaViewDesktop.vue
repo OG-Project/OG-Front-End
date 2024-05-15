@@ -456,6 +456,7 @@ import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
 import router from "../../router";
 import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
 import { useI18n } from 'vue-i18n';
+import { criaHistorico } from '../../stores/criaHistorico'
 
 const { t } = useI18n();
 
@@ -626,6 +627,7 @@ function veSeOStatusTaNaTarefa(status) {
 }
 
 async function criaTarefaNoConcluido() {
+  
   let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   let tarefaCriando = {
     id: JSON.parse(VueCookies.get("IdTarefaCookies")),
@@ -696,6 +698,7 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
   console.log(tarefaCriando)
+  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, VueCookies.get("IdProjetoAtual"))
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(response)
     if (tarefa.value.arquivos.length != 0) {
