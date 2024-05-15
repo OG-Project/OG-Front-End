@@ -224,7 +224,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         // Deleta os arquivos existentes relacionados à tarefa
         await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`, { withCredentials: true });
 
-        const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
+        const formData = new FormData();
+        formData.append('arquivos', arquivos);
+
+        const response = await axios.patch("http://localhost:8082/tarefa/arquivos/" + id, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
