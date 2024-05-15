@@ -1,6 +1,6 @@
 <template>
-    <fundoPopUp largura="77vh" altura="54vh">
-        <div class="flex flex-col justify-between w-[740px] h-[515px]">
+    <fundoPopUp largura="60vh" altura="54vh">
+        <div class="flex flex-col justify-between w-[60vh] h-[54vh]">
             <div class="flex pl-12 pt-12">
                 <div class="text-3xl text-[var(--roxo)]">
                     Alterar E-mail

@@ -23,7 +23,7 @@
 
             <div class=" flex flex-col gap-20">
                 <div class="flex gap-4">
-                    <div class="w-full flex flex-col gap-4  items-center">
+                    <div class="w-full flex flex-col gap-4  items-start">
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
                             {{ $t('aparencia.Titulo') }}
                         </div>
@@ -35,7 +35,7 @@
                             :opcaoSelecionada="perfil.fonteTitulo" :listaSelect="fontsTitulo">
                         </selectPadrao>
                     </div>
-                    <div class="w-full flex flex-col gap-4  items-center">
+                    <div class="w-full flex flex-col gap-4  items-start">
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
                             {{ $t('aparencia.Corpo de Texto') }}
                         </div>
@@ -120,27 +120,10 @@ import CheckBox from './checkBox.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 const perfil = perfilStore()
 const conexao = conexaoBD()
-const { hue } = storeToRefs(perfil)
-const { fonteCorpo } = storeToRefs(perfil)
-const { tamanhoCorpo } = storeToRefs(perfil)
-const { tamanhoTitulo } = storeToRefs(perfil)
+
 let usuario = ref()
 let fonteTamanhoTituloInicial = ref("")
-// let configuracaoa={
-//     fonteCorpo:'Poppins',
-//     fonteCorpoTamanho:2,
-//     fonteTitulo:'Source Sans 3' ,
-//     fonteTituloTamanho: 6,
-//     hueCor: 273,
-//     idioma:'Portugues',
-//     isVisualizaProjetos:true,
-//     isVisualizaEmail:true,
-//     isVisualizaEquipes:true,
-//     isVisualizaPerfil:true,
-//     isDigitarVoz:false ,
-//     isTecladoVirtual: false,
-//     isLibras: false
-// }
+
 const cores = ref({
     1: '0277f5',
     2: 'f52f02',

@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <div style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
+        <div @click="()=> conexao.deletar(VueCookies.get('IdUsuarioCookie'),'/usuario')" style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
             <span>Deseja deletar sua Conta?</span>
         </div>
         

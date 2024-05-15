@@ -1,8 +1,9 @@
 
 <template>
 <div class=""
-style="font-family: var(--fonteCorpo);">
+style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho) ">
     <div class="styleInputPadraoIcon" 
+    :class="{'Invalido':props.isInvalido}"
         v-if="icon!='null' && direcao!='direita' && tipoInput!='float'" 
         :style="estilizaDivInput">
         <div 
@@ -53,6 +54,7 @@ style="font-family: var(--fonteCorpo);">
 
 
     <div class="styleInputPadrao flex items-center" 
+    :class="{'Invalido':props.isInvalido}"
         v-if="icon=='null' & tipoInput=='float'">
         <div class="estiloPlaceHolder">
             
@@ -158,7 +160,7 @@ style="font-family: var(--fonteCorpo);">
     
     <div 
     class="styleInputPadraoIconDireita " 
-    :class="styleInputPadraoDireita" 
+    :class="{'Invalido':props.isInvalido ,styleInputPadraoDireita:true}"
     v-if="direcao=='direita' && tipoInput!='float'" 
     :style="estilizaDivInput">
             <input 
@@ -351,26 +353,6 @@ function teclado(){
         return "#D7D7D7"
     }
 
-
-    // function {
-    //     //Aumenta o tamanho da font size de acordo com a tela
-    //     if(props.fontSize == undefined){ 
-
-    //      if(props.styleInput=="input-pequeno" || props.styleInput=="input-pequeno-escuro" 
-    //     || props.styleInput=="input-claro-pequeno" ||  props.styleInput=="input-transparente-claro-pequeno" || props.styleInput=="input-transparente-escuro-pequeno" ){
-    //             if(window.innerWidth >= 600 && window.innerWidth <= 850){
-    //                 console.log(window.innerWidth)
-    //                 return "0.8rem"
-
-    //             }else if(window.innerWidth >= 850 && window.innerWidth <= 1000){
-    //                 return '1.0rem'
-    //             }
-    //         }
-    //          return '1.2rem'
-    //     }
-    //  return props.fontSize;
-    // }
-
     
     function verificaCor(){
         //verificando se a cor vai ser preta ou branca de acordo com o style recebido
@@ -390,8 +372,6 @@ function teclado(){
     
 </script>
 <style lang="scss">
- 
-
     .Invalido{
         @apply
          border-4 
@@ -404,7 +384,7 @@ function teclado(){
         border-b-4
         hover:rounded-[4px] hover:border-4
          focus-within:border-red-600 
-        focus-within:border-4 focus-within:rounded-[4px];
+        focus-within:border-4 focus-within:rounded-[4px] #{!important};
     }
 
     .styleInputPadrao{

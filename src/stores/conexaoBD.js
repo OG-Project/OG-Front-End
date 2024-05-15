@@ -90,7 +90,6 @@ export const conexaoBD = defineStore('conexaoBD', {
     },
     deletar(id, textoRequisicao) {
       return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
-
       })
     },
     deletarProjetoEquipe(id, idProjeto, textoRequisicao) {

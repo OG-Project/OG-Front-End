@@ -36,7 +36,7 @@
                     
                     <div v-if="ishover" 
                     style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
-                    class="absolute flex bg-gray-400 px-2 py-1 rounded-full items-center text-black">
+                    class="absolute flex bg-[var(--roxo)] px-2 py-1 rounded-full items-center text-black">
                         <span class=" text-[var(--fonteCor)] ">Alterar Foto</span>
                         <iconLapisDinamic  class="
                          bg-cover 

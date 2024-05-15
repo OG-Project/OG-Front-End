@@ -77,18 +77,20 @@ onUpdated(async ()=>{
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
+        console.log(usuario.value);
   if(route.path!='/login' ){
-   console.log('oi aqui');
+   console.log(usuario.value.configuracao.isTutorial);
+   console.log(usuario.value.configuracao.rotaDoPasso);
     if(usuario.value.configuracao.isTutorial){
       if(usuario.value.configuracao.ultimoPassoId!='step-1'
         && usuario.value.configuracao.ultimoPassoId!=null){
           console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
+          router.push(usuario.value.configuracao.rotaDoPasso)
           tour.show(usuario.value.configuracao.ultimoPassoId,true)
       }else{
         console.log(route.path);
         tour.start()
       }
-    }else if(route.path=='/home'){
     }
 
   }
@@ -175,6 +177,7 @@ watch(() => route.path, () => {
   }
 });
 import { inject } from 'vue'
+import router from "./router";
 const tour = inject('tour')
 
 tour.addSteps([
@@ -303,7 +306,7 @@ tour.addSteps([
           let proximoId=splitId.join('-')
           usuario.value.configuracao.ultimoPassoId=(proximoId)
           
-          usuario.value.configuracao.rotaDoPasso='/home'
+          usuario.value.configuracao.rotaDoPasso='/equipe'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -521,7 +524,7 @@ tour.addSteps([
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
           let proximoId=splitId.join('-')
           usuario.value.configuracao.ultimoPassoId=(proximoId)
-          usuario.value.configuracao.rotaDoPasso='/equipe/telaInicial'
+          usuario.value.configuracao.rotaDoPasso='/criaprojeto'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
@@ -737,7 +740,7 @@ tour.addSteps([
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
           let proximoId=splitId.join('-')
           usuario.value.configuracao.ultimoPassoId=(proximoId)
-          usuario.value.configuracao.rotaDoPasso='/criaTarefa'
+          usuario.value.configuracao.rotaDoPasso='/projeto'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
