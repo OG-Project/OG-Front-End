@@ -14,8 +14,15 @@
                         <img class="imgDePerfil" @click="router.push(`/perfil/${membro.id}`)" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
-                    <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
-                    <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" :listaSelect="opcoesSelect" ></SelectPadrao>
+                    <div v-if="verificaCriador(membro)">
+                         <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
+                         :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)" ></SelectPadrao>
+                         <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
+                         :listaSelect="opcoesSelect" @change="editaSelect(opcaoEscolhida, membro)"></SelectPadrao>
+                    </div>
+                    <div v-else class="styleSelectPadraoBranco  md:ml-5 2xl:ml-10">
+
+                    </div> 
              </div>
             </div>
         </div>  
@@ -82,12 +89,16 @@ let listaMembros = ref([]);
 let usuariosRemover = ref([]);
 let membrosEquipe = ref([]);
 let valorSelectSelecionado = ref("Edit")
+let valorSelectEdita = ref("Edit")
 let membrosConvidados = ref([]);
 let usuarioConvidado = ref('');
 let membroParaConvidar = ref([]);
+let opcaoEscolhida = ref("");
+let listaMembrosEditados = ref ([]);
 const screenWidth = window.innerWidth;
-const opcoesSelect = ['Edit', 'View'];
+let select = [];
 let usuarios = banco.procurar('/usuario');
+
 
 let equipeMembros = ref({
     nome: '',
@@ -103,21 +114,55 @@ function limparMensagemErro() {
 
 listaUsuarios();
 
+function opcoesSelect(membro){
+    membro.equipes.forEach((equipeUsuario)=>{
+        if(equipeUsuario.equipe.id == equipeSelecionada){
+            if(equipeUsuario.permissao == 'VER'){
+                select = ['View', 'Edit']  
+            }else{
+                select = ['Edit', 'View']
+            }
+        }
+    })
+    return select;
+}
+
+
+function editaSelect(valor, membro) {
+    
+    valorSelectEdita.value = valor
+    mudaPermissaoMembroEquipe(membro);
+}
+
+function mudaPermissaoMembroEquipe(usuario) {
+    listaMembros.value.some((membro) => {
+        if (membro.username === usuario.username) {
+            if (valorSelectEdita.value == "View") {
+                membro.permissao = 2
+            } else {
+                membro.permissao = 1
+            }
+        }
+        let membroPermissao = {
+                        "usuario": membro,
+                        "permissao": membro.permissao,
+        }
+        listaMembrosEditados.value.push(membroPermissao);
+    })
+}
+
 async function filtrarEquipe() {
     console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
     equipeMembros.value = await (banco.buscarUm(equipeSelecionada, "/equipe"))
 }
 
 function valorSelect(valor, convidado) {
-    console.log(convidado);
-    console.log(valor);
     valorSelectSelecionado.value = valor
     usuarioConvidado.value = convidado.username
     mudaPermissaoUsuario(convidado);
 }
 
 function mudaPermissaoUsuario(usuario) {
-    console.log(membrosConvidados.value);
     membrosConvidados.value.some((membro) => {
         if (membro.username === usuario.username) {
             if (valorSelectSelecionado.value == "View") {
@@ -136,7 +181,6 @@ function verificaCriador(membro){
     membro.equipes.forEach((equipeUsuario) =>{
         if(equipeUsuario.equipe.id == equipeSelecionada){
             if(equipeUsuario.criador == true){
-                  console.error('Você não pode remover o criador'); 
                   retorno = false;
             }
         } 
@@ -332,6 +376,11 @@ async function confirmarConvites() {
     // Limpe a lista de usuários a serem removidos após a remoção
     usuariosRemover.value = [];
 
+    for (const membroEquipeEditado of listaMembrosEditados.value){
+        await banco.removerUsuarioDaEquipe(equipeSelecionada, membroEquipeEditado.usuario.id, "/usuario/removerUsuarioEquipe");
+        banco.adicionarUsuarios(membroEquipeEditado.usuario.id, equipeSelecionada, membroEquipeEditado.permissao, "/usuario/add");
+    }
+
 
     const ids = membrosConvidados.value.map(m => {
         return Number(m.id);
@@ -359,13 +408,14 @@ async function confirmarConvites() {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
     enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
+   
 }
 
 </script>
 
 <style scoped>
 .styleSelectPadraoBranco{
-        @apply border-4 mt-[1vh]
+        @apply border-4 mt-[3vh]
         flex justify-center
         border-transparent
         border-b-brancoNeve

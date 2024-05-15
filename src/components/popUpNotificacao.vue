@@ -1,14 +1,14 @@
 <template>
-    <div class="h-[70vh] w-[30vw] bg-brancoNeve border-slate-100 border-2 flex flex-col items-center"
+    <div class="h-[70vh] w-[30vw] bg-[var(--backgroundItems)] border-[var(--backgroundItems)] border-2 flex flex-col items-center"
         @mouseleave="emit('fecharPopUp')">
         <button class="w-full h-[3%] flex justify-end mr-[2%] mt-[2%]" @click="emit('fecharPopUp')">
             <SvgIconX></SvgIconX>
         </button>
-        <div class="w-[35%] h-[7%] border-b-2 border-roxo flex justify-center mb-[10%]">
+        <div class="w-[35%] h-[7%] border-b-2 border-[var(--roxo)] flex justify-center mb-[10%]">
             Notificações
         </div>
         <div class="w-full h-full gap-5 overflow-y-scroll overflow-x-hidden flex flex-col items-center">
-            <div v-for="notificacao of notificacoes" class="border-roxo border-b-2 w-[90%] h-max flex"
+            <div v-for="notificacao of notificacoes" class="border-[var(--roxo)] border-b-2 w-[90%] h-max flex"
                 @mouseenter="startTimer(notificacao)" @mouseleave="clearTimer(notificacao)">
                 <div class="w-[10%] h-full flex justify-center items-center">
                     <Pessoa></Pessoa>

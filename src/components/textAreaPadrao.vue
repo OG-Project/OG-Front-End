@@ -75,7 +75,7 @@ const estiloBranco = {
   width: props.width,
   height: props.height,
   fontSize: props.tamanhoDaFonte,
-  color: '#000000',
+  color: 'var(--fonteCor)',
   backgroundColor: 'var(--backgroundItems)',
   resize: props.resize
 };
