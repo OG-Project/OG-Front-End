@@ -1,5 +1,5 @@
 <template>
-  <div class="w-min h-[90%] flex flex-col items-center">
+  <div class="w-min h-[90%] flex flex-col items-center" v-if="projeto.tarefas && projeto.tarefas.length > 0">
     <div>
       <cabecalhoCardDaLista :projeto="projetoPromise" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
       </cabecalhoCardDaLista>
@@ -45,6 +45,10 @@
       </draggable>
     </div>
   </div>
+  <div v-else>
+    
+    <p>Não há tarefas</p>
+</div>
 </template>
 
 <script setup>
