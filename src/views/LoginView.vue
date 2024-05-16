@@ -77,17 +77,7 @@ function trocaDeTela() {
 
 async function cadastraUsuario() {
   const criarUsuario = criaUsuarioStore();
-  // let usuarioUnico = true;
-  // let usuarios = banco.procurar("/usuario");
-  // let listaUsuarios = await usuarios;
-  // listaUsuarios.forEach((usuario) => {
-  //   if (usuario.username != usuarioCadastro.value) {
-  //     usuarioUnico = true;
-  //   } else {
-  //     usuarioUnico = false;
-  //   }
-  // });
-  // if (usuarioUnico) {
+
     if (
       emailCadastro.value.indexOf("@") > 0 &&
       emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
@@ -107,7 +97,6 @@ async function cadastraUsuario() {
       }
     }
   }
-// }
 
 
 

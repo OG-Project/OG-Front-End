@@ -12,6 +12,7 @@ export const perfilStore = defineStore('perfilStore', {
          dataDeNascimento:'',
          popUpSenha:false,
          popUpEmail:false,
+         popUpDeletar:false,
          isVlibras:false,
          isVoiceMaker:false,
          isTecladoVirtual:false,
