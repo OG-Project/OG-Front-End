@@ -10,7 +10,7 @@
             <div class="flex justify-start">
                 <div style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" 
                 class="flex flex-col gap-10">
-                    <div class="flex justify-between items-center gap-5">
+                    <!-- <div class="flex justify-between items-center gap-5">
                         <span 
                         class="text-xl">
                         {{ $t('privacidade.Permitir que visualizem seus projetos') }}
@@ -21,7 +21,7 @@
                         tipo="toggle" 
                         el-id="visualizacaoProjeto" 
                         @envia-valor="visualizacaoProjeto($event)" />
-                    </div>
+                    </div> -->
                     <div class="flex justify-between items-center gap-5">
                         <span 
                         class="text-xl">
@@ -58,7 +58,6 @@
                         el-id="visualizacaoPerfil" 
                         @envia-valor="visualizacaoPerfil($event)" />
                     </div>
-                    "permitir Notificação a fazer"
                 </div>
             </div>
         </div>

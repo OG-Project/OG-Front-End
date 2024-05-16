@@ -36,7 +36,7 @@
                     </div>
                     <div v-else-if="!usuarioECriadorEquipe">
                         <div v-if="screenWidth >= 620"
-                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
+                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-[10.5vw] xl:ml-[27vw] lg:ml-[29vw] md:ml-[26vw]">
                             <Botao preset="Sair" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem"
                                 :funcaoClick="removesse">
                             </Botao>
@@ -47,16 +47,18 @@
                             </Botao>
                         </div>
                     </div>
-                    <div v-if="screenWidth >= 620"
-                        class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem"
+                    <div v-if=" usuarioResponsavelEquipe">
+                        <div v-if="screenWidth >= 620"
+                            class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
+                            <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem"
                             :funcaoClick="editarEquipe">
-                        </Botao>
-                    </div>
-                    <div v-else class="flex justify-end mt-20">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilemedio" texto="Editar" tamanhoDaFonte="1rem"
+                             </Botao>
+                        </div>
+                        <div v-else class="flex justify-end mt-20">
+                            <Botao preset="PadraoRoxo" tamanhoPadrao="mobilemedio" texto="Editar" tamanhoDaFonte="1rem"
                             :funcaoClick="editarEquipe">
-                        </Botao>
+                            </Botao>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -132,8 +134,9 @@ let mensagemError = ref("");
 let editando = ref(false);
 let equipes = banco.procurar("/equipe");
 let usuarios = banco.procurar("/usuario");
-let usuarioFazParteEquipe = false;
-let usuarioECriadorEquipe = false;
+let usuarioFazParteEquipe = ref(false);
+let usuarioECriadorEquipe = ref(false);
+let usuarioResponsavelEquipe = ref(false);
 function limparMensagemErro() {
     mensagem.value = "";
 }
@@ -237,11 +240,12 @@ async function equipeDoUsuarioLogado (){
             usuario.equipes.forEach((equipeUsuario) => {
                 // Verifica se a equipe do usuário é a mesma que foi criada
                 if (equipeUsuario.equipe.id == equipeSelecionada) {
-                     console.log(1)
-                     usuarioFazParteEquipe = true;
+                     usuarioFazParteEquipe.value = true;
                     if(equipeUsuario.criador == true){
-                     console.log(2)
-                     usuarioECriadorEquipe = true;
+                     usuarioECriadorEquipe.value = true;
+                    }
+                    if(equipeUsuario.permissao != 'VER'){
+                        usuarioResponsavelEquipe.value = true;
                     }
                 }
             });
@@ -394,8 +398,8 @@ async function atualizarEquipe() {
     } else {
         mensagem.value = ""
         mensagemCor.value = ""
-        mensagem.value = "Nenhuma imagem detectada";
-        mensagemCor.value = "#CD0000"
+        mensagem.value = "editação concluida";
+        mensagemCor.value = '#29CD00'
     }
 
    window.location.reload();
@@ -433,7 +437,7 @@ async function enviarFotoParaBackend(id) {
 @layer components {
 
     .alert {
-        @apply absolute flex items-start justify-start 2xl:mt-[-20vh] mr-10 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
+        @apply absolute flex items-start justify-start text-[var(--fonteCor)] 2xl:mt-[-20vh] mr-10 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
     }
 
     .descricao {

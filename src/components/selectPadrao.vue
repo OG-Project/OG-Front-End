@@ -1,15 +1,15 @@
 <template>
     <div :class=styleSelect :style="estilizaDivSelect">
         <select :style="estilizaSelect"  @input="$emit('update:modelValue', $event.target.value)" class=" flex items-center justify-center xl:text-xl sm:text-sm md:text-md truncate w-full">
-            <option class="options" value="" disabled selected  v-if="opcaoSelecionada==''">{{ placeholderSelect }}</option>
-            <option v-for="opcao of listaSelect" class="options" :value="opcao">{{ opcao }}</option>
+            <option class="options" value="" disabled selected  v-if="placeholderSelect != null">{{ placeholderSelect }}</option>
+            <option v-for="opcao of listaSelect" :disabled="disable" class="options" :value="opcao">{{ opcao }}</option>
         </select>   
     </div>
 
 </template>
 
 <script setup>
-import { onUpdated } from 'vue';
+import { onMounted, onUpdated } from 'vue';
 
 
 defineEmits(['update:modelValue'])
@@ -31,10 +31,18 @@ defineEmits(['update:modelValue'])
             type:String,
             default: 'styleSelectPadrao'
         },
+        disable:{
+            type: Boolean,
+            default: false
+        }
     }
 
    
     )
+    
+    onMounted(() =>{
+        console.log(props.placeholderSelect)
+    })
 
     onUpdated(() => {
     
@@ -93,7 +101,7 @@ defineEmits(['update:modelValue'])
         }
         else if(props.styleSelect=="select-cinza" || props.styleSelect=="select-grande-cinza" ||
         props.styleSelect=="select-cinza-grande"){
-            return "#FFFFFF"
+            return "var(--fonteCor)"
         }
     }
 
