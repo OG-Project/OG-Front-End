@@ -14,6 +14,8 @@ import { webSocketStore } from './stores/webSocket.js'
 import { criaNotificacao } from './stores/criaNotificacao.js';
 import { conexaoBD } from "./stores/conexaoBD";
 import { useRoute } from 'vue-router';
+import TelaLoad from "./components/TelaLoad.vue";
+
 const route = useRoute()
 
 import tabBar from "./components/tabBar.vue";
@@ -64,20 +66,23 @@ onMounted(async () => {
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
   console.log(configuracao.value.isDark);
   if (configuracao.value.isDark) {
-    root.setProperty('--backgroundPuro', '#150f17')
+    root.setProperty('--backgroundPuro', '#0F0F0F')
     root.setProperty('--backgroundItems', '#222222')
     root.setProperty('--fonteCor', '#ffffff')
     root.setProperty('--backgroundItemsClaros', '#363636')
   }
 
 })
-
-onUpdated(async ()=>{
+onBeforeUpdate(async()=>{
   usuario.value =
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
         console.log(usuario.value);
+})
+
+
+onUpdated(()=>{
   if(route.path!='/login' ){
    console.log(usuario.value.configuracao.isTutorial);
    console.log(usuario.value.configuracao.rotaDoPasso);
@@ -111,6 +116,7 @@ function press(b) {
 
 }
 webSocket.esperaMensagem((mensagem) => {
+  console.log("a")
   teste(JSON.parse(mensagem))
 });
 
@@ -178,6 +184,7 @@ watch(() => route.path, () => {
 });
 import { inject } from 'vue'
 import router from "./router";
+import { onBeforeUpdate } from "vue";
 const tour = inject('tour')
 
 tour.addSteps([
@@ -827,7 +834,7 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] max-h-full overflow-hidden">
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
@@ -835,7 +842,7 @@ tour.addSteps([
   </div>
     <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
     <div ref="el" :style="style" style="position: fixed"
-    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max h-full" v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">
         <svgIconMove class="w-[1vw] h-[3vh]" />
@@ -853,6 +860,7 @@ tour.addSteps([
     </div>
   </div>
   
+  <TelaLoad></TelaLoad>
 </template>
 <style scoped>
 

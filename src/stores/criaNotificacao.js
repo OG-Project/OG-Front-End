@@ -68,7 +68,8 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                     receptores: [],
                     conviteParaEquipe: {
                         equipe: objetoNotificacao.conviteParaEquipe.equipe,
-                        usuarioAceito: []
+                        usuarioAceito: [],
+                        permissoes: objetoNotificacao.conviteParaEquipe.permissoes
                     }
                 }
             }

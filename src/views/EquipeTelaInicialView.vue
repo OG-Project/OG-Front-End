@@ -115,6 +115,7 @@ async function criarProjeto() {
   router.push({ path: '/criaProjeto' }).then(() => {
   });
   VueCookies.set("projetoCookie");
+  VueCookies.set("IdProjetoAtual")
 }
 
 

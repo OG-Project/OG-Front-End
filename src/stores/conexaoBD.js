@@ -1,4 +1,3 @@
-
 import { defineStore } from "pinia";
 import axios from "axios";
 import { webSocketStore } from "./webSocket.js";
@@ -8,124 +7,188 @@ import VueCookies from "vue-cookies";
 export const conexaoBD = defineStore('conexaoBD', {
 
   state: () => {
-
     return {
-      api: axios.get("http://localhost:8082/usuario", { withCredentials: true })
+      api: axios.get("http://localhost:8082/usuario", { withCredentials: true }),
+      loading: true,
     }
-
   },
   actions: {
     procurar(textoRequisicao) {
-      return axios.get("http://localhost:8082" + textoRequisicao, { withCredentials: true }).then(response => response.data)
-    },
-    login(usuarioLogin) {
-      return axios.post("http://localhost:8082/login", usuarioLogin, { withCredentials: true }).then(response => {
-        VueCookies.set("JWT", response.data.value)
-      })
-    },
-    cadastrar(objeto, textoRequisicao) {
-      return axios.post("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
-    },
-    cadastrarProjetoEquie(objeto, idEquipe, textoRequisicao) {
-      return axios.post("http://localhost:8082" + textoRequisicao + "/" + idEquipe, objeto, { withCredentials: true }).then(response => response)
-    },
-    atualizar(objeto, textoRequisicao) {
-      console.log(textoRequisicao)
-      if (textoRequisicao == "/usuario") {
-        const idUsuario = VueCookies.get("IdUsuarioCookie")
-        return axios.put("http://localhost:8082" + textoRequisicao + "/" + idUsuario, objeto, { withCredentials: true }).then(response => response)
+      this.loading = true;
+      try {
+        return axios.get("http://localhost:8082" + textoRequisicao, { withCredentials: true }).then(response => response.data)
+      } finally {
+        this.loading = false;
+        console.log('Loading:', this.loading);
       }
 
-      return axios.put("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
     },
-    atualizaProjetoEquipe(objeto, idEquipe, textoRequisicao) {
+    login(usuarioLogin) {
+      this.loading = true;
+      try {
+        return axios.post("http://localhost:8082/login", usuarioLogin, { withCredentials: true }).then(response => {
+          VueCookies.set("JWT", response.data.value)
+        })
+      } finally {
+        this.loading = false;
+      }
+    },
+    cadastrar(objeto, textoRequisicao) {
+      this.loading = true;
+      try {
+        return axios.post("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
+      } finally {
+        this.loading = false;
+      }
+    },
+    cadastrarProjetoEquie(objeto, idEquipe, textoRequisicao) {
+      this.loading = true;
+      try {
+        return axios.post("http://localhost:8082" + textoRequisicao + "/" + idEquipe, objeto, { withCredentials: true }).then(response => response)
+      } finally {
+        this.loading = false;
+      }
+    },
+    async atualizar(objeto, textoRequisicao) {
+      console.log(textoRequisicao)
+      this.loading = true;
+      try {
+        if (textoRequisicao == "/usuario") {
+          const idUsuario = VueCookies.get("IdUsuarioCookie")
+          return axios.put("http://localhost:8082" + textoRequisicao + "/" + idUsuario, objeto, { withCredentials: true }).then(response => response)
+        }
 
-      return axios.put("http://localhost:8082" + textoRequisicao + '/' + idEquipe, objeto, { withCredentials: true }).then(response => response)
+        return axios.put("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
+      } finally {
+        this.loading = false;
+      }
     },
     adicionarUsuarios(idUser, equipeId, numeroPermissao, textoRequisicao) {
-      return axios.patch('http://localhost:8082' + (textoRequisicao + '/' + idUser + "/" + equipeId + "/" + numeroPermissao), "", { withCredentials: true })
+      this.loading = true;
+      try {
+        return axios.patch('http://localhost:8082' + (textoRequisicao + '/' + idUser + "/" + equipeId + "/" + numeroPermissao), "", { withCredentials: true })
+      } finally {
+        this.loading = false;
+      }
     },
     adicionarCriador(userId, equipeId) {
-      return axios.patch('http://localhost:8082/usuario/criador/' + userId + '/' + equipeId, "", { withCredentials: true })
-    },
-    deletarProjetoEquipe(id, idProjeto, textoRequisicao) {
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`, { withCredentials: true }).then(response => {
-
-      })
-    },
-    async buscarHistorico(id, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`)).data)
-    },
-    async buscarMembrosEquipe(equipeId, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
-    },
-    removerUsuarioDaEquipe(equipeId, userId, textoRequisicao) {
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`, { withCredentials: true }).then(response => {
-
-      })
-    },
-    async buscarUm(id, textoRequisicao) {
-      return (await axios.get('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
-    },
-    async buscarProjetosEquipe(equipeId, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
-    },
-    async buscarProjetosUsuario(userId, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`, { withCredentials: true })).data)
-    },
-    atualizaProjetoEquipe(objeto, idEquipe, textoRequisicao) {
-
-      return axios.put("http://localhost:8082" + textoRequisicao + '/' + idEquipe, objeto, { withCredentials: true }).then(response => response)
-    },
-    adicionarUsuarios(idUser, equipeId, numeroPermissao, textoRequisicao) {
-      return axios.patch('http://localhost:8082' + (textoRequisicao + '/' + idUser + "/" + equipeId + "/" + numeroPermissao), "", { withCredentials: true })
-    },
-    adicionarCriador(userId, equipeId) {
-      return axios.patch('http://localhost:8082/usuario/criador/' + userId + '/' + equipeId, "", { withCredentials: true })
+      this.loading = true;
+      try {
+        return axios.patch('http://localhost:8082/usuario/criador/' + userId + '/' + equipeId, "", { withCredentials: true })
+      } finally {
+        this.loading = false;
+      }
     },
     deletar(id, textoRequisicao) {
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
-      })
+      this.loading = true;
+      try {
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
+
+        })
+      } finally {
+        this.loading = false;
+      }
     },
     deletarProjetoEquipe(id, idProjeto, textoRequisicao) {
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`, { withCredentials: true }).then(response => {
+      this.loading = true;
+      try {
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}/${idProjeto}`, { withCredentials: true }).then(response => {
 
-      })
+        })
+      } finally {
+        this.loading = false;
+      }
     },
     async buscarHistorico(id, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`)).data)
+      this.loading = true;
+      try {
+        return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`)).data)
+      } finally {
+        this.loading = false;
+      }
     },
     async buscarMembrosEquipe(equipeId, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+      this.loading = true;
+      try {
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+      } finally {
+        this.loading = false;
+      }
     },
     removerUsuarioDaEquipe(equipeId, userId, textoRequisicao) {
-      return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`, { withCredentials: true }).then(response => {
+      this.loading = true;
+      try {
+        return axios.delete(`http://localhost:8082${textoRequisicao}/${equipeId}/${userId}`, { withCredentials: true }).then(response => {
 
-      })
-    },
-    async buscarUm(id, textoRequisicao) {
-      return (await axios.get('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
+        })
+      } finally {
+        this.loading = false;
+      }
     },
     async buscarProjetosEquipe(equipeId, textoRequisicao) {
-      return await ((await axios.get("http://localhost:8082" + textoRequisicao + "/" + equipeId, { withCredentials: true })).data)
+      this.loading = true;
+      try {
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+      } finally {
+        this.loading = false;
+      }
     },
     async buscarProjetosUsuario(userId, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`, { withCredentials: true })).data)
-
-
+      this.loading = true;
+      try {
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`, { withCredentials: true })).data)
+      } finally {
+        this.loading = false;
+      }
+    },
+    atualizaProjetoEquipe(objeto, idEquipe, textoRequisicao) {
+      this.loading = true;
+      try {
+        return axios.put("http://localhost:8082" + textoRequisicao + '/' + idEquipe, objeto, { withCredentials: true }).then(response => response)
+      } finally {
+        this.loading = false;
+      }
+    },
+    async buscarUm(id, textoRequisicao) {
+      this.loading = true;
+      try {
+        return (await axios.get('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
+      } finally {
+        this.loading = false;
+      }
     },
     async buscarTarefaProjeto(userId, textoRequisicao) {
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`, { withCredentials: true })).data)
+      this.loading = true;
+      try {
+        return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${userId}`, { withCredentials: true })).data)
+      } finally {
+        this.loading = false;
+      }
     },
     adicionarEquipe(equipeId, projetoId, textoRequisicao) {
-      return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId, "", { withCredentials: true })
+      this.loading = true;
+      try {
+        return axios.patch('http://localhost:8082' + textoRequisicao + '/' + projetoId + '/' + equipeId, "", { withCredentials: true })
+      } finally {
+        this.loading = false;
+      }
     },
     deletarEquipe(id, textoRequisicao) {
-      return axios.delete('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true })
+      this.loading = true;
+      try {
+        return axios.delete('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true })
+      } finally {
+        this.loading = false;
+      }
     },
     async deletarTarefa(textoRequisicao, id) {
-      return await axios.delete('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => {
-      })
+      this.loading = true;
+      try {
+        return await axios.delete('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => {
+        })
+      } finally {
+        this.loading = false;
+      }
     },
     async cadastrarFoto(equipeId, foto) {
       try {
@@ -161,7 +224,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         // Deleta os arquivos existentes relacionados à tarefa
         await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`, { withCredentials: true });
 
-        const response = await axios.patch("http://localhost:8082" + textoRequisicao + "/" + id, formData, {
+        const formData = new FormData();
+        formData.append('arquivos', arquivos);
+
+        const response = await axios.patch("http://localhost:8082/tarefa/arquivos/" + id, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },
@@ -183,40 +249,18 @@ export const conexaoBD = defineStore('conexaoBD', {
 
         // Faça a requisição PATCH para enviar a imagem
         const response = await axios.patch(`http://localhost:8082/usuario/${idUsuario}`, formData, {
-
           headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          withCredentials: true
+            'Content-Type': 'multipart/form-data'
+          }
+        }).then(response => {
+          return response.data
         });
-
-        // Retorne os dados da resposta
-        return response.data;
       } catch (error) {
         console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`)).data)
-    }
-  },
-  async cadastrarFotoUsuario(idUsuario, foto) {
-    try {
-      // Crie um FormData e adicione a imagem a ele
-      const formData = new FormData();
-      formData.append('foto', foto);
-
-      // Faça a requisição PATCH para enviar a imagem
-      const response = await axios.patch(`http://localhost:8082/usuario/${idUsuario}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(response => {
-        return response.data
-      });
-    } catch (error) {
-      console.error('Erro ao cadastrar a foto:', error);
-      throw error;
-    }
-    return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+    },
   }
-})
+}
+)

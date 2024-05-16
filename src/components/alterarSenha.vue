@@ -1,5 +1,6 @@
 <template>
     <div>
+        <alertTela > </alertTela>
         <fundoPopUp largura="77vh" altura="68vh">
             <div class="flex flex-col justify-between  w-[77vh] h-[68vh]">
                 <div class="flex pl-12 pt-12">
@@ -72,12 +73,14 @@ import { onMounted,onUpdated ,ref,watch } from 'vue';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD';
 import  VueCookies  from 'vue-cookies';
+import alertTela from './alertTela.vue';
 let perfil=perfilStore()
 let conexao=conexaoBD()
 
 let isInvalido=ref(false)
 
 let usuario=ref({})
+let showAlert=ref(false)
 let senhaUsuario=ref('')
 let senhaAntiga=ref('')
 let senhaNova=ref('')

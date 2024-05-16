@@ -1,10 +1,10 @@
 <template>
-    <div class="gridTotal">
-        <div class=" flex flex-col pl-[5%] mt-[3%] overflow-hidden gap-10">
+    <div class="gridTotal mt-[2%] overflow-hidden">
+        <div class=" flex flex-col pl-[5%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
-                    largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto" :modelValue="nomeProjeto"
-                    @updateModelValue="(e) => {
+                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio" conteudoInput="Nome Projeto"
+                    :isInvalido="semNome" textoInvalido="O Nome é obrigatorio" largura="30" altura="6" fontSize="1.5rem"
+                    v-model="nomeProjeto" :modelValue="nomeProjeto" @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
             </div>
@@ -35,10 +35,10 @@
 
                         </div>
                     </div>
-                    <div class="flex flex-col  items-start justify-start gap-3 w-full ">
+                    <div class="flex flex-col  items-start justify-start gap-6 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             place-holder-pesquisa="Responsáveis pelo projeto"
-                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem">
+                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem" :is-invalido="semResponsavel" :texto-invalido="'Responsável é obrigatório'">
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
@@ -48,8 +48,12 @@
                                         class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
                                         <img src="../../imagem-vetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
-                                        <img src="../../imagem-vetores/X-preto.svg"
-                                            @click="removeResponsavel(responsavel)">
+                                        <div class="w-full flex justify-end pr-2">
+                                            <div class="w-[40%]">
+                                                <img src="../../imagem-vetores/botao-x.svg"
+                                                    @click="removeResponsavel(responsavel)" v-if="responsaveisProjeto.length!=1">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -58,32 +62,41 @@
                 </div>
             </div>
             <div class=" w-[96%] ">
-                <ListaConvidados altura="30vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
+                <ListaConvidados altura="20vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
                     :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]"
-                     @foi-clicado="removeListaEquipeConvidadas">
+                    @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>
         </div>
-        <div class=" w-[83%] h-[90%] flex-row ">
-            <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"
-                @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
+        <div class=" w-[83%] h-full flex-row ">
+            <div class="h-[85%] max-h-[85%]">
+                <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"
+                    @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
+            </div>
+
+            <div id="step-12" class="h-[10%] w-[90%] flex items-end justify-end pr-4 gap-6">
+                <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita && isResponsavel && responsaveisProjeto.length==1 && !naoPodeDeletar"></Botao>
+                <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita" ></Botao>
+                <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita && isResponsavel"></Botao>
+
+
+            </div>
         </div>
-        <div class="flex justify-end items-end ">
+        <div class="flex justify-end items-start ">
             <informacoesProjeto :nome-projeto="nomeProjeto" :lista-status="listaStatus"
                 :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada"
                 :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
         </div>
-    </div>
-    <div id="step-12"class="h-[10%] w-[70.4%] flex items-end justify-end pr-4 gap-6">
-        <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita"></Botao>
-        <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
-        <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-            tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita"></Botao>
 
-            
     </div>
+    <div v-if="mensagem != ''" class="alert">
+        <alertTela :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro">
+        </alertTela>
+    </div>
+
 </template>
 
 <script setup>
@@ -105,8 +118,8 @@ import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
 import router from "@/router";
+import alertTela from '../../components/alertTela.vue';
 import { webSocketStore } from '../../stores/webSocket';
-import { Usuario } from '../../models/usuario';
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
@@ -127,15 +140,27 @@ let listaEquipesSelecionadas = ref([]);
 let listaEquipeEnviaBack = []
 let listaResponsaveisBack = []
 var projetoEdita = ref(true)
-let srcIconListaEquipes = Sair
 let dataFormatada = ref("")
 funcaoPopUp.variavelModal = false
-let idProjeto;
+let idProjeto = VueCookies.get('IdProjetoAtual');
 let placeHolderDataFinalProjeto = ref("")
 let stylePlaceHolder = ref({});
 let dataFinalFormatada = ref("");
+let projeto = ref({});
+let mensagem = ref("");
+let mensagemCor = ref("");
+let semNome = ref(false);
+let semResponsavel = ref(false)
+let isResponsavel = ref(false)
+let naoPodeDeletar = ref(false)
+let usuario;
+let usuarioId = VueCookies.get('IdUsuarioCookie')
+onMounted(async () => {
+    if (idProjeto != undefined) {
+        projeto.value = await conexao.buscarUm(idProjeto, '/projeto')
+    }
 
-onMounted(() => {
+     usuario=await  conexao.buscarUm(usuarioId, "/usuario")
     verificaEdicaoProjeto();
     defineSelect()
     pesquisaBancoUserName();
@@ -145,22 +170,54 @@ onMounted(() => {
     placeHolderDataFinalProjeto.value = "Data final:"
 })
 
+
+
 onUpdated(() => {
     criarProjetoCookies();
     fazPlaceHolderDataFinalProjeto()
 })
 
 
+
+
+function limparMensagemErro() {
+    mensagem.value = "";
+}
+
+function voltaPagina() {
+    router.go(-1)
+}
+
 stylePlaceHolder.value = {
     position: "absolute",
     left: "2.7%",
-    width: "12%",
+    width: "11%",
     height: "2.5%",
     zIndex: "10",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "var(--backgroundPuro)",
     marginTop: "0.35%",
     display: "flex",
     alingItems: "center"
+}
+
+
+async function verificaResponsavel() {
+  
+    
+    if (projeto.value != undefined) {
+        let responsaveis = responsaveisProjeto.value
+        if (responsaveis != null) {
+            for (const responsavel of responsaveis) {
+                if (responsavel == usuario.username) {
+                    isResponsavel.value = true
+                    return 
+                }
+            }
+        }
+    }
+    isResponsavel.value = false
+    return  
+
 }
 
 function fazPlaceHolderDataFinalProjeto() {
@@ -172,18 +229,18 @@ function fazPlaceHolderDataFinalProjeto() {
 }
 
 
-function excluiProjeto(){
-    conexao.deletar(idProjeto,"/projeto").then(()=>{
-        router.push("/home")
+function excluiProjeto() {
+    conexao.deletar(idProjeto, "/projeto").then(() => {
+        voltaPagina()
     })
 }
 
 function fazHoverPlaceHolder() {
-    stylePlaceHolder.value.backgroundColor = "#D7D7D7"
+    stylePlaceHolder.value.backgroundColor = "var(--backgroundItemsClaros)"
 }
 
 function fazBackPadraoPlaceHolder() {
-    stylePlaceHolder.value.backgroundColor = "#FFFFFF"
+    stylePlaceHolder.value.backgroundColor = "var(--backgroundPuro)"
 }
 
 async function mandaDataInformacoes() {
@@ -240,7 +297,7 @@ function buscaProjetoCookies() {
     }
 }
 
-async function  buscaRascunhoCriacaoProjeto() {
+async function buscaRascunhoCriacaoProjeto() {
     if (VueCookies.get("projetoCookie") != null
         && !projetoEdita.value
         && VueCookies.get("projetoCookie") != undefined
@@ -267,14 +324,14 @@ async function  buscaRascunhoCriacaoProjeto() {
             && variavelCookieProjeto.responsaveis != undefined
             && variavelCookieProjeto.responsaveis != "undefined"
             && variavelCookieProjeto.responsaveis != null && variavelCookieProjeto.responsaveis.length != 0) {
-                console.log(variavelCookieProjeto.responsaveis);
+            console.log(variavelCookieProjeto.responsaveis);
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
-        }else{
-            let usuario= await conexao.buscarUm(idUsuario, "/usuario")
+        } else {
+            let usuario = await conexao.buscarUm(idUsuario, "/usuario")
             responsaveisProjeto.value.push(usuario.username)
             listaAuxResponsaveisProjeto.push(usuario.username)
             adicionaResponsaveisProjeto(usuario)
@@ -299,8 +356,9 @@ async function buscaProjetoEditar() {
 }
 
 async function buscaListaResponsaveisBack(projeto) {
+    console.log(projeto)
     projeto.responsaveis.forEach(async (responsavelAtual) => {
-        let responsavel= await conexao.buscarUm(responsavelAtual.idResponsavel,"/usuario")
+        let responsavel = await conexao.buscarUm(responsavelAtual.idResponsavel, "/usuario")
         let username = responsavel.username
         if (verificaTemEsseResponsavelProjeto(username)) {
             responsaveisProjeto.value.push(username)
@@ -365,6 +423,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
                     idResponsavel: usuario.id
                 }
                 listaResponsaveisBack.push(responsavelBanco);
+                verificaResponsavel();
                 return;
             }
         })
@@ -374,29 +433,40 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
             idResponsavel: usuarioRecebe.id
         }
         listaResponsaveisBack.push(responsavelBanco);
+        verificaResponsavel();
     }
 
 }
 
 async function criaProjeto() {
-    if (!projetoEdita.value) {
-        const criaProjeto = criaProjetoStore()
-        
-        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-            router.push('/projeto').then(() => {
-       
-    });
-        restauraCookies();
-        router.push('/projeto')
-    } else {
-        const editaProjeto = editaProjetoStore()
-        let projeto = await conexao.buscarUm(idProjeto, "/projeto")
-        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
-        restauraCookies();
+    if (nomeProjeto.value == "") {
+        semResponsavel.value = false
+        semNome.value = true
+        mensagem.value = "Projeto com dados faltando"
+        mensagemCor.value = "#CD0000"
+        return
+    }else if(responsaveisProjeto.value == ""){
+        mensagem.value = "Projeto com dados faltando"
+        mensagemCor.value = "#CD0000"
+        semResponsavel.value = true
+        semNome.value = false
+        return
     }
+        if (!projetoEdita.value) {
+            const criaProjeto = criaProjetoStore()
+            criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+                , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
 
+            restauraCookies();
+            router.push("/projeto");
+        } else {
+            const editaProjeto = editaProjetoStore()
+            let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+            editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+                , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
+            restauraCookies();
+            router.push("/projeto");
+        }
 }
 
 
@@ -430,15 +500,15 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     let idProjetoEquipe = ""
     let equipeBack;
     let projeto
-    if(projetoEdita.value){
-         projeto = await conexao.buscarUm(idProjeto, '/projeto')
+    if (projetoEdita.value) {
+        projeto = await conexao.buscarUm(idProjeto, '/projeto')
     }
-    let listaBackEquipe =  listaEquipeFront.map((equipeFront) => {
+    let listaBackEquipe = listaEquipeFront.map((equipeFront) => {
         if (projetoEdita.value) {
-             idProjetoEquipe =  verificaIdProjetoEquipe(equipeFront,projeto)   
+            idProjetoEquipe = verificaIdProjetoEquipe(equipeFront, projeto)
         }
-         return equipeBack = {
-             id:  idProjetoEquipe,
+        return equipeBack = {
+            id: idProjetoEquipe,
             equipe: {
                 id: equipeFront.id
             }
@@ -448,18 +518,18 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     listaEquipeEnviaBack = listaBackEquipe;
 }
 
- function verificaIdProjetoEquipe(equipe,projeto){
+function verificaIdProjetoEquipe(equipe, projeto) {
     let idRetorno;
-    projeto.projetoEquipes.forEach((projetoEquipe) =>{
-        if(projetoEquipe.equipe.id == equipe.id){
-            idRetorno=  projetoEquipe.id
+    projeto.projetoEquipes.forEach((projetoEquipe) => {
+        if (projetoEquipe.equipe.id == equipe.id) {
+            idRetorno = projetoEquipe.id
         }
     })
     return idRetorno;
 }
 
 async function removeListaEquipeConvidadas(equipeRemover) {
-    
+
     let listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeRemover.nome);
     let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
@@ -468,7 +538,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         listaEquipesSelecionadas.value.splice(indice, 1);
     }
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
-    if(projetoEdita.value){
+    if (projetoEdita.value) {
         console.log("vai deletar")
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
@@ -477,7 +547,6 @@ async function removeListaEquipeConvidadas(equipeRemover) {
 }
 
 async function removeResponsavel(responsavelRemover) {
-    let listaUsuarios = await conexao.procurar('/usuario');
     responsaveisProjeto.value.forEach((objetoAtual) => {
         if (objetoAtual.username == responsavelRemover.username) {
             let index = responsaveisProjeto.value.indexOf(responsavelRemover)
@@ -489,6 +558,9 @@ async function removeResponsavel(responsavelRemover) {
     )
     if (!projetoEdita) {
         criarProjetoCookies();
+    }
+    if(responsavelRemover == usuario.username){
+        naoPodeDeletar.value = true;
     }
 }
 </script>
