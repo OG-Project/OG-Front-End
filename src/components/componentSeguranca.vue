@@ -9,23 +9,25 @@
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
                     <div class="flex items-center sm:flex-wrap gap-8">
-                        <div class=" w-[470px]">
-                            <span class="text-[var(--roxo)]">*</span> Senha com 8 ou mais caracteres.<br>
-                            <span class="text-[var(--roxo)]">*</span> Senha contento letras, números e caracteres especiais. <br>
-                            <span class="text-[var(--roxo)]">*</span> Não utilize palavras comuns.
-                           
+                        <div class="text-2xl w-[470px]">
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaCaracteres') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaConteudo') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaPalavrasComuns') }}
+                            <!-- Ao alterar a senha, a gente mantém você conectado
+                            a este dispositivo, mas é possível que sua conta
+                            seja desconectada de outros dispositivos. -->
                         </div>
                         <Botao 
                         :funcaoClick="abrePopUp" 
                         :parametrosFuncao="['senha']" 
                         preset="PadraoRoxo" 
-                        texto="Alterar Senha">
+                        :texto="$t('seguranca.alterarSenha')">
                         </Botao>
                     </div>
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="gap-5">
-                            <div class=" w-[470px]">
-                                Seu endereço de e-mail atual é <span class="text-[var(--roxo)]">{{email}}</span>
+                            <div class="text-2xl w-[470px]">
+                                {{ $t('seguranca.seuEmailAtual') }} <span class="text-[var(--roxo)]">{{email}}</span>
                             </div>
                             <div v-if="isLogadoGoogle" class="text-2xl w-[470px]">
                                 Login com a conta do Google ativado
@@ -39,16 +41,15 @@
                         :funcaoClick="abrePopUp" 
                         :parametrosFuncao="['email']" 
                         preset="PadraoRoxo" 
-                        texto="Alterar E-mail">
+                        :texto="$t('seguranca.alterarEmail')">
                         </Botao>
                     </div>
          
                 </div>
             </div>
         </div>
-        <div @click="abrePopUp(['deletar'])" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]"
-            style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho)">
-            <span>Deseja deletar sua Conta?</span>
+        <div style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
+            <span>{{ $t('seguranca.deletarConta') }}</span>
         </div>
         
     </div>
@@ -64,6 +65,7 @@ import { onMounted, ref } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
 const PerfilStore = perfilStore()
 const conexao=conexaoBD()
+import { useI18n } from 'vue-i18n';
 
 
 let funcaoPopUp=funcaoPopUpStore()

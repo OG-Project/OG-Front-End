@@ -47,7 +47,7 @@
                             </Botao>
                         </div>
                     </div>
-                    <div v-if="usuarioECriadorEquipe || usuarioResponsavelEquipe">
+                    <div v-if=" usuarioResponsavelEquipe">
                         <div v-if="screenWidth >= 620"
                             class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
                             <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem"
@@ -134,9 +134,9 @@ let mensagemError = ref("");
 let editando = ref(false);
 let equipes = banco.procurar("/equipe");
 let usuarios = banco.procurar("/usuario");
-let usuarioFazParteEquipe = false;
-let usuarioECriadorEquipe = false;
-let usuarioResponsavelEquipe = false;
+let usuarioFazParteEquipe = ref(false);
+let usuarioECriadorEquipe = ref(false);
+let usuarioResponsavelEquipe = ref(false);
 function limparMensagemErro() {
     mensagem.value = "";
 }
@@ -240,12 +240,12 @@ async function equipeDoUsuarioLogado (){
             usuario.equipes.forEach((equipeUsuario) => {
                 // Verifica se a equipe do usuário é a mesma que foi criada
                 if (equipeUsuario.equipe.id == equipeSelecionada) {
-                     usuarioFazParteEquipe = true;
+                     usuarioFazParteEquipe.value = true;
                     if(equipeUsuario.criador == true){
-                     usuarioECriadorEquipe = true;
+                     usuarioECriadorEquipe.value = true;
                     }
                     if(equipeUsuario.permissao != 'VER'){
-                        usuarioResponsavelEquipe = true;
+                        usuarioResponsavelEquipe.value = true;
                     }
                 }
             });
@@ -398,8 +398,8 @@ async function atualizarEquipe() {
     } else {
         mensagem.value = ""
         mensagemCor.value = ""
-        mensagem.value = "Nenhuma imagem detectada";
-        mensagemCor.value = "#CD0000"
+        mensagem.value = "editação concluida";
+        mensagemCor.value = '#29CD00'
     }
 
    window.location.reload();
@@ -437,7 +437,7 @@ async function enviarFotoParaBackend(id) {
 @layer components {
 
     .alert {
-        @apply absolute flex items-start justify-start 2xl:mt-[-20vh] mr-10 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
+        @apply absolute flex items-start justify-start text-[var(--fonteCor)] 2xl:mt-[-20vh] mr-10 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
     }
 
     .descricao {

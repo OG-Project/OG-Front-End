@@ -289,9 +289,12 @@ async function obterFotosResponsaveis(projeto) {
       let responsaveisComFoto = []
       for(let responsavel of projeto.responsaveis){
         let usuario = await buscaResponsaveis(responsavel)
-        responsaveisComNome.push(usuario.foto)
+        console.log(usuario)
+        responsaveisComFoto.push(usuario.foto)
       }
         if (responsaveisComFoto.length >= 0) {
+          console.log(responsaveisComFoto)
+          console.log(`data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`)
           return `data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`;
         } else {
             return ''

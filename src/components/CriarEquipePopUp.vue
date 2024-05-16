@@ -1,5 +1,5 @@
 <template>
-    <fundoPopUp largura="" altura="95vh">
+    <fundoPopUp largura="" :altura="alturaPopUp()">
         <div class="divGeral" id="step-6">
             <div class=" grid-template flex w-full">
                 <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe
@@ -41,7 +41,7 @@
             </div>
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
                 <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
-                    class="listaConvidados" altura="40vh" :margin-right="marginRightConvidado()" :listaConvidados="listaUsuariosConvidados"
+                    class="listaConvidados" altura="35vh" :margin-right="marginRightConvidado()" :listaConvidados="listaUsuariosConvidados"
                     @foi-clicado="removeListaMembrosConvidados"></ListaConvidados>
             </div>
             <div id="step-7">
@@ -51,7 +51,7 @@
                         :funcaoClick="cadastrarEquipe">
                     </Botao>
                 </div>
-                <div v-else class="mt-10 ml-2">
+                <div v-else class="mt-5 ml-3">
                     <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem"
                         :funcaoClick="cadastrarEquipe">
                     </Botao>
@@ -119,6 +119,14 @@ async function removeListaMembrosConvidados(usuarioConvidado) {
     if (index != -1) {
         listaUsuariosConvidados.value.splice(index, 1);
         membrosEquipe.value.splice(index,1);
+    }
+}
+
+function alturaPopUp() {
+    if (screenWidth <= 620) {
+        return '100vh'
+    }else{
+        return '95vh'
     }
 }
 
@@ -494,13 +502,10 @@ async function enviarFotoParaBackend(equipe) {
 
     @media(max-width: 620px) {
         .titulo {
-            @apply text-4xl mb-2;
-        }
-        .alert{
-            @apply ml-10
+            @apply text-4xl mb-16;
         }
         .botao {
-            @apply flex justify-end mt-10
+            @apply flex justify-end
         }
 
         .convidados-div {
