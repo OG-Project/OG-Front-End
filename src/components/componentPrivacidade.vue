@@ -58,7 +58,6 @@
                         el-id="visualizacaoPerfil" 
                         @envia-valor="visualizacaoPerfil($event)" />
                     </div>
-                    "permitir Notificação a fazer"
                 </div>
             </div>
         </div>

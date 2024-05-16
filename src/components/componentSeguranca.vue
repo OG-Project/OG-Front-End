@@ -10,9 +10,9 @@
                 <div class="flex flex-col gap-10">
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="text-2xl w-[470px]">
-                            <span class="text-[var(--roxo)]">*</span> Senha com 8 ou mais caracteres.<br>
-                            <span class="text-[var(--roxo)]">*</span> Senha contento letras, números e caracteres especiais. <br>
-                            <span class="text-[var(--roxo)]">*</span> Não utilize palavras comuns.
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaCaracteres') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaConteudo') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaPalavrasComuns') }}
                             <!-- Ao alterar a senha, a gente mantém você conectado
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos. -->
@@ -21,13 +21,13 @@
                         :funcaoClick="abrePopUp" 
                         :parametrosFuncao="['senha']" 
                         preset="PadraoRoxo" 
-                        texto="Alterar Senha">
+                        :texto="$t('seguranca.alterarSenha')">
                         </Botao>
                     </div>
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="gap-5">
                             <div class="text-2xl w-[470px]">
-                                Seu endereço de e-mail atual é <span class="text-[var(--roxo)]">{{email}}</span>
+                                {{ $t('seguranca.seuEmailAtual') }} <span class="text-[var(--roxo)]">{{email}}</span>
                             </div>
                             <div v-if="isLogadoGoogle" class="text-2xl w-[470px]">
                                 Login com a conta do Google ativado
@@ -41,7 +41,7 @@
                         :funcaoClick="abrePopUp" 
                         :parametrosFuncao="['email']" 
                         preset="PadraoRoxo" 
-                        texto="Alterar E-mail">
+                        :texto="$t('seguranca.alterarEmail')">
                         </Botao>
                     </div>
                     <!-- tudo errado, arrumar -->
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
-            <span>Deseja deletar sua Conta?</span>
+            <span>{{ $t('seguranca.deletarConta') }}</span>
         </div>
         
     </div>
@@ -81,6 +81,7 @@ const {fonteTitulo} = storeToRefs(PerfilStore)
 const {fonteCorpo} = storeToRefs(PerfilStore)
 const {tamanhoTitulo} = storeToRefs(PerfilStore)
 const {tamanhoCorpo} = storeToRefs(PerfilStore)
+import { useI18n } from 'vue-i18n';
 
 // FAZER A INTEGRAÇÃO COM BANCO E 
 // ATUALIZAR EMAIL E SENHA DO USUARIO DO COOKIE
