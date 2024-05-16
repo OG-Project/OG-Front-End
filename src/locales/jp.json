@@ -53,6 +53,7 @@
     "propriedades": "プロパティ",
     "corDaTarefa": "タスクの色",
     "subtarefas": "サブタスク",
+    "no_date": "日付なし",
     "perguntaCorTarefa": "あなたのタスクの色は？",
     "nomePropriedade": "プロパティ名",
     "tipo": "タイプ",
@@ -127,10 +128,10 @@
     "Permitir que visualizem seu perfil": "プロフィールを表示することを許可する"
   },
   "seguranca": {
-    "セキュリティ": "セキュリティ",
-    "senhaCaracteres": "* 8文字以上のパスワード。",
-    "senhaConteudo": "* 文字、数字、および特殊文字を含むパスワード。",
-    "senhaPalavrasComuns": "* 一般的な単語を使用しないでください。",
+    "Segurança": "セキュリティ",
+    "senhaCaracteres": "8文字以上のパスワード。",
+    "senhaConteudo": "文字、数字、および特殊文字を含むパスワード。",
+    "senhaPalavrasComuns": "一般的な単語を使用しないでください。",
     "seuEmailAtual": "現在のメールアドレスは",
     "loginGoogleAtivado": "Googleアカウントでのログインが有効になっています",
     "contaConectadaGoogle": "接続されたアカウント。 あなたのアカウントはGoogleアカウントに接続されています。 ここでメールアドレスを変更すると、Googleアカウントとの接続が解除されます。",

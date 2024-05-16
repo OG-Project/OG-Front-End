@@ -59,7 +59,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
-                    Informações
+                    {{ $t('informacoes.Informações') }}
                 </div>
                 <div @click="seguranca()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -70,7 +70,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
-                    Segurança
+                    {{ $t('seguranca.Segurança') }}
                 </div>
                 <div @click="acessibilidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -81,7 +81,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
-                    Acessibilidade
+                    {{ $t('acessibilidade.Acessibilidade') }}
                 </div>
                 <div @click="privacidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -92,7 +92,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
-                    Privacidade
+                    {{ $t('privacidade.Privacidade') }}
                 </div>
                 <div @click="aparencia()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -103,7 +103,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
-                    Aparência
+                    {{ $t('aparencia.Aparência') }}
                 </div>
 
             </div>

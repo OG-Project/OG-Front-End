@@ -376,8 +376,8 @@ function filtroPropriedades(listaRecebida, buscarPor) {
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
         opcaoSelecionadaNaTabela.value = 'propriedade';
-        opcoesSelect.value = ["Todos", "Texto", "Número", "Seleção", "Data"];
-        tipoPropriedadeSelect.value = ["Texto", "Número", "Seleção", "Data"]
+        opcoesSelect.value = ["Todos", "Texto", "Número", "Data"];
+        tipoPropriedadeSelect.value = ["Texto", "Número", "Data"]
 
     } else if (opcaoSelecionada == 'status') {
         opcaoSelecionadaNaTabela.value = 'status';
