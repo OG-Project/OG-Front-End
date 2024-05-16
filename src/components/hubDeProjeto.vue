@@ -6,7 +6,7 @@
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
-            <div class="w-[60%] h-[50%] border-b-4 flex items-end justify-between pb-[1%]"
+            <div class="w-[60%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
                 style="font-size:var(--fonteTituloTamanho)">
                 <div class="h-[100%] flex items-end truncate">
                     <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
@@ -63,11 +63,11 @@
             </button>
         </div>
         <div v-if="$route.path === '/projeto/lista'"
-            class="flex justify-center items-center bg-[#CECCCE] px-2 w-[17%] h-[3.5vh]">
+            class="flex justify-center items-center bg-[var(--backgroundItemsClaros)] px-2 w-[17%] h-[3.5vh]">
             <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" placeholder="Propriedades Visiveis" filter
                 optionLabel="nome" :options="projeto.propriedades"
                 :pt="{ root: 'select', labelContainer: 'labelContainer' }"
-                class="bg-[#CECCCE] h-[3vh] w-[110%] flex justify-center items-center"
+                class="bg-[var(--backgroundItemsClaros)] h-[3vh] w-[110%] flex justify-center items-center"
                 :onclick="atualizaVisualizacao()"></MultiSelect>
         </div>
     </div>
@@ -103,10 +103,10 @@ let listaDeEquipes = ref(false)
 let funcaoPopUp = funcaoPopUpStore()
 let visualizacao = ref({})
 let enviandoMensagem = ref(false)
-let corKanban = ref("#CECCCE")
-let corLista = ref("#CECCCE")
-let corTimeline = ref("#CECCCE")
-let corCalendario = ref("#CECCCE")
+let corKanban = ref("var(--backgroundItemsClaros)")
+let corLista = ref("var(--backgroundItemsClaros)")
+let corTimeline = ref("var(--backgroundItemsClaros)")
+let corCalendario = ref("var(--backgroundItemsClaros)")
 
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
@@ -138,26 +138,26 @@ async function verificaSeEResponsavel() {
 function styleBotao() {
     if (window.location.href.includes("lista")) {
         corLista.value = "#DBB3FF"
-        corKanban.value = "#CECCCE"
-        corTimeline.value = "#CECCCE"
-        corCalendario.value = "#CECCCE"
+        corKanban.value = "var(--backgroundItemsClaros)"
+        corTimeline.value = "var(--backgroundItemsClaros)"
+        corCalendario.value = "var(--backgroundItemsClaros)"
     }
     if (window.location.href.includes("kanban")) {
         corKanban.value = "#DBB3FF"
-        corLista.value = "#CECCCE"
-        corTimeline.value = "#CECCCE"
-        corCalendario.value = "#CECCCE"
+        corLista.value = "var(--backgroundItemsClaros)"
+        corTimeline.value = "var(--backgroundItemsClaros)"
+        corCalendario.value = "var(--backgroundItemsClaros)"
     }
     if (window.location.href.includes("timeline")) {
         corTimeline.value = "#DBB3FF"
-        corKanban.value = "#CECCCE"
-        corLista.value = "#CECCCE"
-        corCalendario.value = "#CECCCE"
+        corKanban.value = "var(--backgroundItemsClaros)"
+        corLista.value = "var(--backgroundItemsClaros)"
+        corCalendario.value = "var(--backgroundItemsClaros)"
     }
     if (window.location.href.includes("calendario")) {
-        corTimeline.value = "#CECCCE"
-        corKanban.value = "#CECCCE"
-        corLista.value = "#CECCCE"
+        corTimeline.value = "var(--backgroundItemsClaros)"
+        corKanban.value = "var(--backgroundItemsClaros)"
+        corLista.value = "var(--backgroundItemsClaros)"
         corCalendario.value = "#DBB3FF"
     }
 }
@@ -193,12 +193,11 @@ function definePorcentagem() {
     let string = ""
     let porcentagem = 0
     defineSubTarefasConcluida(tarefas)
-
-    if (tarefas.length > 0) {
+    if (subtarefasConcluidas.length != 0) {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
+
     }
     string = "Progressão " + porcentagem + "%"
-    console.log(string)
     porcentagemDeConclusao.value = string
 }
 function defineSubTarefasConcluida(tarefas) {
@@ -217,55 +216,5 @@ function abreModalMensagem() {
 </script>
 
 <style lang="scss">
-.select {
-    outline: 4px solid #CECCCE;
-    border-radius: 0;
-}
 
-.select:active {
-    border: none;
-    outline: none;
-    border-radius: 0;
-}
-
-.labelContainer:active {
-    border-color: grey;
-    border: none;
-
-    .animation {
-        @apply absolute w-[30%] h-[80%] z-10;
-        animation: myAnim 0.15s ease 0s 1 normal none;
-    }
-
-    @keyframes myAnim {
-        0% {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-    }
-}
-
-.animation {
-    @apply absolute w-[30%] h-[70%] z-10;
-    animation: myAnim 0.15s ease 0s 1 normal none;
-}
-
-@keyframes myAnim {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
 </style>

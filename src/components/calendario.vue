@@ -1,18 +1,18 @@
 <template>
     <div class="flex flex-col w-full h-full relative justify-center items-center overflow-y-scroll overflow-x-hidden">
-        <div class="sticky top-0 h-[20%] w-full bg-[#FBFBFB] flex justify-center z-10">
+        <div class="sticky top-0 h-[20%] w-full bg-[var(--backgroundItems)] flex justify-center z-10">
             <div class="flex flex-row w-full ">
                 <div class="flex w-full">
                     <div class="w-[50%] h-full ml-[7%] flex flex-row items-center gap-4">
                         <button @click="setaEsquerda()" class="w-[5%]">
                             <div
-                                class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                class="w-[23px] h-[23px] rounded-full border-[1px] flex justify-center items-center">
 
                                 <div class="setaEsquerda"></div>
 
                             </div>
                         </button>
-                        <div class="text-[28px] w-[17%]">
+                        <div class="text-[160%] w-[17%] flex justify-center">
                             {{ format(new Date(data), "MMMM", {
                             locale: ptBR
                         }).charAt(0).toUpperCase() +
@@ -20,7 +20,7 @@
                         </div>
                         <button @click="setaDireita()" class="w-[5%]">
                             <div
-                                class="w-[23px] h-[23px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                class="w-[23px] h-[23px] rounded-full border-[1px]  flex justify-center items-center">
                                 <div class="setaDireita"></div>
                             </div>
                         </button>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="w-full h-[20%] flex justify-center items-center">
-                        <div class="w-[40%] h-[15%] bg-gray-400 flex items-end" v-if="dia.temTres == true"></div>
+                        <div class="w-[40%] h-[15%] bg-[var(--backgroundItemsClaros)] flex items-end" v-if="dia.temTres == true"></div>
                     </div>
                 </div>
             </div>
@@ -125,7 +125,7 @@ function estilizaDia(dia) {
     cardDia = {
         width: "100%",
         height: "100%",
-        backgroundColor: "lightgray",
+        backgroundColor: "[var(--backgroundItemsClaros)]",
         borderRadius: "10%",
         fontWeight: "700",
         fontSize: "1vw",
@@ -226,7 +226,7 @@ function hover(dia) {
                 gap: "8px",
                 position: "absolute",
                 paddingBottom: "1%",
-                backgroundColor: "lightgray",
+                backgroundColor: "[var(--backgroundItemsClaros)]",
                 borderBottomLeftRadius: "10%",
                 borderBottomRightRadius: "10%",
                 zIndex: "0",
@@ -403,8 +403,8 @@ console.log(tarefas)
     .setaEsquerda {
         width: 7px;
         height: 7px;
-        border-left: 2px solid black;
-        border-bottom: 2px solid black;
+        border-left: 2px solid ;
+        border-bottom: 2px solid ;
         border-radius: 10%;
         transform: rotate(45deg);
     }
@@ -412,8 +412,8 @@ console.log(tarefas)
     .setaDireita {
         width: 7px;
         height: 7px;
-        border-right: 2px solid black;
-        border-top: 2px solid black;
+        border-right: 2px solid ;
+        border-top: 2px solid ;
         border-radius: 10%;
         transform: rotate(45deg);
     }

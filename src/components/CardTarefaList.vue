@@ -8,7 +8,7 @@
       <draggable class=" truncate flex flex-col gap-3" v-model="projeto.tarefas" :animation="300" group="tarefa"
         item-key="tarefa.indice" @start="drag = true" @end="onDragEnd">
         <template #item="{ element: tarefa, index }">
-          <div class="flex flex-row truncate h-[6vh] bg-[#CCC9CE] py-[1%] select-none" v-if="tarefa.nome != null"
+          <div class="flex flex-row truncate h-[6vh] bg-[var(--backgroundItemsClaros)] py-[1%] select-none" v-if="tarefa.nome != null"
             @click="trocaRota(tarefa)">
 
             <div class="border-r-2 flex items-center justify-center w-[10vw] truncate h-full">
@@ -45,8 +45,8 @@
       </draggable>
     </div>
   </div>
-  <div v-else>
-    
+  <div v-else class="flex flex-col justify-center items-center">
+    <NotePad></NotePad>
     <p>Não há tarefas</p>
 </div>
 </template>
@@ -59,6 +59,7 @@ import { format } from 'date-fns';
 import router from '../router';
 import VueCookies from 'vue-cookies';
 import draggable from "vuedraggable";
+import NotePad from '../imagem-vetores/NotePad.vue';
 
 let api = conexaoBD()
 let projetoId = VueCookies.get("IdProjetoAtual")

@@ -6,19 +6,7 @@
             <div class="w-[60%] m-[5%] font-Poppins font-medium truncate">
                 <p class="truncate select-none">{{ props.tarefa.nome }}</p>
             </div>
-            <div class="teste2">
-                <div class="h-[50%] flex items-center">
-                    <svg width="1.9vw" height="7" viewBox="0 0 29 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <ellipse cx="2.96387" cy="3.33062" rx="2.78614" ry="2.88189" fill="black" />
-                        <ellipse cx="14.1084" cy="3.33062" rx="2.78614" ry="2.88189" fill="black" />
-                        <ellipse cx="25.2529" cy="3.33062" rx="2.78614" ry="2.88189" fill="black" />
-                    </svg>
-                </div>
-                <div class="h-[50%] flex justify-center">
-                    <div class="bola"></div>
-                </div>
 
-            </div>
             <!-- <div class="abaRoxa" v-for="tarefa of usuarioLogado.tarefas">
                 <div v-if="tarefa.tarefa.id == props.tarefa.id" class="flex justify-end pl-[20%]">
                     <svg width="2vh" height="2vh" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,10 +20,10 @@
         <div :style="tira" v-if="preset == 2" id="draggableElement" draggable="true">
             <div class="flex column gap-2 justify-center items-center truncate">
                 <div class="w-[20%]">
-                    <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="1vw" height="2vh" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                     d="M11.5 7H17L11.5 1.5V7ZM2.5 0H12.5L18.5 6V16C18.5 16.5304 18.2893 17.0391 17.9142 17.4142C17.5391 17.7893 17.0304 18 16.5 18H2.5C1.96957 18 1.46086 17.7893 1.08579 17.4142C0.710714 17.0391 0.5 16.5304 0.5 16V2C0.5 0.89 1.39 0 2.5 0ZM2.5 2V16H16.5V9H9.5V2H2.5Z"
-                            fill="white" />
+                            :fill="verificaCorTexto(props.tarefa)" />
                     </svg>
                 </div>
                 <p class="truncate w-[70%]">{{ props.tarefa.nome }}</p>
@@ -92,7 +80,7 @@ let usuarioLogado = $cookies.get("usuarioCookie");
 kanban = {
     width: "12vw",
     height: "8vh",
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "var(--backgroundItemsClaros)",
     display: "flex",
 
 }
@@ -101,11 +89,11 @@ tira.value = {
         width: "7vw",
         height: "1vh",
         backgroundColor: ("#" + props.tarefa.cor),
-        color: verificaCorTexto(tarefa),
+        color: verificaCorTexto( props.tarefa),
         display: "flex",
         alignItems: "center",
         padding: "1.4vh",
-        fontSize: "0.7vw"
+        fontSize: "0.9vw"
     }
 
 
@@ -118,7 +106,7 @@ tira.value = {
 hoverCard = {
     width: "12vw",
     height: "8vh",
-    backgroundColor: "#D9D9D9",
+    backgroundColor: "var(--backgroundItemsClaros)",
     display: "flex",
     outline: "2px solid purple"
 }
