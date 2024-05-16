@@ -151,5 +151,31 @@
     "prontas": "准备就绪",
     "totalMinutosTrabalhados": "总工作分钟数",
     "historico": "历史"
-  }
+  },
+  "criaEquipePopUp": {
+    "nomeEquipe": "团队名称",
+    "adicionarMembro": "添加成员",
+    "convidar": "邀请",
+    "descricao": "描述（可选）",
+    "convites": "邀请",
+    "criarEquipe": "创建团队",
+    "equipe": "团队",
+    "caracteres": "最多255个字符",
+    "membroAviso": "成员已属于该团队。",
+    "voceAviso": "您已经属于该团队。",
+    "nomeObrigatorio": "团队名称是必填项"
+},
+"editarEquipePopUp": {
+  "equipeEditar": "编辑团队",
+  "deletar": "删除",
+  "editar": "编辑",
+  "sair": "退出",
+  "salvar": "保存更改",
+  "alteracao": "未检测到更改",
+  "edicao": "编辑完成",
+  "confirmar": "确认"
+
+}
+
+
 }

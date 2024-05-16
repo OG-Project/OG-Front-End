@@ -151,5 +151,31 @@
     "prontas": "Ready",
     "totalMinutosTrabalhados": "Total Worked Minutes",
     "historico": "History"
-  }
+  },
+  "criaEquipePopUp": {
+    "nomeEquipe": "Team Name",
+    "adicionarMembro": "Add Member",
+    "convidar": "invite",
+    "descricao": "Description (optional)",
+    "convites": "Invitations",
+    "criarEquipe": "Create Team",
+    "equipe": "Team",
+    "caracteres": "Maximum of 255 characters",
+    "membroAviso": "Member already belongs to the team.",
+    "voceAviso": "You already belong to the team.",
+    "nomeObrigatorio": "Team name is required"
+},
+"editarEquipePopUp": {
+  "equipeEditar": "Edit Team",
+  "deletar": "Delete",
+  "editar": "Edit",
+  "sair": "Leave",
+  "salvar": "Save changes",
+  "alteracao": "No changes detected",
+  "edicao": "Editing completed",
+  "confirmar": "Confirm"
+
+}
+
+
 }

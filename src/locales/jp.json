@@ -151,5 +151,31 @@
     "prontas": "完了",
     "totalMinutosTrabalhados": "総作業時間",
     "historico": "履歴"
-  }
+  },
+  "criaEquipePopUp": {
+    "nomeEquipe": "チーム名",
+    "adicionarMembro": "メンバーを追加",
+    "convidar": "招待する",
+    "descricao": "説明（任意）",
+    "convites": "招待",
+    "criarEquipe": "チームを作成",
+    "equipe": "チーム",
+    "caracteres": "最大255文字",
+    "membroAviso": "メンバーは既にチームに所属しています。",
+    "voceAviso": "あなたは既にチームに所属しています。",
+    "nomeObrigatorio": "チーム名は必須です"
+},
+"editarEquipePopUp": {
+  "equipeEditar": "チームを編集",
+  "deletar": "削除",
+  "editar": "編集",
+  "sair": "退出",
+  "salvar": "変更を保存",
+  "alteracao": "変更は検出されませんでした",
+  "edicao": "編集が完了しました",
+  "confirmar": "確認する"
+
+}
+
+
 }

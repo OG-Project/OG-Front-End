@@ -151,5 +151,31 @@
       "prontas": "Готово",
       "totalMinutosTrabalhados": "Всего минут работы",
       "historico": "История"
-    }
+    },
+    "criaEquipePopUp": {
+      "nomeEquipe": "Название команды",
+      "adicionarMembro": "Добавить участника",
+      "convidar": "пригласить",
+      "descricao": "Описание (необязательно)",
+      "convites": "Приглашения",
+      "criarEquipe": "Создать команду",
+      "equipe": "Команда",
+      "caracteres": "Максимум 255 символов",
+      "membroAviso": "Участник уже состоит в команде.",
+      "voceAviso": "Вы уже состоите в команде.",
+      "nomeObrigatorio": "Название команды обязательно"
+  },
+  "editarEquipePopUp": {
+    "equipeEditar": "Редактировать команду",
+    "deletar": "Удалить",
+    "editar": "Редактировать",
+    "sair": "Выйти",
+    "salvar": "Сохранить изменения",
+    "alteracao": "Изменений не обнаружено",
+    "edicao": "Редактирование завершено",
+    "confirmar": "Подтвердить"
+
+}
+
+  
 }

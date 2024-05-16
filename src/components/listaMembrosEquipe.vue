@@ -31,21 +31,21 @@
         </div>  
         <div class="adiciona-membro">
             <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
+                icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
                 v-model="usuarioConvidado" :modelValue="usuarioConvidado"
                     @updateModelValue="(e) => {
                         usuarioConvidado = e
                     }"></Input>
             <div class="flex mt-[1vh] ml-5">
                 <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
-                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                    :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
                 <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilepequeno"
-                texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
         </div>
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()"
-                texto="Convites" mostrar-select="true" @opcaoSelecionada="valorSelect" class="listaConvidados" altura="40vh"
+                :texto="$t('criaEquipePopUp.convites')" mostrar-select="true" @opcaoSelecionada="valorSelect" class="listaConvidados" altura="40vh"
                  :listaConvidados="membrosConvidados" @foi-clicado="removeListaMembrosConvidados">
             </ListaConvidados>
         </div>
@@ -53,10 +53,10 @@
             <div>
                 <div>
                     <div v-if="screenWidth >= 620">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.confirmar') " tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                     <div v-else>
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" :texto="$t('editarEquipePopUp.confirmar') " tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                 </div>
             </div>

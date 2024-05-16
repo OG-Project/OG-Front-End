@@ -151,6 +151,32 @@
     "prontas": "Listas",
     "totalMinutosTrabalhados": "Total de Minutos Trabajados",
     "historico": "Histórico"   
-  }
+  },
+  "criaEquipePopUp": {
+    "nomeEquipe": "Nombre del Equipo",
+    "adicionarMembro": "Agregar Miembro",
+    "convidar": "invitar",
+    "descricao": "Descripción (opcional)",
+    "convites": "Invitaciones",
+    "criarEquipe": "Crear Equipo",
+    "equipe": "Equipo",
+    "caracteres": "Máximo de 255 caracteres",
+    "membroAviso": "El miembro ya pertenece al equipo.",
+    "voceAviso": "Ya perteneces al equipo.",
+    "nomeObrigatorio": "El nombre del equipo es obligatorio"
+},
+"editarEquipePopUp": {
+  "equipeEditar": "Editar Equipo",
+  "deletar": "Eliminar",
+  "editar": "Editar",
+  "sair": "Salir",
+  "salvar": "Guardar cambios",
+  "alteracao": "No se detectaron cambios",
+  "edicao": "Edición completada",
+  "confirmar": "Confirmar"
+
+}
+
+
   
 }
