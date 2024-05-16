@@ -174,8 +174,38 @@
   "alteracao": "No changes detected",
   "edicao": "Editing completed",
   "confirmar": "Confirm"
+},
+"selectComponent": {
+  "edit": "edit",
+  "view": "view"
+},
+"tutorial": {
+  "bemVindo": "Welcome!!",
+  "mostraAtividades": "Here shows your most important activities",
+  "proximo": "Next",
+  "dashboard": "Dashboard",
+  "informacoes": "Information to manage your completed and pending tasks.",
+  "pular": "Skip",
+  "voltar": "Back",
+  "menu": "Menu",
+  "clique": "Click to access the system flow",
+  "partes": "Important parts",
+  "equipe": "Team, here you can view and create your teams. Click to see",
+  "crieEquipe": "Create a Team",
+  "cliqueECrie": "Click here to create new teams",
+  "preencha": "Fill in the fields",
+  "crieAEquipe": "Create the Team",
+  "entreEquipe": "Join the created team",
+  "projetosEquipe": "Here you can see team projects",
+  "crieProjeto": "Click to create a project",
+  "crieUmProjeto": "Create a Project",
+  "gerenciar": "Here you will manage the tasks of the project",
+  "crieTarefa": "Create the first task",
+  "preenchaTarefa": "Fill in the fields to create the task.",
+  "completar": "Click here to complete",
+  "formas": "There are different ways to view your tasks like Kanban, List, Calendar, and Timeline",
+  "funcionalidades": "There are more features on the site, but this is the essential.",
+  "finalizar": "finalize"
 
 }
-
-
 }

@@ -174,5 +174,37 @@
     "alteracao": "Nenhuma alteração detectada",
     "edicao": "Edição concluida",
     "confirmar": "Confirmar"
+  },
+  "selectComponent":{
+    "edit": "editar",
+    "view": "ver"
+  },
+  "tutorial":{
+    "bemVindo": "Bem Vindo!!",
+    "mostraAtividades": "Aqui mostra suas atividades mais importantes",
+    "proximo": "Próximo",
+    "dashboard": "Gráfico",
+    "informacoes": "Informações para gerenciar suas tarefas feitas e não feitas.",
+    "pular": "Pular",
+    "voltar": "Voltar",
+    "menu": "Menu",
+    "clique": "Clique para acessar o fluxo do sistema",
+    "partes": "Partes importantes",
+    "equipe": "Equipe, aqui pode visualizar suas equipes e cria-las. Clique para ver",
+    "crieEquipe": "Crie uma Equipe",
+    "cliqueECrie": "Clique aqui para criar novas equipes",
+    "preencha": "Preencha os campos",
+    "crieAEquipe": "Crie a Equipe",
+    "entreEquipe": "Entre na equipe criada",
+    "projetosEquipe": "Aqui pode-se ver projetos da equipe",
+    "crieProjeto": "Clique para criar um projeto",
+    "crieUmProjeto": "Crie Um Projeto",
+    "gerenciar": "Aqui vai gerenciar as tarefas do projeto em questão",
+    "crieTarefa": "Crie a primeira tarefa",
+    "preenchaTarefa": "Preencha os campos para poder criar a tarefa.",
+    "completar": "Clique aqui para completar",
+    "formas": "Há formas diferentes de visualizar suas tarefas como Kanban, Lista, Calendario e Linha do Tempo",
+    "funcionalidades": "Existem mais funcionalidades no site, mas o essencial é isso.",
+    "finalizar": "finalizar"
   }
 }
