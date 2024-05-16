@@ -58,6 +58,7 @@
     "tipo": "类型",
     "status": "状态",
     "naoPossuiResponsavel": "无责任人指定",
+    "no_date": "无截止日期",
     "dashboard": "仪表板",
     "no_subtasks": "无子任务",
     "projects": "项目",
@@ -127,10 +128,10 @@
     "Permitir que visualizem seu perfil": "允许查看您的个人资料"
   },
   "seguranca": {
-    "安全": "安全",
-    "senhaCaracteres": " * 具有8个或更多字符的密码。",
-    "senhaConteudo": " * 包含字母、数字和特殊字符的密码。",
-    "senhaPalavrasComuns": " * 不要使用常见词。",
+    "Segurança": "安全",
+    "senhaCaracteres": " 具有8个或更多字符的密码。",
+    "senhaConteudo": " 包含字母、数字和特殊字符的密码。",
+    "senhaPalavrasComuns": " 不要使用常见词。",
     "seuEmailAtual": "您当前的电子邮件地址是",
     "loginGoogleAtivado": "已激活使用Google帐户登录",
     "contaConectadaGoogle": "连接的帐户。您的帐户已连接到Google帐户。在此更改电子邮件地址将断开与Google帐户的连接。",

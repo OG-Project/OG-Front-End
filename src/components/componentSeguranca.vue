@@ -1,7 +1,7 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div>
-            <h1 style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+            <h1 style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
                 Segurança
             </h1>
         </div>
@@ -10,9 +10,9 @@
                 <div class="flex flex-col gap-10">
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="text-2xl w-[470px]">
-                            <span class="text-[var(--roxo)]">*</span> Senha com 8 ou mais caracteres.<br>
-                            <span class="text-[var(--roxo)]">*</span> Senha contento letras, números e caracteres especiais. <br>
-                            <span class="text-[var(--roxo)]">*</span> Não utilize palavras comuns.
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaCaracteres') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaConteudo') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaPalavrasComuns') }}
                             <!-- Ao alterar a senha, a gente mantém você conectado
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos. -->
@@ -21,13 +21,13 @@
                         :funcaoClick="abrePopUp" 
                         :parametrosFuncao="['senha']" 
                         preset="PadraoRoxo" 
-                        texto="Alterar Senha">
+                        :texto="$t('seguranca.alterarSenha')">
                         </Botao>
                     </div>
                     <div class="flex items-center sm:flex-wrap gap-8">
                         <div class="gap-5">
                             <div class="text-2xl w-[470px]">
-                                Seu endereço de e-mail atual é <span class="text-[var(--roxo)]">{{email}}</span>
+                                {{ $t('seguranca.seuEmailAtual') }} <span class="text-[var(--roxo)]">{{email}}</span>
                             </div>
                             <div v-if="isLogadoGoogle" class="text-2xl w-[470px]">
                                 Login com a conta do Google ativado
@@ -41,24 +41,15 @@
                         :funcaoClick="abrePopUp" 
                         :parametrosFuncao="['email']" 
                         preset="PadraoRoxo" 
-                        texto="Alterar E-mail">
+                        :texto="$t('seguranca.alterarEmail')">
                         </Botao>
                     </div>
-                    <!-- tudo errado, arrumar -->
-                    <!-- <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Alterar E-mail</span>
-                        <Input styleInput="input-transparente-claro-grande" 
-                        conteudoInput="Altera E-mail" 
-                        v-model="email" 
-                        tipo="obrigatorio" />
-                    </div> -->
-                    <!-- <alteraSenha v-if="PerfilStore.popUpSenha"></alteraSenha>
-                   <alterarEmail v-if="PerfilStore.popUpEmail"></alterarEmail>  -->
+         
                 </div>
             </div>
         </div>
         <div style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
-            <span>Deseja deletar sua Conta?</span>
+            <span>{{ $t('seguranca.deletarConta') }}</span>
         </div>
         
     </div>
@@ -70,27 +61,18 @@ import { perfilStore } from '../stores/perfilStore'
 import Input from '../components/Input.vue'
 import Botao from './Botao.vue';
 import VueCookies from "vue-cookies";
-import alteraSenha from './alterarSenha.vue'
 import { onMounted, ref } from 'vue';
-import alterarEmail from './alterarEmail.vue';
-import { storeToRefs } from 'pinia';
 import { conexaoBD } from '../stores/conexaoBD';
 const PerfilStore = perfilStore()
 const conexao=conexaoBD()
-const {fonteTitulo} = storeToRefs(PerfilStore)
-const {fonteCorpo} = storeToRefs(PerfilStore)
-const {tamanhoTitulo} = storeToRefs(PerfilStore)
-const {tamanhoCorpo} = storeToRefs(PerfilStore)
+import { useI18n } from 'vue-i18n';
 
-// FAZER A INTEGRAÇÃO COM BANCO E 
-// ATUALIZAR EMAIL E SENHA DO USUARIO DO COOKIE
 
 let funcaoPopUp=funcaoPopUpStore()
 let usuario;
 
 let isLogadoGoogle=false;
-let popUpSenha=ref(false);
-let popUpEmail=ref(false);
+
 
 let email=ref('');
 
@@ -106,10 +88,17 @@ if (tipo[0] == 'senha') {
  
     PerfilStore.popUpSenha = true;
     PerfilStore.popUpEmail = false;
+    PerfilStore.popUpDeletar = false;
 
-} else {
+} else if(tipo[0]=='email'){
     PerfilStore.popUpEmail = true;
     PerfilStore.popUpSenha = false;
+    PerfilStore.popUpDeletar = false;
+}else if(tipo[0]=='deletar'){
+    PerfilStore.popUpDeletar = true;
+    PerfilStore.popUpEmail = false;
+    PerfilStore.popUpSenha = false;
+
 }
 
 funcaoPopUp.abrePopUp()

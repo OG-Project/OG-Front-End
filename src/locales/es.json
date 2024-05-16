@@ -52,6 +52,7 @@
     "nomeDoTopico": "Nombre del Tema",
     "propriedades": "Propiedades",
     "corDaTarefa": "Color de la Tarea",
+    "no_date": "Sin Fecha",
     "subtarefas": "Subtareas",
     "perguntaCorTarefa": "¿Cuál es el color de tu Tarea?",
     "nomePropriedade": "Nombre de la Propiedad",
@@ -127,10 +128,10 @@
     "Permitir que visualizem seu perfil": "Permitir ver tu perfil"
   },
   "seguranca": {
-    "Seguridad": "Seguridad",
-    "senhaCaracteres": "* Contraseña con 8 o más caracteres.",
-    "senhaConteudo": "* Contraseña que contiene letras, números y caracteres especiales.",
-    "senhaPalavrasComuns": "* No utilice palabras comunes.",
+    "Segurança": "Seguridad",
+    "senhaCaracteres": "Contraseña con 8 o más caracteres.",
+    "senhaConteudo": "Contraseña que contiene letras, números y caracteres especiales.",
+    "senhaPalavrasComuns": "No utilice palabras comunes.",
     "seuEmailAtual": "Su dirección de correo electrónico actual es",
     "loginGoogleAtivado": "Inicio de sesión con cuenta de Google activado",
     "contaConectadaGoogle": "Cuenta conectada. Su cuenta está conectada a una cuenta de Google. Cambiar la dirección de correo electrónico aquí desconectará la cuenta de Google.",

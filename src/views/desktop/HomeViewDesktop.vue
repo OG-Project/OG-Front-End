@@ -88,6 +88,7 @@ async function verificaTarefasFeitas() {
     console.log(tarefasFeitas.value);
     console.log(tarefasNaoFeitas.value);
     porcentagemTarefasFeitas();
+    criaGrafico();
   });
 }
 
@@ -141,11 +142,9 @@ function enviaParaTarefasDoMes() {
   mostraTarefasPrincipais.value = false;
   funcaoPopUp.abrePopUp();
 }
-
-onMounted(() => {
-  verificaTarefasFeitas();
+function criaGrafico() {
   const data = {
-    labels: ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"],
+    labels: ["Feito", "Não Feito"],
     datasets: [
       {
         data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
@@ -153,6 +152,7 @@ onMounted(() => {
       },
     ],
   };
+  
   const config = {
     type: "doughnut",
     data: data,
@@ -166,13 +166,13 @@ onMounted(() => {
       },
     },
   };
-  data.labels = ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"];
-  data.datasets[0].data = [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value];
-  const chartCanvas = document.getElementById('tabela');
-  if (chartCanvas) {
-    const ctx = chartCanvas.getContext('2d');
-    new Chart(ctx, config);
-  }
+  
+  const ctx = document.getElementById("tabela");
+  window.myDoughnut = new Chart(ctx, config);
+}
+
+onMounted(() => {
+  verificaTarefasFeitas();
 });
 </script>
 
