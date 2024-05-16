@@ -36,6 +36,11 @@ const conexao=conexaoBD()
 function confirmar(){
     console.log('delete');
     conexao.deletar(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    VueCookies.remove('IdUsuarioCookie');
+    VueCookies.remove('IdTarefaCookies');
+    VueCookies.remove('IdProjetoAtual');
+    VueCookies.remove('JWT');
+    VueCookies.remove('equipeSelecionada');
 router.push('/login')
 }
 
