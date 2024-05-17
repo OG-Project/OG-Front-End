@@ -122,8 +122,8 @@ function mostraSenhaConfirmacao() {
   }
 }
 
-function loginGoogle() {
-  window.location.href = "http://localhost:8082"
+function loginGoogle(){
+  window.location.href= "http://localhost:8082"
 }
 </script>
 
@@ -157,8 +157,7 @@ function loginGoogle() {
             <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
             <hr style="width: 20%; text-align: left; margin-left: 0" />
           </div>
-          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
-            :funcaoClick="loginGoogle"></Botao>
+          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse" :funcaoClick="loginGoogle"></Botao>
           <Botao preset="PadraoBrancoIcon" :icon="iconeLinkedin" texto="Linkedin" ladoDoIcon="row-reverse"></Botao>
         </div>
       </Transition>

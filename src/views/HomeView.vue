@@ -29,13 +29,14 @@ onMounted(() => {
       screenWidth.value = window.innerWidth
   })
   colocaUsuarioId();
-  buscaConfiguracaoesPadrao();
 })
 
 function colocaUsuarioId(){
+  console.log("teste")
   banco.getCookie().then((res) =>{
   console.log(res.id)
   VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+  buscaConfiguracaoesPadrao();
  })
 }
 
