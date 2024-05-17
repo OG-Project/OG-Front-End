@@ -235,8 +235,9 @@ function somePopUp() {
     }
 
     .animation {
-        @apply absolute left-16 top-1 w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
+        @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
         animation: myAnim 0.15s ease 0s 1 normal none;
+        background-color: var(--backgroundItems);
     }
 }
 </style>

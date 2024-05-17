@@ -105,7 +105,7 @@ onMounted(async () => {
     if ( visualizacao.value.propriedadeVisiveis != null) {
         listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
     }
-
+    verificaSeEResponsavel()
     console.log(visualizacao.value)
     verificaSeEResponsavel()
     definePorcentagem()
