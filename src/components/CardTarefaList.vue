@@ -1,5 +1,5 @@
 <template>
-  <div class="w-min h-[90%] flex flex-col items-center" v-if="projeto.tarefas && projeto.tarefas.length > 0">
+  <div class="w-min h-[90%] flex flex-col items-center" v-if="projeto.tarefas && retornaTarefasAparentes(projeto.tarefas).length > 0">
     <div>
       <cabecalhoCardDaLista :projeto="projetoPromise" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
       </cabecalhoCardDaLista>
@@ -84,6 +84,17 @@ async function transformaEmObject() {
   projeto.value = await api.buscarUm(projetoId, '/projeto')
   // visualizacaoPromise = api.procurar("/visualizacaoEmLista/" + projeto.id)
   visualizacao = await visualizacaoPromise
+}
+
+function retornaTarefasAparentes(tarefas){
+  let tarefasAparecendo = [];
+  tarefas.forEach(tarefa => {
+    if(tarefa.nome != null){
+      tarefasAparecendo.push(tarefa)
+    }
+  })
+  console.log(tarefasAparecendo)
+  return tarefasAparecendo
 }
 
 function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {

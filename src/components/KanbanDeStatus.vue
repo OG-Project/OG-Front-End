@@ -1,66 +1,66 @@
 <template>
-    <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
-        {{ console.log(lista) }}
-        <div v-for="status of lista" class="w-auto flex h-full">
-            <div :style="status.style"  @dragover="retornaStatusNovo(status.propriedade)">
+    <div class="flex flex-col">
+        <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
+            {{ console.log(lista) }}
+            <div v-for="status of lista" class="w-auto flex h-full">
+                <div :style="status.style" @dragover="retornaStatusNovo(status.propriedade)">
 
-                <div
-                    class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
-                    <div class="w-[90%] flex justify-center">
-                        {{ status.propriedade.nome }}
+                    <div
+                        class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
+                        <div class="w-full flex justify-center">
+                            {{ status.propriedade.nome }}
+                        </div>
                     </div>
-                    <div class="w-[10%]">
-                        <img src="../assets/image 3.png">
+                    <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
+                        v-model="status.tarefas" :animation="300" group="tarefa" @start="drag = true"
+                        @end="() => mudaStatus(status)" item-key="tarefa.indice">
+                        <template #item="{ element: tarefa }">
+                            <div class="w-full h-full flex items-center justify-center"
+                                @dragstart="(() => { tarefaDrag = tarefa })">
+                                <div class="w-[80%] pt-[2vh]" v-if="tarefa != null && tarefa.nome != null">
+                                    <CardTarefas :tarefa=tarefa preset="1" v-on:deleta-tarefa="deletarTarefa($event)">
+                                    </cardTarefas>
+                                </div>
+                            </div>
+                        </template>
+                    </draggable>
+                    <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none"
+                        @click="store.criaTarefa(status.propriedade)">
+                        <p :style="corDoTexto(status.propriedade)">+ Nova</p>
+                    </button>
+                </div>
+            </div>
+            <span class="pr-4">
+
+                <button class="novaPropriedade " @click="abrePopUp()">
+                    <h1>+Novo</h1>
+                </button>
+            </span>
+        </div>
+        <div v-if="popUpStatus" class=" w-[100%] h-[10%] flex justify-end">
+            <div class="w-[24.5%] h-[60%] flex flex-col justify-center  bg-[var(--backgroundItemsClaros)]">
+                <div class="h-[13vh] w-[15vw] flex justify-end">
+                    <img src="../imagem-vetores/triangulo.svg">
+                </div>
+                <div class="flex flex-row justify-between">
+                    <div class="pl-2" >
+                        <Input largura="8" conteudoInput="Nome do Status" fontSize="1rem" altura="2"
+                            v-model="nomeStatus"></Input>
+                    </div>
+                    <div class="pr-2">
+                        <ColorPicker v-model="corStatus" class="rounded-sm" />
+                    </div>
+
+                </div>
+                <div class="flex justify-between">
+                    <div class="pl-2 pt-2 pb-2">
+                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="fechaPopUp"></Botao>
+                    </div>
+                    <div class="pr-2 pt-2 pb-2">
+                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
+                        </Botao>
                     </div>
                 </div>
-                <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
-                    v-model="status.tarefas" :animation="300" group="tarefa" @start="drag = true"
-                    @end="() => mudaStatus(status)" item-key="tarefa.indice">
-                    <template #item="{ element: tarefa }">
-                        <div class="w-full h-full flex items-center justify-center"
-                            @dragstart="(() => { tarefaDrag = tarefa })">
-                            <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
-                                <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
-                            </div>
-                        </div>
-                    </template>
-                </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none" @click="store.criaTarefa(), router.push('/criaTarefa').then(() => {
-            window.location.reload()
-        });">
-                    <p :style="corDoTexto(status.propriedade)">+ Nova</p>
-                </button>
-            </div>
-        </div>
-        <span class="pr-4">
-
-            <button class="novaPropriedade " @click="popUpStatus = true">
-                <h1>+Novo</h1>
-            </button>
-        </span>
-    </div>
-    <div v-if="popUpStatus == true">
-        <div class="flex justify-end">
-            <img src="../imagem-vetores/triangulo.svg">
-        </div>
-        <div class="flex flex-row justify-between">
-            <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                    v-model="nomeStatus"></Input>
-            </div>
-            <div class="pr-2">
-                <ColorPicker v-model="corStatus" class="rounded-sm" />
-            </div>
-
-        </div>
-        <div class="flex justify-between">
-            <div class="pl-2 pt-2 pb-2">
-                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="popUpStatus = false"></Botao>
-            </div>
-            <div class="pr-2 pt-2 pb-2">
-
-                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
-                </Botao>
             </div>
         </div>
     </div>
@@ -79,6 +79,7 @@ import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 import ColorPicker from 'primevue/colorpicker';
 import tinycolor from "tinycolor2";
 import router from '@/router'
+import Input from '../components/Input.vue';
 
 let api = conexaoBD()
 let projetoApi = api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
@@ -117,6 +118,10 @@ function verificaCorTexto(status) {
     }
 }
 
+function fechaPopUp() {
+    popUpStatus.value = false
+}
+
 function corDoTexto(status) {
     return {
         color: verificaCorTexto(status)
@@ -126,6 +131,33 @@ function corDoTexto(status) {
 function retornaStatusNovo(status) {
     statusNovo = status
     console.log(status);
+}
+
+function abrePopUp() {
+    popUpStatus.value = true
+}
+
+function criaStatusBack() {
+    if (nomeStatus.value != "") {
+        let statusCriado = {
+            nome: nomeStatus.value,
+            cor: corStatus.value
+        }
+        projeto.value.statusList.push(statusCriado)
+        console.log(projeto.value)
+    }
+}
+
+function deletarTarefa(id) {
+    console.log(id)
+    lista.value.forEach((status) => {
+        status.tarefas.forEach((tarefa, index) => {
+            if (tarefa.id == id) {
+                status.tarefas.splice(index, 1)
+            }
+        })
+    })
+    api.deletarTarefa("/tarefa", id)
 }
 
 function mudaStatus() {
@@ -210,10 +242,6 @@ function ordenaTarefas() {
 
 }
 
-
-function fechaPopUp() {
-    popUpStatus = false
-}
 async function defineListaDePropriedades() {
     let listaDePropriedades = []
     projeto.value = (await (projetoApi))

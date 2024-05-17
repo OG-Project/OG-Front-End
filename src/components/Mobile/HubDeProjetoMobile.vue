@@ -171,7 +171,7 @@ function definePorcentagem() {
     let string = ""
     let porcentagem = 0
     defineSubTarefasConcluida(tarefas)
-    if (subtarefasConcluidas.length != 0) {
+    if (subtarefasConcluidas.value.length != 0) {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
 
     }

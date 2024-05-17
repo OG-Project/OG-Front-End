@@ -8,7 +8,7 @@ export const conexaoBD = defineStore('conexaoBD', {
 
   state: () => {
     return {
-      api: axios.get("http://localhost:8082/usuario", { withCredentials: true }),
+      api: ("http://localhost:8082/usuario", { withCredentials: true }),
        loading: true,
     }
   },
@@ -86,7 +86,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     deletar(id, textoRequisicao) {
-      this.loading = true;
       try{
       return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
 
@@ -263,7 +262,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async deletarTarefa(textoRequisicao, id) {
-      this.loading = true;
       try{
       return await axios.delete('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => {
       })

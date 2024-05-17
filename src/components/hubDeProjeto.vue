@@ -179,7 +179,6 @@ function enviaCookieTarefaNova() {
     VueCookies.set("IdTarefaCookies", 0, new Date())
     localStorage.setItem("TarefaNaoFinalizada", "", new Date())
     criaTarefa.criaTarefa()
-    router.push('/criaTarefa')
 }
 function enviaCookieProjeto() {
     router.push('/editaProjeto')
@@ -193,7 +192,7 @@ function definePorcentagem() {
     let string = ""
     let porcentagem = 0
     defineSubTarefasConcluida(tarefas)
-    if (subtarefasConcluidas.length != 0) {
+    if (subtarefasConcluidas.value.length != 0 && subtarefasConcluidas.value != null) {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
 
     }
