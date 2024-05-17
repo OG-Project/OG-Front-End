@@ -27,7 +27,10 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = true;
       try {
         return axios.post("http://localhost:8082/login", usuarioLogin, { withCredentials: true }).then(response => {
+          alert(response.data.value)
           VueCookies.set("JWT", response.data.value)
+        }).catch((error)=>{
+          console.log(error)
         })
       } finally {
         this.loading = false;

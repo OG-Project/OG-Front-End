@@ -46,10 +46,11 @@ async function fazerLogin() {
   await banco.login(usuarioSecurity).catch(e =>{
     alert("Login invalido")
      error =e
+     console.log(error);
   })
-  if(error != null){
-    return
-  }
+  // if(error != null){
+  //   return
+  // }
   let usuarios = banco.procurar("/usuario");
   let listaUsuarios = await usuarios;
   listaUsuarios.forEach((usuario) => {
@@ -58,8 +59,8 @@ async function fazerLogin() {
         senhaUsuarioLogin.value = "";
         VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
         router.push('/home').then(() => {
-        window.location.reload()
-    });
+          window.location.reload()
+        });
       }
   });
   

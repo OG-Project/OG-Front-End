@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import  VueCookies  from 'vue-cookies';
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   linkActiveClass:'active',
@@ -133,7 +134,7 @@ const router = createRouter({
     {
       path:'/perfil',
       name:'Perfil',
-      redirect:'/perfil/informacoes',
+      redirect: ()=> '/perfil/informacoes',
       component: () => import('../views/PerfilView.vue'),
       children:[
         {
@@ -162,6 +163,13 @@ const router = createRouter({
           component: ()=>import('../components/componentAparencia.vue')
         }
       ],
+      meta:{
+        requiresAuth:true
+      }
+    },
+    {
+      path:'/aparencia',
+      component: ()=> import('../components/componentAparencia.vue'),
       meta:{
         requiresAuth:true
       }
