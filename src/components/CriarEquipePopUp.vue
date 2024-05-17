@@ -1,8 +1,8 @@
 <template>
-    <fundoPopUp largura="" altura="95vh">
+    <fundoPopUp largura="" :altura="alturaPopUp()">
         <div class="divGeral" id="step-6">
             <div class=" grid-template flex w-full">
-                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">Equipe
+                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl absolute sm:text-xs color-[#000]">{{ $t('criaEquipePopUp.equipe')  }}
                 </h1>
             </div>
             <div class=" grid-template  flex w-full mt-[1vh]  p-5">
@@ -15,44 +15,44 @@
                     </div>
                 </div>
                 <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
-                    :largura="larguraInput()" conteudoInput="Nome da Equipe" v-model="nome"
+                    :largura="larguraInput()" :conteudoInput="$t('criaEquipePopUp.nomeEquipe') " v-model="nome"
                     @updateModelValue="(e) => { nome = e }"></Input>
             </div>
             <div class=" grid-template  flex w-full">
                 <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e) => { usuarioConvidado = e }"
                     styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                    icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
+                    icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
                     v-model="usuarioConvidado"></Input>
             </div>
             <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
-                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                    :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
             <div v-else class="grid-template flex w-full mt-[1vh]">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px"
-                    tamanhoPadrao="mobilegrande" texto="convidar" tamanhoDaFonte="0.9rem"
+                    tamanhoPadrao="mobilegrande" :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem"
                     :funcaoClick="adicionarMembro"></Botao>
             </div>
             <div class=" grid-template flex w-full mt-[1vh]">
                 <textAreaPadrao
                     class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center"
-                    height="10vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"
+                    height="10vh" resize="none" tamanho-da-fonte="1rem" :placeholder="$t('criaEquipePopUp.descricao')"
                     v-model="descricao"></textAreaPadrao>
             </div>
             <div class="convidados-div flex justify-center xl:mt-[2vh] lg:mt-[4vh] md:mt-[4vh]">
-                <ListaConvidados @opcaoSelecionada="valorSelect" texto="Convites" mostrar-select="true"
-                    class="listaConvidados" altura="40vh" :margin-right="marginRightConvidado()" :listaConvidados="listaUsuariosConvidados"
+                <ListaConvidados @opcaoSelecionada="valorSelect" :texto="$t('criaEquipePopUp.convites')" mostrar-select="true"
+                    class="listaConvidados" altura="35vh" :margin-right="marginRightConvidado()" :listaConvidados="listaUsuariosConvidados"
                     @foi-clicado="removeListaMembrosConvidados"></ListaConvidados>
             </div>
             <div id="step-7">
                 <div v-if="screenWidth >= 620"
                     class="botao flex justify-end xl:mt-[8vh] md:mt-[10vh] xl:mx-[3vw] lg:mx-[5vw] md:mx-[5vw]">
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Criar Equipe" tamanhoDaFonte="1rem"
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('criaEquipePopUp.criarEquipe')" tamanhoDaFonte="1rem"
                         :funcaoClick="cadastrarEquipe">
                     </Botao>
                 </div>
-                <div v-else class="mt-10 ml-2">
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Criar Equipe" tamanhoDaFonte="1rem"
+                <div v-else class="mt-5 ml-3">
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" :texto="$t('criaEquipePopUp.criarEquipe')" tamanhoDaFonte="1rem"
                         :funcaoClick="cadastrarEquipe">
                     </Botao>
                 </div>
@@ -78,7 +78,9 @@ import VueCookies from "vue-cookies";
 import alertTela from './alertTela.vue';
 import { webSocketStore } from '../stores/webSocket.js'
 import { apple } from 'color-convert/conversions';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 
 
 const banco = conexaoBD();
@@ -108,7 +110,7 @@ function verificaTamanho(){
  if(descricao.value.length > 255){
     mensagem.value = ""
     mensagemCor.value = ""
-    mensagem.value = "Máximo de 255 caracteres";
+    mensagem.value = t('criaEquipePopUp.caracteres');
     mensagemCor.value = "#CD0000"
  }
 }
@@ -119,6 +121,14 @@ async function removeListaMembrosConvidados(usuarioConvidado) {
     if (index != -1) {
         listaUsuariosConvidados.value.splice(index, 1);
         membrosEquipe.value.splice(index,1);
+    }
+}
+
+function alturaPopUp() {
+    if (screenWidth <= 620) {
+        return '100vh'
+    }else{
+        return '95vh'
     }
 }
 
@@ -270,13 +280,13 @@ async function listaUsuarios() {
                 } else {
                     mensagem.value = ""
                     mensagemCor.value = ""
-                    mensagem.value = "membro já pertence à equipe.";
+                    mensagem.value = t('criaEquipePopUp.membroAviso');
                     mensagemCor.value = "#CD0000"
                 }
             } else {
                 mensagem.value = ""
                 mensagemCor.value = ""
-                mensagem.value = "Você já pertence à equipe.";
+                mensagem.value = t('criaEquipePopUp.voceAviso');
                 mensagemCor.value = "#CD0000"
             }
         }
@@ -293,7 +303,7 @@ async function cadastrarEquipe() {
     if (!nome.value.trim()) {
         mensagem.value = ""
         mensagemCor.value = ""
-        mensagem.value = "É obrigatório o nome da equipe";
+        mensagem.value = t('criaEquipePopUp.nomeObrigatorio')
         mensagemCor.value = "#CD0000";
         return;
     }
@@ -494,13 +504,10 @@ async function enviarFotoParaBackend(equipe) {
 
     @media(max-width: 620px) {
         .titulo {
-            @apply text-4xl mb-2;
-        }
-        .alert{
-            @apply ml-10
+            @apply text-4xl mb-16;
         }
         .botao {
-            @apply flex justify-end mt-10
+            @apply flex justify-end
         }
 
         .convidados-div {

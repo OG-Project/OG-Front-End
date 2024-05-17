@@ -89,6 +89,7 @@ async function verificaTarefasFeitas() {
     console.log(tarefasFeitas.value);
     console.log(tarefasNaoFeitas.value);
     porcentagemTarefasFeitas();
+    criaGrafico();
   });
 }
 
@@ -143,20 +144,26 @@ function enviaParaTarefasDoMes() {
   funcaoPopUp.abrePopUp();
 }
 
-function colocaUsuarioId(){
-  banco.getCookie().then((res) =>{
-  console.log(res.id)
-  VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
- })
-}
+
 
 onMounted(() => {
   if(VueCookies.get("JWT") != null){
     colocaUsuarioId()
   }
+ 
+}
+)
+ 
+function colocaUsuarioId(){
+  console.log("teste")
+  banco.getCookie().then((res) =>{
+  console.log(res.id)
+  VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
   verificaTarefasFeitas();
+ })
+}
   const data = {
-    labels: ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"],
+    labels: ["Feito", "Não Feito"],
     datasets: [
       {
         data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
@@ -164,6 +171,7 @@ onMounted(() => {
       },
     ],
   };
+  
   const config = {
     type: "doughnut",
     data: data,
@@ -177,14 +185,11 @@ onMounted(() => {
       },
     },
   };
-  data.labels = ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"];
-  data.datasets[0].data = [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value];
-  const chartCanvas = document.getElementById('tabela');
-  if (chartCanvas) {
-    const ctx = chartCanvas.getContext('2d');
-    new Chart(ctx, config);
-  }
-});
+  
+  const ctx = document.getElementById("tabela");
+  window.myDoughnut = new Chart(ctx, config);
+
+
 </script>
 
 <style scoped>

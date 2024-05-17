@@ -1,5 +1,5 @@
 <template>
-  <div class="grid-template ">
+  <div class="grid-template flex">
     <div class="convites-bg flex-col w-full bg-[[var(--backgroundItemsClaros)]] shadow-md  shadow-[var(--backgroundItemsClaros)] overflow-y-auto scrollbar-thin"
       :style="{ height: altura }">
       <div class="flex justify-center overfloow-y:auto">
@@ -72,7 +72,7 @@ let opcaoEscolhida = ref("")
 function enviaOpcao(convidado){
   instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
 }
-const opcoesSelect = ['Edit', 'View'];
+const opcoesSelect = ['View','Edit'];
 
 const imagemIcon = {
   height: props.altDaImagemIcon,
@@ -138,7 +138,7 @@ const removerConvidado = (convidado) => {
        @apply mr-2 w-[40px] h-[40px]; 
       }
       .imgIcon{
-       @apply bg-cover 
+       @apply bg-cover  w-[30px] h-[30px]
        bg-center flex flex-col justify-center 
        items-center mr-5 ml-[2vw];
       }

@@ -10,9 +10,13 @@
       <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
     </div>
     <div class="divCel flex justify-end">
-      <div id="step-10" class="botaoProjetos flex mt-[-3vh] mr-[1vw]">
+      <div id="step-10" class="botaoProjetos flex mt-[-3vh] mr-[1vw]" v-if="retornoPermissao">
         <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim"
           corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"
+          :texto="'+ ' + $t('equipes.projeto')" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
+        </Botao>
+        <Botao v-else-if="screenWidth <= 320" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim"
+          corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="mobilemedio"
           :texto="'+ ' + $t('equipes.projeto')" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
         </Botao>
         <Botao v-else preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)"
@@ -73,6 +77,7 @@ import engrenagem from "../imagem-vetores/engrenagem.vue";
 import membrosEquipeImagem from "../imagem-vetores/membrosEquipeImagem.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
+const usuarioLogado = VueCookies.get('IdUsuarioCookie')
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
 const listaProjetos = ref([]);
@@ -80,11 +85,13 @@ let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal = false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
-let listaResponsaveis = ref([])
+let listaResponsaveis = ref([]);
+let retornoPermissao = ref(false);
 const banco = conexaoBD();
 
 onMounted(() => {
-  buscaProjeto()
+  buscaProjeto();
+  verificaMembroPermissao();
 })
 
 async function buscaProjeto() {
@@ -112,13 +119,32 @@ async function entrarNoProjeto(projeto) {
 
 async function criarProjeto() {
   VueCookies.set("idAuxEquipe", Number(equipeSelecionada))
-  router.push('/criaProjeto').then(() => {
-        window.location.reload()
-    });
+  router.push({ path: '/criaProjeto' }).then(() => {
+    window.location.reload()
+  });
   VueCookies.set("projetoCookie");
   VueCookies.set("IdProjetoAtual")
 }
 
+async function verificaMembroPermissao(){
+     
+     const usuario = await banco.buscarUm(usuarioLogado,"/usuario")
+     console.log(usuario.equipes)
+     usuario.equipes.forEach((equipeUsuario) =>{
+        if(equipeUsuario.equipe.id == equipeSelecionada){
+            console.log(usuario);
+            if(equipeUsuario.criador){
+                retornoPermissao.value = true;
+                  return;
+            }
+            else if(equipeUsuario.permissao.length > 1){
+                  retornoPermissao.value = true;
+                  return;
+            }
+        } 
+    })
+    
+}
 
 async function obterNomesResponsaveis(projeto) {
   if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {

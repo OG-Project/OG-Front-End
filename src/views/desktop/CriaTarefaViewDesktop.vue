@@ -741,19 +741,19 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
-  tarefaCriando.arquivos = tarefa.value.arquivos;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
   console.log(tarefaCriando)
-  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, VueCookies.get("IdProjetoAtual"))
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(response)
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
     }
-    // router.push("/projeto").then(() => {
-    //   window.location.reload();
-    // });
+    router.push("/projeto").then(() => {
+      // window.location.reload();
+    });
 
   });
 
@@ -970,7 +970,6 @@ async function calculaTempoAtuacao() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  tarefaCriando.arquivos = tarefa.value.arquivos;
   tarefaCriando.tempoAtuacao = tempoAtuado;
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {

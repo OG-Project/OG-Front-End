@@ -88,12 +88,19 @@ function openClose() {
 }
 
 onMounted(async ()=>{
-  usuario.value =
-    await banco.buscarUm(
-      JSON.parse(
-        VueCookies.get('IdUsuarioCookie')), '/usuario')
-  console.log(usuario.value);
+  colocaUsuarioId()
 })
+
+ 
+function colocaUsuarioId(){
+  console.log("teste")
+  banco.getCookie().then((res) =>{
+    usuario.value= res;
+  console.log(res.id)
+  VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+  verificaTarefasFeitas();
+ })
+}
 
 function redirecionamento(local) {
   router.push(local).then(() => {
@@ -102,6 +109,7 @@ function redirecionamento(local) {
       VueCookies.remove('IdUsuarioCookie');
       VueCookies.remove('IdTarefaCookies');
       VueCookies.remove('IdProjetoAtual');
+      VueCookies.remove('JWT');
       VueCookies.remove('equipeSelecionada');
       window.location.reload();
     }

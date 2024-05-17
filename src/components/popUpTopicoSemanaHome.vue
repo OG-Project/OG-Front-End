@@ -3,12 +3,11 @@
     <div class="h-[80vh] w-[45vw] flex flex-col items-center z-[9999]">
       <h1 class="text-4xl">{{ props.nomeDoTopico }}</h1>
         <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
-        <div  v-for="projeto of listaDeProjetos" class="w-[100%] h-[12%] border-2 border-[var(--backgroundPuro)] bg-[var(--backgroundItems)] flex items-center justify-around"
+        <div  v-for="projeto of listaDeProjetos" class="w-[100%] h-[12%] border-2 border-[var(--backgroundItemsClaros)] bg-[var(--backgroundItems)] flex items-center justify-around"
           style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
           <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid var(--roxo)" @click="redireciona('/projeto/kanban', projeto.id)">
-            <p>{{ projeto.nome }}</p>
-            <p v-if="projeto.responsaveis[0]">{{ projeto.responsaveis[0].responsavel.username }}</p>
-            <p v-if="!projeto.responsaveis[0]">{{ $t('home.naoPossuiResponsavel') }}</p>
+            <p style="font-family:var(--fonteCorpo);">{{ projeto.nome }}</p>
+            <p v-if="projeto.dataFinal != null">{{projeto.dataFinal}}</p>
           </div>
         </div>
       </div>

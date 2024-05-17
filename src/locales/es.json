@@ -52,6 +52,7 @@
     "nomeDoTopico": "Nombre del Tema",
     "propriedades": "Propiedades",
     "corDaTarefa": "Color de la Tarea",
+    "no_date": "Sin Fecha",
     "subtarefas": "Subtareas",
     "perguntaCorTarefa": "¿Cuál es el color de tu Tarea?",
     "nomePropriedade": "Nombre de la Propiedad",
@@ -127,10 +128,10 @@
     "Permitir que visualizem seu perfil": "Permitir ver tu perfil"
   },
   "seguranca": {
-    "Seguridad": "Seguridad",
-    "senhaCaracteres": "* Contraseña con 8 o más caracteres.",
-    "senhaConteudo": "* Contraseña que contiene letras, números y caracteres especiales.",
-    "senhaPalavrasComuns": "* No utilice palabras comunes.",
+    "Segurança": "Seguridad",
+    "senhaCaracteres": "Contraseña con 8 o más caracteres.",
+    "senhaConteudo": "Contraseña que contiene letras, números y caracteres especiales.",
+    "senhaPalavrasComuns": "No utilice palabras comunes.",
     "seuEmailAtual": "Su dirección de correo electrónico actual es",
     "loginGoogleAtivado": "Inicio de sesión con cuenta de Google activado",
     "contaConectadaGoogle": "Cuenta conectada. Su cuenta está conectada a una cuenta de Google. Cambiar la dirección de correo electrónico aquí desconectará la cuenta de Google.",
@@ -151,6 +152,64 @@
     "prontas": "Listas",
     "totalMinutosTrabalhados": "Total de Minutos Trabajados",
     "historico": "Histórico"   
-  }
-  
+  },
+  "criaEquipePopUp": {
+    "nomeEquipe": "Nombre del Equipo",
+    "adicionarMembro": "Agregar Miembro",
+    "convidar": "invitar",
+    "descricao": "Descripción (opcional)",
+    "convites": "Invitaciones",
+    "criarEquipe": "Crear Equipo",
+    "equipe": "Equipo",
+    "caracteres": "Máximo de 255 caracteres",
+    "membroAviso": "El miembro ya pertenece al equipo.",
+    "voceAviso": "Ya perteneces al equipo.",
+    "nomeObrigatorio": "El nombre del equipo es obligatorio"
+},
+"editarEquipePopUp": {
+  "equipeEditar": "Editar Equipo",
+  "deletar": "Eliminar",
+  "editar": "Editar",
+  "sair": "Salir",
+  "salvar": "Guardar cambios",
+  "alteracao": "No se detectaron cambios",
+  "edicao": "Edición completada",
+  "confirmar": "Confirmar"
+},
+"selectComponent": {
+  "edit": "editar",
+  "view": "ver"
+},
+"tutorial": {
+  "bemVindo": "¡Bienvenido!",
+  "mostraAtividades": "Aquí se muestran tus actividades más importantes",
+  "proximo": "Siguiente",
+  "dashboard": "Tablero",
+  "informacoes": "Información para gestionar tus tareas hechas y no hechas.",
+  "pular": "Omitir",
+  "voltar": "Volver",
+  "menu": "Menú",
+  "clique": "Haz clic para acceder al flujo del sistema",
+  "partes": "Partes importantes",
+  "equipe": "Equipo, aquí puedes ver tus equipos y crearlos. Haz clic para ver",
+  "crieEquipe": "Crear un Equipo",
+  "cliqueECrie": "Haz clic aquí para crear nuevos equipos",
+  "preencha": "Llena los campos",
+  "crieAEquipe": "Crea el Equipo",
+  "entreEquipe": "Únete al equipo creado",
+  "projetosEquipe": "Aquí puedes ver los proyectos del equipo",
+  "crieProjeto": "Haz clic para crear un proyecto",
+  "crieUmProjeto": "Crea un Proyecto",
+  "gerenciar": "Aquí gestionarás las tareas del proyecto en cuestión",
+  "crieTarefa": "Crea la primera tarea",
+  "preenchaTarefa": "Llena los campos para poder crear la tarea.",
+  "completar": "Haz clic aquí para completar",
+  "formas": "Hay diferentes formas de visualizar tus tareas como Kanban, Lista, Calendario y Línea de Tiempo",
+  "funcionalidades": "Existen más funcionalidades en el sitio, pero esto es lo esencial.",
+  "finalizar": "finalizar"
+},
+"confirmarPopUp": {
+  "confirmar": "¿Estás seguro?"
+}
+
 }
