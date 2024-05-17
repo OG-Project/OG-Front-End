@@ -75,26 +75,27 @@ function trocaDeTela() {
 
 async function cadastraUsuario() {
   const criarUsuario = criaUsuarioStore();
-  if (
-    emailCadastro.value.indexOf("@") > 0 &&
-    emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
-    emailCadastro.value.includes(".")
-  ) {
-    if (senhaCadastro.value === confirmarSenhaCadastro.value) {
-      criarUsuario.criaUsuario(
-        usuarioCadastro.value,
-        emailCadastro.value,
-        senhaCadastro.value
-      )
-      usuarioCadastro.value = "";
-      emailCadastro.value = "";
-      senhaCadastro.value = "";
-      confirmarSenhaCadastro.value = "";
-      trocaDeTela();
+  
+    if (
+      emailCadastro.value.indexOf("@") > 0 &&
+      emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
+      emailCadastro.value.includes(".")
+    ) {
+      if (senhaCadastro.value === confirmarSenhaCadastro.value) {
+        criarUsuario.criaUsuario(
+          usuarioCadastro.value,
+          emailCadastro.value,
+          senhaCadastro.value
+        )
+        usuarioCadastro.value = "";
+        emailCadastro.value = "";
+        senhaCadastro.value = "";
+        confirmarSenhaCadastro.value = "";
+        trocaDeTela();
+      }
     }
   }
-}
-// }
+
 
 
 

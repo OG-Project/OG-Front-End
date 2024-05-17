@@ -114,7 +114,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async buscarHistorico(id, textoRequisicao) {
       this.loading = true;
       try {
-        return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`)).data)
+        return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`, { withCredentials: true })).data)
       } finally {
         this.loading = false;
       }
