@@ -69,6 +69,7 @@ let tarefasFeitas = ref(0);
 let tarefasNaoFeitas = ref(0);
 let totalTarefas = ref(0);
 
+
 async function verificaTarefasFeitas() {
   const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
   equipeUsuario.equipes.forEach(async equipe => {
@@ -142,7 +143,17 @@ function enviaParaTarefasDoMes() {
   funcaoPopUp.abrePopUp();
 }
 
+function colocaUsuarioId(){
+  banco.getCookie().then((res) =>{
+  console.log(res.id)
+  VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+ })
+}
+
 onMounted(() => {
+  if(VueCookies.get("JWT") != null){
+    colocaUsuarioId()
+  }
   verificaTarefasFeitas();
   const data = {
     labels: ["Feito: " + quantidadeTarefasFeitas.value.toFixed(2) + "%", "Não Feito: " + quantidadeNaoTarefasFeitas.value.toFixed(2) + "%"],

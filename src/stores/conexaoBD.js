@@ -23,6 +23,16 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
 
     },
+
+    getCookie(){
+      this.loading = true;
+      try {
+        return axios.get("http://localhost:8082/cookie" , { withCredentials: true }).then(response =>  {return response.data})
+      } finally {
+        this.loading = false;
+        console.log('Loading:', this.loading);
+      }
+    },
     login(usuarioLogin) {
       this.loading = true;
       try {
