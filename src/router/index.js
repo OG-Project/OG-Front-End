@@ -1,20 +1,28 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import  VueCookies  from 'vue-cookies';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  linkActiveClass:'active',
   routes: [
     {
 
       path: '/home',
       name: 'Home',
-      component: () => import('../views/HomeView.vue')
+      component: () => import('../views/HomeView.vue'),
+      meta:{
+        requiresAuth:true
+      }
     },
     {
 
       path: '/',
       name: 'Inicio',
-      redirect: '/login',
-      component: () => import('../views/HomeView.vue')
+      redirect: '/home',
+      component: () => import('../views/HomeView.vue'),
+      meta:{
+        requiresAuth:true
+      }
     },
     {
       path: '/login',
@@ -31,60 +39,96 @@ const router = createRouter({
             {
               path:'kanban',
               name:'Kanban',
-              component: ()=>import('../components/KanbanDeStatus.vue')
+              component: ()=>import('../components/KanbanDeStatus.vue'),
+              meta:{
+                requiresAuth:true
+              }
             },
             {
               path:'lista',
               name:'Lista',
-              component: ()=>import('../components/CardTarefaList.vue')
+              component: ()=>import('../components/CardTarefaList.vue'),
+              meta:{
+                requiresAuth:true
+              }
             },
             {
               path:'timeline',
               name:'TimeLine',
-              component: ()=>import('../components/timeLine.vue')
+              component: ()=>import('../components/timeLine.vue'),
+              meta:{
+                requiresAuth:true
+              }
             },
             {
               path:'calendario',
               name:'Calendario',
-              component: ()=>import('../components/calendario.vue')
+              component: ()=>import('../components/calendario.vue'),
+              meta:{
+                requiresAuth:true
+              }
             },
             {
               path:'aparencia',
               name:'Aparencia',
-              component: ()=>import('../components/componentAparencia.vue')
+              component: ()=>import('../components/componentAparencia.vue'),
+              meta:{
+                requiresAuth:true
+              }
             }
-          ]
+          ],
+          meta:{
+            requiresAuth:true
+          }
      },
      
      {
           path: '/equipe',
           name: 'Equipe',
-          component: () => import('../views/EquipeHomeView.vue')
+          component: () => import('../views/EquipeHomeView.vue'),
+          meta:{
+            requiresAuth:true
+          }
      },
      {
           path: '/equipe/telaInicial',
           name: 'telaInicial',
-          component: () => import('../views/EquipeTelaInicialView.vue')
+          component: () => import('../views/EquipeTelaInicialView.vue'),
+          meta:{
+            requiresAuth:true
+          }
      },
      {
       path: '/criaProjeto',
       name: 'criaProjeto',
-      component: () => import('../views/CriarProjetoView.vue')
+      component: () => import('../views/CriarProjetoView.vue'),
+      meta:{
+        requiresAuth:true
+      }
     },
     {
       path: '/editaProjeto',
       name: 'editaProjeto',
-      component: () => import('../views/CriarProjetoView.vue')
+      component: () => import('../views/CriarProjetoView.vue'),
+      meta:{
+        requiresAuth:true
+      }
     },
     {
       path: '/criaTarefa',
       name: 'criaTarefa',
-      component: () => import('../views/CriarTarefaView.vue')
+      component: () => import('../views/CriarTarefaView.vue'),
+      meta:{
+        requiresAuth:true
+      }
     },
     {
      path: '/projetos',
      name: 'projetos',
-     component: () => import('../views/ProjetoListaView.vue')
+     component: () => import('../views/ProjetoListaView.vue'),
+     meta:{
+       requiresAuth:true
+     }
     },
     {
       path:'/perfil',
@@ -117,11 +161,17 @@ const router = createRouter({
           name:'Aparencia',
           component: ()=>import('../components/componentAparencia.vue')
         }
-      ]
+      ],
+      meta:{
+        requiresAuth:true
+      }
     },
     {
       path:'/perfil/:id',
-      component: () => import('../views/PerfilInfoView.vue')
+      component: () => import('../views/PerfilInfoView.vue'),
+      meta:{
+        requiresAuth:true
+      }
     },
     {
       path:'/chat',
@@ -129,7 +179,10 @@ const router = createRouter({
     },
     {
       path: '/projeto/responsavel',
-      component: () => import('../views/AdminHomeView.vue')
+      component: () => import('../views/AdminHomeView.vue'),
+      meta:{
+        requiresAuth:true
+      }
     },
     // {
     //   path: '/404',
@@ -144,6 +197,20 @@ const router = createRouter({
     // }
 
   ]
+})
+router.beforeEach(async (to)=>{
+  // const rotasPublicas=['/login']
+
+  console.log(to.fullPath);
+  console.log(VueCookies.get('JWT'));
+  if(VueCookies.get('JWT')==null && to.path!='/login'){
+   return {path:'/login'}
+  } 
+  else if(VueCookies.get('JWT')!=null && to.path=='/login' ){
+    return {path:'/home'}
+  }
+  
+  
 })
 
 export default router

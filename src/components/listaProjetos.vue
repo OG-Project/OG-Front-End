@@ -36,7 +36,7 @@
                 </div>
                 <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('urgentes')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id"
                 draggable="true" @dragstart="onDragStart($event, projeto)">
-                  <KanbanProjetos  :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos @click="entrarNoProjeto(projeto)" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col  mobile:mt-5" @dragover.prevent @drop.prevent="event => onDrop(event, 'nao-iniciados', '#0034BA')">
@@ -45,7 +45,7 @@
                </div>
                <div class="flex justify-center  mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('nao-iniciados')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :v-if="projeto.categoria === 'nao-iniciados'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos @click="entrarNoProjeto(projeto)" :v-if="projeto.categoria === 'nao-iniciados'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max flex min-h-[15vh] flex-col  mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'prontos', '#389300')">
@@ -54,16 +54,16 @@
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('prontos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :v-if="projeto.categoria === 'prontos'"  :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos @click="entrarNoProjeto(projeto)" :v-if="projeto.categoria === 'prontos'"  :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
               <div class="kanban-board w-full max-h-max min-h-[15vh] flex flex-col  mobile:mt-5"  @dragover.prevent @drop.prevent="event => onDrop(event, 'meus-projetos', '#8E00FF')">
                 <div class="meusProjetos">
-                  <h1 class="txl:text-xl sm:text-sm text-white"> {{$t('projeto.MEUS PROJETOS')}}</h1>
+                  <h1 class="xl:text-xl sm:text-sm text-white"> {{$t('projeto.MEUS PROJETOS')}}</h1>
                 </div>
                 <div class="flex justify-center mt-10 w-[100%]" v-for="projeto of filtrarPorCategoria('meus-projetos')" @compositionstart="agruparProjetosPorCategoria()"  :key="projeto.id" 
                 draggable="true" @dragstart="onDragStart($event, projeto)" >
-                  <KanbanProjetos :v-if="projeto.categoria === 'meus-projetos'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
+                  <KanbanProjetos @click="entrarNoProjeto(projeto)" :v-if="projeto.categoria === 'meus-projetos'" :nome="projeto.nome" :cor="projeto.corTopico" :imagem="obterFotosResponsaveis(projeto)" @dragover="projetoEmBaixoId = projeto.id" ></KanbanProjetos>
                 </div>
               </div>
             </div>
@@ -100,7 +100,7 @@
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :reponsavel="obterNomesResponsaveis(projeto)"
+              :responsavel="listaResponsaveis"
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
@@ -109,7 +109,7 @@
                 :descricao="projeto.descricao" 
                 :comeco="formatarData(projeto.dataCriacao)" 
                 :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-                :reponsavel="obterNomesResponsaveis(projeto)"
+                :responsavel="listaResponsaveis"
                 :feito="calcularProgressoProjeto(projeto)"
                 :tempo-atuacao="projeto.tempoAtuacao"
                 @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
@@ -146,7 +146,7 @@
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
   const router = useRouter();
-  
+  let listaResponsaveis = ref([])
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;
@@ -271,6 +271,7 @@ async function obterNomesResponsaveis(projeto) {
       if (responsaveisComNome.length >= 0) {
         listaResponsaveis.value = responsaveisComNome.join(', ');
       }
+      
     }
   } else {
     return "Não há responsáveis";
@@ -288,9 +289,12 @@ async function obterFotosResponsaveis(projeto) {
       let responsaveisComFoto = []
       for(let responsavel of projeto.responsaveis){
         let usuario = await buscaResponsaveis(responsavel)
-        responsaveisComNome.push(usuario.foto)
+        console.log(usuario)
+        responsaveisComFoto.push(usuario.foto)
       }
         if (responsaveisComFoto.length >= 0) {
+          console.log(responsaveisComFoto)
+          console.log(`data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`)
           return `data:${responsaveisComFoto[0].tipo};base64,${responsaveisComFoto[0].dados}`;
         } else {
             return ''

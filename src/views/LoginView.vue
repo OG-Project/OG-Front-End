@@ -40,21 +40,27 @@ let usuarioSecurity = {
   password: ""
 }
 async function fazerLogin() {
-  usuarioSecurity.username=usuarioLogin.value
-  usuarioSecurity.password=senhaUsuarioLogin.value
+  usuarioSecurity.username = usuarioLogin.value
+  usuarioSecurity.password = senhaUsuarioLogin.value
   let error;
-  await banco.login(usuarioSecurity).catch(e =>{
+  await banco.login(usuarioSecurity).catch(e => {
     alert("Login invalido")
-     error =e
+    error = e
   })
-  if(error != null){
-    VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
-        router.push('/home').then(() => {
+  if (error != "undefined") {
+    // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
+    // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
+    banco.getCookie().then((usuario) => {
+      usuarioLogin.value = "";
+      senhaUsuarioLogin.value = "";
+      VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
+      router.push('/home').then(() => {
         window.location.reload()
-    });
-    return
-  }
+      })
+      return
+    })
 
+  }
 }
 
 function trocaDeTela() {
@@ -69,17 +75,7 @@ function trocaDeTela() {
 
 async function cadastraUsuario() {
   const criarUsuario = criaUsuarioStore();
-  // let usuarioUnico = true;
-  // let usuarios = banco.procurar("/usuario");
-  // let listaUsuarios = await usuarios;
-  // listaUsuarios.forEach((usuario) => {
-  //   if (usuario.username != usuarioCadastro.value) {
-  //     usuarioUnico = true;
-  //   } else {
-  //     usuarioUnico = false;
-  //   }
-  // });
-  // if (usuarioUnico) {
+  
     if (
       emailCadastro.value.indexOf("@") > 0 &&
       emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
@@ -99,7 +95,7 @@ async function cadastraUsuario() {
       }
     }
   }
-// }
+
 
 
 
@@ -124,6 +120,10 @@ function mostraSenhaConfirmacao() {
     vizualizacaoDeSenhaConfirmacao.value = "";
     iconeDaSenhaConfirmacao.value = olhoOculto;
   }
+}
+
+function loginGoogle() {
+  window.location.href = "http://localhost:8082"
 }
 </script>
 
@@ -157,7 +157,8 @@ function mostraSenhaConfirmacao() {
             <p class="text-[#FFFFFF] ml-2 mr-2">or</p>
             <hr style="width: 20%; text-align: left; margin-left: 0" />
           </div>
-          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"></Botao>
+          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
+            :funcaoClick="loginGoogle"></Botao>
           <Botao preset="PadraoBrancoIcon" :icon="iconeLinkedin" texto="Linkedin" ladoDoIcon="row-reverse"></Botao>
         </div>
       </Transition>

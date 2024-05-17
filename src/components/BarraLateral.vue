@@ -102,6 +102,7 @@ function redirecionamento(local) {
       VueCookies.remove('IdUsuarioCookie');
       VueCookies.remove('IdTarefaCookies');
       VueCookies.remove('IdProjetoAtual');
+      VueCookies.remove('JWT');
       VueCookies.remove('equipeSelecionada');
       window.location.reload();
     }

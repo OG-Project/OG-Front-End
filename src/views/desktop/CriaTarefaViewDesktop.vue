@@ -744,8 +744,9 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
-  
-  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, VueCookies.get("IdProjetoAtual"))
+  console.log(tarefaCriando)
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(tarefa.value.arquivos.length);
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))

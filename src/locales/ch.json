@@ -153,5 +153,64 @@
     "prontas": "准备就绪",
     "totalMinutosTrabalhados": "总工作分钟数",
     "historico": "历史"
-  }
+  },
+  "criaEquipePopUp": {
+    "nomeEquipe": "团队名称",
+    "adicionarMembro": "添加成员",
+    "convidar": "邀请",
+    "descricao": "描述（可选）",
+    "convites": "邀请",
+    "criarEquipe": "创建团队",
+    "equipe": "团队",
+    "caracteres": "最多255个字符",
+    "membroAviso": "成员已属于该团队。",
+    "voceAviso": "您已经属于该团队。",
+    "nomeObrigatorio": "团队名称是必填项"
+},
+"editarEquipePopUp": {
+  "equipeEditar": "编辑团队",
+  "deletar": "删除",
+  "editar": "编辑",
+  "sair": "退出",
+  "salvar": "保存更改",
+  "alteracao": "未检测到更改",
+  "edicao": "编辑完成",
+  "confirmar": "确认"
+},
+"selectComponent": {
+  "edit": "编辑",
+  "view": "查看"
+},
+"tutorial": {
+  "bemVindo": "欢迎!!",
+  "mostraAtividades": "这里显示您的重要活动",
+  "proximo": "下一步",
+  "dashboard": "图表",
+  "informacoes": "管理您已完成和未完成任务的信息。",
+  "pular": "跳过",
+  "voltar": "返回",
+  "menu": "菜单",
+  "clique": "点击访问系统流程",
+  "partes": "重要部分",
+  "equipe": "团队，这里可以查看和创建团队。点击查看",
+  "crieEquipe": "创建团队",
+  "cliqueECrie": "点击此处创建新团队",
+  "preencha": "填写字段",
+  "crieAEquipe": "创建团队",
+  "entreEquipe": "加入创建的团队",
+  "projetosEquipe": "这里可以看到团队项目",
+  "crieProjeto": "点击创建项目",
+  "crieUmProjeto": "创建一个项目",
+  "gerenciar": "在这里管理项目任务",
+  "crieTarefa": "创建第一个任务",
+  "preenchaTarefa": "填写字段以创建任务。",
+  "completar": "点击这里完成",
+  "formas": "有不同的方法查看您的任务，例如看板、列表、日历和时间线",
+  "funcionalidades": "网站上还有更多功能，但这是基本的。",
+  "finalizar": "完成"
+},
+"confirmarPopUp": {
+  "confirmar": "你确定吗？"
+}
+
 }

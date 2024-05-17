@@ -21,11 +21,15 @@
 <script setup>
 import { ref, onMounted, defineProps, watch, computed, onUpdated } from "vue";
 import { perfilStore } from "../stores/perfilStore";
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 let perfil = perfilStore()
 import { storeToRefs } from 'pinia';
 const { hue } = storeToRefs(perfil)
 const isHovered = ref(false);
 const isClick = ref(false);
+
 // 
 
 const tamanhoComClass = ref("medioId");
@@ -145,7 +149,7 @@ switch (props.sombreado) {
 
 switch (Preset) {
   case "Deletar":
-    Texto = "Deletar";
+    Texto = t('editarEquipePopUp.deletar');
     TemIcon = "nao";
     botao = {
       display: "flex",
@@ -181,7 +185,7 @@ switch (Preset) {
 
     break;
   case "DeletarMobile":
-    Texto = "Deletar";
+    Texto = t('editarEquipePopUp.deletar');
     TemIcon = "nao";
     botao = {
       display: "flex",
@@ -218,7 +222,7 @@ switch (Preset) {
 
     break;
   case "Confirmar":
-    Texto = "Confirmar";
+    Texto = t('editarEquipePopUp.confirmar');
     TemIcon = "nao";
     botao = {
       display: "flex",
@@ -253,7 +257,7 @@ switch (Preset) {
     };
     break;
   case "Sair":
-    Texto = "Sair";
+    Texto = t('editarEquipePopUp.sair');
     TemIcon = "nao";
     botao = {
       display: "flex",

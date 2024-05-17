@@ -75,7 +75,8 @@
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
-                        <img class="w-[5%] h-[20%] " :src="botaoSair" @click="removeStatus(status)">
+                        <img class="w-[5%] h-[20%] " :src="botaoSair" @click="removeStatus(status)" v-if="status.status.nome != 'Em Progresso' && status.status.nome != 'Pronto' 
+                        && status.status.nome != 'Não iniciado'">
 
                     </div>
                 </div>
