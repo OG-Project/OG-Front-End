@@ -459,6 +459,7 @@ async function confirmarConvites() {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
     enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
+    window.location.reload();
    
 }
 

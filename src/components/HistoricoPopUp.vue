@@ -6,7 +6,7 @@
             </div>
             <div class="divHistorico">
                 <div  v-for="historico in historicos" :key="historico.id" class="div">
-                   <img v-if="historico.criador.foto != null" class="imgPerfil" :src="`data:${historico.criador.foto.tipo};base64,${historico.criador.foto.dados}`" 
+                   <img @click="router.push('/perfil/'+historico.criador.id)" v-if="historico.criador.foto != null" class="imgPerfil cursor-pointer" :src="`data:${historico.criador.foto.tipo};base64,${historico.criador.foto.dados}`" 
                    alt="">
                    <userTodoPreto v-else class="imgPerfil"></userTodoPreto>
                     <div class="historico">
@@ -26,6 +26,7 @@ import { onMounted, ref, defineProps } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import { criaHistoricoStore } from '../stores/criaHistorico';
 import VueCookies from "vue-cookies";
+import router from '../router';
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 onMounted (async () =>{
     buscarHistorico();
