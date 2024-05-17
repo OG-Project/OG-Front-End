@@ -30,14 +30,14 @@ onMounted(() => {
   })
   console.log("entrou na home on mounted");
   colocaUsuarioId();
-  buscaConfiguracaoesPadrao();
 })
 
 function colocaUsuarioId(){
-  console.log("entrou na home");
+  console.log("teste")
   banco.getCookie().then((res) =>{
   console.log(res.id)
   VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+  buscaConfiguracaoesPadrao();
  })
 }
 

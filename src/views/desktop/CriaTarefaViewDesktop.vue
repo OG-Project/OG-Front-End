@@ -134,7 +134,7 @@
           <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
             <img
               v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
-              class="h-[100%] w-[100%]" :src="arquivo.dados">
+              class="h-[100%] w-[100%]" :src="'data:' + arquivo.tipo + ';base64,' + arquivo.dados">
             <div v-else>
               <img class="h-[65%]" :src='getIconSrc(arquivo)' />
             </div>
@@ -747,6 +747,7 @@ async function criaTarefaNoConcluido() {
   console.log(tarefaCriando)
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
+
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(tarefa.value.arquivos.length);
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
@@ -1099,18 +1100,13 @@ function exibirComentarios() {
 }
 let arquivoSelecionado = ref(null)
 function gerarArquivo(e) {
-  let arquivo = e.target.files[0];
-  arquivoSelecionado.value = arquivo;
+  let fd = new FormData()
+  let selectedFile = e.target.files[0];
+  fd.append('arquivo', selectedFile, selectedFile.name);
   let reader = new FileReader();
-  reader.readAsDataURL(arquivo);
+  reader.readAsDataURL(selectedFile);
   reader.onload = function () {
-    let arquivoBase64 = reader.result;
-    let arquivoParaOBanco = {
-      nome: arquivo.name,
-      tipo: arquivo.type,
-      dados: arquivoBase64,
-    };
-    tarefa.value.arquivos.push(arquivoSelecionado.value);
+    tarefa.value.arquivos.push(fd);
     update()
   }
   console.log(tarefa.value.arquivos);

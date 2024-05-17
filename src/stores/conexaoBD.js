@@ -233,13 +233,9 @@ export const conexaoBD = defineStore('conexaoBD', {
 
     async patchDeArquivosNaTarefa(arquivos, id) {
       try {
-        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`, { withCredentials: true })
-
-        arquivos.forEach(async arquivo => {
-          const formData = new FormData();
-          formData.append('arquivo', arquivo);
-          console.log(formData);
-          await axios.patch(`http://localhost:8082/tarefa/arquivos/"${id}`, formData, {
+        await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`, { withCredentials: true });
+        arquivos.forEach(async arquivo => {  
+          await axios.patch(`http://localhost:8082/tarefa/arquivos/${id}`, arquivo, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
