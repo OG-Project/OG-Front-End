@@ -80,7 +80,7 @@
                                             @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
                                     </div>
                                     <div class="w-[20%] flex items-center justify-center gap-10 h-10">
-                                        <IconeHistorico @click="funcao" class="w-[20%] h-[85%] cursor-pointer">
+                                        <IconeHistorico @click="abrePopUp(tarefa, 'tarefa')" class="w-[20%] h-[85%] cursor-pointer">
                                         </IconeHistorico>
                                     </div>
                                 </div>
@@ -131,7 +131,8 @@
 </div> -->
         </div>
     </div>
-    <HistoricoPopUp></HistoricoPopUp>
+    <HistoricoPopUp :texto-requisicao="textoRequisicao"
+    :id="number.id" v-if="funcaoPopUp.variavelModal"></HistoricoPopUp>
 </template>
 <script setup>
 import { format } from "date-fns";
@@ -147,10 +148,31 @@ import IconeHistorico from "../assets/Historico.vue";
 import HistoricoPopUp from "../components/HistoricoPopUp.vue";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 
+let number = ref();
+let textoRequisicao = ref('');
+
 import router from '@/router';
 
 import tinycolor from "tinycolor2";
 import CheckBox from "../components/checkBox.vue";
+const funcaoPopUp = funcaoPopUpStore();
+funcaoPopUp.variavelModal = false;
+
+async function abrePopUp(objeto, tipo) {
+    if(tipo == 'tarefa'){
+        number.value = objeto;
+        console.log(number.value.id)
+        textoRequisicao.value = tipo;
+        console.log(textoRequisicao.value)
+        funcaoPopUp.abrePopUp()
+    }else if(tipo == "projeto"){
+        number.value = objeto;
+        console.log(number.value.id)
+        textoRequisicao.value = tipo;
+        console.log(textoRequisicao.value)
+    }
+        
+}
 
 function corDaFonte(backgroundColor) {
     const isLight = tinycolor(backgroundColor).isLight();

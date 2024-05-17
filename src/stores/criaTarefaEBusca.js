@@ -3,6 +3,7 @@ import { conexaoBD } from './conexaoBD'
 import VueCookies from "vue-cookies";
 import router from "@/router";
 import { webSocketStore } from '../stores/webSocket.js'
+import { criaHistoricoStore } from '../stores/criaHistorico.js'
 
 export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
   state: () => {
@@ -31,6 +32,10 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
           // Armazenar o ID da tarefa nos cookies
           VueCookies.set("IdTarefaCookies", response.data.id, 100000000000);
           
+          const criaHistorico = criaHistoricoStore();
+          let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+          criaHistorico.criaHistoricoTarefa("Criou a tarefa", response.data, usuario)
+
           // Verificar e deletar a tarefa anterior, se existir
           let projetoId = VueCookies.get("IdProjetoAtual");
           if (idTarefaAntiga != null) {
@@ -39,9 +44,6 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
               await api.deletarTarefa("/tarefa",tarefaAntiga.id );
             }
           }
-          
-          // Remover dados de tarefa não finalizada do armazenamento local
-          // Redirecionar para a página de criação de tarefa
           router.push('/criaTarefa');
         })
         .catch((error) => {
