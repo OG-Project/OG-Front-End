@@ -207,6 +207,9 @@
   "formas": "有不同的方法查看您的任务，例如看板、列表、日历和时间线",
   "funcionalidades": "网站上还有更多功能，但这是基本的。",
   "finalizar": "完成"
-
+},
+"confirmarPopUp": {
+  "confirmar": "你确定吗？"
 }
+
 }

@@ -2,7 +2,7 @@
     <fundoPopUp largura="" altura="60vh">
         <div class="divGeral">
             <div class="divTitulo">
-                <h1 class="titulo">Historico</h1>
+                <h1 class="titulo">{{$t('paginaAdm.historico')}}</h1>
             </div>
             <div class="divHistorico">
                 <div  v-for="historico in historicos" :key="historico.id" class="div">
@@ -10,8 +10,8 @@
                    alt="">
                    <userTodoPreto v-else class="imgPerfil"></userTodoPreto>
                     <div class="historico">
-                       <h1 class="mensagem w-[50%] ">{{ historico.mensagem }}</h1>
-                       <h1 class="flex items-center w-[40%] ">{{ historico.criador.username}}</h1>
+                       <h1 class="mensagem 2xl:mr-14 xl:mr-14  2xl:w-[50%] xl:w-[10vw] lg:w-[20vw] md:w-[30vw] ">{{ historico.mensagem }}</h1>
+                       <h1 class="criador flex items-center 2xl:w-[40%] xl:w-[0vw] lg:w-[0vw] md:w-[0vw]">{{ historico.criador.username}}</h1>
                        <h1 class="data w-[10%]">{{ formatarData( historico.dataDeEnvio) }}</h1>
                     </div>
                 </div>
@@ -24,6 +24,18 @@ import fundoPopUp from './fundoPopUp.vue';
 import userTodoPreto from '../imagem-vetores/userTodoPreto.vue';
 import { onMounted, ref, defineProps } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
+import { criaHistoricoStore } from '../stores/criaHistorico';
+import VueCookies from "vue-cookies";
+const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
+onMounted (async () =>{
+    buscarHistorico();
+    // const criaHistorico = criaHistoricoStore();
+    // let tarefa = await banco.buscarUm(props.id, "/tarefa")
+    // let usuario = await banco.buscarUm(usuarioLogadoId, "/usuario")
+    // console.log(tarefa)
+    // console.log(usuario)
+    // criaHistorico.criaHistoricoTarefa("criou tarefa",tarefa,usuario)
+});
 
 const props = defineProps({
     textoRequisicao: String,
@@ -35,7 +47,10 @@ let historicos = ref([]);
 
 async function buscarHistorico(){
     
+    console.log()
     historicos.value = await banco.buscarHistorico(props.id, props.textoRequisicao)
+    
+    
     console.log(historicos.value)
 }
 
@@ -47,14 +62,12 @@ function formatarData(data){
         return `${dia}/${mes}/${ano}`;
 }
 
-onMounted (() =>{
-    buscarHistorico();
-});
+
 
 </script>
 <style scoped>
 .divGeral{
- @apply 2xl:w-[30vw] 2xl:h-[60vh] xl:w-[40vw] xl:h-[60vh] lg:w-[50vw] lg:h-[60vh] md:w-[60vw] md:h-[60vh]
+ @apply 2xl:w-[30vw] 2xl:h-[60vh] xl:w-[40vw] xl:h-[60vh] lg:w-[50vw] lg:h-[60vh] md:w-[63vw] md:h-[60vh]
 }
 .divTitulo{
     @apply w-full h-[6vh]
@@ -71,13 +84,13 @@ onMounted (() =>{
     bg-[var(--backgroundItemsClaros)]  rounded-md
 }
 .imgPerfil{
-    @apply flex justify-start w-[40px] h-[40px] rounded-full mr-5 2xl:mt-1 xl:mt-2 lg:mt-2 md:mt-2
+    @apply flex justify-start w-[40px] h-[40px] rounded-full mr-5 2xl:mt-1 xl:mt-2 lg:mt-2 md:mt-2 
 }
 .div{
     @apply flex w-full justify-end p-5;
 }
 .mensagem{
-    @apply flex justify-center items-center ml-3 2xl:text-base xl:text-base lg:text-lg md:text-sm truncate;
+    @apply flex justify-center items-center ml-3 2xl:text-base xl:text-base lg:text-lg md:text-lg truncate;
 }
 .data{
     @apply flex justify-end items-center 2xl:ml-[2vw] xl:ml-[12vw] lg:ml-[20vw] md:ml-[23vw] text-base
@@ -109,24 +122,27 @@ onMounted (() =>{
            @apply flex flex-wrap w-full justify-center
        }
        .historico{
-           @apply flex w-[90vw] h-[5vh] mr-[1vw]  
+           @apply flex w-[75vw] h-[5vh] mr-[1vw]  
            bg-[var(--backgroundItemsClaros)] rounded-md
        }
        .imgPerfil{
-           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-5 mt-2;
+           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-2 mt-2;
        }
        .div{
            @apply flex w-full justify-end p-5;
        }
        .mensagem{
-           @apply flex justify-center items-center ml-3 mobile:text-base
+           @apply flex-wrap justify-start w-[75vw] items-center ml-3 mobile:text-sm
        }
        .data{
-           @apply flex justify-end items-center ml-[9vw] mobile:text-base
+           @apply flex-wrap w-[35vw] justify-end items-center ml-[9vw] mt-[5vh] mobile:text-sm
+       }
+       .criador{
+        @apply flex-wrap w-[0vw] mr-[-10vw] mobile:text-sm;
        }
 }
 
-@media(max-width: 375px) {
+@media(min-width: 330px) and (max-width: 375px) {
     .divGeral{
         @apply w-[98vw] h-[60vh];
        }
@@ -140,24 +156,27 @@ onMounted (() =>{
            @apply flex flex-wrap w-full justify-center
        }
        .historico{
-           @apply flex w-[90vw] h-[5vh] mr-[1vw]  
+           @apply flex w-[75vw] h-[5vh] mr-[1vw]  
            bg-[var(--backgroundItemsClaros)] rounded-md
        }
        .imgPerfil{
-           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-5 mt-2;
+           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-3 mt-2;
        }
        .div{
            @apply flex w-full justify-end p-5;
        }
        .mensagem{
-           @apply flex justify-center items-center ml-3 mobile:text-sm
+           @apply flex-wrap w-[75vw] justify-start items-center ml-3 mobile:text-sm
        }
        .data{
-           @apply flex justify-end items-center ml-[9vw] mobile:text-sm
+           @apply flex-wrap w-[35vw] justify-end items-center ml-[8vw] mt-[5vh] mobile:text-sm
+       }
+       .criador{
+        @apply flex-wrap w-[0vw] mr-[-12vw] mobile:text-sm;
        }
 }
 
-@media(min-width: 425px) and (max-width: 620px){
+@media(min-width: 385px) and (max-width: 620px){
     .divGeral{
         @apply w-[98vw] h-[60vh];
        }
@@ -171,20 +190,23 @@ onMounted (() =>{
            @apply flex flex-wrap w-full justify-center
        }
        .historico{
-           @apply flex w-[90vw] h-[5vh] mr-[1vw]  
+           @apply flex w-[75vw] h-[5vh] mr-[1vw]  
            bg-[var(--backgroundItemsClaros)] rounded-md
        }
        .imgPerfil{
            @apply flex justify-start w-[40px] h-[40px] rounded-full mr-5 mt-2;
        }
        .div{
-           @apply flex w-full justify-end p-5;
+           @apply flex w-[100vw] justify-end p-5;
        }
        .mensagem{
-           @apply flex justify-center items-center ml-3 mobile:text-base
+           @apply flex-wrap justify-start w-[90vw] items-center ml-3 mobile:text-base
        }
        .data{
-           @apply flex justify-end items-center ml-[9vw] mobile:text-base
+           @apply flex-wrap w-[40vw] justify-end items-center ml-[9vw] mt-[5vh] mobile:text-base
+       }
+       .criador{
+        @apply flex-wrap w-[0vw] mr-[-15vw] mobile:text-sm;
        }
 }
 </style>

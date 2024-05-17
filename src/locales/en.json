@@ -207,6 +207,9 @@
   "formas": "There are different ways to view your tasks like Kanban, List, Calendar, and Timeline",
   "funcionalidades": "There are more features on the site, but this is the essential.",
   "finalizar": "finalize"
-
+},
+"confirmarPopUp": {
+  "confirmar": "Are you sure?"
 }
+
 }

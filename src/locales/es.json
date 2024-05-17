@@ -207,6 +207,9 @@
   "formas": "Hay diferentes formas de visualizar tus tareas como Kanban, Lista, Calendario y Línea de Tiempo",
   "funcionalidades": "Existen más funcionalidades en el sitio, pero esto es lo esencial.",
   "finalizar": "finalizar"
+},
+"confirmarPopUp": {
+  "confirmar": "¿Estás seguro?"
+}
 
-} 
 }
