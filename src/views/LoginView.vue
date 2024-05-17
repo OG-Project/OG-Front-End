@@ -47,10 +47,12 @@ async function fazerLogin() {
     alert("Login invalido")
     error = e
   })
-  if (error != "undefined") {
+  console.log(error);
+  if (error != 'undefined') {
     // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
     // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
     banco.getCookie().then((usuario) => {
+      console.log("entrou aqui");
       usuarioLogin.value = "";
       senhaUsuarioLogin.value = "";
       VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
@@ -141,7 +143,7 @@ function loginGoogle() {
           <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
           <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
             v-model="usuarioLogin" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
-          <div class="flex flex-row justify-center items-center pl-10">
+          <div class="flex flex-row w-full justify-center items-center pl-7">
             <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
               v-model="senhaUsuarioLogin" :tipo="vizualizacaoDeSenha"
               @updateModelValue="(e) => { senhaUsuarioLogin = e; }"></Input>

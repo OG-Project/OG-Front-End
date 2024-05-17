@@ -28,11 +28,13 @@ onMounted(() => {
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
+  console.log("entrou na home on mounted");
   colocaUsuarioId();
   buscaConfiguracaoesPadrao();
 })
 
 function colocaUsuarioId(){
+  console.log("entrou na home");
   banco.getCookie().then((res) =>{
   console.log(res.id)
   VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
