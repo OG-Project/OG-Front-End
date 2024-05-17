@@ -147,8 +147,8 @@
       </div>
       <div class="pl-12 mt-4">
         <div class="w-min h-min relative">
-          <Botao preset="PadraoVazado" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')"
-            tamanhoPadrao="pequeno" inverterCorIcon="sim"></Botao>
+          <Botao preset="PadraoVazado" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno"
+            inverterCorIcon="sim"></Botao>
           <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
         </div>
 
@@ -214,7 +214,8 @@
         </div>
         <div class="w-[85%] flex flex-col">
           <div v-for="comentario of tarefa.comentarios">
-            <div v-if="comentario.autor" class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
+            <div v-if="comentario.autor"
+              class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
               <div class="w-[15%] gap-4 flex justify-center">
                 <div v-if="comentario.autor.username === usuarioCookies.username"
                   class="w-[80%] mt-2 gap-4 flex justify-center">
@@ -287,7 +288,8 @@
               </option>
             </select>
           </div>
-          <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center" style=" font-family:var(--fonteCorpo);">
+          <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center"
+            style=" font-family:var(--fonteCorpo);">
             <select class="flex text-center w-[100%] text-[var(--fonteCor)]" v-model="parametroDoFiltroStatus">
               <option :value="$t('criaTarefa.sort_by')">{{ $t('criaTarefa.sort_by') }}</option>
               <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
@@ -311,10 +313,9 @@
               <div v-for="propriedadeForTarefa of tarefa.propriedades" class="w-full">
                 <div v-if="propriedade.propriedade.tipo != 'SELECAO'" class="w-full">
                   <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id" class="w-full">
-                    <div v-if="propriedade.propriedade.tipo === 'TEXTO'"
-                      class="flex items-center justify-start">
+                    <div v-if="propriedade.propriedade.tipo === 'TEXTO'" class="flex items-center justify-start">
                       <div class="w-[15%] pl-4 flex items-center justify-start">
-                        <p class="truncate" >{{ propriedade.propriedade.nome }}: </p>
+                        <p class="truncate">{{ propriedade.propriedade.nome }}: </p>
                       </div>
                       <div class="w-[58%] flex items-center justify-start">
                         <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
@@ -339,7 +340,7 @@
                       <div class="w-[15%] pl-4 flex items-center justify-start">
                         <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
                       </div>
-                      <div class="w-[58%] flex items-center justify-start"> 
+                      <div class="w-[58%] flex items-center justify-start">
                         <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
                           @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                         </Input>
@@ -743,19 +744,15 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
-  console.log(tarefaCriando)
+  
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, VueCookies.get("IdProjetoAtual"))
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
-    console.log(response)
-    if (tarefa.value.arquivos.length != 0) {
-      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
-    }
-    router.push("/projeto").then(() => {
-      // window.location.reload();
+    console.log(tarefa.value.arquivos.length);
+    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+    banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
+      console.log(response);
     });
-
   });
-
 }
 
 //Função que deleta status
@@ -972,7 +969,7 @@ async function calculaTempoAtuacao() {
   tarefaCriando.tempoAtuacao = tempoAtuado;
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
-    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"));
   }
 }
 
@@ -1099,9 +1096,10 @@ onUnmounted(() => {
 function exibirComentarios() {
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
 }
-
+let arquivoSelecionado = ref(null)
 function gerarArquivo(e) {
   let arquivo = e.target.files[0];
+  arquivoSelecionado.value = arquivo;
   let reader = new FileReader();
   reader.readAsDataURL(arquivo);
   reader.onload = function () {
@@ -1111,7 +1109,7 @@ function gerarArquivo(e) {
       tipo: arquivo.type,
       dados: arquivoBase64,
     };
-    tarefa.value.arquivos.push(arquivoParaOBanco);
+    tarefa.value.arquivos.push(arquivoSelecionado.value);
     update()
   }
   console.log(tarefa.value.arquivos);

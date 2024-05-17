@@ -74,6 +74,7 @@
   "barraLateral": {
     "home": "Inicio",
     "equipe": "Equipos",
+    "tutorial": "Tutorial",
     "projetos": "Proyectos",
     "sair": "Salir"
   },

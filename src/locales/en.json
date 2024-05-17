@@ -74,6 +74,7 @@
   "barraLateral": {
     "home": "Home",
     "equipe": "Teams",
+    "tutorial": "Tutorial",
     "projetos": "Projects",
     "sair": "Logout"
   },

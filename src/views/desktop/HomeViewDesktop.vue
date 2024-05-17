@@ -5,7 +5,7 @@
         class="poligono h-[95%] w-[38%] shadow-2xl flex justify-center flex-col left-10 absolute overflow-visible"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px; z-index: 5;">
         <div class="flex justify-center items-end text-white text-4xl h-[10%]">
-          <p style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);">{{ $t('home.dashboard') }}</p>
+          <p style="font-family:var(--fonteTitulo);" class="text-3xl">{{ $t('home.dashboard') }}</p>
         </div>
         <div class="flex items-center justify-center mt-8 h-[62%] text-white">
           <canvas id="tabela" v-if="tarefasFeitas > 0 || tarefasNaoFeitas > 0"></canvas>

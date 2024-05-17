@@ -48,21 +48,13 @@ async function fazerLogin() {
      error =e
   })
   if(error != null){
-    return
-  }
-  let usuarios = banco.procurar("/usuario");
-  let listaUsuarios = await usuarios;
-  listaUsuarios.forEach((usuario) => {
-    if (usuarioLogin.value === usuario.username) {
-        usuarioLogin.value = "";
-        senhaUsuarioLogin.value = "";
-        VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
+    VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
         router.push('/home').then(() => {
         window.location.reload()
     });
-      }
-  });
-  
+    return
+  }
+
 }
 
 function trocaDeTela() {

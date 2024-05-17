@@ -42,7 +42,7 @@
             </div>
             <div  class="flex gap-6 justify-center items-center text-white " @click="geraTutorial()">
               <tutorial-icon ></tutorial-icon>
-              <div>{{ 'Tutorial' }}</div>
+              <div>{{ $t('barraLateral.tutorial') }}</div>
             </div>
           </div>
           <div class="w-full flex-col flex gap-6 ml-4 mb-4 justify-end items-start" @click="redirecionamento('/login')">
