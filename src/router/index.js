@@ -134,7 +134,7 @@ const router = createRouter({
     {
       path:'/perfil',
       name:'Perfil',
-      redirect: ()=> '/perfil/informacoes',
+      // redirect: ()=> '/perfil/informacoes',
       component: () => import('../views/PerfilView.vue'),
       children:[
         {
@@ -170,6 +170,13 @@ const router = createRouter({
     {
       path:'/aparencia',
       component: ()=> import('../components/componentAparencia.vue'),
+      meta:{
+        requiresAuth:true
+      }
+    },
+    {
+      path:'/informacoes',
+      component: ()=> import('../components/componentInformacoes.vue'),
       meta:{
         requiresAuth:true
       }

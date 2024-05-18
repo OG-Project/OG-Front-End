@@ -1,14 +1,21 @@
 <template>
-        <div class="w-[75vw] h-[92vh] flex flex-col  ">
+        <div class="laptop:w-[75vw] miniMobile:w-full miniMobile:h-full laptop:h-[92vh] flex flex-col  ">
                 <div style="
                 font-family:var(--fonteTitulo);
                 font-size: var(--fonteTituloTamanho);">
-                        <h1 class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">{{ $t('informacoes.Informações') }}</h1>
+                <div class="items-center flex">
+                        <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
+                                <flecha />
+                        </span>
+                        <div class="m-[5%] border-b-4 border-[#CCC4CF] p-4 miniMobile:pr-16 laptop:pr-32 w-max">
+                                {{ $t('informacoes.Informações') }}
+                        </div>
+                </div>
                 </div>
                 <div style="
                 font-family: var(--fonteCorpo); 
                 font-size: var(--fonteCorpoTamanho);" 
-                class="flex justify-center w-full  sm:flex-wrap  gap-8">
+                class="flex justify-center w-full  miniMobile:flex-wrap  gap-8">
                         <div class="flex flex-col 2xl:w-max md:w-[493px] sm:w-[493px] gap-y-10">
                                 <div class="flex items-center justify-between gap-5 ">
                                         <span class="">{{ $t('informacoes.Nome') }}</span>
@@ -39,7 +46,7 @@
                                                 }"
                                          />
                                 </div>
-                                <div class="flex items-center justify-between gap-5">
+                                <!-- <div class="flex items-center justify-between gap-5">
                                         <span class="text-xl">{{ $t('informacoes.E-mail') }}</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
@@ -52,7 +59,7 @@
                                                 PerfilStore.email=e
                                                 }"
                                         />
-                                </div>
+                                </div> -->
                         </div>
                         
                         <div class="flex flex-col 2xl:w-max sm:w-[493px] gap-y-10">
@@ -116,9 +123,11 @@ import { Usuario } from '../models/usuario';
 import { storeToRefs } from 'pinia';
 import {conexaoBD} from '../stores/conexaoBD.js'
 const PerfilStore=perfilStore()
+import router from '../router';
 const {fonteTitulo} = storeToRefs(PerfilStore)
 const {fonteCorpo} = storeToRefs(PerfilStore)
 const conexao=conexaoBD()
+import flecha from '../assets/flecha-mobile-perfil.vue';
 // console.log(conexao
 
 let nome=ref('')

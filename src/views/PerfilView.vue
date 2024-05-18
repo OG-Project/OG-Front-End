@@ -22,6 +22,8 @@ import { ref, onMounted,watch } from 'vue'
 import PerfilViewDesktop from './desktop/PerfilViewDesktop.vue';
 import PerfilViewMobile from './mobile/PerfilViewMobile.vue';
 import router from '../router';
+import { useRoute } from 'vue-router';
+const route = useRoute()
 
 // https://dontpad.com/02-05-2024gks
 // import { useShepherd } from 'vue-shepherd'
@@ -32,10 +34,12 @@ watch(() => window.innerWidth, () => {
   screenWidth.value = window.innerWidth
 })
 onMounted(() => {
-  
-  window.addEventListener('resize', () => {
-      screenWidth.value = window.innerWidth
-  })
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        
+    }
 })
 
 </script>

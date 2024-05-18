@@ -1,7 +1,5 @@
 <template>
-    <alterarSenha v-if="popUpSenha"></alterarSenha>
-    <alterarEmail v-if="popUpEmail"></alterarEmail>
-    <ConfirmaPopUp v-if="popUpDeletar"></ConfirmaPopUp>
+    
     <div class="flex justify-center flex-wrap ">
         <div class="flex flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
@@ -59,7 +57,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
-                    :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
+                    >
                     {{ $t('informacoes.Informações') }}
                 </div>
                 <div @click="seguranca()" class="bg-[var(--roxo)] medioId 
@@ -70,7 +68,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
-                    :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
+                    >
                     {{ $t('seguranca.Segurança') }}
                 </div>
                 <div @click="acessibilidade()" class="bg-[var(--roxo)] medioId 
@@ -81,7 +79,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
-                    :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
+                    >
                     {{ $t('acessibilidade.Acessibilidade') }}
                 </div>
                 <div @click="privacidade()" class="bg-[var(--roxo)] medioId 
@@ -92,7 +90,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
-                    :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
+                    >
                     {{ $t('privacidade.Privacidade') }}
                 </div>
                 <div @click="aparencia()" class="bg-[var(--roxo)] medioId 
@@ -103,7 +101,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
-                    :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
+                    >
                     {{ $t('aparencia.Aparência') }}
                 </div>
 
@@ -119,9 +117,6 @@ import { storeToRefs } from 'pinia';
 import { perfilStore } from '../../stores/perfilStore';
 import router from '../../router';
 import iconLapisDinamic from '../../imagem-vetores/icon-lapisDinamic..vue';
-import ConfirmaPopUp from '../../components/ConfirmaPopUp.vue'
-import alterarEmail from '../../components/alterarEmail.vue';
-import alterarSenha from '../../components/alterarSenha.vue';
 import { onBeforeMount, onMounted, ref , computed, onUnmounted } from 'vue';
 import {useRoute} from 'vue-router';
 import  VueCookies  from 'vue-cookies';
