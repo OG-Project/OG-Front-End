@@ -33,6 +33,9 @@
     --backgroundItems: #f8f8f8; 
     --backgroundItemsClaros: #f1f1f1; 
     --fonteCor:#000000;
+    --fonteTituloTamanhoMobile:4vh ;
+    --fonteCorpoTamanhoMobile:1vh ;
+    
 }
 
 html{
