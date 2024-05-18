@@ -503,6 +503,7 @@ import router from "../../router";
 import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
 import { useI18n } from 'vue-i18n';
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
+import route from "color-convert/route";
 
 const criaHistorico = criaHistoricoStore();
 
@@ -747,13 +748,12 @@ async function criaTarefaNoConcluido() {
   console.log(tarefaCriando)
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
-
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(tarefa.value.arquivos.length);
+    if (tarefa.value.arquivos.length != 0) {
     banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
-    banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
-      console.log(response);
-    });
+    }
+    router.push('/projeto/kanban')
   });
 }
 
