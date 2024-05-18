@@ -5,22 +5,18 @@
             <div class="divMaior ">
                 <div v-if="defineOpcao(route.path, '/projeto/calendario')"
                     class="w-[100%] h-screen flex justify-center items-center">
-                    <calendario></calendario>
+                    <calendarioMobile></calendarioMobile>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/timeline')"
                     class="w-[100%] h-screen flex justify-center items-center">
                     <timeLine></timeLine>
                 </div> 
                 <div v-if="defineOpcao(route.path, '/projeto/kanban')"
-                    class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto" >
-                    <KanbanDeStatus></KanbanDeStatus>
+                    class="w-full h-screen flex justify-start px-4 items-center overflow-x-auto" >
+                    <KanbanDeStatusMobile></KanbanDeStatusMobile>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length < 7"
                     class="w-full max-w-full h-screen flex justify-center px-4 items-center overflow-x-auto">
-                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
-                </div>
-                <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length >= 7"
-                    class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto">
                     <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
                 </div>
             </div>
@@ -29,8 +25,8 @@
 </template>
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue';
-import calendario from '../../components/calendario.vue';
-import KanbanDeStatus from '../../components/KanbanDeStatus.vue';
+import calendarioMobile from '../../components/Mobile/calendarioMobile.vue';
+import KanbanDeStatusMobile from '../../components/Mobile/KanbanDeStatusMobile.vue';
 import timeLine from '../../components/timeLine.vue';
 import cardList from '../../components/CardTarefaList.vue';
 import HubDeProjetoMobile from '../../components/Mobile/HubDeProjetoMobile.vue'

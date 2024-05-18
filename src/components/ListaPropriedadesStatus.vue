@@ -41,7 +41,7 @@
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
-                        <img class="w-[5%] h-[20%]" :src="botaoSair" @click="removePropriedade(propriedade)">
+                        <botaoSair class="w-[5%] h-[20%]"  @click="removePropriedade(propriedade)"></botaoSair>
                     </div>
                 </div>
 
@@ -72,8 +72,7 @@
                                 <p>Não há tarefas</p>
                             </div>
                         </div>
-                        <img class="w-[5%] h-[20%] " :src="botaoSair" @click="removeStatus(status)">
-
+                        <botaoSair class="w-[5%] h-[20%] "  @click="removeStatus(status)"></botaoSair>
                     </div>
                 </div>
 
@@ -189,8 +188,7 @@ import sortBy from 'sort-by';
 import { useRoute } from 'vue-router';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router/index'
-import sair from '../imagem-vetores/botao-x.svg'
-const botaoSair = sair;
+import botaoSair from '../imagem-vetores/botao-x.vue'
 const instance = getCurrentInstance();
 const route = useRoute();
 const conexao = conexaoBD();

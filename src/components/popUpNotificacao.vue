@@ -99,7 +99,7 @@ import { set } from 'date-fns';
 let usuarioId = VueCookies.get('IdUsuarioCookie');
 let api = conexaoBD();
 let notificacoes = ref([]);
-let emit = defineEmits(['fecharPopUp'])
+let emit = defineEmits(['fecharPopUp','temNotificacao'])
 let estilo = ref({})
 let timeoutId = null;
 

@@ -1,7 +1,7 @@
 <template>
     <div @click="enviaCookie(tarefa)">
         <!-- Preset 1 Kanban -->
-        <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" @mouseout="unhover" v-if="preset == 1">
+        <div :style="isHovered ? hoverCard : kanban" @mouseover="hover" class="w-[95px] h-[20px] md:w-[12vw] md:h-[4vw]" @mouseout="unhover" v-if="preset == 1">
             <div :style="tarefa1"> </div>
             <div class="w-[60%] m-[5%] font-Poppins font-medium truncate">
                 <p class="truncate select-none">{{ props.tarefa.nome }}</p>
@@ -88,8 +88,6 @@ let tira = ref({})
 let usuarioLogado = $cookies.get("usuarioCookie");
 
 kanban = {
-    width: "12vw",
-    height: "8vh",
     backgroundColor: "var(--backgroundItemsClaros)",
     display: "flex",
 
@@ -114,8 +112,7 @@ tarefa1.value = {
 }
 
 hoverCard = {
-    width: "12vw",
-    height: "8vh",
+
     backgroundColor: "var(--backgroundItemsClaros)",
     display: "flex",
     outline: "2px solid purple"

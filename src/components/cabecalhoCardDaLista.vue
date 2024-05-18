@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-row w-max h-[10%] justify-center items-center">
         <div v-for="nome of listaDeNomesVisiveis" class=" truncate ">
-            <div class="border-r-2 flex items-center justify-center w-[10vw]">
+            <div class="border-r-2 flex items-center justify-center w-[185px]">
                 {{ nome.charAt(0).toUpperCase() + nome.slice(1) }}
             </div>
         </div>

@@ -1,31 +1,32 @@
 <template>
-  <div class="w-min h-[90%] flex flex-col items-center" v-if="projeto.tarefas && retornaTarefasAparentes(projeto.tarefas).length > 0">
+  <div :class="'w-full h-[90%] flex flex-col  ' + (tamanhoDeTela() ? 'items-center':'items-start') "
+    v-if="projeto.tarefas && retornaTarefasAparentes(projeto.tarefas).length > 0">
     <div>
       <cabecalhoCardDaLista :projeto="projetoPromise" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
       </cabecalhoCardDaLista>
     </div>
-    <div class="flex flex-col w-min h-full justify-strart items-center gap-3">
-      <draggable class=" truncate flex flex-col gap-3" v-model="projeto.tarefas" :animation="300" group="tarefa"
+    <div class="flex flex-col w-min h-full justify-start items-center gap-3">
+      <draggable class=" truncate flex flex-col gap-3 items" v-model="projeto.tarefas" :animation="300" group="tarefa"
         item-key="tarefa.indice" @start="drag = true" @end="onDragEnd">
         <template #item="{ element: tarefa, index }">
-          <div class="flex flex-row truncate h-[6vh] bg-[var(--backgroundItemsClaros)] py-[1%] select-none" v-if="tarefa.nome != null"
-            @click="trocaRota(tarefa)">
+          <div class="flex flex-row truncate h-[6vh] bg-[var(--backgroundItemsClaros)] py-[1%] select-none"
+            v-if="tarefa.nome != null" @click="trocaRota(tarefa)">
 
-            <div class="border-r-2 flex items-center justify-center w-[10vw] truncate h-full">
+            <div class="border-r-2 flex items-center justify-center w-[185px] truncate h-full">
               {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
             </div>
-            <div class="border-r-2 flex items-center justify-start w-[10vw] truncate  h-full"
+            <div class="border-r-2 flex items-center justify-start w-[185px] truncate  h-full"
               v-if="tarefa.descricao != null">
               {{ tarefa.descricao.charAt(0).toUpperCase() + tarefa.descricao.slice(1) }}
             </div>
-            <div v-if="tarefa.descricao == null" class="border-r-2 flex items-center justify-center w-[10vw]  h-full">
+            <div v-if="tarefa.descricao == null" class="border-r-2 flex items-center justify-center w-[185px]  h-full">
               <p>Não Tem Valor</p>
             </div>
             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-              <div class="border-r-2 flex items-center justify-center w-[10vw] truncate  h-full"
+              <div class="border-r-2 flex items-center justify-center w-[185px] truncate  h-full"
                 v-if="funcaoVerificaPropriedade(propriedade, tarefa)">
                 <div v-if="propriedade.valor.valor == null || propriedade.valor.valor == ''"
-                  class="border-r-2 flex items-center justify-center w-[10vw]  h-full">
+                  class=" flex items-center justify-center w-[185px]  h-full">
                   <p>Não Tem Valor</p>
                 </div>
                 <div v-if="propriedade.propriedade.tipo == 'DATA' && propriedade.valor.valor != null">
@@ -48,11 +49,11 @@
   <div v-else class="flex flex-col justify-center items-center">
     <NotePad></NotePad>
     <p>Não há tarefas</p>
-</div>
+  </div>
 </template>
 
 <script setup>
-import { onMounted, ref, onUnmounted, watch } from 'vue';
+import { onMounted, ref, onUnmounted, watch, onUpdated } from 'vue';
 import cabecalhoCardDaLista from './cabecalhoCardDaLista.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import { format } from 'date-fns';
@@ -67,11 +68,15 @@ let visualizacaoPromise = {}
 let projeto = ref({})
 let visualizacao = {}
 let lista = ref([])
+let tamanhoDaTela = ref(window.innerWidth)
 
 
 onMounted(() => {
   transformaEmObject().then(() => {
     ordenaTarefas()
+  })
+  window.addEventListener('resize', () => {
+    tamanhoDaTela.value = window.innerWidth
   })
 })
 
@@ -86,15 +91,24 @@ async function transformaEmObject() {
   visualizacao = await visualizacaoPromise
 }
 
-function retornaTarefasAparentes(tarefas){
+function retornaTarefasAparentes(tarefas) {
   let tarefasAparecendo = [];
   tarefas.forEach(tarefa => {
-    if(tarefa.nome != null){
+    if (tarefa.nome != null) {
       tarefasAparecendo.push(tarefa)
     }
   })
   console.log(tarefasAparecendo)
   return tarefasAparecendo
+}
+
+function tamanhoDeTela() {
+  let tela90 = (90/100)*tamanhoDaTela.value
+  const quantidadePossivel = tela90/185
+  if((props.listaDePropriedadesVisiveis.length+2) > quantidadePossivel){
+    return false
+  }
+  return true
 }
 
 function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
