@@ -3,6 +3,7 @@ import { Projeto } from '../models/Projeto'
 import { conexaoBD } from './conexaoBD'
 import { webSocketStore } from '../stores/webSocket.js'
 import VueCookies from "vue-cookies";
+import { criaHistoricoStore } from '../stores/criaHistorico.js'
 
 
 let api = conexaoBD();
@@ -26,20 +27,25 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       projetoCriado.statusList = status;
       projetoCriado.responsaveis = responsaveis;
       projetoCriado.dataFinal = dataFinal
+
       if(VueCookies.get("idAuxEquipe") != null && VueCookies.get("idAuxEquipe") != undefined && VueCookies.get("idAuxEquipe") != "" && VueCookies.get("idAuxEquipe") != "undefined"){
-        api.cadastrarProjetoEquie(projetoCriado,VueCookies.get("idAuxEquipe") ,'/projeto').then((res) => {
+        api.cadastrarProjetoEquie(projetoCriado,VueCookies.get("idAuxEquipe") ,'/projeto').then(async (res) => {
           projetoAux = res.data;
           VueCookies.set("IdProjetoAtual", res.data.id)
           this.enviaParaWebSocket(equipes, projetoAux)
+          const criaHistorico = criaHistoricoStore();
+          let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+          criaHistorico.criaHistoricoProjeto("Criou o Projeto", projetoAux, usuario)
         })
       }else{
-      api.cadastrar(projetoCriado, '/projeto').then((res) => {
+      api.cadastrar(projetoCriado, '/projeto').then( (res) => {
         projetoAux = res.data;
         VueCookies.set("IdProjetoAtual", res.data.id)
+        
         this.enviaParaWebSocket(equipes, projetoAux)
       })
     }
-
+    
     },
     enviaParaWebSocket(equipesAux, projetoAux) {
       let teste = {

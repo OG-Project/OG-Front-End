@@ -66,6 +66,8 @@ import { conexaoBD } from "../stores/conexaoBD";
 import { editaProjetoStore } from "../stores/editaProjeto";
 import iconMensagem from "../assets/iconMensagem.vue";
 import router from "../router";
+import { criaHistoricoStore } from "../stores/criaHistorico";
+const criaHistorico = criaHistoricoStore();
 const conexao = conexaoBD();
 const editaProjeto = editaProjetoStore();
 const idUsuarioCookie = VueCookies.get("IdUsuarioCookie")
@@ -110,6 +112,7 @@ function enviaComentario(comentario) {
         ,projeto.statusList, projeto.responsaveis, projeto.dataFinal
         ,projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, comentariosProjetoFront.value, projeto.tarefas)
          // passar todos os dados do projeto 
+         criaHistorico.criaHistoricoProjeto("Comentou no projeto", projeto.value, usuarioCookies.value);
 }
 function formatarData(data) {
     let dataFormatada = new Date(data)

@@ -210,6 +210,30 @@
 },
 "confirmarPopUp": {
   "confirmar": "Are you sure?"
-}
+},
+"historicoTarefa": {
+  "deletarSubTarefa": "Deleted the subtask ",
+  "editou": "Edited the task ",
+  "criaTarefa": "Created the task ",
+  "criaSubTarefa": "Created the subtask ",
+  "status": "Changed the status ",
+  "criaComentario": "Commented on the task ",
+  "deletaComentario": "Deleted a comment ",
+  "concluiu": "Completed the subtask "
+},
+"historicoProjeto": {
+  "editou": "Edited the project",
+  "criou": "Created the project",
+  "addResponsavel": "Added a new responsible",
+  "convidouEquipe": "Invited a team",
+  "removeEquipe": "Removed a team",
+  "removeResponsavel": "Removed the responsible",
+  "status": "Created a new status",
+  "propriedade": "Created a property",
+  "removeStatus": "Removed the status",
+  "removePropriedade": "Removed the property",
+  "comentario": "Commented on the project",
+  "deletaTarefa": "Deleted the task"
 
+}
 }

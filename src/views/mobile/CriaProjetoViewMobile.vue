@@ -129,6 +129,17 @@ let placeHolderDataFinalProjeto = ref("")
 let stylePlaceHolder = ref({});
 let dataFinalFormatada = ref("");
 
+function reloadTelaTarefa() {
+  const reload = VueCookies.get('idReloadProjeto');
+  if (reload == '0') {
+    console.log("reload")
+    VueCookies.set('idReloadProjeto', '1');
+    window.location.reload();
+  }
+}
+
+reloadTelaTarefa()
+
 onMounted(() => {
     verificaEdicaoProjeto();
     defineSelect()
