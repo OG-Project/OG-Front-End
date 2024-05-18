@@ -37,6 +37,8 @@ export default {
       'tablet': '640px',
       'laptop': '1024px',
       'desktop': '1280px',
+      'mobileGrande':'426px',
+      'mobileMedio':'376px',
       'mobile':'321px',
       'miniMobile':'280px'
      
