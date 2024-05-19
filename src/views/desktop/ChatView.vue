@@ -10,7 +10,7 @@
                 <button class="text-white w-[50%] h-full  flex flex-col justify-end items-center"
                     @click="trocaLista(2)">
                     <p>Equipes</p>
-                    <div v-if="opcao2 == 2" class="w-[50%] h-[3%] bg-[var(--backgroundItemsClaros)]">
+                    <div v-if="opcao2 == 2" class="w-[50%] h-[3%] bg-[var(--backgroundItems)]">
 
                     </div>
                 </button>
@@ -23,6 +23,9 @@
                     <div class="w-[35%] h-[full] flex items-center justify-center" v-if="equipe.equipe.foto != null">
                         <img class="imgDePerfil"
                             :src="'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados" alt="">
+                    </div>
+                    <div v-else class="w-[35%] h-[full] flex items-center justify-center">
+                        <img class="imgDePerfil" src="../../imagem-vetores/imagemEquipe.svg" alt="">
                     </div>
                     <div class="flex flex-col w-[65%] items-start justify-end gap-[10px]">
                         <div v-if="opcao2 == '1'">
@@ -38,11 +41,12 @@
                 </div>
             </div>
         </div>
-        <div class="h-full w-full flex flex-col justify-end">
-            <div>
+        <div class="h-full w-full flex flex-col justify-end ">
+            <div class="scrollable">
+                {{ console.log(chat) }}
                 <div v-for="mensagem of chat.mensagens" class=" w-full flex justify-end">
-                    {{ console.log(mensagem) }}
-                    <div v-if="mensagem.criador.id!=usuarioLogado.id" class="w-full pl-[30px] flex flex-col items-start">
+                    <div v-if="mensagem.criador.id != usuarioLogado.id"
+                        class="w-full pl-[2.5%] flex flex-col items-start">
                         <div class="text-[70%]">
                             {{ mensagem.criador.username }}
                         </div>
@@ -52,8 +56,9 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="mensagem.criador.id==usuarioLogado.id" class="w-full flex pr-[30px] justify-end ">
-                        <div class="max-w-[45%] p-[2%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl">
+                    <div v-if="mensagem.criador.id == usuarioLogado.id"
+                        class="w-full flex pr-[2.5%] pt-[2%] justify-end ">
+                        <div class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white">
                             {{ mensagem.mensagem }}
                         </div>
                     </div>
@@ -63,7 +68,8 @@
                 <div class="h-[80%] w-full flex justify-center">
                     <div class="w-[95%] h-[90%] bg-[var(--backgroundItemsClaros)] flex justify-center">
                         <input type="text" class="w-[95%] h-full bg-[var(--backgroundItemsClaros)]"
-                            v-model="corpoDaMensagem" placeholder="Digite Uma Mensagem">
+                            v-model="corpoDaMensagem" placeholder="Digite Uma Mensagem"
+                            @keypress.enter="mandaMensagem()">
                     </div>
                 </div>
             </div>
@@ -76,19 +82,38 @@ import { conexaoBD } from '../../stores/conexaoBD';
 import { onMounted, ref } from 'vue';
 import router from '@/router';
 import VueCookies from 'vue-cookies';
+import { set } from 'date-fns';
+import { webSocketStore } from '../../stores/webSocket';
 
 let api = conexaoBD();
 let listaDeConversas = ref([]);
-let opcao2 = ref("2");
+let opcao2 = ref("");
 let usuarioLogadoId = ref(VueCookies.get('IdUsuarioCookie'));
 let usuarioLogado = ref({});
 let corpoDaMensagem = ref("");
 let listaDeMensagens = ref([]);
 let chat = ref({});
+let webSocket = webSocketStore();
+webSocket.url = "ws://localhost:8082/og/webSocket/chat/"+chat.value.id
 
 onMounted(async () => {
     usuarioLogado.value = await api.buscarUm(usuarioLogadoId.value, '/usuario')
-    trocaLista(1)
+    if (localStorage.getItem('opcao') != null) {
+        trocaLista(localStorage.getItem('opcao'))
+        setTimeout(() => {
+            defineSeEstaSelecionado()
+            DefineListaDeMensagens()
+        }, 10);
+    }
+})
+
+
+webSocket.esperaMensagem((retorno) => {
+    console.log(retorno);
+    if(retorno == "mensagemEnviada"){
+        console.log("Chegou a mensagem websocket")
+        DefineListaDeMensagens()
+    }
 })
 
 async function trocaLista(opcao) {
@@ -101,30 +126,58 @@ async function trocaLista(opcao) {
             });
         });
         opcao2.value = "2";
+        localStorage.setItem('opcao', '2')
     } else {
         listaDeConversas.value = [{ equipe: await api.buscarUm(1, '/usuario') }];
         opcao2.value = "1";
+        localStorage.setItem('opcao', '1')
     }
 }
 
 async function DefineListaDeMensagens() {
-    chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/equipe')
+    let chatResponse = ref({})
+    chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/equipe').then((response) => {
+        console.log(response);
+        chatResponse.value = response
+        console.log(chat.value);
+    })
+    chat.value = chatResponse.value
 }
 
 function mudaRota(equipe) {
     router.push('/chat/' + equipe.equipe.id).then(() => {
-        console.log(equipe);
-        console.log(window.location.href.charAt(window.location.href.length - 1))
-        listaDeConversas.value.forEach(equipe => {
-            var ultimoCaracter = window.location.href.charAt(window.location.href.length - 1);
-            if (ultimoCaracter == equipe.equipe.id) {
-                equipe.isSelecionado = true;
-            } else {
-                equipe.isSelecionado = false;
-            }
-        });
+        defineSeEstaSelecionado()
     });
-    DefineListaDeMensagens()
+    setTimeout(() => {
+        DefineListaDeMensagens()
+    }, 10);
+}
+
+function defineSeEstaSelecionado() {
+    listaDeConversas.value.forEach(equipe => {
+        var ultimoCaracter = window.location.href.charAt(window.location.href.length - 1);
+        if (ultimoCaracter == equipe.equipe.id) {
+            equipe.isSelecionado = true;
+        } else {
+            equipe.isSelecionado = false;
+        }
+    });
+}
+
+async function mandaMensagem() {
+    let mensagem = {
+        criador: {
+            id:usuarioLogado.value.id
+        },
+        mensagem: corpoDaMensagem.value,
+    }
+    console.log(mensagem);
+    await api.cadastrar(mensagem, '/mensagem/'+chat.value.id).then((response) => {
+        console.log(response);
+        chat.value.mensagens.push(response.data)
+    })
+    corpoDaMensagem.value = "";
+    webSocket.enviaMensagemWebSocket("mensagemEnviada")
 }
 
 </script>
@@ -136,5 +189,32 @@ function mudaRota(equipe) {
 
 input:focus {
     outline: 0;
+}
+
+.scrollable {
+    overflow-y: scroll; /* para adicionar uma barra de rolagem vertical */
+    scrollbar-color: "var(--backgroundItemsClaros)"; /* oculta a barra de rolagem padrão do Firefox */
+}
+
+.scrollable::-webkit-scrollbar {
+    width: 0; /* largura zero para ocultar a barra de rolagem */
+}
+
+/* Estilos para WebKit (Chrome, Safari, Opera) */
+.scrollable::-webkit-scrollbar-thumb {
+    background-color: transparent; /* cor transparente para ocultar o polegar da barra de rolagem */
+}
+
+/* Estilo para as extremidades da barra de rolagem */
+.scrollable::-webkit-scrollbar-corner {
+    background: transparent; /* cor transparente para ocultar a borda entre as barras de rolagem */
+}
+
+/* Estilo para adicionar bordas arredondadas nas extremidades */
+.scrollable {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 </style>
