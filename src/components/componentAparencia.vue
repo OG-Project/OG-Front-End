@@ -14,7 +14,7 @@
         </div>
         <div style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
             class=" sm:flex-wrap sm:justify-center flex-row-reverse items-center flex gap-4">
-            <div class="miniMobile:hidden tablet:block  w-[300px] h-[300px]  relative">
+            <div class="miniMobile:hidden laptop:block  w-[300px] h-[300px]  relative">
                 <div
                     class="hexagon shadow-xl right-[70px] absolute z-[10]  bg-[var(--roxo)] rotate-90 w-[166px] h-[152px]">
                 </div>
@@ -115,7 +115,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref ,watch} from 'vue';
 import selectPadrao from './selectPadrao.vue';
 import convert from 'color-convert';
 import Botao from './Botao.vue'
@@ -132,6 +132,11 @@ const conexao = conexaoBD()
 
 let usuario = ref()
 let fonteTamanhoTituloInicial = ref("")
+const screenWidth = ref(window.innerWidth)
+
+watch(() => window.innerWidth, () => {
+  screenWidth.value = window.innerWidth
+})
 
 const cores = ref({
     1: '0277f5',
@@ -320,10 +325,19 @@ onMounted(() => {
     console.log('fonts ' + perfil.fonteCorpo + ' ' + perfil.fonteTitulo)
     console.log(convert.hex.hsl(cor.value)[0])
     buscaConfiguracaoesPadrao()
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
 })
 onUpdated(() => {
     console.log('update')
     console.log(styleGet.getPropertyValue('--roxo'));
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/aparencia')
+    }
 })
 </script>
 
