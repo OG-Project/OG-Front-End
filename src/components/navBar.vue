@@ -16,7 +16,9 @@
         </inputDePesquisa>
       </div>
       <div class="flex items-center gap-8 w-[16%]">
-        <button @click="notificacaoBoolean = true">
+        <div v-if="TemNotificacao">
+        </div>
+        <button @click="notificacaoBoolean = true, TemNotificacao = false">
           <notificacao />
         </button>
         <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
@@ -45,7 +47,7 @@ import popUpNotificacao from "../components/popUpNotificacao.vue";
 import inputDePesquisa from "./inputDePesquisa.vue";
 import { inject } from "vue";
 const tour = inject('tour')
-
+let TemNotificacao = ref(false);
 const banco = conexaoBD();
 
 onMounted(async () => {

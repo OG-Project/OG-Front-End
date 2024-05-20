@@ -402,7 +402,7 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
 
     }
     const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/2"
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 

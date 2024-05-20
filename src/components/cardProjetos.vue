@@ -212,12 +212,39 @@ function somePopUp() {
         }
     }
 
-    @media(min-width: 425px) and (max-width: 620px){
+    @media(min-width: 395px) and (max-width: 620px){
+            .parteDeBaixoCard{
+                @apply flex flex-col h-[76px] items-center  justify-evenly;
+            }
+            .cardTotal {
+                @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-white overflow-hidden mt-[3vh] mobile:ml-4 miniMobile:ml-0; 
+                transition: transform 0.3s ease;
+            }
+            .barraCinzaGrafico {
+                @apply relative text-white flex w-[70vw] h-5 justify-start bg-gray-500;
+            }
+            .data{
+                @apply mr-[14vw];
+            }
+            .divInformacoes{
+                @apply flex flex-col justify-evenly w-[80vw] h-[202px] 
+            }
+            .tempoAtuacao{
+                @apply flex justify-end ;
+            }
+        }
+        .animation {
+            @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
+            animation: myAnim 0.15s ease 0s 1 normal none;
+            background-color: var(--backgroundItems);
+        }
+    }
+    @media(min-width: 380px) and (max-width: 390px){
         .parteDeBaixoCard{
             @apply flex flex-col h-[76px] items-center  justify-evenly;
         }
         .cardTotal {
-            @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-white overflow-hidden mt-[3vh] ml-3;
+            @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-white overflow-hidden mt-[3vh] mobile:ml-0 miniMobile:ml-0; 
             transition: transform 0.3s ease;
         }
         .barraCinzaGrafico {
@@ -232,12 +259,12 @@ function somePopUp() {
         .tempoAtuacao{
             @apply flex justify-end ;
         }
+        .animation {
+            @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
+            animation: myAnim 0.15s ease 0s 1 normal none;
+            background-color: var(--backgroundItems);
+        }   
     }
 
-    .animation {
-        @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
-        animation: myAnim 0.15s ease 0s 1 normal none;
-        background-color: var(--backgroundItems);
-    }
-}
+
 </style>

@@ -836,7 +836,16 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] min-h-screen overflow-hidden">
+  <div v-show="isVlibras == true">
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+  </div>
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] min-h-screen  overflow-hidden">
+
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
@@ -851,14 +860,6 @@ tour.addSteps([
         <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
       </div>
       <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
-    </div>
-  </div>
-  <div v-show="isVlibras == true">
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper>
-        <div class="vw-plugin-top-wrapper"></div>
-      </div>
     </div>
   </div>
   

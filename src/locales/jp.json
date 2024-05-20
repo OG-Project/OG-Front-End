@@ -210,6 +210,33 @@
 },
 "confirmarPopUp": {
   "confirmar": "本当によろしいですか？"
+},
+"historicoTarefa": {
+  "deletarSubTarefa": "サブタスクを削除しました ",
+  "editou": "タスクを編集しました ",
+  "criaTarefa": "タスクを作成しました ",
+  "criaSubTarefa": "サブタスクを作成しました ",
+  "status": "ステータスを変更しました ",
+  "criaComentario": "タスクにコメントしました ",
+  "deletaComentario": "コメントを削除しました ",
+  "concluiu": "サブタスクを完了しました "
+},
+"historicoProjeto": {
+  "editou": "プロジェクトを編集しました",
+  "criou": "プロジェクトを作成しました",
+  "addResponsavel": "新しい責任者を追加しました",
+  "convidouEquipe": "チームを招待しました",
+  "removeEquipe": "チームを削除しました",
+  "removeResponsavel": "責任者を削除しました",
+  "status": "新しいステータスを作成しました",
+  "propriedade": "プロパティを作成しました",
+  "removeStatus": "ステータスを削除しました",
+  "removePropriedade": "プロパティを削除しました",
+  "comentario": "プロジェクトにコメントしました",
+  "deletaTarefa": "タスクを削除しました"
+
 }
+
+
 
 }

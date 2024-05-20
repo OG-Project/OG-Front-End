@@ -122,6 +122,7 @@ async function criarProjeto() {
   router.push({ path: '/criaProjeto' }).then(() => {
     window.location.reload()
   });
+  VueCookies.set('idReloadProjeto', '0');
   VueCookies.set("projetoCookie");
   VueCookies.set("IdProjetoAtual")
 }
