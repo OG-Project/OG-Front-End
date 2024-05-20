@@ -181,6 +181,7 @@ function corDaFonte(backgroundColor) {
 
 function redirecionamento(local, id) {
     localStorage.removeItem('TarefaNaoFinalizada')
+    VueCookies.set('idReloadTarefa', '0');
     VueCookies.set('IdTarefaCookies', id, 100000000)
     router.push(local)
 }

@@ -4,14 +4,14 @@
             <div class="divTitulo">
                 <h1 class="titulo">{{$t('paginaAdm.historico')}}</h1>
             </div>
-            <div class="divHistorico">
+            <div class="divHistorico overflow-y-auto">
                 <div  v-for="historico in historicos" :key="historico.id" class="div">
                    <img @click="router.push('/perfil/'+historico.criador.id)" v-if="historico.criador.foto != null" class="imgPerfil cursor-pointer" :src="`data:${historico.criador.foto.tipo};base64,${historico.criador.foto.dados}`" 
                    alt="">
                    <userTodoPreto v-else class="imgPerfil"></userTodoPreto>
                     <div class="historico">
-                       <h1 class="mensagem 2xl:mr-14 xl:mr-14  2xl:w-[50%] xl:w-[10vw] lg:w-[20vw] md:w-[30vw] ">{{ historico.mensagem }}</h1>
-                       <h1 class="criador flex items-center 2xl:w-[40%] xl:w-[0vw] lg:w-[0vw] md:w-[0vw]">{{ historico.criador.username}}</h1>
+                       <h1 class="mensagem 2xl:mr-14 xl:mr-14  w-[50%] xl:w-[80%] lg:w-[90%] md:w-[90%] ">{{ traducao(historico) }}</h1>
+                       <h1 class="criador flex items-center 2xl:mr-[0vw] xl:mr-[-10vw] lg:mr-[-18vw] md:mr-[-20vw] 2xl:w-[0%] xl:w-[0%] lg:w-[0vw] md:w-[0vw]">{{ historico.criador.username}}</h1>
                        <h1 class="data w-[10%]">{{ formatarData( historico.dataDeEnvio) }}</h1>
                     </div>
                 </div>
@@ -24,18 +24,15 @@ import fundoPopUp from './fundoPopUp.vue';
 import userTodoPreto from '../imagem-vetores/userTodoPreto.vue';
 import { onMounted, ref, defineProps } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
-import { criaHistoricoStore } from '../stores/criaHistorico';
+
 import VueCookies from "vue-cookies";
 import router from '../router';
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 onMounted (async () =>{
     buscarHistorico();
-    // const criaHistorico = criaHistoricoStore();
-    // let tarefa = await banco.buscarUm(props.id, "/tarefa")
-    // let usuario = await banco.buscarUm(usuarioLogadoId, "/usuario")
-    // console.log(tarefa)
-    // console.log(usuario)
-    // criaHistorico.criaHistoricoTarefa("criou tarefa",tarefa,usuario)
+
 });
 
 const props = defineProps({
@@ -53,6 +50,70 @@ async function buscarHistorico(){
     
     
     console.log(historicos.value)
+}
+
+    function traducao(historico){
+        
+    if(historico.mensagem == 'Criou a tarefa'){
+        return t('historicoTarefa.criaTarefa')
+    }
+    if(historico.mensagem == 'Editou a tarefa'){
+        return t('historicoTarefa.editou')
+    }
+    if(historico.mensagem == "Deletou a subTarefa"){
+        return t('historicoTarefa.deletarSubTarefa')
+    }
+    if(historico.mensagem == "Criou a subTarefa"){
+        return t('historicoTarefa.criaSubTarefa')
+    }
+    if(historico.mensagem ==  "Mudou o status"){
+        return t('historicoTarefa.status')
+    }
+    if(historico.mensagem == "Comentou na tarefa"){
+        return t('historicoTarefa.criaComentario')
+    }
+    if(historico.mensagem == "Deletou um comentario"){
+        return t('historicoTarefa.deletaComentario')
+    }
+    if(historico.mensagem == "Concluiu a subTarefa"){
+        return t('historicoTarefa.concluiu')
+    }
+    if(historico.mensagem == "Criou o projeto"){
+        return t('historicoProjeto.criou')
+    }
+    if(historico.mensagem == "Editou o Projeto"){
+        return t('historicoProjeto.editou')
+    }
+    if(historico.mensagem ==  "Adicionou um novo responsável"){
+        return t('historicoProjeto.addResponsavel')
+    }
+    if(historico.mensagem == "Convidou uma Equipe"){
+        return t('historicoProjeto.convidouEquipe')
+    }
+    if(historico.mensagem == "Removeu uma Equipe"){
+        return t('historicoProjeto.removeEquipe')
+    }
+    if(historico.mensagem == "Removeu o responsável"){
+        return t('historicoProjeto.removeResponsavel')
+    }
+    if(historico.mensagem == "Criou um status novo"){
+        return t('historicoProjeto.status')
+    }
+    if(historico.mensagem == "Criou uma propriedade"){
+        return t('historicoProjeto.propriedade')
+    }
+    if(historico.mensagem == "Removeu a propriedade"){
+        return t('historicoProjeto.removePropriedade')
+    }
+    if(historico.mensagem == "Removeu o status"){
+        return t('historicoProjeto.removeStatus')
+    }
+    if(historico.mensagem == "Comentou no Projeto"){
+        return t('historicoProjeto.comentario')
+    }
+    if(historico.mensagem == "Deletou a tarefa"){
+        return t('historicoProjeto.deletaTarefa')
+    }
 }
 
 function formatarData(data){
@@ -77,7 +138,8 @@ function formatarData(data){
     @apply flex justify-center mt-10  text-3xl
 }
 .divHistorico{
-    @apply flex flex-wrap w-full justify-center
+    @apply flex flex-wrap w-full h-full justify-center;
+    scrollbar-width: none;
 }
 .historico{
     @apply flex 2xl:w-[23vw] 2xl:h-[5vh] 2xl:mr-[1vw] xl:w-[30vw] xl:h-[5vh] xl:mr-[2vw] 
@@ -91,10 +153,10 @@ function formatarData(data){
     @apply flex w-full justify-end p-5;
 }
 .mensagem{
-    @apply flex justify-center items-center ml-3 2xl:text-base xl:text-base lg:text-lg md:text-lg truncate;
+    @apply flex justify-start items-center ml-3 2xl:text-base xl:text-base lg:text-lg md:text-lg truncate;
 }
 .data{
-    @apply flex justify-end items-center 2xl:ml-[2vw] xl:ml-[12vw] lg:ml-[20vw] md:ml-[23vw] text-base
+    @apply flex justify-end bg-black mt-[5vh] 2xl:ml-[2vw] xl:ml-[12vw] lg:ml-[20vw] md:ml-[23vw] text-base
 }
 
 @media(min-width: 2560px){
@@ -107,6 +169,12 @@ function formatarData(data){
   .mensagem{
     @apply text-xl 2xl:w-[20vw]
   }
+}
+
+@media(min-width: 2560px){
+    .criador{
+        @apply mr-[-1vw]
+    }
 }
 
 @media(max-width: 320px) {
@@ -136,7 +204,7 @@ function formatarData(data){
            @apply flex-wrap justify-start w-[75vw] items-center ml-3 mobile:text-sm
        }
        .data{
-           @apply flex-wrap w-[35vw] justify-end items-center ml-[9vw] mt-[5vh] mobile:text-sm
+           @apply flex-wrap w-[20vw] justify-end items-center ml-[9vw] mt-[5vh] mobile:text-sm
        }
        .criador{
         @apply flex-wrap w-[0vw] mr-[-10vw] mobile:text-sm;
@@ -161,7 +229,7 @@ function formatarData(data){
            bg-[var(--backgroundItemsClaros)] rounded-md
        }
        .imgPerfil{
-           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-3 mt-2;
+           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-3 ;
        }
        .div{
            @apply flex w-full justify-end p-5;
@@ -170,7 +238,7 @@ function formatarData(data){
            @apply flex-wrap w-[75vw] justify-start items-center ml-3 mobile:text-sm
        }
        .data{
-           @apply flex-wrap w-[35vw] justify-end items-center ml-[8vw] mt-[5vh] mobile:text-sm
+           @apply flex-wrap w-[20vw] justify-end items-center ml-[8vw] mt-[5vh] mobile:text-sm
        }
        .criador{
         @apply flex-wrap w-[0vw] mr-[-12vw] mobile:text-sm;
@@ -195,7 +263,7 @@ function formatarData(data){
            bg-[var(--backgroundItemsClaros)] rounded-md
        }
        .imgPerfil{
-           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-5 mt-2;
+           @apply flex justify-start w-[40px] h-[40px] rounded-full mr-5 mt-1;
        }
        .div{
            @apply flex w-[100vw] justify-end p-5;
@@ -204,10 +272,10 @@ function formatarData(data){
            @apply flex-wrap justify-start w-[90vw] items-center ml-3 mobile:text-base
        }
        .data{
-           @apply flex-wrap w-[40vw] justify-end items-center ml-[9vw] mt-[5vh] mobile:text-base
+           @apply flex-wrap w-[30vw] justify-end items-center ml-[9vw] mt-[5vh] mobile:text-base
        }
        .criador{
-        @apply flex-wrap w-[0vw] mr-[-15vw] mobile:text-sm;
+        @apply flex-wrap w-[0vw] mr-[-15vw] mobile:text-base;
        }
 }
 </style>

@@ -9,10 +9,11 @@
                     <div class="corDiv">
                         <img v-if="equipe.equipe.foto != null"
                             class="imgDePerfil" :src="'data:' +
-                    equipe.equipe.foto.tipo +
-                    ';base64,' +
-                    equipe.equipe.foto.dados
-                    " alt="">
+                        equipe.equipe.foto.tipo +
+                         ';base64,' +
+                         equipe.equipe.foto.dados
+                         " alt="">
+                         <equipe class="imgDePerfil" v-else></equipe>
                         <h1 class="flex mt-5 text-xl md:text-lg">{{ equipe.equipe.nome }}</h1>
                     </div>
                 </div>
@@ -60,6 +61,7 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
 import { webSocketStore } from '../stores/webSocket.js';
+import equipe from '../imagem-vetores/equipe.vue';
 
 
 let projetoAtual = ref(VueCookies.get('IdProjetoAtual'))
