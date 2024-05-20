@@ -509,6 +509,17 @@ const { t } = useI18n();
 
 const banco = conexaoBD();
 
+function reloadTelaTarefa() {
+  const reload = VueCookies.get('idReloadTarefa');
+  if (reload == '0') {
+    console.log("reload")
+    VueCookies.set('idReloadTarefa', '1');
+    window.location.reload()
+  }
+}
+
+reloadTelaTarefa()
+
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   console.log(propriedade);
   if (propriedade.valor.valor != '') {
@@ -562,7 +573,11 @@ let numeroDeArquivos = ref(0);
 
 //Variáveis usadas na hora de criar uma propriedade
 
-function deletaTarefa() {
+async function deletaTarefa() {
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  let projeto = await banco.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
+  let tarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  criaHistorico.criaHistoricoProjeto("Deletou a tarefa " + tarefa.nome, projeto, usuario)
   banco.deletarTarefa("/tarefa", VueCookies.get("IdTarefaCookies"));
   router.push("/projeto").then(() => {
     window.location.reload();
@@ -744,7 +759,8 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
   console.log(tarefaCriando)
-  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, VueCookies.get("IdProjetoAtual"))
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(response)
     if (tarefa.value.arquivos.length != 0) {
@@ -783,7 +799,7 @@ function deletaValorSelect(listaSelect, index) {
 
 //Função utilizada para criar uma Subtarefa
 
-function criaSubtarefa() {
+async function criaSubtarefa() {
   if (nomeSubtarefa.value != "") {
     if (statusSubtarefa.value === "") {
       nomeSubtarefa.value = "";
@@ -805,6 +821,9 @@ function criaSubtarefa() {
     numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
     porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
     barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+    let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+    let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+    criaHistorico.criaHistoricoTarefa("Criou a subTarefa " + subtarefaNova.nome, tarefaSubtarefa, usuario)
   }
 }
 
@@ -817,7 +836,7 @@ function reloadSubTarefas() {
 
 //Função utilizada para deletar uma Subtarefa
 
-function deletaSubtarefa(subtarefa) {
+async function deletaSubtarefa(subtarefa) {
   tarefa.value.subtarefas.forEach((subtarefaParaDeletar) => {
     if (subtarefaParaDeletar === subtarefa) {
       tarefa.value.subtarefas.splice(tarefa.value.subtarefas.indexOf(subtarefa), 1);
@@ -827,6 +846,9 @@ function deletaSubtarefa(subtarefa) {
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  criaHistorico.criaHistoricoTarefa("Deletou a subTarefa " + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 
 //Função utilizada para criar uma Propriedade
@@ -1155,7 +1177,7 @@ function abreFechaCriaSubTarefas() {
 
 //Funções que removem e adicionam os status e propriedades da tarefa
 
-function adicionaExcluiStatusNaTarefa(status) {
+async function adicionaExcluiStatusNaTarefa(status) {
   if (tarefa.value.status) {
     if (tarefa.value.status.id == status.id) {
       tarefa.value.status = null;
@@ -1167,6 +1189,9 @@ function adicionaExcluiStatusNaTarefa(status) {
     tarefa.value.status = status;
   }
   veSeOStatusTaNaTarefa(status)
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  let tarefaStatus = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  criaHistorico.criaHistoricoTarefa("Mudou o status ", tarefaStatus, usuario)
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
@@ -1220,21 +1245,28 @@ function abreFechaComentario() {
 
 //Função que publica o comentario na tarefa
 
-function enviaComentario(comentario) {
+async function enviaComentario(comentario) {
   tarefa.value.comentarios.push({
     autor: comentario[1],
     conteudo: comentario[0]
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  let tarefaComentario = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  criaHistorico.criaHistoricoTarefa("Comentou na tarefa ", tarefaComentario, usuario)
+
 }
 
 //
 
-function deletaComentario(comentario) {
+async function deletaComentario(comentario) {
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  let tarefaComentario = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
   tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
       tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
+      criaHistorico.criaHistoricoTarefa("Deletou um comentario ", tarefaComentario, usuario)
     }
   });
 }
@@ -1345,11 +1377,14 @@ let comentarioSendoEditado = ref(false);
 
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
-function trocaStatusDaSubTarefa(subtarefa, index) {
+async function trocaStatusDaSubTarefa(subtarefa, index) {
   tarefa.value.subtarefas[index].concluido = !tarefa.value.subtarefas[index].concluido;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  criaHistorico.criaHistoricoTarefa("Concluiu a subTarefa " + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 
 //Estilo da barra de porcentagem
@@ -1386,10 +1421,9 @@ function formatarData(data) {
 
 }
 
-function clicouOpcaoPropriedades() {
+async function clicouOpcaoPropriedades() {
   const opcaoPropriedades = document.getElementById('opcaoPropriedades');
   const opcaoStatus = document.getElementById('opcaoStatus');
-
   if (!opcaoEstaClicadaPropriedades.value) {
     opcaoEstaClicadaPropriedades.value = true;
     opcaoEstaClicadaStatus.value = false;
@@ -1398,6 +1432,7 @@ function clicouOpcaoPropriedades() {
     opcaoPropriedades.classList.remove('opcaoNaoClicada');
     opcaoStatus.classList.add('opcaoNaoClicada');
     opcaoStatus.classList.remove('opcaoClicada');
+  
   }
 }
 

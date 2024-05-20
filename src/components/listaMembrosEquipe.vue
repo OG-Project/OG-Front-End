@@ -14,7 +14,7 @@
                         <img class="imgDePerfil" @click="router.push(`/perfil/${membro.id}`)" :src="'data:' + membro.foto.tipo + ';base64,' + membro.foto.dados" alt="">
                         <h1 class="flex mt-5 text-xl md:text-lg truncate">{{ membro.username }}</h1>
                     </div>
-                    <div v-if="verificaCriador(membro) && retornoPermissao">
+                    <div v-if="verificaCriador(membro) && retornoPermissao && membro.id != usuarioLogado ">
                          <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
                          :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)" ></SelectPadrao>
                          <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
@@ -29,23 +29,25 @@
              </div>
             </div>
         </div>  
-        <div class="adiciona-membro">
+        <div class="adiciona-membro" v-if="retornoPermissao">
             <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Membro"
+                icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
                 v-model="usuarioConvidado" :modelValue="usuarioConvidado"
                     @updateModelValue="(e) => {
                         usuarioConvidado = e
                     }"></Input>
             <div class="flex mt-[1vh] ml-5">
                 <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
-                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                    :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
                 <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilepequeno"
-                texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
+        </div>
+        <div v-else class="adiciona-membro">
         </div>
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" :margin-right="marginRightConvidado()"
-                texto="Convites" mostrar-select="true" @opcaoSelecionada="valorSelect" class="listaConvidados" altura="40vh"
+                :texto="$t('criaEquipePopUp.convites')" mostrar-select="true" @opcaoSelecionada="valorSelect" class="listaConvidados" altura="40vh"
                  :listaConvidados="membrosConvidados" @foi-clicado="removeListaMembrosConvidados">
             </ListaConvidados>
         </div>
@@ -53,10 +55,10 @@
             <div>
                 <div>
                     <div v-if="screenWidth >= 620">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.confirmar') " tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                     <div v-else>
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" texto="Confirmar" tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
+                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" :texto="$t('editarEquipePopUp.confirmar') " tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                 </div>
             </div>
@@ -81,6 +83,9 @@ import {webSocketStore} from "../stores/webSocket.js";
 import alertTela from './alertTela.vue';
 import sair from '../imagem-vetores/Sair.vue';
 import equipe from '../imagem-vetores/equipe.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
 
 onMounted (() =>{
     exibirMembrosNaLista();
@@ -108,6 +113,7 @@ let selectDisable = '';
 let usuarios = banco.procurar('/usuario');
 
 
+
 let equipeMembros = ref({
     nome: '',
     descricao: ''
@@ -126,9 +132,9 @@ function opcoesSelect(membro){
     membro.equipes.forEach((equipeUsuario)=>{
         if(equipeUsuario.equipe.id == equipeSelecionada){
             if(equipeUsuario.permissao == 'VER'){
-                select = ['View', 'Edit']  
+                select = [t('selectComponent.view'), t('selectComponent.edit')]  
             }else if(equipeUsuario.permissao == 'VER','EDITAR',"CRIAR","PATCH"){
-                select = ['Edit', 'View']
+                select = [ t('selectComponent.edit'),t('selectComponent.view')]
             }
         }
     })
@@ -139,9 +145,9 @@ function opcoesSelectPlaceholder(membro){
     membro.equipes.forEach((equipeUsuario)=>{
         if(equipeUsuario.equipe.id == equipeSelecionada){
             if(equipeUsuario.permissao == 'VER'){
-                selectDisable = 'View';  
+                selectDisable = t('selectComponent.view');  
             }else if(equipeUsuario.permissao == 'VER','EDITAR',"CRIAR","PATCH"){
-                selectDisable = 'Edit';
+                selectDisable = t('selectComponent.edit');
             }
         }
     })
@@ -150,6 +156,7 @@ function opcoesSelectPlaceholder(membro){
 
 function editaSelect(valor, membro) {
     console.log(membro)
+    console.log(valor)
     valorSelectEdita.value = valor
     mudaPermissaoMembroEquipe(membro);
 }
@@ -157,7 +164,7 @@ function editaSelect(valor, membro) {
 function mudaPermissaoMembroEquipe(usuario) {
     listaMembros.value.some((membro) => {
         if (membro.username === usuario.username) {
-            if (valorSelectEdita.value == "View") {
+            if (valorSelectEdita.value == t('selectComponent.view')) {
                 membro.permissao = 2
             } else {
                 membro.permissao = 1
@@ -395,7 +402,7 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
 
     }
     const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/2"
+    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
     await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
@@ -452,6 +459,7 @@ async function confirmarConvites() {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
     enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
+    window.location.reload();
    
 }
 

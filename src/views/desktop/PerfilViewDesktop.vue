@@ -15,8 +15,7 @@
                 flex 
                 justify-center 
                 items-center  
-                sm:h-[30%] 
-                sm:w-[30%] 
+                
                 md:w-[70%] 
                 md:h-[70%] 
                 rounded-full 
@@ -26,8 +25,6 @@
                     :src="Imagem"
                     class="xl:w-[85%] 
                     hover:bg-slate-600 
-                    sm:h-[30%] 
-                    sm:w-[30%] 
                     md:w-[70%] 
                     md:h-[70%] 
                     rounded-full 

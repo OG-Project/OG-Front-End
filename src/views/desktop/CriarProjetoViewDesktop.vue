@@ -38,7 +38,8 @@
                     <div class="flex flex-col  items-start justify-start gap-6 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             place-holder-pesquisa="Responsáveis pelo projeto"
-                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem" :is-invalido="semResponsavel" :texto-invalido="'Responsável é obrigatório'">
+                            @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem"
+                            :is-invalido="semResponsavel" :texto-invalido="'Responsável é obrigatório'">
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
@@ -51,7 +52,8 @@
                                         <div class="w-full flex justify-end pr-2">
                                             <div class="w-[40%]">
                                                 <img src="../../imagem-vetores/botao-x.svg"
-                                                    @click="removeResponsavel(responsavel)" v-if="responsaveisProjeto.length!=1">
+                                                    @click="removeResponsavel(responsavel)"
+                                                    v-if="responsaveisProjeto.length != 1">
                                             </div>
                                         </div>
                                     </div>
@@ -76,16 +78,18 @@
 
             <div id="step-12" class="h-[10%] w-[90%] flex items-end justify-end pr-4 gap-6">
                 <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto" v-if="projetoEdita && isResponsavel && responsaveisProjeto.length==1 && !naoPodeDeletar"></Botao>
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto"
+                    v-if="projetoEdita && isResponsavel && responsaveisProjeto.length == 1 && !naoPodeDeletar"></Botao>
                 <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita" ></Botao>
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
                 <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="projetoEdita && isResponsavel"></Botao>
+                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"
+                    v-if="projetoEdita && isResponsavel"></Botao>
 
 
             </div>
         </div>
-        <div class="flex justify-end items-start ">
+        <div class="flex justify-end items-start">
             <informacoesProjeto :nome-projeto="nomeProjeto" :lista-status="listaStatus"
                 :lista-propriedades="listaPropriedades" :-data-inicial-projeto="dataFormatada"
                 :-data-final-projeto="dataFinalFormatada"></informacoesProjeto>
@@ -124,6 +128,10 @@ const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
+import { criaHistoricoStore } from '../../stores/criaHistorico.js'
+
+const criaHistorico = criaHistoricoStore();
+
 var listaSelecao = ref([]);
 let idUsuario = VueCookies.get("IdUsuarioCookie")
 let nomeProjeto = ref("");
@@ -143,10 +151,12 @@ var projetoEdita = ref(true)
 let dataFormatada = ref("")
 funcaoPopUp.variavelModal = false
 let idProjeto = VueCookies.get('IdProjetoAtual');
+let idEquipe = VueCookies.get('equipeSelecionada');
 let placeHolderDataFinalProjeto = ref("")
 let stylePlaceHolder = ref({});
 let dataFinalFormatada = ref("");
 let projeto = ref({});
+let equipeSelecionada = ref({})
 let mensagem = ref("");
 let mensagemCor = ref("");
 let semNome = ref(false);
@@ -155,17 +165,34 @@ let isResponsavel = ref(false)
 let naoPodeDeletar = ref(false)
 let usuario;
 let usuarioId = VueCookies.get('IdUsuarioCookie')
+
+function reloadTelaTarefa() {
+  const reload = VueCookies.get('idReloadProjeto');
+  if (reload == '0') {
+    console.log("reload")
+    VueCookies.set('idReloadProjeto', '1');
+    window.location.reload();
+  }
+}
+
+reloadTelaTarefa()
+
 onMounted(async () => {
-    if (idProjeto != undefined) {
+
+    if (idProjeto != undefined && idProjeto != "undefined") {
         projeto.value = await conexao.buscarUm(idProjeto, '/projeto')
     }
-
-     usuario=await  conexao.buscarUm(usuarioId, "/usuario")
+    if (idEquipe != undefined && idEquipe != "undefined") {
+        equipeSelecionada.value = (await conexao.buscarUm(idEquipe, '/equipe'))
+    }
+    usuario = await conexao.buscarUm(usuarioId, "/usuario")
     verificaEdicaoProjeto();
     defineSelect()
     pesquisaBancoUserName();
     buscaProjetoCookies();
     mandaDataInformacoes();
+    let listaEquipe = [equipeSelecionada.value.nome]
+    colocaListaEquipes(listaEquipe)
     listaEquipesConvidadas.value = [];
     placeHolderDataFinalProjeto.value = "Data final:"
 })
@@ -176,9 +203,6 @@ onUpdated(() => {
     criarProjetoCookies();
     fazPlaceHolderDataFinalProjeto()
 })
-
-
-
 
 function limparMensagemErro() {
     mensagem.value = "";
@@ -200,23 +224,20 @@ stylePlaceHolder.value = {
     alingItems: "center"
 }
 
-
 async function verificaResponsavel() {
-  
-    
     if (projeto.value != undefined) {
         let responsaveis = responsaveisProjeto.value
         if (responsaveis != null) {
             for (const responsavel of responsaveis) {
                 if (responsavel == usuario.username) {
                     isResponsavel.value = true
-                    return 
+                    return
                 }
             }
         }
     }
     isResponsavel.value = false
-    return  
+    return
 
 }
 
@@ -270,13 +291,14 @@ function verificaEdicaoProjeto() {
 }
 
 async function defineSelect() {
-    let listaAux = (await conexao.procurar('/equipe'))
+    let listaAux = []
+    usuario.equipes.forEach((equipe) => listaAux.push(equipe.equipe))
     let listaAux1 = []
     listaAux.forEach(equipeAtual => {
         listaAux1.push(equipeAtual.nome);
         listaSelecao.value = listaAux1
     });
-    return listaSelecao
+    return listaSelecao.value
 }
 
 function colocaListaPropriedades(propriedades) {
@@ -298,18 +320,18 @@ function buscaProjetoCookies() {
 }
 
 async function buscaRascunhoCriacaoProjeto() {
-    if (VueCookies.get("projetoCookie") != null
-        && !projetoEdita.value
-        && VueCookies.get("projetoCookie") != undefined
-        && VueCookies.get("projetoCookie") != "undefined") {
+    if (!projetoEdita.value && VueCookies.get("projetoCookie") != "undefined") {
+
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         dataFinalProjeto.value = variavelCookieProjeto.dataFinal;
+
         if (variavelCookieProjeto.equipes != []
             && variavelCookieProjeto.equipes != undefined
             && variavelCookieProjeto.equipes != "undefined"
             && variavelCookieProjeto.equipes != null) {
+
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
                 const objetoEnviaBack = {
@@ -324,19 +346,18 @@ async function buscaRascunhoCriacaoProjeto() {
             && variavelCookieProjeto.responsaveis != undefined
             && variavelCookieProjeto.responsaveis != "undefined"
             && variavelCookieProjeto.responsaveis != null && variavelCookieProjeto.responsaveis.length != 0) {
-            console.log(variavelCookieProjeto.responsaveis);
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
-        } else {
+        } 
+    } else {
             let usuario = await conexao.buscarUm(idUsuario, "/usuario")
             responsaveisProjeto.value.push(usuario.username)
             listaAuxResponsaveisProjeto.push(usuario.username)
             adicionaResponsaveisProjeto(usuario)
         }
-    }
 }
 
 async function buscaProjetoEditar() {
@@ -356,7 +377,6 @@ async function buscaProjetoEditar() {
 }
 
 async function buscaListaResponsaveisBack(projeto) {
-    console.log(projeto)
     projeto.responsaveis.forEach(async (responsavelAtual) => {
         let responsavel = await conexao.buscarUm(responsavelAtual.idResponsavel, "/usuario")
         let username = responsavel.username
@@ -424,6 +444,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
                 }
                 listaResponsaveisBack.push(responsavelBanco);
                 verificaResponsavel();
+                criaHistorico.criaHistoricoProjeto("Adicionou um novo responsavel", projeto, usuario)
                 return;
             }
         })
@@ -433,6 +454,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
             idResponsavel: usuarioRecebe.id
         }
         listaResponsaveisBack.push(responsavelBanco);
+        criaHistorico.criaHistoricoProjeto("Adicionou um novo responsavel", projeto, usuario)
         verificaResponsavel();
     }
 
@@ -445,28 +467,28 @@ async function criaProjeto() {
         mensagem.value = "Projeto com dados faltando"
         mensagemCor.value = "#CD0000"
         return
-    }else if(responsaveisProjeto.value == ""){
+    } else if (responsaveisProjeto.value == "") {
         mensagem.value = "Projeto com dados faltando"
         mensagemCor.value = "#CD0000"
         semResponsavel.value = true
         semNome.value = false
         return
     }
-        if (!projetoEdita.value) {
-            const criaProjeto = criaProjetoStore()
-            criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-                , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-
-            restauraCookies();
-            router.push("/projeto");
-        } else {
-            const editaProjeto = editaProjetoStore()
-            let projeto = await conexao.buscarUm(idProjeto, "/projeto")
-            editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-                , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
-            restauraCookies();
-            router.push("/projeto");
-        }
+    if (!projetoEdita.value) {
+        const criaProjeto = criaProjetoStore()
+        criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
+        restauraCookies();
+        router.push("/projeto");
+    } else {
+        const editaProjeto = editaProjetoStore()
+        let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+        editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
+            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
+        restauraCookies();
+        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
+        router.push("/projeto");
+    }
 }
 
 
@@ -491,6 +513,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
         return;
     }
+    criaHistorico.criaHistoricoProjeto("Convidou uma Equipe", projeto, usuario)
     listaEquipesSelecionadas.value.push(equipeVinculada)
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
@@ -516,6 +539,7 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     })
     console.log(listaBackEquipe)
     listaEquipeEnviaBack = listaBackEquipe;
+    
 }
 
 function verificaIdProjetoEquipe(equipe, projeto) {
@@ -543,7 +567,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
     criarProjetoCookies();
-
+    criaHistorico.criaHistoricoProjeto("Removeu uma Equipe", projeto, usuario)
 }
 
 async function removeResponsavel(responsavelRemover) {
@@ -553,13 +577,14 @@ async function removeResponsavel(responsavelRemover) {
             responsaveisProjeto.value.splice(index, 1);
             listaAuxResponsaveisProjeto.splice(index, 1)
             listaResponsaveisBack.splice(index, 1);
+            criaHistorico.criaHistoricoProjeto("Removeu o responsavel" + responsavelRemover.username, projeto, usuario)
         }
     }
     )
     if (!projetoEdita) {
         criarProjetoCookies();
     }
-    if(responsavelRemover == usuario.username){
+    if (responsavelRemover == usuario.username) {
         naoPodeDeletar.value = true;
     }
 }

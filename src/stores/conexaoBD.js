@@ -23,6 +23,18 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
 
     },
+
+    getCookie(){
+      // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
+    // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
+      this.loading = true;
+      try {
+        return axios.get("http://localhost:8082/cookie" , { withCredentials: true }).then(response =>  {return response.data})
+      } finally {
+        this.loading = false;
+        console.log('Loading:', this.loading);
+      }
+    },
     login(usuarioLogin) {
       this.loading = true;
       try {
@@ -83,9 +95,8 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     deletar(id, textoRequisicao) {
-      this.loading = true;
-      try {
-        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
+      try{
+      return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
 
         })
       } finally {
@@ -105,7 +116,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async buscarHistorico(id, textoRequisicao) {
       this.loading = true;
       try {
-        return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`)).data)
+        return await ((await axios.get(`http://localhost:8082/historico/${textoRequisicao}/${id}`, { withCredentials: true })).data)
       } finally {
         this.loading = false;
       }
@@ -185,12 +196,11 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async deletarTarefa(textoRequisicao, id) {
-      this.loading = true;
-      try {
-        return await axios.delete('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => {
-        })
-      } finally {
-        this.loading = false;
+      try{
+      return await axios.delete('http://localhost:8082' + textoRequisicao + '/' + id, { withCredentials: true }).then(response => {
+      })
+      }finally {
+      this.loading = false;
       }
     },
     async cadastrarFoto(equipeId, foto) {

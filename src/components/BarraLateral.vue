@@ -44,6 +44,10 @@
               <tutorial-icon ></tutorial-icon>
               <div>{{ 'Tutorial' }}</div>
             </div>
+            <div  class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/chat')">
+              <iconChat ></iconChat>
+              <div>{{ 'Chat' }}</div>
+            </div>
           </div>
           <div class="w-full flex-col flex gap-6 ml-4 mb-4 justify-end items-start" @click="redirecionamento('/login')">
             <div class="flex gap-6 justify-center items-center text-white ">
@@ -71,6 +75,8 @@ import VueCookies from "vue-cookies";
 import { conexaoBD } from '../stores/conexaoBD';
 import tutorialIcon from '../assets/tutorialIcon.vue';
 import { inject } from 'vue'
+import iconChat from '../assets/iconChat.vue'
+
 
 const tour = inject('tour')
 const aberto = ref(false);
@@ -88,12 +94,19 @@ function openClose() {
 }
 
 onMounted(async ()=>{
-  usuario.value =
-    await banco.buscarUm(
-      JSON.parse(
-        VueCookies.get('IdUsuarioCookie')), '/usuario')
-  console.log(usuario.value);
+  colocaUsuarioId()
 })
+
+ 
+function colocaUsuarioId(){
+  console.log("teste")
+  banco.getCookie().then((res) =>{
+    usuario.value= res;
+  console.log(res.id)
+  VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+  verificaTarefasFeitas();
+ })
+}
 
 function redirecionamento(local) {
   router.push(local).then(() => {

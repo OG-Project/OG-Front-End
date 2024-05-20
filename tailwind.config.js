@@ -37,7 +37,7 @@ export default {
       'tablet': '640px',
       'laptop': '1024px',
       'desktop': '1280px',
-      'mobile':'320px',
+      'mobile':'321px',
       'miniMobile':'280px'
      
     },
@@ -50,7 +50,7 @@ export default {
     fontFamily:{
       poppins: ['"Poppins"', '"sans-serif"'],
       sourceSans:['"Source Sans 3"', '"sans-serif"']
-    },
+    }
   },
   plugins: [],
 }

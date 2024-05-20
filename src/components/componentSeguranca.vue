@@ -1,14 +1,14 @@
 <template>
-    <div class="w-[75vw] h-[92vh] flex flex-col">
+    <div class="w-[75vw] h-[92vh] flex flex-col tablet:flex-col">
         <div>
             <h1 style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-                Segurança
+                {{ $t('seguranca.Segurança') }}
             </h1>
         </div>
         <div style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" class="pl-32 items-center">
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10">
-                    <div class="flex items-center sm:flex-wrap gap-8">
+                    <div class="flex items-center sm:flex-wrap gap-8 max-tablet:flex-wrap">
                         <div class="text-2xl w-[470px]">
                             <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaCaracteres') }}<br>
                             <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaConteudo') }}<br>
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
-            <span>{{ $t('seguranca.deletarConta') }}</span>
+            <span @click="abrePopUp(['deletar'])">{{ $t('seguranca.deletarConta') }}</span>
         </div>
         
     </div>

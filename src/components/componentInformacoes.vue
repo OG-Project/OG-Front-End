@@ -97,7 +97,7 @@
                         tamanhoDaFonte="2.0vh" />
                 </div>
         </div>
-        <alertTela v-if="alterado" cor="#29CD00" mensagem="Alterado com Sucesso" />
+        <alertTela v-if="alterado" :key="alterado" cor="#29CD00" mensagem="Alterado com Sucesso" />
 </template>
 
 <script setup>
@@ -129,17 +129,23 @@ let editar=ref(false)
 let alterado=ref(false)
 
 function alterarInformacoes(){
-        console.log(nome.value)
-        console.log(PerfilStore.email)
-        console.log(PerfilStore.username)
-        console.log(PerfilStore.sobrenome)
-        console.log(PerfilStore.dataDeNascimento)
-        usuario.value.nome=nome.value
-        usuario.value.email=PerfilStore.email
-        usuario.value.username=PerfilStore.username
-        usuario.value.sobrenome=PerfilStore.sobrenome
-        usuario.value.dataNascimento=PerfilStore.dataDeNascimento
-        conexao.atualizar(usuario.value,'/usuario')
+        if(editar.value){
+                alterado.value=!alterado.value
+                setTimeout(() => {
+                        alterado.value=!alterado.value
+                }, 5000);
+                console.log(nome.value)
+                console.log(PerfilStore.email)
+                console.log(PerfilStore.username)
+                console.log(PerfilStore.sobrenome)
+                console.log(PerfilStore.dataDeNascimento)
+                usuario.value.nome=nome.value
+                usuario.value.email=PerfilStore.email
+                usuario.value.username=PerfilStore.username
+                usuario.value.sobrenome=PerfilStore.sobrenome
+                usuario.value.dataNascimento=PerfilStore.dataDeNascimento
+                conexao.atualizar(usuario.value,'/usuario')
+        }
         editar.value=!editar.value
 
 }

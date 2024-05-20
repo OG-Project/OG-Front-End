@@ -33,10 +33,13 @@
     --backgroundItems: #f8f8f8; 
     --backgroundItemsClaros: #f1f1f1; 
     --fonteCor:#000000;
+    --fonteTituloTamanhoMobile:4vh ;
+    --fonteCorpoTamanhoMobile:1vh ;
+    
 }
 
 html{
-    @apply md:text-sm xl:text-lg  sm:text-xs;
+    @apply md:text-sm xl:text-lg  sm:text-xs mobile:text-xs miniMobile:text-xs;
     font-family: var(--fonteCorpo);
 }
 

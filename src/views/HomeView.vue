@@ -13,7 +13,9 @@ import { ref, onMounted,watch } from 'vue'
 import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
 import router from '../router';
+import { conexaoBD } from "../stores/conexaoBD.js";
 
+const banco = conexaoBD();
 // https://dontpad.com/02-05-2024gks
 // import { useShepherd } from 'vue-shepherd'
 
@@ -23,13 +25,20 @@ watch(() => window.innerWidth, () => {
   screenWidth.value = window.innerWidth
 })
 onMounted(() => {
-  
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
-
-  buscaConfiguracaoesPadrao();
+  colocaUsuarioId();
 })
+
+function colocaUsuarioId(){
+  console.log("teste")
+  banco.getCookie().then((res) =>{
+  console.log(res.id)
+  VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+  buscaConfiguracaoesPadrao();
+ })
+}
 
 async function buscaConfiguracaoesPadrao(){
     let root = document.documentElement.style
