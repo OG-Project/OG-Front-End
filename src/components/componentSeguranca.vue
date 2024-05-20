@@ -2,7 +2,7 @@
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div class="flex flex-row w-full items-center ">
             <div v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
-                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[60%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
+                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
             </div>
             <h1 v-if="screenWidth <= 740"
             style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
@@ -40,7 +40,7 @@
                         <div class="gap-5">
                             <div class="text-2xl min-w-[60%] w-full flex flex-col">
                                 <div> {{ $t('seguranca.seuEmailAtual') }}</div>
-                                <div class="text-[var(--roxo)] w-full break-words">
+                                <div class="text-[var(--roxo)] w-full max-tablet:w-[70%]  break-words">
                                     {{ email }}
                                 </div>
                             </div>
@@ -70,6 +70,9 @@
         </div>
 
     </div>
+    <alterarSenha v-if="popUpSenha"></alterarSenha>
+    <alterarEmail v-if="popUpEmail"></alterarEmail>
+    <ConfirmaPopUp v-if="popUpDeletar"></ConfirmaPopUp>
 </template>
 
 <script setup>
@@ -80,10 +83,15 @@ import Botao from './Botao.vue';
 import VueCookies from "vue-cookies";
 import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
-import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
+import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue';
+import ConfirmaPopUp from '../components/ConfirmaPopUp.vue'
+import alterarEmail from '../components/alterarEmail.vue';
+import alterarSenha from '../components/alterarSenha.vue';
+import { storeToRefs } from 'pinia';
 
 const PerfilStore = perfilStore()
 const conexao = conexaoBD()
+const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(PerfilStore)
 import { useI18n } from 'vue-i18n';
 const screenWidth = ref(window.innerWidth)
 
@@ -103,7 +111,6 @@ onMounted(async () => {
     usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'), '/usuario')
     console.log(usuario)
     email.value = usuario.email
-
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
     })
