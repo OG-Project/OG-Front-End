@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import  VueCookies  from 'vue-cookies';
-
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   linkActiveClass:'active',
@@ -159,6 +157,7 @@ const router = createRouter({
       meta:{
         requiresAuth:true
       }
+
     },
     {
       path:'/aparencia',
