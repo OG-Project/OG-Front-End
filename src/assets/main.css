@@ -39,7 +39,7 @@
 }
 
 html{
-    @apply md:text-sm xl:text-lg  sm:text-xs mobile:text-xs;
+    @apply md:text-sm xl:text-lg  sm:text-xs max-mobileGrande:text-xs max-mobile:text-xs ;
     font-family: var(--fonteCorpo);
 }
 
