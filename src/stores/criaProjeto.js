@@ -29,9 +29,8 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       projetoCriado.statusList = status;
       projetoCriado.responsaveis = responsaveis;
       projetoCriado.dataFinal = dataFinal
-      if (VueCookies.get("idAuxEquipe") != null && VueCookies.get("idAuxEquipe") != undefined && VueCookies.get("idAuxEquipe") != "") {
-        api.cadastrarProjetoEquie(projetoCriado, VueCookies.get("idAuxEquipe"), '/projeto').then((res) => {
-          console.log(res);
+      if(VueCookies.get("idAuxEquipe") != null && VueCookies.get("idAuxEquipe") != undefined && VueCookies.get("idAuxEquipe") != "" && VueCookies.get("idAuxEquipe") != "undefined"){
+        api.cadastrarProjetoEquie(projetoCriado,VueCookies.get("idAuxEquipe") ,'/projeto').then((res) => {
           projetoAux = res.data;
           VueCookies.set("IdProjetoAtual", res.data.id)
           this.enviaParaWebSocket(equipes, projetoAux)

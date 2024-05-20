@@ -7,7 +7,10 @@
 
 <script setup>
 import { get } from '@vueuse/core';
+import { onMounted } from 'vue';
 import { defineProps, ref } from 'vue';
+import VueCookies from 'vue-cookies';
+import { conexaoBD } from '../stores/conexaoBD';
 defineEmits(['update:modelValue'])
 const props = defineProps({
   placeholder: {
@@ -42,17 +45,38 @@ const props = defineProps({
 });
 
 const hoverPadrao = {
-        color : ""
+        color : "var(--backgroundItemsClaros)"
     }
 
 const estilo = ref({});
+let usuario=  ref()
+let configuracao = ref()
+const conexao = conexaoBD();
+onMounted(() =>{
+  buscaConfiguracao()
+})
+
+async function buscaConfiguracao(){
+  let root = document.documentElement.style
+  usuario.value =
+    await conexao.buscarUm(
+      JSON.parse(
+        VueCookies.get('IdUsuarioCookie')), '/usuario')
+  configuracao.value = usuario.value.configuracao
+  root.setProperty('--hueRoxo', configuracao.value.hueCor)
+  root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
+  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
+}
 
 const estiloBranco = {
   width: props.width,
   height: props.height,
   fontSize: props.tamanhoDaFonte,
-  color: '#000000',
-  backgroundColor: '#D7D7D7',
+  color: 'var(--fonteCor)',
+  backgroundColor: 'var(--backgroundItems)',
   resize: props.resize
 };
 
@@ -61,7 +85,7 @@ const estiloPreto = {
   height: props.height,
   fontSize: props.tamanhoDaFonte,
   color: '#FFFFFF',
-  backgroundColor: '#777777',
+  backgroundColor: 'var(--backgroundItems)',
   resize: props.resize
 };
 
@@ -69,7 +93,7 @@ const estiloTransparente = {
   width: props.width,
   height: props.height,
   fontSize: props.tamanhoDaFonte,
-  color: '#000000',
+  color: 'var(--fonteCor)',
   resize: props.resize
 };
 
@@ -82,15 +106,17 @@ switch (props.preset) {
     break;
   case 'transparente':
     estilo.value= estiloTransparente;
-    hoverPadrao.color="#D7D7D7";
+    hoverPadrao.color="var(--backgroundItems)";
     break;
   default:
     estilo.value = estiloBranco;
     break;
 }
+
+
 </script>
 
-<style scoped>
+<style lang="scss">
 
 textarea:hover{
     background-color: v-bind('hoverPadrao.color');
@@ -98,5 +124,6 @@ textarea:hover{
 
 textarea{
   border-bottom: solid 4px var(--roxo);
+  background-color: var(--backgroundPuro);
 }
 </style>

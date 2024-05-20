@@ -1,6 +1,6 @@
 <template>
-    <div class="flex flex-col items-center w-full h-[80%]">
-        <div class=" flex flex-col  mt-[3%] gap-20">
+    <div class="flex flex-col items-center justify-center w-full h-[80%]">
+        <div class=" flex flex-col  mt-[3%] gap-20 justify-center pl-3">
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
                     largura="80" altura="6" fontSize="1.5rem" v-model="nomeProjeto" :modelValue="nomeProjeto"
@@ -36,10 +36,10 @@
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
-                                class=" bg-brancoNeve p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
+                                class=" bg-[var(--backgroundItems)]  p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
                                 <div v-for="responsavel of responsaveisProjeto ">
                                     <div
-                                        class="bg-roxo-claro rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
+                                        class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
                                         <img src="../../imagem-vetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
                                         <img src="../../imagem-vetores/X-preto.svg"
@@ -51,24 +51,29 @@
                     </div>
                 </div>
             </div>
-            <div class=" w-[96%] ">
+            <div class=" w-full ">
                 <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]"
+                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas"
                     :caminho-da-imagem-icon=srcIconListaEquipes @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>
         </div>
-        <div class=" w-full h-[90%] flex flex-row justify-center miniMobile:mr-7">
+        <div class=" w-full h-[90%] flex flex-row justify-center miniMobile:mr-4">
             <ListaPropiedadesStatus @manda-lista-propriedade="colocaListaPropriedades"
                 @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
         </div>
-        <div class="h-[10%] w-full flex items-center justify-center  pr-4 pb-28 ">
+        <div class="h-[10%]  flex-row  pb-28 ">
             <Botao preset="PadraoRoxo" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
-                height="5vh" width="79vw" tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
+                tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
                 v-if="!projetoEdita"></Botao>
-            <Botao preset="PadraoRoxo" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
-                height="5vh" width="79vw" tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
+            <Botao preset="PadraoRoxo" texto="Salvar Alterções" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
+                tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
                 v-if="projetoEdita"></Botao>
+                <div class="mt-4">
+                    <Botao preset="DeletarMobile"  tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
+                tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
+                v-if="projetoEdita"></Botao>
+                </div>
 
         </div>
     </div>
@@ -143,10 +148,10 @@ onUpdated(() => {
 stylePlaceHolder.value = {
     position: "absolute",
     left: "2.7%",
-    width: "12%",
+    width: "11%",
     height: "2.5%",
     zIndex: "10",
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "var(--backgroundPuro)",
     marginTop: "0.35%",
     display: "flex",
     alingItems: "center"
@@ -160,12 +165,19 @@ function fazPlaceHolderDataFinalProjeto() {
     }
 }
 
+
+function excluiProjeto(){
+    conexao.deletar(idProjeto,"/projeto").then(()=>{
+        router.push("/home")
+    })
+}
+
 function fazHoverPlaceHolder() {
-    stylePlaceHolder.value.backgroundColor = "#D7D7D7"
+    stylePlaceHolder.value.backgroundColor = "var(--backgroundItemsClaros)"
 }
 
 function fazBackPadraoPlaceHolder() {
-    stylePlaceHolder.value.backgroundColor = "#FFFFFF"
+    stylePlaceHolder.value.backgroundColor = "var(--backgroundPuro)"
 }
 
 async function mandaDataInformacoes() {
@@ -222,7 +234,7 @@ function buscaProjetoCookies() {
     }
 }
 
-async function buscaRascunhoCriacaoProjeto() {
+async function  buscaRascunhoCriacaoProjeto() {
     if (VueCookies.get("projetoCookie") != null
         && !projetoEdita.value
         && VueCookies.get("projetoCookie") != undefined
@@ -249,14 +261,14 @@ async function buscaRascunhoCriacaoProjeto() {
             && variavelCookieProjeto.responsaveis != undefined
             && variavelCookieProjeto.responsaveis != "undefined"
             && variavelCookieProjeto.responsaveis != null && variavelCookieProjeto.responsaveis.length != 0) {
-            console.log(variavelCookieProjeto.responsaveis);
+                console.log(variavelCookieProjeto.responsaveis);
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
-        } else {
-            let usuario = await conexao.buscarUm(idUsuario, "/usuario")
+        }else{
+            let usuario= await conexao.buscarUm(idUsuario, "/usuario")
             responsaveisProjeto.value.push(usuario.username)
             listaAuxResponsaveisProjeto.push(usuario.username)
             adicionaResponsaveisProjeto(usuario)
@@ -282,7 +294,7 @@ async function buscaProjetoEditar() {
 
 async function buscaListaResponsaveisBack(projeto) {
     projeto.responsaveis.forEach(async (responsavelAtual) => {
-        let responsavel = await conexao.buscarUm(responsavelAtual.idResponsavel, "/usuario")
+        let responsavel= await conexao.buscarUm(responsavelAtual.idResponsavel,"/usuario")
         let username = responsavel.username
         if (verificaTemEsseResponsavelProjeto(username)) {
             responsaveisProjeto.value.push(username)
@@ -363,19 +375,19 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
 async function criaProjeto() {
     if (!projetoEdita.value) {
         const criaProjeto = criaProjetoStore()
-
+        
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-        router.push('/projeto').then(() => {
-
-        });
+            router.push('/projeto').then(() => {
+       
+    });
         restauraCookies();
         router.push('/projeto')
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
-            , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
+        , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
     }
 
@@ -412,15 +424,15 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     let idProjetoEquipe = ""
     let equipeBack;
     let projeto
-    if (projetoEdita.value) {
-        projeto = await conexao.buscarUm(idProjeto, '/projeto')
+    if(projetoEdita.value){
+         projeto = await conexao.buscarUm(idProjeto, '/projeto')
     }
-    let listaBackEquipe = listaEquipeFront.map((equipeFront) => {
+    let listaBackEquipe =  listaEquipeFront.map((equipeFront) => {
         if (projetoEdita.value) {
-            idProjetoEquipe = verificaIdProjetoEquipe(equipeFront, projeto)
+             idProjetoEquipe =  verificaIdProjetoEquipe(equipeFront,projeto)   
         }
-        return equipeBack = {
-            id: idProjetoEquipe,
+         return equipeBack = {
+             id:  idProjetoEquipe,
             equipe: {
                 id: equipeFront.id
             }
@@ -430,18 +442,18 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     listaEquipeEnviaBack = listaBackEquipe;
 }
 
-function verificaIdProjetoEquipe(equipe, projeto) {
+ function verificaIdProjetoEquipe(equipe,projeto){
     let idRetorno;
-    projeto.projetoEquipes.forEach((projetoEquipe) => {
-        if (projetoEquipe.equipe.id == equipe.id) {
-            idRetorno = projetoEquipe.id
+    projeto.projetoEquipes.forEach((projetoEquipe) =>{
+        if(projetoEquipe.equipe.id == equipe.id){
+            idRetorno=  projetoEquipe.id
         }
     })
     return idRetorno;
 }
 
 async function removeListaEquipeConvidadas(equipeRemover) {
-
+    
     let listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeRemover.nome);
     let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
@@ -450,7 +462,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         listaEquipesSelecionadas.value.splice(indice, 1);
     }
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
-    if (projetoEdita.value) {
+    if(projetoEdita.value){
         console.log("vai deletar")
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }

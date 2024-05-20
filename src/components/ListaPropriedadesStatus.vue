@@ -1,7 +1,9 @@
 <template>
-    <div class="bg-[var(--backgroundItemsClaros)] shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
+    <div
+        class="bg-[var(--backgroundItemsClaros)] shadow-md  w-[80%]  max-h-[80vh] flex flex-col  pt-6 justify-end p-[2%] m-[3%] gap-10">
         <div>
-            <div class="flex flex-row justify-between items-center border-b-2 border-[var(--roxo)]" @click="buscandoPor()">
+            <div class="flex flex-row justify-between items-center border-b-2 border-[var(--roxo)]"
+                @click="buscandoPor()">
                 <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades
                 </p>
                 <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
@@ -21,7 +23,7 @@
 
                         <div class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4"
                             v-if="propriedade.verNomeCompleto == true">
-                            <p class="w-[50%]  h-max break-words  bg-brancoNeve ">
+                            <p class="w-[50%]  h-max break-words  bg-[var(--backgroundItemsClaros)] ">
                                 {{ propriedade.propriedade.nome }}</p>
                             <p class="w-[50%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
                         </div>
@@ -53,7 +55,8 @@
 
                         <div v-if="status.verNomeCompleto == true"
                             class="w-[50%] flex flex-row items-center gap-8 pb-4 pt-4">
-                            <p class="w-[50%] h-max break-words bg-brancoNeve">{{ status.status.nome }}</p>
+                            <p class="w-[50%] h-max break-words bg-[var(--backgroundItemsClaros)]">{{ status.status.nome
+                                }}</p>
                             <ColorPicker v-model="status.status.cor" @hide="atualizaStatus(status)"></ColorPicker>
                         </div>
                         <div v-if="status.verNomeCompleto == false" class="w-[50%] flex flex-row pb-4 pt-4 gap-8">
@@ -95,12 +98,12 @@
                     <div class="pl-2">
                         <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-                nomePropriedade = e
-            }">
+                    nomePropriedade = e
+                }">
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect" largura="8"
+                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect" largura="10"
                             altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
@@ -109,8 +112,8 @@
                     <div class="pl-2">
                         <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
-                nomePropriedade = e
-            }">
+                    nomePropriedade = e
+                }">
                         </Input>
                     </div>
                     <div class="pr-2">
@@ -121,11 +124,11 @@
                 </div>
                 <div class="flex felx-row justify-between">
                     <div class="pl-2 pt-2 pb-2">
-                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                        <Botao preset="Sair" tamanhoPadrao="medio" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
                     </div>
                     <div class="pr-2 pt-2 pb-2">
 
-                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedadeBack">
+                        <Botao preset="Confirmar" tamanhoPadrao="medio" :funcaoClick="criaPropriedadeBack">
                         </Botao>
                     </div>
                 </div>
@@ -141,15 +144,15 @@
                     <div class="pl-2" v-if="screenWidth >= 340">
                         <Input largura="8" conteudoInput="Nome Status" fontSize="1rem" altura="2"
                             :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
-                nomeStatus = e
-            }">
+                    nomeStatus = e
+                }">
                         </Input>
                     </div>
                     <div class="pl-2" v-else>
                         <Input largura="25" conteudoInput="Nome Status" fontSize="0.90rem" altura="2"
                             :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
-                nomeStatus = e
-            }">
+                    nomeStatus = e
+                }">
                         </Input>
 
                     </div>
@@ -160,10 +163,10 @@
                 </div>
                 <div class="flex felx-row justify-between">
                     <div class="pl-2 pt-2 pb-2">
-                        <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
+                        <Botao preset="Sair" tamanhoPadrao="medio" :funcaoClick="funcaoPopUp.fechaPopUp"></Botao>
                     </div>
                     <div class="pr-2 pt-2 pb-2">
-                        <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
+                        <Botao preset="Confirmar" tamanhoPadrao="medio" :funcaoClick="criaStatusBack">
                         </Botao>
                     </div>
                 </div>
@@ -213,7 +216,7 @@ let idProjeto;
 let tarefasAtribuidas = false
 let listaPropriedadesBackEnd = [];
 let tipoPropriedadeSelect = ref([])
-let usuario=  ref()
+let usuario = ref()
 let configuracao = ref()
 onMounted(() => {
     verificaEdicaoProjeto();
@@ -232,20 +235,20 @@ onMounted(() => {
 }
 )
 
-async function buscaConfiguracaoesPadrao(){
+async function buscaConfiguracaoesPadrao() {
     let root = document.documentElement.style
-  usuario.value =
-    await conexao.buscarUm(
-      JSON.parse(
-        VueCookies.get('IdUsuarioCookie')), '/usuario')
-  configuracao.value = usuario.value.configuracao
-  root.setProperty('--hueRoxo', configuracao.value.hueCor)
-  root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
-  root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
-  root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
-  root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho+"vh")
-  root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho+"vh")
- 
+    usuario.value =
+        await conexao.buscarUm(
+            JSON.parse(
+                VueCookies.get('IdUsuarioCookie')), '/usuario')
+    configuracao.value = usuario.value.configuracao
+    root.setProperty('--hueRoxo', configuracao.value.hueCor)
+    root.setProperty('--hueRoxoClaro', configuracao.value.hueCor)
+    root.setProperty('--fonteCorpo', configuracao.value.fonteCorpo)
+    root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
+    root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + "vh")
+    root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + "vh")
+
 }
 const screenWidth = ref(window.innerWidth);
 
@@ -357,7 +360,7 @@ function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux1 = []
     listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
-       
+
         if (opcaoAtual.propriedade.tipo != "" && opcaoAtual.propriedade.tipo != undefined) {
             if (opcaoAtual.propriedade.tipo.toLowerCase() == buscarPor.toLowerCase()) {
                 listaAux1.push(opcaoAtual)
@@ -371,8 +374,8 @@ function filtroPropriedades(listaRecebida, buscarPor) {
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
         opcaoSelecionadaNaTabela.value = 'propriedade';
-        opcoesSelect.value = ["Todos", "Texto", "Número", "Seleção", "Data"];
-        tipoPropriedadeSelect.value = ["Texto", "Número", "Seleção", "Data"]
+        opcoesSelect.value = ["Todos", "Texto", "Número", "Data"];
+        tipoPropriedadeSelect.value = ["Texto", "Número", "Data"]
 
     } else if (opcaoSelecionada == 'status') {
         opcaoSelecionadaNaTabela.value = 'status';
@@ -661,7 +664,7 @@ async function removePropriedade(propriedadeRecebida) {
 }
 
 .animation {
-    @apply w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col miniMobile:w-full;
+    @apply w-[80%] bg-[var(--backgroundItems)] shadow-md flex justify-around flex-col miniMobile:w-full;
     animation: myAnim 0.15s ease 0s 1 normal none;
 }
 

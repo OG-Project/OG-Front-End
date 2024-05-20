@@ -99,7 +99,9 @@ let alinhamento = ref(43)
 const screenWidth = window.innerWidth;
 
 // const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-
+onMounted(() =>{
+    console.log(props.responsavel);
+})
 
 const grafico = {
     display: "flex",
@@ -233,8 +235,9 @@ function somePopUp() {
     }
 
     .animation {
-        @apply absolute left-16 top-1 w-[80%] bg-brancoNeve shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
+        @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
         animation: myAnim 0.15s ease 0s 1 normal none;
+        background-color: var(--backgroundItems);
     }
 }
 </style>

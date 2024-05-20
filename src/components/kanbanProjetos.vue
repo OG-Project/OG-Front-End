@@ -6,7 +6,7 @@
       </div>
       <div class="flex justify-center">
         <div>
-          <img v-if="imagem != ''" class="imagem" :src="imagem" alt="">
+          <img v-if="imagem != ''" class="imagem" :src="fotoUrl" alt="">
           <userTodoPreto v-else class="imagem"></userTodoPreto>
         </div>
       </div>
@@ -15,14 +15,26 @@
      
     </template>
     <script setup>
-  import {onMounted} from 'vue';
+  import {onMounted, ref} from 'vue';
   import userTodoPreto from '../imagem-vetores/userTodoPreto.vue'
+  let fotoUrl= ref()
+
     const props = defineProps({
     cor: String,
     nome: String,
     imagem: String,
     categoria: String
     });
+
+    onMounted(()=>{
+      foto(props.imagem);
+    })
+
+    async function foto(imagem){
+          fotoUrl.value = await imagem;
+          console.log(foto)
+          
+    }
 
     const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
 
@@ -39,12 +51,6 @@
     }else if (screenWidth >= 2560){
         return 16;
     }
-    }
-
-    function editarProjeto(projeto){
-       const projetoId = projeto.id;
-       VueCookies.set("projetoEditarId", projetoId, 1000000);
-       console.log(VueCookies.set("projetoEditarId", projetoId, 1000000))
     }
     </script>
     <style scoped>

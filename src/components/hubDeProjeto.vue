@@ -6,13 +6,21 @@
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
+<<<<<<< HEAD
             <div class="w-[60%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
                 style="font-size:var(--fonteTituloTamanho)">
+=======
+            <div class="w-[60%] h-[60%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
+>>>>>>> 33e60aebe879423a673d042d931af8238eaed144
                 <div class="h-[100%] flex items-end truncate">
                     <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
                 </div>
+<<<<<<< HEAD
                 <div class="flex items-end" v-if="verificaSeEResponsavel()"
                     @click="router.push('/projeto/responsavel')">
+=======
+                <div class="flex items-end" v-if="isResponsavel" @click="router.push('/projeto/responsavel')">
+>>>>>>> 33e60aebe879423a673d042d931af8238eaed144
                     <Dashboard></Dashboard>
                 </div>
             </div>
@@ -108,6 +116,7 @@ let corLista = ref("var(--backgroundItemsClaros)")
 let corTimeline = ref("var(--backgroundItemsClaros)")
 let corCalendario = ref("var(--backgroundItemsClaros)")
 
+let isResponsavel = ref(false)
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
     console.log(projeto.value)
@@ -115,7 +124,9 @@ onMounted(async () => {
     if (visualizacao.value.propriedadeVisiveis != null) {
         listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
     }
+    verificaSeEResponsavel()
     console.log(visualizacao.value)
+    verificaSeEResponsavel()
     definePorcentagem()
     styleBotao()
 })
@@ -127,12 +138,13 @@ async function verificaSeEResponsavel() {
     if (responsaveis != null) {
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
-                return true
+                isResponsavel.value= true
+                return
             }
         }
     }
-    return false
-
+    isResponsavel.value = false
+    return
 }
 
 function styleBotao() {
@@ -216,4 +228,51 @@ function abreModalMensagem() {
 
 <style lang="scss">
 
+.select:active {
+    border: none;
+    outline: none;
+    border-radius: 0;
+}
+
+.labelContainer:active {
+    border-color: grey;
+    border: none;
+
+    .animation {
+        @apply absolute w-[30%] h-[80%] z-10;
+        animation: myAnim 0.15s ease 0s 1 normal none;
+    }
+
+    @keyframes myAnim {
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+}
+
+.animation {
+    @apply absolute  2xl:w-[30%] xl:w-[30%] lg:w-[30%]
+     md:w-[80%] h-[70%] z-10 mobile:w-full miniMobile:w-full;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
 </style>

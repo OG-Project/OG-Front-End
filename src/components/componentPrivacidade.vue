@@ -1,18 +1,31 @@
 <template>
-    <div class="w-[75vw] h-[92vh] flex flex-col  ">
-        <div>
-            <h1 style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" 
-            class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-            {{ $t('privacidade.Privacidade') }}
+    <div class="w-[75vw] h-[92vh] flex flex-col max-md:items-center  max-md:w-full">
+        <div class="flex flex-row w-full items-center">
+            <div v-if="screenWidth <=768" class="w-[15%] flex items-center justify-center">
+                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] h-full"></flechaMobilePerfil>
+            </div>
+            
+
+            <h1  v-if="screenWidth >=500" style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
+                class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 
+                w-max max-sm:w-[80%] mobile:w-[50%]  max-miniMobile:pr-8 max-miniMobile:mb-8 max-mobile:pr-14 max-mobile:mb-6 ">
+                {{ $t('privacidade.Privacidade') }}
             </h1>
+
+            <h1 v-else style="font-family:var(--fonteTitulo);font-size: var(--fonteTitulo);"
+                class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 
+                w-max max-sm:w-[80%] mobile:w-[50%]  max-miniMobile:pr-8 max-miniMobile:mb-8 max-mobile:pr-14 max-mobile:mb-6 ">
+                {{ $t('privacidade.Privacidade') }}
+            </h1>
+
         </div>
-        <div class="pl-32 items-center">
+        <div class=" flex ml-32 max-md:ml-0">
             <div class="flex justify-start">
-                <div style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" 
-                class="flex flex-col gap-10">
-                    <div class="flex justify-between items-center gap-5">
+                <div style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
+                    class="flex flex-col gap-10">
+                    <!-- <div class="flex justify-between items-center gap-5">
                         <span 
-                        class="text-xl">
+                        class="">
                         {{ $t('privacidade.Permitir que visualizem seus projetos') }}
                         </span>
                         <CheckBox 
@@ -21,48 +34,32 @@
                         tipo="toggle" 
                         el-id="visualizacaoProjeto" 
                         @envia-valor="visualizacaoProjeto($event)" />
+                    </div> -->
+                    <div class="flex justify-between items-center gap-5">
+                        <span class="">
+                            {{ $t('privacidade.Permitir que visualizem seu email') }}
+                        </span>
+                        <CheckBox :key="isVisualizaEmail.valueOf()" :checked="gerarBooleano('visualizacaoEmail')"
+                            tipo="toggle" el-id="visualizacaoEmail" @envia-valor="visualizacaoEmail($event)" />
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span 
-                        class="text-xl">
-                        {{ $t('privacidade.Permitir que visualizem seu email') }}
+                        <span class="">
+                            {{ $t('privacidade.Permitir que visualizem suas equipes') }}
                         </span>
-                        <CheckBox 
-                        :key="isVisualizaEmail.valueOf()"
-                        :checked="gerarBooleano('visualizacaoEmail')" 
-                        tipo="toggle" 
-                        el-id="visualizacaoEmail" 
-                        @envia-valor="visualizacaoEmail($event)" />
+                        <CheckBox :key="isVisualizaEquipes.valueOf()" :checked="gerarBooleano('visualizacaoEquipes')"
+                            tipo="toggle" el-id="visualizacaoEquipes" @envia-valor="visualizacaoEquipes($event)" />
                     </div>
                     <div class="flex justify-between items-center gap-5">
-                        <span 
-                        class="text-xl">
-                        {{ $t('privacidade.Permitir que visualizem suas equipes') }}
+                        <span class="">
+                            {{ $t('privacidade.Permitir que visualizem seu perfil') }}
                         </span>
-                        <CheckBox 
-                        :key=" isVisualizaEquipes.valueOf()" 
-                        :checked="gerarBooleano('visualizacaoEquipes')"
-                        tipo="toggle" 
-                        el-id="visualizacaoEquipes" 
-                        @envia-valor="visualizacaoEquipes($event)" />
+                        <CheckBox :key="isVisualizaPerfil.valueOf()" :checked="gerarBooleano('visualizacaoPerfil')"
+                            tipo="toggle" el-id="visualizacaoPerfil" @envia-valor="visualizacaoPerfil($event)" />
                     </div>
-                    <div class="flex justify-between items-center gap-5">
-                        <span 
-                        class="text-xl">
-                        {{ $t('privacidade.Permitir que visualizem seu perfil') }}
-                        </span>
-                        <CheckBox 
-                        :key="isVisualizaPerfil.valueOf()"
-                        :checked="gerarBooleano('visualizacaoPerfil')" 
-                        tipo="toggle" 
-                        el-id="visualizacaoPerfil" 
-                        @envia-valor="visualizacaoPerfil($event)" />
-                    </div>
-                    "permitir Notificação a fazer"
                 </div>
             </div>
         </div>
-        
+
     </div>
 </template>
 
@@ -71,88 +68,99 @@ import CheckBox from '../components/checkBox.vue'
 import VueCookies from 'vue-cookies';
 import { perfilStore } from '../stores/perfilStore';
 import { conexaoBD } from '../stores/conexaoBD.js';
-import { onBeforeMount, onMounted,ref } from 'vue';
+import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Usuario } from '../models/usuario';
+import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 const perfil = perfilStore()
-const conexao=conexaoBD()
-const {fonteTitulo} = storeToRefs(perfil)
-const {fonteCorpo} = storeToRefs(perfil)
-let usuario=ref()
-let isVisualizaEmail=ref(false)
-let isVisualizaEquipes=ref(false)
-let isVisualizaPerfil=ref(false)
-let isVisualizaProjetos=ref(false)
+const conexao = conexaoBD()
+const { fonteTitulo } = storeToRefs(perfil)
+const { fonteCorpo } = storeToRefs(perfil)
+let usuario = ref()
+let isVisualizaEmail = ref(false)
+let isVisualizaEquipes = ref(false)
+let isVisualizaPerfil = ref(false)
+let isVisualizaProjetos = ref(false)
+const screenWidth = ref(window.innerWidth)
 
-function visualizacaoProjeto(valor){ 
-    console.log(valor);   
-    perfil.isVisualizacaoProjeto=valor.valor
-    usuario.value.configuracao.isVisualizaProjetos=
-    perfil.isVisualizacaoProjeto
-    conexao.atualizar(usuario.value,'/usuario')
+watch(() => window.innerWidth, () => {
+    screenWidth.value = window.innerWidth
+})
+
+function visualizacaoProjeto(valor) {
+    console.log(valor);
+    perfil.isVisualizacaoProjeto = valor.valor
+    usuario.value.configuracao.isVisualizaProjetos =
+        perfil.isVisualizacaoProjeto
+    conexao.atualizar(usuario.value, '/usuario')
     // VueCookies.set('isVisualizacaoProjeto',JSON.stringify(perfil.isVisualizacaoProjeto))
 }
-function visualizacaoEquipes(valor){
-    console.log(valor);   
-    perfil.isVisualizacaoEquipe=valor.valor
-    usuario.value.configuracao.isVisualizaEquipes=
-    perfil.isVisualizacaoEquipe
-    conexao.atualizar(usuario.value,'/usuario')
+
+function visualizacaoEquipes(valor) {
+    console.log(valor);
+    perfil.isVisualizacaoEquipe = valor.valor
+    usuario.value.configuracao.isVisualizaEquipes =
+        perfil.isVisualizacaoEquipe
+    conexao.atualizar(usuario.value, '/usuario')
     // VueCookies.set('isVisualizacaoEquipe',JSON.stringify(perfil.isVisualizacaoEquipe))
 
 }
-function visualizacaoEmail(valor){
-    console.log(valor);   
-    perfil.isVisualizacaoEmail=valor.valor
-    usuario.value.configuracao.isVisualizaEmail=
-    perfil.isVisualizacaoEmail
-    conexao.atualizar(usuario.value,'/usuario')
-    // VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
-}
-function visualizacaoPerfil(valor){
-    console.log(valor);   
-    perfil.isVisualizacaoPerfil=valor.valor
-    usuario.value.configuracao.isVisualizaPerfil=
-    perfil.isVisualizacaoPerfil
-    conexao.atualizar(usuario.value,'/usuario')
+
+function visualizacaoEmail(valor) {
+    console.log(valor);
+    perfil.isVisualizacaoEmail = valor.valor
+    usuario.value.configuracao.isVisualizaEmail =
+        perfil.isVisualizacaoEmail
+    conexao.atualizar(usuario.value, '/usuario')
     // VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
 }
 
-function gerarBooleano(id){
+function visualizacaoPerfil(valor) {
+    console.log(valor);
+    perfil.isVisualizacaoPerfil = valor.valor
+    usuario.value.configuracao.isVisualizaPerfil =
+        perfil.isVisualizacaoPerfil
+    conexao.atualizar(usuario.value, '/usuario')
+    // VueCookies.set('isVisualizacaoEmail',JSON.stringify(perfil.isVisualizacaoEmail))
+}
+
+function gerarBooleano(id) {
     console.log(id);
-    if(id=='visualizacaoPerfil') {
+    if (id == 'visualizacaoPerfil') {
         return isVisualizaPerfil.value
-    }else if(id=='visualizacaoEquipes'){
+    } else if (id == 'visualizacaoEquipes') {
         return isVisualizaEquipes.value
-    }else if(id=='visualizacaoEmail'){
+    } else if (id == 'visualizacaoEmail') {
         return isVisualizaEmail.value
-    }else if(id=='visualizacaoProjeto'){
+    } else if (id == 'visualizacaoProjeto') {
         return isVisualizaProjetos.value
     }
-    
+
 }
-onBeforeMount(async()=>{
-    
+onBeforeMount(async () => {
+
 
 })
-onMounted(async()=>{
-    usuario.value=
+
+onMounted(async () => {
+    usuario.value =
         await conexao.buscarUm(
             JSON.parse(
-                VueCookies.get('IdUsuarioCookie')),'/usuario')
+                VueCookies.get('IdUsuarioCookie')), '/usuario')
     console.log(usuario.value.configuracao);
-    isVisualizaEmail.value=usuario.value.configuracao.isVisualizaEmail
-    isVisualizaEquipes.value=usuario.value.configuracao.isVisualizaEquipes
-    isVisualizaPerfil.value=usuario.value.configuracao.isVisualizaPerfil
-    isVisualizaProjetos.value=usuario.value.configuracao.isVisualizaProjetos
+    isVisualizaEmail.value = usuario.value.configuracao.isVisualizaEmail
+    isVisualizaEquipes.value = usuario.value.configuracao.isVisualizaEquipes
+    isVisualizaPerfil.value = usuario.value.configuracao.isVisualizaPerfil
+    isVisualizaProjetos.value = usuario.value.configuracao.isVisualizaProjetos
     console.log(isVisualizaProjetos.value);
     console.log(isVisualizaPerfil.value);
     console.log(isVisualizaEquipes.value);
     console.log(isVisualizaEmail.value);
     VueCookies.config('30d')
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
 })
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

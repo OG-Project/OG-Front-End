@@ -20,7 +20,7 @@
                                         tipo="obrigatorio"
                                         @updateModelValue="(e)=> {
                                                 console.log(e)
-                                                nome.value=e
+                                                nome=e
                                         }"
                                         />
                                 </div>
@@ -131,10 +131,12 @@ function alterarInformacoes(){
         console.log(PerfilStore.username)
         console.log(PerfilStore.sobrenome)
         console.log(PerfilStore.dataDeNascimento)
+        usuario.value.nome=nome.value
         usuario.value.email=PerfilStore.email
         usuario.value.username=PerfilStore.username
         usuario.value.sobrenome=PerfilStore.sobrenome
         usuario.value.dataNascimento=PerfilStore.dataDeNascimento
+        conexao.atualizar(usuario.value,'/usuario')
         editar.value=!editar.value
 
 }

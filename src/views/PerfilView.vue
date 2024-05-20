@@ -1,6 +1,7 @@
 <template>
     <alterarSenha v-if="popUpSenha"></alterarSenha>
     <alterarEmail v-if="popUpEmail"></alterarEmail>
+    <ConfirmaPopUp v-if="popUpDeletar"></ConfirmaPopUp>
     <div class="flex justify-center flex-wrap ">
         <div class="flex bg-[var(--backgroundItems)] flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
@@ -36,7 +37,7 @@
                     
                     <div v-if="ishover" 
                     style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
-                    class="absolute flex bg-gray-400 px-2 py-1 rounded-full items-center text-black">
+                    class="absolute flex bg-[var(--roxo)] px-2 py-1 rounded-full items-center text-black">
                         <span class=" text-[var(--fonteCor)] ">Alterar Foto</span>
                         <iconLapisDinamic  class="
                          bg-cover 
@@ -59,7 +60,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/informacoes') }">
-                    Informações
+                    {{ $t('informacoes.Informações') }}
                 </div>
                 <div @click="seguranca()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -70,7 +71,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/seguranca') }">
-                    Segurança
+                    {{ $t('seguranca.Segurança') }}
                 </div>
                 <div @click="acessibilidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -81,7 +82,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/acessibilidade') }">
-                    Acessibilidade
+                    {{ $t('acessibilidade.Acessibilidade') }}
                 </div>
                 <div @click="privacidade()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -92,7 +93,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/privacidade') }">
-                    Privacidade
+                    {{ $t('privacidade.Privacidade') }}
                 </div>
                 <div @click="aparencia()" class="bg-[var(--roxo)] medioId 
                     text-white 
@@ -103,7 +104,7 @@
                     items-center
                     cursor-pointer" 
                     :class="{ 'active': identificarRota(route.path, '/perfil/aparencia') }">
-                    Aparência
+                    {{ $t('aparencia.Aparência') }}
                 </div>
 
             </div>
@@ -124,7 +125,7 @@ import { perfilStore } from '../stores/perfilStore';
 import Botao from '../components/Botao.vue'
 import router from '../router';
 import iconLapisDinamic from '../imagem-vetores/icon-lapisDinamic..vue';
-
+import ConfirmaPopUp from '../components/ConfirmaPopUp.vue'
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
 import { onBeforeMount, onMounted, ref , computed, onUnmounted } from 'vue';
@@ -134,7 +135,7 @@ import { conexaoBD } from '../stores/conexaoBD';
 import { useFileDialog } from '@vueuse/core'
 
 const perfil = perfilStore()
-const { popUpSenha, popUpEmail } = storeToRefs(perfil)
+const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(perfil)
 const route = useRoute()
 const conexao = conexaoBD()
 const { files, open, reset, onChange } = useFileDialog({

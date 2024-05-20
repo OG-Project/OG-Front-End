@@ -3,6 +3,7 @@ import { conexaoBD } from './conexaoBD'
 import VueCookies from "vue-cookies";
 import router from "@/router";
 import { webSocketStore } from '../stores/webSocket.js'
+import { criaHistoricoStore } from '../stores/criaHistorico.js'
 
 export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
   state: () => {
