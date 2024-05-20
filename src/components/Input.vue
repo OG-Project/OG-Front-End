@@ -1,27 +1,13 @@
 <template>
-<div class=""
-style="font-family: var(--fonteCorpo);">
-    <div class="styleInputPadraoIcon" 
-        v-if="icon!='null' && direcao!='direita' && tipoInput!='float'" 
-        :style="estilizaDivInput">
-        <div 
-        class=" cursor-pointer flex items-center justify-center">
-            <img 
-            :src=icon 
-            :style="tamanhoIcon" 
-            class="flex items-center justify-center">
-        </div>
-            <input 
-            :type="tipo" 
-            :style="{ ...estilizaInput, 'max-width': '100%' }" 
-            id="inputStyle" 
-            :disabled=desabilitado 
-            :value="modelValue"
-            @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('updateModelValue', $event.target.value)" 
-            :placeholder=conteudoInput > 
-            
-        <div class="flex items-center justify-center">
+    <div class="" style="font-family: var(--fonteCorpo);">
+        <div class="styleInputPadraoIcon" v-if="icon != 'null' && direcao != 'direita' && tipoInput != 'float'"
+            :style="estilizaDivInput">
+            <div class=" cursor-pointer flex items-center justify-center">
+                <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+            </div>
+            <input :type="tipo" :style="{ ...estilizaInput, 'max-width': '100%' }" id="inputStyle"
+                :disabled=desabilitado :value="modelValue" @focus="$emit('clickInput', perfil.el = $event.target)"
+                @input="$emit('updateModelValue', $event.target.value)" :placeholder=conteudoInput>
 
                 <svgIconMic @click="mic" v-show="isVoiceMaker" class="  
             *:fill-[var(--fonteCor)]
@@ -60,10 +46,37 @@ style="font-family: var(--fonteCorpo);">
             class="peer" 
             placeholder=" "  > 
             <div class="flex items-center justify-center">
-                <svgIconMic 
-                @click="mic" 
-                v-show="isVoiceMaker" 
-                class=" 
+
+                <svgIconMic @click="mic" v-show="isVoiceMaker" class="  
+            *:fill-[var(--fonteCor)]
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+                <svgIconKeyboard @click="teclado" v-show="isTecladoVirtual" class=" 
+            *:fill-[var(--fonteCor)]
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            </div>
+        </div>
+
+        <!-- fazer input com botão com um ou dois -->
+
+
+        <div class="styleInputPadrao flex items-center" v-if="icon == 'null' & tipoInput == 'float'">
+            <div class="estiloPlaceHolder">
+
+                <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
+                    @focus="$emit('clickInput', perfil.el = $event.target)"
+                    @input="$emit('updateModelValue', $event.target.value)" class="peer" placeholder=" ">
+                <div class="flex items-center justify-center">
+                    <svgIconMic @click="mic" v-show="isVoiceMaker" class=" 
                 *:fill-[var(--fonteCor)] 
                 cursor-pointer 
                 w-[2.5vw] 
@@ -120,18 +133,40 @@ style="font-family: var(--fonteCorpo);">
             flex 
             items-center 
             justify-center" />
+            </div>
+            <div>
+                <input :type="tipo" :style="estilizaInput" id="inputStyle" :disabled=desabilitado :value="modelValue"
+                    @focus="$emit('clickInput', perfil.el = $event.target)"
+                    @input="$emit('updateModelValue', $event.target.value)" :placeholder=conteudoInput>
+            </div>
         </div>
-        <div>
-            <input 
-            :type="tipo" 
-            :style="estilizaInput" 
-            id="inputStyle" 
-            :disabled=desabilitado 
-            :value="modelValue"
-            @focus="$emit('clickInput',perfil.el=$event.target)"
-            @input="$emit('updateModelValue', $event.target.value)" 
-            :placeholder=conteudoInput  > 
+
+        <div class="styleInputPadraoIconDireita " :class="styleInputPadraoDireita"
+            v-if="direcao == 'direita' && tipoInput != 'float'" :style="estilizaDivInput">
+            <input :type="tipo" :placeholder=conteudoInput :style="estilizaInput" id="inputStyle" :disabled=desabilitado
+                :value="modelValue" @focus="$emit('clickInput', perfil.el = $event.target)"
+                @input="$emit('updateModelValue', $event.target.value)">
+            <div class="flex items-center justify-center">
+                <img :src=icon :style="tamanhoIcon" class="flex items-center justify-center">
+                <svgIconMic @click="mic" v-show="isVoiceMaker" class="  
+            *:fill-[var(--fonteCor)]
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+                <svgIconKeyboard @click="teclado" v-show="isTecladoVirtual" class=" 
+            *:fill-[var(--fonteCor)]
+            cursor-pointer 
+            w-[2.5vw] 
+            h-[2.5vh] 
+            flex 
+            items-center 
+            justify-center" />
+            </div>
         </div>
+        <label v-if="props.isInvalido" class="text-red-600 absolute">{{ props.textoInvalido }}</label>
     </div>
     
     <div 
@@ -173,7 +208,6 @@ style="font-family: var(--fonteCorpo);">
             </div>
         </div>
         <label v-if="props.isInvalido" class="text-red-600 absolute">{{ props.textoInvalido }}</label>
-    </div>
 </template>
 
 <script setup>
@@ -255,7 +289,6 @@ function heigthResponsivo() {
     }
     return "6vh"
 }
-
 const tamanhoIcon = {
     width: "50%",
     height: "50%",
@@ -354,23 +387,13 @@ function hoverStyle(){
     
 </script>
 <style lang="scss">
- 
+.Invalido {
+    @apply border-4 border-transparent *:*:text-red-600 border-b-red-600 px-2 max-w-max w-min border-b-4 hover:rounded-[4px] hover:border-4 focus-within:border-red-600 focus-within:border-4 focus-within:rounded-[4px];
+}
 
-    .Invalido{
-        @apply
-         border-4 
-        border-transparent
-        *:*:text-red-600
-        border-b-red-600    
-        px-2
-        max-w-max
-        w-min
-        border-b-4
-        hover:rounded-[4px] hover:border-4
-         focus-within:border-red-600 
-        focus-within:border-4 focus-within:rounded-[4px];
-    }
-
+.styleInputPadrao {
+    @apply border-4 border-transparent border-b-[var(--roxo)] px-2 max-w-max w-min border-b-4 hover:rounded-[4px] hover:border-4 focus-within:border-[var(--roxo)] focus-within:border-4 focus-within:rounded-[4px];
+}
 .styleInputPadrao {
     @apply border-4 border-transparent border-b-[var(--roxo)] px-2 max-w-max w-min border-b-4 hover:rounded-[4px] hover:border-4 focus-within:border-[var(--roxo)] focus-within:border-4 focus-within:rounded-[4px];
 

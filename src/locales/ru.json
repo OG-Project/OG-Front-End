@@ -211,7 +211,30 @@
 },
 "confirmarPopUp": {
   "confirmar": "Вы уверены?"
-}
+},
+"historicoTarefa": {
+  "deletarSubTarefa": "Удалил подзадачу ",
+  "editou": "Отредактировал задачу ",
+  "criaTarefa": "Создал задачу ",
+  "criaSubTarefa": "Создал подзадачу ",
+  "status": "Изменил статус ",
+  "criaComentario": "Прокомментировал задачу ",
+  "deletaComentario": "Удалил комментарий ",
+  "concluiu": "Завершил подзадачу "
+},
+"historicoProjeto": {
+  "editou": "Отредактировал проект",
+  "criou": "Создал проект",
+  "addResponsavel": "Добавил нового ответственного",
+  "convidouEquipe": "Пригласил команду",
+  "removeEquipe": "Удалил команду",
+  "removeResponsavel": "Удалил ответственного",
+  "status": "Создал новый статус",
+  "propriedade": "Создал свойство",
+  "removeStatus": "Удалил статус",
+  "removePropriedade": "Удалил свойство",
+  "comentario": "Прокомментировал проект",
+  "deletaTarefa": "Удалил задачу"
 
-  
+} 
 }

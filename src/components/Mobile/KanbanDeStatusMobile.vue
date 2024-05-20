@@ -1,11 +1,9 @@
 <template>
-    <div class="w-min h-[25%] justify-start flex gap-[5vw]">
-        {{ console.log(lista) }}
-        <div v-for="status of lista" class="w-auto flex h-full">
+    <div class="h-[25%] justify-center flex gap-[5vw]">
+        <div v-for="status of lista" class="w-[120px] flex flex-wrap h-full mb-10">
             <div :style="status.style" @dragover="retornaStatusNovo(status.propriedade)">
-
                 <div
-                    class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
+                    class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[2.5vw] rounded-md">
                     <div class="w-full flex justify-center">
                         {{ status.propriedade.nome }}
                     </div>
@@ -29,7 +27,7 @@
                 </button>
             </div>
         </div>
-        <span class="pr-4 ">
+        <span class="">
 
             <button class="novaPropriedade" @click="abrePopUp()">
                 <h1>+Novo</h1>
@@ -37,7 +35,7 @@
             <div v-if="popUpStatus" class=" w-[100%] h-full flex justify-end">
                 <div class="w-[100%] h-[80%] flex flex-col  justify-center  bg-[var(--backgroundItemsClaros)]">
                     <div class="h-[30%] w-full flex justify-end">
-                        <img src="../imagem-vetores/triangulo.svg">
+                        <img src="../../imagem-vetores/triangulo.svg">
                     </div>
                     <div class="flex flex-row justify-between">
                         <div class="pl-2">
@@ -68,18 +66,18 @@
 
 <script setup>
 import { ref, watch, onMounted } from 'vue';
-import CardTarefas from './cardTarefas.vue';
-import { conexaoBD } from '../stores/conexaoBD';
+import CardTarefas from '../cardTarefas.vue';
+import { conexaoBD } from '../../stores/conexaoBD';
 import VueCookies from "vue-cookies"
 import draggable from "vuedraggable";
 import sortBy from 'sort-by'
-import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca';
-import Botao from '../components/Botao.vue'
-import { funcaoPopUpStore } from '../stores/funcaoPopUp'
+import { criaTarefaEBuscaStore } from '../../stores/criaTarefaEBusca';
+import Botao from '../../components/Botao.vue'
+import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
 import ColorPicker from 'primevue/colorpicker';
 import tinycolor from "tinycolor2";
 import router from '@/router'
-import Input from '../components/Input.vue';
+import Input from '../../components/Input.vue';
 
 let api = conexaoBD()
 let projetoApi = api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
@@ -262,7 +260,7 @@ async function defineListaDePropriedades() {
                 propriedade: status,
                 tarefas: listaDeTarefas,
                 style: listaStyle = {
-                    width: "15vw",
+                    width: "120px",
                     height: "max-content",
                     display: "flex",
                     alignItems: "center",
@@ -289,7 +287,7 @@ function verificaListaVaziaBoolean(tarefas) {
 </script>
 
 <style scoped lang="scss">
-@import url(../assets/main.css);
+@import url(../../assets/main.css);
 
 .divMaior {
     @apply bg-brancoNeve;
@@ -307,7 +305,7 @@ function verificaListaVaziaBoolean(tarefas) {
 }
 
 .novaPropriedade {
-    @apply w-[15vw] h-[50%] bg-[#A79DB0] flex justify-center items-center text-[2vw] p-[3.2vw] bg-[var(--backgroundItemsClaros)];
+    @apply w-[120px] h-[50%] bg-[#A79DB0] flex justify-center items-center text-[2vw] p-[3.2vw] bg-[var(--backgroundItemsClaros)];
     box-shadow: 0px 5px 7px #222222;
 
 }
