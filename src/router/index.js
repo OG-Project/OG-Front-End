@@ -131,6 +131,23 @@ const router = createRouter({
      }
     },
     {
+      path: '/privacidade',
+      name: 'privacidade',
+      component: () => import('../components/componentPrivacidade.vue'),
+      meta:{
+        requiresAuth:true
+      }
+     },
+
+     {
+      path: '/seguranca',
+      name: 'seguranca',
+      component: () => import('../components/componentSeguranca.vue'),
+      meta:{
+        requiresAuth:true
+      }
+     },
+    {
       path:'/perfil',
       name:'Perfil',
       redirect:'/perfil/informacoes',
