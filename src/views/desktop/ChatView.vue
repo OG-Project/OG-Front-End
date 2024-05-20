@@ -20,7 +20,8 @@
                     @click="mudaRota(equipe)">
                     <div v-if="equipe.isSelecionado == true" class="w-[3%] h-full bg-[var(--roxo)]">
                     </div>
-                    <div class="w-[35%] h-[full] flex items-center justify-center" v-if="equipe.equipe.foto != null">
+                    <div class="w-[35%] h-[full] flex items-center justify-center"
+                        v-if="equipe.equipe && equipe.equipe.foto != null">
                         <img class="imgDePerfil"
                             :src="'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados" alt="">
                     </div>
@@ -84,6 +85,7 @@ import router from '@/router';
 import VueCookies from 'vue-cookies';
 import { set } from 'date-fns';
 import { webSocketStore } from '../../stores/webSocket';
+import { Usuario } from '../../models/usuario';
 
 let api = conexaoBD();
 let listaDeConversas = ref([]);
@@ -94,13 +96,13 @@ let corpoDaMensagem = ref("");
 let listaDeMensagens = ref([]);
 let chat = ref({});
 let webSocket = webSocketStore();
-webSocket.url = "ws://localhost:8082/og/webSocket/chat/"+chat.value.id
+webSocket.url = "ws://localhost:8082/og/webSocket/chat/" + chat.value.id
 
 onMounted(async () => {
     usuarioLogado.value = await api.buscarUm(usuarioLogadoId.value, '/usuario')
     if (localStorage.getItem('opcao') != null) {
-        trocaLista(localStorage.getItem('opcao'))
         setTimeout(() => {
+            trocaLista(localStorage.getItem('opcao'))
             defineSeEstaSelecionado()
             DefineListaDeMensagens()
         }, 10);
@@ -110,7 +112,7 @@ onMounted(async () => {
 
 webSocket.esperaMensagem((retorno) => {
     console.log(retorno);
-    if(retorno == "mensagemEnviada"){
+    if (retorno == "mensagemEnviada") {
         console.log("Chegou a mensagem websocket")
         DefineListaDeMensagens()
     }
@@ -128,7 +130,21 @@ async function trocaLista(opcao) {
         opcao2.value = "2";
         localStorage.setItem('opcao', '2')
     } else {
-        listaDeConversas.value = [{ equipe: await api.buscarUm(1, '/usuario') }];
+        await api.procurar('/chat').then((response) => {
+            response.forEach(chat => {
+                chat.usuarios.forEach(usuario => {
+                    console.log(usuario)
+                    if (usuario.id != usuarioLogado.value.id) {
+                        listaDeConversas.value.push({
+
+                            isSelecionado: ref(false),
+                            equipe: 
+                        })
+                    }
+                });
+            });
+        });
+        console.log(listaDeConversas.value)
         opcao2.value = "1";
         localStorage.setItem('opcao', '1')
     }
@@ -167,12 +183,12 @@ function defineSeEstaSelecionado() {
 async function mandaMensagem() {
     let mensagem = {
         criador: {
-            id:usuarioLogado.value.id
+            id: usuarioLogado.value.id
         },
         mensagem: corpoDaMensagem.value,
     }
     console.log(mensagem);
-    await api.cadastrar(mensagem, '/mensagem/'+chat.value.id).then((response) => {
+    await api.cadastrar(mensagem, '/mensagem/' + chat.value.id).then((response) => {
         console.log(response);
         chat.value.mensagens.push(response.data)
     })
@@ -192,22 +208,27 @@ input:focus {
 }
 
 .scrollable {
-    overflow-y: scroll; /* para adicionar uma barra de rolagem vertical */
-    scrollbar-color: "var(--backgroundItemsClaros)"; /* oculta a barra de rolagem padrão do Firefox */
+    overflow-y: scroll;
+    /* para adicionar uma barra de rolagem vertical */
+    scrollbar-color: "var(--backgroundItemsClaros)";
+    /* oculta a barra de rolagem padrão do Firefox */
 }
 
 .scrollable::-webkit-scrollbar {
-    width: 0; /* largura zero para ocultar a barra de rolagem */
+    width: 0;
+    /* largura zero para ocultar a barra de rolagem */
 }
 
 /* Estilos para WebKit (Chrome, Safari, Opera) */
 .scrollable::-webkit-scrollbar-thumb {
-    background-color: transparent; /* cor transparente para ocultar o polegar da barra de rolagem */
+    background-color: transparent;
+    /* cor transparente para ocultar o polegar da barra de rolagem */
 }
 
 /* Estilo para as extremidades da barra de rolagem */
 .scrollable::-webkit-scrollbar-corner {
-    background: transparent; /* cor transparente para ocultar a borda entre as barras de rolagem */
+    background: transparent;
+    /* cor transparente para ocultar a borda entre as barras de rolagem */
 }
 
 /* Estilo para adicionar bordas arredondadas nas extremidades */
