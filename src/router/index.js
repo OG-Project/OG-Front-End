@@ -122,6 +122,14 @@ const router = createRouter({
         requiresAuth:true
       }
      },
+     {
+      path: '/acessibilidade',
+      name: 'acessibilidade',
+      component: () => import('../components/componentAcessibilidade.vue'),
+      meta:{
+        requiresAuth:true
+      }
+     },
     {
       path:'/perfil',
       name:'Perfil',
