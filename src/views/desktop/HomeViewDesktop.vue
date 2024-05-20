@@ -9,23 +9,29 @@
         </div>
         <div class="flex items-center justify-center mt-8 h-[62%] text-white">
           <canvas id="tabela" v-if="tarefasFeitas > 0 || tarefasNaoFeitas > 0"></canvas>
-          <p v-else class="text-2xl" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{ $t('home.no_subtasks') }}</p>
+          <p v-else class="text-2xl" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
+            $t('home.no_subtasks') }}</p>
         </div>
       </div>
       <div class="bg-[var(--backgroundItems)] ml-12 w-[76%] h-[92%] flex items-center justify-end"
         style="box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px">
         <div class="overflow-y-auto h-[100%] w-[75%] flex items-center flex-col">
           <div class="flex justify-center w-full text-4xl mt-8">
-            <p style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);">{{ $t('home.projects') }}</p>
+            <p style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);">{{ $t('home.projects') }}
+            </p>
           </div>
           <div class="flex gap-12 mt-16 flex-wrap justify-center w-[70%] text-4xl">
-            <topicosHome style="font-family:var(--fonteCorpo);" @click="enviaParaTarefasPrincipais()" :nomeDoTopico="$t('home.main_projects')">
+            <topicosHome style="font-family:var(--fonteCorpo);" @click="enviaParaTarefasPrincipais()"
+              :nomeDoTopico="$t('home.main_projects')">
             </topicosHome>
-            <topicosHome style="font-family:var(--fonteCorpo);" :nomeDoTopico="$t('home.daily_projects')" @click="enviaParaTarefasDoDia()">
+            <topicosHome style="font-family:var(--fonteCorpo);" :nomeDoTopico="$t('home.daily_projects')"
+              @click="enviaParaTarefasDoDia()">
             </topicosHome>
-            <topicosHome style="font-family:var(--fonteCorpo);" :nomeDoTopico="$t('home.weekly_projects')" @click="enviaParaTarefasDaSemana()">
+            <topicosHome style="font-family:var(--fonteCorpo);" :nomeDoTopico="$t('home.weekly_projects')"
+              @click="enviaParaTarefasDaSemana()">
             </topicosHome>
-            <topicosHome style="font-family:var(--fonteCorpo);" :nomeDoTopico="$t('home.monthly_projects')" @click="enviaParaTarefasDoMes()">
+            <topicosHome style="font-family:var(--fonteCorpo);" :nomeDoTopico="$t('home.monthly_projects')"
+              @click="enviaParaTarefasDoMes()">
             </topicosHome>
           </div>
         </div>
@@ -89,7 +95,6 @@ async function verificaTarefasFeitas() {
     console.log(tarefasFeitas.value);
     console.log(tarefasNaoFeitas.value);
     porcentagemTarefasFeitas();
-    criaGrafico();
   });
 }
 
@@ -147,21 +152,10 @@ function enviaParaTarefasDoMes() {
 
 
 onMounted(() => {
-  if(VueCookies.get("JWT") != null){
+  if (VueCookies.get("JWT") != null) {
     colocaUsuarioId()
   }
- 
-}
-)
- 
-function colocaUsuarioId(){
-  console.log("teste")
-  banco.getCookie().then((res) =>{
-  console.log(res.id)
-  VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
   verificaTarefasFeitas();
- })
-}
   const data = {
     labels: ["Feito", "Não Feito"],
     datasets: [
@@ -171,7 +165,7 @@ function colocaUsuarioId(){
       },
     ],
   };
-  
+
   const config = {
     type: "doughnut",
     data: data,
@@ -185,9 +179,20 @@ function colocaUsuarioId(){
       },
     },
   };
-  
+
   const ctx = document.getElementById("tabela");
-  window.myDoughnut = new Chart(ctx, config);
+  const grafico = new Chart(ctx, config);
+}
+)
+
+function colocaUsuarioId() {
+  console.log("teste")
+  banco.getCookie().then((res) => {
+    console.log(res.id)
+    VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+    verificaTarefasFeitas();
+  })
+}
 
 
 </script>
