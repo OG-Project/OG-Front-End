@@ -2,44 +2,42 @@
     <span class="overflow-y-scroll overflow-x-hidden items-center flex flex-col w-full h-[72%]">
         <div class="h-full w-[80%] flex flex-col justify-start">
             <div class="h-full flex flex-col w-full items-center">
-                <span class="absolute flex items-start justify-center h-[30%] w-full top-0">
-                    <div class=" w-[80%] h-[100%] flex flex-col items-center bg-[#FBFBFB]">
+                <span class="absolute flex items-start justify-center h-[25%] w-full top-0">
+                    <div class=" w-[80%] h-[100%] flex flex-col items-center bg-[var(--backgroundItems)]">
                         <div class="w-full h-full">
                             <div class="w-[100%] h-[50%] flex flex-row">
-                                <div class="w-[70%] flex flex-row gap-4 text-[28px] items-start">
-                                    <button @click="setaEsquerda()" class="h-full w-[10%]">
+                                <div class="w-[70%] flex flex-row gap-4 text-[160%] items-start ">
+                                    <button @click="setaEsquerda()" class="h-full w-[5%]">
                                         <div
-                                            class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                            class="w-[27px] h-[27px] rounded-full border-[1px] flex justify-center items-center">
 
                                             <div class="setaEsquerda"></div>
                                         </div>
                                     </button>
-                                    <div class="flex flex-row h-full items-center w-[35%]">
+                                    <div class="flex flex-row h-full items-center justify-center w-[40%]">
                                         <div>
                                             {{ format(data, "MMMM", {
                                         locale: ptBR
                                     }).charAt(0).toUpperCase() +
-                                        format(data, "MMMM", { locale: ptBR }).slice(1) + ' ‎ ' }}
-                                        </div>
-                                        <div>
-                                            {{ " de " + getYear(data) }}
+                                        format(data, "MMMM", { locale: ptBR }).slice(1)}}
+                                        {{ " de " + getYear(data) }}
                                         </div>
                                     </div>
 
-                                    <button @click="setaDireita()" class="h-full w-[10%]">
+                                    <button @click="setaDireita()" class="h-full w-[5%] justify-end">
                                         <div
-                                            class="w-[27px] h-[27px] rounded-full border-[1px] border-black flex justify-center items-center">
+                                            class="w-[27px] h-[27px] rounded-full border-[1px] flex justify-center items-center">
                                             <div class="setaDireita"></div>
                                         </div>
                                     </button>
                                 </div>
-                                <div class="w-[50%] flex justify-end items-center text-[42px]">
+                                <div class="w-[50%] flex justify-end items-center text-[240%]">
                                     {{ horaAtual }}
                                 </div>
                             </div>
                             <div class="flex justify-center w-full h-[50%]">
                                 <div class="w-[20%] flex flex-col justify-end items-center">
-                                    <button @click="mudaIntervalo()" class=" bg-gray-300 w-[90%] h-[60%] rounded-xl">
+                                    <button @click="mudaIntervalo()" class=" bg-[var(--backgroundItemsClaros)] w-[90%] h-[60%] rounded-xl">
                                         {{ visualizacao }}
                                     </button>
                                     <div>
@@ -71,16 +69,14 @@
                     </div>
                 </span>
                 <div class="linhaDoTempo ">
-
                     <div v-if="tipoDeIntervalo == 1" v-for="hora of diaSelecionado.listaDeHoras.value"
                         class=" h-[3.8%] flex gap-2" @dragover="retornaHoraEIndice(hora)">
-
                         <div :class="'colunaDeHoras h-[10vh] flex items-start justify-center rounded-none ' +
                                         (hora == '00:00' ? 'rounded-t-2xl' : hora == '23:00' ? 'rounded-b-2xl' : '')">
                             {{ hora }}
                         </div>
                         <div
-                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
+                            class="w-full bg-[var(--backgroundItemsClaros)] h-[90%] border-2 border-y-0 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
                             <div v-for="(tarefa, indice) of diaSelecionado.listaDeTarefas.value" class=" flex flex-row "
                                 @dragover="retornaHoraEIndice(hora, indice)">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
@@ -105,7 +101,7 @@
                             {{ hora }}
                         </div>
                         <div
-                            class="w-full bg-gray-200 h-[90%] border-2 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
+                            class="w-full bg-[var(--backgroundItemsClaros)] h-[90%] border-2 border-y-0 border-r-roxoEscuro border-l-roxoEscuro flex flex-row">
                             <div v-for="(tarefa, indice) of diaSelecionado.listaDeTarefas.value" class="flex flex-row"
                                 @dragover="retornaHoraEIndice(hora, indice)">
                                 <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
@@ -503,7 +499,7 @@ function mudaIntervalo() {
 @layer components {
 
     .colunaDeHoras {
-        @apply rounded-[1.7vh] w-[5%] max-h-min bg-gray-300 flex gap-[8vh]
+        @apply rounded-[1.7vh] w-[5%] max-h-min bg-[var(--backgroundItemsClaros)] flex gap-[8vh]
     }
 
     .popUp {
@@ -531,8 +527,8 @@ function mudaIntervalo() {
     .setaEsquerda {
         width: 10px;
         height: 10px;
-        border-left: 2px solid black;
-        border-bottom: 2px solid black;
+        border-left: 2px solid ;
+        border-bottom: 2px solid ;
         border-radius: 10%;
         transform: rotate(45deg);
     }
@@ -540,14 +536,14 @@ function mudaIntervalo() {
     .linhaDoTempo {
         width: 100%;
         max-height: min-content;
-        margin-top: 17%;
+        margin-top: 22vh;
     }
 
     .setaDireita {
         width: 10px;
         height: 10px;
-        border-right: 2px solid black;
-        border-top: 2px solid black;
+        border-right: 2px solid ;
+        border-top: 2px solid ;
         border-radius: 10%;
         transform: rotate(45deg);
     }

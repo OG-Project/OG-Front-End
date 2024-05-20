@@ -31,74 +31,50 @@ const router = createRouter({
 
     },
     {
-          path:'/projeto',
-          name:'Projeto',
-          redirect:'/projeto/lista',
-          component: () => import('../views/ProjetoView.vue'),
-          children:[
-            {
-              path:'kanban',
-              name:'Kanban',
-              component: ()=>import('../components/KanbanDeStatus.vue'),
-              meta:{
-                requiresAuth:true
-              }
-            },
-            {
-              path:'lista',
-              name:'Lista',
-              component: ()=>import('../components/CardTarefaList.vue'),
-              meta:{
-                requiresAuth:true
-              }
-            },
-            {
-              path:'timeline',
-              name:'TimeLine',
-              component: ()=>import('../components/timeLine.vue'),
-              meta:{
-                requiresAuth:true
-              }
-            },
-            {
-              path:'calendario',
-              name:'Calendario',
-              component: ()=>import('../components/calendario.vue'),
-              meta:{
-                requiresAuth:true
-              }
-            },
-            {
-              path:'aparencia',
-              name:'Aparencia',
-              component: ()=>import('../components/componentAparencia.vue'),
-              meta:{
-                requiresAuth:true
-              }
-            }
-          ],
-          meta:{
-            requiresAuth:true
-          }
-     },
-     
-     {
-          path: '/equipe',
-          name: 'Equipe',
-          component: () => import('../views/EquipeHomeView.vue'),
-          meta:{
-            requiresAuth:true
-          }
-     },
-     {
-          path: '/equipe/telaInicial',
-          name: 'telaInicial',
-          component: () => import('../views/EquipeTelaInicialView.vue'),
-          meta:{
-            requiresAuth:true
-          }
-     },
-     {
+      path: '/projeto',
+      name: 'Projeto',
+      redirect: '/projeto/lista',
+      component: () => import('../views/ProjetoView.vue'),
+      children: [
+        {
+          path: 'kanban',
+          name: 'Kanban',
+          component: () => import('../components/KanbanDeStatus.vue')
+        },
+        {
+          path: 'lista',
+          name: 'Lista',
+          component: () => import('../components/CardTarefaList.vue')
+        },
+        {
+          path: 'timeline',
+          name: 'TimeLine',
+          component: () => import('../components/timeLine.vue')
+        },
+        {
+          path: 'calendario',
+          name: 'Calendario',
+          component: () => import('../components/calendario.vue')
+        },
+        {
+          path: 'aparencia',
+          name: 'Aparencia',
+          component: () => import('../components/componentAparencia.vue')
+        }
+      ]
+    },
+
+    {
+      path: '/equipe',
+      name: 'Equipe',
+      component: () => import('../views/EquipeHomeView.vue')
+    },
+    {
+      path: '/equipe/telaInicial',
+      name: 'telaInicial',
+      component: () => import('../views/EquipeTelaInicialView.vue')
+    },
+    {
       path: '/criaProjeto',
       name: 'criaProjeto',
       component: () => import('../views/CriarProjetoView.vue'),
@@ -152,31 +128,31 @@ const router = createRouter({
       name:'Perfil',
       redirect:'/perfil/informacoes',
       component: () => import('../views/PerfilView.vue'),
-      children:[
+      children: [
         {
-          path:'informacoes',
-          name:'Informacoes',
-          component: ()=>import('../components/componentInformacoes.vue')
+          path: 'informacoes',
+          name: 'Informacoes',
+          component: () => import('../components/componentInformacoes.vue')
         },
         {
-          path:'acessibilidade',
-          name:'Acessibilidade',
-          component: ()=>import('../components/componentAcessibilidade.vue')
+          path: 'acessibilidade',
+          name: 'Acessibilidade',
+          component: () => import('../components/componentAcessibilidade.vue')
         },
         {
-          path:'seguranca',
-          name:'Seguranca',
-          component: ()=>import('../components/componentSeguranca.vue')
+          path: 'seguranca',
+          name: 'Seguranca',
+          component: () => import('../components/componentSeguranca.vue')
         },
         {
-          path:'privacidade',
-          name:'Privacidade',
-          component: ()=>import('../components/componentPrivacidade.vue')
+          path: 'privacidade',
+          name: 'Privacidade',
+          component: () => import('../components/componentPrivacidade.vue')
         },
         {
-          path:'aparencia',
-          name:'Aparencia',
-          component: ()=>import('../components/componentAparencia.vue')
+          path: 'aparencia',
+          name: 'Aparencia',
+          component: () => import('../components/componentAparencia.vue')
         }
       ],
       meta:{
@@ -191,8 +167,15 @@ const router = createRouter({
       }
     },
     {
-      path:'/chat',
-      component: () => import('../views/desktop/ChatView.vue')
+      path: '/chat',
+      component: () => import('../views/desktop/ChatView.vue'),
+      children: [
+        {
+          path: '/chat/:id',
+          name: 'Chat',
+          component: () => import('../views/desktop/ChatView.vue')
+        },
+      ]
     },
     {
       path: '/projeto/responsavel',
