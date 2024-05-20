@@ -1,13 +1,25 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col  ">
-        <div>
-            <h1 style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" 
-            class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-                {{ $t('acessibilidade.Acessibilidade') }}
-                <!-- {{ configuracao }} -->
-            </h1>
+        
+        <div class="flex flex-row w-full items-center">
+            <div v-if="screenWidth <=768" class="w-[15%] flex items-center justify-center">
+                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] h-full"></flechaMobilePerfil>
+            </div>
+            <div>
+                <h1 v-if="screenWidth >=500" style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);" 
+                class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+                    {{ $t('acessibilidade.Acessibilidade') }}
+                    <!-- {{ configuracao }} -->
+                </h1>
+                <h1 v-else style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" 
+                    class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+                        {{ $t('acessibilidade.Acessibilidade') }}
+                        <!-- {{ configuracao }} -->
+                    </h1>
+            </div>
         </div>
-        <div class="pl-32 items-center">
+        
+        <div class="pl-32 items-center max-mobileGrande:pl-12">
             <div class="flex justify-start">
 
                 <div style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" 
@@ -48,10 +60,25 @@ import { storeToRefs } from 'pinia';
 import { conexaoBD } from '../stores/conexaoBD';
 import { watch } from 'vue';
 import { onUnmounted } from 'vue';
+import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 let perfil = perfilStore()
 let conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
 const { fonteCorpo } = storeToRefs(perfil)
+
+const screenWidth = ref(window.innerWidth)
+
+watch(() => window.innerWidth, () => {
+    screenWidth.value = window.innerWidth
+})
+
+onUnmounted(() => {
+    window.location.reload()
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+})
+
 
 watch(() => VueCookies.get('Idioma'), (valorIdioma) => {
     switch (valorIdioma) {
@@ -111,9 +138,7 @@ let isTecladoVirtual = ref(false)
 let isDigitarVoz = ref(false)
 let usuario = ref({})
 
-onUnmounted(() => {
-    window.location.reload()
-})
+
 
 const listaIdiomas = ref(['Português', 'English', 'Español', '中国人', '日本語', 'Русский']);
 
