@@ -88,11 +88,13 @@ import ConfirmaPopUp from '../components/ConfirmaPopUp.vue'
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
 import { storeToRefs } from 'pinia';
+import router from '../router';
 
 const PerfilStore = perfilStore()
 const conexao = conexaoBD()
 const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(PerfilStore)
 import { useI18n } from 'vue-i18n';
+import { onUpdated } from 'vue';
 const screenWidth = ref(window.innerWidth)
 
 watch(() => window.innerWidth, () => {
@@ -114,6 +116,14 @@ onMounted(async () => {
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
     })
+})
+onUpdated(()=>{
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/seguranca')
+    }
 })
 
 function abrePopUp(tipo) {
