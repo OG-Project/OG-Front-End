@@ -194,11 +194,16 @@ import { useRoute } from 'vue-router';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router/index'
 import sair from '../imagem-vetores/botao-x.svg'
+import { criaHistoricoStore } from '../stores/criaHistorico'
+
+const criaHistorico = criaHistoricoStore();
 const botaoSair = sair;
 const instance = getCurrentInstance();
 const route = useRoute();
 const conexao = conexaoBD();
 const funcaoPopUp = funcaoPopUpStore();
+let usuarioId = VueCookies.get('IdUsuarioCookie')
+let idProjetoHistorico = VueCookies.get('IdProjetoAtual');
 let opcoesSelect = ref([]);
 let opcaoSelecionadaNaTabela = ref("");
 let buscarPor = ref("");
@@ -220,8 +225,10 @@ let tarefasAtribuidas = false
 let listaPropriedadesBackEnd = [];
 let tipoPropriedadeSelect = ref([])
 let usuario = ref()
+let usuarioHistorico = ref();
 let configuracao = ref()
-onMounted(() => {
+let projetoHistorico = ref();
+onMounted(async () => {
     verificaEdicaoProjeto();
     buscaPropriedadeCookies();
     buscarStatusCookies();
@@ -233,6 +240,8 @@ onMounted(() => {
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
     })
+    usuarioHistorico.value = await conexao.buscarUm(usuarioId, "/usuario")
+    projetoHistorico.value = await conexao.buscarUm(idProjetoHistorico, "/projeto")
 
     criaStatusPadrao()
 }
@@ -502,9 +511,12 @@ function criaStatusBack() {
             cor: corStatus.value
         }
         auxParaCriarStatus.push(statusCriado);
+        criaHistorico.criaHistoricoProjeto("Criou um status novo", projetoHistorico.value, usuarioHistorico.value)
         criaStatusCookies(statusCriado)
+        
         mandaStatusBack();
     }
+   
 }
 
 function criaPropriedadeBack() {
@@ -513,9 +525,10 @@ function criaPropriedadeBack() {
             nome: nomePropriedade.value,
             tipo: tipoPropriedade.value
         }
+        criaHistorico.criaHistoricoProjeto("Criou uma propriedade", projetoHistorico.value, usuarioHistorico.value)
         criaPropriedadeCookies(propriedadeCriada)
     }
-
+    
 }
 
 function atualizaStatus(statusRecebido) {
@@ -619,6 +632,7 @@ async function removeStatus(statusRecebe) {
     let indice = listaStatus.value.findIndex((obj) => obj.status.nome === statusRecebe.status.nome);
     if (indice !== -1) {
         listaStatus.value.splice(indice, 1);
+        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removeStatus') + statusRecebe.status.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     if (!projetoEdita.value) {
         criaStatusCookies()
@@ -630,6 +644,7 @@ async function removePropriedade(propriedadeRecebida) {
     let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome && obj.propriedade.tipo == propriedadeRecebida.propriedade.tipo);
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
+        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removePropriedade') + propriedadeRecebida.propriedade.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     criaPropriedadeCookies()
 

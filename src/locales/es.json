@@ -210,6 +210,33 @@
 },
 "confirmarPopUp": {
   "confirmar": "¿Estás seguro?"
+},
+"historicoTarefa": {
+  "deletarSubTarefa": "Eliminó la subtarea ",
+  "editou": "Editó la tarea ",
+  "criaTarefa": "Creó la tarea ",
+  "criaSubTarefa": "Creó la subtarea ",
+  "status": "Cambiado el estado ",
+  "criaComentario": "Comentó en la tarea ",
+  "deletaComentario": "Eliminó un comentario ",
+  "concluiu": "Concluyó la subtarea "
+},
+"historicoProjeto": {
+  "editou": "Editó el proyecto",
+  "criou": "Creó el proyecto",
+  "addResponsavel": "Añadió un nuevo responsable",
+  "convidouEquipe": "Invitó a un equipo",
+  "removeEquipe": "Eliminó un equipo",
+  "removeResponsavel": "Eliminó al responsable",
+  "status": "Creó un nuevo estado",
+  "propriedade": "Creó una propiedad",
+  "removeStatus": "Eliminó el estado",
+  "removePropriedade": "Eliminó la propiedad",
+  "comentario": "Comentó en el proyecto",
+  "deletaTarefa": "Eliminó la tarea"
+
 }
+
+
 
 }

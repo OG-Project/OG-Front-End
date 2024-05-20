@@ -17,8 +17,8 @@
                                     :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
                                 <equipe class="imagemEquipe" v-else></equipe>
                                 <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{
-                    truncarNome(equipe.equipe.nome,
-                        larguraNomeEquipe()) }}
+                                     truncarNome(equipe.equipe.nome,
+                                        larguraNomeEquipe()) }}
                                 </p>
                             </div>
                             <div @click.stop="abrePopUp(equipe, 'engrenagem')">
