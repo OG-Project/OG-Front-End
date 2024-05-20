@@ -72,6 +72,9 @@ import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Usuario } from '../models/usuario';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
+import { onUpdated } from 'vue';
+import router from '../router';
+
 const perfil = perfilStore()
 const conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
@@ -85,6 +88,15 @@ const screenWidth = ref(window.innerWidth)
 
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
+})
+
+onUpdated(()=>{
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/privacidade')
+    }
 })
 
 function visualizacaoProjeto(valor) {
