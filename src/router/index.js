@@ -99,16 +99,6 @@ const router = createRouter({
       }
     },
     {
-<<<<<<< HEAD
-      path: '/projetos',
-      name: 'projetos',
-      component: () => import('../views/ProjetoListaView.vue')
-    },
-    {
-      path: '/perfil',
-      name: 'Perfil',
-      redirect: '/perfil/informacoes',
-=======
      path: '/projetos',
      name: 'projetos',
      component: () => import('../views/ProjetoListaView.vue'),
@@ -137,7 +127,6 @@ const router = createRouter({
       path:'/perfil',
       name:'Perfil',
       redirect:'/perfil/informacoes',
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
       component: () => import('../views/PerfilView.vue'),
       children: [
         {
@@ -171,16 +160,11 @@ const router = createRouter({
       }
     },
     {
-<<<<<<< HEAD
-      path: '/perfil/:id',
-      component: () => import('../views/PerfilInfoView.vue')
-=======
       path:'/perfil/:id',
       component: () => import('../views/PerfilInfoView.vue'),
       meta:{
         requiresAuth:true
       }
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
     },
     {
       path: '/chat',

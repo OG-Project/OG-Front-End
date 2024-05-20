@@ -6,21 +6,13 @@
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
-<<<<<<< HEAD
             <div class="w-[60%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
                 style="font-size:var(--fonteTituloTamanho)">
-=======
-            <div class="w-[60%] h-[60%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
                 <div class="h-[100%] flex items-end truncate">
                     <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
                 </div>
-<<<<<<< HEAD
                 <div class="flex items-end" v-if="verificaSeEResponsavel()"
                     @click="router.push('/projeto/responsavel')">
-=======
-                <div class="flex items-end" v-if="isResponsavel" @click="router.push('/projeto/responsavel')">
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
                     <Dashboard></Dashboard>
                 </div>
             </div>

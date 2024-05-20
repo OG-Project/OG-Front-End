@@ -8,13 +8,8 @@ export const conexaoBD = defineStore('conexaoBD', {
 
   state: () => {
     return {
-<<<<<<< HEAD
-      api: ("http://localhost:8082/usuario", { withCredentials: true }),
-       loading: true,
-=======
       api: axios.get("http://localhost:8082/usuario", { withCredentials: true }),
       loading: true,
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
     }
   },
   actions: {
@@ -42,21 +37,12 @@ export const conexaoBD = defineStore('conexaoBD', {
     },
     login(usuarioLogin) {
       this.loading = true;
-<<<<<<< HEAD
-      try{
-      return axios.post("http://localhost:8082/login", usuarioLogin).then(response => {
-        VueCookies.set("JWT", response.data.value)
-      })
-      }finally {
-      this.loading = false;
-=======
       try {
         return axios.post("http://localhost:8082/login", usuarioLogin, { withCredentials: true }).then(response => {
           VueCookies.set("JWT", response.data.value)
         })
       } finally {
         this.loading = false;
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
       }
     },
     cadastrar(objeto, textoRequisicao) {
@@ -106,14 +92,8 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     deletar(id, textoRequisicao) {
-<<<<<<< HEAD
       try{
       return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
-=======
-      this.loading = true;
-      try {
-        return axios.delete(`http://localhost:8082${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
 
         })
       } finally {
@@ -156,8 +136,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         this.loading = false;
       }
     },
-<<<<<<< HEAD
-=======
     async buscarProjetosEquipe(equipeId, textoRequisicao) {
       this.loading = true;
       try {
@@ -166,7 +144,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         this.loading = false;
       }
     },
->>>>>>> 33e60aebe879423a673d042d931af8238eaed144
     async buscarProjetosUsuario(userId, textoRequisicao) {
       this.loading = true;
       try {
