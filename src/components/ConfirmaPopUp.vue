@@ -1,6 +1,6 @@
 <template>
     <div >
-        <FundoPopUp largura="60vh" altura="44vh">
+        <FundoPopUp  :largura="screenWidth < 640 ? '100%' : '30%'" :altura="screenWidth < 640 ? '100%' : '50%'">
             <div class="flex flex-col justify-around items-center w-[60vh] h-[44vh] ">
                 <div style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);">
                     <div class="text-[var(--roxo)]">{{ $t('confirmarPopUp.confirmar') }}</div>

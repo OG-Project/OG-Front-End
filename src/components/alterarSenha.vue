@@ -1,6 +1,6 @@
 <template>
     <div>
-        <fundoPopUp :largura="screenWidth < 640 ? '100%' : '70%'" :altura="screenWidth < 640 ? '100%' : '60%'" >
+        <fundoPopUp :largura="screenWidth < 640 ? '100%' : '50%'" :altura="screenWidth < 640 ? '100%' : '60%'" >
             <div class="flex flex-col justify-between  w-full h-full gap-9">
                 <div class="max-md:pl-0 max-md:pt-0 flex pl-12 pt-12">
                     <div v-if="screenWidth >= 768"
