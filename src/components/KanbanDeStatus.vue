@@ -200,13 +200,13 @@ function mudaStatus() {
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-                        valorPropriedadeTarefaPutPut.valor = {
+                        valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             numero: valorPropriedadeTarefaPut.valor.valor ?? null,
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-                        valorPropriedadeTarefaPutPut.valor = {
+                        valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             valores: valorPropriedadeTarefaPut.valor.valor ?? null,
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
