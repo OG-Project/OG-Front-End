@@ -175,7 +175,7 @@ function reloadTelaTarefa() {
   }
 }
 
-reloadTelaTarefa()
+// reloadTelaTarefa()
 
 onMounted(async () => {
 

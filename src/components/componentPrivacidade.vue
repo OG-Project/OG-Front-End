@@ -11,12 +11,12 @@
                 w-max max-sm:w-[80%] mobile:w-[50%]  max-miniMobile:pr-8 max-miniMobile:mb-8 max-mobile:pr-14 max-mobile:mb-6 ">
                 {{ $t('privacidade.Privacidade') }}
             </h1>
-
+<!-- 
             <h1 v-else style="font-family:var(--fonteTitulo);font-size: var(--fonteTitulo);"
                 class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 
                 w-max max-sm:w-[80%] mobile:w-[50%]  max-miniMobile:pr-8 max-miniMobile:mb-8 max-mobile:pr-14 max-mobile:mb-6 ">
                 {{ $t('privacidade.Privacidade') }}
-            </h1>
+            </h1> -->
 
         </div>
         <div class=" flex ml-32 max-md:ml-0">
