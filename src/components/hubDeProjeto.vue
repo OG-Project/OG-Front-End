@@ -6,10 +6,9 @@
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
-            <div class="w-[60%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
-                style="font-size:var(--fonteTituloTamanho)">
-                <div class="h-[100%] flex items-end truncate">
-                    <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
+            <div class="w-[60%] h-[120px] border-b-4 flex flex-row items-end justify-between pb-[1%]">
+                <div class="h-[12vh] flex items-end">
+                    <p class="h-[8vh] w-[30vw] truncate flex items-center" style="font-size:var(--fonteTituloTamanho)">{{ projeto.nome }}</p>
                 </div>
                 <div class="flex items-end" v-if="verificaSeEResponsavel()"
                     @click="router.push('/projeto/responsavel')">
