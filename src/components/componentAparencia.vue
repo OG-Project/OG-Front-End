@@ -29,8 +29,6 @@
             <div class=" flex flex-col items-center gap-20">
                 <div class="flex miniMobile:w-[300px] laptop:w-full miniMobile:flex-wrap laptop:flex-nowrap laptop:gap-4 miniMobile:gap-8">
                     <div class=" w-full flex flex-col gap-4 miniMobile:items-center laptop:items-start">
-                        <div>
-                        </div>
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max  px-12">
                             {{ $t('aparencia.Titulo') }}
                         </div>
@@ -112,7 +110,7 @@
 
         </div>
     </div>
-    <alertTela v-if="alterado" mensagem="Isso pode afetar sua experiência" :key="alterado" largura="15vw"cor="#8E00FF" /> 
+    <alertTela v-if="alterado" mensagem="Isso pode afetar sua experiência" :key="alterado" :largura="screenWidth.value>=1024?  '15vw':'22vw'"cor="#8E00FF" /> 
 </template>
 
 <script setup>
