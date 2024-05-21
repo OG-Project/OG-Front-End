@@ -19,10 +19,12 @@
                     @updateModelValue="(e) => { nome = e }"></Input>
             </div>
             <div class=" grid-template  flex w-full">
-                <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e) => { usuarioConvidado = e }"
-                    styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                    icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
-                    v-model="usuarioConvidado"></Input>
+                <inputDePesquisa :class="{ 'computedClasses': someCondition }" 
+                    styleInput="input-transparente-claro" :largura="larguraInputConvidado()" 
+                    :place-holder-pesquisa="$t('criaEquipePopUp.adicionarMembro')" v-model="convidado"
+                    @updateModelValue="(e) => { convidado = e }" icon="../src/imagem-vetores/adicionarPessoa.svg" ref="inputPesquisa"
+                      :lista-da-pesquisa=listaDeUsuariosParaBusca @item-selecionado="pegaValorSelecionadoPesquisa">
+                </inputDePesquisa>
             </div>
             <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
@@ -51,7 +53,7 @@
                         :funcaoClick="cadastrarEquipe">
                     </Botao>
                 </div>
-                <div v-else class="mt-5 ml-3">
+                <div v-else class="mt-5 ml-6">
                     <Botao preset="PadraoRoxo" tamanhoPadrao="mobilegrande" :texto="$t('criaEquipePopUp.criarEquipe')" tamanhoDaFonte="1rem"
                         :funcaoClick="cadastrarEquipe">
                     </Botao>
@@ -78,6 +80,7 @@ import VueCookies from "vue-cookies";
 import alertTela from './alertTela.vue';
 import { webSocketStore } from '../stores/webSocket.js'
 import { apple } from 'color-convert/conversions';
+import inputDePesquisa from './inputDePesquisa.vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -86,12 +89,14 @@ const { t } = useI18n();
 const banco = conexaoBD();
 let nome = ref('');
 let descricao = ref('');
+let listaDeUsuariosParaBusca = ref([]);
 let usuarioConvidado = ref('');
 let usuarioLogado = VueCookies.get("IdUsuarioCookie")
-let valorSelectSelecionado = ref("Edit")
+let valorSelectSelecionado = ref(t('selectComponent.view'))
 let membrosEquipe = ref([]);
 let listaUsuariosConvidados = ref([])
 const screenWidth = window.innerWidth;
+let convidado = ref('');
 let usuarios = banco.procurar("/usuario");
 
 function limparMensagemErro() {
@@ -104,6 +109,24 @@ let mensagemCor = ref("");
 watch(() => descricao.value, () => {
     verificaTamanho();
 })
+
+onMounted(()=>{
+    pesquisaBancoUserName()
+    
+})
+
+async function pesquisaBancoUserName() {
+    let listaAux = (await banco.procurar('/usuario'))
+    listaAux.forEach(usuarioAtual => {
+        listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
+    });
+    return listaDeUsuariosParaBusca;
+}
+
+async function pegaValorSelecionadoPesquisa(valorPesquisa) {
+   usuarioConvidado.value = valorPesquisa
+   
+}
 
 function verificaTamanho(){
     console.log(descricao.value)
@@ -154,15 +177,17 @@ function marginRightConvidado() {
 }
 
 function valorSelect(valor, convidado) {
+    
     valorSelectSelecionado.value = valor
     usuarioConvidado.value = convidado.username
+    
     mudaPermissaoUsuario(convidado);
 }
 
 function mudaPermissaoUsuario(usuario) {
     membrosEquipe.value.some((membro) => {
         if (membro.usuario.username === usuario.username) {
-            if (valorSelectSelecionado.value == "View") {
+            if (valorSelectSelecionado.value == t('selectComponent.view')) {
                 membro.permissao = 2
             } else {
                 membro.permissao = 1
@@ -265,6 +290,7 @@ function larguraInputConvidado() {
 async function listaUsuarios() {
     let listaUsuarios = await usuarios;
     let usuarioCriador = await banco.buscarUm(usuarioLogado, "/usuario")
+    console.log(usuarioConvidado.value)
     listaUsuarios.forEach((usuario) => {
 
         if (usuarioConvidado.value === usuario.username || usuarioConvidado.value === usuario.email) {
@@ -291,10 +317,12 @@ async function listaUsuarios() {
             }
         }
     });
+    
 }
 
 async function adicionarMembro() {
     await listaUsuarios();
+    convidado.value = ''
 }
 
 async function cadastrarEquipe() {
@@ -393,7 +421,7 @@ async function enviarFotoParaBackend(equipe) {
 @layer components {
 
     .alert {
-        @apply absolute flex items-start justify-start 2xl:mt-[-25vh] 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
+        @apply absolute flex items-start justify-start 2xl:mt-[-25vh] 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh]  z-[9999];
     }
 
     .imagem-arredondada {
@@ -503,6 +531,9 @@ async function enviarFotoParaBackend(equipe) {
     }
 
     @media(max-width: 620px) {
+        .divGeral{
+            @apply w-[100vw]
+        }
         .titulo {
             @apply text-4xl mb-16;
         }

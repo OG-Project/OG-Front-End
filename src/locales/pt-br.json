@@ -225,14 +225,14 @@
     "editou": "Editou o Projeto",
     "criou": "Criou o projeto",
     "addResponsavel": "Adicionou um novo responsável",
-    "convidouEquipe": "Convidou uma Equipe",
-    "removeEquipe": "Removeu uma Equipe",
+    "convidouEquipe": "Convidou uma equipe",
+    "removeEquipe": "Removeu uma equipe",
     "removeResponsavel": "Removeu o responsável",
     "status": "Criou um status novo",
     "propriedade": "Criou uma propriedade",
     "removeStatus": "Removeu o status",
     "removePropriedade": "Removeu a propriedade",
-    "comentario": "Comentou no Projeto",
+    "comentario": "Comentou no projeto",
     "deletaTarefa": "Deletou a tarefa"
   }
 }

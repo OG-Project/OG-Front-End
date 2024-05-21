@@ -52,69 +52,89 @@ async function buscarHistorico(){
     console.log(historicos.value)
 }
 
-    function traducao(historico){
-        
-    if(historico.mensagem == 'Criou a tarefa'){
-        return t('historicoTarefa.criaTarefa')
+function traducao(historico) {
+    if (historico.mensagem.startsWith('Criou a tarefa')) {
+        const tarefaNome = historico.mensagem.replace('Criou a tarefa', '').trim();
+        return `${t('historicoTarefa.criaTarefa')} ${tarefaNome}`;
     }
-    if(historico.mensagem == 'Editou a tarefa'){
-        return t('historicoTarefa.editou')
+    if (historico.mensagem.startsWith('Editou a tarefa')) {
+        const tarefaNome = historico.mensagem.replace('Editou a tarefa', '').trim();
+        return `${t('historicoTarefa.editou')} ${tarefaNome}`;
     }
-    if(historico.mensagem == "Deletou a subTarefa"){
-        return t('historicoTarefa.deletarSubTarefa')
+    if (historico.mensagem.startsWith('Deletou a subTarefa')) {
+        const subTarefaNome = historico.mensagem.replace('Deletou a subTarefa', '').trim();
+        return `${t('historicoTarefa.deletarSubTarefa')} ${subTarefaNome}`;
     }
-    if(historico.mensagem == "Criou a subTarefa"){
-        return t('historicoTarefa.criaSubTarefa')
+    if (historico.mensagem.startsWith('Criou a subTarefa')) {
+        const subTarefaNome = historico.mensagem.replace('Criou a subTarefa', '').trim();
+        return `${t('historicoTarefa.criaSubTarefa')} ${subTarefaNome}`;
     }
-    if(historico.mensagem ==  "Mudou o status"){
-        return t('historicoTarefa.status')
+    if (historico.mensagem.startsWith('Mudou o status')) {
+        const statusDetalhe = historico.mensagem.replace('Mudou o status', '').trim();
+        return `${t('historicoTarefa.status')} ${statusDetalhe}`;
     }
-    if(historico.mensagem == "Comentou na tarefa"){
-        return t('historicoTarefa.criaComentario')
+    if (historico.mensagem.startsWith('Comentou na tarefa')) {
+        const comentarioDetalhe = historico.mensagem.replace('Comentou na tarefa', '').trim();
+        return `${t('historicoTarefa.criaComentario')} ${comentarioDetalhe}`;
     }
-    if(historico.mensagem == "Deletou um comentario"){
-        return t('historicoTarefa.deletaComentario')
+    if (historico.mensagem.startsWith('Deletou um comentario')) {
+        const comentarioDetalhe = historico.mensagem.replace('Deletou um comentario', '').trim();
+        return `${t('historicoTarefa.deletaComentario')} ${comentarioDetalhe}`;
     }
-    if(historico.mensagem == "Concluiu a subTarefa"){
-        return t('historicoTarefa.concluiu')
+    if (historico.mensagem.startsWith('Concluiu a subTarefa')) {
+        const subTarefaNome = historico.mensagem.replace('Concluiu a subTarefa', '').trim();
+        return `${t('historicoTarefa.concluiu')} ${subTarefaNome}`;
     }
-    if(historico.mensagem == "Criou o projeto"){
-        return t('historicoProjeto.criou')
+    if (historico.mensagem.startsWith('Criou o projeto')) {
+        const projetoNome = historico.mensagem.replace('Criou o projeto', '').trim();
+        return `${t('historicoProjeto.criou')} ${projetoNome}`;
     }
-    if(historico.mensagem == "Editou o Projeto"){
-        return t('historicoProjeto.editou')
+    if (historico.mensagem.startsWith('Editou o Projeto')) {
+        const projetoNome = historico.mensagem.replace('Editou o Projeto', '').trim();
+        return `${t('historicoProjeto.editou')} ${projetoNome}`;
     }
-    if(historico.mensagem ==  "Adicionou um novo responsável"){
-        return t('historicoProjeto.addResponsavel')
+    if (historico.mensagem.startsWith('Adicionou um novo responsável')) {
+        const responsavelNome = historico.mensagem.replace('Adicionou um novo responsável', '').trim();
+        return `${t('historicoProjeto.addResponsavel')} ${responsavelNome}`;
     }
-    if(historico.mensagem == "Convidou uma Equipe"){
-        return t('historicoProjeto.convidouEquipe')
+    if (historico.mensagem.startsWith('Convidou uma equipe')) {
+        const equipeNome = historico.mensagem.replace('Convidou uma equipe', '').trim();
+        return `${t('historicoProjeto.convidouEquipe')} ${equipeNome}`;
     }
-    if(historico.mensagem == "Removeu uma Equipe"){
-        return t('historicoProjeto.removeEquipe')
+    if (historico.mensagem.startsWith('Removeu uma equipe')) {
+        const equipeNome = historico.mensagem.replace('Removeu uma equipe', '').trim();
+        return `${t('historicoProjeto.removeEquipe')} ${equipeNome}`;
     }
-    if(historico.mensagem == "Removeu o responsável"){
-        return t('historicoProjeto.removeResponsavel')
+    if (historico.mensagem.startsWith('Removeu o responsável')) {
+        const responsavelNome = historico.mensagem.replace('Removeu o responsável', '').trim();
+        return `${t('historicoProjeto.removeResponsavel')} ${responsavelNome}`;
     }
-    if(historico.mensagem == "Criou um status novo"){
-        return t('historicoProjeto.status')
+    if (historico.mensagem.startsWith('Criou um status novo')) {
+        const statusNome = historico.mensagem.replace('Criou um status novo', '').trim();
+        return `${t('historicoProjeto.status')} ${statusNome}`;
     }
-    if(historico.mensagem == "Criou uma propriedade"){
-        return t('historicoProjeto.propriedade')
+    if (historico.mensagem.startsWith('Criou uma propriedade')) {
+        const propriedadeNome = historico.mensagem.replace('Criou uma propriedade', '').trim();
+        return `${t('historicoProjeto.propriedade')} ${propriedadeNome}`;
     }
-    if(historico.mensagem == "Removeu a propriedade"){
-        return t('historicoProjeto.removePropriedade')
+    if (historico.mensagem.startsWith('Removeu a propriedade')) {
+        const propriedadeNome = historico.mensagem.replace('Removeu a propriedade', '').trim();
+        return `${t('historicoProjeto.removePropriedade')} ${propriedadeNome}`;
     }
-    if(historico.mensagem == "Removeu o status"){
-        return t('historicoProjeto.removeStatus')
+    if (historico.mensagem.startsWith('Removeu o status')) {
+        const statusNome = historico.mensagem.replace('Removeu o status', '').trim();
+        return `${t('historicoProjeto.removeStatus')} ${statusNome}`;
     }
-    if(historico.mensagem == "Comentou no Projeto"){
-        return t('historicoProjeto.comentario')
+    if (historico.mensagem.startsWith('Comentou no projeto')) {
+        const comentarioDetalhe = historico.mensagem.replace('Comentou no projeto', '').trim();
+        return `${t('historicoProjeto.comentario')} ${comentarioDetalhe}`;
     }
-    if(historico.mensagem == "Deletou a tarefa"){
-        return t('historicoProjeto.deletaTarefa')
+    if (historico.mensagem.startsWith('Deletou a tarefa')) {
+        const tarefaNome = historico.mensagem.replace('Deletou a tarefa', '').trim();
+        return `${t('historicoProjeto.deletaTarefa')} ${tarefaNome}`;
     }
 }
+
 
 function formatarData(data){
     const dataFormatada = new Date(data);

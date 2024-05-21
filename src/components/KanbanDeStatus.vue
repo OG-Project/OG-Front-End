@@ -25,8 +25,9 @@
                         </div>
                     </template>
                 </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none" @click="store.criaTarefa(), router.push('/criaTarefa').then(() => {
-            window.location.reload()
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none" @click="store.criaTarefa() ,VueCookies.set('idReloadTarefa', '0'), router.push('/criaTarefa').then(() => {
+                    window.location.reload()
+
         });">
                     <p :style="corDoTexto(status.propriedade)">+ Nova</p>
                 </button>

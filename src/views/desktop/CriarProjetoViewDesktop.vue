@@ -513,7 +513,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
         return;
     }
-    criaHistorico.criaHistoricoProjeto("Convidou uma Equipe", projeto, usuario)
+    criaHistorico.criaHistoricoProjeto("Convidou uma equipe", projeto, usuario)
     listaEquipesSelecionadas.value.push(equipeVinculada)
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
@@ -567,7 +567,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
     criarProjetoCookies();
-    criaHistorico.criaHistoricoProjeto("Removeu uma Equipe", projeto, usuario)
+    criaHistorico.criaHistoricoProjeto("Removeu uma equipe", projeto, usuario)
 }
 
 async function removeResponsavel(responsavelRemover) {

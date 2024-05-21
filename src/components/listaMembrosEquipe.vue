@@ -1,5 +1,5 @@
 <template>
-      <fundoPopUp :largura="larguraPopUp()" altura="95vh">
+      <fundoPopUp :largura="larguraPopUp()" :altura="tamanhoPopUp()">
       <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
@@ -17,30 +17,36 @@
                     <div v-if="verificaCriador(membro) && retornoPermissao && membro.id != usuarioLogado ">
                          <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
                          :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)" ></SelectPadrao>
-                         <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
+                         <SelectPadrao v-else class="styleSelectPadraoBrancoMobile mt-[3vh]" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
                          :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)"></SelectPadrao>
                     </div>
                     <div v-else >
                         <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
                             @change="editaSelect(opcaoEscolhida, membro)" :placeholderSelect="opcoesSelectPlaceholder(membro)"  :disable="true" ></SelectPadrao>
-                            <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
+                            <SelectPadrao v-else class="styleSelectPadraoBrancoMobile" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
                             :placeholderSelect="opcoesSelectPlaceholder(membro)" @change="editaSelect(opcaoEscolhida, membro)" :disable="true"></SelectPadrao>
                     </div> 
              </div>
             </div>
         </div>  
         <div class="adiciona-membro" v-if="retornoPermissao">
-            <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
+            <Input v-if="screenWidth >= 620" styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
                 icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
                 v-model="usuarioConvidado" :modelValue="usuarioConvidado"
                     @updateModelValue="(e) => {
                         usuarioConvidado = e
                     }"></Input>
+                    <Input v-else styleInput="input-transparente-claro" :largura="larguraInputConvidadoMobile()"
+                    icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
+                    v-model="usuarioConvidado" :modelValue="usuarioConvidado"
+                        @updateModelValue="(e) => {
+                            usuarioConvidado = e
+                        }"></Input>
             <div class="flex mt-[1vh] ml-5">
                 <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
                     :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
-                <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilepequeno"
-                :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                <Botao v-else class="botaoMobile flex justify-start mt-16" preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilegrande"
+                texto="+" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
         </div>
         <div v-else class="adiciona-membro">
@@ -51,8 +57,8 @@
                  :listaConvidados="membrosConvidados" @foi-clicado="removeListaMembrosConvidados">
             </ListaConvidados>
         </div>
-        <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
-            <div>
+        <div class="botao absolute bottom-0 right-0 2xl:mb-4 xl:mb-4 lg:mb-4 md:mb-4 mobile:mb-14 miniMobile:mb-16 mr-4">
+            <div >
                 <div>
                     <div v-if="screenWidth >= 620">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.confirmar') " tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
@@ -91,6 +97,16 @@ onMounted (() =>{
     exibirMembrosNaLista();
     verificaMembroPermissao();
 }) 
+
+function tamanhoPopUp() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 620) {
+        return '100vh'
+    }
+    else {
+        return '95vh'
+    }
+}
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('IdUsuarioCookie')
@@ -319,7 +335,7 @@ function marginRightConvidado() {
 
 function larguraPopUp(){
     if(screenWidth <= 620){
-          return '90vw';
+          return '100vw';
     }else{
         return '';
     }
@@ -340,6 +356,22 @@ function larguraInputConvidado(){
     } else if (screenWidth >= 2560) {
         return '12';
     }
+}
+
+function larguraInputConvidadoMobile(){
+    if(screenWidth <= 620){
+          return '70'
+    }
+    if(screenWidth <= 425){
+        return '60'
+    }
+    if(screenWidth <= 375){
+        return '35'
+    }
+    else if(screenWidth <= 320){
+        return '35'
+    }
+    
 }
 
 async function listaUsuarios() {
@@ -467,7 +499,19 @@ async function confirmarConvites() {
 
 <style scoped>
 .styleSelectPadraoBranco{
-        @apply border-4 mt-[4vh]
+        @apply border-4 2xl:mt-[4vh] xl:mt-[4vh] lg:mt-[2vh] md:mt-[2vh]
+        flex justify-center
+        border-transparent
+        border-b-brancoNeve
+        border-b-2
+        w-[10]
+        items-center  focus-within:border-white
+        focus-within:border-4 focus-within:rounded-md truncate;
+        
+    }
+
+    .styleSelectPadraoBrancoMobile{
+        @apply border-4 
         flex justify-center
         border-transparent
         border-b-brancoNeve
@@ -563,10 +607,13 @@ async function confirmarConvites() {
         @apply w-[3vw] h-[4vh]
       }
     }
-    
-     @media (min-width: 320px) and (max-width: 375px) {
+
+    @media(max-width: 320px){
+        .botaoMobile{
+            @apply ml-[-86vw]
+        }
         .divEquipe{
-            @apply flex justify-center w-[100%]
+            @apply flex justify-start w-[80vw]
          }
          .adiciona-membro{
              @apply flex justify-end ml-[-5vw];
@@ -575,7 +622,7 @@ async function confirmarConvites() {
              @apply w-[65vw];
          }
          .corDiv{
-             @apply flex ml-5 mr-5 h-20 w-[100vw] 
+             @apply flex ml-1 h-20 w-[60vw] 
              border-transparent
              border-b-roxo    
              border-b-2
@@ -584,18 +631,75 @@ async function confirmarConvites() {
              
          }
          .div-membros{
-             @apply w-[100%];
+             @apply w-[100vw];
          }
          .equipeNome{
               @apply flex text-2xl mt-6;
          }
-         .styleSelectPadraoBranco{
-             @apply border-4 mt-[1.5vh] ml-3 
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[20vw] ml-5
              flex justify-center
              border-transparent
              border-b-brancoNeve
              border-b-2
-             w-max
+             items-center  focus-within:border-white
+             focus-within:border-4 focus-within:rounded-md truncate;
+         }
+         .imgDePerfil{
+             @apply w-[35px] h-[35px]
+         }
+         .imagemEquipe{
+             @apply w-[40px] h-[40px] mt-5 mr-3;
+         }
+         .imgIcon{
+             @apply w-[20px] h-[20px]  bg-center flex mt-8;
+         }
+         .div-lista{
+             @apply w-[212vw] p-2 ml-[-12vw] ;
+             
+         }
+         .botao{
+            @apply flex justify-end mb-[6vh] mr-[-4.4vw] ;
+        }
+         .alert{
+            @apply mr-[5vw] mt-[-15vh] ;
+          }
+    }
+
+    @media(min-width: 321px) and (max-width: 344px){
+        .botaoMobile{
+            @apply ml-[-86vw]
+        }
+        .divEquipe{
+            @apply flex justify-start w-[80vw]
+         }
+         .adiciona-membro{
+             @apply flex justify-end ml-[-7vw];
+         }
+         .divGeral{
+             @apply w-[65vw];
+         }
+         .corDiv{
+             @apply flex ml-1 h-20 w-[60vw] 
+             border-transparent
+             border-b-roxo    
+             border-b-2
+             items-center focus-within:border-roxo 
+             focus-within:border-4;
+             
+         }
+         .div-membros{
+             @apply w-[100vw];
+         }
+         .equipeNome{
+              @apply flex text-2xl mt-6;
+         }
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[20vw] ml-5
+             flex justify-center
+             border-transparent
+             border-b-brancoNeve
+             border-b-2
              items-center  focus-within:border-white
              focus-within:border-4 focus-within:rounded-md truncate;
          }
@@ -613,17 +717,21 @@ async function confirmarConvites() {
              
          }
          .botao{
-             @apply flex justify-start mr-[41vw]
-             p-[10vw] mt-[50vh] ;
-         }
+            @apply flex justify-end mb-[5vh] mr-[-1.5vw] ;
+        }
          .alert{
             @apply mr-[5vw] mt-[-15vh] ;
           }
     }
 
-    @media(min-width: 425px) and (max-width: 620px){
+    
+
+    @media(min-width: 345px) and (max-width: 375px){
+        .botaoMobile{
+            @apply ml-[-85vw]
+        }
         .divEquipe{
-            @apply flex justify-center w-[100%]
+            @apply flex justify-start w-[80vw]
          }
          .adiciona-membro{
              @apply flex justify-end ml-[-5vw];
@@ -632,7 +740,7 @@ async function confirmarConvites() {
              @apply w-[65vw];
          }
          .corDiv{
-             @apply flex ml-5 mr-5 h-20 w-[60vw] 
+             @apply flex ml-1 h-20 w-[60vw] 
              border-transparent
              border-b-roxo    
              border-b-2
@@ -641,13 +749,129 @@ async function confirmarConvites() {
              
          }
          .div-membros{
-             @apply w-[100%];
+             @apply w-[100vw];
+         }
+         .equipeNome{
+              @apply flex text-2xl mt-6;
+         }
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[20vw] ml-5
+             flex justify-center
+             border-transparent
+             border-b-brancoNeve
+             border-b-2
+             items-center  focus-within:border-white
+             focus-within:border-4 focus-within:rounded-md truncate;
+         }
+         .imgDePerfil{
+             @apply w-[35px] h-[35px]
+         }
+         .imagemEquipe{
+             @apply w-[40px] h-[40px] mt-5 mr-3;
+         }
+         .imgIcon{
+             @apply w-[20px] h-[20px]  bg-center flex mt-8;
+         }
+         .div-lista{
+             @apply w-[200vw] p-2 ml-[-12vw] ;
+             
+         }
+         .botao{
+            @apply flex justify-end mb-[5vh] mr-[-1vw] ;
+        }
+         .alert{
+            @apply mr-[5vw] mt-[-15vh] ;
+          }
+    }
+    
+     @media (min-width: 376px) and (max-width: 424px) {
+        .botaoMobile{
+            @apply ml-[-85vw]
+        }
+        .divEquipe{
+            @apply flex justify-start w-[80vw]
+         }
+         .adiciona-membro{
+             @apply flex justify-end ml-[-5vw];
+         }
+         .divGeral{
+             @apply w-[65vw];
+         }
+         .corDiv{
+             @apply flex ml-1 h-20 w-[60vw] 
+             border-transparent
+             border-b-roxo    
+             border-b-2
+             items-center focus-within:border-roxo 
+             focus-within:border-4;
+             
+         }
+         .div-membros{
+             @apply w-[100vw];
+         }
+         .equipeNome{
+              @apply flex text-2xl mt-6;
+         }
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[20vw] ml-5
+             flex justify-center
+             border-transparent
+             border-b-brancoNeve
+             border-b-2
+             items-center  focus-within:border-white
+             focus-within:border-4 focus-within:rounded-md truncate;
+         }
+         .imgDePerfil{
+             @apply w-[35px] h-[35px]
+         }
+         .imagemEquipe{
+             @apply w-[40px] h-[40px] mt-5 mr-3;
+         }
+         .imgIcon{
+             @apply w-[20px] h-[20px]  bg-center flex mt-8;
+         }
+         .div-lista{
+             @apply w-[200vw] p-2 ml-[-12vw] ;
+             
+         }
+         .botao{
+             @apply flex justify-end mb-[5vh] mr-[0.5vw] ;
+         }
+         .alert{
+            @apply mr-[5vw] mt-[-15vh] ;
+          }
+    }
+
+    @media(min-width: 425px) and (max-width: 620px){
+        .botaoMobile{
+            @apply ml-[-83vw]
+        }
+        .divEquipe{
+            @apply flex justify-center w-[80vw]
+         }
+         .adiciona-membro{
+             @apply flex justify-end ml-[-5vw];
+         }
+         .divGeral{
+             @apply w-[65vw];
+         }
+         .corDiv{
+             @apply flex ml-1 mr-5 h-20 w-[60vw] 
+             border-transparent
+             border-b-roxo    
+             border-b-2
+             items-center focus-within:border-roxo 
+             focus-within:border-4;
+             
+         }
+         .div-membros{
+             @apply w-[100vw];
          }
          .equipeNome{
               @apply flex text-3xl mt-5;
          }
-         .styleSelectPadraoBranco{
-             @apply border-4 mt-[1.5vh] ml-3 
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] 
              flex justify-center
              border-transparent
              border-b-brancoNeve
@@ -671,7 +895,7 @@ async function confirmarConvites() {
          }
          .botao{
              @apply flex justify-start mr-[41vw]
-             p-[10vw] mt-[50vh] ;
+             p-[10vw] mt-[60vh] ;
          }
          .alert{
             @apply mr-[5vw] mt-[-15vh] ;

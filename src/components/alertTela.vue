@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed w-screen h-screen z-[9999] top-8 flex justify-end right-4">
+    <div class="fixed z-[9999] top-8 flex justify-end right-4">
         <div class="card" :class="{ 'fade-in': show, 'fade-out': !show }" id="messeger">
             <div class="flex justify-center">
                 <div class="divCor" :style="{ backgroundColor: cor }"></div>
@@ -123,10 +123,10 @@
 
     @media(min-width:355px) and(max-width: 375px) {
         .card-titulo {
-            @apply truncate flex-wrap ml-0 text-lg w-[80vw];
+            @apply truncate flex-wrap ml-0 text-lg w-[70vw];
         }
         .card {
-            @apply w-[90vw] h-[6vh];
+            @apply mr-[-3.5vw] w-[98vw] h-[6vh];
             transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
         }
     }
