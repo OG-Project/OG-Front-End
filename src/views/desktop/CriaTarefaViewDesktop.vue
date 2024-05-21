@@ -514,11 +514,11 @@ function reloadTelaTarefa() {
   if (reload == '0') {
     console.log("reload")
     VueCookies.set('idReloadTarefa', '1');
-    window.location.reload()
+    // window.location.reload()
   }
 }
 
-reloadTelaTarefa()
+// reloadTelaTarefa()
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   console.log(propriedade);
@@ -580,7 +580,7 @@ async function deletaTarefa() {
   criaHistorico.criaHistoricoProjeto("Deletou a tarefa " + tarefa.nome, projeto, usuario)
   banco.deletarTarefa("/tarefa", VueCookies.get("IdTarefaCookies"));
   router.push("/projeto").then(() => {
-    window.location.reload();
+    // window.location.reload();
     VueCookies.remove("IdTarefaCookies");
   });
 }

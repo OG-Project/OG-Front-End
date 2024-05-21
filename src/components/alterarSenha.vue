@@ -1,6 +1,7 @@
 <template>
     <div>
-        <fundoPopUp :largura="screenWidth < 640 ? '100%' : '50%'" :altura="screenWidth < 640 ? '100%' : '60%'" >
+        <fundoPopUp :largura="screenWidth < 640 ? '100%' : '40%'" :altura="screenWidth < 640 ? '100%' : '60%'" >
+
             <div class="flex flex-col justify-between  w-full h-full gap-9">
                 <div class="max-md:pl-0 max-md:pt-0 flex pl-12 pt-12">
                     <div v-if="screenWidth >= 768"
@@ -22,24 +23,24 @@
                             <span class="font-semibold">Insira a senha antiga</span>
                             <Input styleInput="input-transparente-claro-grande" conteudoInput="Senha Antiga"
                                 v-model="senhaAntiga" tipo="obrigatorio" @updateModelValue="(e) => {
-            senhaAntiga = e
-        }" />
+                                                                senhaAntiga = e
+                                                            }" />
                         </div>
                         <div class="flex justify-between items-center gap-5 max-sm:flex-col">
                             <span class="font-semibold">Insira uma senha nova</span>
                             <Input styleInput="input-transparente-claro-grande" conteudoInput="Senha Nova"
                                 v-model="senhaNova" tipo="password" :isInvalido="isInvalido"
                                 textoInvalido="Senha não é igual" @updateModelValue="(e) => {
-            senhaNova = e
-        }" />
+                                        senhaNova = e
+                                    }" />
                         </div>
                         <div class="flex justify-between items-center gap-5 max-sm:flex-col">
                             <span class="font-semibold">Confirme a nova senha</span>
                             <Input styleInput="input-transparente-claro-grande" conteudoInput="Confirmar Senha"
                                 v-model="senhaConfirmada" tipo="password" :isInvalido="isInvalido"
                                 textoInvalido="Senha não é igual" @updateModelValue="(e) => {
-            senhaConfirmada = e
-        }" />
+                                                                        senhaConfirmada = e
+                                                                    }" />
                         </div>
                     </div>
                 </div>

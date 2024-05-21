@@ -29,8 +29,6 @@
             <div class=" flex flex-col items-center gap-20">
                 <div class="flex miniMobile:w-[300px] laptop:w-full miniMobile:flex-wrap laptop:flex-nowrap laptop:gap-4 miniMobile:gap-8">
                     <div class=" w-full flex flex-col gap-4 miniMobile:items-center laptop:items-start">
-                        <div>
-                        </div>
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max  px-12">
                             {{ $t('aparencia.Titulo') }}
                         </div>
@@ -112,6 +110,7 @@
 
         </div>
     </div>
+    <alertTela v-if="alterado" mensagem="Isso pode afetar sua experiência" :key="alterado" :largura="screenWidth.value>=1024?  '15vw':'22vw'"cor="#8E00FF" /> 
 </template>
 
 <script setup>
@@ -127,6 +126,7 @@ import { perfilStore } from '../stores/perfilStore'
 import CheckBox from './checkBox.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router';
+import alertTela from './alertTela.vue';
 const perfil = perfilStore()
 const conexao = conexaoBD()
 
@@ -164,7 +164,7 @@ let configuracao = ref();
 let tamanhoCorpos = ref([])
 let tamanhoTitulos = ref([])
 let isDark=ref(false)
-
+let alterado=ref(false)
 
 tamanhoTitulos.value = ['Pequeno', 'Normal', 'Grande']
 tamanhoCorpos.value = ['Pequeno', 'Normal', 'Grande']
@@ -207,13 +207,10 @@ function corEscolhida(a) {
     usuario.value.configuracao.hueCor = matizCor[0] + ''
     console.log(usuario.value.configuracao.hueCor);
     conexao.atualizar(usuario.value, '/usuario')
-    try {
-        console.log(conexao.buscarUm(
-            JSON.parse(
-                VueCookies.get('IdUsuarioCookie')), '/usuario'));
-    } catch (error) {
-        console.log(error);
-    }
+    alterado.value=!alterado.value
+                setTimeout(() => {
+                        alterado.value=!alterado.value
+                }, 5000);
     // VueCookies.set('matizCor',JSON.stringify(matizCor[0],'30d'))
     console.log(matizCor[0])
 

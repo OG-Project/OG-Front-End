@@ -120,7 +120,7 @@ async function entrarNoProjeto(projeto) {
 async function criarProjeto() {
   VueCookies.set("idAuxEquipe", Number(equipeSelecionada))
   router.push({ path: '/criaProjeto' }).then(() => {
-    window.location.reload()
+    // window.location.reload()
   });
   VueCookies.set('idReloadProjeto', '0');
   VueCookies.set("projetoCookie");
