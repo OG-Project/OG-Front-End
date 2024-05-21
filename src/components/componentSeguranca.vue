@@ -70,9 +70,9 @@
         </div>
 
     </div>
-    <alterarSenha v-if="popUpSenha && screenWidth<1024"></alterarSenha>
-    <alterarEmail v-if="popUpEmail && screenWidth<1024"></alterarEmail>
-    <ConfirmaPopUp v-if="popUpDeletar && screenWidth<1024"></ConfirmaPopUp>
+    <alterarSenha v-if="popUpSenha && screenWidth <= 1024" ></alterarSenha>
+    <alterarEmail v-if="popUpEmail  && screenWidth <= 1024"></alterarEmail>
+    <ConfirmaPopUp v-if="popUpDeletar  && screenWidth <= 1024"></ConfirmaPopUp>
 </template>
 
 <script setup>
@@ -89,7 +89,6 @@ import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
 import { storeToRefs } from 'pinia';
 import router from '../router';
-
 const PerfilStore = perfilStore()
 const conexao = conexaoBD()
 const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(PerfilStore)

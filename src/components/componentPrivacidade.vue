@@ -1,9 +1,9 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col max-md:items-center  max-md:w-full">
         <div class="flex flex-row w-full items-center">
-            <div v-if="screenWidth <=768" class="w-[15%] flex items-center justify-center">
-                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] h-full"></flechaMobilePerfil>
-            </div>
+            <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
+                <flechaMobilePerfil />
+            </span>
             
 
             <h1  v-if="screenWidth >=500" style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
@@ -85,7 +85,7 @@ let isVisualizaEquipes = ref(false)
 let isVisualizaPerfil = ref(false)
 let isVisualizaProjetos = ref(false)
 const screenWidth = ref(window.innerWidth)
-
+import router from '../router';
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
 })

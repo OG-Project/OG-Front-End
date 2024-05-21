@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div>
         <FundoPopUp :largura="screenWidth < 640 ? '100%' : '30%'" :altura="screenWidth < 640 ? '100%' : '40%'" >
             <div class="flex flex-col justify-around items-center w-full h-full">
                 <div style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);">
