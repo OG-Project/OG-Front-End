@@ -7,14 +7,7 @@
             <PerfilViewMobile />
         </div>
     </div>
-    <!-- <div class="h-[90%]">
-      <div v-if="screenWidth >= 1024" class="h-[90%]">
-      <HomeViewDesktop></HomeViewDesktop>
-      </div>
-      <div v-else>
-      <HomeViewMobile></HomeViewMobile>
-      </div>
-  </div> -->
+ 
 </template>
 
 <script setup>

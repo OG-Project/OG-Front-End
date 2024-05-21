@@ -3,9 +3,9 @@
         <!-- <Input conteudoInput="oi" direcao="direita" styleInput="input-claro" ></Input> -->
         <div>
             <div class="flex items-center">
-                <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
-                    <flecha />
-                </span>
+                <div @click="router.push('/perfil')" v-if="screenWidth < 1024" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
+                <flecha class=" "></flecha>
+                </div>
                 <div style="font-family: var(--fonteTitulo); font-size: var(--fonteTituloTamanho);"
                     class="m-[5%] border-b-4 border-[#CCC4CF] p-4 tablet:pr-32 w-max">
                     {{ $t('aparencia.Aparência') }}
@@ -13,7 +13,7 @@
             </div>
         </div>
         <div style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
-            class=" miniMobile:flex-wrap miniMobile:justify-center miniMobile:items-center laptop:flex-wrap flex-row-reverse items-center flex gap-4">
+            class=" miniMobile:flex-wrap miniMobile:justify-center miniMobile:items-center flex-row-reverse items-center flex gap-4">
             <div class="miniMobile:hidden laptop:block  w-[300px] h-[300px]  relative">
                 <div
                     class="hexagon shadow-xl right-[70px] absolute z-[10]  bg-[var(--roxo)] rotate-90 w-[166px] h-[152px]">
@@ -95,7 +95,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex miniMobile:pb-20 tablet:pb-0 justify-between items-center gap-3">
+                <div class="flex miniMobile:pb-20 laptop:pb-0 justify-between items-center gap-3">
                     <span class="text-[var(--fonteCorpoTamanho)]">{{ $t('aparencia.Modo Claro') }}</span>
                     <CheckBox 
                     :key="isDark.valueOf()"
