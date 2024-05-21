@@ -3,6 +3,7 @@ import { Projeto } from '../models/Projeto'
 import { webSocketStore } from '../stores/webSocket.js'
 import { conexaoBD } from './conexaoBD'
 import VueCookies from 'vue-cookies';
+import { criaNotificacao } from "./criaNotificacao.js";
 export const editaProjetoStore = defineStore('editaProjeto', {
   state: () => {
     return {
@@ -46,6 +47,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
 
     },
     enviaParaWebSocket(equipesAux, projetoAux) {
+      const criaNotificacaoStore = criaNotificacao();
       let teste
       if (window.location.pathname == "/editaProjeto") {
         teste = {
@@ -66,9 +68,7 @@ export const editaProjetoStore = defineStore('editaProjeto', {
       }
 
       console.log(teste)
-      const webSocket = webSocketStore();
-      webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-      webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+      criaNotificacaoStore.mandarNotificacao(teste)
     }
   },
 })

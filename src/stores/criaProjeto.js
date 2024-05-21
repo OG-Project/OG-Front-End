@@ -4,12 +4,13 @@ import { conexaoBD } from './conexaoBD'
 import { webSocketStore } from '../stores/webSocket.js'
 import VueCookies from "vue-cookies";
 import { id } from "date-fns/locale";
-
+import { criaNotificacao } from '../stores/criaNotificacao.js';
 import { criaHistoricoStore } from '../stores/criaHistorico.js'
 
 
 
 let api = conexaoBD();
+const criaNotificacaoStore = criaNotificacao();
 
 export const criaProjetoStore = defineStore('criaProjeto', {
   state: () => {
@@ -17,7 +18,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       nomeProjeto: ''
     }
   },
-
+  
   actions: {
     async criaProjeto(nome, descricao, equipes, propriedades, status, responsaveis, dataFinal) {
       let equipeAtual = VueCookies.get("equipeSelecionada");
@@ -83,6 +84,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
           }
         }
       }
+      criaNotificacaoStore.mandarNotificacao(teste)
       let teste2 = {
         equipes: [equipeAtual],
         notificao: {
@@ -90,11 +92,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
           projeto: projeto
         }
       }
-      const webSocket = webSocketStore();
-      webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-      await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
-      await webSocket.enviaMensagemWebSocket(JSON.stringify(teste2))
-
+      criaNotificacaoStore.mandarNotificacao(teste2)
     }
   },
 })

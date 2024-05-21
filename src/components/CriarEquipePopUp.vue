@@ -79,10 +79,11 @@ import alertTela from './alertTela.vue';
 import { webSocketStore } from '../stores/webSocket.js'
 import { apple } from 'color-convert/conversions';
 import { useI18n } from 'vue-i18n';
+import { criaNotificacao } from '../stores/criaNotificacao';
 
 const { t } = useI18n();
 
-
+const criaNotificacaoStore = criaNotificacao();
 const banco = conexaoBD();
 let nome = ref('');
 let descricao = ref('');
@@ -355,9 +356,7 @@ async function enviaParaWebSocket(equipe, membrosConvidados) {
             }
         }
     }
-    const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
-    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+    criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 function funcaoPermissao(convidados){
