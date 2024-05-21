@@ -1,7 +1,7 @@
 <template>
     <div v-if="enviandoMensagem" class="absolute w-full h-full z-[5]" @click="abreModalMensagem()">
     </div>
-    <div v-if="funcaoPopUp.variavelModal == true" class="flex justify-center">
+    <div v-if="funcaoPopUp.variavelModal == true && funcaoAbrePopUp2" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
@@ -37,6 +37,11 @@
                 @click="mudaVariavelBooleana()">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
+            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
+            @click="abrePopUp(projeto, 'projeto')">
+                <IconeHistorico  class="w-[70%] h-[100%]  cursor-pointer">
+                </IconeHistorico>
+            </button>
             <div v-if="enviandoMensagem" class=" animation">
                 <comentarioProjeto></comentarioProjeto>
             </div>
@@ -70,7 +75,10 @@
                 class="bg-[var(--backgroundItemsClaros)] h-[3vh] w-[110%] flex justify-center items-center"
                 :onclick="atualizaVisualizacao()"></MultiSelect>
         </div>
+        
     </div>
+    <HistoricoPopUp :texto-requisicao="textoRequisicao"
+    :id="number.id" v-if="funcaoAbrePopUp && funcaoPopUp.variavelModal"></HistoricoPopUp>
 </template>
 
 <script setup>
@@ -88,6 +96,10 @@ import iconMensagem from '../assets/iconMensagem.vue';
 import MultiSelect from 'primevue/multiselect';
 import comentarioProjeto from './comentarioProjeto.vue';
 import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca'
+import HistoricoPopUp from "../components/HistoricoPopUp.vue";
+import IconeHistorico from "../assets/historicoProjeto.vue";
+
+
 
 let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
@@ -100,13 +112,31 @@ let tarefasConcluidas = []
 let subtarefasConcluidas = ref([])
 let subtarefas = ref([])
 let listaDeEquipes = ref(false)
-let funcaoPopUp = funcaoPopUpStore()
+let funcaoPopUp = funcaoPopUpStore();
+let funcaoAbrePopUp = ref(false);
+let funcaoAbrePopUp2 = ref(false);
+
 let visualizacao = ref({})
 let enviandoMensagem = ref(false)
 let corKanban = ref("var(--backgroundItemsClaros)")
 let corLista = ref("var(--backgroundItemsClaros)")
 let corTimeline = ref("var(--backgroundItemsClaros)")
 let corCalendario = ref("var(--backgroundItemsClaros)")
+
+let isResponsavel = ref(false)
+
+let number = ref();
+let textoRequisicao = ref('');
+
+async function abrePopUp(objeto, tipo) {
+        number.value = objeto;
+        console.log(number.value.id)
+        textoRequisicao.value = tipo;
+        funcaoAbrePopUp.value = true;
+        funcaoPopUp.variavelModal = true;
+        console.log(textoRequisicao.value)
+        
+}
 
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
@@ -115,7 +145,9 @@ onMounted(async () => {
     if (visualizacao.value.propriedadeVisiveis != null) {
         listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
     }
+    verificaSeEResponsavel()
     console.log(visualizacao.value)
+    verificaSeEResponsavel()
     definePorcentagem()
     styleBotao()
 })
@@ -127,12 +159,13 @@ async function verificaSeEResponsavel() {
     if (responsaveis != null) {
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
-                return true
+                isResponsavel.value= true
+                return
             }
         }
     }
-    return false
-
+    isResponsavel.value = false
+    return
 }
 
 function styleBotao() {
@@ -178,13 +211,16 @@ watch(listaPropriedadeVisiveis, () => {
 function enviaCookieTarefaNova() {
     VueCookies.set("IdTarefaCookies", 0, new Date())
     localStorage.setItem("TarefaNaoFinalizada", "", new Date())
+    VueCookies.set('idReloadTarefa', '0');
     criaTarefa.criaTarefa()
 }
 function enviaCookieProjeto() {
+    VueCookies.set('idReloadProjeto', '0');
     router.push('/editaProjeto')
 }
 function mudaVariavelBooleana() {
     funcaoPopUp.abrePopUp()
+    funcaoAbrePopUp2.value=true
 }
 
 function definePorcentagem() {
@@ -216,4 +252,51 @@ function abreModalMensagem() {
 
 <style lang="scss">
 
+.select:active {
+    border: none;
+    outline: none;
+    border-radius: 0;
+}
+
+.labelContainer:active {
+    border-color: grey;
+    border: none;
+
+    .animation {
+        @apply absolute w-[30%] h-[80%] z-10;
+        animation: myAnim 0.15s ease 0s 1 normal none;
+    }
+
+    @keyframes myAnim {
+        0% {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+}
+
+.animation {
+    @apply absolute  2xl:w-[30%] xl:w-[30%] lg:w-[30%]
+     md:w-[80%] h-[70%] z-10 mobile:w-full miniMobile:w-full;
+    animation: myAnim 0.15s ease 0s 1 normal none;
+}
+
+@keyframes myAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
 </style>

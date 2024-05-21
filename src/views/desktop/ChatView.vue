@@ -20,8 +20,7 @@
                     @click="mudaRota(equipe)">
                     <div v-if="equipe.isSelecionado == true" class="w-[3%] h-full bg-[var(--roxo)]">
                     </div>
-                    <div class="w-[35%] h-[full] flex items-center justify-center"
-                        v-if="equipe.equipe && equipe.equipe.foto != null">
+                    <div class="w-[35%] h-[full] flex items-center justify-center" v-if="equipe.equipe.foto != null">
                         <img class="imgDePerfil"
                             :src="'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados" alt="">
                     </div>
@@ -84,7 +83,6 @@ import router from '@/router';
 import VueCookies from 'vue-cookies';
 import { set } from 'date-fns';
 import { webSocketStore } from '../../stores/webSocket';
-import { Usuario } from '../../models/usuario';
 
 let api = conexaoBD();
 let listaDeConversas = ref([]);
@@ -96,13 +94,15 @@ let listaDeMensagens = ref([]);
 let chat = ref({});
 let webSocket = webSocketStore();
 
-webSocket.url = "ws://localhost:8082/og/webSocket/chat/1"
+webSocket.url = "ws://localhost:8082/og/webSocket/chat/"+chat.value.id
 
 onMounted(async () => {
     usuarioLogado.value = await api.buscarUm(usuarioLogadoId.value, '/usuario')
     if (localStorage.getItem('opcao') != null) {
+        trocaLista(localStorage.getItem('opcao'))
         setTimeout(() => {
             trocaLista(localStorage.getItem('opcao'))
+            defineSeEstaSelecionado()
             DefineListaDeMensagens()
             document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
         }, 10);
@@ -116,6 +116,7 @@ try {
     })
 } catch (e) {
 }
+
 
 async function trocaLista(opcao) {
     listaDeConversas.value = [];
@@ -187,7 +188,7 @@ function defineSeEstaSelecionado() {
 async function mandaMensagem() {
     let mensagem = {
         criador: {
-            id: usuarioLogado.value.id
+            id:usuarioLogado.value.id
         },
         mensagem: corpoDaMensagem.value,
     }
@@ -217,23 +218,21 @@ input:focus {
     scrollbar-color: "var(--backgroundItemsClaros)";
     /* oculta a barra de rolagem padrão do Firefox */
     height: 80vh;
+
 }
 
 .scrollable::-webkit-scrollbar {
-    width: 0;
-    /* largura zero para ocultar a barra de rolagem */
+    width: 0; /* largura zero para ocultar a barra de rolagem */
 }
 
 /* Estilos para WebKit (Chrome, Safari, Opera) */
 .scrollable::-webkit-scrollbar-thumb {
-    background-color: transparent;
-    /* cor transparente para ocultar o polegar da barra de rolagem */
+    background-color: transparent; /* cor transparente para ocultar o polegar da barra de rolagem */
 }
 
 /* Estilo para as extremidades da barra de rolagem */
 .scrollable::-webkit-scrollbar-corner {
-    background: transparent;
-    /* cor transparente para ocultar a borda entre as barras de rolagem */
+    background: transparent; /* cor transparente para ocultar a borda entre as barras de rolagem */
 }
 
 /* Estilo para adicionar bordas arredondadas nas extremidades */

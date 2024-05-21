@@ -15,6 +15,7 @@ export const criaHistoricoStore = defineStore('criaHistorico',{
             historicoProjeto.mensagem = mensagem;
             historicoProjeto.criador = criador;
             historicoProjeto.projeto = projeto;
+            historicoProjeto.tarefa = null;
             api.cadastrar(historicoProjeto, '/historico')
         },
         criaHistoricoTarefa(mensagem,tarefa,criador){
@@ -23,6 +24,7 @@ export const criaHistoricoStore = defineStore('criaHistorico',{
             historicoTarefa.mensagem = mensagem;
             historicoTarefa.criador = criador;
             historicoTarefa.tarefa = tarefa,
+            historicoTarefa.projeto = null;
             api.cadastrar(historicoTarefa, '/historico')
         }
     }

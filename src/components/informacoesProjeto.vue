@@ -9,7 +9,7 @@
                     <p>Nome do projeto:</p>
                 </div>
                 <div class="w-[40%] justify-end flex-row ">
-                    <p class="w-[100%] text-[#620BA7] break-all">{{ nomeProjeto }}</p>
+                    <p class="w-[100%] text-[var(--roxoAtencao)] break-all">{{ nomeProjeto }}</p>
                 </div>
             </div>
             <div class="flex flex-col pl-8 gap-2 " v-else>
@@ -17,7 +17,7 @@
                     <p>Nome do projeto:</p>
                 </div>
                 <div class="w-full justify-end flex-row ">
-                    <p class="w-[100%] text-[#620BA7] break-all">{{ nomeProjeto }}</p>
+                    <p class="w-[100%] text-[var(--roxoAtencao)] break-all">{{ nomeProjeto }}</p>
                 </div>
             </div>
             <div class="flex pl-8 mt-4 pb-2">
@@ -25,7 +25,7 @@
                     <p>Data Inicial:</p>
                 </div>
                 <div class="w-[40%] justify-end flex-row">
-                    <p class="text-[var(--roxo)]">{{ DataInicialProjeto }}</p>
+                    <p class="text-[var(--roxoAtencao)]">{{ DataInicialProjeto }}</p>
                 </div>
             </div>
             <div class="flex pl-8">
@@ -33,7 +33,7 @@
                     <p>Data Final:</p>
                 </div>
                 <div class="w-[40%] justify-end flex-row">
-                    <p class="text-[#620BA7]">{{ DataFinalProjeto }}</p>
+                    <p class="text-[var(--roxoAtencao)]">{{ DataFinalProjeto }}</p>
                 </div>
             </div>
         </div>
@@ -171,9 +171,8 @@ function contraste(cor) {
 }
 
 .scrollBarInfo {
-    position: relative;
     overflow: hidden;
-    transition: overflow-y 0.3s ease;
-    @apply overflow-y-auto max-h-max h-[92vh] flex flex-col border-2 gap-8 shadow-xl border-[var(--backgroundItemsClaros)] border-b-0;
+    transition: overflow-y ;
+    @apply overflow-y-auto max-h-max h-[87vh] flex flex-col border-2 gap-8 shadow-xl border-[var(--backgroundItemsClaros)] border-b-0;
 }
 </style>

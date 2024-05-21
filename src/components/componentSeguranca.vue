@@ -1,67 +1,78 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
-        <div>
-            <h1 style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-                Segurança
+        <div class="flex flex-row w-full items-center ">
+            <div @click="router.push('/perfil')" v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
+                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
+            </div>
+            <h1 v-if="screenWidth <= 740"
+            style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
+                class="m-[5%] border-b-4 border-[#CCC4CF] p-2 w-max">
+                {{ $t('seguranca.Segurança') }}
+            </h1>
+            <h1 v-else style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
+                class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
+                {{ $t('seguranca.Segurança') }}
             </h1>
         </div>
-        <div style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);" class="pl-32 items-center">
+        <div style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
+            class="pl-32 items-center max-sm:pl-12 max-mobileGrande:pl-8">
             <div class="flex justify-start">
-                <div class="flex flex-col gap-10">
-                    <div class="flex items-center sm:flex-wrap gap-8">
-                        <div class="text-2xl w-[470px]">
-                            <span class="text-[var(--roxo)]">*</span> Senha com 8 ou mais caracteres.<br>
-                            <span class="text-[var(--roxo)]">*</span> Senha contento letras, números e caracteres especiais. <br>
-                            <span class="text-[var(--roxo)]">*</span> Não utilize palavras comuns.
+                <div class="flex flex-col gap-10 ">
+                    <div class="flex  lg:flex-row gap-8  max-md:flex-col">
+                        <div class="text-2xl w-[60%] ">
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaCaracteres') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaConteudo') }}<br>
+                            <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaPalavrasComuns') }}
                             <!-- Ao alterar a senha, a gente mantém você conectado
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos. -->
                         </div>
-                        <Botao 
-                        :funcaoClick="abrePopUp" 
-                        :parametrosFuncao="['senha']" 
-                        preset="PadraoRoxo" 
-                        texto="Alterar Senha">
-                        </Botao>
+                        <div>
+                            <Botao v-if="screenWidth >= 640" :funcaoClick="abrePopUp" :parametrosFuncao="['senha']"
+                                preset="PadraoRoxo" :texto="$t('seguranca.alterarSenha')">
+                            </Botao>
+                            <Botao v-else :funcaoClick="abrePopUp" :parametrosFuncao="['senha']" preset="PadraoRoxo"
+                                tamanhoPadrao="mobilemedio" :texto="$t('seguranca.alterarSenha')">
+                            </Botao>
+                        </div>
                     </div>
-                    <div class="flex items-center sm:flex-wrap gap-8">
+                    <div class="flex  items-start lg:flex-row gap-8 max-md:flex-col">
                         <div class="gap-5">
-                            <div class="text-2xl w-[470px]">
-                                Seu endereço de e-mail atual é <span class="text-[var(--roxo)]">{{email}}</span>
+                            <div class="text-2xl min-w-[60%] w-full flex flex-col">
+                                <div> {{ $t('seguranca.seuEmailAtual') }}</div>
+                                <div class="text-[var(--roxo)] w-full max-tablet:w-[70%]  break-words">
+                                    {{ email }}
+                                </div>
                             </div>
                             <div v-if="isLogadoGoogle" class="text-2xl w-[470px]">
                                 Login com a conta do Google ativado
                                 Conta conectada
-                                Sua conta está conectada a uma conta do Google. 
+                                Sua conta está conectada a uma conta do Google.
                                 Alterar o endereço de e-mail aqui vai
                                 desconectar a conta do Google.
                             </div>
                         </div>
-                        <Botao 
-                        :funcaoClick="abrePopUp" 
-                        :parametrosFuncao="['email']" 
-                        preset="PadraoRoxo" 
-                        texto="Alterar E-mail">
-                        </Botao>
+                        <div class="w-[45%] flex md:justify-end">
+                            <Botao v-if="screenWidth >= 640" :funcaoClick="abrePopUp" :parametrosFuncao="['email']"
+                                preset="PadraoRoxo" :texto="$t('seguranca.alterarEmail')">
+                            </Botao>
+                            <Botao v-else :funcaoClick="abrePopUp" :parametrosFuncao="['email']" preset="PadraoRoxo"
+                                tamanhoPadrao="mobilemedio" :texto="$t('seguranca.alterarEmail')">
+                            </Botao>
+                        </div>
                     </div>
-                    <!-- tudo errado, arrumar -->
-                    <!-- <div class="flex justify-between items-center gap-5">
-                        <span class="text-xl">Alterar E-mail</span>
-                        <Input styleInput="input-transparente-claro-grande" 
-                        conteudoInput="Altera E-mail" 
-                        v-model="email" 
-                        tipo="obrigatorio" />
-                    </div> -->
-                    <!-- <alteraSenha v-if="PerfilStore.popUpSenha"></alteraSenha>
-                   <alterarEmail v-if="PerfilStore.popUpEmail"></alterarEmail>  -->
+
                 </div>
             </div>
         </div>
         <div style="font-Family:var(--fonteCorpo)" class="flex items-center justify-between ml-[10%] mr-[15%] mt-[17%]">
-            <span>Deseja deletar sua Conta?</span>
+            <span @click="abrePopUp(['deletar'])">{{ $t('seguranca.deletarConta') }}</span>
         </div>
-        
+
     </div>
+    <alterarSenha v-if="popUpSenha && screenWidth <= 1024" ></alterarSenha>
+    <alterarEmail v-if="popUpEmail  && screenWidth <= 1024"></alterarEmail>
+    <ConfirmaPopUp v-if="popUpDeletar  && screenWidth <= 1024"></ConfirmaPopUp>
 </template>
 
 <script setup>
@@ -70,49 +81,70 @@ import { perfilStore } from '../stores/perfilStore'
 import Input from '../components/Input.vue'
 import Botao from './Botao.vue';
 import VueCookies from "vue-cookies";
-import alteraSenha from './alterarSenha.vue'
-import { onMounted, ref } from 'vue';
-import alterarEmail from './alterarEmail.vue';
-import { storeToRefs } from 'pinia';
+import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
+import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue';
+import ConfirmaPopUp from '../components/ConfirmaPopUp.vue'
+import alterarEmail from '../components/alterarEmail.vue';
+import alterarSenha from '../components/alterarSenha.vue';
+import { storeToRefs } from 'pinia';
+import router from '../router';
 const PerfilStore = perfilStore()
-const conexao=conexaoBD()
-const {fonteTitulo} = storeToRefs(PerfilStore)
-const {fonteCorpo} = storeToRefs(PerfilStore)
-const {tamanhoTitulo} = storeToRefs(PerfilStore)
-const {tamanhoCorpo} = storeToRefs(PerfilStore)
+const conexao = conexaoBD()
+const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(PerfilStore)
+import { useI18n } from 'vue-i18n';
+import { onUpdated } from 'vue';
+const screenWidth = ref(window.innerWidth)
 
-// FAZER A INTEGRAÇÃO COM BANCO E 
-// ATUALIZAR EMAIL E SENHA DO USUARIO DO COOKIE
-
-let funcaoPopUp=funcaoPopUpStore()
-let usuario;
-
-let isLogadoGoogle=false;
-let popUpSenha=ref(false);
-let popUpEmail=ref(false);
-
-let email=ref('');
-
-onMounted(async ()=>{
-    usuario= await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
-    console.log(usuario)
-    email.value=usuario.email
+watch(() => window.innerWidth, () => {
+    screenWidth.value = window.innerWidth
 })
 
-function abrePopUp(tipo){
-console.log(tipo)
-if (tipo[0] == 'senha') {
- 
-    PerfilStore.popUpSenha = true;
-    PerfilStore.popUpEmail = false;
+let funcaoPopUp = funcaoPopUpStore()
+let usuario;
 
-} else {
-    PerfilStore.popUpEmail = true;
-    PerfilStore.popUpSenha = false;
-}
+let isLogadoGoogle = false;
 
-funcaoPopUp.abrePopUp()
+
+let email = ref('');
+
+onMounted(async () => {
+    usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'), '/usuario')
+    console.log(usuario)
+    email.value = usuario.email
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+})
+onUpdated(()=>{
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/seguranca')
+    }
+})
+
+function abrePopUp(tipo) {
+    console.log(tipo)
+    if (tipo[0] == 'senha') {
+
+        PerfilStore.popUpSenha = true;
+        PerfilStore.popUpEmail = false;
+        PerfilStore.popUpDeletar = false;
+
+    } else if (tipo[0] == 'email') {
+        PerfilStore.popUpEmail = true;
+        PerfilStore.popUpSenha = false;
+        PerfilStore.popUpDeletar = false;
+    } else if (tipo[0] == 'deletar') {
+        PerfilStore.popUpDeletar = true;
+        PerfilStore.popUpEmail = false;
+        PerfilStore.popUpSenha = false;
+
+    }
+
+    funcaoPopUp.abrePopUp()
 
 }
 

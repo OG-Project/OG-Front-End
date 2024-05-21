@@ -20,7 +20,9 @@ const route = useRoute()
 
 import tabBar from "./components/tabBar.vue";
 import NavBarMobile from "./components/NavBarMobile.vue";
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 
 const banco = conexaoBD();
 const criaNotificacaoStore = criaNotificacao();
@@ -66,31 +68,36 @@ onMounted(async () => {
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
   console.log(configuracao.value.isDark);
   if (configuracao.value.isDark) {
-    root.setProperty('--backgroundPuro', '#150f17')
+    root.setProperty('--backgroundPuro', '#0F0F0F')
     root.setProperty('--backgroundItems', '#222222')
     root.setProperty('--fonteCor', '#ffffff')
     root.setProperty('--backgroundItemsClaros', '#363636')
   }
 
 })
-
-onUpdated(async ()=>{
+onBeforeUpdate(async()=>{
   usuario.value =
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
+        console.log(usuario.value);
+})
+
+
+onUpdated(()=>{
   if(route.path!='/login' ){
-   console.log('oi aqui');
+   console.log(usuario.value.configuracao.isTutorial);
+   console.log(usuario.value.configuracao.rotaDoPasso);
     if(usuario.value.configuracao.isTutorial){
       if(usuario.value.configuracao.ultimoPassoId!='step-1'
         && usuario.value.configuracao.ultimoPassoId!=null){
           console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
+          router.push(usuario.value.configuracao.rotaDoPasso)
           tour.show(usuario.value.configuracao.ultimoPassoId,true)
       }else{
         console.log(route.path);
         tour.start()
       }
-    }else if(route.path=='/home'){
     }
 
   }
@@ -178,13 +185,15 @@ watch(() => route.path, () => {
   }
 });
 import { inject } from 'vue'
+import router from "./router";
+import { onBeforeUpdate } from "vue";
 const tour = inject('tour')
 
 tour.addSteps([
   {
     id: 'step-1',
-    title: 'Bem Vindo!!',
-    text: 'Aqui mostra suas atividades mais importantes',
+    title: t('tutorial.bemVindo'),
+    text: t('tutorial.mostraAtividades'),
     attachTo: {
       element: '#step-1',
       on: 'top'
@@ -192,7 +201,7 @@ tour.addSteps([
     buttons: [
       {
         classes: 'button',
-        text: 'Próximo',
+        text: t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -205,7 +214,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text: t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -217,15 +226,15 @@ tour.addSteps([
   },
   {
     id: 'step-2',
-    title: 'Dashboard',
-    text: 'Informações para gerenciar suas tarefas feitas e não feitas',
+    title: t('tutorial.dashboard'),
+    text: t('tutorial.informacoes'),
     attachTo: {
       element: '#step-2',
       on: 'top'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -238,7 +247,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -247,22 +256,22 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-3',
-    title: 'Menu',
-    text: 'Clique para acessar o fluxo do sistema',
+    title:  t('tutorial.menu'),
+    text:  t('tutorial.clique'),
     attachTo: {
       element: '#step-3',
       on: 'right-end'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -275,7 +284,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -284,36 +293,36 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },  
   {
     id: 'step-4',
-    title: 'Partes importantes',
-    text: 'Equipe, aqui pode visualizar suas equipes e cria-las. Clique para ver',
+    title:  t('tutorial.partes'),
+    text:  t('tutorial.equipe'),
     attachTo: {
       element: '#step-4',
       on: 'right-end'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
           let proximoId=splitId.join('-')
           usuario.value.configuracao.ultimoPassoId=(proximoId)
           
-          usuario.value.configuracao.rotaDoPasso='/home'
+          usuario.value.configuracao.rotaDoPasso='/equipe'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -322,22 +331,22 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-5',
-    title: 'Crie uma Equipe ',
-    text: 'Clique aqui para criar novas equipes ',
+    title:  t('tutorial.crieEquipe'),
+    text:  t('tutorial.cliqueECrie'),
     attachTo: {
       element: '#step-5',
       on: 'right'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -350,7 +359,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -359,21 +368,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-6',
-    text: 'Preencha os campos',
+    text:  t('tutorial.preencha'),
     attachTo: {
       element: '#step-6',
       on: 'right'
     },
     buttons:[
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -386,7 +395,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -395,21 +404,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-7',
-    text: 'Crie a Equipe',
+    text:  t('tutorial.crieAEquipe'),
     attachTo: {
       element: '#step-7',
       on: 'right'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -423,7 +432,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -432,21 +441,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-8',
-    text: 'Entre na equipe criada',
+    text:  t('tutorial.entreEquipe'),
     attachTo: {
       element: '#step-8',
       on: 'right'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -459,7 +468,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -468,21 +477,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-9',
-    text: 'Aqui pode-se ver projetos da equipe ',
+    text:  t('tutorial.projetosEquipe'),
     attachTo: {
       element: '#step-9',
       on: 'center'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -495,7 +504,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -504,34 +513,34 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-10',
-    text: 'Clique para criar um projeto',
+    text:  t('tutorial.crieProjeto'),
     attachTo: {
       element: '#step-10',
       on: 'left'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
           let proximoId=splitId.join('-')
           usuario.value.configuracao.ultimoPassoId=(proximoId)
-          usuario.value.configuracao.rotaDoPasso='/equipe/telaInicial'
+          usuario.value.configuracao.rotaDoPasso='/criaprojeto'
           banco.atualizar(usuario.value,'/usuario')
           tour.next()
         } 
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -540,21 +549,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-11',
-    text: 'Prencha os campos',
+    text:  t('tutorial.preencha'),
     attachTo: {
       element: '#step-11',
       on: 'right'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text:  t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -567,7 +576,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text:  t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -576,21 +585,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text:  t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-12',
-    text: 'Crie Um Projeto',
+    text: t('tutorial.crieUmProjeto'),
     attachTo: {
       element: '#step-12',
       on: 'right'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text: t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -603,7 +612,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text: t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -612,21 +621,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text: t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-13',
-    text: 'Aqui vai gerenciar as tarefas do projeto em questão.',
+    text: t('tutorial.gerenciar'),
     attachTo: {
       element: '#step-13',
       on: 'center'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text: t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -639,7 +648,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text: t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -648,21 +657,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text: t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-14',
-    text: 'Crie a primeira tarefa.',
+    text: t('tutorial.crieTarefa'),
     attachTo: {
       element: '#step-14',
       on: 'left-end'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text: t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -675,7 +684,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text: t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -684,21 +693,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text: t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-15',
-    text: 'Prencha os campos para poder criar a tarefa.',
+    text: t('tutorial.preenchaTarefa'),
     attachTo: {
       element: '#step-15',
       on: 'top-end'
     },
     buttons: [
       {
-        text: 'Próximo',
+        text: t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -711,7 +720,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text: t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -720,57 +729,21 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text: t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-16',
-    text: 'Clique aqui para completar.',
+    text: t('tutorial.completar'),
     attachTo: {
       element: '#step-16',
       on: 'top-end'
     },
     buttons: [
       {
-        text: 'Próximo',
-        action: ()=>{
-          let splitId=tour.getCurrentStep().id.split('-')
-          splitId[1]=''+(Number.parseInt(splitId[1])+1)
-          let proximoId=splitId.join('-')
-          usuario.value.configuracao.ultimoPassoId=(proximoId)
-          usuario.value.configuracao.rotaDoPasso='/criaTarefa'
-          banco.atualizar(usuario.value,'/usuario')
-          tour.next()
-        } 
-      },
-      {
-        secondary: true,
-        text: 'Pular',
-        action: ()=>{
-          usuario.value.configuracao.isTutorial=false
-          banco.atualizar(usuario.value,'/usuario')
-          tour.complete()
-        }
-      },
-      {
-        secondary: true,
-        text: 'Voltar',
-        action: tour.back
-      }
-    ]
-  },
-  {
-    id: 'step-17',
-    text: 'Há formas diferentes de visualizar suas tarefas como Kanban, Lista, Calendario e Linha do Tempo.',
-    attachTo: {
-      element: '#step-17',
-      on: 'top-end'
-    },
-    buttons: [
-      {
-        text: 'Próximo',
+        text: t('tutorial.proximo'),
         action: ()=>{
           let splitId=tour.getCurrentStep().id.split('-')
           splitId[1]=''+(Number.parseInt(splitId[1])+1)
@@ -783,7 +756,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Pular',
+        text: t('tutorial.pular'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           banco.atualizar(usuario.value,'/usuario')
@@ -792,21 +765,57 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text: t('tutorial.voltar'),
+        action: tour.back
+      }
+    ]
+  },
+  {
+    id: 'step-17',
+    text: t('tutorial.formas'),
+    attachTo: {
+      element: '#step-17',
+      on: 'top-end'
+    },
+    buttons: [
+      {
+        text: t('tutorial.proximo'),
+        action: ()=>{
+          let splitId=tour.getCurrentStep().id.split('-')
+          splitId[1]=''+(Number.parseInt(splitId[1])+1)
+          let proximoId=splitId.join('-')
+          usuario.value.configuracao.ultimoPassoId=(proximoId)
+          usuario.value.configuracao.rotaDoPasso='/projeto'
+          banco.atualizar(usuario.value,'/usuario')
+          tour.next()
+        } 
+      },
+      {
+        secondary: true,
+        text: t('tutorial.pular'),
+        action: ()=>{
+          usuario.value.configuracao.isTutorial=false
+          banco.atualizar(usuario.value,'/usuario')
+          tour.complete()
+        }
+      },
+      {
+        secondary: true,
+        text: t('tutorial.voltar'),
         action: tour.back
       }
     ]
   },
   {
     id: 'step-18',
-    text: 'Existem mais funcionalidades no site, mas o essencial é isso.',
+    text: t('tutorial.funcionalidades'),
     attachTo: {
       element: '#step-18',
       on: 'top-end'
     },
     buttons: [
       {
-        text: 'Finalizar',
+        text: t('tutorial.finalizar'),
         action: ()=>{
           usuario.value.configuracao.isTutorial=false
           usuario.value.configuracao.ultimoPassoId='step-1'
@@ -817,7 +826,7 @@ tour.addSteps([
       },
       {
         secondary: true,
-        text: 'Voltar',
+        text: t('tutorial.voltar'),
         action: tour.back
       }
     ]
@@ -827,7 +836,16 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] h-full">
+  <div v-show="isVlibras == true">
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+  </div>
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] min-h-screen  overflow-hidden">
+
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
@@ -835,21 +853,13 @@ tour.addSteps([
   </div>
     <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
     <div ref="el" :style="style" style="position: fixed"
-    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max" v-if="perfil.isTecladoAtivado">
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max " v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">
         <svgIconMove class="w-[1vw] h-[3vh]" />
         <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
       </div>
       <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
-    </div>
-  </div>
-  <div v-show="isVlibras == true">
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper>
-        <div class="vw-plugin-top-wrapper"></div>
-      </div>
     </div>
   </div>
   

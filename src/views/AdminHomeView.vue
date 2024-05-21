@@ -1,7 +1,8 @@
 <template>
     <div class="h-[92vh] w-full">
         <div class="flex p-2 text-4xl justify-center">
-            <h1>{{ $t('paginaAdm.listaDeTarefas') }}</h1>
+            <h1 style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);">{{
+                $t('paginaAdm.listaDeTarefas') }}</h1>
         </div>
         <div class="flex items-center relative justify-center mt-4 h-[38%] ml-16">
             <div id="poligono"
@@ -14,20 +15,29 @@
                 <div class="overflow-y-auto h-[100%] w-[80%] flex items-center flex-col" id="scrollbar">
                     <div class="flex gap-4 mt-6 flex-wrap justify-center w-[100%] text-md">
                         <div class="flex gap-8 pb-8 w-[90%] items-center justify-center">
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.nomeDaTarefa') }}</p>
+                            <p class="w-[20%] flex items-center justify-center"
+                                style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
+                $t('paginaAdm.nomeDaTarefa') }}</p>
                             <!-- <p class="w-[20%] flex items-center justify-center">Lider</p> -->
                             <!-- <p class="w-[20%] flex items-center justify-center">Membros</p> -->
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.status') }}</p>
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.tempoTrabalhado') }}
+                            <p class="w-[20%] flex items-center justify-center"
+                                style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
+                $t('paginaAdm.status') }}</p>
+                            <p class="w-[20%] flex items-center justify-center"
+                                style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
+                $t('paginaAdm.tempoTrabalhado') }}
                             </p>
                             <!-- <p class="w-[20%] flex items-center justify-center">Entrega</p> -->
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.aprovado') }}</p>
-                            <p class="w-[20%] flex items-center justify-center">{{ $t('paginaAdm.historico') }}</p>
+                            <p class="w-[20%] flex items-center justify-center"
+                                style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
+                $t('paginaAdm.aprovado') }}</p>
+                            <p class="w-[20%] flex items-center justify-center"
+                                style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
+                $t('paginaAdm.historico') }}</p>
                         </div>
                         <div v-for="tarefa of tarefas" class="w-[90%] text-sm">
                             <div v-if="tarefa.nome">
                                 <div class="flex gap-8">
-                                    {{ console.log(tarefa) }}
                                     <p class="w-[20%] truncate flex items-center justify-center h-10 bg-[#B488D7] cursor-pointer"
                                         @click="redirecionamento('/criaTarefa', tarefa.id)">{{ tarefa.nome }}</p>
                                     <!-- <p class="w-[20%] flex items-center justify-center h-10" v-if="tarefa.lider"
@@ -44,14 +54,19 @@
                                         possui</p> -->
 
                                     <p class="w-[20%] flex items-center justify-center h-10" v-if="tarefa.status"
-                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) }">
+                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) + 'font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);'}">
                                         {{ tarefa.status.nome }}</p>
-                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]"
+                                        style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
+                                        v-else>Não
                                         possui</p>
                                     <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]"
+                                        style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
                                         v-if="tarefa.tempoAtuacao">{{
                 tarefa.tempoAtuacao }}</p>
-                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]" v-else>Não
+                                    <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]"
+                                        style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
+                                        v-else>Não
                                         possui</p>
                                     <!-- <p class="w-[20%] flex items-center justify-center h-10 bg-[#EF8F7A]"
                                         v-if="tarefa.diaCompleto">{{ format(new Date(tarefa.diaCompleto), "dd/MM/yyyy")
@@ -65,7 +80,8 @@
                                             @click="deixaTarefaConcluida(tarefa, 'Aprovado')"></AprovedIcon>
                                     </div>
                                     <div class="w-[20%] flex items-center justify-center gap-10 h-10">
-                                        <IconeHistorico class="w-[20%] h-[85%] cursor-pointer"></IconeHistorico>
+                                        <IconeHistorico @click="abrePopUp(tarefa, 'tarefa')" class="w-[20%] h-[85%] cursor-pointer">
+                                        </IconeHistorico>
                                     </div>
                                 </div>
                             </div>
@@ -76,11 +92,12 @@
         </div>
         <div class="flex relative w-full gap-4 pl-24 mt-16 h-[38%]">
             <div class="flex pl-12 flex-col justify-center w-[22%] h-[85%] border-r-2 border-black">
-                <p class="text-2xl">{{ $t('paginaAdm.tarefas') }}</p>
-                <p>{{ $t('paginaAdm.total') }}: {{ totalDeTarefas }}</p>
-                <p>{{ $t('paginaAdm.emProgresso') }}: {{ totalEmProgresso }}</p>
-                <p>{{ $t('paginaAdm.prontas') }}: {{ totalProntas }}</p>
-                <p>{{ $t('paginaAdm.totalMinutosTrabalhados') }}: {{ totalHorasTrabalhadas }}</p>
+                <p style="font-family:var(--fonteCorpo);" class="text-2xl">{{ $t('paginaAdm.tarefas') }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.total') }}: {{ totalDeTarefas }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.emProgresso') }}: {{ totalEmProgresso }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.prontas') }}: {{ totalProntas }}</p>
+                <p style="font-family:var(--fonteCorpo);">{{ $t('paginaAdm.totalMinutosTrabalhados') }}: {{
+                totalHorasTrabalhadas }}</p>
             </div>
             <div class="flex flex-col w-[5%] h-full items-center justify-center gap-4">
                 <button @click="changeChart('bar')"
@@ -114,6 +131,8 @@
 </div> -->
         </div>
     </div>
+    <HistoricoPopUp :texto-requisicao="textoRequisicao"
+    :id="number.id" v-if="funcaoPopUp.variavelModal"></HistoricoPopUp>
 </template>
 <script setup>
 import { format } from "date-fns";
@@ -126,11 +145,34 @@ import checkBox from "../components/checkBox.vue";
 import AprovedIcon from "../assets/AprovadoAdm.vue";
 import RejectedIcon from "../assets/VoltaAdm.vue";
 import IconeHistorico from "../assets/Historico.vue";
+import HistoricoPopUp from "../components/HistoricoPopUp.vue";
+import { funcaoPopUpStore } from "../stores/funcaoPopUp";
+
+let number = ref();
+let textoRequisicao = ref('');
 
 import router from '@/router';
 
 import tinycolor from "tinycolor2";
 import CheckBox from "../components/checkBox.vue";
+const funcaoPopUp = funcaoPopUpStore();
+funcaoPopUp.variavelModal = false;
+
+async function abrePopUp(objeto, tipo) {
+    if(tipo == 'tarefa'){
+        number.value = objeto;
+        console.log(number.value.id)
+        textoRequisicao.value = tipo;
+        console.log(textoRequisicao.value)
+        funcaoPopUp.abrePopUp()
+    }else if(tipo == "projeto"){
+        number.value = objeto;
+        console.log(number.value.id)
+        textoRequisicao.value = tipo;
+        console.log(textoRequisicao.value)
+    }
+        
+}
 
 function corDaFonte(backgroundColor) {
     const isLight = tinycolor(backgroundColor).isLight();
@@ -139,29 +181,35 @@ function corDaFonte(backgroundColor) {
 
 function redirecionamento(local, id) {
     localStorage.removeItem('TarefaNaoFinalizada')
+    VueCookies.set('idReloadTarefa', '0');
     VueCookies.set('IdTarefaCookies', id, 100000000)
     router.push(local)
 }
 
-function deixaTarefaConcluida(tarefa, status) {
-    if (status == 'Rejeitado') {
-        tarefa.concluida = false
-        tarefa.status = {
-            id: 2,
-            nome: "Em Progresso",
-            cor: "17179c"
+async function deixaTarefaConcluida(tarefa, status) {
+    banco.buscarTarefaProjeto(VueCookies.get('IdProjetoAtual'), '/projeto').then((projeto) => {
+        let emProgresso = {}
+        let pronto = {}
+        console.log(projeto);
+        projeto.statusList.forEach(status => {
+            if (status.nome == 'Em Progresso') {
+                emProgresso = status
+            }
+            if (status.nome == 'Pronto') {
+                pronto = status
+            }
+        })
+        if (status == 'Rejeitado') {
+            tarefa.concluida = false
+            tarefa.status = emProgresso
+            banco.atualizar(tarefa, "/tarefa")
         }
-        banco.atualizar(tarefa, "/tarefa")
-    }
-    else {
-        tarefa.concluida = true
-        tarefa.status = {
-            id: 1,
-            nome: 'Pronto',
-            cor: '38a31a'
+        else {
+            tarefa.concluida = true
+            tarefa.status = pronto
+            banco.atualizar(tarefa, "/tarefa")
         }
-        banco.atualizar(tarefa, "/tarefa")
-    }
+    })
 }
 
 const banco = conexaoBD();
@@ -263,8 +311,8 @@ function changeChart(type) {
     renderChart(type)
 }
 let totalDeTarefas = computed(() => tarefas.value.length)
-let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status.nome === 'Em Progresso').length)
-let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status.nome === 'Pronto').length)
+let totalEmProgresso = computed(() => tarefas.value.filter(tarefa => tarefa.status && tarefa.status.nome === 'Em Progresso').length)
+let totalProntas = computed(() => tarefas.value.filter(tarefa => tarefa.status && tarefa.status.nome === 'Pronto').length)
 let totalHorasTrabalhadas = computed(() => {
     if (tarefas) {
         return tarefas.value.reduce((acc, tarefa) => {

@@ -2,7 +2,7 @@
     <fundoPopUp v-if="!editando" largura="" :altura="tamanhoPopUp()">
         <div class="divGeral">
             <div class=" grid-template flex w-full">
-                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe Editar</h1>
+                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">{{ $t('editarEquipePopUp.equipeEditar')  }}</h1>
             </div>
 
             <div class=" grid-template  flex w-full mt-[1vh] p-5">
@@ -24,39 +24,41 @@
                     <div v-if="usuarioECriadorEquipe">
                         <div v-if="screenWidth >= 620"
                             class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
-                            <Botao preset="Deletar" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem"
+                            <Botao preset="Deletar" tamanhoPadrao="medio" :texto=" $t('editarEquipePopUp.deletar')  " tamanhoDaFonte="1rem"
                                 :funcaoClick="deletarEquipe">
                             </Botao>
                         </div>
                         <div v-else class="flex mt-20">
-                            <Botao preset="Deletar" tamanhoPadrao="mobilemedio" texto="Deletar" tamanhoDaFonte="1rem"
+                            <Botao preset="Deletar" tamanhoPadrao="mobilemedio" :texto=" $t('editarEquipePopUp.deletar')  " tamanhoDaFonte="1rem"
                                 :funcaoClick="deletarEquipe">
                             </Botao>
                         </div>
                     </div>
                     <div v-else-if="!usuarioECriadorEquipe">
                         <div v-if="screenWidth >= 620"
-                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-5 xl:ml-[6vw] lg:ml-[6vw] md:ml-[5vw]">
-                            <Botao preset="Sair" tamanhoPadrao="medio" texto="Deletar" tamanhoDaFonte="1rem"
+                            class="flex justify-start xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:ml-[10.5vw] xl:ml-[27vw] lg:ml-[29vw] md:ml-[26vw]">
+                            <Botao preset="Sair" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.sair') " tamanhoDaFonte="1rem"
                                 :funcaoClick="removesse">
                             </Botao>
                         </div>
                         <div v-else class="flex mt-20">
-                            <Botao preset="Sair" tamanhoPadrao="mobilemedio" texto="Deletar" tamanhoDaFonte="1rem"
+                            <Botao preset="Sair" tamanhoPadrao="mobilemedio" :texto="$t('editarEquipePopUp.sair') " tamanhoDaFonte="1rem"
                                 :funcaoClick="removesse">
                             </Botao>
                         </div>
                     </div>
-                    <div v-if="screenWidth >= 620"
-                        class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Editar" tamanhoDaFonte="1rem"
+                    <div v-if=" usuarioResponsavelEquipe">
+                        <div v-if="screenWidth >= 620"
+                            class=" flex justify-end xl:mt-[10vh] lg:mt-[15vh] md:mt-[15vh] 2xl:mr-5 xl:mr-[5vw] lg:mr-[5vw] md:mr-[4vw]">
+                            <Botao preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.editar')" tamanhoDaFonte="1rem"
                             :funcaoClick="editarEquipe">
-                        </Botao>
-                    </div>
-                    <div v-else class="flex justify-end mt-20">
-                        <Botao preset="PadraoRoxo" tamanhoPadrao="mobilemedio" texto="Editar" tamanhoDaFonte="1rem"
+                             </Botao>
+                        </div>
+                        <div v-else class="flex justify-end mt-20">
+                            <Botao preset="PadraoRoxo" tamanhoPadrao="mobilemedio" :texto="$t('editarEquipePopUp.editar')" tamanhoDaFonte="1rem"
                             :funcaoClick="editarEquipe">
-                        </Botao>
+                            </Botao>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -66,7 +68,7 @@
     <fundoPopUp v-if="editando" largura="" :altura="tamanhoPopUp()">
         <div class="divGeral">
             <div class=" grid-template flex w-full">
-                <h1 class="tituloEditar flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">Equipe</h1>
+                <h1 class="tituloEditar flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">{{$t('criaEquipePopUp.equipe')}}</h1>
             </div>
             <div class=" grid-template  flex w-full mt-[1vh] p-5">
                 <div class="relative">
@@ -77,20 +79,20 @@
                     </div>
                 </div>
                 <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
-                    :largura="larguraInput()" conteudoInput="Nome da Equipe"  v-model="nome" @updateModelValue="(e)=> {nome=e}"></Input>
+                    :largura="larguraInput()" :conteudoInput="$t('criaEquipePopUp.nomeEquipe')"  v-model="nome" @updateModelValue="(e)=> {nome=e}"></Input>
             </div>
             <div class=" grid-template flex w-full mt-[1vh]">
                 <textAreaPadrao
                     class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center"
-                    height="20vh" resize="none" tamanho-da-fonte="1rem" placeholder="Descrição(opcional)"
+                    height="20vh" resize="none" tamanho-da-fonte="1rem" :placeholder="$t('criaEquipePopUp.descricao')"
                     v-model="descricao" @updateModelValue="(e)=> {descricao= e}"></textAreaPadrao>
             </div>
             <div
                 class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
-                <Botao v-if="screenWidth >= 620" preset="PadraoRoxo" tamanhoPadrao="medio" texto="Salvar alterações"
+                <Botao v-if="screenWidth >= 620" preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.salvar')"
                     tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
                 </Botao>
-                <Botao v-else preset="PadraoRoxo" tamanhoPadrao="mobilepadrao" texto="Salvar alterações"
+                <Botao v-else preset="PadraoRoxo" tamanhoPadrao="mobilepadrao" :texto="$t('editarEquipePopUp.salvar')"
                     tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
                 </Botao>
             </div>
@@ -114,6 +116,9 @@ import VueCookies from "vue-cookies";
 import { useRouter } from 'vue-router'
 import equipe from '../imagem-vetores/equipe.vue';
 import alertTela from './alertTela.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 const screenWidth = window.innerWidth;
 const router = useRouter();
 const banco = conexaoBD();
@@ -132,8 +137,9 @@ let mensagemError = ref("");
 let editando = ref(false);
 let equipes = banco.procurar("/equipe");
 let usuarios = banco.procurar("/usuario");
-let usuarioFazParteEquipe = false;
-let usuarioECriadorEquipe = false;
+let usuarioFazParteEquipe = ref(false);
+let usuarioECriadorEquipe = ref(false);
+let usuarioResponsavelEquipe = ref(false);
 function limparMensagemErro() {
     mensagem.value = "";
 }
@@ -163,7 +169,7 @@ function verificaTamanho(){
  if(descricao.value.length > 255){
     mensagem.value = ""
     mensagemCor.value = ""
-    mensagem.value = "Máximo de 255 caracteres";
+    mensagem.value = t('criaEquipePopUp.caracteres');
     mensagemCor.value = "#CD0000"
  }
 }
@@ -237,11 +243,12 @@ async function equipeDoUsuarioLogado (){
             usuario.equipes.forEach((equipeUsuario) => {
                 // Verifica se a equipe do usuário é a mesma que foi criada
                 if (equipeUsuario.equipe.id == equipeSelecionada) {
-                     console.log(1)
-                     usuarioFazParteEquipe = true;
+                     usuarioFazParteEquipe.value = true;
                     if(equipeUsuario.criador == true){
-                     console.log(2)
-                     usuarioECriadorEquipe = true;
+                     usuarioECriadorEquipe.value = true;
+                    }
+                    if(equipeUsuario.permissao != 'VER'){
+                        usuarioResponsavelEquipe.value = true;
                     }
                 }
             });
@@ -363,7 +370,7 @@ async function atualizarEquipe() {
             } else {
                 mensagem.value = ""
                 mensagemCor.value = ""
-                mensagem.value = "Nenhuma alteração detectada";
+                mensagem.value = t('editarEquipePopUp.alteracao');
                 mensagemCor.value = "#CD0000"
             }
 
@@ -394,8 +401,8 @@ async function atualizarEquipe() {
     } else {
         mensagem.value = ""
         mensagemCor.value = ""
-        mensagem.value = "Nenhuma imagem detectada";
-        mensagemCor.value = "#CD0000"
+        mensagem.value = t('editarEquipePopUp.edicao');;
+        mensagemCor.value = '#29CD00'
     }
 
    window.location.reload();
@@ -433,7 +440,7 @@ async function enviarFotoParaBackend(id) {
 @layer components {
 
     .alert {
-        @apply absolute flex items-start justify-start 2xl:mt-[-20vh] mr-10 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
+        @apply absolute flex items-start justify-start text-[var(--fonteCor)] 2xl:mt-[-20vh] mr-10 2xl:ml-[77vw] xl:ml-[75vw] xl:mt-[-20vh] lg:ml-[68vw] lg:mt-[-15vh] md:ml-[60vw] md:mt-[-15vh] z-[9999];
     }
 
     .descricao {

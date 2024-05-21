@@ -1,14 +1,14 @@
 <template>
   <div :style="tamanhoPesquisa">
     <div v-if="temIcon">
-      <Input :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa" :fontSize="fontSize"
+      <Input :isInvalido="isInvalido" :textoInvalido="textoInvalido" :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa" :fontSize="fontSize"
         :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa"
         tipo="obrigatorio" @updateModelValue="(e) => {
     conteudoDaPesquisa = e
   }"></Input>
     </div>
     <div v-if="!temIcon" @="$emit('itemSelecionado', conteudoDaPesquisa)">
-      <Input :largura="props.largura" styleInput="input-transparente-claro" :conteudoInput="placeHolderPesquisa"
+      <Input  :isInvalido="isInvalido" :textoInvalido="textoInvalido" :largura="props.largura" styleInput="input-transparente-claro" :conteudoInput="placeHolderPesquisa"
         :fontSize="fontSize" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa" @updateModelValue="(e) => {
     conteudoDaPesquisa = e
   }"></Input>
@@ -46,6 +46,7 @@ import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
 import { defineProps, defineEmits } from "vue";
 import VueCookies from "vue-cookies";
 import router from "@/router";
+import { onMounted } from "vue";
 
 let conteudoDaPesquisa = ref("");
 defineEmits(['itemSelecionado'])
@@ -60,13 +61,21 @@ const props = defineProps({
   placeHolderPesquisa: {
     type: String
   },
+  isInvalido :{
+    type: Boolean,
+    default: false
+  },
+  textoInvalido: String,
   fontSize: String,
-  tipo: String
+  tipo: String,
 });
 
 let itemsIguais = ref(false);
 
 let listaRenderizada = ref([]);
+
+
+
 
 function verificaSeSaoIguais() {
   for (const itemPesquisado of listaRenderizada.value) {

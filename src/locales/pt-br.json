@@ -59,6 +59,7 @@
     "status": "Status",
     "naoPossuiResponsavel": "Não possui responsável",
     "dashboard": "Dashboard",
+    "no_date": "Sem Data",
     "no_subtasks": "Sem Subtarefas",
     "projects": "Projetos",
     "main_projects": "Principais Projetos",
@@ -128,9 +129,9 @@
   },
   "seguranca": {
     "Segurança": "Segurança",
-    "senhaCaracteres": "* Senha com 8 ou mais caracteres.",
-    "senhaConteudo": "* Senha contendo letras, números e caracteres especiais.",
-    "senhaPalavrasComuns": "* Não utilize palavras comuns.",
+    "senhaCaracteres": "Senha com 8 ou mais caracteres.",
+    "senhaConteudo": "Senha contendo letras, números e caracteres especiais.",
+    "senhaPalavrasComuns": "Não utilize palavras comuns.",
     "seuEmailAtual": "Seu endereço de e-mail atual é",
     "loginGoogleAtivado": "Login com a conta do Google ativado",
     "contaConectadaGoogle": "Conta conectada. Sua conta está conectada a uma conta do Google. Alterar o endereço de e-mail aqui vai desconectar a conta do Google.",
@@ -151,5 +152,87 @@
     "prontas": "Prontas",
     "totalMinutosTrabalhados": "Total de Minutos Trabalhados",
     "historico": "Histórico"
+  },
+  "criaEquipePopUp":{
+    "nomeEquipe": "Nome da Equipe",
+    "adicionarMembro": "Adicionar Membro",
+    "convidar": "convidar",
+    "descricao": "Descrição(opcional)",
+    "convites": "Convites",
+    "criarEquipe": "Criar Equipe",
+    "equipe": "Equipe",
+    "caracteres": "Máximo de 255 caracteres",
+    "membroAviso": "Membro já pertence à equipe.",
+    "voceAviso": "Você já pertence à equipe.",
+    "nomeObrigatorio": "É obrigatório o nome da equipe"
+  },
+  "editarEquipePopUp":{
+    "equipeEditar": "Equipe Editar",
+    "deletar": "Deletar",
+    "editar": "Editar",
+    "sair": "Sair",
+    "salvar": "Salvar alterações",
+    "alteracao": "Nenhuma alteração detectada",
+    "edicao": "Edição concluida",
+    "confirmar": "Confirmar"
+  },
+  "selectComponent":{
+    "edit": "editar",
+    "view": "ver"
+  },
+  "tutorial":{
+    "bemVindo": "Bem Vindo!!",
+    "mostraAtividades": "Aqui mostra suas atividades mais importantes",
+    "proximo": "Próximo",
+    "dashboard": "Gráfico",
+    "informacoes": "Informações para gerenciar suas tarefas feitas e não feitas.",
+    "pular": "Pular",
+    "voltar": "Voltar",
+    "menu": "Menu",
+    "clique": "Clique para acessar o fluxo do sistema",
+    "partes": "Partes importantes",
+    "equipe": "Equipe, aqui pode visualizar suas equipes e cria-las. Clique para ver",
+    "crieEquipe": "Crie uma Equipe",
+    "cliqueECrie": "Clique aqui para criar novas equipes",
+    "preencha": "Preencha os campos",
+    "crieAEquipe": "Crie a Equipe",
+    "entreEquipe": "Entre na equipe criada",
+    "projetosEquipe": "Aqui pode-se ver projetos da equipe",
+    "crieProjeto": "Clique para criar um projeto",
+    "crieUmProjeto": "Crie Um Projeto",
+    "gerenciar": "Aqui vai gerenciar as tarefas do projeto em questão",
+    "crieTarefa": "Crie a primeira tarefa",
+    "preenchaTarefa": "Preencha os campos para poder criar a tarefa.",
+    "completar": "Clique aqui para completar",
+    "formas": "Há formas diferentes de visualizar suas tarefas como Kanban, Lista, Calendario e Linha do Tempo",
+    "funcionalidades": "Existem mais funcionalidades no site, mas o essencial é isso.",
+    "finalizar": "finalizar"
+  },
+  "confirmarPopUp":{
+    "confirmar": "Tem Certeza ?"
+  },
+  "historicoTarefa":{
+    "deletarSubTarefa": "Deletou a subTarefa ",
+    "editou": "Editou a tarefa ",
+    "criaTarefa": "Criou a tarefa ",
+    "criaSubTarefa": "Criou a subTarefa ",
+    "status": "Mudou o status ",
+    "criaComentario": "Comentou na tarefa ",
+    "deletaComentario": "Deletou um comentario ",
+    "concluiu": "Concluiu a subTarefa "
+  },
+  "historicoProjeto":{
+    "editou": "Editou o Projeto",
+    "criou": "Criou o projeto",
+    "addResponsavel": "Adicionou um novo responsável",
+    "convidouEquipe": "Convidou uma Equipe",
+    "removeEquipe": "Removeu uma Equipe",
+    "removeResponsavel": "Removeu o responsável",
+    "status": "Criou um status novo",
+    "propriedade": "Criou uma propriedade",
+    "removeStatus": "Removeu o status",
+    "removePropriedade": "Removeu a propriedade",
+    "comentario": "Comentou no Projeto",
+    "deletaTarefa": "Deletou a tarefa"
   }
 }

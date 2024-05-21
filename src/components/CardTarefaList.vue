@@ -30,7 +30,7 @@
                   <p>Não Tem Valor</p>
                 </div>
                 <div v-if="propriedade.propriedade.tipo == 'DATA' && propriedade.valor.valor != null">
-                  {{ format(new Date(propriedade.valor.valor), 'dd/MM/yyyy HH:mm') }}
+                  {{ format(new Date(propriedade.valor.valor), 'dd/MM/yyyy hh:mm') }}
                 </div>
                 <div v-else="propriedade.propriedade.tipo == 'TEXTO' && propriedade.valor.valor != null">
                   {{ propriedade.valor.valor.charAt(0).toUpperCase() + propriedade.valor.valor.slice(1) }}

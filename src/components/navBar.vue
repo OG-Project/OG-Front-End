@@ -51,9 +51,19 @@ let TemNotificacao = ref(false);
 const banco = conexaoBD();
 
 onMounted(async () => {
-  usuarioCookies.value = await autenticarUsuario(usuarioId);
+  colocaUsuarioId()
 });
 
+
+
+function colocaUsuarioId(){
+  console.log("teste")
+  banco.getCookie().then((res) =>{
+    usuarioCookies.value= res;
+    VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
+    verificaTarefasFeitas();
+ })
+}
 onBeforeMount(() => {
   lista.value = criaListaDePesquisa();
 });
