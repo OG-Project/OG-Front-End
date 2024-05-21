@@ -9,7 +9,7 @@
             <div class="w-[60%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
                 style="font-size:var(--fonteTituloTamanho)">
                 <div class="h-[100%] flex items-end truncate">
-                    <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
+                    <p class="h-[60%] pt-[2vh] truncate flex items-center">{{ projeto.nome }}</p>
                 </div>
                 <div class="flex items-end" v-if="verificaSeEResponsavel()"
                     @click="router.push('/projeto/responsavel')">
