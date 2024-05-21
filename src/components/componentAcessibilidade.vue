@@ -62,6 +62,8 @@ import { watch } from 'vue';
 import { onUnmounted } from 'vue';
 import flecha from '../assets/flecha-mobile-perfil.vue'
 import router from '../router';
+import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
+import { onUpdated } from 'vue';
 let perfil = perfilStore()
 let conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
@@ -83,6 +85,14 @@ onUnmounted(() => {
 
 })
 
+onUpdated(()=>{
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/acessibilidade')
+    }
+})
 
 watch(() => VueCookies.get('Idioma'), (valorIdioma) => {
     switch (valorIdioma) {
