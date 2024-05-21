@@ -46,6 +46,7 @@ import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
 import { defineProps, defineEmits } from "vue";
 import VueCookies from "vue-cookies";
 import router from "@/router";
+import { onMounted } from "vue";
 
 let conteudoDaPesquisa = ref("");
 defineEmits(['itemSelecionado'])
@@ -66,12 +67,15 @@ const props = defineProps({
   },
   textoInvalido: String,
   fontSize: String,
-  tipo: String
+  tipo: String,
 });
 
 let itemsIguais = ref(false);
 
 let listaRenderizada = ref([]);
+
+
+
 
 function verificaSeSaoIguais() {
   for (const itemPesquisado of listaRenderizada.value) {
