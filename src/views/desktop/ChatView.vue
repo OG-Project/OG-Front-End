@@ -44,7 +44,6 @@
         </div>
         <div class="h-full w-full flex flex-col justify-end ">
             <div class="scrollable">
-                {{ console.log(chat) }}
                 <div v-for="mensagem of chat.mensagens" class=" w-full flex justify-end">
                     <div v-if="mensagem.criador.id != usuarioLogado.id"
                         class="w-full pl-[2.5%] flex flex-col items-start">
@@ -89,34 +88,35 @@ import { Usuario } from '../../models/usuario';
 
 let api = conexaoBD();
 let listaDeConversas = ref([]);
-let opcao2 = ref("");
+let opcao2 = ref(localStorage.getItem('opcao'));
 let usuarioLogadoId = ref(VueCookies.get('IdUsuarioCookie'));
 let usuarioLogado = ref({});
 let corpoDaMensagem = ref("");
 let listaDeMensagens = ref([]);
 let chat = ref({});
 let webSocket = webSocketStore();
-webSocket.url = "ws://localhost:8082/og/webSocket/chat/" + chat.value.id
+webSocket.url = "ws://localhost:8082/og/webSocket/chat/1"
 
 onMounted(async () => {
     usuarioLogado.value = await api.buscarUm(usuarioLogadoId.value, '/usuario')
     if (localStorage.getItem('opcao') != null) {
         setTimeout(() => {
             trocaLista(localStorage.getItem('opcao'))
-            defineSeEstaSelecionado()
             DefineListaDeMensagens()
         }, 10);
     }
+    document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
+
 })
 
-
+try{
 webSocket.esperaMensagem((retorno) => {
-    console.log(retorno);
-    if (retorno == "mensagemEnviada") {
-        console.log("Chegou a mensagem websocket")
-        DefineListaDeMensagens()
-    }
-})
+    webSocket.criaConexaoWebSocket()
+    chat.value.mensagens.push(JSON.parse(retorno))
+    document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
+})}catch(e){
+    console.log(e)
+}
 
 async function trocaLista(opcao) {
     listaDeConversas.value = [];
@@ -133,31 +133,34 @@ async function trocaLista(opcao) {
         await api.procurar('/chat').then((response) => {
             response.forEach(chat => {
                 chat.usuarios.forEach(usuario => {
-                    console.log(usuario)
                     if (usuario.id != usuarioLogado.value.id) {
                         listaDeConversas.value.push({
-
                             isSelecionado: ref(false),
-                            equipe: 
+                            equipe: usuario
                         })
                     }
                 });
             });
         });
-        console.log(listaDeConversas.value)
         opcao2.value = "1";
         localStorage.setItem('opcao', '1')
     }
+    DefineListaDeMensagens()
 }
 
 async function DefineListaDeMensagens() {
     let chatResponse = ref({})
-    chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/equipe').then((response) => {
-        console.log(response);
-        chatResponse.value = response
-        console.log(chat.value);
-    })
+    if(opcao2.value == "2"){
+        chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/equipe').then((response) => {
+            chatResponse.value = response
+        })
+    }else if(opcao2.value == "1"){
+        chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/pessoal/'+VueCookies.get("IdUsuarioCookie")).then((response) => {
+            chatResponse.value = response
+        })
+    }
     chat.value = chatResponse.value
+    defineSeEstaSelecionado()
 }
 
 function mudaRota(equipe) {
@@ -187,13 +190,14 @@ async function mandaMensagem() {
         },
         mensagem: corpoDaMensagem.value,
     }
-    console.log(mensagem);
     await api.cadastrar(mensagem, '/mensagem/' + chat.value.id).then((response) => {
-        console.log(response);
-        chat.value.mensagens.push(response.data)
+        console.log(JSON.stringify(response.data));
+        webSocket.enviaMensagemWebSocket(JSON.stringify(response.data))
     })
     corpoDaMensagem.value = "";
-    webSocket.enviaMensagemWebSocket("mensagemEnviada")
+
+    document.getElementById("scrollable").scrollTop = document.getElementById("scrollable").scrollHeight;
+
 }
 
 </script>
