@@ -2,7 +2,7 @@
   <div :style="tamanhoPesquisa">
     <div v-if="temIcon">
       <Input :isInvalido="isInvalido" :textoInvalido="textoInvalido" :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa" :fontSize="fontSize"
-        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa"
+        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa " :zerarInput="zeraInput"
         tipo="obrigatorio" @updateModelValue="(e) => {
     conteudoDaPesquisa = e
   }"></Input>
@@ -41,11 +41,12 @@
 </template>
 <script setup>
 import Input from "./Input.vue";
-import { createVNode, ref, watch } from "vue";
+import { createVNode, onMounted, ref, watch } from "vue";
 import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
 import { defineProps, defineEmits } from "vue";
 import VueCookies from "vue-cookies";
 import router from "@/router";
+
 
 let conteudoDaPesquisa = ref("");
 defineEmits(['itemSelecionado'])
@@ -66,8 +67,22 @@ const props = defineProps({
   },
   textoInvalido: String,
   fontSize: String,
-  tipo: String
+  tipo: String,
+  zeraInput:{
+    type: Boolean,
+    default: false
+  }
 });
+
+watch(()=> props.zeraInput, () =>{
+  zerarInput();
+})
+
+function zerarInput(){
+  if(props.zeraInput == true){
+    conteudoDaPesquisa.value = ''
+  }
+}
 
 let itemsIguais = ref(false);
 
@@ -77,7 +92,6 @@ function verificaSeSaoIguais() {
   for (const itemPesquisado of listaRenderizada.value) {
     if (conteudoDaPesquisa.value === itemPesquisado) {
       itemsIguais.value = true;
-      console.log(itemsIguais.value);
       return;
     } else {
       itemsIguais.value = false;
