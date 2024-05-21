@@ -65,7 +65,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async atualizar(objeto, textoRequisicao) {
-      console.log(textoRequisicao)
+      console.log(objeto);
       this.loading = true;
       try {
         if (textoRequisicao == "/usuario") {

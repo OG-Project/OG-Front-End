@@ -22,10 +22,11 @@
             <div v-for="responsavel of tarefa.responsaveis ">
               <div class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem] w-max flex flex-row items-center gap-1 ">
                 <img src="../../imagem-vetores/userTodoPreto.svg">
-                <p>{{ responsavel }}</p>
+                <p v-if="responsavel.responsavel">{{ responsavel.responsavel.username }}</p>
+                <p v-else>{{ responsavel }}</p>
                 <div class="w-full flex justify-end pr-2">
                   <div class="w-[40%]">
-                    <img src="../../imagem-vetores/botao-x.svg" @click="removeResponsavel(responsavel)"
+                    <img :src="BotaoX" @click="removeResponsavel(responsavel)"
                       v-if="tarefa.responsaveis.length != 1">
                   </div>
                 </div>
@@ -307,8 +308,7 @@
               </option>
               <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Numero') }}
               </option>
-              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Seleção') }}
-              </option>
+
             </select>
           </div>
           <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center"
@@ -356,7 +356,8 @@
                           class="border-2 w-[75%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
                           type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
                       </div>
-                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}
+                      </p>
                     </div>
                     <div v-if="propriedade.propriedade.tipo === 'NUMERO'"
                       class="flex items-center justify-start w-full">
@@ -368,7 +369,8 @@
                           @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                         </Input>
                       </div>
-                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}
+                      </p>
                     </div>
                     <!-- <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
                     <div v-for="(valor, index) in propriedade.valor.valor" class="mb-4 mt-4 h-8 items-center flex"
@@ -528,6 +530,7 @@ import { useI18n } from 'vue-i18n';
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
 import route from "color-convert/route";
 import inputDePesquisa from "../../components/inputDePesquisa.vue";
+import { ta } from "date-fns/locale";
 
 const criaHistorico = criaHistoricoStore();
 
@@ -805,11 +808,12 @@ async function criaTarefaNoConcluido() {
       console.log(usuarioBanco.username);
       console.log(responsavel);
       if (usuarioBanco.username == responsavel) {
-        let responsavel = {
-          responsavel: usuarioBanco,
-          tarefa: tarefa2
+        console.log(tarefaCriando);
+        console.log(usuarioBanco);
+        let usuarioTarefa = {
+          responsavel: usuarioBanco
         }
-        tarefaCriando.responsaveis.push(responsavel)
+        tarefaCriando.responsaveis.push(usuarioTarefa)
       }
     });
   });
@@ -824,7 +828,7 @@ async function criaTarefaNoConcluido() {
     banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
       console.log(response);
     });
-    // router.push('/projeto/kanban')
+    router.push('/projeto/kanban')
   });
 }
 
@@ -992,7 +996,8 @@ async function calculaTempoAtuacao() {
     valorPropriedadeTarefas: [],
     dataCriacao: null,
     indice: [],
-    tempoAtuacao: "00:00:00"
+    tempoAtuacao: "00:00:00",
+    responsaveis: []
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
@@ -1045,25 +1050,34 @@ async function calculaTempoAtuacao() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefaCriando.tempoAtuacao = tempoAtuado;
   tarefa.value.responsaveis.forEach(async (responsavel) => {
     let usuariosBanco = await banco.procurar("/usuario")
     usuariosBanco.forEach(usuarioBanco => {
       console.log(usuarioBanco.username);
       console.log(responsavel);
       if (usuarioBanco.username == responsavel) {
-        let responsavel = {
-          responsavel: usuarioBanco,
-          tarefa: tarefa2
+        console.log(tarefaCriando);
+        console.log(usuarioBanco);
+        let usuarioTarefa = {
+          responsavel: usuarioBanco
         }
-        tarefaCriando.responsaveis.push(responsavel)
+        tarefaCriando.responsaveis.push(usuarioTarefa)
       }
     });
   });
-  tarefaCriando.tempoAtuacao = tempoAtuado;
-  banco.atualizar(tarefaCriando, "/tarefa")
-  if (tarefa.value.arquivos.length != 0) {
-    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"));
-  }
+  console.log(tarefaCriando)
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
+  banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
+    console.log(tarefa.value.arquivos.length);
+    if (tarefa.value.arquivos.length != 0) {
+      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+    }
+    banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
+      console.log(response);
+    });
+  });
 }
 
 
@@ -1111,6 +1125,7 @@ async function puxaTarefaDaEdicao() {
 
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
+  console.log(tarefaAux.responsaveis);
   console.log(tarefaAux);
   tarefa.value.nome = tarefaAux.nome;
   tarefa.value.descricao = tarefaAux.descricao;
@@ -1129,7 +1144,9 @@ async function puxaTarefaDaEdicao() {
   tarefa.value.arquivos = tarefaAux.arquivos;
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
-  tarefa.value.responsaveis = tarefaAux.responsaveis;
+  tarefaAux.responsaveis.forEach(responsavel => {
+    tarefa.value.responsaveis.push(responsavel.responsavel.username)
+  });
   tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
   tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
 }
@@ -1347,6 +1364,16 @@ async function deletaComentario(comentario) {
   });
 }
 
+async function removeResponsavel(responsavelRemover) {
+    tarefa.value.responsaveis.forEach((objetoAtual) => {
+        if (objetoAtual.username == responsavelRemover.username) {
+            let index = tarefa.value.responsaveis.indexOf(responsavelRemover)
+            tarefa.value.responsaveis.splice(index, 1);
+            criaHistorico.criaHistoricoTarefa("Removeu o responsavel" + responsavelRemover.username, tarefa, usuario)
+        }
+    })
+}
+
 //Função que troca o valor da variavel de comentario sendo editado
 
 function trocaComentarioSendoEditado() {
@@ -1525,7 +1552,6 @@ function clicouOpcaoStatus() {
     opcaoPropriedades.classList.remove('opcaoClicada');
   }
 }
-
 </script>
 <style scoped>
 #fundoPopUp {
