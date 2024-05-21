@@ -29,7 +29,6 @@ const criaNotificacaoStore = criaNotificacao();
 const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-webSocket.criaConexaoWebSocket();
 
 const perfil = perfilStore()
 const { isVlibras } = storeToRefs(perfil);

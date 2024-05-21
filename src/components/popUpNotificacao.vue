@@ -54,8 +54,9 @@
                                 </button>
                                 <button v-if="notificacao.notificacao.conviteParaProjeto != null" class="">
                                     <div v-if="notificacao.notificacao.conviteParaProjeto.projeto != null"
-                                        class="w-full">
+                                        class="">
                                         <p class="truncate ">
+                                            {{ notificacao.notificacao.conviteParaProjeto.projeto.nome }}
                                         </p>
                                     </div>
                                 </button>
@@ -109,7 +110,7 @@ onMounted(async () => {
 })
 
 async function defineNotificacoes() {
-    notificacoes.value = await api.buscarUm(usuarioId, '/notificacao/buscar')
+    notificacoes.value = await api.buscarUmaNotificacao(usuarioId, '/notificacao/buscar')
     console.log(notificacoes.value)
     let lista = []
     for (const notificacaoAux of notificacoes.value) {
@@ -216,7 +217,7 @@ async function adicionaUsuarioALista(notificacao) {
 
 }
 function removerUsuarioALista(notificacao) {
-    api.deletarEquipe(notificacao.id, '/notificacao').then(() => {
+    api.deletarEquipe(notificacao.id, '/notificacao').then((response) => {
         defineNotificacoes()
     })
 }

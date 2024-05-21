@@ -84,8 +84,10 @@ import alertTela from './alertTela.vue';
 import sair from '../imagem-vetores/Sair.vue';
 import equipe from '../imagem-vetores/equipe.vue';
 import { useI18n } from 'vue-i18n';
+import { criaNotificacao } from '../stores/criaNotificacao';
 
 const { t } = useI18n()
+const criaNotificacaoStore = criaNotificacao();
 
 onMounted (() =>{
     exibirMembrosNaLista();
@@ -111,8 +113,6 @@ const screenWidth = window.innerWidth;
 let select = [];
 let selectDisable = '';
 let usuarios = banco.procurar('/usuario');
-
-
 
 let equipeMembros = ref({
     nome: '',
@@ -401,9 +401,8 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
         }
 
     }
-    const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/" +usuarioLogado
-    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+    console.log("teste")
+    criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 function funcaoPermissao(convidados){
