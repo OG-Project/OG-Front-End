@@ -170,8 +170,8 @@ function loginGoogle() {
 
             <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Criar Conta" tamanhoPadrao="medio"></Botao>
             <div class="flex items-center justify-center w-[70%]">
-              <hr style="width: 40%; text-align: left; margin-left: 0" />
-              <hr style="width: 40%; text-align: left; margin-left: 0" />
+              <hr style="width: 35%; text-align: left; margin-left: 0" />
+              <hr style="width: 35%; text-align: left; margin-left: 0" />
             </div>
             <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
               :funcaoClick="loginGoogle"></Botao>

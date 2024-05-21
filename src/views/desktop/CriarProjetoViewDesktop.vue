@@ -128,6 +128,10 @@ const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
+import { criaHistoricoStore } from '../../stores/criaHistorico.js'
+
+const criaHistorico = criaHistoricoStore();
+
 var listaSelecao = ref([]);
 let idUsuario = VueCookies.get("IdUsuarioCookie")
 let nomeProjeto = ref("");
@@ -161,6 +165,18 @@ let isResponsavel = ref(false)
 let naoPodeDeletar = ref(false)
 let usuario;
 let usuarioId = VueCookies.get('IdUsuarioCookie')
+
+function reloadTelaTarefa() {
+  const reload = VueCookies.get('idReloadProjeto');
+  if (reload == '0') {
+    console.log("reload")
+    VueCookies.set('idReloadProjeto', '1');
+    window.location.reload();
+  }
+}
+
+reloadTelaTarefa()
+
 onMounted(async () => {
 
     if (idProjeto != undefined && idProjeto != "undefined") {
@@ -415,7 +431,6 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
             adicionaResponsaveisProjeto(usuarioAtual)
         }
     });
-
 }
 
 async function adicionaResponsaveisProjeto(usuarioRecebe) {
@@ -428,6 +443,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
                 }
                 listaResponsaveisBack.push(responsavelBanco);
                 verificaResponsavel();
+                criaHistorico.criaHistoricoProjeto("Adicionou um novo responsavel", projeto, usuario)
                 return;
             }
         })
@@ -437,6 +453,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
             idResponsavel: usuarioRecebe.id
         }
         listaResponsaveisBack.push(responsavelBanco);
+        criaHistorico.criaHistoricoProjeto("Adicionou um novo responsavel", projeto, usuario)
         verificaResponsavel();
     }
 
@@ -460,7 +477,6 @@ async function criaProjeto() {
         const criaProjeto = criaProjetoStore()
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
-
         restauraCookies();
         router.push("/projeto");
     } else {
@@ -469,6 +485,7 @@ async function criaProjeto() {
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
+        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
         router.push("/projeto");
     }
 }
@@ -495,6 +512,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
         return;
     }
+    criaHistorico.criaHistoricoProjeto("Convidou uma Equipe", projeto, usuario)
     listaEquipesSelecionadas.value.push(equipeVinculada)
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
@@ -520,6 +538,7 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     })
     console.log(listaBackEquipe)
     listaEquipeEnviaBack = listaBackEquipe;
+    
 }
 
 function verificaIdProjetoEquipe(equipe, projeto) {
@@ -547,7 +566,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
     criarProjetoCookies();
-
+    criaHistorico.criaHistoricoProjeto("Removeu uma Equipe", projeto, usuario)
 }
 
 async function removeResponsavel(responsavelRemover) {
@@ -557,6 +576,7 @@ async function removeResponsavel(responsavelRemover) {
             responsaveisProjeto.value.splice(index, 1);
             listaAuxResponsaveisProjeto.splice(index, 1)
             listaResponsaveisBack.splice(index, 1);
+            criaHistorico.criaHistoricoProjeto("Removeu o responsavel" + responsavelRemover.username, projeto, usuario)
         }
     }
     )

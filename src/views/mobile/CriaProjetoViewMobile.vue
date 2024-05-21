@@ -101,6 +101,9 @@ import { useRoute } from 'vue-router';
 import router from "@/router";
 import { webSocketStore } from '../../stores/webSocket';
 import { Usuario } from '../../models/usuario';
+import { criaHistoricoStore } from '../../stores/criaHistorico.js'
+
+const criaHistorico = criaHistoricoStore();
 const funcaoPopUp = funcaoPopUpStore();
 const conexao = conexaoBD();
 const route = useRoute();
@@ -129,7 +132,18 @@ let placeHolderDataFinalProjeto = ref("")
 let stylePlaceHolder = ref({});
 let dataFinalFormatada = ref("");
 
-onMounted(() => {
+function reloadTelaTarefa() {
+  const reload = VueCookies.get('idReloadProjeto');
+  if (reload == '0') {
+    console.log("reload")
+    VueCookies.set('idReloadProjeto', '1');
+    window.location.reload();
+  }
+}
+
+reloadTelaTarefa()
+
+onMounted(async () => {
     verificaEdicaoProjeto();
     defineSelect()
     pesquisaBancoUserName();
@@ -351,6 +365,8 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 }
 
 async function adicionaResponsaveisProjeto(usuarioRecebe) {
+    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     if (usuarioRecebe.id == undefined) {
         let listaAux = (await conexao.procurar('/usuario'))
         listaAux.forEach(usuario => {
@@ -359,6 +375,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
                     idResponsavel: usuario.id
                 }
                 listaResponsaveisBack.push(responsavelBanco);
+                criaHistorico.criaHistoricoProjeto("Adicionou um novo responsavel", projeto, usuario)
                 return;
             }
         })
@@ -368,6 +385,7 @@ async function adicionaResponsaveisProjeto(usuarioRecebe) {
             idResponsavel: usuarioRecebe.id
         }
         listaResponsaveisBack.push(responsavelBanco);
+        criaHistorico.criaHistoricoProjeto("Adicionou um novo responsavel", projeto, usuario)
     }
 
 }
@@ -386,8 +404,10 @@ async function criaProjeto() {
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
+        let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
+        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
         restauraCookies();
     }
 
@@ -402,6 +422,8 @@ function restauraCookies() {
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     const listaEquipes = await conexao.procurar('/equipe');
+    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     let equipeVinculada;
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
@@ -415,6 +437,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
         return;
     }
+    criaHistorico.criaHistoricoProjeto("Convidou uma Equipe", projeto, usuario)
     listaEquipesSelecionadas.value.push(equipeVinculada)
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
@@ -453,7 +476,8 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
 }
 
 async function removeListaEquipeConvidadas(equipeRemover) {
-    
+    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     let listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeRemover.nome);
     let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
@@ -467,10 +491,12 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
     criarProjetoCookies();
-
+    criaHistorico.criaHistoricoProjeto("Removeu uma Equipe", projeto, usuario)
 }
 
 async function removeResponsavel(responsavelRemover) {
+    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     let listaUsuarios = await conexao.procurar('/usuario');
     responsaveisProjeto.value.forEach((objetoAtual) => {
         if (objetoAtual.username == responsavelRemover.username) {
@@ -478,6 +504,7 @@ async function removeResponsavel(responsavelRemover) {
             responsaveisProjeto.value.splice(index, 1);
             listaAuxResponsaveisProjeto.splice(index, 1)
             listaResponsaveisBack.splice(index, 1);
+            criaHistorico.criaHistoricoProjeto("Removeu o responsavel" + responsavelRemover.username, projeto, usuario)
         }
     }
     )

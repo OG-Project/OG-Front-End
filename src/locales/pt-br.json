@@ -211,5 +211,29 @@
   },
   "confirmarPopUp":{
     "confirmar": "Tem Certeza ?"
+  },
+  "historicoTarefa":{
+    "deletarSubTarefa": "Deletou a subTarefa ",
+    "editou": "Editou a tarefa ",
+    "criaTarefa": "Criou a tarefa ",
+    "criaSubTarefa": "Criou a subTarefa ",
+    "status": "Mudou o status ",
+    "criaComentario": "Comentou na tarefa ",
+    "deletaComentario": "Deletou um comentario ",
+    "concluiu": "Concluiu a subTarefa "
+  },
+  "historicoProjeto":{
+    "editou": "Editou o Projeto",
+    "criou": "Criou o projeto",
+    "addResponsavel": "Adicionou um novo responsável",
+    "convidouEquipe": "Convidou uma Equipe",
+    "removeEquipe": "Removeu uma Equipe",
+    "removeResponsavel": "Removeu o responsável",
+    "status": "Criou um status novo",
+    "propriedade": "Criou uma propriedade",
+    "removeStatus": "Removeu o status",
+    "removePropriedade": "Removeu a propriedade",
+    "comentario": "Comentou no Projeto",
+    "deletaTarefa": "Deletou a tarefa"
   }
 }

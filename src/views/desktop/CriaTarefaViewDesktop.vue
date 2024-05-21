@@ -10,6 +10,30 @@
         <TextAreaPadrao width="80%" height="16vh" :placeholder="$t('criaTarefa.task_description')"
           tamanho-da-fonte="1rem" resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
       </div>
+      <!-- davi cala a porra da boca -->
+      <div class="w-[55%] justify-center min-h-[5%] pl-12 mt-4">
+        <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false" class=""
+          place-holder-pesquisa="Responsáveis pela tarefa" @item-selecionado="pegaValorSelecionadoPesquisa" largura="16"
+          fontSize="1rem">
+        </inputDePesquisa>
+        <div v-if="tarefa.responsaveis != ''" class="scrollListaResponsaveis" v-dragscroll>
+          <div
+            class=" bg-[var(--backgroundItems)] p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
+            <div v-for="responsavel of tarefa.responsaveis ">
+              <div class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem] w-max flex flex-row items-center gap-1 ">
+                <img src="../../imagem-vetores/userTodoPreto.svg">
+                <p>{{ responsavel }}</p>
+                <div class="w-full flex justify-end pr-2">
+                  <div class="w-[40%]">
+                    <img src="../../imagem-vetores/botao-x.svg" @click="removeResponsavel(responsavel)"
+                      v-if="tarefa.responsaveis.length != 1">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
         <!-- <div class="flex flex-col justify-center w-[30%]">
           <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.properties') }}</p>
@@ -122,7 +146,6 @@
           </div>
         </div>
       </div>
-
       <p class="pl-12 mt-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.files', {
           arquivos:
             tarefa.arquivos.length
@@ -136,7 +159,7 @@
               v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
               class="h-[100%] w-[100%]" :src="'data:' + arquivo.tipo + ';base64,' + arquivo.dados">
             <div v-else>
-              <img class="h-[65%]" :src='getIconSrc(arquivo)' />
+              <img class="h-[65%]" :src="getIconSrc(arquivo)" />
             </div>
           </a>
           <div class="bg-[var(--backgroundItemsClaros)] w-[100%] h-[15%] items-center flex justify-around">
@@ -317,35 +340,35 @@
                       <div class="w-[15%] pl-4 flex items-center justify-start">
                         <p class="truncate">{{ propriedade.propriedade.nome }}: </p>
                       </div>
-                      <div class="w-[58%] flex items-center justify-start">
+                      <div class="w-[58%] flex items-center justify-center">
                         <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
                           @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                         </Input>
                       </div>
-                      <p class="w-[27%] pr-7 flex items-start justify-end">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                      <p class="w-[27%] pr-7 flex items-start ">Tipo: {{ propriedade.propriedade.tipo }}</p>
                     </div>
                     <div v-if="propriedade.propriedade.tipo === 'DATA'" class="flex items-center justify-around w-full">
                       <div class="w-[15%] pl-4 flex items-center justify-start">
                         <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
                       </div>
-                      <div class="w-[58%] flex items-center justify-start">
+                      <div class="w-[58%] flex items-center justify-center">
                         <input @input="patchDaListaDePropriedades()"
-                          class="border-2 w-[100%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
+                          class="border-2 w-[75%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
                           type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
                       </div>
-                      <p class="w-[27%] pr-2 flex items-start justify-end">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}</p>
                     </div>
                     <div v-if="propriedade.propriedade.tipo === 'NUMERO'"
                       class="flex items-center justify-start w-full">
                       <div class="w-[15%] pl-4 flex items-center justify-start">
                         <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
                       </div>
-                      <div class="w-[58%] flex items-center justify-start">
+                      <div class="w-[58%] flex items-center justify-center">
                         <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
                           @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                         </Input>
                       </div>
-                      <p class="w-[27%] pr-2 flex items-start justify-end">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}</p>
                     </div>
                     <!-- <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
                     <div v-for="(valor, index) in propriedade.valor.valor" class="mb-4 mt-4 h-8 items-center flex"
@@ -504,12 +527,26 @@ import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
 import { useI18n } from 'vue-i18n';
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
 import route from "color-convert/route";
+import inputDePesquisa from "../../components/inputDePesquisa.vue";
 
 const criaHistorico = criaHistoricoStore();
 
 const { t } = useI18n();
 
 const banco = conexaoBD();
+
+function reloadTelaTarefa() {
+  const reload = VueCookies.get('idReloadTarefa');
+  if (reload == '0') {
+    console.log("reload")
+    VueCookies.set('idReloadTarefa', '1');
+    window.location.reload()
+  }
+}
+
+let listaDeUsuariosParaBusca = ref([]);
+
+reloadTelaTarefa()
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   console.log(propriedade);
@@ -564,7 +601,11 @@ let numeroDeArquivos = ref(0);
 
 //Variáveis usadas na hora de criar uma propriedade
 
-function deletaTarefa() {
+async function deletaTarefa() {
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let projeto = await banco.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
+  let tarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  criaHistorico.criaHistoricoProjeto("Deletou a tarefa " + tarefa.nome, projeto, usuario)
   banco.deletarTarefa("/tarefa", VueCookies.get("IdTarefaCookies"));
   router.push("/projeto").then(() => {
     window.location.reload();
@@ -674,6 +715,18 @@ function veSeOStatusTaNaTarefa(status) {
     return false
   }
 }
+function verificaTemEsseResponsavelProjeto(username) {
+  return (!tarefa.value.responsaveis.includes(username));
+}
+
+async function pegaValorSelecionadoPesquisa(valorPesquisa) {
+  const listaUsuarios = (await banco.procurar('/usuario'))
+  listaUsuarios.forEach(usuarioAtual => {
+    if (valorPesquisa == usuarioAtual.username && verificaTemEsseResponsavelProjeto(usuarioAtual.username)) {
+      tarefa.value.responsaveis.push(usuarioAtual.username)
+    }
+  });
+}
 
 async function criaTarefaNoConcluido() {
 
@@ -691,7 +744,8 @@ async function criaTarefaNoConcluido() {
     valorPropriedadeTarefas: [],
     dataCriacao: null,
     indice: [],
-    tempoAtuacao: "00:00:00"
+    tempoAtuacao: "00:00:00",
+    responsaveis: []
   }
   tarefaCriando.nome = tarefa.value.nome;
   tarefaCriando.descricao = tarefa.value.descricao;
@@ -745,15 +799,32 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
+  tarefa.value.responsaveis.forEach(async (responsavel) => {
+    let usuariosBanco = await banco.procurar("/usuario")
+    usuariosBanco.forEach(usuarioBanco => {
+      console.log(usuarioBanco.username);
+      console.log(responsavel);
+      if (usuarioBanco.username == responsavel) {
+        let responsavel = {
+          responsavel: usuarioBanco,
+          tarefa: tarefa2
+        }
+        tarefaCriando.responsaveis.push(responsavel)
+      }
+    });
+  });
   console.log(tarefaCriando)
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     console.log(tarefa.value.arquivos.length);
     if (tarefa.value.arquivos.length != 0) {
-    banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
     }
-    router.push('/projeto/kanban')
+    banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
+      console.log(response);
+    });
+    // router.push('/projeto/kanban')
   });
 }
 
@@ -782,7 +853,7 @@ function deletaValorSelect(listaSelect, index) {
 
 //Função utilizada para criar uma Subtarefa
 
-function criaSubtarefa() {
+async function criaSubtarefa() {
   if (nomeSubtarefa.value != "") {
     if (statusSubtarefa.value === "") {
       nomeSubtarefa.value = "";
@@ -804,6 +875,9 @@ function criaSubtarefa() {
     numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
     porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
     barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+    let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+    let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+    criaHistorico.criaHistoricoTarefa("Criou a subTarefa " + subtarefaNova.nome, tarefaSubtarefa, usuario)
   }
 }
 
@@ -816,7 +890,7 @@ function reloadSubTarefas() {
 
 //Função utilizada para deletar uma Subtarefa
 
-function deletaSubtarefa(subtarefa) {
+async function deletaSubtarefa(subtarefa) {
   tarefa.value.subtarefas.forEach((subtarefaParaDeletar) => {
     if (subtarefaParaDeletar === subtarefa) {
       tarefa.value.subtarefas.splice(tarefa.value.subtarefas.indexOf(subtarefa), 1);
@@ -826,6 +900,9 @@ function deletaSubtarefa(subtarefa) {
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  criaHistorico.criaHistoricoTarefa("Deletou a subTarefa " + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 
 //Função utilizada para criar uma Propriedade
@@ -968,6 +1045,20 @@ async function calculaTempoAtuacao() {
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
+  tarefa.value.responsaveis.forEach(async (responsavel) => {
+    let usuariosBanco = await banco.procurar("/usuario")
+    usuariosBanco.forEach(usuarioBanco => {
+      console.log(usuarioBanco.username);
+      console.log(responsavel);
+      if (usuarioBanco.username == responsavel) {
+        let responsavel = {
+          responsavel: usuarioBanco,
+          tarefa: tarefa2
+        }
+        tarefaCriando.responsaveis.push(responsavel)
+      }
+    });
+  });
   tarefaCriando.tempoAtuacao = tempoAtuado;
   banco.atualizar(tarefaCriando, "/tarefa")
   if (tarefa.value.arquivos.length != 0) {
@@ -1012,7 +1103,8 @@ let tarefa = ref({
   status: [],
   subtarefas: [],
   corDaTarefa: "ffffff",
-  tempoAtuacao: "00:00:00"
+  tempoAtuacao: "00:00:00",
+  responsaveis: []
 });
 
 async function puxaTarefaDaEdicao() {
@@ -1037,6 +1129,7 @@ async function puxaTarefaDaEdicao() {
   tarefa.value.arquivos = tarefaAux.arquivos;
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
+  tarefa.value.responsaveis = tarefaAux.responsaveis;
   tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
   tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
 }
@@ -1059,9 +1152,18 @@ function update() {
   autenticaUsuarioCookies();
 }
 
+async function pesquisaBancoUserName() {
+  let listaAux = (await banco.procurar('/usuario'))
+  listaAux.forEach(usuarioAtual => {
+    listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
+  });
+  return listaDeUsuariosParaBusca;
+}
+
 onMounted(async () => {
   timerTempoAtuacao();
   puxaTarefaDaEdicao();
+  pesquisaBancoUserName()
   const { t } = useI18n();
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   procuraProjetosDoBanco();
@@ -1109,6 +1211,7 @@ function gerarArquivo(e) {
     tarefa.value.arquivos.push(fd);
     update()
   }
+  console.log(fd.get('arquivo'));
   console.log(tarefa.value.arquivos);
 }
 
@@ -1150,7 +1253,7 @@ function abreFechaCriaSubTarefas() {
 
 //Funções que removem e adicionam os status e propriedades da tarefa
 
-function adicionaExcluiStatusNaTarefa(status) {
+async function adicionaExcluiStatusNaTarefa(status) {
   if (tarefa.value.status) {
     if (tarefa.value.status.id == status.id) {
       tarefa.value.status = null;
@@ -1162,6 +1265,9 @@ function adicionaExcluiStatusNaTarefa(status) {
     tarefa.value.status = status;
   }
   veSeOStatusTaNaTarefa(status)
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaStatus = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  criaHistorico.criaHistoricoTarefa("Mudou o status ", tarefaStatus, usuario)
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
@@ -1215,21 +1321,28 @@ function abreFechaComentario() {
 
 //Função que publica o comentario na tarefa
 
-function enviaComentario(comentario) {
+async function enviaComentario(comentario) {
   tarefa.value.comentarios.push({
     autor: comentario[1],
     conteudo: comentario[0]
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaComentario = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  criaHistorico.criaHistoricoTarefa("Comentou na tarefa ", tarefaComentario, usuario)
+
 }
 
 //
 
-function deletaComentario(comentario) {
+async function deletaComentario(comentario) {
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaComentario = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
       tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
+      criaHistorico.criaHistoricoTarefa("Deletou um comentario ", tarefaComentario, usuario)
     }
   });
 }
@@ -1340,11 +1453,14 @@ let comentarioSendoEditado = ref(false);
 
 //Função que troca o valor da Subtarefa de concluido pra em progresso
 
-function trocaStatusDaSubTarefa(subtarefa, index) {
+async function trocaStatusDaSubTarefa(subtarefa, index) {
   tarefa.value.subtarefas[index].concluido = !tarefa.value.subtarefas[index].concluido;
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  criaHistorico.criaHistoricoTarefa("Concluiu a subTarefa " + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 
 //Estilo da barra de porcentagem
@@ -1365,7 +1481,6 @@ let opcaoEstaClicadaStatus = ref(false);
 //Função que troca qual é o display onde mostra os status e as propriedades que pode adicionar na tarefa
 
 function formatarData(data) {
-  console.log(data);
   const dataObj = new Date(data);
   if (dataObj.getDate()) {
     const dia = String(dataObj.getDate()).padStart(2, '0');
@@ -1381,10 +1496,9 @@ function formatarData(data) {
 
 }
 
-function clicouOpcaoPropriedades() {
+async function clicouOpcaoPropriedades() {
   const opcaoPropriedades = document.getElementById('opcaoPropriedades');
   const opcaoStatus = document.getElementById('opcaoStatus');
-
   if (!opcaoEstaClicadaPropriedades.value) {
     opcaoEstaClicadaPropriedades.value = true;
     opcaoEstaClicadaStatus.value = false;
@@ -1393,6 +1507,7 @@ function clicouOpcaoPropriedades() {
     opcaoPropriedades.classList.remove('opcaoNaoClicada');
     opcaoStatus.classList.add('opcaoNaoClicada');
     opcaoStatus.classList.remove('opcaoClicada');
+
   }
 }
 

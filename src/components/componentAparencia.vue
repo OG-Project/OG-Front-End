@@ -1,15 +1,20 @@
 <template>
-    <div id="id" class="w-[75vw] h-[92vh] flex flex-col justify-evenly  ">
+    <div id="id" class="laptop:w-[75vw] laptop:h-[92vh] miniMobile:w-full miniMobile:h-full  flex flex-col justify-evenly  ">
         <!-- <Input conteudoInput="oi" direcao="direita" styleInput="input-claro" ></Input> -->
         <div>
-            <h1 style="font-family: var(--fonteTitulo); font-size: var(--fonteTituloTamanho);"
-                class="m-[5%] text-4xl border-b-4 border-[#CCC4CF] p-4 pr-32 w-max">
-                {{ $t('aparencia.Aparência') }}
-            </h1>
+            <div class="flex items-center">
+                <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
+                    <flecha />
+                </span>
+                <div style="font-family: var(--fonteTitulo); font-size: var(--fonteTituloTamanho);"
+                    class="m-[5%] border-b-4 border-[#CCC4CF] p-4 tablet:pr-32 w-max">
+                    {{ $t('aparencia.Aparência') }}
+                </div>
+            </div>
         </div>
         <div style="font-family: var(--fonteCorpo); font-size: var(--fonteCorpoTamanho);"
             class=" sm:flex-wrap sm:justify-center flex-row-reverse items-center flex gap-4">
-            <div class=" w-[300px] h-[300px]  relative">
+            <div class="miniMobile:hidden laptop:block  w-[300px] h-[300px]  relative">
                 <div
                     class="hexagon shadow-xl right-[70px] absolute z-[10]  bg-[var(--roxo)] rotate-90 w-[166px] h-[152px]">
                 </div>
@@ -22,8 +27,10 @@
             </div>
 
             <div class=" flex flex-col gap-20">
-                <div class="flex gap-4">
-                    <div class="w-full flex flex-col gap-4  items-start">
+                <div class="flex miniMobile:flex-wrap laptop:flex-nowrap laptop:gap-4 miniMobile:gap-8">
+                    <div class="w-full flex flex-col gap-4 miniMobile:items-center laptop:items-start">
+                        <div>
+                        </div>
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
                             {{ $t('aparencia.Titulo') }}
                         </div>
@@ -35,7 +42,7 @@
                             :opcaoSelecionada="perfil.fonteTitulo" :listaSelect="fontsTitulo">
                         </selectPadrao>
                     </div>
-                    <div class="w-full flex flex-col gap-4  items-start">
+                    <div class="w-full flex flex-col gap-4 miniMobile:items-center laptop:items-start">
                         <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">
                             {{ $t('aparencia.Corpo de Texto') }}
                         </div>
@@ -51,7 +58,7 @@
 
                 <div class="flex flex-col justify-center items-center gap-3">
                     <div class="pb-1 border-b-2 border-[var(--roxo)] w-max px-12">{{ $t('aparencia.Cores') }}</div>
-                    <div class="flex flex-wrap justify-center w-96 gap-5">
+                    <div class="flex flex-wrap justify-center w-60 gap-5">
                         <div @click="corEscolhida(cores[1])" :style="{ backgroundColor: '#' + cores[1] }"
                             class="cores cursor-pointer w-10 h-10">
                         </div>
@@ -90,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-between items-center gap-5">
+                <div class="flex miniMobile:pb-16 tablet:pb-0 justify-between items-center gap-3">
                     <span class="text-[var(--fonteCorpoTamanho)]">{{ $t('aparencia.Modo Claro') }}</span>
                     <CheckBox 
                     :key="isDark.valueOf()"
@@ -108,21 +115,28 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref ,watch} from 'vue';
 import selectPadrao from './selectPadrao.vue';
 import convert from 'color-convert';
 import Botao from './Botao.vue'
 import VueCookies from 'vue-cookies';
+import flecha from '../assets/flecha-mobile-perfil.vue'
 
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../stores/perfilStore'
 import CheckBox from './checkBox.vue';
 import { conexaoBD } from '../stores/conexaoBD';
+import router from '../router';
 const perfil = perfilStore()
 const conexao = conexaoBD()
 
 let usuario = ref()
 let fonteTamanhoTituloInicial = ref("")
+const screenWidth = ref(window.innerWidth)
+
+watch(() => window.innerWidth, () => {
+  screenWidth.value = window.innerWidth
+})
 
 const cores = ref({
     1: '0277f5',
@@ -311,10 +325,19 @@ onMounted(() => {
     console.log('fonts ' + perfil.fonteCorpo + ' ' + perfil.fonteTitulo)
     console.log(convert.hex.hsl(cor.value)[0])
     buscaConfiguracaoesPadrao()
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
 })
 onUpdated(() => {
     console.log('update')
     console.log(styleGet.getPropertyValue('--roxo'));
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/aparencia')
+    }
 })
 </script>
 

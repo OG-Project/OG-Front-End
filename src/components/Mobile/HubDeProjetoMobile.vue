@@ -1,70 +1,39 @@
 <template>
     <div v-if="enviandoMensagem" class="absolute w-full h-full z-[5]" @click="abreModalMensagem()">
     </div>
-    <div v-if="funcaoPopUp.variavelModal == true && funcaoAbrePopUp2" class="flex justify-center">
+    <div v-if="funcaoPopUp.variavelModal == true" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
-    <div class="w-full h-[25vh] flex  items-center ">
-        <div class="w-[60%] h-full flex flex-col items-center">
-            <div class="w-[60%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
+    <div class="w-full h-[13vh] flex  items-center ">
+        <div class="w-[90%] h-[20vh] flex flex-col items-center ">
+            <div class="w-[80%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
                 style="font-size:var(--fonteTituloTamanho)">
                 <div class="h-[100%] flex items-end truncate">
                     <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
                 </div>
-                <div class="flex items-end" v-if="verificaSeEResponsavel()"
-                    @click="router.push('/projeto/responsavel')">
-                    <Dashboard></Dashboard>
-                </div>
             </div>
-            <div class="w-[45%]  flex justify-end">
+            <div class="w-[80%] mt-2  flex justify-start">
                 {{ porcentagemDeConclusao }}
             </div>
         </div>
-        <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
-            <button id="step-14" class="w-[20%] border-2 border-[var(--roxo)] flex justify-center items-center"
-                @click="enviaCookieTarefaNova()">
-                +Tarefa
-            </button>
-            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
-                @click="abreModalMensagem()">
-                <iconMensagem></iconMensagem>
-            </button>
-            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
-                @click="enviaCookieProjeto()">
-                <IconEngrenagem1></IconEngrenagem1>
-            </button>
-            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
-                @click="mudaVariavelBooleana()">
-                <ImagemPessoasProjeto></ImagemPessoasProjeto>
-            </button>
-            <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
-            @click="abrePopUp(projeto, 'projeto')">
-                <IconeHistorico  class="w-[70%] h-[100%]  cursor-pointer">
-                </IconeHistorico>
-            </button>
-            <div v-if="enviandoMensagem" class=" animation">
-                <comentarioProjeto></comentarioProjeto>
-            </div>
-        </div>
-
     </div>
-    <div class="w-[80%] h-[3.5vh] flex flex-row justify-between align-bottom">
-        <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
+    <div class="w-[80%] h-[10vh] flex flex-row justify-center items-center">
+        <div class="pl-[7%] w-[90%] h-[50%] flex flex-row gap-[1%]">
             <button @click="router.push('/projeto/kanban')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corKanban, paddingLeft: '1%', paddingRight: '1%' }">
-                Kanban
+                <KanbanIcon cor="var(--fonteCor)"></KanbanIcon>
             </button>
             <button @click="router.push('/projeto/lista')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corLista, paddingLeft: '1%', paddingRight: '1%' }">
-                Lista
+                <ListaIcon cor="var(--fonteCor)"></ListaIcon>
             </button>
             <button @click="router.push('/projeto/timeline')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corTimeline, paddingLeft: '1%', paddingRight: '1%' }">
-                Linha Do Tempo
+                <TimelineIcon cor="var(--fonteCor)"></TimelineIcon>
             </button>
             <button @click="router.push('/projeto/calendario')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corCalendario, paddingLeft: '1%', paddingRight: '1%' }">
-                Calendário
+                <CalendarioIcon cor="var(--fonteCor)"></CalendarioIcon>
             </button>
         </div>
         <div v-if="$route.path === '/projeto/lista'"
@@ -75,31 +44,28 @@
                 class="bg-[var(--backgroundItemsClaros)] h-[3vh] w-[110%] flex justify-center items-center"
                 :onclick="atualizaVisualizacao()"></MultiSelect>
         </div>
-        
     </div>
-    <HistoricoPopUp :texto-requisicao="textoRequisicao"
-    :id="number.id" v-if="funcaoAbrePopUp && funcaoPopUp.variavelModal"></HistoricoPopUp>
 </template>
 
 <script setup>
 import router from '@/router'
-import Dashboard from '../assets/dashboard.vue';
-import { conexaoBD } from '../stores/conexaoBD';
+import Dashboard from '../../assets/dashboard.vue';
+import { conexaoBD } from '../../stores/conexaoBD';
 import VueCookies from 'vue-cookies';
 import { onMounted, ref, watch } from 'vue';
-import IconEngrenagem1 from '../assets/iconEngrenagem 1.vue';
-import ImagemPessoasProjeto from '../assets/imagemPessoasProjeto.vue';
-import ListaDeMembrosEquipe from '../components/listaMembrosEquipe.vue'
-import ListaDeEquipesProjeto from './listaDeEquipesProjeto.vue';
-import { funcaoPopUpStore } from '../stores/funcaoPopUp';
-import iconMensagem from '../assets/iconMensagem.vue';
+import IconEngrenagem1 from '../../assets/iconEngrenagem 1.vue';
+import ImagemPessoasProjeto from '../../assets/imagemPessoasProjeto.vue';
+import ListaDeMembrosEquipe from '../../components/listaMembrosEquipe.vue'
+import ListaDeEquipesProjeto from '../listaDeEquipesProjeto.vue';
+import { funcaoPopUpStore } from '../../stores/funcaoPopUp';
+import iconMensagem from '../../assets/iconMensagem.vue';
 import MultiSelect from 'primevue/multiselect';
-import comentarioProjeto from './comentarioProjeto.vue';
-import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca'
-import HistoricoPopUp from "../components/HistoricoPopUp.vue";
-import IconeHistorico from "../assets/historicoProjeto.vue";
-
-
+import comentarioProjeto from '../comentarioProjeto.vue';
+import { criaTarefaEBuscaStore } from '../../stores/criaTarefaEBusca'
+import KanbanIcon from '../../assets/KanbanIcon.vue'
+import ListaIcon from '../../assets/ListaIcon.vue'
+import TimelineIcon from '../../assets/TimelineIcon.vue'
+import CalendarioIcon from '../../assets/CalendarioIcon.vue'
 
 let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
@@ -112,31 +78,13 @@ let tarefasConcluidas = []
 let subtarefasConcluidas = ref([])
 let subtarefas = ref([])
 let listaDeEquipes = ref(false)
-let funcaoPopUp = funcaoPopUpStore();
-let funcaoAbrePopUp = ref(false);
-let funcaoAbrePopUp2 = ref(false);
-
+let funcaoPopUp = funcaoPopUpStore()
 let visualizacao = ref({})
 let enviandoMensagem = ref(false)
 let corKanban = ref("var(--backgroundItemsClaros)")
 let corLista = ref("var(--backgroundItemsClaros)")
 let corTimeline = ref("var(--backgroundItemsClaros)")
 let corCalendario = ref("var(--backgroundItemsClaros)")
-
-let isResponsavel = ref(false)
-
-let number = ref();
-let textoRequisicao = ref('');
-
-async function abrePopUp(objeto, tipo) {
-        number.value = objeto;
-        console.log(number.value.id)
-        textoRequisicao.value = tipo;
-        funcaoAbrePopUp.value = true;
-        funcaoPopUp.variavelModal = true;
-        console.log(textoRequisicao.value)
-        
-}
 
 onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
@@ -145,9 +93,7 @@ onMounted(async () => {
     if (visualizacao.value.propriedadeVisiveis != null) {
         listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
     }
-    verificaSeEResponsavel()
     console.log(visualizacao.value)
-    verificaSeEResponsavel()
     definePorcentagem()
     styleBotao()
 })
@@ -159,30 +105,29 @@ async function verificaSeEResponsavel() {
     if (responsaveis != null) {
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
-                isResponsavel.value= true
-                return
+                return true
             }
         }
     }
-    isResponsavel.value = false
-    return
+    return false
+
 }
 
 function styleBotao() {
     if (window.location.href.includes("lista")) {
-        corLista.value = "var(--roxoClaro)"
+        corLista.value = "#DBB3FF"
         corKanban.value = "var(--backgroundItemsClaros)"
         corTimeline.value = "var(--backgroundItemsClaros)"
         corCalendario.value = "var(--backgroundItemsClaros)"
     }
     if (window.location.href.includes("kanban")) {
-        corKanban.value = "var(--roxoClaro)"
+        corKanban.value = "#DBB3FF"
         corLista.value = "var(--backgroundItemsClaros)"
         corTimeline.value = "var(--backgroundItemsClaros)"
         corCalendario.value = "var(--backgroundItemsClaros)"
     }
     if (window.location.href.includes("timeline")) {
-        corTimeline.value = "var(--roxoClaro)"
+        corTimeline.value = "#DBB3FF"
         corKanban.value = "var(--backgroundItemsClaros)"
         corLista.value = "var(--backgroundItemsClaros)"
         corCalendario.value = "var(--backgroundItemsClaros)"
@@ -191,7 +136,7 @@ function styleBotao() {
         corTimeline.value = "var(--backgroundItemsClaros)"
         corKanban.value = "var(--backgroundItemsClaros)"
         corLista.value = "var(--backgroundItemsClaros)"
-        corCalendario.value = "var(--roxoClaro)"
+        corCalendario.value = "#DBB3FF"
     }
 }
 
@@ -211,16 +156,14 @@ watch(listaPropriedadeVisiveis, () => {
 function enviaCookieTarefaNova() {
     VueCookies.set("IdTarefaCookies", 0, new Date())
     localStorage.setItem("TarefaNaoFinalizada", "", new Date())
-    VueCookies.set('idReloadTarefa', '0');
     criaTarefa.criaTarefa()
+    router.push('/criaTarefa')
 }
 function enviaCookieProjeto() {
-    VueCookies.set('idReloadProjeto', '0');
     router.push('/editaProjeto')
 }
 function mudaVariavelBooleana() {
     funcaoPopUp.abrePopUp()
-    funcaoAbrePopUp2.value=true
 }
 
 function definePorcentagem() {
@@ -228,7 +171,7 @@ function definePorcentagem() {
     let string = ""
     let porcentagem = 0
     defineSubTarefasConcluida(tarefas)
-    if (subtarefasConcluidas.value.length != 0 && subtarefasConcluidas.value != null) {
+    if (subtarefasConcluidas.value.length != 0) {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
 
     }
@@ -250,53 +193,4 @@ function abreModalMensagem() {
 
 </script>
 
-<style lang="scss">
-
-.select:active {
-    border: none;
-    outline: none;
-    border-radius: 0;
-}
-
-.labelContainer:active {
-    border-color: grey;
-    border: none;
-
-    .animation {
-        @apply absolute w-[30%] h-[80%] z-10;
-        animation: myAnim 0.15s ease 0s 1 normal none;
-    }
-
-    @keyframes myAnim {
-        0% {
-            opacity: 0;
-            transform: translateY(50px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-    }
-}
-
-.animation {
-    @apply absolute  2xl:w-[30%] xl:w-[30%] lg:w-[30%]
-     md:w-[80%] h-[70%] z-10 mobile:w-full miniMobile:w-full;
-    animation: myAnim 0.15s ease 0s 1 normal none;
-}
-
-@keyframes myAnim {
-    0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-}
-</style>
+<style lang="scss"></style>

@@ -12,11 +12,13 @@
     <div class="h-[8vh] w-[50%] flex gap-8 justify-end mr-8">
       <div class="flex justify-between pt-3 w-[16vw]">
         <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10"
-          :conteudoInput="$t('navBar.pesquisar')" :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99]">
+          :placeHolderPesquisa="$t('navBar.pesquisar')" :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99]">
         </inputDePesquisa>
       </div>
       <div class="flex items-center gap-8 w-[16%]">
-        <button @click="notificacaoBoolean = true">
+        <div v-if="TemNotificacao">
+        </div>
+        <button @click="notificacaoBoolean = true, TemNotificacao = false">
           <notificacao />
         </button>
         <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
@@ -45,7 +47,7 @@ import popUpNotificacao from "../components/popUpNotificacao.vue";
 import inputDePesquisa from "./inputDePesquisa.vue";
 import { inject } from "vue";
 const tour = inject('tour')
-
+let TemNotificacao = ref(false);
 const banco = conexaoBD();
 
 onMounted(async () => {

@@ -211,6 +211,31 @@
 },
 "confirmarPopUp": {
   "confirmar": "你确定吗？"
+},
+"historicoTarefa": {
+  "deletarSubTarefa": "删除了子任务 ",
+  "editou": "编辑了任务 ",
+  "criaTarefa": "创建了任务 ",
+  "criaSubTarefa": "创建了子任务 ",
+  "status": "更改了状态 ",
+  "criaComentario": "评论了任务 ",
+  "deletaComentario": "删除了评论 ",
+  "concluiu": "完成了子任务 "
+},
+"historicoProjeto": {
+  "editou": "编辑了项目",
+  "criou": "创建了项目",
+  "addResponsavel": "添加了一个新负责人",
+  "convidouEquipe": "邀请了一个团队",
+  "removeEquipe": "删除了一个团队",
+  "removeResponsavel": "删除了负责人",
+  "status": "创建了一个新状态",
+  "propriedade": "创建了一个属性",
+  "removeStatus": "删除了状态",
+  "removePropriedade": "删除了属性",
+  "comentario": "评论了项目",
+  "deletaTarefa": "删除了任务"
+
 }
 
 }

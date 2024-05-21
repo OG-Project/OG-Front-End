@@ -3,76 +3,77 @@
         <div class="sticky top-0 h-[20%] w-full bg-[var(--backgroundItems)] flex justify-center z-10">
             <div class="flex flex-row w-full ">
                 <div class="flex w-full">
-                    <div class="w-[50%] h-full ml-[7%] flex flex-row items-center gap-4">
+                    <div class="w-[80%] h-full ml-[7%] flex flex-row items-center gap-4">
                         <button @click="setaEsquerda()" class="w-[5%]">
-                            <div
-                                class="w-[23px] h-[23px] rounded-full border-[1px] flex justify-center items-center">
-
+                            <div class="w-[23px] h-[23px] rounded-full border-[1px] flex justify-center items-center">
                                 <div class="setaEsquerda"></div>
-
                             </div>
                         </button>
-                        <div class="text-[160%] w-[17%] flex justify-center">
+                        <div class="text-[160%] w-[45%] flex justify-center">
                             {{ format(new Date(data), "MMMM", {
                             locale: ptBR
                         }).charAt(0).toUpperCase() +
                             format(new Date(data), "MMMM", { locale: ptBR }).slice(1) }}
                         </div>
                         <button @click="setaDireita()" class="w-[5%]">
-                            <div
-                                class="w-[23px] h-[23px] rounded-full border-[1px]  flex justify-center items-center">
+                            <div class="w-[23px] h-[23px] rounded-full border-[1px]  flex justify-center items-center">
                                 <div class="setaDireita"></div>
                             </div>
                         </button>
                     </div>
-                    <div class="w-[36.5%] flex justify-end items-center">
-                        <h1 class="text-[2.5vw] ">{{ getYear(data) }}</h1>
+                    <div class="w-[10%] flex justify-end items-center">
+                        <h1 class="text-[5vw] ">{{ getYear(data) }}</h1>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="w-[85%] gap-[2.5%]  flex row justify-between ">
-            <div class="w-[14%] flex justify-start">
-                <h1>Domingo</h1>
+        <div class="w-full h-[80%] flex flex-col items-center scroll-auto overflow-x-auto">
+            <div class="w-[85%] gap-[2.5%]  flex row justify-between ">
+                <div class="w-[14%] flex justify-start">
+                    <h1>Domingo</h1>
+                </div>
+                <div class="w-[14%] flex justify-start">
+                    <h1>Segunda</h1>
+                </div>
+                <div class="w-[14%] flex justify-start">
+                    <h1>Terça</h1>
+                </div>
+                <div class="w-[14%] flex justify-start">
+                    <h1>Quarta</h1>
+                </div>
+                <div class="w-[14%] flex justify-start">
+                    <h1>Quinta</h1>
+                </div>
+                <div class="w-[14%] flex justify-start">
+                    <h1>Sexta</h1>
+                </div>
+                <div class="w-[14%] flex justify-start">
+                    <h1>Sábado</h1>
+                </div>
             </div>
-            <div class="w-[14%] flex justify-start">
-                <h1>Segunda</h1>
-            </div>
-            <div class="w-[14%] flex justify-start">
-                <h1>Terça</h1>
-            </div>
-            <div class="w-[14%] flex justify-start">
-                <h1>Quarta</h1>
-            </div>
-            <div class="w-[14%] flex justify-start">
-                <h1>Quinta</h1>
-            </div>
-            <div class="w-[14%] flex justify-start">
-                <h1>Sexta</h1>
-            </div>
-            <div class="w-[14%] flex justify-start">
-                <h1>Sábado</h1>
-            </div>
-        </div>
-        <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
-            <div class="calendario">
-                <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia"
-                    @dragover="retornaDiaEIndice(dia)" @mouseenter="hover(dia)" @mouseleave="getCalendario()">
-                    <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[5%]">{{ format(new Date(dia.dia), 'd') }}
-                    </h1>
-                    <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[5%] text-[#9C9494]">{{ format(new
+            <div class="h-full w-[30%] flex flex-col justify-start">
+                <div class="calendario">
+                    <div v-for="dia of calendario" v-bind="estilizaDia(dia)" :style="cardDia"
+                        @dragover="retornaDiaEIndice(dia)" @mouseenter="hover(dia)" @mouseleave="getCalendario()">
+                        <h1 v-if="getMonth(dia.dia) == getMonth(data)" class="m-[5%]">{{ format(new Date(dia.dia), 'd')
+                            }}
+                        </h1>
+                        <h1 v-if="getMonth(dia.dia) != getMonth(data)" class="m-[5%] text-[#9C9494]">{{ format(new
                             Date(dia.dia), 'd') }}</h1>
-                    <div :style="dia.style">
-                        <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort(sortBy('indice'))">
-                            <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row h-full"
-                                @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
-                                @dragover="retornaDiaEIndice(dia, indice)">
-                                <cardTarefas :tarefa=tarefa.tarefa altura="1vh" largura="7vw" preset="2"></cardTarefas>
+                        <div :style="dia.style">
+                            <div v-for="(tarefa, indice) of dia.listaDeTarefas.sort(sortBy('indice'))">
+                                <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row h-full"
+                                    @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
+                                    @dragover="retornaDiaEIndice(dia, indice)">
+                                    <cardTarefas :tarefa=tarefa.tarefa altura="1vh" largura="7vw" preset="2">
+                                    </cardTarefas>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-full h-[20%] flex justify-center items-center">
-                        <div class="w-[40%] h-[15%] bg-[var(--backgroundItemsClaros)] flex items-end" v-if="dia.temTres == true"></div>
+                        <div class="w-full h-[20%] flex justify-center items-center">
+                            <div class="w-[40%] h-[15%] bg-[var(--backgroundItemsClaros)] flex items-end"
+                                v-if="dia.temTres == true"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,10 +83,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import cardTarefas from './cardTarefas.vue'
+import cardTarefas from '../cardTarefas.vue'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, getDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { conexaoBD } from '../stores/conexaoBD';
+import { conexaoBD } from '../../stores/conexaoBD';
 import sortBy from 'sort-by'
 import VueCookies from 'vue-cookies';
 
@@ -111,9 +112,9 @@ onMounted(async () => {
 function ordenaTarefas() {
     calendario.value.forEach(dia => {
         dia.listaDeTarefas.sort((tarefa, tarefa2) => {
-          if (tarefa.tarefa.nome != null && tarefa2.tarefa.nome != null) {
-            return tarefa.tarefa.indice[0].indice - tarefa2.tarefa.indice[0].indice
-          }
+            if (tarefa.tarefa.nome != null && tarefa2.tarefa.nome != null) {
+                return tarefa.tarefa.indice[0].indice - tarefa2.tarefa.indice[0].indice
+            }
         })
     })
 }
@@ -250,7 +251,7 @@ function setaDireita() {
 }
 async function trocaDiaEIndice(tarefa, dia, indice) {
     console.log(dia.listaDeTarefas)
-    tarefa.propriedade.valor.valor = format(new Date(dia.dia), "yyyy-MM-dd")+"T"+ new Date(tarefa.propriedade.valor.valor).toLocaleTimeString()
+    tarefa.propriedade.valor.valor = format(new Date(dia.dia), "yyyy-MM-dd") + "T" + new Date(tarefa.propriedade.valor.valor).toLocaleTimeString()
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
@@ -272,7 +273,7 @@ function verificaQauntidadetarefa(dia) {
 }
 
 function onDragEnd(tarefas) {
-console.log(tarefas)
+    console.log(tarefas)
     let tarefaPut = {}
     tarefas.forEach(async (tarefaAux, index) => {
         let tarefa = tarefaAux.tarefa
@@ -367,7 +368,7 @@ console.log(tarefas)
 </script>
 
 <style scoped>
-@import url(../assets/main.css);
+@import url(../../assets/main.css);
 
 @layer components {
 
@@ -403,8 +404,8 @@ console.log(tarefas)
     .setaEsquerda {
         width: 7px;
         height: 7px;
-        border-left: 2px solid ;
-        border-bottom: 2px solid ;
+        border-left: 2px solid;
+        border-bottom: 2px solid;
         border-radius: 10%;
         transform: rotate(45deg);
     }
@@ -412,8 +413,8 @@ console.log(tarefas)
     .setaDireita {
         width: 7px;
         height: 7px;
-        border-right: 2px solid ;
-        border-top: 2px solid ;
+        border-right: 2px solid;
+        border-top: 2px solid;
         border-radius: 10%;
         transform: rotate(45deg);
     }
