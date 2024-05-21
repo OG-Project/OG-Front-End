@@ -7,10 +7,14 @@
         <div class="flex justify-center items-end text-white text-4xl h-[10%]">
           <p style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);">{{ $t('home.dashboard') }}</p>
         </div>
-        <div class="flex items-center justify-center mt-8 h-[62%] text-white">
+        <div class="flex flex-col items-center justify-center mt-10 h-[62%] text-white">
           <canvas id="tabela" v-if="tarefasFeitas > 0 || tarefasNaoFeitas > 0"></canvas>
           <p v-else class="text-2xl" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
             $t('home.no_subtasks') }}</p>
+          <div class="flex gap-4 pt-4">
+            <p>Feitas: {{ tarefasFeitas }}</p>
+            <p>Não feitas: {{ tarefasNaoFeitas }}</p>
+          </div>
         </div>
       </div>
       <div class="bg-[var(--backgroundItems)] ml-12 w-[76%] h-[92%] flex items-center justify-end"
@@ -104,6 +108,33 @@ function porcentagemTarefasFeitas() {
   quantidadeNaoTarefasFeitas.value = (tarefasNaoFeitas.value / totalSubTarefas) * 100;
   console.log(quantidadeTarefasFeitas.value);
   console.log(quantidadeNaoTarefasFeitas.value);
+  const data = {
+    labels: ["Feito", "Não Feito"],
+    datasets: [
+      {
+        data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
+        backgroundColor: ["#428A6A", "#8A4242"],
+      },
+    ],
+  };
+
+  const config = {
+    type: "doughnut",
+    data: data,
+    options: {
+      borderWidth: 0,
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+          display: false
+        },
+      },
+    },
+  };
+
+  const ctx = document.getElementById("tabela");
+  const grafico = new Chart(ctx, config);
 }
 
 const DATA_COUNT = 5;
@@ -156,32 +187,6 @@ onMounted(() => {
     colocaUsuarioId()
   }
   verificaTarefasFeitas();
-  const data = {
-    labels: ["Feito", "Não Feito"],
-    datasets: [
-      {
-        data: [quantidadeTarefasFeitas.value, quantidadeNaoTarefasFeitas.value],
-        backgroundColor: ["#428A6A", "#8A4242"],
-      },
-    ],
-  };
-
-  const config = {
-    type: "doughnut",
-    data: data,
-    options: {
-      borderWidth: 0,
-      responsive: true,
-      plugins: {
-        legend: {
-          position: "bottom",
-        },
-      },
-    },
-  };
-
-  const ctx = document.getElementById("tabela");
-  const grafico = new Chart(ctx, config);
 }
 )
 

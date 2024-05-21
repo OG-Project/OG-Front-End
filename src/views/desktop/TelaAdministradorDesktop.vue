@@ -54,7 +54,7 @@
                                         possui</p> -->
 
                                     <p class="w-[20%] flex items-center justify-center h-10" v-if="tarefa.status"
-                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor) + 'font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);'}">
+                                        :style="{ 'background-color': '#' + tarefa.status.cor, color: corDaFonte(tarefa.status.cor)}">
                                         {{ tarefa.status.nome }}</p>
                                     <p class="w-[20%] flex items-center justify-center h-10 bg-[#93E28D]"
                                         style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
