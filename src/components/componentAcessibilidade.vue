@@ -2,12 +2,12 @@
     <div class=" max-mobileGrande:w-full w-[75vw] h-[92vh] flex flex-col  ">
 
         <div class="flex flex-row w-full items-center ">
-            <div v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
-                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[60%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
-            </div>
+            <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
+                <flecha />
+            </span>
             <div>
                 <h1 v-if="screenWidth <= 740"
-                    style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
+                    style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
                     class="m-[1%] border-b-4 border-[#CCC4CF] p-2 w-max">
                     {{ $t('acessibilidade.Acessibilidade') }}
                     <!-- {{ configuracao }} -->
@@ -60,7 +60,11 @@ import { storeToRefs } from 'pinia';
 import { conexaoBD } from '../stores/conexaoBD';
 import { watch } from 'vue';
 import { onUnmounted } from 'vue';
+import flecha from '../assets/flecha-mobile-perfil.vue'
+import router from '../router';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
+import { onUpdated } from 'vue';
+import router from '../router';
 let perfil = perfilStore()
 let conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
@@ -82,6 +86,14 @@ onUnmounted(() => {
 
 })
 
+onUpdated(()=>{
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/acessibilidade')
+    }
+})
 
 watch(() => VueCookies.get('Idioma'), (valorIdioma) => {
     switch (valorIdioma) {

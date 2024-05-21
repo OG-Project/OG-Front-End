@@ -1,5 +1,5 @@
 <template>
-    <fundoPopUp :largura="screenWidth < 640 ? '100%' : '70%'" :altura="screenWidth < 640 ? '100%' : '60%'">
+    <fundoPopUp :largura="screenWidth < 640 ? '100%' : '30%'" :altura="screenWidth < 640 ? '100%' : '50%'">
         <div class="flex flex-col justify-between w-[60vh] h-[54vh]">
             <div class="flex max-md:pl-0 pl-12 pt-12 justify-center">
                 <div v-if="screenWidth >= 768" style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class=" text-[var(--roxo)]">

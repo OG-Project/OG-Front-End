@@ -19,17 +19,24 @@ export const webSocketStore = defineStore('webSocket', {
             }
         },
 
+        fechaConexaoWebSocket() {
+            this.socket.close();
+        },
+
         enviaMensagemWebSocket(mensagem) {
-            console.log("Bateu no enviaMensagemWebSocket");
-            this.socket.send(mensagem);
+            let socket = new WebSocket(this.url)
+            socket.onopen = function (event) {
+                console.log("Conexão aberta");
+                socket.send(mensagem);
+            }
         },
 
         esperaMensagem(retorno) {
+            this.criaConexaoWebSocket()
             console.log(retorno)
-            this.socket.onmessage = function (event) {
+            this.socket.onmessage = (event) => {
                 retorno(event.data);
             }
-
         }
     }
 

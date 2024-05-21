@@ -419,11 +419,11 @@ function reloadTelaTarefa() {
   if (reload == '0') {
     console.log("reload")
     VueCookies.set('idReloadTarefa', '1');
-    window.location.reload();
+    // window.location.reload();
   }
 }
 
-reloadTelaTarefa()
+// reloadTelaTarefa()
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   for (const propriedadeFor of tarefa.value.propriedades) {

@@ -1,22 +1,22 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col max-md:items-center  max-md:w-full">
         <div class="flex flex-row w-full items-center">
-            <div v-if="screenWidth <=768" class="w-[15%] flex items-center justify-center">
-                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] h-full"></flechaMobilePerfil>
-            </div>
+            <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
+                <flechaMobilePerfil />
+            </span>
             
 
-            <h1  v-if="screenWidth >=500" style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
+            <h1  v-if="screenWidth >=500" style="font-family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
                 class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 
                 w-max max-sm:w-[80%] mobile:w-[50%]  max-miniMobile:pr-8 max-miniMobile:mb-8 max-mobile:pr-14 max-mobile:mb-6 ">
                 {{ $t('privacidade.Privacidade') }}
             </h1>
-
+<!-- 
             <h1 v-else style="font-family:var(--fonteTitulo);font-size: var(--fonteTitulo);"
                 class="m-[5%] border-b-4 border-[#CCC4CF] p-4 pr-32 
                 w-max max-sm:w-[80%] mobile:w-[50%]  max-miniMobile:pr-8 max-miniMobile:mb-8 max-mobile:pr-14 max-mobile:mb-6 ">
                 {{ $t('privacidade.Privacidade') }}
-            </h1>
+            </h1> -->
 
         </div>
         <div class=" flex ml-32 max-md:ml-0">
@@ -72,6 +72,9 @@ import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Usuario } from '../models/usuario';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
+import { onUpdated } from 'vue';
+import router from '../router';
+
 const perfil = perfilStore()
 const conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
@@ -82,9 +85,18 @@ let isVisualizaEquipes = ref(false)
 let isVisualizaPerfil = ref(false)
 let isVisualizaProjetos = ref(false)
 const screenWidth = ref(window.innerWidth)
-
+import router from '../router';
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
+})
+
+onUpdated(()=>{
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
+    if(screenWidth.value>=1024){
+        router.push('/perfil/privacidade')
+    }
 })
 
 function visualizacaoProjeto(valor) {

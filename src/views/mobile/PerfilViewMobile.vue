@@ -1,6 +1,6 @@
 <template>
     
-    <div class="flex justify-center flex-wrap ">
+    <div class="flex justify-center flex-wrap miniMobile:pb-4 tablet:pb-20">
         <div class="flex flex-col sm:justify-center md:justify-around items-center w-[20%] h-[92vh] drop-shadow-md">
             <div class=" flex justify-center items-center w-[329px] h-[329px]">
                 <div 
@@ -13,8 +13,7 @@
                 flex 
                 justify-center 
                 items-center  
-                sm:h-[30%] 
-                sm:w-[30%] 
+              
                 md:w-[70%] 
                 md:h-[70%] 
                 rounded-full 
@@ -24,8 +23,7 @@
                     :src="Imagem"
                     class="xl:w-[85%] 
                     hover:bg-slate-600 
-                    sm:h-[30%] 
-                    sm:w-[30%] 
+                   
                     md:w-[70%] 
                     md:h-[70%] 
                     rounded-full 
@@ -103,6 +101,17 @@
                     cursor-pointer" 
                     >
                     {{ $t('aparencia.Aparência') }}
+                </div>
+                <div @click="sair()" class="bg-[var(--roxo)] medioId 
+                    text-white 
+                    justify-center 
+                    active:border-2 
+                    active:border-[var(--clickBorder)] 
+                    flex 
+                    items-center
+                    cursor-pointer" 
+                    >
+                    {{ $t('barraLateral.sair') }}
                 </div>
 
             </div>
@@ -236,16 +245,18 @@ function privacidade() {
 }
 function aparencia() {
     router.push({ path: '/aparencia' })
-
 }
 
-function identificarRota(rotaAtual, rota) {
-    if (rotaAtual == rota) {
-        return true
-    }
-
-    return false
+function sair() {
+    VueCookies.remove('IdUsuarioCookie');
+      VueCookies.remove('IdTarefaCookies');
+      VueCookies.remove('IdProjetoAtual');
+      VueCookies.remove('JWT');
+      VueCookies.remove('equipeSelecionada');
+      window.location.reload();
+    // router.push({ path: '/login' })
 }
+
 
 
 
