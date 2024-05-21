@@ -1,11 +1,11 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div class="flex flex-row w-full items-center ">
-            <div v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
-                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
-            </div>
-            <h1 v-if="screenWidth <= 740"
-            style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
+            <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
+                <flechaMobilePerfil />
+            </span>
+            <h1 v-if="screenWidth <= 1024"
+            style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
                 class="m-[5%] border-b-4 border-[#CCC4CF] p-2  w-max">
                 {{ $t('seguranca.Segurança') }}
             </h1>
@@ -70,9 +70,9 @@
         </div>
 
     </div>
-    <alterarSenha v-if="popUpSenha"></alterarSenha>
-    <alterarEmail v-if="popUpEmail"></alterarEmail>
-    <ConfirmaPopUp v-if="popUpDeletar"></ConfirmaPopUp>
+    <alterarSenha v-if="popUpSenha && screenWidth <= 1024" ></alterarSenha>
+    <alterarEmail v-if="popUpEmail  && screenWidth <= 1024"></alterarEmail>
+    <ConfirmaPopUp v-if="popUpDeletar  && screenWidth <= 1024"></ConfirmaPopUp>
 </template>
 
 <script setup>
@@ -89,7 +89,6 @@ import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
 import { storeToRefs } from 'pinia';
 import router from '../router';
-
 const PerfilStore = perfilStore()
 const conexao = conexaoBD()
 const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(PerfilStore)
