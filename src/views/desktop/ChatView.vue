@@ -50,7 +50,7 @@
                         <div class="text-[70%]">
                             {{ mensagem.criador.username }}
                         </div>
-                        <div class="max-w-[45%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-t-3xl rounded-r-3xl">
+                        <div class="max-w-[45%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-t-3xl rounded-r-3xl break-words">
                             <div>
                                 {{ mensagem.mensagem }}
                             </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div v-if="mensagem.criador.id == usuarioLogado.id"
                         class="w-full flex pr-[2.5%] pt-[2%] justify-end ">
-                        <div class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white">
+                        <div class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white break-words">
                             {{ mensagem.mensagem }}
                         </div>
                     </div>
@@ -95,6 +95,7 @@ let corpoDaMensagem = ref("");
 let listaDeMensagens = ref([]);
 let chat = ref({});
 let webSocket = webSocketStore();
+
 webSocket.url = "ws://localhost:8082/og/webSocket/chat/1"
 
 onMounted(async () => {
@@ -103,19 +104,17 @@ onMounted(async () => {
         setTimeout(() => {
             trocaLista(localStorage.getItem('opcao'))
             DefineListaDeMensagens()
+            document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
         }, 10);
     }
-    document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
-
 })
 
-try{
-webSocket.esperaMensagem((retorno) => {
-    webSocket.criaConexaoWebSocket()
-    chat.value.mensagens.push(JSON.parse(retorno))
-    document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
-})}catch(e){
-    console.log(e)
+try {
+    webSocket.esperaMensagem((retorno) => {
+        webSocket.criaConexaoWebSocket()
+        chat.value.mensagens.push(JSON.parse(retorno))
+    })
+} catch (e) {
 }
 
 async function trocaLista(opcao) {
@@ -145,17 +144,19 @@ async function trocaLista(opcao) {
         opcao2.value = "1";
         localStorage.setItem('opcao', '1')
     }
-    DefineListaDeMensagens()
+    router.push('/chat').then(() => {
+        DefineListaDeMensagens()
+    });
 }
 
 async function DefineListaDeMensagens() {
     let chatResponse = ref({})
-    if(opcao2.value == "2"){
+    if (opcao2.value == "2") {
         chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/equipe').then((response) => {
             chatResponse.value = response
         })
-    }else if(opcao2.value == "1"){
-        chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/pessoal/'+VueCookies.get("IdUsuarioCookie")).then((response) => {
+    } else if (opcao2.value == "1") {
+        chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/pessoal/' + VueCookies.get("IdUsuarioCookie")).then((response) => {
             chatResponse.value = response
         })
     }
@@ -191,7 +192,6 @@ async function mandaMensagem() {
         mensagem: corpoDaMensagem.value,
     }
     await api.cadastrar(mensagem, '/mensagem/' + chat.value.id).then((response) => {
-        console.log(JSON.stringify(response.data));
         webSocket.enviaMensagemWebSocket(JSON.stringify(response.data))
     })
     corpoDaMensagem.value = "";
@@ -216,6 +216,7 @@ input:focus {
     /* para adicionar uma barra de rolagem vertical */
     scrollbar-color: "var(--backgroundItemsClaros)";
     /* oculta a barra de rolagem padrão do Firefox */
+    height: 80vh;
 }
 
 .scrollable::-webkit-scrollbar {
