@@ -170,19 +170,19 @@ async function verificaSeEResponsavel() {
 
 function styleBotao() {
     if (window.location.href.includes("lista")) {
-        corLista.value = "#DBB3FF"
+        corLista.value = "var(--roxoClaro)"
         corKanban.value = "var(--backgroundItemsClaros)"
         corTimeline.value = "var(--backgroundItemsClaros)"
         corCalendario.value = "var(--backgroundItemsClaros)"
     }
     if (window.location.href.includes("kanban")) {
-        corKanban.value = "#DBB3FF"
+        corKanban.value = "var(--roxoClaro)"
         corLista.value = "var(--backgroundItemsClaros)"
         corTimeline.value = "var(--backgroundItemsClaros)"
         corCalendario.value = "var(--backgroundItemsClaros)"
     }
     if (window.location.href.includes("timeline")) {
-        corTimeline.value = "#DBB3FF"
+        corTimeline.value = "var(--roxoClaro)"
         corKanban.value = "var(--backgroundItemsClaros)"
         corLista.value = "var(--backgroundItemsClaros)"
         corCalendario.value = "var(--backgroundItemsClaros)"
@@ -191,7 +191,7 @@ function styleBotao() {
         corTimeline.value = "var(--backgroundItemsClaros)"
         corKanban.value = "var(--backgroundItemsClaros)"
         corLista.value = "var(--backgroundItemsClaros)"
-        corCalendario.value = "#DBB3FF"
+        corCalendario.value = "var(--roxoClaro)"
     }
 }
 
