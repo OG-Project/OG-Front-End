@@ -43,14 +43,13 @@
         </div>
         <div class="h-full w-full flex flex-col justify-end ">
             <div class="scrollable">
-                {{ console.log(chat) }}
                 <div v-for="mensagem of chat.mensagens" class=" w-full flex justify-end">
                     <div v-if="mensagem.criador.id != usuarioLogado.id"
                         class="w-full pl-[2.5%] flex flex-col items-start">
                         <div class="text-[70%]">
                             {{ mensagem.criador.username }}
                         </div>
-                        <div class="max-w-[45%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-t-3xl rounded-r-3xl">
+                        <div class="max-w-[45%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-t-3xl rounded-r-3xl break-words">
                             <div>
                                 {{ mensagem.mensagem }}
                             </div>
@@ -58,7 +57,7 @@
                     </div>
                     <div v-if="mensagem.criador.id == usuarioLogado.id"
                         class="w-full flex pr-[2.5%] pt-[2%] justify-end ">
-                        <div class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white">
+                        <div class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white break-words">
                             {{ mensagem.mensagem }}
                         </div>
                     </div>
@@ -87,13 +86,14 @@ import { webSocketStore } from '../../stores/webSocket';
 
 let api = conexaoBD();
 let listaDeConversas = ref([]);
-let opcao2 = ref("");
+let opcao2 = ref(localStorage.getItem('opcao'));
 let usuarioLogadoId = ref(VueCookies.get('IdUsuarioCookie'));
 let usuarioLogado = ref({});
 let corpoDaMensagem = ref("");
 let listaDeMensagens = ref([]);
 let chat = ref({});
 let webSocket = webSocketStore();
+
 webSocket.url = "ws://localhost:8082/og/webSocket/chat/"+chat.value.id
 
 onMounted(async () => {
@@ -101,20 +101,22 @@ onMounted(async () => {
     if (localStorage.getItem('opcao') != null) {
         trocaLista(localStorage.getItem('opcao'))
         setTimeout(() => {
+            trocaLista(localStorage.getItem('opcao'))
             defineSeEstaSelecionado()
             DefineListaDeMensagens()
+            document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
         }, 10);
     }
 })
 
+try {
+    webSocket.esperaMensagem((retorno) => {
+        webSocket.criaConexaoWebSocket()
+        chat.value.mensagens.push(JSON.parse(retorno))
+    })
+} catch (e) {
+}
 
-webSocket.esperaMensagem((retorno) => {
-    console.log(retorno);
-    if(retorno == "mensagemEnviada"){
-        console.log("Chegou a mensagem websocket")
-        DefineListaDeMensagens()
-    }
-})
 
 async function trocaLista(opcao) {
     listaDeConversas.value = [];
@@ -128,20 +130,39 @@ async function trocaLista(opcao) {
         opcao2.value = "2";
         localStorage.setItem('opcao', '2')
     } else {
-        listaDeConversas.value = [{ equipe: await api.buscarUm(1, '/usuario') }];
+        await api.procurar('/chat').then((response) => {
+            response.forEach(chat => {
+                chat.usuarios.forEach(usuario => {
+                    if (usuario.id != usuarioLogado.value.id) {
+                        listaDeConversas.value.push({
+                            isSelecionado: ref(false),
+                            equipe: usuario
+                        })
+                    }
+                });
+            });
+        });
         opcao2.value = "1";
         localStorage.setItem('opcao', '1')
     }
+    router.push('/chat').then(() => {
+        DefineListaDeMensagens()
+    });
 }
 
 async function DefineListaDeMensagens() {
     let chatResponse = ref({})
-    chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/equipe').then((response) => {
-        console.log(response);
-        chatResponse.value = response
-        console.log(chat.value);
-    })
+    if (opcao2.value == "2") {
+        chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/equipe').then((response) => {
+            chatResponse.value = response
+        })
+    } else if (opcao2.value == "1") {
+        chat.value = await api.buscarUm(window.location.href.charAt(window.location.href.length - 1), '/chat/pessoal/' + VueCookies.get("IdUsuarioCookie")).then((response) => {
+            chatResponse.value = response
+        })
+    }
     chat.value = chatResponse.value
+    defineSeEstaSelecionado()
 }
 
 function mudaRota(equipe) {
@@ -171,13 +192,13 @@ async function mandaMensagem() {
         },
         mensagem: corpoDaMensagem.value,
     }
-    console.log(mensagem);
-    await api.cadastrar(mensagem, '/mensagem/'+chat.value.id).then((response) => {
-        console.log(response);
-        chat.value.mensagens.push(response.data)
+    await api.cadastrar(mensagem, '/mensagem/' + chat.value.id).then((response) => {
+        webSocket.enviaMensagemWebSocket(JSON.stringify(response.data))
     })
     corpoDaMensagem.value = "";
-    webSocket.enviaMensagemWebSocket("mensagemEnviada")
+
+    document.getElementById("scrollable").scrollTop = document.getElementById("scrollable").scrollHeight;
+
 }
 
 </script>
@@ -192,8 +213,12 @@ input:focus {
 }
 
 .scrollable {
-    overflow-y: scroll; /* para adicionar uma barra de rolagem vertical */
-    scrollbar-color: "var(--backgroundItemsClaros)"; /* oculta a barra de rolagem padrão do Firefox */
+    overflow-y: scroll;
+    /* para adicionar uma barra de rolagem vertical */
+    scrollbar-color: "var(--backgroundItemsClaros)";
+    /* oculta a barra de rolagem padrão do Firefox */
+    height: 80vh;
+
 }
 
 .scrollable::-webkit-scrollbar {
