@@ -55,6 +55,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
+                    :class="{'mobileMedioId': mobile() }"
                     >
                     {{ $t('informacoes.Informações') }}
                 </div>
@@ -65,7 +66,8 @@
                     active:border-[var(--clickBorder)] 
                     flex 
                     items-center
-                    cursor-pointer" 
+                    cursor-pointer"
+                    :class="{'mobileMedioId': mobile() }" 
                     >
                     {{ $t('seguranca.Segurança') }}
                 </div>
@@ -77,6 +79,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
+                    :class="{'mobileMedioId': mobile() }"
                     >
                     {{ $t('acessibilidade.Acessibilidade') }}
                 </div>
@@ -88,6 +91,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
+                    :class="{'mobileMedioId': mobile() }"
                     >
                     {{ $t('privacidade.Privacidade') }}
                 </div>
@@ -99,6 +103,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
+                    :class="{'mobileMedioId': mobile() }"
                     >
                     {{ $t('aparencia.Aparência') }}
                 </div>
@@ -110,6 +115,7 @@
                     flex 
                     items-center
                     cursor-pointer" 
+                    :class="{'mobileMedioId': mobile() }"
                     >
                     {{ $t('barraLateral.sair') }}
                 </div>
@@ -126,7 +132,7 @@ import { storeToRefs } from 'pinia';
 import { perfilStore } from '../../stores/perfilStore';
 import router from '../../router';
 import iconLapisDinamic from '../../imagem-vetores/icon-lapisDinamic..vue';
-import { onBeforeMount, onMounted, ref , computed, onUnmounted } from 'vue';
+import { onBeforeMount, onMounted, ref , computed, watch } from 'vue';
 import {useRoute} from 'vue-router';
 import  VueCookies  from 'vue-cookies';
 import { conexaoBD } from '../../stores/conexaoBD';
@@ -141,6 +147,18 @@ const { files, open, reset, onChange } = useFileDialog({
 })
 
 const imagemSelecionada = ref(null);
+const screenWidth = ref(window.innerWidth)
+
+watch(() => window.innerWidth, () => {
+    screenWidth.value = window.innerWidth
+})
+
+function mobile(){
+    if(screenWidth.value<640){
+        return true
+    }
+    return false
+}
 
 onChange((files)=>{
     console.log('files');
@@ -216,6 +234,9 @@ onMounted(async () => {
     // if(foto.value==undefined){
     //     foto.value=usuario.value.foto
     // }
+    window.addEventListener('resize', () => {
+        screenWidth.value = window.innerWidth
+    })
     console.log(foto.value);
 })
 
@@ -259,7 +280,6 @@ function sair() {
 
 
 
-
 </script>
 
 <style scoped>
@@ -284,4 +304,22 @@ function sair() {
     transform: translateX(20px);
     opacity: 0;
 }
+
+.mobileGrandeId {
+  @apply w-[80vw] h-[5vh];
+}
+
+.mobileMedioId {
+  @apply w-[42vw] h-[5vh] !important;
+
+}
+
+.mobilePadraoId {
+  @apply w-[48vw] h-[5vh];
+}
+
+.mobilePequenoId {
+  @apply w-[20vw] h-[5vh] 2xl:h-[5vh] xl:h-[8vh];
+}
+
 </style>

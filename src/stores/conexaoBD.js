@@ -20,7 +20,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.get(this.url + textoRequisicao, { withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
-        console.log('Loading:', this.loading);
+        // console.log('Loading:', this.loading);
       }
 
     },
@@ -66,7 +66,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async atualizar(objeto, textoRequisicao) {
-      console.log(textoRequisicao)
+      console.log(objeto);
       this.loading = true;
       try {
         if (textoRequisicao == "/usuario") {
@@ -75,6 +75,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         }
 
         return axios.put(this.url + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
+
       } finally {
         this.loading = false;
       }
@@ -215,7 +216,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         const formData = new FormData();
         formData.append('foto', foto);
 
-
+  
         // Faça a requisição PATCH para enviar a image
 
         const response = await axios.patch(this.url + `/equipe/${equipeId}`, formData, {
@@ -250,7 +251,9 @@ export const conexaoBD = defineStore('conexaoBD', {
           withCredentials: true
         }).then(response => {
           return response.data
+
         });
+       
 
       } catch (error) {
         console.error('Erro ao cadastrar a foto:', error);
@@ -262,12 +265,13 @@ export const conexaoBD = defineStore('conexaoBD', {
         // Crie um FormData e adicione a imagem a ele
         const formData = new FormData();
         formData.append('foto', foto);
-
+        console.log(formData.get("foto"))
         // Faça a requisição PATCH para enviar a imagem
         const response = await axios.patch(this.url + `/usuario/${idUsuario}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
-          }
+          },
+          withCredentials: true
         }).then(response => {
           return response.data
         });
@@ -276,6 +280,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         throw error;
       }
       return await ((await axios.get(this.url + `${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+
     },
   }
 }
