@@ -220,12 +220,11 @@ function hover(dia) {
         if (dia.temTres) {
             dia.style = {
                 height: "max-content",
-                width: "11.5%",
+                width: "100%",
                 display: "flex",
                 overflow: "hidden",
                 flexDirection: "column",
                 gap: "8px",
-                position: "absolute",
                 paddingBottom: "1%",
                 backgroundColor: "[var(--backgroundItemsClaros)]",
                 borderBottomLeftRadius: "10%",

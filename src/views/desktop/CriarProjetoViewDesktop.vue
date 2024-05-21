@@ -431,7 +431,6 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
             adicionaResponsaveisProjeto(usuarioAtual)
         }
     });
-
 }
 
 async function adicionaResponsaveisProjeto(usuarioRecebe) {

@@ -73,6 +73,7 @@
   },
   "barraLateral": {
     "home": "ホーム",
+    "tutorial": "チュートリアル",
     "equipe": "チーム",
     "projetos": "プロジェクト",
     "sair": "ログアウト"

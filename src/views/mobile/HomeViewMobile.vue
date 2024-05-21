@@ -2,7 +2,7 @@
     <div class="w-full h-full flex flex-col items-center justify-center">
         <div class="h-16 flex items-center justify-center">
             <h1 class="text-3xl sm:text-5xl font-bold w-fit border-b-2 border-black" v-if="usuarioCookies">
-                {{ $t('home.bemVindoUsuario', {nome: usuarioCookies.username}) }}
+                {{ $t('home.bemVindoUsuario', { nome: usuarioCookies.username }) }}
             </h1>
         </div>
         <div class="h-48 flex items-center justify-around w-full">
@@ -33,13 +33,12 @@
             <h1 class="text-2xl sm:text-4xl pt-4">{{ nomeDoTopico }}</h1>
             <div class="w-[80%] h-[80%] flex flex-col gap-12 mt-6">
                 <div v-for="projeto of listaDeProjetos"
-                    class="w-[100%] h-[12%] bg-[#F6F6F6] flex items-center justify-around"
+                    class="w-[100%] h-[12%] bg-[var(--backgorundItemsClaro)] flex items-center justify-around"
                     style="box-shadow: -2px 6px 13px 7px rgba(0, 0, 0, 0.18)">
                     <div class="m-4 flex w-[70%] justify-between" style="border-bottom: 2px solid var(--roxo)"
                         @click="redireciona('/projeto/kanban', projeto.id)">
                         <p>{{ projeto.nome }}</p>
-                        <p v-if="projeto.responsaveis[0]">{{ projeto.responsaveis[0].responsavel.username }}</p>
-                        <p v-if="!projeto.responsaveis[0]">{{ $t('home.naoPossuiResponsavel') }}</p>
+                        <p v-if="projeto.dataFinal != null">{{ projeto.dataFinal }}</p>
                     </div>
                 </div>
             </div>

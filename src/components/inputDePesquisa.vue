@@ -19,7 +19,7 @@
       <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
         @click="passaValorProInput(itemPesquisado)">
         <div :style="respostaPesquisa">
-          <p>{{ itemPesquisado }}</p>
+          <p class="truncate">{{ itemPesquisado }}</p>
         </div>
         <hr />
       </div>
@@ -30,8 +30,8 @@
       <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
         @click="passaValorProInput(itemPesquisado)">
         <div :style="respostaPesquisa">
-          <p class="w-[50%] pl-4">{{ itemPesquisado.nome }}</p>
-          <p class="w-[50%]">{{ itemPesquisado.tipo }}</p>
+          <p class="w-[50%] pl-4 truncate">{{ itemPesquisado.nome }}</p>
+          <p class="w-[50%] truncate">{{ itemPesquisado.tipo }}</p>
         </div>
         <hr />
       </div>
