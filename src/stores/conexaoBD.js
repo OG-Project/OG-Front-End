@@ -19,7 +19,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.get("http://localhost:8082" + textoRequisicao, { withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
-        console.log('Loading:', this.loading);
+        // console.log('Loading:', this.loading);
       }
 
     },
@@ -65,7 +65,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async atualizar(objeto, textoRequisicao) {
-      console.log(textoRequisicao)
+      console.log(objeto);
       this.loading = true;
       try {
         return axios.put("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
@@ -204,7 +204,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         const formData = new FormData();
         formData.append('foto', foto);
 
-
+  
         // Faça a requisição PATCH para enviar a image
 
         const response = await axios.patch(`http://localhost:8082/equipe/${equipeId}`, formData, {
@@ -229,17 +229,16 @@ export const conexaoBD = defineStore('conexaoBD', {
 
     async patchDeArquivosNaTarefa(arquivos, id) {
       try {
-        // Deleta os arquivos existentes relacionados à tarefa
         await axios.delete(`http://localhost:8082/tarefa/arquivos/${id}`, { withCredentials: true });
-
-        const response = await axios.patch("http://localhost:8082/tarefa/arquivos/" + id, arquivos, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          },
-          withCredentials: true
-        }).then(response => {
-          return response.data
+        arquivos.forEach(async arquivo => {  
+          await axios.patch(`http://localhost:8082/tarefa/arquivos/${id}`, arquivo, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true
+          })
         });
+       
 
       } catch (error) {
         console.error('Erro ao cadastrar a foto:', error);
@@ -251,12 +250,13 @@ export const conexaoBD = defineStore('conexaoBD', {
         // Crie um FormData e adicione a imagem a ele
         const formData = new FormData();
         formData.append('foto', foto);
-
+        console.log(formData.get("foto"))
         // Faça a requisição PATCH para enviar a imagem
         const response = await axios.patch(`http://localhost:8082/usuario/${idUsuario}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
-          }
+          },
+          withCredentials: true
         }).then(response => {
           return response.data
         });
@@ -264,7 +264,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         console.error('Erro ao cadastrar a foto:', error);
         throw error;
       }
-      return await ((await axios.get(`http://localhost:8082${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
+ 
     },
   }
 }

@@ -2,7 +2,7 @@
   <div class="h-[8vh] w-full flex justify-around z-[9999999999]">
     <div class="h-[8vh] w-[70%] flex items-center gap-8 justify-end mr-8">
       <div class="h-[8vh] pt-3 w-[55vw] absolute">
-        <inputDePesquisa styleInput="input-claro-pequeno" largura="50" altura="10" :conteudoInput="$t('navBar.pesquisar')"
+        <inputDePesquisa styleInput="input-claro-pequeno" largura="50" altura="10" :placeHolderPesquisa="$t('navBar.pesquisar')"
          :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99999999999999999]"></inputDePesquisa>
       </div>
     </div>

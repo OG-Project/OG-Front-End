@@ -140,8 +140,8 @@
       </div>
       <div class="pl-12 mt-4">
         <div class="w-min h-min relative cursor-pointer">
-          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" :icon="iconAnexo" tamanhoDaBorda="2px"
-            :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno" inverterCorIcon="sim"></Botao>
+          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" tamanhoDaBorda="2px"
+            :texto="$t('criaTarefa.attach')" tamanhoPadrao="mobilepequeno" inverterCorIcon="sim"></Botao>
           <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
             @change="e => gerarArquivo(e)">
         </div>
@@ -377,8 +377,8 @@
         </div>
       </div>
       <div class="w-[96%] flex justify-between fixed bottom-28 right-4 pt-8">
-        <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
+        <Botao tamanhoPadrao="mobilepequeno" preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        <Botao tamanhoPadrao="mobilepequeno" :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
@@ -1025,9 +1025,9 @@ const listaFiltradaStatus = computed(() => {
   }
 });
 
-const parametroDoFiltroStatus = ref(); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+const parametroDoFiltroStatus = ref(t('criaTarefa.sort_by')); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
 
-const parametroDoFiltroPropriedade = ref(); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+const parametroDoFiltroPropriedade = ref(t('criaTarefa.sort_by')); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 const listaFiltradaPropriedades = computed(() => {

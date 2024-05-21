@@ -30,7 +30,7 @@
                             :fill="verificaCorTexto(props.tarefa)" />
                     </svg>
                 </div>
-                <p class="truncate w-[70%]">{{ props.tarefa.nome }}</p>
+                <p class="truncate w-[90%]">{{ props.tarefa.nome }}</p>
             </div>
         </div>
     </div>

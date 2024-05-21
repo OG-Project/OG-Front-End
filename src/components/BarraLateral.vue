@@ -42,7 +42,7 @@
             </div>
             <div  class="flex gap-6 justify-center items-center text-white " @click="geraTutorial()">
               <tutorial-icon ></tutorial-icon>
-              <div>{{ 'Tutorial' }}</div>
+              <div>{{ $t('barraLateral.tutorial') }}</div>
             </div>
             <div  class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/chat')">
               <iconChat ></iconChat>
