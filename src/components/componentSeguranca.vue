@@ -1,12 +1,12 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div class="flex flex-row w-full items-center ">
-            <div v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
+            <div @click="router.push('/perfil')" v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
                 <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
             </div>
             <h1 v-if="screenWidth <= 740"
             style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
-                class="m-[5%] border-b-4 border-[#CCC4CF] p-2  w-max">
+                class="m-[5%] border-b-4 border-[#CCC4CF] p-2 w-max">
                 {{ $t('seguranca.Segurança') }}
             </h1>
             <h1 v-else style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
@@ -70,9 +70,9 @@
         </div>
 
     </div>
-    <alterarSenha v-if="popUpSenha"></alterarSenha>
-    <alterarEmail v-if="popUpEmail"></alterarEmail>
-    <ConfirmaPopUp v-if="popUpDeletar"></ConfirmaPopUp>
+    <alterarSenha v-if="popUpSenha && screenWidth<1024"></alterarSenha>
+    <alterarEmail v-if="popUpEmail && screenWidth<1024"></alterarEmail>
+    <ConfirmaPopUp v-if="popUpDeletar && screenWidth<1024"></ConfirmaPopUp>
 </template>
 
 <script setup>

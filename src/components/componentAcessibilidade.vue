@@ -2,7 +2,7 @@
     <div class=" max-mobileGrande:w-full w-[75vw] h-[92vh] flex flex-col  ">
 
         <div class="flex flex-row w-full items-center ">
-            <div v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
+            <div @click="router.push('/perfil')" v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
                 <flechaMobilePerfil class=" w-[50%] max-mobile:w-[60%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
             </div>
             <div>
@@ -62,6 +62,7 @@ import { watch } from 'vue';
 import { onUnmounted } from 'vue';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 import { onUpdated } from 'vue';
+import router from '../router';
 let perfil = perfilStore()
 let conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
