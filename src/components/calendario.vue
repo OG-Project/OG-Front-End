@@ -226,7 +226,7 @@ function hover(dia) {
                 gap: "8px",
                 position: "absolute",
                 paddingBottom: "1%",
-                backgroundColor: "[var(--backgroundItemsClaros)]",
+                backgroundColor: "var(--backgroundItems)",
                 borderBottomLeftRadius: "10%",
                 borderBottomRightRadius: "10%",
                 zIndex: "0",
