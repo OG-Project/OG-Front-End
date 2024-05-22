@@ -53,8 +53,8 @@
           <div class="flex w-[100%]">
             <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
               :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
-              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
-              :responsavel="listaResponsaveis" :tempoAtuacao="projeto.tempoAtuacao">
+              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
+              :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)" :tempoAtuacao="projeto.tempoAtuacao" >
             </CardProjetos>
           </div>
         </div>
@@ -85,21 +85,13 @@ let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal = false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
-let listaResponsaveis = ref([]);
+
 let retornoPermissao = ref(false);
 const banco = conexaoBD();
 
 onMounted(() => {
-  buscaProjeto();
   verificaMembroPermissao();
 })
-
-async function buscaProjeto() {
-  let projeto = await banco.procurar("/projeto")
-  projeto.forEach((projeto) => {
-    obterNomesResponsaveis(projeto)
-  })
-}
 
 let equipeEditar = ref({
   nome: '',
@@ -145,27 +137,6 @@ async function verificaMembroPermissao(){
         } 
     })
     
-}
-
-async function obterNomesResponsaveis(projeto) {
-  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-    let responsaveisComNome = []
-    for (let responsavel of projeto.responsaveis) {
-      let responsavelAtual = await buscaResponsaveis(responsavel)
-      responsaveisComNome.push(responsavelAtual.username)
-      listaResponsaveis.value = responsaveisComNome
-      if (responsaveisComNome.length >= 0) {
-        listaResponsaveis.value = responsaveisComNome.join(', ');
-      }
-    }
-  } else {
-    return "Não há responsáveis";
-  }
-}
-
-async function buscaResponsaveis(responsavel) {
-  return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
-
 }
 
 function formatarData(data) {

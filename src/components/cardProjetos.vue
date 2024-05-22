@@ -23,7 +23,7 @@
 
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>Responsavel:</b> {{ responsavel }}
+                    <b>Responsavel:</b> {{ responsaveis }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -67,6 +67,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { conexaoBD } from "../stores/conexaoBD.js";
+
+const banco = conexaoBD();
+
 const props = defineProps({
     name: {
         type: String,
@@ -74,8 +78,9 @@ const props = defineProps({
     descricao: {
         type: String,
     },
-    responsavel: {
-        type: String,
+    responsaveisIds: {
+        type: Array, 
+        default: () => [] 
     },
     feito: {
         type: Number,
@@ -94,14 +99,27 @@ const props = defineProps({
     }
 
 })
-let verTempoAtuacao = ref(false)
-let alinhamento = ref(43)
+
+let responsaveis = ref([]); // Inicialmente exibir "Carregando..." até que os nomes dos responsáveis sejam carregados
+let verTempoAtuacao = ref(false);
+let alinhamento = ref(43);
 const screenWidth = window.innerWidth;
 
-// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-onMounted(() =>{
-    console.log(props.responsavel);
-})
+onMounted(async () => {
+    const nomesResponsaveis = await buscaResponsaveis(props.responsaveisIds);
+    responsaveis.value = nomesResponsaveis.join(', ');
+    
+});
+
+async function buscaResponsaveis(responsaveisIds) {
+    const nomesResponsaveis = [];
+    for (const responsavelId of responsaveisIds) {
+        const responsavel = await banco.buscarUm(responsavelId, "/usuario");
+        nomesResponsaveis.push(responsavel.username);
+        }
+        return nomesResponsaveis;
+   
+}
 
 const grafico = {
     display: "flex",

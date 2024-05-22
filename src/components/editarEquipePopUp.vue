@@ -397,6 +397,7 @@ async function atualizarEquipe() {
                 equipeAtualizar.foto = equipe.foto;
             }
         }
+        
     });
 
     equipeEditar.value.nome = equipeAtualizar.nome;
@@ -416,6 +417,7 @@ async function atualizarEquipe() {
         mensagem.value = t('editarEquipePopUp.edicao');;
         mensagemCor.value = '#29CD00'
     }
+    window.location.reload()
 }
 
 // Função para converter o arquivo para base64

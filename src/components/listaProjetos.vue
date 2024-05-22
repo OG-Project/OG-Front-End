@@ -100,7 +100,7 @@
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :responsavel="listaResponsaveis"
+              :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)"
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
@@ -109,7 +109,7 @@
                 :descricao="projeto.descricao" 
                 :comeco="formatarData(projeto.dataCriacao)" 
                 :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-                :responsavel="listaResponsaveis"
+                :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)"
                 :feito="calcularProgressoProjeto(projeto)"
                 :tempo-atuacao="projeto.tempoAtuacao"
                 @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
@@ -146,7 +146,6 @@
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
   const router = useRouter();
-  let listaResponsaveis = ref([])
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;
@@ -155,16 +154,8 @@
 
   
 onMounted(() => {
-  buscaProjetoBanco()
   buscarProjetos();
 })
-
-async function buscaProjetoBanco() {
-  let projeto = await banco.procurar("/projeto")
-  projeto.forEach((projeto) => {
-    obterNomesResponsaveis(projeto)
-  })
-}
 
   const ativarBotao = (botao) => {
 
@@ -261,22 +252,6 @@ async function buscaProjetoBanco() {
     }
 }
 
-async function obterNomesResponsaveis(projeto) {
-  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-    let responsaveisComNome = []
-    for (let responsavel of projeto.responsaveis) {
-      let responsavelAtual = await buscaResponsaveis(responsavel)
-      responsaveisComNome.push(responsavelAtual.username)
-      listaResponsaveis.value = responsaveisComNome
-      if (responsaveisComNome.length >= 0) {
-        listaResponsaveis.value = responsaveisComNome.join(', ');
-      }
-      
-    }
-  } else {
-    return "Não há responsáveis";
-  }
-}
 async function buscaResponsaveis(responsavel) {
   return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
 

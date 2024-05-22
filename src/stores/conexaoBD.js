@@ -167,7 +167,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async buscarUm(id, textoRequisicao) {
       this.loading = true;
       try {
-        return (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
+        return await (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
       } finally {
         this.loading = false;
       }
