@@ -2,20 +2,20 @@
 import { useRouter } from "vue-router";
 import Botao from "../components/Botao.vue";
 import Input from "../components/Input.vue";
-import iconeGoogle from "../imagem-vetores/iconeGoogle.svg";
-import iconeLinkedin from "../imagem-vetores/iconeLinkedin.svg";
-import iconePessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
-import iconeSenhaLogin from "../imagem-vetores/iconeCadeadoSenhaLogin.svg";
-import imgVetorSenha from "../imagem-vetores/iconeCadeadoSenhaLogin.svg";
-import imgEmailRegistro from "../imagem-vetores/iconeEmailRegistro.svg";
-import imgPessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
+import iconeGoogle from "../imagemVetores/iconeGoogle.svg";
+import iconeLinkedin from "../imagemVetores/iconeLinkedin.svg";
+import iconePessoaLogin from "../imagemVetores/iconePessoaLogin.svg";
+import iconeSenhaLogin from "../imagemVetores/iconeCadeadoSenhaLogin.svg";
+import imgVetorSenha from "../imagemVetores/iconeCadeadoSenhaLogin.svg";
+import imgEmailRegistro from "../imagemVetores/iconeEmailRegistro.svg";
+import imgPessoaLogin from "../imagemVetores/iconePessoaLogin.svg";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import { criaUsuarioStore } from "../stores/criarUsuario.js";
-import olho from "../imagem-vetores/olho.svg";
-import olhoOculto from "../imagem-vetores/olhoOculto.svg";
+import olho from "../imagemVetores/olho.svg";
+import olhoOculto from "../imagemVetores/olhoOculto.svg";
 import { ref } from "vue";
-import Logo from "../imagem-vetores/logo.vue";
+import Logo from "../imagemVetores/logo.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
 
@@ -36,6 +36,7 @@ let senhaUsuarioLogin = ref("");
 let usuarioCadastro = ref("");
 let emailCadastro = ref("");
 let senhaCadastro = ref("");
+let usuarioOuSenhaInvalida = ref(false);
 let confirmarSenhaCadastro = ref("");
 let usuarioSecurity = {
   username: "",
@@ -47,6 +48,7 @@ async function fazerLogin() {
   let error;
   await banco.login(usuarioSecurity).catch(e => {
     alert("Login invalido")
+    
     error = e
   })
   console.log(error);
@@ -64,6 +66,9 @@ async function fazerLogin() {
       return
     })
 
+  }else{
+    console.log("aaaaa");
+    usuarioOuSenhaInvalida.value = true
   }
 }
 
@@ -153,7 +158,7 @@ async function loginGoogle(){
       <div class="h-[100vh] w-[70%] flex items-center justify-center flex-col">
         <div class="flex items-center justify-center flex-col h-full">
           <Logo class="tamanhoDaLogoLogin" />
-          <img class="tamanhoDoNomeLogin" src="../imagem-vetores/nome.svg" />
+          <img class="tamanhoDoNomeLogin" src="../imagemVetores/nome.svg" />
         </div>
       </div>
       <div id="bordaCinza">
@@ -161,10 +166,10 @@ async function loginGoogle(){
           <div v-if="tipo === 'login'" :style="conteudoFormulario">
             <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
             <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
-              v-model="usuarioLogin" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
+              v-model="usuarioLogin" :isInvalido="usuarioOuSenhaInvalida" textoInvalido="Usuario ou senha invalida" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
             <div class="flex flex-row w-full justify-center items-center pl-7">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-                v-model="senhaUsuarioLogin" :tipo="vizualizacaoDeSenha"
+                v-model="senhaUsuarioLogin" :isInvalido="usuarioOuSenhaInvalida" textoInvalido="Usuario ou senha invalida" :tipo="vizualizacaoDeSenha"
                 @updateModelValue="(e) => { senhaUsuarioLogin = e; }"></Input>
               <button class="h-[100%] w-[6%]" @click="mostraSenhas">
                 <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
@@ -190,7 +195,7 @@ async function loginGoogle(){
               v-model="emailCadastro" @updateModelValue="(e) => { emailCadastro = e; }"></Input>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-                v-model="senhaCadastro" :tipo="vizualizacaoDeSenha"
+                v-model="senhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenha"
                 @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhas">
                 <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
@@ -198,7 +203,7 @@ async function loginGoogle(){
             </div>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Confirmar Senha"
-                v-model="confirmarSenhaCadastro" :tipo="vizualizacaoDeSenhaConfirmacao"
+                v-model="confirmarSenhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenhaConfirmacao"
                 @updateModelValue="(e) => { confirmarSenhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
                 <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
@@ -276,7 +281,7 @@ async function loginGoogle(){
 }
 
 #imagemDeFundoLogin {
-  background-image: url(../imagem-vetores/BG1.svg);
+  background-image: url(../imagemVetores/BG1.svg);
   background-color: #ffffff;
   height: 100vh;
   width: 100vw;

@@ -16,9 +16,8 @@
                                 <img class="imagemEquipe" v-if="equipe.equipe.foto"
                                     :src="equipe.equipe.foto?.tipo ? 'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados : ''">
                                 <equipe class="imagemEquipe" v-else></equipe>
-                                <p class=" text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{
-                                     truncarNome(equipe.equipe.nome,
-                                        larguraNomeEquipe()) }}
+                                <p class=" truncate text-2xl mt-5 ml-4 text-[var(--fonteCor)] ">{{
+                                     equipe.equipe.nome }}
                                 </p>
                             </div>
                             <div @click.stop="abrePopUp(equipe, 'engrenagem')">
@@ -56,9 +55,9 @@ import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
-import maisIcon from "../imagem-vetores/maisIcon.vue";
-import engrenagem from "../imagem-vetores/engrenagem.vue";
-import equipe from "../imagem-vetores/equipe.vue";
+import maisIcon from "../imagemVetores/maisIcon.vue";
+import engrenagem from "../imagemVetores/engrenagem.vue";
+import equipe from "../imagemVetores/equipe.vue";
 import TelaLoad from "../components/TelaLoad.vue";
 
 import { inject } from "vue";
@@ -187,18 +186,23 @@ function limparNomeCompleto() {
 }
 
 .textArea {
-    @apply truncate flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] md:w-[31vw] md:h-[10vh] w-full bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+    @apply truncate flex mr-4 items-start justify-start ml-5 mt-[2vh] 2xl:w-[18vw] xl:h-[10vh] xl:w-[21vw] lg:w-[28vw] 
+    md:w-[31vw] md:h-[10vh] w-full bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 
+    focus-within:border-[var(--roxo)] focus-within:border-4;
     border-bottom: 'solid 4px var(--roxo)';
 }
 
 .corDiv {
-    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[15vw] lg:w-[21vw] md:w-[25vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
+    @apply flex ml-10 h-20 w-[13vw] 2xl:w-[13vw] xl:w-[15vw] lg:w-[21vw] md:w-[25vw] border-transparent 
+    border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
 
 }
 
 .maisEquipes {
 
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] 
+    lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh]
+     bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)] justify-center items-center;
 }
 
 .listaEquipes {
@@ -211,15 +215,53 @@ function limparNomeCompleto() {
 }
 
 .criarEquipe {
-    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw] md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)];
+    @apply flex flex-col 2xl:ml-[5vw] 2xl:mr-16 2xl:mt-[5vh] xl:ml-[4.5vw] xl:mr-0 xl:mt-[5vh] lg:ml-[5vw] lg:mt-[5vh] lg:mr-16 md:ml-[5vw]
+     md:mt-[5vh] 2xl:w-[20vw] 2xl:h-[25vh] xl:w-[23.5vw] xl:h-[25vh] lg:w-[32.5vw] lg:h-[23vh] md:w-[37vw] md:h-[23vh] bg-[var(--backgroundItemsClaros)] 
+     shadow-md shadow-[var(--backgroundItemsClaros)];
 }
 
 .imagemEquipe {
-    @apply flex ml-2 mt-5 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[5vw] md:h-[4vh] rounded-full;
+    @apply flex ml-2 mt-5 2xl:h-[4vh] 2xl:w-[2vw] xl:h-[4vh] xl:w-[3vw] lg:w-[4vw] lg:h-[4vh] md:w-[5vw] 
+    md:h-[4vh] rounded-full;
 }
 
 .imgIcon {
-    @apply flex 2xl:ml-8 2xl:mt-2 lg:ml-4 lg:mt-2 md:ml-2 md:mt-0 2xl:h-[4vh] 2xl:w-[2vw] lg:h-[4vh] lg:w-[3vw] md:h-[6vh] md:w-[4vw];
+    @apply flex 2xl:ml-8 2xl:mt-2 lg:ml-4 lg:mt-2 md:ml-2 md:mt-0 2xl:h-[4vh] 2xl:w-[2vw] lg:h-[4vh] lg:w-[3vw]
+     md:h-[6vh] md:w-[4vw];
+}
+
+@media(min-width: 621px) and (max-width: 767px){
+    .maisEquipes {
+        @apply flex flex-col ml-[6vw] mt-[5vh] w-[77vw] h-[25vh] bg-[var(--backgroundItemsClaros)] shadow-md 
+        shadow-[var(--backgroundItemsClaros)] justify-center items-center;
+    }
+
+    .criarEquipe {
+        @apply flex flex-col ml-[6vw] mr-12 mt-[5vh] w-[100%] h-[25vh] bg-[var(--backgroundItemsClaros)] shadow-md shadow-[var(--backgroundItemsClaros)];
+    }
+
+    .imagemEquipe {
+        @apply flex ml-2 mt-5 h-[30px] w-[30px] rounded-full;
+    }
+
+    .imgIcon {
+        @apply flex ml-[3vw] mt-4 h-[25px] w-[25px];
+    }
+
+    .corDiv {
+        @apply flex ml-[5vw] h-20 w-[55vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
+    }
+
+    .textArea {
+        @apply flex mr-4 items-start justify-start ml-5 mt-[2vh] w-[72vw] h-[10vh] bg-[#D7D7D7] text-black text-lg text-left border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+        border-bottom: 'solid 4px var(--roxo)';
+    }
+
+    .listaEquipes {
+        @apply flex flex-wrap justify-start w-[88vw] h-[71vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
+        flex: 1 1 px;
+    }
+
 }
 
 @media(max-width: 620px) {

@@ -13,7 +13,7 @@
       class="relative h-[60%] w-[100%] lg:h-[60%] lg:w-[45%] 2xl:h-[80%] 2xl:w-[55%] xl:h-[60%] xl:w-[45%] md:h-[60%] md:w-[55%] sm:h-[60%] sm:w-[80%]"
     >
       <img
-        src="../imagem-vetores/botao-x.svg"
+        src="../imagemVetores/botaoX.svg"
         id="botao-sair"
         class="absolute top-1 right-1"
         @click="funcaoPopUp.fechaPopUp()"
@@ -78,7 +78,7 @@
 import Input from "./Input.vue";
 import Botao from "./Botao.vue";
 import CheckBox from "./checkBox.vue";
-import iconAnexo from "../imagem-vetores/anexoIcon.svg";
+import iconAnexo from "../imagemVetores/anexoIcon.svg";
 import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import TextAreaPadrao from "./textAreaPadrao.vue";
 import ProgressBar from 'primevue/progressbar';

@@ -118,7 +118,7 @@
     "E-mail": "Электронная почта",
     "Sobrenome": "Фамилия",
     "Data de Nascimento": "Дата рождения",
-    "Editar E-mail": "Редактировать электронную почту",
+    "Editar E-mail": "Редактировать информацию",
     "Confirmar Edição": "Подтвердить редактирование"
   },
   "privacidade": {
@@ -140,32 +140,32 @@
     "alterarEmail": "Изменить адрес электронной почты",
     "deletarConta": "Хотите удалить свою учетную запись?"
   },
-    "paginaAdm": {
-      "listaDeTarefas": "Список задач",
-      "tarefasDoSeuProjeto": "Задачи вашего проекта",
-      "nomeDaTarefa": "Название задачи",
-      "status": "Статус",
-      "tempoTrabalhado": "Время работы",
-      "aprovado": "Утверждено",
-      "tarefas": "Задачи",
-      "total": "Всего",
-      "emProgresso": "В процессе",
-      "prontas": "Готово",
-      "totalMinutosTrabalhados": "Всего минут работы",
-      "historico": "История"
-    },
-    "criaEquipePopUp": {
-      "nomeEquipe": "Название команды",
-      "adicionarMembro": "Добавить участника",
-      "convidar": "пригласить",
-      "descricao": "Описание (необязательно)",
-      "convites": "Приглашения",
-      "criarEquipe": "Создать команду",
-      "equipe": "Команда",
-      "caracteres": "Максимум 255 символов",
-      "membroAviso": "Участник уже состоит в команде.",
-      "voceAviso": "Вы уже состоите в команде.",
-      "nomeObrigatorio": "Название команды обязательно"
+  "paginaAdm": {
+    "listaDeTarefas": "Список задач",
+    "tarefasDoSeuProjeto": "Задачи вашего проекта",
+    "nomeDaTarefa": "Название задачи",
+    "status": "Статус",
+    "tempoTrabalhado": "Время работы",
+    "aprovado": "Утверждено",
+    "tarefas": "Задачи",
+    "total": "Всего",
+    "emProgresso": "В процессе",
+    "prontas": "Готово",
+    "totalMinutosTrabalhados": "Всего минут работы",
+    "historico": "История"
+  },
+  "criaEquipePopUp": {
+    "nomeEquipe": "Название команды",
+    "adicionarMembro": "Добавить участника",
+    "convidar": "пригласить",
+    "descricao": "Описание (необязательно)",
+    "convites": "Приглашения",
+    "criarEquipe": "Создать команду",
+    "equipe": "Команда",
+    "caracteres": "Максимум 255 символов",
+    "membroAviso": "Участник уже состоит в команде.",
+    "voceAviso": "Вы уже состоите в команде.",
+    "nomeObrigatorio": "Название команды обязательно"
   },
   "editarEquipePopUp": {
     "equipeEditar": "Редактировать команду",
@@ -176,65 +176,92 @@
     "alteracao": "Изменений не обнаружено",
     "edicao": "Редактирование завершено",
     "confirmar": "Подтвердить"
-},
-"selectComponent": {
-  "edit": "редактировать",
-  "view": "просмотр"
-},
-"tutorial": {
-  "bemVindo": "Добро пожаловать!!",
-  "mostraAtividades": "Здесь отображаются ваши самые важные действия",
-  "proximo": "Далее",
-  "dashboard": "График",
-  "informacoes": "Информация для управления выполненными и невыполненными задачами.",
-  "pular": "Пропустить",
-  "voltar": "Назад",
-  "menu": "Меню",
-  "clique": "Нажмите, чтобы получить доступ к системе",
-  "partes": "Важные части",
-  "equipe": "Команда, здесь можно просмотреть и создать свои команды. Нажмите, чтобы увидеть",
-  "crieEquipe": "Создать команду",
-  "cliqueECrie": "Нажмите здесь, чтобы создать новые команды",
-  "preencha": "Заполните поля",
-  "crieAEquipe": "Создать команду",
-  "entreEquipe": "Вступите в созданную команду",
-  "projetosEquipe": "Здесь можно увидеть проекты команды",
-  "crieProjeto": "Нажмите, чтобы создать проект",
-  "crieUmProjeto": "Создать проект",
-  "gerenciar": "Здесь вы будете управлять задачами проекта",
-  "crieTarefa": "Создайте первую задачу",
-  "preenchaTarefa": "Заполните поля, чтобы создать задачу.",
-  "completar": "Нажмите здесь, чтобы завершить",
-  "formas": "Есть разные способы просмотра ваших задач, такие как Канбан, Список, Календарь и Временная шкала",
-  "funcionalidades": "На сайте есть и другие функции, но это основное.",
-  "finalizar": "завершить"
-},
-"confirmarPopUp": {
-  "confirmar": "Вы уверены?"
-},
-"historicoTarefa": {
-  "deletarSubTarefa": "Удалил подзадачу ",
-  "editou": "Отредактировал задачу ",
-  "criaTarefa": "Создал задачу ",
-  "criaSubTarefa": "Создал подзадачу ",
-  "status": "Изменил статус ",
-  "criaComentario": "Прокомментировал задачу ",
-  "deletaComentario": "Удалил комментарий ",
-  "concluiu": "Завершил подзадачу "
-},
-"historicoProjeto": {
-  "editou": "Отредактировал проект",
-  "criou": "Создал проект",
-  "addResponsavel": "Добавил нового ответственного",
-  "convidouEquipe": "Пригласил команду",
-  "removeEquipe": "Удалил команду",
-  "removeResponsavel": "Удалил ответственного",
-  "status": "Создал новый статус",
-  "propriedade": "Создал свойство",
-  "removeStatus": "Удалил статус",
-  "removePropriedade": "Удалил свойство",
-  "comentario": "Прокомментировал проект",
-  "deletaTarefa": "Удалил задачу"
-
-} 
+  },
+  "selectComponent": {
+    "edit": "редактировать",
+    "view": "просмотр"
+  },
+  "tutorial": {
+    "bemVindo": "Добро пожаловать!!",
+    "mostraAtividades": "Здесь отображаются ваши самые важные действия",
+    "proximo": "Далее",
+    "dashboard": "График",
+    "informacoes": "Информация для управления выполненными и невыполненными задачами.",
+    "pular": "Пропустить",
+    "voltar": "Назад",
+    "menu": "Меню",
+    "clique": "Нажмите, чтобы получить доступ к системе",
+    "partes": "Важные части",
+    "equipe": "Команда, здесь можно просмотреть и создать свои команды. Нажмите, чтобы увидеть",
+    "crieEquipe": "Создать команду",
+    "cliqueECrie": "Нажмите здесь, чтобы создать новые команды",
+    "preencha": "Заполните поля",
+    "crieAEquipe": "Создать команду",
+    "entreEquipe": "Вступите в созданную команду",
+    "projetosEquipe": "Здесь можно увидеть проекты команды",
+    "crieProjeto": "Нажмите, чтобы создать проект",
+    "crieUmProjeto": "Создать проект",
+    "gerenciar": "Здесь вы будете управлять задачами проекта",
+    "crieTarefa": "Создайте первую задачу",
+    "preenchaTarefa": "Заполните поля, чтобы создать задачу.",
+    "completar": "Нажмите здесь, чтобы завершить",
+    "formas": "Есть разные способы просмотра ваших задач, такие как Канбан, Список, Календарь и Временная шкала",
+    "funcionalidades": "На сайте есть и другие функции, но это основное.",
+    "finalizar": "завершить"
+  },
+  "confirmarPopUp": {
+    "confirmar": "Вы уверены?"
+  },
+  "historicoTarefa": {
+    "deletarSubTarefa": "Удалил подзадачу ",
+    "editou": "Отредактировал задачу ",
+    "criaTarefa": "Создал задачу ",
+    "criaSubTarefa": "Создал подзадачу ",
+    "status": "Изменил статус ",
+    "criaComentario": "Прокомментировал задачу ",
+    "deletaComentario": "Удалил комментарий ",
+    "concluiu": "Завершил подзадачу "
+  },
+  "historicoProjeto": {
+    "editou": "Отредактировал проект",
+    "criou": "Создал проект",
+    "addResponsavel": "Добавил нового ответственного",
+    "convidouEquipe": "Пригласил команду",
+    "removeEquipe": "Удалил команду",
+    "removeResponsavel": "Удалил ответственного",
+    "status": "Создал новый статус",
+    "propriedade": "Создал свойство",
+    "removeStatus": "Удалил статус",
+    "removePropriedade": "Удалил свойство",
+    "comentario": "Прокомментировал проект",
+    "deletaTarefa": "Удалил задачу"
+  },
+  "cardProjetos": {
+    "tempoDeAtuacao": "Время работы",
+    "responsavel": "Ответственный",
+    "descricao": "Описание"
+  },
+  "criaProjeto": {
+    "nomeProjeto": "Название проекта",
+    "descricao": "Описание",
+    "dataFinal": "Дата завершения",
+    "conviar": "Пригласить",
+    "responsavelPeloProjeto": "Руководитель проекта",
+    "equipesVinculadas": "Связанные группы",
+    "naoHaTarefas": "Нет задач",
+    "tarefasAtribuidas": "Назначенные задачи",
+    "informacoes": "Информация",
+    "dataInicial": "Дата начала"
+  },
+  "perfilInfo": {
+    "nome": "Имя",
+    "sobrenome": "Фамилия",
+    "email": "Электронная почта",
+    "dataNascimento": "Дата рождения",
+    "equipesDe": "Команды",
+    "inicieUmChatCom": "Начать чат с",
+    "oUsuarioPossuiOPerfilPrivado": "Пользователь имеет закрытый профиль",
+    "username": "Имя пользователя",
+    "asEquipesDoUsuarioSaoPrivadas": "Команды пользователя закрыты"
+  }
 }

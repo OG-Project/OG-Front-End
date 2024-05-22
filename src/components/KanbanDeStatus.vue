@@ -24,7 +24,7 @@
                     </template>
                 </draggable>
                 <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none"
-                    @click="store.criaTarefa(status.propriedade)">
+                    @click="store.criaTarefa(status.propriedade), VueCookies.set('idReloadTarefa', '0')">
                     <p :style="corDoTexto(status.propriedade)">+ Nova</p>
                 </button>
             </div>
@@ -37,7 +37,7 @@
             <div v-if="popUpStatus" class=" w-[100%] h-full flex justify-end">
                 <div class="w-[100%] h-[80%] flex flex-col  justify-center  bg-[var(--backgroundItemsClaros)]">
                     <div class="h-[30%] w-full flex justify-end">
-                        <img src="../imagem-vetores/triangulo.svg">
+                        <img src="../imagemVetores/triangulo.svg">
                     </div>
                     <div class="flex flex-row justify-between">
                         <div class="pl-2">

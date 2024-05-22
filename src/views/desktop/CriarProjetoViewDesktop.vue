@@ -2,19 +2,19 @@
     <div class="gridTotal mt-[2%] overflow-hidden">
         <div class=" flex flex-col pl-[5%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio" conteudoInput="Nome Projeto"
+                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio" :conteudoInput="$t('criaProjeto.nomeProjeto')"
                     :isInvalido="semNome" textoInvalido="O Nome é obrigatorio" largura="30" altura="6" fontSize="1.5rem"
                     v-model="nomeProjeto" :modelValue="nomeProjeto" @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
             </div>
             <div class="h-[15%] w-max flex items-center">
-                <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="8vh" preset="transparente"
+                <TextAreaPadrao :placeholder="$t('criaProjeto.descricao')" resize="none" width="30vw " height="8vh" preset="transparente"
                     tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
             <div class="w-max h-max" @mouseenter="fazHoverPlaceHolder()" @mouseleave="fazBackPadraoPlaceHolder()">
                 <span :style="stylePlaceHolder" @mouseenter="fazBackPadraoPlaceHolder()"
-                    @mouseleave="fazHoverPlaceHolder()">{{ placeHolderDataFinalProjeto }}</span>
+                    @mouseleave="fazHoverPlaceHolder()">{{ $t('criaProjeto.dataFinal') }}</span>
                 <Input altura="2" fontSize="1rem" largura="13" tipo="date" v-model="dataFinalProjeto"
                     :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
                         dataFinalProjeto = e
@@ -29,7 +29,7 @@
                                 placeholder-select="Equipes" v-model="equipesRelacionadasProjeto"
                                 fonte-tamanho="0.9rem"></selectPadrao>
 
-                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
+                            <Botao preset="PadraoVazado" :texto="$t('criaProjeto.conviar')" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
                                 :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
                             </Botao>
 
@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex flex-col  items-start justify-start gap-6 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
-                            place-holder-pesquisa="Responsáveis pelo projeto"
+                            :place-holder-pesquisa="$t('criaProjeto.responsavelPeloProjeto')"
                             @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem"
                             :is-invalido="semResponsavel" :texto-invalido="'Responsável é obrigatório'">
                         </inputDePesquisa>
@@ -47,13 +47,12 @@
                                 <div v-for="responsavel of responsaveisProjeto ">
                                     <div
                                         class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
-                                        <img src="../../imagem-vetores/userTodoPreto.svg">
+                                        <img src="../../imagemVetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
                                         <div class="w-full flex justify-end pr-2">
                                             <div class="w-[40%]">
-                                                <img src="../../imagem-vetores/botao-x.svg"
-                                                    @click="removeResponsavel(responsavel)"
-                                                    v-if="responsaveisProjeto.length != 1">
+                                                <BotaoX @click="removeResponsavel(responsavel)"
+                                                    v-if="responsaveisProjeto.length != 1"></BotaoX>
                                             </div>
                                         </div>
                                     </div>
@@ -65,7 +64,7 @@
             </div>
             <div class=" w-[96%] ">
                 <ListaConvidados altura="20vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]"
+                    :listaConvidados="listaEquipesSelecionadas" :texto="$t('criaProjeto.equipesVinculadas')" class="w-[100%]"
                     @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>
@@ -117,7 +116,7 @@ import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
-import Sair from "../../imagem-vetores/Sair.svg";
+import Sair from "../../imagemVetores/Sair.svg";
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
@@ -129,6 +128,7 @@ const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
+import botaoX from '../../imagemVetores/botaoX.vue';
 
 const criaHistorico = criaHistoricoStore();
 
@@ -167,12 +167,12 @@ let usuario;
 let usuarioId = VueCookies.get('IdUsuarioCookie')
 
 function reloadTelaTarefa() {
-  const reload = VueCookies.get('idReloadProjeto');
-  if (reload == '0') {
-    console.log("reload")
-    VueCookies.set('idReloadProjeto', '1');
-    window.location.reload();
-  }
+    const reload = VueCookies.get('idReloadProjeto');
+    if (reload == '0') {
+        console.log("reload")
+        VueCookies.set('idReloadProjeto', '1');
+        window.location.reload();
+    }
 }
 
 reloadTelaTarefa()
@@ -351,13 +351,13 @@ async function buscaRascunhoCriacaoProjeto() {
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
-        } 
-    } else {
-            let usuario = await conexao.buscarUm(idUsuario, "/usuario")
-            responsaveisProjeto.value.push(usuario.username)
-            listaAuxResponsaveisProjeto.push(usuario.username)
-            adicionaResponsaveisProjeto(usuario)
         }
+    } else {
+        let usuario = await conexao.buscarUm(idUsuario, "/usuario")
+        responsaveisProjeto.value.push(usuario.username)
+        listaAuxResponsaveisProjeto.push(usuario.username)
+        adicionaResponsaveisProjeto(usuario)
+    }
 }
 
 async function buscaProjetoEditar() {
@@ -512,7 +512,7 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
         return;
     }
-    criaHistorico.criaHistoricoProjeto("Convidou uma Equipe", projeto, usuario)
+    criaHistorico.criaHistoricoProjeto("Convidou uma equipe", projeto, usuario)
     listaEquipesSelecionadas.value.push(equipeVinculada)
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
@@ -538,7 +538,7 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     })
     console.log(listaBackEquipe)
     listaEquipeEnviaBack = listaBackEquipe;
-    
+
 }
 
 function verificaIdProjetoEquipe(equipe, projeto) {
@@ -566,7 +566,7 @@ async function removeListaEquipeConvidadas(equipeRemover) {
         conexao.deletarProjetoEquipe(equipeVinculada.id, Number(idProjeto), "/equipe")
     }
     criarProjetoCookies();
-    criaHistorico.criaHistoricoProjeto("Removeu uma Equipe", projeto, usuario)
+    criaHistorico.criaHistoricoProjeto("Removeu uma equipe", projeto, usuario)
 }
 
 async function removeResponsavel(responsavelRemover) {

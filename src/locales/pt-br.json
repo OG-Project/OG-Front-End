@@ -118,7 +118,7 @@
     "E-mail": "E-mail",
     "Sobrenome": "Sobrenome",
     "Data de Nascimento": "Data de Nascimento",
-    "Editar E-mail": "Editar E-mail",
+    "Editar E-mail": "Editar Informações",
     "Confirmar Edição": "Confirmar Edição"
   },
   "privacidade": {
@@ -226,14 +226,43 @@
     "editou": "Editou o Projeto",
     "criou": "Criou o projeto",
     "addResponsavel": "Adicionou um novo responsável",
-    "convidouEquipe": "Convidou uma Equipe",
-    "removeEquipe": "Removeu uma Equipe",
+    "convidouEquipe": "Convidou uma equipe",
+    "removeEquipe": "Removeu uma equipe",
     "removeResponsavel": "Removeu o responsável",
     "status": "Criou um status novo",
     "propriedade": "Criou uma propriedade",
     "removeStatus": "Removeu o status",
     "removePropriedade": "Removeu a propriedade",
-    "comentario": "Comentou no Projeto",
+    "comentario": "Comentou no projeto",
     "deletaTarefa": "Deletou a tarefa"
+  },
+  "cardProjetos":{
+    "tempoDeAtuacao": "Tempo de Atuação",
+    "responsavel": "Responsável",
+    "descricao": "Descrição"
+  },
+  "criaProjeto":{
+    "nomeProjeto": "Nome do Projeto",
+    "descricao": "Descrição",
+    "dataFinal": "Data Final",
+    "conviar": "Convidar",
+    "responsavelPeloProjeto": "Responsável pelo Projeto",
+    "equipesVinculadas": "Equipes Vinculadas",
+    "naoHaTarefas": "Não há tarefas",
+    "tarefasAtribuidas": "Tarefas Atribuídas",
+    "informacoes": "Informações",
+    "dataInicial" : "Data Inicial",
+    "dataFinal" : "Data Final"
+  },
+  "perfilInfo": {
+    "nome": "Nome",
+    "sobrenome": "Sobrenome",
+    "email": "E-mail",
+    "dataNascimento": "Data de Nascimento",
+    "equipesDe": "Equipes de",
+    "inicieUmChatCom": "Inicie um chat com",
+    "oUsuarioPossuiOPerfilPrivado": "O usuário possui o perfil privado",
+    "username": "Username",
+    "asEquipesDoUsuarioSaoPrivadas": "As equipes do usuário são privadas"
   }
 }
