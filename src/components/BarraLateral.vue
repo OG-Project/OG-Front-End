@@ -8,7 +8,7 @@
       <div class="transition h-[100vh] w-[15vw] bg-[var(--roxoEscuro)]">
         <div class="flex-col h-full flex justify-between gap-6">
           <div class="ml-4 mt-6">
-            <img class="cursor-pointer" src="../imagem-vetores/botao-x-branco.svg" @click="openClose()" />
+            <img class="cursor-pointer" src="../imagemVetores/botaoXBranco.svg" @click="openClose()" />
           </div>
 
           <div class="flex-col h-full flex gap-6 ml-4 mt-10 items-start">
@@ -42,7 +42,7 @@
             </div>
             <div  class="flex gap-6 justify-center items-center text-white " @click="geraTutorial()">
               <tutorial-icon ></tutorial-icon>
-              <div>{{ 'Tutorial' }}</div>
+              <div>{{ $t('barraLateral.tutorial') }}</div>
             </div>
             <div  class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/chat')">
               <iconChat ></iconChat>
@@ -70,7 +70,7 @@
 <script setup>
 import router from '@/router';
 import { ref, onMounted } from "vue";
-import hamburger from '../imagem-vetores/haburguer.vue'
+import hamburger from '../imagemVetores/haburguer.vue'
 import VueCookies from "vue-cookies";
 import { conexaoBD } from '../stores/conexaoBD';
 import tutorialIcon from '../assets/tutorialIcon.vue';
@@ -116,6 +116,7 @@ function redirecionamento(local) {
       VueCookies.remove('IdTarefaCookies');
       VueCookies.remove('IdProjetoAtual');
       VueCookies.remove('JWT');
+      VueCookies.remove('JSESSIONID');
       VueCookies.remove('equipeSelecionada');
       window.location.reload();
     }

@@ -7,13 +7,12 @@
             <div class="div-membros flex flex-col items-center overflow-y-auto scrollbar-thin">
                 <div class="flex justify-center w-full" v-for="equipe in projetoAtual.projetoEquipes">
                     <div class="corDiv">
-                        <img v-if="equipe.equipe.foto != null"
-                            class="imgDePerfil" :src="'data:' +
-                        equipe.equipe.foto.tipo +
-                         ';base64,' +
-                         equipe.equipe.foto.dados
-                         " alt="">
-                         <equipe class="imgDePerfil" v-else></equipe>
+                        <img v-if="equipe.equipe.foto != null" class="imgDePerfil" :src="'data:' +
+                    equipe.equipe.foto.tipo +
+                    ';base64,' +
+                    equipe.equipe.foto.dados
+                    " alt="">
+                        <equipe class="imgDePerfil" v-else></equipe>
                         <h1 class="flex mt-5 text-xl md:text-lg">{{ equipe.equipe.nome }}</h1>
                     </div>
                 </div>
@@ -22,7 +21,7 @@
         </div>
         <div class="adiciona-membro">
             <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Equipe"
+                icon="../src/imagemVetores/adicionarPessoa.svg" conteudoInput="Adicionar Equipe"
                 v-model="equipeConvidada" :modelValue="equipeConvidada" @updateModelValue="(e) => {
                     equipeConvidada = e
                 }"></Input>
@@ -34,8 +33,8 @@
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites"
                 mostrar-select="true" class="listaConvidados" altura="40vh"
-                caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg"
-                caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="equipesConvidadas">
+                caminho-da-imagem-icon="../src/imagemVetores/Sair.svg"
+                caminho-da-imagem-perfil="../src/imagemVetores/perfilPadrao.svg" :listaConvidados="equipesConvidadas">
             </ListaConvidados>
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
@@ -61,9 +60,10 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
 import { webSocketStore } from '../stores/webSocket.js';
-import equipe from '../imagem-vetores/equipe.vue';
+import equipe from '../imagemVetores/equipe.vue';
+import { criaNotificacao } from '../stores/criaNotificacao';
 
-
+const criaNotificacaoStore = criaNotificacao();
 let projetoAtual = ref(VueCookies.get('IdProjetoAtual'))
 const banco = conexaoBD();
 onMounted(async () => {
@@ -140,19 +140,27 @@ async function listaDeEquipes() {
 }
 
 async function adicionarEquipe() {
+    console.log(equipeConvidada.value);
     const equipeDoProjeto = listaEquipes.value.find(equipe => equipe.nome === equipeConvidada.value);
     const equipes = await banco.procurar("/equipe")
     const equipe = equipes.find(equipe => equipe.nome === equipeConvidada.value)
+    console.log(equipe)
     if (equipeDoProjeto) {
         console.log("Esse usuário já faz parte da equipe.");
         return;
     }
 
     // Verifica se o usuário já foi convidado
-    const equipeJaConvidada = equipesConvidadas.value.some(equipe => equipe.nome === equipeConvidada.value);
-    console.log(equipeConvidada.value)
-    if (equipeJaConvidada) {
-        console.log("Você já convidou essa pessoa.");
+    if (equipesConvidadas != null) {
+        const equipeJaConvidada = equipesConvidadas.value.some(equipe => equipe.nome === equipeConvidada.value);
+        console.log(equipeConvidada.value)
+        if (equipeJaConvidada) {
+            console.log("Você já convidou essa pessoa.");
+        } else {
+            equipesConvidadas.value.push(equipe)
+            equipesParaConvidar.value.push(equipe)
+            setTimeout(await listaDeEquipes(), 100);
+        }
     } else {
         equipesConvidadas.value.push(equipe)
         equipesParaConvidar.value.push(equipe)
@@ -190,9 +198,7 @@ async function enviaParaWebSocket(projeto, equipesConvidadas) {
         }
 
     }
-    const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+    criaNotificacaoStore.mandarNotificacao(teste)
 }
 
 

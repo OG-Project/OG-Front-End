@@ -27,8 +27,8 @@
                 </div>
             </div>
         </div>
-        <div class="w-full h-[80%] flex flex-col items-center scroll-auto overflow-x-auto">
-            <div class="w-[85%] gap-[2.5%]  flex row justify-between ">
+        <div class="w-full h-[80%] flex flex-col items-center overflow-x-auto over">
+            <div class="w-full pl-[1%] gap-[10%]  flex row justify-end ">
                 <div class="w-[14%] flex justify-start">
                     <h1>Domingo</h1>
                 </div>
@@ -220,12 +220,11 @@ function hover(dia) {
         if (dia.temTres) {
             dia.style = {
                 height: "max-content",
-                width: "11.5%",
+                width: "100%",
                 display: "flex",
                 overflow: "hidden",
                 flexDirection: "column",
                 gap: "8px",
-                position: "absolute",
                 paddingBottom: "1%",
                 backgroundColor: "[var(--backgroundItemsClaros)]",
                 borderBottomLeftRadius: "10%",

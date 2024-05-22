@@ -1,11 +1,8 @@
 <template>
-    <fundoPopUp :largura="screenWidth < 640 ? '100%' : '30%'" :altura="screenWidth < 640 ? '100%' : '50%'">
-        <div class="flex flex-col justify-between w-[60vh] h-[54vh]">
-            <div class="flex max-md:pl-0 pl-12 pt-12 justify-center">
+    <fundoPopUp class="w-full h-full" :largura="screenWidth < 640 ? '100%' : '40%'" :altura="screenWidth < 640 ? '100%' : '50%'">
+        <div class="flex flex-col justify-around px-[2vw] miniMobile:w-full miniMobile:h-full tablet:w-[40vw] tablet:h-[50vh]">
+            <div class="flex max-md:pl-0 ">
                 <div v-if="screenWidth >= 768" style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);" class=" text-[var(--roxo)]">
-                    Alterar E-mail
-                </div>
-                <div v-else style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);" class=" text-[var(--roxo)]">
                     Alterar E-mail
                 </div>
             </div>
@@ -27,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="flex justify-center pb-14 pr-14" v-if="screenWidth < 640">
+            <div class="flex justify-center " v-if="screenWidth < 640">
                 <Botao 
                 :funcaoClick="alteraEmail" 
                 preset="PadraoVazado" 
@@ -35,7 +32,7 @@
                 tamanhoDaBorda="2px"
                 tamanhoDaFonte="2.0vh" tamanhoPadrao="mobilemedio" />
             </div>
-            <div class="flex justify-end pb-14 pr-14" v-else>
+            <div class="flex justify-end " v-else>
                 <Botao 
                 :funcaoClick="alteraEmail" 
                 preset="PadraoVazado" 
@@ -82,6 +79,8 @@ function alteraEmail(){
             usuario.value.email=emailNovo.value
             conexao.atualizar(usuario.value,'/usuario')
             isEmailInvalido.value=false
+            perfil.alteradoEmail=!perfil.alteradoEmail
+            perfil.popUpEmail=!perfil.popUpEmail
         }
     }else{
         isEmailInvalido.value=true

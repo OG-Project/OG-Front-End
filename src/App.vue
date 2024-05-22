@@ -29,7 +29,6 @@ const criaNotificacaoStore = criaNotificacao();
 const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-webSocket.criaConexaoWebSocket();
 
 const perfil = perfilStore()
 const { isVlibras } = storeToRefs(perfil);
@@ -52,7 +51,7 @@ onMounted(async () => {
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   
-
+  console.log(usuario.value);
   let root = document.documentElement.style
   configuracao.value = usuario.value.configuracao
   console.log(configuracao.value);
@@ -83,8 +82,8 @@ onBeforeUpdate(async()=>{
         console.log(usuario.value);
 })
 
-
 onUpdated(()=>{
+
   if(route.path!='/login' ){
    console.log(usuario.value.configuracao.isTutorial);
    console.log(usuario.value.configuracao.rotaDoPasso);
@@ -117,8 +116,7 @@ function press(b) {
   }
 
 }
-webSocket.esperaMensagem((mensagem) => {
-  console.log("a")
+webSocket.esperaMensagem((mensagem) => { 
   teste(JSON.parse(mensagem))
 });
 

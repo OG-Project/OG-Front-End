@@ -2,9 +2,9 @@
     <div class=" max-mobileGrande:w-full w-[75vw] h-[92vh] flex flex-col  ">
 
         <div class="flex flex-row w-full items-center ">
-            <span @click="router.push('/perfil')" class="miniMobile:flex laptop:hidden">
-                <flecha />
-            </span>
+            <div @click="router.push('/perfil')" v-if="screenWidth < 1024" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
+                <flechaMobilePerfil class=""></flechaMobilePerfil>
+            </div>
             <div>
                 <h1 v-if="screenWidth <= 740"
                     style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
@@ -37,7 +37,7 @@
                         </CheckBox>
                         <!-- Boolean(1) -->
                     </div>
-                    <div class="flex justify-between items-center gap-5">
+                    <div v-if="screenWidth>=1024" class="flex justify-between items-center gap-5">
                         <span class="">{{ $t('acessibilidade.Teclado Virtual') }}</span>
                         <CheckBox :key="isTecladoVirtual.valueOf()" tipo="toggle" el-id="checkTecladoVirtual"
                             :checked="gerarBooleano('checkTecladoVirtual')" @envia-valor="tecladoVirtual($event)">
@@ -64,7 +64,6 @@ import flecha from '../assets/flecha-mobile-perfil.vue'
 // import router from '../router';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 import { onUpdated } from 'vue';
-import router from '../router';
 let perfil = perfilStore()
 let conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
@@ -202,7 +201,7 @@ onMounted(async () => {
     // console.log(isTecladoVirtual.value);
     // console.log(isTecladoVirtual.value);
     VueCookies.config('30d')
-    VueCookies.set("Idioma", "pt-BR", 100000000000);
+    // VueCookies.set("Idioma", "pt-BR", 100000000000);
     arrumaIndexDaListaDeIdiomas()
 })
 

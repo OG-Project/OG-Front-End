@@ -28,6 +28,7 @@ onMounted(() => {
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
+  console.log("entrou na home on mounted");
   colocaUsuarioId();
 })
 
