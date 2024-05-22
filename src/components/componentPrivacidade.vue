@@ -73,7 +73,7 @@ import { storeToRefs } from 'pinia';
 import { Usuario } from '../models/usuario';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 import { onUpdated } from 'vue';
-import router from '../router';
+// import router from '../router';
 
 const perfil = perfilStore()
 const conexao = conexaoBD()
