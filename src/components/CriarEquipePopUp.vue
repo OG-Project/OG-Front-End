@@ -21,7 +21,7 @@
             <div class=" grid-template  flex w-full">
                 <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e) => { usuarioConvidado = e }"
                     styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                    icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
+                    icon="../src/imagemVetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
                     v-model="usuarioConvidado"></Input>
             </div>
             <div v-if="screenWidth >= 620" class="grid-template flex w-full mt-[1vh]">
@@ -205,7 +205,7 @@ const imagemSelecionadaUrl = computed(() => {
 });
 
 // URL da imagem padrão
-const imagemPadraoUrl = '../src/imagem-vetores/imagemEquipePadrao.svg';
+const imagemPadraoUrl = '../src/imagemVetores/imagemEquipePadrao.svg';
 
 // Computed property para determinar qual URL de imagem exibir
 const imagemExibicao = computed(() => {

@@ -41,6 +41,9 @@
                     class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
                     {{ perfil.username }}
                 </h1>
+                <div @click="iniciarChat()">
+                    <p>Iniciar Conversa</p>
+                </div>
                 <div :style="{ fontFamily: fonteCorpo }" class="flex sm:flex-wrap justify-center gap-8">
                     <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
                         <div class="flex items-center justify-between gap-5 ">
@@ -82,7 +85,7 @@
                         <p>{{ console.log(projetosEquipe) }}</p>
                     </div>
                 </template>
-            </Carousel> -->
+</Carousel> -->
         </div>
     </div>
 </template>
@@ -101,6 +104,10 @@ import { conexaoBD } from '../stores/conexaoBD';
 import { onMounted, computed, ref, onUpdated, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useMouseInElement, useWindowSize } from '@vueuse/core'
+import router from '../router';
+import VueCookies from 'vue-cookies'
+import AlertTela from '../components/alertTela.vue';
+
 
 const route = useRoute()
 
@@ -172,6 +179,33 @@ function verificaTemEquipe(equipes) {
         return true
     }
     return false
+}
+
+async function iniciarChat() {
+    chat = {}
+    conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/chat/pessoal/' + usuario.value.id).then((response) => {
+        chat = response
+        if (chat == {}) {
+            conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/usuario').then((response) => {
+                let chat = {
+                    usuarios: [{
+                        id: usuario.value.id
+                    }, {
+                        id: response.id
+                    }]
+                }
+                console.log(chat.usuarios)
+                conexao.cadastrar(chat, '/chat/pessoal').then((response) => {
+                    console.log(response)
+                    localStorage.setItem('opcao', 1)
+                    router.push('/chat/' + usuario.value.id)
+                })
+            })
+        }else{
+            console.log("entrou")
+            router.push('/chat/' + usuario.value.id)
+        }
+    })
 }
 
 let Imagem = computed(() => {

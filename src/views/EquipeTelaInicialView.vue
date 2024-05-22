@@ -5,7 +5,7 @@
         :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados"
         @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')" @mouseover="expandirImagem"
         @mouseleave="reduzirImagem">
-      <img class="imagemEquipe bg-[#d7d7d7]" v-else src="../imagem-vetores/imagemEquipePadrao.svg"
+      <img class="imagemEquipe bg-[#d7d7d7]" v-else src="../imagemVetores/imagemEquipePadrao.svg"
         @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')">
       <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
     </div>
@@ -73,8 +73,8 @@ import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import CardProjetos from "../components/cardProjetos.vue";
 import { useRouter } from 'vue-router'
-import engrenagem from "../imagem-vetores/engrenagem.vue";
-import membrosEquipeImagem from "../imagem-vetores/membrosEquipeImagem.vue";
+import engrenagem from "../imagemVetores/engrenagem.vue";
+import membrosEquipeImagem from "../imagemVetores/membrosEquipeImagem.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('IdUsuarioCookie')

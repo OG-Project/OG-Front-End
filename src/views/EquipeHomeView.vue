@@ -56,9 +56,9 @@ import { funcaoPopUpStore } from "../stores/funcaoPopUp";
 import criarEquipePopUp from "../components/CriarEquipePopUp.vue";
 import { useRouter } from 'vue-router'
 import { webSocketStore } from '../stores/webSocket.js'
-import maisIcon from "../imagem-vetores/maisIcon.vue";
-import engrenagem from "../imagem-vetores/engrenagem.vue";
-import equipe from "../imagem-vetores/equipe.vue";
+import maisIcon from "../imagemVetores/maisIcon.vue";
+import engrenagem from "../imagemVetores/engrenagem.vue";
+import equipe from "../imagemVetores/equipe.vue";
 import TelaLoad from "../components/TelaLoad.vue";
 
 import { inject } from "vue";

@@ -16,7 +16,7 @@
 <script setup>
 import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 const funcaoPopUp = funcaoPopUpStore();
-import botaoX from '../imagem-vetores/botao-xDinamic.vue';
+import botaoX from '../imagemVetores/botaoXDinamic.vue';
 
 
     const props=defineProps({

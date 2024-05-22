@@ -114,7 +114,7 @@ import Botao from './Botao.vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import { useRouter } from 'vue-router'
-import equipe from '../imagem-vetores/equipe.vue';
+import equipe from '../imagemVetores/equipe.vue';
 import alertTela from './alertTela.vue';
 import { useI18n } from 'vue-i18n';
 
@@ -219,7 +219,7 @@ const imagemSelecionadaUrl = computed(() => {
 });
 
 // URL da imagem padrão
-const imagemPadraoUrl = '../src/imagem-vetores/imagemEquipePadrao.svg';
+const imagemPadraoUrl = '../src/imagemVetores/imagemEquipePadrao.svg';
 
 // Computed property para determinar qual URL de imagem exibir
 const imagemExibicao = computed(() => {

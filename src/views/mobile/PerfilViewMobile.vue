@@ -131,7 +131,7 @@
 import { storeToRefs } from 'pinia';
 import { perfilStore } from '../../stores/perfilStore';
 import router from '../../router';
-import iconLapisDinamic from '../../imagem-vetores/icon-lapisDinamic..vue';
+import iconLapisDinamic from '../../imagemVetores/icon-lapisDinamic..vue';
 import { onBeforeMount, onMounted, ref , computed, watch } from 'vue';
 import {useRoute} from 'vue-router';
 import  VueCookies  from 'vue-cookies';

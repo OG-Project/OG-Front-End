@@ -21,7 +21,7 @@
         </div>
         <div class="adiciona-membro">
             <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagem-vetores/adicionarPessoa.svg" conteudoInput="Adicionar Equipe"
+                icon="../src/imagemVetores/adicionarPessoa.svg" conteudoInput="Adicionar Equipe"
                 v-model="equipeConvidada" :modelValue="equipeConvidada" @updateModelValue="(e) => {
                     equipeConvidada = e
                 }"></Input>
@@ -33,8 +33,8 @@
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites"
                 mostrar-select="true" class="listaConvidados" altura="40vh"
-                caminho-da-imagem-icon="../src/imagem-vetores/Sair.svg"
-                caminho-da-imagem-perfil="../src/imagem-vetores/perfilPadrao.svg" :listaConvidados="equipesConvidadas">
+                caminho-da-imagem-icon="../src/imagemVetores/Sair.svg"
+                caminho-da-imagem-perfil="../src/imagemVetores/perfilPadrao.svg" :listaConvidados="equipesConvidadas">
             </ListaConvidados>
         </div>
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
@@ -60,7 +60,7 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
 import { webSocketStore } from '../stores/webSocket.js';
-import equipe from '../imagem-vetores/equipe.vue';
+import equipe from '../imagemVetores/equipe.vue';
 import { criaNotificacao } from '../stores/criaNotificacao';
 
 const criaNotificacaoStore = criaNotificacao();

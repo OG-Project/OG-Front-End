@@ -41,8 +41,8 @@
 </template>
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
-import sair from '../imagem-vetores/Sair.vue'
-import userTodoPreto from '../imagem-vetores/userTodoPreto.vue'
+import sair from '../imagemVetores/Sair.vue'
+import userTodoPreto from '../imagemVetores/userTodoPreto.vue'
 
 import { defineProps, onUpdated, ref } from 'vue';
 import { getCurrentInstance } from 'vue';

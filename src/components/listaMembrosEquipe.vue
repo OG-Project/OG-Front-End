@@ -31,7 +31,7 @@
         </div>  
         <div class="adiciona-membro" v-if="retornoPermissao">
             <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
+                icon="../src/imagemVetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
                 v-model="usuarioConvidado" :modelValue="usuarioConvidado"
                     @updateModelValue="(e) => {
                         usuarioConvidado = e
@@ -81,8 +81,8 @@ import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
 import {webSocketStore} from "../stores/webSocket.js";
 import alertTela from './alertTela.vue';
-import sair from '../imagem-vetores/Sair.vue';
-import equipe from '../imagem-vetores/equipe.vue';
+import sair from '../imagemVetores/Sair.vue';
+import equipe from '../imagemVetores/equipe.vue';
 import { useI18n } from 'vue-i18n';
 import { criaNotificacao } from '../stores/criaNotificacao';
 

@@ -40,9 +40,9 @@
                                 <div v-for="responsavel of responsaveisProjeto ">
                                     <div
                                         class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
-                                        <img src="../../imagem-vetores/userTodoPreto.svg">
+                                        <img src="../../imagemVetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
-                                        <img src="../../imagem-vetores/X-preto.svg"
+                                        <img src="../../imagemVetores/X-preto.svg"
                                             @click="removeResponsavel(responsavel)">
                                     </div>
                                 </div>
@@ -94,7 +94,7 @@ import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
-import Sair from "../../imagem-vetores/Sair.svg";
+import Sair from "../../imagemVetores/Sair.svg";
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
