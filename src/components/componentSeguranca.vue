@@ -27,7 +27,7 @@
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos. -->
                         </div>
-                        <div>
+                        <div v-if="!isLogadoGoogle" >
                             <Botao v-if="screenWidth >= 640" :funcaoClick="abrePopUp" :parametrosFuncao="['senha']"
                                 preset="PadraoRoxo" :texto="$t('seguranca.alterarSenha')">
                             </Botao>
@@ -52,7 +52,7 @@
                                 desconectar a conta do Google.
                             </div>
                         </div>
-                        <div class="w-[45%] flex md:justify-end">
+                        <div v-if="!isLogadoGoogle" class="w-[45%] flex md:justify-end">
                             <Botao v-if="screenWidth >= 640" :funcaoClick="abrePopUp" :parametrosFuncao="['email']"
                                 preset="PadraoRoxo" :texto="$t('seguranca.alterarEmail')">
                             </Botao>
@@ -70,9 +70,12 @@
         </div>
 
     </div>
+    <alertTela v-if="alteradoSenha" :key="alteradoSenha"  mensagem="Senha Alterada" cor="#29CD00" ></alertTela>
+    <alertTela v-if="alteradoEmail" :key="alteradoEmail"  mensagem="Email Alterado" cor="#29CD00" ></alertTela>
     <alterarSenha v-if="popUpSenha && screenWidth <= 1024" ></alterarSenha>
     <alterarEmail v-if="popUpEmail  && screenWidth <= 1024"></alterarEmail>
     <ConfirmaPopUp v-if="popUpDeletar  && screenWidth <= 1024"></ConfirmaPopUp>
+    
 </template>
 
 <script setup>
@@ -87,11 +90,13 @@ import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue';
 import ConfirmaPopUp from '../components/ConfirmaPopUp.vue'
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
+import alertTela from './alertTela.vue';
+
 import { storeToRefs } from 'pinia';
 import router from '../router';
 const PerfilStore = perfilStore()
 const conexao = conexaoBD()
-const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(PerfilStore)
+const { popUpSenha, popUpEmail,popUpDeletar,alteradoEmail,alteradoSenha } = storeToRefs(PerfilStore)
 import { useI18n } from 'vue-i18n';
 import { onUpdated } from 'vue';
 const screenWidth = ref(window.innerWidth)
@@ -100,18 +105,27 @@ watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
 })
 
+watch(() => alteradoSenha, () => {
+        setTimeout(() => {
+            alteradoSenha=!alteradoSenha
+                }, 5000);
+})
+watch(() => alteradoEmail, () => {
+        setTimeout(() => {
+            alteradoEmail=!alteradoEmail
+                }, 5000);
+})
+
 let funcaoPopUp = funcaoPopUpStore()
-let usuario;
-
-let isLogadoGoogle = false;
-
-
+let usuario=ref({});
+let isLogadoGoogle =ref(false);
 let email = ref('');
 
 onMounted(async () => {
-    usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'), '/usuario')
-    console.log(usuario)
-    email.value = usuario.email
+    usuario.value = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'), '/usuario')
+    console.log(usuario.value)
+    email.value = usuario.value.email
+    isLogadoGoogle.value=usuario.value.isGoogleLogado
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
     })

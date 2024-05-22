@@ -73,6 +73,18 @@ export const conexaoBD = defineStore('conexaoBD', {
         this.loading = false;
       }
     },
+    async trocaSenha(id, senhaNova) {
+      this.loading = true;
+      try {
+        console.log(senhaNova);
+        console.log(id);
+        return axios.patch('http://localhost:8082/usuario/senha/' + id, senhaNova, { withCredentials: true }).then(response =>{
+          console.log(response) 
+        } )
+      }finally {
+        this.loading = false;
+      }
+    },
     adicionarUsuarios(idUser, equipeId, numeroPermissao, textoRequisicao) {
       this.loading = true;
       try {
