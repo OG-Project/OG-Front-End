@@ -166,78 +166,102 @@
     "membroAviso": "メンバーは既にチームに所属しています。",
     "voceAviso": "あなたは既にチームに所属しています。",
     "nomeObrigatorio": "チーム名は必須です"
-},
-"editarEquipePopUp": {
-  "equipeEditar": "チームを編集",
-  "deletar": "削除",
-  "editar": "編集",
-  "sair": "退出",
-  "salvar": "変更を保存",
-  "alteracao": "変更は検出されませんでした",
-  "edicao": "編集が完了しました",
-  "confirmar": "確認する"
-},
-"selectComponent": {
-  "edit": "編集",
-  "view": "表示"
-},
-"tutorial": {
-  "bemVindo": "ようこそ!!",
-  "mostraAtividades": "ここでは、最も重要な活動が表示されます",
-  "proximo": "次へ",
-  "dashboard": "ダッシュボード",
-  "informacoes": "完了および未完了のタスクを管理するための情報。",
-  "pular": "スキップ",
-  "voltar": "戻る",
-  "menu": "メニュー",
-  "clique": "システムフローにアクセスするにはクリック",
-  "partes": "重要な部分",
-  "equipe": "チーム、ここでチームを表示および作成できます。クリックして表示",
-  "crieEquipe": "チームを作成",
-  "cliqueECrie": "新しいチームを作成するにはここをクリック",
-  "preencha": "フィールドに入力",
-  "crieAEquipe": "チームを作成",
-  "entreEquipe": "作成されたチームに参加",
-  "projetosEquipe": "ここではチームのプロジェクトを確認できます",
-  "crieProjeto": "プロジェクトを作成するにはクリック",
-  "crieUmProjeto": "プロジェクトを作成",
-  "gerenciar": "ここでプロジェクトのタスクを管理",
-  "crieTarefa": "最初のタスクを作成",
-  "preenchaTarefa": "タスクを作成するためにフィールドに入力。",
-  "completar": "完了するにはここをクリック",
-  "formas": "タスクを表示するさまざまな方法があります：カンバン、リスト、カレンダー、タイムライン",
-  "funcionalidades": "サイトには他にも機能がありますが、基本はこれです。",
-  "finalizar": "終了する"
-},
-"confirmarPopUp": {
-  "confirmar": "本当によろしいですか？"
-},
-"historicoTarefa": {
-  "deletarSubTarefa": "サブタスクを削除しました ",
-  "editou": "タスクを編集しました ",
-  "criaTarefa": "タスクを作成しました ",
-  "criaSubTarefa": "サブタスクを作成しました ",
-  "status": "ステータスを変更しました ",
-  "criaComentario": "タスクにコメントしました ",
-  "deletaComentario": "コメントを削除しました ",
-  "concluiu": "サブタスクを完了しました "
-},
-"historicoProjeto": {
-  "editou": "プロジェクトを編集しました",
-  "criou": "プロジェクトを作成しました",
-  "addResponsavel": "新しい責任者を追加しました",
-  "convidouEquipe": "チームを招待しました",
-  "removeEquipe": "チームを削除しました",
-  "removeResponsavel": "責任者を削除しました",
-  "status": "新しいステータスを作成しました",
-  "propriedade": "プロパティを作成しました",
-  "removeStatus": "ステータスを削除しました",
-  "removePropriedade": "プロパティを削除しました",
-  "comentario": "プロジェクトにコメントしました",
-  "deletaTarefa": "タスクを削除しました"
-
-}
-
-
-
+  },
+  "editarEquipePopUp": {
+    "equipeEditar": "チームを編集",
+    "deletar": "削除",
+    "editar": "編集",
+    "sair": "退出",
+    "salvar": "変更を保存",
+    "alteracao": "変更は検出されませんでした",
+    "edicao": "編集が完了しました",
+    "confirmar": "確認する"
+  },
+  "selectComponent": {
+    "edit": "編集",
+    "view": "表示"
+  },
+  "tutorial": {
+    "bemVindo": "ようこそ!!",
+    "mostraAtividades": "ここでは、最も重要な活動が表示されます",
+    "proximo": "次へ",
+    "dashboard": "ダッシュボード",
+    "informacoes": "完了および未完了のタスクを管理するための情報。",
+    "pular": "スキップ",
+    "voltar": "戻る",
+    "menu": "メニュー",
+    "clique": "システムフローにアクセスするにはクリック",
+    "partes": "重要な部分",
+    "equipe": "チーム、ここでチームを表示および作成できます。クリックして表示",
+    "crieEquipe": "チームを作成",
+    "cliqueECrie": "新しいチームを作成するにはここをクリック",
+    "preencha": "フィールドに入力",
+    "crieAEquipe": "チームを作成",
+    "entreEquipe": "作成されたチームに参加",
+    "projetosEquipe": "ここではチームのプロジェクトを確認できます",
+    "crieProjeto": "プロジェクトを作成するにはクリック",
+    "crieUmProjeto": "プロジェクトを作成",
+    "gerenciar": "ここでプロジェクトのタスクを管理",
+    "crieTarefa": "最初のタスクを作成",
+    "preenchaTarefa": "タスクを作成するためにフィールドに入力。",
+    "completar": "完了するにはここをクリック",
+    "formas": "タスクを表示するさまざまな方法があります：カンバン、リスト、カレンダー、タイムライン",
+    "funcionalidades": "サイトには他にも機能がありますが、基本はこれです。",
+    "finalizar": "終了する"
+  },
+  "confirmarPopUp": {
+    "confirmar": "本当によろしいですか？"
+  },
+  "historicoTarefa": {
+    "deletarSubTarefa": "サブタスクを削除しました ",
+    "editou": "タスクを編集しました ",
+    "criaTarefa": "タスクを作成しました ",
+    "criaSubTarefa": "サブタスクを作成しました ",
+    "status": "ステータスを変更しました ",
+    "criaComentario": "タスクにコメントしました ",
+    "deletaComentario": "コメントを削除しました ",
+    "concluiu": "サブタスクを完了しました "
+  },
+  "historicoProjeto": {
+    "editou": "プロジェクトを編集しました",
+    "criou": "プロジェクトを作成しました",
+    "addResponsavel": "新しい責任者を追加しました",
+    "convidouEquipe": "チームを招待しました",
+    "removeEquipe": "チームを削除しました",
+    "removeResponsavel": "責任者を削除しました",
+    "status": "新しいステータスを作成しました",
+    "propriedade": "プロパティを作成しました",
+    "removeStatus": "ステータスを削除しました",
+    "removePropriedade": "プロパティを削除しました",
+    "comentario": "プロジェクトにコメントしました",
+    "deletaTarefa": "タスクを削除しました"
+  },
+  "cardProjetos": {
+    "tempoDeAtuacao": "作業時間",
+    "responsavel": "責任者",
+    "descricao": "説明"
+  },
+  "criaProjeto": {
+    "nomeProjeto": "プロジェクト名",
+    "descricao": "説明",
+    "dataFinal": "終了日",
+    "conviar": "招待",
+    "responsavelPeloProjeto": "プロジェクトマネージャー",
+    "equipesVinculadas": "関連チーム",
+    "naoHaTarefas": "タスクはありません",
+    "tarefasAtribuidas": "割り当てられたタスク",
+    "informacoes": "情報",
+    "dataInicial": "開始日"
+  },
+  "perfilInfo": {
+    "nome": "名前",
+    "sobrenome": "姓",
+    "email": "メールアドレス",
+    "dataNascimento": "誕生日",
+    "equipesDe": "チーム",
+    "inicieUmChatCom": "チャットを開始する",
+    "oUsuarioPossuiOPerfilPrivado": "ユーザーはプライベートプロフィールを持っています",
+    "username": "ユーザー名",
+    "asEquipesDoUsuarioSaoPrivadas": "ユーザーのチームはプライベートです"
+  }
 }

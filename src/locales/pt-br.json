@@ -235,5 +235,34 @@
     "removePropriedade": "Removeu a propriedade",
     "comentario": "Comentou no projeto",
     "deletaTarefa": "Deletou a tarefa"
+  },
+  "cardProjetos":{
+    "tempoDeAtuacao": "Tempo de Atuação",
+    "responsavel": "Responsável",
+    "descricao": "Descrição"
+  },
+  "criaProjeto":{
+    "nomeProjeto": "Nome do Projeto",
+    "descricao": "Descrição",
+    "dataFinal": "Data Final",
+    "conviar": "Convidar",
+    "responsavelPeloProjeto": "Responsável pelo Projeto",
+    "equipesVinculadas": "Equipes Vinculadas",
+    "naoHaTarefas": "Não há tarefas",
+    "tarefasAtribuidas": "Tarefas Atribuídas",
+    "informacoes": "Informações",
+    "dataInicial" : "Data Inicial",
+    "dataFinal" : "Data Final"
+  },
+  "perfilInfo": {
+    "nome": "Nome",
+    "sobrenome": "Sobrenome",
+    "email": "E-mail",
+    "dataNascimento": "Data de Nascimento",
+    "equipesDe": "Equipes de",
+    "inicieUmChatCom": "Inicie um chat com",
+    "oUsuarioPossuiOPerfilPrivado": "O usuário possui o perfil privado",
+    "username": "Username",
+    "asEquipesDoUsuarioSaoPrivadas": "As equipes do usuário são privadas"
   }
 }

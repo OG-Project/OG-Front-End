@@ -1,283 +1,286 @@
 <template>
-  <div class="bg-[var(--backgroundPuro)]  flex flex-row min-h-[92vh] w-full">
-    <div class="w-[40vw] min-h-[96%] flex flex-col">
-      <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
-        <Input largura="32" altura="6" fontSize="2rem" :conteudoInput="$t('criaTarefa.task_name')"
-          styleInput="input-transparente-claro-grande" v-model="tarefa.nome"
-          @updateModelValue="(e) => { tarefa.nome = e }"></Input>
-      </div>
-      <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
-        <TextAreaPadrao width="80%" height="16vh" :placeholder="$t('criaTarefa.task_description')"
-          tamanho-da-fonte="1rem" resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
-      </div>
-      <!-- davi cala a porra da boca -->
-      <div class="w-[55%] justify-center min-h-[5%] pl-12 mt-4">
-        <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false" class=""
-          place-holder-pesquisa="Responsáveis pela tarefa" @item-selecionado="pegaValorSelecionadoPesquisa" largura="16"
-          fontSize="1rem">
-        </inputDePesquisa>
-        <div v-if="tarefa.responsaveis != ''" class="scrollListaResponsaveis" v-dragscroll>
-          <div
-            class=" bg-[var(--backgroundItems)] p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
-            <div v-for="responsavel of tarefa.responsaveis ">
-              <div class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem] w-max flex flex-row items-center gap-1 ">
-                <img src="../../imagem-vetores/userTodoPreto.svg">
-                <p v-if="responsavel.responsavel">{{ responsavel.responsavel.username }}</p>
-                <p v-else>{{ responsavel }}</p>
-                <div class="w-full flex justify-end pr-2">
-                  <div class="w-[40%]">
-                    <img :src="BotaoX" @click="removeResponsavel(responsavel)"
-                      v-if="tarefa.responsaveis.length != 1">
+  <div class="bg-[var(--backgroundPuro)] relative flex flex-row min-h-[92vh] w-full">
+    <p v-if="veSeEResponsavelDaTarefa(VueCookies.get('IdUsuarioCookie')) == false" class="absolute top-1/3 left-1/3 text-3xl">
+      Você não pode editar essa tarefa </p>
+    <div :class="{ 'blurred': !veSeEResponsavelDaTarefa(VueCookies.get('IdUsuarioCookie')) == false }" class="flex">
+      <div class="w-[40vw] min-h-[96%] flex flex-col">
+        <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
+          <Input largura="32" altura="6" fontSize="2rem" :conteudoInput="$t('criaTarefa.task_name')"
+            styleInput="input-transparente-claro-grande" v-model="tarefa.nome"
+            @updateModelValue="(e) => { tarefa.nome = e }"></Input>
+        </div>
+        <div class="flex flex-col pl-12 min-h-[16vh] mt-4 w-[90%] flex">
+          <TextAreaPadrao width="80%" height="16vh" :placeholder="$t('criaTarefa.task_description')"
+            tamanho-da-fonte="1rem" resize="none" v-model="tarefa.descricao"></TextAreaPadrao>
+        </div>
+        <!-- davi cala a porra da boca -->
+        <div class="w-[55%] justify-center min-h-[5%] pl-12 mt-4">
+          <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false" class=""
+            place-holder-pesquisa="Responsáveis pela tarefa" @item-selecionado="pegaValorSelecionadoPesquisa"
+            largura="16" fontSize="1rem">
+          </inputDePesquisa>
+          <div v-if="tarefa.responsaveis != ''" class="scrollListaResponsaveis" v-dragscroll>
+            <div
+              class=" bg-[var(--backgroundItems)] p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
+              <div v-for="responsavel of tarefa.responsaveis ">
+                <div class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem] w-max flex flex-row items-center gap-1 ">
+                  <img src="../../imagem-vetores/userTodoPreto.svg">
+                  <p v-if="responsavel.responsavel">{{ responsavel.responsavel.username }}</p>
+                  <p v-else>{{ responsavel }}</p>
+                  <div class="w-full flex justify-end pr-2">
+                    <div class="w-[40%]">
+                      <img :src="BotaoX" @click="removeResponsavel(responsavel)" v-if="tarefa.responsaveis.length != 1">
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
-        <!-- <div class="flex flex-col justify-center w-[30%]">
+        <div class="flex pl-12 items-center justify-between mt-4 h-[5%] w-[72%]">
+          <!-- <div class="flex flex-col justify-center w-[30%]">
           <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.properties') }}</p>
           <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]"
             @click="abreFechaCriaPropriedades()">
             {{ $t('criaTarefa.create') }}
           </button>
         </div> -->
-        <div class="flex flex-col justify-center w-[50%]">
-          <p style="font-family:var(--fonteCorpo);"> {{ $t('criaTarefa.task_color') }}</p>
-          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center break-keep h-[70%]"
-            @click="abreFechaMudaCor()">
-            {{ $t('criaTarefa.create') }}
-          </button>
-        </div>
+          <div class="flex flex-col justify-center w-[50%]">
+            <p style="font-family:var(--fonteCorpo);"> {{ $t('criaTarefa.task_color') }}</p>
+            <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center break-keep h-[70%]"
+              @click="abreFechaMudaCor()">
+              {{ $t('criaTarefa.create') }}
+            </button>
+          </div>
 
-        <div class="flex flex-col justify-center w-[50%]">
-          <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.subtasks') }}</p>
-          <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]"
-            @click="abreFechaCriaSubTarefas()">
-            {{ $t('criaTarefa.create') }}
-          </button>
+          <div class="flex flex-col justify-center w-[50%]">
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.subtasks') }}</p>
+            <button style="font-family:var(--fonteCorpo);" class="flex flex-col justify-center h-[70%]"
+              @click="abreFechaCriaSubTarefas()">
+              {{ $t('criaTarefa.create') }}
+            </button>
+          </div>
         </div>
-      </div>
-      <!-- Pop-Up utilizado para criar status -->
-      <div v-if="corSendoMudada">
-        <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
-          <div class="animation bg-[(var(--backgorundItems)]">
-            <div class="flex justify-start">
-              <TrianguloStart></TrianguloStart>
-            </div>
+        <!-- Pop-Up utilizado para criar status -->
+        <div v-if="corSendoMudada">
+          <div v-if="corSendoMudada" class="h-full flex flex-row pl-12 pt-6 pb-6">
+            <div class="animation bg-[(var(--backgorundItems)]">
+              <div class="flex justify-start">
+                <TrianguloStart></TrianguloStart>
+              </div>
 
-            <div class="flex flex-row justify-between items-end">
-              <div class="pl-2">
-                <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.task_color_question') }}</p>
+              <div class="flex flex-row justify-between items-end">
+                <div class="pl-2">
+                  <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.task_color_question') }}</p>
+                </div>
+                <div class="pr-2">
+                  <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
+                </div>
               </div>
-              <div class="pr-2">
-                <ColorPicker v-model="tarefa.corDaTarefa" class="border-2 rounded-lg" />
-              </div>
-            </div>
-            <div class="flex felx-row justify-end">
-              <div class="pr-2 pt-2 pb-2">
-                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="abreFechaMudaCor"></Botao>
+              <div class="flex felx-row justify-end">
+                <div class="pr-2 pt-2 pb-2">
+                  <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="abreFechaMudaCor"></Botao>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Popaaa-araaaaa criar uma propariedade -->
+        <!-- Popaaa-araaaaa criar uma propariedade -->
 
-      <div v-if="propriedadeSendoCriada">
-        <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
+        <div v-if="propriedadeSendoCriada">
+          <div v-if="propriedadeSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6 bg-[var(--backgorundItems)]">
 
-          <!-- fiz como um popUp, tem um botão que abre o popUp -->
-          <div class="animation">
-            <div class="flex justify-start">
-              <TrianguloStart></TrianguloStart>
-            </div>
-
-            <div class="flex flex-row justify-between items-end">
-              <div class="pl-2">
-                <Input largura="10" :conteudoInput="$t('criaTarefa.property_name')" fontSize="1rem" altura="3.8"
-                  v-model="nomePropriedade" @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
+            <!-- fiz como um popUp, tem um botão que abre o popUp -->
+            <div class="animation">
+              <div class="flex justify-start">
+                <TrianguloStart></TrianguloStart>
               </div>
-              <div class="pr-2">
-                <selectPadrao :placeholderSelect="$t('criaTarefa.type')"
-                  :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
-                  largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
-                </selectPadrao>
-              </div>
-            </div>
 
-            <div class="flex felx-row justify-between items-end">
-              <div class="pl-2 pt-2 pb-2">
-                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="abreFechaCriaPropriedades"></Botao>
+              <div class="flex flex-row justify-between items-end">
+                <div class="pl-2">
+                  <Input largura="10" :conteudoInput="$t('criaTarefa.property_name')" fontSize="1rem" altura="3.8"
+                    v-model="nomePropriedade" @updateModelValue="(e) => { nomePropriedade = e; }"></Input>
+                </div>
+                <div class="pr-2">
+                  <selectPadrao :placeholderSelect="$t('criaTarefa.type')"
+                    :lista-select="[$t('criaTarefa.Texto'), $t('criaTarefa.Data'), $t('criaTarefa.Numero'), $t('criaTarefa.Seleção')]"
+                    largura="8" altura="3.8" fonteTamanho="0.8rem" v-model="tipoPropriedade">
+                  </selectPadrao>
+                </div>
               </div>
-              <div class="pr-2 pt-2 pb-2">
-                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedade"></Botao>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div v-if="subtarefaSendoCriada">
-        <div v-if="subtarefaSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6">
-          <div class="animation bg-[(var(--backgorundItems)]">
-            <div class="flex justify-start">
-              <TrianguloStart></TrianguloStart>
-            </div>
-
-            <div class="flex flex-row justify-between items-end">
-              <div class="pl-2">
-                <Input largura="10" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8"
-                  v-model="nomeSubtarefa" @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
-              </div>
-              <selectPadrao :placeholderSelect="$t('criaTarefa.status')"
-                :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8" altura="3.8"
-                fonteTamanho="0.8rem" v-model="statusSubtarefa" />
-            </div>
-            <div class="flex felx-row justify-between">
-              <div class="pl-2 pt-2 pb-2">
-                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="abreFechaCriaSubTarefas"></Botao>
-              </div>
-              <div class="pr-2 pt-2 pb-2">
-                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaSubtarefa"></Botao>
+              <div class="flex felx-row justify-between items-end">
+                <div class="pl-2 pt-2 pb-2">
+                  <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="abreFechaCriaPropriedades"></Botao>
+                </div>
+                <div class="pr-2 pt-2 pb-2">
+                  <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaPropriedade"></Botao>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <p class="pl-12 mt-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.files', {
-          arquivos:
-            tarefa.arquivos.length
-        }) }}</p>
-      <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
-        class="flex h-[18vh] w-[80%] bg-[var(--backgroundItems)] ml-12 mt-4 overflow-auto">
-        <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
-          v-for="arquivo in tarefa.arquivos">
-          <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
-            <img
-              v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
-              class="h-[100%] w-[100%]" :src="'data:' + arquivo.tipo + ';base64,' + arquivo.dados">
-            <div v-else>
-              <img class="h-[65%]" :src="getIconSrc(arquivo)" />
-            </div>
-          </a>
-          <div class="bg-[var(--backgroundItemsClaros)] w-[100%] h-[15%] items-center flex justify-around">
-            <p class="truncate w-[100px] text-xs text-[var(--fonteCor)]">{{ arquivo.nome }}</p>
-            <img @click="deletaArquivo(arquivo)" :src="BotaoX">
-          </div>
-        </div>
-      </div>
-      <div class="pl-12 mt-4">
-        <div class="w-min h-min relative">
-          <Botao preset="PadraoVazado" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno"
-            inverterCorIcon="sim"></Botao>
-          <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
-        </div>
 
-      </div>
-      <div class="pl-12 mt-4">
-        <h1 style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.subtasks') }}</h1>
-        <div class="flex items-center">
-          <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
-            <div :style="barraPorcentagem" class="corDaBarraDeProgresso"></div>
-          </div>
-          <p class="pl-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.completed_tasks', {
-          porcentagem: porcentagemDeTarefasConcluidas.toFixed(2)
-        }) }}%</p>
-        </div>
-      </div>
-      <!-- Sub Tarefa -->
-      <div class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-2 overflow-auto" id="subtarefaOverflow">
-        <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
-          <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
-            <div class="flex gap-2 items-center">
-              <CheckBox :checked="subtarefa.concluido" tipo="checkbox"
-                @click="trocaStatusDaSubTarefa(subtarefa, index)" />
-              <p style="font-family:var(--fonteCorpo);">{{ subtarefa.nome }}</p>
-            </div>
-            <div class="flex gap-2 justify-center">
-              <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.status') }}:</p>
-              <div v-if="subtarefa.concluido">
-                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#7CC0E5]">{{
-          $t('criaTarefa.completed') }}</p>
+        <div v-if="subtarefaSendoCriada">
+          <div v-if="subtarefaSendoCriada" class="h-full  flex flex-row pl-12 pt-6 pb-6">
+            <div class="animation bg-[(var(--backgorundItems)]">
+              <div class="flex justify-start">
+                <TrianguloStart></TrianguloStart>
               </div>
+
+              <div class="flex flex-row justify-between items-end">
+                <div class="pl-2">
+                  <Input largura="10" :conteudoInput="$t('criaTarefa.subtask_name')" fontSize="1rem" altura="3.8"
+                    v-model="nomeSubtarefa" @updateModelValue="(e) => { nomeSubtarefa = e; }"></Input>
+                </div>
+                <selectPadrao :placeholderSelect="$t('criaTarefa.status')"
+                  :lista-select="[$t('criaTarefa.in_progress'), $t('criaTarefa.completed')]" largura="8" altura="3.8"
+                  fonteTamanho="0.8rem" v-model="statusSubtarefa" />
+              </div>
+              <div class="flex felx-row justify-between">
+                <div class="pl-2 pt-2 pb-2">
+                  <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="abreFechaCriaSubTarefas"></Botao>
+                </div>
+                <div class="pr-2 pt-2 pb-2">
+                  <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaSubtarefa"></Botao>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="pl-12 mt-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.files', {
+      arquivos:
+        tarefa.arquivos.length
+    }) }}</p>
+        <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
+          class="flex h-[18vh] w-[80%] bg-[var(--backgroundItems)] ml-12 mt-4 overflow-auto">
+          <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
+            v-for="arquivo in tarefa.arquivos">
+            <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
+              <img
+                v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
+                class="h-[100%] w-[100%]" :src="arquivo.dados">
               <div v-else>
-                <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#C6B473]">{{
-          $t('criaTarefa.in_progress') }}</p>
+                <img class="h-[65%]" :src='getIconSrc(arquivo)' />
               </div>
-            </div>
-            <img @click="deletaSubtarefa(subtarefa)" :src="BotaoX" class="h-full mr-8" />
-          </div>
-        </div>
-      </div>
-      <!-- Fazer um v-for de propriedades -->
-      <div class="pl-12 mt-8">
-        <div class="flex text-xl">
-          <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.comments') }}</p>
-          <button class="ml-2" @click="abreFechaComentario()">+</button>
-        </div>
-        <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
-          <div class="w-[100%] border-2 border-[var(--backgroundItems)] mt-4 mb-4 shadow-lg min-h-[10vh] flex">
-
-            <img v-if="usuarioCookies.foto.tipo != null"
-              class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
-          usuarioCookies.foto.tipo +
-          ';base64,' +
-          usuarioCookies.foto.dados
-          " />
-            <div class="pb-2 flex flex-col items-end">
-              <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4"
-                :placeholder="$t('criaTarefa.task_description')" tamanho-da-fonte="1rem" resize="vertical"
-                v-model="comentarioSendoEnviado"></TextAreaPadrao>
-              <Botao :texto="$t('criaTarefa.send')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
-                :funcaoClick="enviaComentario" :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
+            </a>
+            <div class="bg-[#F6F6F6] w-[100%] h-[15%] items-center flex justify-around">
+              <p class="truncate w-[100px] text-xs">{{ arquivo.nome }}</p>
+              <img @click="deletaArquivo(arquivo)" :src="BotaoX">
             </div>
           </div>
         </div>
-        <div class="w-[85%] flex flex-col">
-          <div v-for="comentario of tarefa.comentarios">
-            <div v-if="comentario.autor"
-              class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
-              <div class="w-[15%] gap-4 flex justify-center">
-                <div v-if="comentario.autor.username === usuarioCookies.username"
-                  class="w-[80%] mt-2 gap-4 flex justify-center">
-                  <img class="w-[25%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
-                  <img @click="deletaComentario(comentario)" class="w-[25%]" :src="BotaoX" />
+        <div class="pl-12 mt-4">
+          <div class="w-min h-min relative">
+            <Botao preset="PadraoVazado" tamanhoDaBorda="2px" :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno"
+              inverterCorIcon="sim"></Botao>
+            <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0" @change="e => gerarArquivo(e)">
+          </div>
+
+        </div>
+        <div class="pl-12 mt-4">
+          <h1 style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.subtasks') }}</h1>
+          <div class="flex items-center">
+            <div class="h-[1vh] w-[58%] bg-[#D7D7D7]">
+              <div :style="barraPorcentagem" class="corDaBarraDeProgresso"></div>
+            </div>
+            <p class="pl-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.completed_tasks', {
+      porcentagem: porcentagemDeTarefasConcluidas.toFixed(2)
+    }) }}%</p>
+          </div>
+        </div>
+        <!-- Sub Tarefa -->
+        <div class="pl-12 max-h-[20vh] gap-8 w-[90%] flex flex-col mt-2 overflow-auto" id="subtarefaOverflow">
+          <div v-for="(subtarefa, index) of tarefa.subtarefas" :key="subtarefa.id">
+            <div class="flex h-[2vh] w-full justify-between items-center mt-2 mb-2">
+              <div class="flex gap-2 items-center">
+                <CheckBox :checked="subtarefa.concluido" tipo="checkbox"
+                  @click="trocaStatusDaSubTarefa(subtarefa, index)" />
+                <p style="font-family:var(--fonteCorpo);">{{ subtarefa.nome }}</p>
+              </div>
+              <div class="flex gap-2 justify-center">
+                <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.status') }}:</p>
+                <div v-if="subtarefa.concluido">
+                  <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#7CC0E5]">{{
+      $t('criaTarefa.completed') }}</p>
                 </div>
-                <div v-if="comentario.autor.username != usuarioCookies.username"
-                  class="w-[80%] mt-6 gap-4 flex justify-center">
+                <div v-else>
+                  <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#C6B473]">{{
+      $t('criaTarefa.in_progress') }}</p>
                 </div>
               </div>
-              <div class="flex w-[100%] mb-2">
-                <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados"
-                  @click="router.push(`/perfil/${comentario.autor.id}`)"
-                  class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
-                <div class="w-[80%]">
-                  <p>
-                    {{ comentario.autor.username }}
-                  </p>
+              <img @click="deletaSubtarefa(subtarefa)" :src="BotaoX" class="h-full mr-8" />
+            </div>
+          </div>
+        </div>
+        <!-- Fazer um v-for de propriedades -->
+        <div class="pl-12 mt-8">
+          <div class="flex text-xl">
+            <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.comments') }}</p>
+            <button class="ml-2" @click="abreFechaComentario()">+</button>
+          </div>
+          <div v-if="abreFechaComentarioBoolean" class="w-[85%] flex flex-col">
+            <div class="w-[100%] border-2 border-[var(--backgroundItems)] mt-4 mb-4 shadow-lg min-h-[10vh] flex">
 
-                  <div v-if="comentarioSendoEditado &&
-          comentario.autor.username === usuarioCookies.username
-          ">
-                    <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" tamanho-da-fonte="1rem"
-                      resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
+              <img v-if="usuarioCookies.foto.tipo != null"
+                class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
+      usuarioCookies.foto.tipo +
+      ';base64,' +
+      usuarioCookies.foto.dados
+      " />
+              <div class="pb-2 flex flex-col items-end">
+                <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4"
+                  :placeholder="$t('criaTarefa.task_description')" tamanho-da-fonte="1rem" resize="vertical"
+                  v-model="comentarioSendoEnviado"></TextAreaPadrao>
+                <Botao :texto="$t('criaTarefa.send')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
+                  :funcaoClick="enviaComentario" :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
+              </div>
+            </div>
+          </div>
+          <div class="w-[85%] flex flex-col">
+            <div v-for="comentario of tarefa.comentarios">
+              <div v-if="comentario.autor"
+                class="w-[100%] border-2 border-[var(--backgroundItems)] mt-2 mb-2 shadow-lg min-h-[10vh] items-end flex flex-col">
+                <div class="w-[15%] gap-4 flex justify-center">
+                  <div v-if="comentario.autor.username === usuarioCookies.username"
+                    class="w-[80%] mt-2 gap-4 flex justify-center">
+                    <img class="w-[25%]" :src="iconeLapisPreto" @click="trocaComentarioSendoEditado" />
+                    <img @click="deletaComentario(comentario)" class="w-[25%]" :src="BotaoX" />
                   </div>
-                  <div v-if="!comentarioSendoEditado ||
-          comentario.autor.username != usuarioCookies.username
-          ">
-                    <p class="pt-4 pb-4 pr-4 break-all">
-                      {{ comentario.conteudo }}
+                  <div v-if="comentario.autor.username != usuarioCookies.username"
+                    class="w-[80%] mt-6 gap-4 flex justify-center">
+                  </div>
+                </div>
+                <div class="flex w-[100%] mb-2">
+                  <img :src="'data:' + comentario.autor.foto.tipo + ';base64,' + comentario.autor.foto.dados"
+                    @click="router.push(`/perfil/${comentario.autor.id}`)"
+                    class="shadow-2xl max-h-[60px] min-h-[60px] min-w-[60px] max-w-[60px] mr-4 ml-4 rounded-full" />
+                  <div class="w-[80%]">
+                    <p>
+                      {{ comentario.autor.username }}
                     </p>
-                  </div>
 
-                  <div v-if="comentarioSendoEditado &&
-          comentario.autor.username === usuarioCookies.username
-          ">
-                    <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
-                      :funcaoClick="editarComentario" :parametrosFuncao="comentario"></Botao>
+                    <div v-if="comentarioSendoEditado &&
+      comentario.autor.username === usuarioCookies.username
+      ">
+                      <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" tamanho-da-fonte="1rem"
+                        resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
+                    </div>
+                    <div v-if="!comentarioSendoEditado ||
+      comentario.autor.username != usuarioCookies.username
+      ">
+                      <p class="pt-4 pb-4 pr-4 break-all">
+                        {{ comentario.conteudo }}
+                      </p>
+                    </div>
+
+                    <div v-if="comentarioSendoEditado &&
+      comentario.autor.username === usuarioCookies.username
+      ">
+                      <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
+                        :funcaoClick="editarComentario" :parametrosFuncao="comentario"></Botao>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -285,94 +288,98 @@
           </div>
         </div>
       </div>
-    </div>
-    <!-- Propriedades e Status -->
-    <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
-      <div class="w-[80%] h-[80vh] shadow-xl border-2 border-[var(--backgroundItems)]">
-        <div class="flex justify-around h-[4%]">
-          <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades"
-            style="width: 33%; font-family:var(--fonteCorpo);">
-            {{ $t('criaTarefa.properties') }}
-          </button>
-          <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus"
-            style="width: 33%; font-family:var(--fonteCorpo);">
-            {{ $t('criaTarefa.status') }}
-          </button>
-          <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center"
-            style=" font-family:var(--fonteCorpo);">
-            <select class="flex text-center w-[100%] text-[var(--fonteCor)]" v-model="parametroDoFiltroPropriedade">
-              <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
-              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Texto') }}
-              </option>
-              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Data') }}
-              </option>
-              <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Numero') }}
-              </option>
+      <!-- Propriedades e Status -->
+      <div class="w-[40vw] items-center min-h-[96%] flex flex-col">
+        <div class="w-[80%] h-[80vh] shadow-xl border-2 border-[var(--backgroundItems)]">
+          <div class="flex justify-around h-[4%]">
+            <button class="opcaoClicada" @click="clicouOpcaoPropriedades()" id="opcaoPropriedades"
+              style="width: 33%; font-family:var(--fonteCorpo);">
+              {{ $t('criaTarefa.properties') }}
+            </button>
+            <button class="opcaoNaoClicada" @click="clicouOpcaoStatus()" id="opcaoStatus"
+              style="width: 33%; font-family:var(--fonteCorpo);">
+              {{ $t('criaTarefa.status') }}
+            </button>
+            <div v-if="opcaoEstaClicadaPropriedades" class="w-[33%] flex items-center justify-center"
+              style=" font-family:var(--fonteCorpo);">
+              <select class="flex text-center w-[100%] text-[var(--fonteCor)]" v-model="parametroDoFiltroPropriedade">
+                <option selected="selected">{{ $t('criaTarefa.sort_by') }}</option>
+                <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Texto') }}
+                </option>
+                <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Data') }}
+                </option>
+                <option style=" font-family:var(--fonteCorpo);">{{ $t('criaTarefa.Numero') }}
+                </option>
 
-            </select>
+              </select>
+            </div>
+            <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center"
+              style=" font-family:var(--fonteCorpo);">
+              <select class="flex text-center w-[100%] text-[var(--fonteCor)]" v-model="parametroDoFiltroStatus">
+                <option :value="$t('criaTarefa.sort_by')">{{ $t('criaTarefa.sort_by') }}</option>
+                <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
+                <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
+              </select>
+            </div>
           </div>
-          <div v-if="opcaoEstaClicadaStatus" class="w-[33%] flex items-center justify-center"
-            style=" font-family:var(--fonteCorpo);">
-            <select class="flex text-center w-[100%] text-[var(--fonteCor)]" v-model="parametroDoFiltroStatus">
-              <option :value="$t('criaTarefa.sort_by')">{{ $t('criaTarefa.sort_by') }}</option>
-              <option value="az">{{ $t('criaTarefa.a_to_z') }}</option>
-              <option value="za">{{ $t('criaTarefa.z_to_a') }}</option>
-            </select>
-          </div>
-        </div>
 
-        <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
-          <div v-for="propriedade in listaFiltradaPropriedades" :key="propriedade.propriedade.id"
-            class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
-            <!-- <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between"> -->
-            <!-- <div class="flex gap-2 items-center w-[40%]">
+          <div v-if="opcaoEstaClicadaPropriedades" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
+            <div v-for="propriedade in listaFiltradaPropriedades" :key="propriedade.propriedade.id"
+              class="w-[100%] min-h-[8vh] gap-2 flex flex-col items-center justify-center">
+              <!-- <div v-if="propriedade" class="w-[100%] min-h-[3vh] gap-2 pl-4 flex flex-row items-center justify-between"> -->
+              <!-- <div class="flex gap-2 items-center w-[40%]">
                 <p style="font-family:var(--fonteCorpo);" class="break-all">{{ propriedade.propriedade.nome }}</p>
               </div>
               <div class="w-[25%]">
                 <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.type') }}: {{ propriedade.propriedade.tipo }}</p>
               </div> -->
-            <!-- </div> -->
-            <div class="w-[100%] min-h-[5vh] flex justify-center flex-wrap">
-              <div v-for="propriedadeForTarefa of tarefa.propriedades" class="w-full">
-                <div v-if="propriedade.propriedade.tipo != 'SELECAO'" class="w-full">
-                  <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id" class="w-full">
-                    <div v-if="propriedade.propriedade.tipo === 'TEXTO'" class="flex items-center justify-start">
-                      <div class="w-[15%] pl-4 flex items-center justify-start">
-                        <p class="truncate">{{ propriedade.propriedade.nome }}: </p>
+              <!-- </div> -->
+              <div class="w-[100%] min-h-[5vh] flex justify-center flex-wrap">
+                <div v-for="propriedadeForTarefa of tarefa.propriedades" class="w-full">
+                  <div v-if="propriedade.propriedade.tipo != 'SELECAO'" class="w-full">
+                    <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id" class="w-full">
+                      <div v-if="propriedade.propriedade.tipo === 'TEXTO'" class="flex items-center justify-start">
+                        <div class="w-[15%] pl-4 flex items-center justify-start">
+                          <p class="truncate">{{ propriedade.propriedade.nome }}: </p>
+                        </div>
+                        <div class="w-[58%] flex items-center justify-center">
+                          <Input styleInput="input-transparente-claro-pequeno"
+                            v-model="propriedadeForTarefa.valor.valor"
+                            @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                          </Input>
+                        </div>
+                        <p class="w-[27%] pr-7 flex items-start ">Tipo: {{ propriedade.propriedade.tipo }}</p>
                       </div>
-                      <div class="w-[58%] flex items-center justify-center">
-                        <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
-                          @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
-                        </Input>
+                      <div v-if="propriedade.propriedade.tipo === 'DATA'"
+                        class="flex items-center justify-around w-full">
+                        <div class="w-[15%] pl-4 flex items-center justify-start">
+                          <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
+                        </div>
+                        <div class="w-[58%] flex items-center justify-center">
+                          <input @input="patchDaListaDePropriedades()"
+                            class="border-2 w-[75%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
+                            type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
+                        </div>
+                        <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo
+                          }}
+                        </p>
                       </div>
-                      <p class="w-[27%] pr-7 flex items-start ">Tipo: {{ propriedade.propriedade.tipo }}</p>
-                    </div>
-                    <div v-if="propriedade.propriedade.tipo === 'DATA'" class="flex items-center justify-around w-full">
-                      <div class="w-[15%] pl-4 flex items-center justify-start">
-                        <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
+                      <div v-if="propriedade.propriedade.tipo === 'NUMERO'"
+                        class="flex items-center justify-start w-full">
+                        <div class="w-[15%] pl-4 flex items-center justify-start">
+                          <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
+                        </div>
+                        <div class="w-[58%] flex items-center justify-center">
+                          <Input styleInput="input-transparente-claro-pequeno"
+                            v-model="propriedadeForTarefa.valor.valor"
+                            @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
+                          </Input>
+                        </div>
+                        <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo
+                          }}
+                        </p>
                       </div>
-                      <div class="w-[58%] flex items-center justify-center">
-                        <input @input="patchDaListaDePropriedades()"
-                          class="border-2 w-[75%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
-                          type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
-                      </div>
-                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}
-                      </p>
-                    </div>
-                    <div v-if="propriedade.propriedade.tipo === 'NUMERO'"
-                      class="flex items-center justify-start w-full">
-                      <div class="w-[15%] pl-4 flex items-center justify-start">
-                        <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
-                      </div>
-                      <div class="w-[58%] flex items-center justify-center">
-                        <Input styleInput="input-transparente-claro-pequeno" v-model="propriedadeForTarefa.valor.valor"
-                          @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
-                        </Input>
-                      </div>
-                      <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo }}
-                      </p>
-                    </div>
-                    <!-- <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
+                      <!-- <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
                     <div v-for="(valor, index) in propriedade.valor.valor" class="mb-4 mt-4 h-8 items-center flex"
                       :key="index">
                       <Input conteudoInput=" " v-model="propriedadeForTarefa.valor.valor[index]"
@@ -387,43 +394,43 @@
                       </p>
                     </div>
                   </div> -->
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div v-if="opcaoEstaClicadaStatus" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
-          <div v-for="(statsAdd, index) in listaFiltradaStatus" :key="index"
-            class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
-            <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
-              <div class="w-[35%] flex gap-2 items-center pl-4">
-                <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)"
-                  tipo="radio">
-                </CheckBox>
-                <p style="font-family:var(--fonteCorpo);" class="break-all">{{ statsAdd.nome }}</p>
-              </div>
-              <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{
-          statsAdd.cor.toUpperCase() }}</p>
-              <div class="w-[30%] flex justify-between">
-                <ColorPicker disabled v-model="statsAdd.cor"
-                  class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
+          <div v-if="opcaoEstaClicadaStatus" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
+            <div v-for="(statsAdd, index) in listaFiltradaStatus" :key="index"
+              class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
+              <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
+                <div class="w-[35%] flex gap-2 items-center pl-4">
+                  <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)"
+                    tipo="radio">
+                  </CheckBox>
+                  <p style="font-family:var(--fonteCorpo);" class="break-all">{{ statsAdd.nome }}</p>
+                </div>
+                <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{
+    statsAdd.cor.toUpperCase() }}</p>
+                <div class="w-[30%] flex justify-between">
+                  <ColorPicker disabled v-model="statsAdd.cor"
+                    class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div id="" class="w-[80%] flex justify-between pt-8">
-        <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-        <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado"
-          :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        <div id="" class="w-[80%] flex justify-between pt-8">
+          <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+          <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado"
+            :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        </div>
       </div>
     </div>
-
     <div id="propriedadesOverflow" class="shadow-xl border-2 border-[var(--backgroundItems)]">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
         <h1 style="font-family:var(--fonteTitulo);" class="min-h-[9%] text-3xl font-semibold">{{
-          $t('criaTarefa.information') }}</h1>
+      $t('criaTarefa.information') }}</h1>
       </div>
       <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
         <div class="flex pl-8">
@@ -452,7 +459,7 @@
           </div>
           <div class="w-[40%] justify-end flex-row">
             <p style="font-family:var(--fonteCorpo);" class="text-[var(--roxo)]"> {{ format(new
-          Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
+      Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
           </div>
         </div>
       </div>
@@ -485,7 +492,7 @@
           <p style="font-family:var(--fonteCorpo);" class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
           <div v-if="propriedade.propriedade.tipo === 'DATA'">
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }} {{
-          formatarData(propriedade.valor.valor) }}</p>
+      formatarData(propriedade.valor.valor) }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'SELECAO'" class="flex">
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }}</p>
@@ -541,7 +548,6 @@ const banco = conexaoBD();
 function reloadTelaTarefa() {
   const reload = VueCookies.get('idReloadTarefa');
   if (reload == '0') {
-    console.log("reload")
     VueCookies.set('idReloadTarefa', '1');
     window.location.reload()
   }
@@ -550,16 +556,6 @@ function reloadTelaTarefa() {
 let listaDeUsuariosParaBusca = ref([]);
 
 reloadTelaTarefa()
-
-function veSeAPropriedadeTaNaTarefa(propriedade) {
-  console.log(propriedade);
-  if (propriedade.valor.valor != '') {
-    return true
-  }
-  else {
-    return false
-  }
-}
 
 let tempoAtuado;
 let horaEntrada;
@@ -665,7 +661,6 @@ function getIconSrc(arquivo) {
 
 function timerTempoAtuacao() {
   horaEntrada = new Date().getTime()
-  console.log(horaEntrada);
 }
 
 async function patchDaListaDePropriedades() {
@@ -699,20 +694,17 @@ async function patchDaListaDePropriedades() {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
         }
       }
     }
   }
-  console.log(tarefa2);
   banco.atualizar(tarefa2, "/tarefa")
 }
 
 function veSeOStatusTaNaTarefa(status) {
   if (tarefa.value.status) {
     if (tarefa.value.status.id == status.id) {
-      console.log(true);
       return true
     }
     return false
@@ -796,7 +788,11 @@ async function criaTarefaNoConcluido() {
   });
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
-  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  if(tarefa.value.corDaTarefa){
+    tarefaCriando.cor = tarefa.value.corDaTarefa;
+  }else{
+    tarefaCriando.cor = "620BA7";
+  }
   tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
@@ -805,11 +801,7 @@ async function criaTarefaNoConcluido() {
   tarefa.value.responsaveis.forEach(async (responsavel) => {
     let usuariosBanco = await banco.procurar("/usuario")
     usuariosBanco.forEach(usuarioBanco => {
-      console.log(usuarioBanco.username);
-      console.log(responsavel);
       if (usuarioBanco.username == responsavel) {
-        console.log(tarefaCriando);
-        console.log(usuarioBanco);
         let usuarioTarefa = {
           responsavel: usuarioBanco
         }
@@ -817,16 +809,13 @@ async function criaTarefaNoConcluido() {
       }
     });
   });
-  console.log(tarefaCriando)
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
-    console.log(tarefa.value.arquivos.length);
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
     }
     banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
-      console.log(response);
     });
     router.push('/projeto/kanban')
   });
@@ -928,8 +917,6 @@ async function criaPropriedade() {
     if (nomePropriedade.value != "") {
       const cria = criaPropriedadeTarefaStore();
       tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
-      console.log(tipoPropriedade.value);
-      console.log(nomePropriedade.value);
 
       cria.criaPropriedade(
         nomePropriedade.value,
@@ -943,10 +930,8 @@ async function criaPropriedade() {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   nomePropriedade.value = "";
   tipoPropriedade.value = "";
-  console.log(projetoDaTarefa.value.propriedades);
   let tarefaAtual = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa");
   propriedades.value = tarefaAtual.valorPropriedadeTarefas;
-  console.log(propriedades.value);
   propriedadeSendoCriada.value = false;
 }
 async function calculaTempoAtuacao() {
@@ -958,7 +943,6 @@ async function calculaTempoAtuacao() {
   let horasSoma = 0
   if (tarefa.value.tempoAtuacao != null && tarefa.value.tempoAtuacao != undefined && tarefa.value.tempoAtuacao != 0 && tarefa.value.tempoAtuacao != "") {
     [horasSoma, minutosSoma, segundosSoma] = tarefa.value.tempoAtuacao.split(":").map(Number);
-    console.log(horasSoma)
   }
   const horaSaida = new Date().getTime();
   const diferenca = horaSaida - horaEntrada;
@@ -969,7 +953,6 @@ async function calculaTempoAtuacao() {
   segundos += segundosSoma;
   minutos += minutosSoma;
   horas += horasSoma;
-  console.log(horasSoma)
   minutos += Math.floor(segundos / 60);
   segundos = segundos % 60;
 
@@ -981,7 +964,6 @@ async function calculaTempoAtuacao() {
   horas = horas < 10 ? `0${horas}` : horas;
 
   tempoAtuado = `${horas}:${minutos}:${segundos}`;
-  console.log(tempoAtuado)
   let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   let tarefaCriando = {
     id: JSON.parse(VueCookies.get("IdTarefaCookies")),
@@ -1045,7 +1027,11 @@ async function calculaTempoAtuacao() {
   });
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
-  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  if(tarefa.value.corDaTarefa){
+    tarefaCriando.cor = tarefa.value.corDaTarefa;
+  }else{
+    tarefaCriando.cor = "620BA7";
+  }
   tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
@@ -1054,11 +1040,7 @@ async function calculaTempoAtuacao() {
   tarefa.value.responsaveis.forEach(async (responsavel) => {
     let usuariosBanco = await banco.procurar("/usuario")
     usuariosBanco.forEach(usuarioBanco => {
-      console.log(usuarioBanco.username);
-      console.log(responsavel);
       if (usuarioBanco.username == responsavel) {
-        console.log(tarefaCriando);
-        console.log(usuarioBanco);
         let usuarioTarefa = {
           responsavel: usuarioBanco
         }
@@ -1066,16 +1048,13 @@ async function calculaTempoAtuacao() {
       }
     });
   });
-  console.log(tarefaCriando)
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
-    console.log(tarefa.value.arquivos.length);
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
     }
     banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
-      console.log(response);
     });
   });
 }
@@ -1121,27 +1100,30 @@ let tarefa = ref({
   responsaveis: []
 });
 
+function getDownloadLink(arquivo) {
+  return `data:${arquivo.tipo};base64,${arquivo.dados}`;
+}
+
 async function puxaTarefaDaEdicao() {
 
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
-  console.log(tarefaAux.responsaveis);
-  console.log(tarefaAux);
   tarefa.value.nome = tarefaAux.nome;
   tarefa.value.descricao = tarefaAux.descricao;
   for (const comentarioId of tarefaAux.comentarios) {
     let comentario = await banco.buscarUm(comentarioId, "/comentario");
-    console.log(comentario);
     tarefa.value.comentarios.push(comentario);
   }
   for (const props of tarefaAux.valorPropriedadeTarefas) {
     if (props.propriedade.tipo == "SELECAO" && props.valor.valor == null) {
-      console.log("entrou no if");
       props.valor.selecao = []
     }
   }
   tarefa.value.corDaTarefa = tarefaAux.cor;
-  tarefa.value.arquivos = tarefaAux.arquivos;
+  tarefaAux.arquivos.forEach(arquivo => {
+    arquivo.dados = "data:" + arquivo.tipo + ";base64," + arquivo.dados;
+    tarefa.value.arquivos.push(arquivo);
+  });
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
   tarefaAux.responsaveis.forEach(responsavel => {
@@ -1153,7 +1135,6 @@ async function puxaTarefaDaEdicao() {
 
 async function atualizaPropriedadesEStatus() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
-  console.log(IdTarefaCookies);
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   status.value = projetoDaTarefa.value.statusList;
   propriedades.value = tarefaAux.valorPropriedadeTarefas;
@@ -1219,17 +1200,19 @@ function exibirComentarios() {
 }
 let arquivoSelecionado = ref(null)
 function gerarArquivo(e) {
-  let fd = new FormData()
-  let selectedFile = e.target.files[0];
-  fd.append('arquivo', selectedFile, selectedFile.name);
+  let arquivo = e.target.files[0];
   let reader = new FileReader();
-  reader.readAsDataURL(selectedFile);
+  reader.readAsDataURL(arquivo);
   reader.onload = function () {
-    tarefa.value.arquivos.push(fd);
+    let arquivoBase64 = reader.result;
+    let arquivoParaOBanco = {
+      nome: arquivo.name,
+      tipo: arquivo.type,
+      dados: arquivoBase64,
+    };
+    tarefa.value.arquivos.push(arquivoParaOBanco);
     update()
   }
-  console.log(fd.get('arquivo'));
-  console.log(tarefa.value.arquivos);
 }
 
 function deletaArquivo(arquivo) {
@@ -1288,19 +1271,12 @@ async function adicionaExcluiStatusNaTarefa(status) {
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
-  console.log("Entrou na função");
   if (!estaNaTarefa) {
-    console.log("push");
     tarefa.value.propriedades.push(propriedade)
   }
   else {
-    console.log("antes de começar o for");
     for (let propriedadeForTarefa of tarefa.value.propriedades) {
-      console.log("começou o for");
-      console.log(propriedade.id);
-      console.log(propriedadeForTarefa.id);
       if (propriedadeForTarefa.propriedade.id == propriedade.propriedade.id) {
-        console.log("entrou pra deletar a propriedade ", propriedade);
         propriedade.valor.valor = propriedadeForTarefa.valor.valor
         tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);
       }
@@ -1365,13 +1341,13 @@ async function deletaComentario(comentario) {
 }
 
 async function removeResponsavel(responsavelRemover) {
-    tarefa.value.responsaveis.forEach((objetoAtual) => {
-        if (objetoAtual.username == responsavelRemover.username) {
-            let index = tarefa.value.responsaveis.indexOf(responsavelRemover)
-            tarefa.value.responsaveis.splice(index, 1);
-            criaHistorico.criaHistoricoTarefa("Removeu o responsavel" + responsavelRemover.username, tarefa, usuario)
-        }
-    })
+  tarefa.value.responsaveis.forEach((objetoAtual) => {
+    if (objetoAtual.username == responsavelRemover.username) {
+      let index = tarefa.value.responsaveis.indexOf(responsavelRemover)
+      tarefa.value.responsaveis.splice(index, 1);
+      criaHistorico.criaHistoricoTarefa("Removeu o responsavel" + responsavelRemover.username, tarefa, usuario)
+    }
+  })
 }
 
 //Função que troca o valor da variavel de comentario sendo editado
@@ -1414,8 +1390,6 @@ const parametroDoFiltroPropriedade = ref(t('criaTarefa.sort_by')); // Definindo 
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 const listaFiltradaPropriedades = computed(() => {
-  console.log(parametroDoFiltroPropriedade.value);
-  console.log(t('criaTarefa.sort_by'));
   if (parametroDoFiltroPropriedade.value === t('criaTarefa.sort_by')) {
     return propriedades.value;
   }
@@ -1450,6 +1424,16 @@ function numeroDeSubTarefasConcluidas() {
     }
   });
   return numeroDeSubTarefasC.value;
+}
+
+function veSeEResponsavelDaTarefa(usuario) {
+  tarefa.value.responsaveis.forEach((responsavel) => {
+    if (responsavel.username == usuario.username) {
+      return true;
+    } else {
+      return false;
+    }
+  });
 }
 
 //Função que faz a conta da porcentagem de tarefas concluidas
@@ -1703,5 +1687,13 @@ function clicouOpcaoStatus() {
 option {
   font-size: small;
   border: 1px solid #cbcbcb;
+}
+
+.blurred {
+  filter: blur(3px);
+  /* Adiciona o efeito de blur */
+  pointer-events: none;
+  /* Impede eventos de mouse na div */
+  backdrop-filter: opacity(20%)
 }
 </style>
