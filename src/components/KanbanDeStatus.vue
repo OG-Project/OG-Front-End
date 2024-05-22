@@ -24,7 +24,7 @@
                     </template>
                 </draggable>
                 <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none"
-                    @click="store.criaTarefa(status.propriedade)">
+                    @click="store.criaTarefa(status.propriedade), VueCookies.set('idReloadTarefa', '0')">
                     <p :style="corDoTexto(status.propriedade)">+ Nova</p>
                 </button>
             </div>

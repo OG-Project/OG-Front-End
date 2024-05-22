@@ -1,5 +1,5 @@
 <template>
-      <fundoPopUp :largura="larguraPopUp()" altura="95vh">
+      <fundoPopUp :largura="larguraPopUp()" :altura="tamanhoPopUp()">
       <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
             <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
@@ -17,30 +17,36 @@
                     <div v-if="verificaCriador(membro) && retornoPermissao && membro.id != usuarioLogado ">
                          <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
                          :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)" ></SelectPadrao>
-                         <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
+                         <SelectPadrao v-else class="styleSelectPadraoBrancoMobile mt-[3vh]" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
                          :listaSelect="opcoesSelect(membro)" @change="editaSelect(opcaoEscolhida, membro)"></SelectPadrao>
                     </div>
                     <div v-else >
                         <SelectPadrao v-if="screenWidth >= 620" class="styleSelectPadraoBranco md:ml-5 2xl:ml-5" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida"
                             @change="editaSelect(opcaoEscolhida, membro)" :placeholderSelect="opcoesSelectPlaceholder(membro)"  :disable="true" ></SelectPadrao>
-                            <SelectPadrao v-else class="styleSelectPadraoBranco " styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
+                            <SelectPadrao v-else class="styleSelectPadraoBrancoMobile" styleSelect="select-branco" fonteTamanho="1rem" v-model="opcaoEscolhida" 
                             :placeholderSelect="opcoesSelectPlaceholder(membro)" @change="editaSelect(opcaoEscolhida, membro)" :disable="true"></SelectPadrao>
                     </div> 
              </div>
             </div>
         </div>  
         <div class="adiciona-membro" v-if="retornoPermissao">
-            <Input  styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagemVetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
-                v-model="usuarioConvidado" :modelValue="usuarioConvidado"
-                    @updateModelValue="(e) => {
-                        usuarioConvidado = e
-                    }"></Input>
-            <div class="flex mt-[1vh] ml-5">
+            <inputDePesquisa v-if="screenWidth >= 620" :class="{ 'computedClasses': someCondition }" 
+                    styleInput="input-transparente-claro" :largura="larguraInputConvidado()" 
+                    :place-holder-pesquisa="$t('criaEquipePopUp.adicionarMembro')"  :zera-input="zerarInput"
+                     icon="../src/imagem-vetores/adicionarPessoa.svg" ref="inputPesquisa"
+                      :lista-da-pesquisa=listaDeUsuariosParaBusca @item-selecionado="pegaValorSelecionadoPesquisa" >
+                </inputDePesquisa>
+                <inputDePesquisa v-else :class="{ 'computedClasses': someCondition }" 
+                    styleInput="input-transparente-claro" :largura="larguraInputConvidadoMobile()" 
+                    :place-holder-pesquisa="$t('criaEquipePopUp.adicionarMembro')"  :zera-input="zerarInput"
+                     icon="../src/imagem-vetores/adicionarPessoa.svg" ref="inputPesquisa"
+                      :lista-da-pesquisa=listaDeUsuariosParaBusca @item-selecionado="pegaValorSelecionadoPesquisa" >
+                </inputDePesquisa>
+            <div class="adicionaMembroMobile flex mt-[1vh] ml-5">
                 <Botao v-if="screenWidth >= 620" class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
                     :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
-                <Botao v-else class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilepequeno"
-                :texto="$t('criaEquipePopUp.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
+                <Botao v-else class="botaoMobile flex justify-start mt-16" preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="mobilegrande"
+                texto="+" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarMembro"></Botao>
             </div>
         </div>
         <div v-else class="adiciona-membro">
@@ -51,10 +57,10 @@
                  :listaConvidados="membrosConvidados" @foi-clicado="removeListaMembrosConvidados">
             </ListaConvidados>
         </div>
-        <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
-            <div>
+        <div class="botao absolute bottom-0 right-0 2xl:mb-4 xl:mb-4 lg:mb-4 md:mb-4 mobile:mb-14 miniMobile:mb-16 mr-4">
+            <div >
                 <div>
-                    <div v-if="screenWidth >= 620">
+                    <div v-if="screenWidth >= 621">
                         <Botao preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.confirmar') " tamanhoDaFonte="0.9rem" :funcaoClick="confirmarConvites"></Botao>
                     </div>
                     <div v-else>
@@ -84,15 +90,44 @@ import alertTela from './alertTela.vue';
 import sair from '../imagemVetores/Sair.vue';
 import equipe from '../imagemVetores/equipe.vue';
 import { useI18n } from 'vue-i18n';
-import { criaNotificacao } from '../stores/criaNotificacao';
+
+import inputDePesquisa from './inputDePesquisa.vue';
 
 const { t } = useI18n()
+let listaDeUsuariosParaBusca = ref([]);
+let zerarInput = ref(false)
+
+import { criaNotificacao } from '../stores/criaNotificacao';
 const criaNotificacaoStore = criaNotificacao();
+
 
 onMounted (() =>{
     exibirMembrosNaLista();
     verificaMembroPermissao();
+    pesquisaBancoUserName()
 }) 
+
+async function pesquisaBancoUserName() {
+    let listaAux = (await banco.procurar('/usuario'))
+    listaAux.forEach(usuarioAtual => {
+        listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
+    });
+    return listaDeUsuariosParaBusca;
+}
+
+async function pegaValorSelecionadoPesquisa(valorPesquisa) {
+   usuarioConvidado.value = valorPesquisa
+}
+
+function tamanhoPopUp() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 620) {
+        return '100vh'
+    }
+    else {
+        return '95vh'
+    }
+}
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('IdUsuarioCookie')
@@ -101,8 +136,8 @@ const banco = conexaoBD();
 let listaMembros = ref([]);
 let usuariosRemover = ref([]);
 let membrosEquipe = ref([]);
-let valorSelectSelecionado = ref("Edit")
-let valorSelectEdita = ref("Edit")
+let valorSelectSelecionado = ref(t('selectComponent.view'))
+let valorSelectEdita = ref(t('selectComponent.view'))
 let membrosConvidados = ref([]);
 let usuarioConvidado = ref('');
 let membroParaConvidar = ref([]);
@@ -193,7 +228,7 @@ function valorSelect(valor, convidado) {
 function mudaPermissaoUsuario(usuario) {
     membrosConvidados.value.some((membro) => {
         if (membro.username === usuario.username) {
-            if (valorSelectSelecionado.value == "View") {
+            if (valorSelectSelecionado.value == t('selectComponent.view')) {
                 membro.permissao = 2
             } else {
                 membro.permissao = 1
@@ -319,7 +354,7 @@ function marginRightConvidado() {
 
 function larguraPopUp(){
     if(screenWidth <= 620){
-          return '90vw';
+          return '100vw';
     }else{
         return '';
     }
@@ -328,6 +363,9 @@ function larguraPopUp(){
 function larguraInputConvidado(){
     if(screenWidth <= 620){
           return '40'
+    }
+    if(screenWidth <= 680){
+        return '45'
     }
     if (screenWidth <= 768) {
         return '24';
@@ -340,6 +378,22 @@ function larguraInputConvidado(){
     } else if (screenWidth >= 2560) {
         return '12';
     }
+}
+
+function larguraInputConvidadoMobile(){
+    if(screenWidth <= 620){
+          return '70'
+    }
+    if(screenWidth <= 425){
+        return '60'
+    }
+    if(screenWidth <= 375){
+        return '35'
+    }
+    else if(screenWidth <= 320){
+        return '35'
+    }
+    
 }
 
 async function listaUsuarios() {
@@ -380,6 +434,7 @@ async function adicionarMembro() {
         membroParaConvidar.value.push(membroConvidado);
         await listaUsuarios();
     }
+    zerarInput.value = true
 }
 
 async function enviaParaWebSocket(equipe,membrosConvidados) {
@@ -458,14 +513,26 @@ async function confirmarConvites() {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
     enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
-   
+    window.location.reload()
 }
 
 </script>
 
 <style scoped>
 .styleSelectPadraoBranco{
-        @apply border-4 mt-[4vh]
+        @apply border-4 2xl:mt-[4vh] xl:mt-[3.5vh] lg:mt-[2vh] md:mt-[2.5vh]
+        flex justify-center
+        border-transparent
+        border-b-brancoNeve
+        border-b-2
+        w-[10]
+        items-center  focus-within:border-white
+        focus-within:border-4 focus-within:rounded-md truncate;
+        
+    }
+
+    .styleSelectPadraoBrancoMobile{
+        @apply border-4 
         flex justify-center
         border-transparent
         border-b-brancoNeve
@@ -521,7 +588,8 @@ async function confirmarConvites() {
 }
 
 .imgIcon {
-    @apply bg-cover bg-center flex mt-8 md:ml-10 2xl:w-[1.5vw] 2xl:h-[4vh] xl:w-[2vw] xl:h-[4vh] lg:w-[3vw] lg:h-[4vh] md:w-[3.5vw] md:h-[4vh];
+    @apply bg-cover bg-center flex 2xl:mt-8 xl:mt-8 lg:mt-6 md:mt-[2.2vh] sm:mt-[5vh] md:ml-10 2xl:w-[1.5vw] 2xl:h-[4vh]
+     xl:w-[2vw] xl:h-[4vh] lg:w-[3vw] lg:h-[4vh] md:w-[3.5vw] md:h-[4vh];
 }
 
 
@@ -543,6 +611,64 @@ async function confirmarConvites() {
     @apply rounded-full bg-cover bg-center flex flex-col mt-5 mr-5 2xl:w-[55px] 2xl:h-[55px] xl:w-[50px] xl:h-[50px] lg:w-[45px] lg:h-[45px] md:w-[40px] md:h-[40px];
 }
 
+@media(min-width: 621px) and (max-width: 767px){
+      
+            .divEquipe{
+                @apply flex justify-start w-[80vw]
+            }
+            .adiciona-membro{
+                @apply flex justify-center absolute bottom-[58vh] ml-[10vw]  ;
+            }
+            .divGeral{
+                @apply w-[85vw];
+            }
+            .corDiv{
+                @apply flex ml-1 mr-5 h-20 w-[40vw] 
+                border-transparent
+                border-b-roxo    
+                border-b-2
+                items-center focus-within:border-roxo 
+                focus-within:border-4;
+                
+            }
+            .styleSelectPadraoBranco{
+                @apply border-4 mt-[2vh]
+                flex justify-center
+                border-transparent
+                border-b-brancoNeve
+                border-b-2
+                w-[10]
+                items-center  focus-within:border-white
+                focus-within:border-4 focus-within:rounded-md truncate;
+                
+            }
+            .div-membros{
+                @apply w-[90%] h-[20vh] mt-10 ml-[10vw];
+            }
+            .equipeNome{
+                @apply flex text-4xl 2xl:mr-5 truncate mt-5;
+            }
+           
+            .imgDePerfil{
+                @apply w-[30px] h-[30px]
+            }
+            .imagemEquipe{
+                @apply w-[40px] h-[40px] mt-2 mr-3;
+            }
+            .imgIcon{
+                @apply flex w-[30px] h-[30px] mt-8 mr-10;
+            }
+            .div-lista {
+                @apply w-[180vw] p-2 ml-5;
+            }
+            .botao {
+                @apply flex justify-end w-[60%] p-10 ml-[11vw] ;
+            }
+            .alert{
+                @apply mr-[5vw] mt-[-15vh] ;
+    
+            }
+        }
 
     @media(min-width: 2560px) {
     .divGeral {
@@ -561,10 +687,13 @@ async function confirmarConvites() {
         @apply w-[3vw] h-[4vh]
       }
     }
-    
-     @media (min-width: 320px) and (max-width: 375px) {
+
+    @media(max-width: 320px){
+        .botaoMobile{
+            @apply ml-[-86vw]
+        }
         .divEquipe{
-            @apply flex justify-center w-[100%]
+            @apply flex justify-start w-[80vw]
          }
          .adiciona-membro{
              @apply flex justify-end ml-[-5vw];
@@ -573,7 +702,7 @@ async function confirmarConvites() {
              @apply w-[65vw];
          }
          .corDiv{
-             @apply flex ml-5 mr-5 h-20 w-[100vw] 
+             @apply flex ml-1 h-20 w-[60vw] 
              border-transparent
              border-b-roxo    
              border-b-2
@@ -582,18 +711,17 @@ async function confirmarConvites() {
              
          }
          .div-membros{
-             @apply w-[100%];
+             @apply w-[100vw] ml-[-5vw];
          }
          .equipeNome{
               @apply flex text-2xl mt-6;
          }
-         .styleSelectPadraoBranco{
-             @apply border-4 mt-[1.5vh] ml-3 
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[15vw] ml-5
              flex justify-center
              border-transparent
              border-b-brancoNeve
              border-b-2
-             w-max
              items-center  focus-within:border-white
              focus-within:border-4 focus-within:rounded-md truncate;
          }
@@ -604,33 +732,37 @@ async function confirmarConvites() {
              @apply w-[40px] h-[40px] mt-5 mr-3;
          }
          .imgIcon{
-             @apply w-[20px] h-[20px]  bg-center flex mt-8;
+             @apply w-[30px] h-[40px] bg-center flex mt-8 mr-[5vw];
          }
          .div-lista{
-             @apply w-[200vw] p-2 ml-[-12vw] ;
+             @apply w-[212vw] p-2 ml-[-12vw] ;
              
          }
          .botao{
-             @apply flex justify-start mr-[41vw]
-             p-[10vw] mt-[50vh] ;
-         }
+            @apply flex justify-end mb-[6vh] mr-[-4.4vw] ;
+        }
          .alert{
             @apply mr-[5vw] mt-[-15vh] ;
           }
     }
 
-    @media(min-width: 425px) and (max-width: 620px){
+    
+
+    @media(min-width: 321px) and (max-width: 344px){
+        .botaoMobile{
+            @apply ml-[-86vw]
+        }
         .divEquipe{
-            @apply flex justify-center w-[100%]
+            @apply flex justify-start w-[80vw]
          }
          .adiciona-membro{
-             @apply flex justify-end ml-[-5vw];
+             @apply flex justify-end ml-[-8vw] mb-[-1.5vh];
          }
          .divGeral{
              @apply w-[65vw];
          }
          .corDiv{
-             @apply flex ml-5 mr-5 h-20 w-[60vw] 
+             @apply flex ml-1 h-20 w-[80vw] 
              border-transparent
              border-b-roxo    
              border-b-2
@@ -639,40 +771,222 @@ async function confirmarConvites() {
              
          }
          .div-membros{
-             @apply w-[100%];
+             @apply w-[100vw] ml-[-5vw];
          }
          .equipeNome{
-              @apply flex text-3xl mt-5;
+              @apply flex text-2xl mt-6;
          }
-         .styleSelectPadraoBranco{
-             @apply border-4 mt-[1.5vh] ml-3 
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[15vw] ml-5
              flex justify-center
              border-transparent
              border-b-brancoNeve
              border-b-2
-             w-max
              items-center  focus-within:border-white
              focus-within:border-4 focus-within:rounded-md truncate;
          }
          .imgDePerfil{
-             @apply w-[30px] h-[30px]
+             @apply w-[35px] h-[35px]
          }
          .imagemEquipe{
              @apply w-[40px] h-[40px] mt-5 mr-3;
          }
          .imgIcon{
-             @apply w-[20px] h-[20px]  bg-center flex mt-8;
+             @apply flex w-[30px] h-[40px] bg-center  mt-8 mr-[5vw];
          }
          .div-lista{
              @apply w-[200vw] p-2 ml-[-12vw] ;
              
          }
          .botao{
-             @apply flex justify-start mr-[41vw]
-             p-[10vw] mt-[50vh] ;
+            @apply flex justify-end mb-[5vh] mr-[-1.5vw] ;
+        }
+         .alert{
+            @apply mr-[5vw] mt-[-15vh] ;
+          }
+    }
+
+    @media(min-width: 345px) and (max-width: 375px){
+        .botaoMobile{
+            @apply ml-[-85vw]
+        }
+        .divEquipe{
+            @apply flex justify-start w-[80vw]
+         }
+         .adiciona-membro{
+             @apply flex justify-end ml-[-5vw] mb-[-1.5vh];
+         }
+         .adicionaMembroMobile{
+            @apply flex ml-[5vw] mt-[1vh]
+         }
+         .divGeral{
+             @apply w-[65vw];
+         }
+         .corDiv{
+             @apply flex ml-1 h-20 w-[60vw] 
+             border-transparent
+             border-b-roxo    
+             border-b-2
+             items-center focus-within:border-roxo 
+             focus-within:border-4;
+             
+         }
+         .div-membros{
+             @apply w-[100vw] ml-[-6vw];
+         }
+         .equipeNome{
+              @apply flex text-2xl mt-6;
+         }
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[20vw] ml-5
+             flex justify-center
+             border-transparent
+             border-b-brancoNeve
+             border-b-2
+             items-center  focus-within:border-white
+             focus-within:border-4 focus-within:rounded-md truncate;
+         }
+         .imgDePerfil{
+             @apply w-[35px] h-[35px]
+         }
+         .imagemEquipe{
+             @apply w-[40px] h-[40px] mt-5 mr-3;
+         }
+         .imgIcon{
+             @apply flex w-[30px] h-[40px] bg-center  mt-8 mr-[5vw] ;
+         }
+         .div-lista{
+             @apply w-[200vw] p-2 ml-[-12vw] ;
+             
+         }
+         .botao{
+            @apply flex justify-end mb-[5vh] mr-[-1vw] ;
+        }
+         .alert{
+            @apply mr-[5vw] mt-[-15vh] ;
+          }
+    }
+    
+     @media (min-width: 376px) and (max-width: 424px) {
+        .botaoMobile{
+            @apply ml-[-85vw]
+        }
+        .divEquipe{
+            @apply flex justify-start w-[80vw]
+         }
+         .adiciona-membro{
+             @apply flex justify-end ml-[-5vw] mb-[-1.5vh];
+         }
+         .adicionaMembroMobile{
+            @apply flex mt-[-1vh]
+         }
+         .divGeral{
+             @apply w-[65vw];
+         }
+         .corDiv{
+             @apply flex ml-1 h-20 w-[60vw] 
+             border-transparent
+             border-b-roxo    
+             border-b-2
+             items-center focus-within:border-roxo 
+             focus-within:border-4;
+             
+         }
+         .div-membros{
+             @apply w-[100vw] ml-[-5vw];
+         }
+         .equipeNome{
+              @apply flex text-2xl mt-6;
+         }
+         .styleSelectPadraoBrancoMobile{
+             @apply border-4 mt-[3vh] w-[20vw] ml-5
+             flex justify-center
+             border-transparent
+             border-b-brancoNeve
+             border-b-2
+             items-center  focus-within:border-white
+             focus-within:border-4 focus-within:rounded-md truncate;
+         }
+         .imgDePerfil{
+             @apply w-[35px] h-[35px]
+         }
+         .imagemEquipe{
+             @apply w-[40px] h-[40px] mt-5 mr-3;
+         }
+         .imgIcon{
+             @apply flex w-[30px] h-[40px]  bg-center  mt-8 mr-[5vw];
+         }
+         .div-lista{
+             @apply w-[200vw] p-2 ml-[-12vw] ;
+             
+         }
+         .botao{
+             @apply flex justify-end mb-[5vh] mr-[0.5vw] ;
          }
          .alert{
             @apply mr-[5vw] mt-[-15vh] ;
           }
     }
+
+        @media(min-width: 425px) and (max-width: 620px){
+            .botaoMobile{
+                @apply ml-[-83vw]
+            }
+            .divEquipe{
+                @apply flex justify-start w-[80vw]
+            }
+            .adiciona-membro{
+                @apply flex justify-end ml-[-5vw] mb-[-1.5vh];
+            }
+            .adicionaMembroMobile{
+                @apply flex ml-[5vw] mt-[-0.5vh]
+            }
+            .divGeral{
+                @apply w-[65vw];
+            }
+            .corDiv{
+                @apply flex ml-1 mr-5 h-20 w-[40vw] 
+                border-transparent
+                border-b-roxo    
+                border-b-2
+                items-center focus-within:border-roxo 
+                focus-within:border-4;
+                
+            }
+            .div-membros{
+                @apply w-[100vw] ml-[-5vw];
+            }
+            .equipeNome{
+                @apply flex text-3xl mt-5;
+            }
+            .styleSelectPadraoBrancoMobile{
+                @apply border-4 mt-[3vh] 
+                flex justify-center
+                border-transparent
+                border-b-brancoNeve
+                border-b-2
+                w-max
+                items-center  focus-within:border-white
+                focus-within:border-4 focus-within:rounded-md truncate;
+            }
+            .imgDePerfil{
+                @apply w-[30px] h-[30px]
+            }
+            .imagemEquipe{
+                @apply w-[40px] h-[40px] mt-5 mr-3;
+            }
+            .imgIcon{
+                @apply flex w-[40px] h-[40px] mt-8 mr-[5vw];
+            }
+            .div-lista{
+                @apply w-[200vw] p-2 ml-[-12vw] ;
+            }
+            .botao{
+                @apply flex justify-start mr-[41vw]
+                p-[10vw] mt-[60vh] ;
+            }
+            .alert{
+                @apply mr-[5vw] mt-[-15vh] ;
+            }
+        }
 </style>

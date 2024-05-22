@@ -17,17 +17,17 @@
                         <div class="flex justify-end">
                             <img src="../imagemVetores/triangulo.svg">
                         </div>
-                        Tempo de Atuação: {{ tempoAtuacao }}
+                        {{ $t('cardProjetos.tempoAtuacao') }}: {{ tempoAtuacao }}
                     </div>
                 </div>
 
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>Responsavel:</b> {{ responsavel }}
+                    <b>{{$t('cardProjetos.responsavel')}}:</b> {{ responsavel }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
-                    <b>Descrição:</b> {{ descricao }}
+                    <b>{{$t('cardProjetos.descricao')}}:</b> {{ descricao }}
                 </p>
             </div>
         </div>
@@ -195,8 +195,8 @@ function somePopUp() {
             @apply flex flex-col h-[76px] items-center  justify-evenly;
         }
         .cardTotal {
-            @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-white overflow-hidden mt-[3vh] ;
-            transition: transform 0.3s ease;
+            @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-[var(--backgroundItemsClaros)] overflow-hidden mt-[3vh] ;
+            transition: transform 0.5s ease;
         }
         .barraCinzaGrafico {
             @apply relative text-white flex w-[70vw] h-5 justify-start bg-gray-500;
@@ -212,12 +212,12 @@ function somePopUp() {
         }
     }
 
-    @media(min-width: 395px) and (max-width: 620px){
+    @media(min-width: 395px) and (max-width: 425px){
             .parteDeBaixoCard{
                 @apply flex flex-col h-[76px] items-center  justify-evenly;
             }
             .cardTotal {
-                @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-white overflow-hidden mt-[3vh] mobile:ml-4 miniMobile:ml-0; 
+                @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-[var(--backgroundItemsClaros)] overflow-hidden mt-[3vh] mobile:ml-4 miniMobile:ml-0; 
                 transition: transform 0.3s ease;
             }
             .barraCinzaGrafico {
@@ -239,12 +239,32 @@ function somePopUp() {
             background-color: var(--backgroundItems);
         }
     }
+
+    @media(min-width: 426px) and (max-width: 620px){
+        .parteDeBaixoCard{
+            @apply flex flex-col h-[76px] items-center justify-evenly;
+        }
+        .cardTotal {
+            @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-[var(--backgroundItemsClaros)] overflow-hidden mt-[3vh] ml-12; 
+            transition: transform 0.3s ease;
+        }
+        .data{
+            @apply mr-[14vw];
+        }
+        .divInformacoes{
+            @apply flex flex-col justify-evenly w-[60vw] h-[202px] 
+        }
+        .tempoAtuacao{
+            @apply flex justify-end ;
+        }
+    }
+
     @media(min-width: 380px) and (max-width: 390px){
         .parteDeBaixoCard{
             @apply flex flex-col h-[76px] items-center  justify-evenly;
         }
         .cardTotal {
-            @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-white overflow-hidden mt-[3vh] mobile:ml-0 miniMobile:ml-0; 
+            @apply flex flex-col items-center justify-between relative w-[350px] h-[289px] bg-[var(--backgroundItemsClaros)] overflow-hidden mt-[3vh] mobile:ml-0 miniMobile:ml-0; 
             transition: transform 0.3s ease;
         }
         .barraCinzaGrafico {
@@ -266,5 +286,12 @@ function somePopUp() {
         }   
     }
 
+    @media(min-width: 621px) and (max-width: 767px){
+      
+        .divInformacoes{
+           @apply flex flex-col justify-evenly w-[50vw] h-[202px]
+        }
+        
+      }
 
 </style>

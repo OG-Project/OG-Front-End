@@ -25,9 +25,9 @@ export const conexaoBD = defineStore('conexaoBD', {
 
     },
 
-    getCookie(){
+    getCookie() {
       // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
-    // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
+      // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
       this.loading = true;
       try {
         return axios.get(this.url+"/cookie" , { withCredentials: true }).then(response =>  {return response.data})
@@ -42,7 +42,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.post(this.url + "/login", usuarioLogin, { withCredentials: true }).then(response => {
           alert(response.data.value)
           VueCookies.set("JWT", response.data.value)
-        }).catch((error)=>{
+        }).catch((error) => {
           console.log(error)
         })
       } finally {
@@ -216,7 +216,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         const formData = new FormData();
         formData.append('foto', foto);
 
-  
+
         // Faça a requisição PATCH para enviar a image
 
         const response = await axios.patch(this.url + `/equipe/${equipeId}`, formData, {
@@ -253,7 +253,7 @@ export const conexaoBD = defineStore('conexaoBD', {
           return response.data
 
         });
-       
+
 
       } catch (error) {
         console.error('Erro ao cadastrar a foto:', error);

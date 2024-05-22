@@ -166,76 +166,102 @@
     "membroAviso": "成员已属于该团队。",
     "voceAviso": "您已经属于该团队。",
     "nomeObrigatorio": "团队名称是必填项"
-},
-"editarEquipePopUp": {
-  "equipeEditar": "编辑团队",
-  "deletar": "删除",
-  "editar": "编辑",
-  "sair": "退出",
-  "salvar": "保存更改",
-  "alteracao": "未检测到更改",
-  "edicao": "编辑完成",
-  "confirmar": "确认"
-},
-"selectComponent": {
-  "edit": "编辑",
-  "view": "查看"
-},
-"tutorial": {
-  "bemVindo": "欢迎!!",
-  "mostraAtividades": "这里显示您的重要活动",
-  "proximo": "下一步",
-  "dashboard": "图表",
-  "informacoes": "管理您已完成和未完成任务的信息。",
-  "pular": "跳过",
-  "voltar": "返回",
-  "menu": "菜单",
-  "clique": "点击访问系统流程",
-  "partes": "重要部分",
-  "equipe": "团队，这里可以查看和创建团队。点击查看",
-  "crieEquipe": "创建团队",
-  "cliqueECrie": "点击此处创建新团队",
-  "preencha": "填写字段",
-  "crieAEquipe": "创建团队",
-  "entreEquipe": "加入创建的团队",
-  "projetosEquipe": "这里可以看到团队项目",
-  "crieProjeto": "点击创建项目",
-  "crieUmProjeto": "创建一个项目",
-  "gerenciar": "在这里管理项目任务",
-  "crieTarefa": "创建第一个任务",
-  "preenchaTarefa": "填写字段以创建任务。",
-  "completar": "点击这里完成",
-  "formas": "有不同的方法查看您的任务，例如看板、列表、日历和时间线",
-  "funcionalidades": "网站上还有更多功能，但这是基本的。",
-  "finalizar": "完成"
-},
-"confirmarPopUp": {
-  "confirmar": "你确定吗？"
-},
-"historicoTarefa": {
-  "deletarSubTarefa": "删除了子任务 ",
-  "editou": "编辑了任务 ",
-  "criaTarefa": "创建了任务 ",
-  "criaSubTarefa": "创建了子任务 ",
-  "status": "更改了状态 ",
-  "criaComentario": "评论了任务 ",
-  "deletaComentario": "删除了评论 ",
-  "concluiu": "完成了子任务 "
-},
-"historicoProjeto": {
-  "editou": "编辑了项目",
-  "criou": "创建了项目",
-  "addResponsavel": "添加了一个新负责人",
-  "convidouEquipe": "邀请了一个团队",
-  "removeEquipe": "删除了一个团队",
-  "removeResponsavel": "删除了负责人",
-  "status": "创建了一个新状态",
-  "propriedade": "创建了一个属性",
-  "removeStatus": "删除了状态",
-  "removePropriedade": "删除了属性",
-  "comentario": "评论了项目",
-  "deletaTarefa": "删除了任务"
-
-}
-
+  },
+  "editarEquipePopUp": {
+    "equipeEditar": "编辑团队",
+    "deletar": "删除",
+    "editar": "编辑",
+    "sair": "退出",
+    "salvar": "保存更改",
+    "alteracao": "未检测到更改",
+    "edicao": "编辑完成",
+    "confirmar": "确认"
+  },
+  "selectComponent": {
+    "edit": "编辑",
+    "view": "查看"
+  },
+  "tutorial": {
+    "bemVindo": "欢迎!!",
+    "mostraAtividades": "这里显示您的重要活动",
+    "proximo": "下一步",
+    "dashboard": "图表",
+    "informacoes": "管理您已完成和未完成任务的信息。",
+    "pular": "跳过",
+    "voltar": "返回",
+    "menu": "菜单",
+    "clique": "点击访问系统流程",
+    "partes": "重要部分",
+    "equipe": "团队，这里可以查看和创建团队。点击查看",
+    "crieEquipe": "创建团队",
+    "cliqueECrie": "点击此处创建新团队",
+    "preencha": "填写字段",
+    "crieAEquipe": "创建团队",
+    "entreEquipe": "加入创建的团队",
+    "projetosEquipe": "这里可以看到团队项目",
+    "crieProjeto": "点击创建项目",
+    "crieUmProjeto": "创建一个项目",
+    "gerenciar": "在这里管理项目任务",
+    "crieTarefa": "创建第一个任务",
+    "preenchaTarefa": "填写字段以创建任务。",
+    "completar": "点击这里完成",
+    "formas": "有不同的方法查看您的任务，例如看板、列表、日历和时间线",
+    "funcionalidades": "网站上还有更多功能，但这是基本的。",
+    "finalizar": "完成"
+  },
+  "confirmarPopUp": {
+    "confirmar": "你确定吗？"
+  },
+  "historicoTarefa": {
+    "deletarSubTarefa": "删除了子任务 ",
+    "editou": "编辑了任务 ",
+    "criaTarefa": "创建了任务 ",
+    "criaSubTarefa": "创建了子任务 ",
+    "status": "更改了状态 ",
+    "criaComentario": "评论了任务 ",
+    "deletaComentario": "删除了评论 ",
+    "concluiu": "完成了子任务 "
+  },
+  "historicoProjeto": {
+    "editou": "编辑了项目",
+    "criou": "创建了项目",
+    "addResponsavel": "添加了一个新负责人",
+    "convidouEquipe": "邀请了一个团队",
+    "removeEquipe": "删除了一个团队",
+    "removeResponsavel": "删除了负责人",
+    "status": "创建了一个新状态",
+    "propriedade": "创建了一个属性",
+    "removeStatus": "删除了状态",
+    "removePropriedade": "删除了属性",
+    "comentario": "评论了项目",
+    "deletaTarefa": "删除了任务"
+  },
+  "cardProjetos": {
+    "tempoDeAtuacao": "工作时间",
+    "responsavel": "负责人",
+    "descricao": "描述"
+  },
+  "criaProjeto": {
+    "nomeProjeto": "项目名称",
+    "descricao": "描述",
+    "dataFinal": "最后日期",
+    "conviar": "邀请",
+    "responsavelPeloProjeto": "项目负责人",
+    "equipesVinculadas": "相关团队",
+    "naoHaTarefas": "没有任务",
+    "tarefasAtribuidas": "分配的任务",
+    "informacoes": "信息",
+    "dataInicial": "起始日期"
+  },
+  "perfilInfo": {
+    "nome": "姓名",
+    "sobrenome": "姓",
+    "email": "电子邮件",
+    "dataNascimento": "出生日期",
+    "equipesDe": "团队",
+    "inicieUmChatCom": "开始聊天",
+    "oUsuarioPossuiOPerfilPrivado": "用户拥有私人资料",
+    "username": "用户名",
+    "asEquipesDoUsuarioSaoPrivadas": "用户的团队是私人的"
+  }
 }
