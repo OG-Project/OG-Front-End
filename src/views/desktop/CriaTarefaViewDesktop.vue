@@ -400,31 +400,31 @@
                 </div>
               </div>
             </div>
-            <div v-if="opcaoEstaClicadaStatus" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
-              <div v-for="(statsAdd, index) in listaFiltradaStatus" :key="index"
-                class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
-                <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
-                  <div class="w-[35%] flex gap-2 items-center pl-4">
-                    <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)"
-                      tipo="radio">
-                    </CheckBox>
-                    <p style="font-family:var(--fonteCorpo);" class="break-all">{{ statsAdd.nome }}</p>
-                  </div>
-                  <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{
-      statsAdd.cor.toUpperCase() }}</p>
-                  <div class="w-[30%] flex justify-between">
-                    <ColorPicker disabled v-model="statsAdd.cor"
-                      class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
-                  </div>
+          </div>
+          <div v-if="opcaoEstaClicadaStatus" class="h-[96%] w-[100%] pt-4 flex flex-col gap-4 overflow-y-auto">
+            <div v-for="(statsAdd, index) in listaFiltradaStatus" :key="index"
+              class="w-[100%] min-h-[3vh] gap-4 flex flex-col items-center justify-center">
+              <div class="w-[100%] min-h-[3vh] gap-16 flex flex-row items-center justify-center">
+                <div class="w-[35%] flex gap-2 items-center pl-4">
+                  <CheckBox @click="adicionaExcluiStatusNaTarefa(statsAdd)" :checked="veSeOStatusTaNaTarefa(statsAdd)"
+                    tipo="radio">
+                  </CheckBox>
+                  <p style="font-family:var(--fonteCorpo);" class="break-all">{{ statsAdd.nome }}</p>
+                </div>
+                <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{
+    statsAdd.cor.toUpperCase() }}</p>
+                <div class="w-[30%] flex justify-between">
+                  <ColorPicker disabled v-model="statsAdd.cor"
+                    class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
                 </div>
               </div>
             </div>
           </div>
-          <div id="" class="w-[80%] flex justify-between pt-8">
-            <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-            <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado"
-              :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-          </div>
+        </div>
+        <div id="" class="w-[80%] flex justify-between pt-8">
+          <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+          <Botao id="step-16" :funcaoClick="criaTarefaNoConcluido" preset="PadraoVazado"
+            :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
         </div>
       </div>
     </div>
@@ -804,7 +804,11 @@ async function criaTarefaNoConcluido() {
   });
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
-  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  if(tarefa.value.corDaTarefa){
+    tarefaCriando.cor = tarefa.value.corDaTarefa;
+  }else{
+    tarefaCriando.cor = "620BA7";
+  }
   tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
@@ -1053,7 +1057,11 @@ async function calculaTempoAtuacao() {
   });
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
-  tarefaCriando.cor = tarefa.value.corDaTarefa;
+  if(tarefa.value.corDaTarefa){
+    tarefaCriando.cor = tarefa.value.corDaTarefa;
+  }else{
+    tarefaCriando.cor = "620BA7";
+  }
   tarefaCriando.indice = tarefa2.indice;
   // tarefaCriando.responsaveis = tarefa.value.responsaveis;
   tarefaCriando.status = tarefa.value.status;
