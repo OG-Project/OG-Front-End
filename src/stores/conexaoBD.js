@@ -68,10 +68,10 @@ export const conexaoBD = defineStore('conexaoBD', {
       console.log(textoRequisicao)
       this.loading = true;
       try {
-        if (textoRequisicao == "/usuario") {
-          const idUsuario = VueCookies.get("IdUsuarioCookie")
-          return axios.put("http://localhost:8082" + textoRequisicao + "/" + idUsuario, objeto, { withCredentials: true }).then(response => response)
-        }
+        // if (textoRequisicao == "/usuario") {
+        //   const idUsuario = VueCookies.get("IdUsuarioCookie")
+        //   return axios.put("http://localhost:8082" + textoRequisicao + "/" + idUsuario, objeto, { withCredentials: true }).then(response => response)
+        // }
 
         return axios.put("http://localhost:8082" + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
       } finally {
