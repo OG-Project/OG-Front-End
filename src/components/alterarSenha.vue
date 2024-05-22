@@ -3,31 +3,22 @@
         <fundoPopUp :largura="screenWidth < 640 ? '100%' : '40%'" :altura="screenWidth < 640 ? '100%' : '60%'" >
 
             <div class="flex flex-col justify-between  w-full h-full gap-9">
-                <div class="max-md:pl-0 max-md:pt-0 flex pl-12 pt-12">
+                <div class="max-md:pl-0 max-md:pt-0 flex ">
                     <div v-if="screenWidth >= 768"
                         style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanho);"
                         class=" text-[var(--roxo)]">
                         Alterar Senha
                         <!-- {{ senhaUsuario }} -->
                     </div>
-                    <div v-else style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
-                        class=" flex text-[var(--roxo)]">
-                        Alterar Senha
-                        <!-- {{ senhaUsuario }} -->
-                    </div>
+                    
+                    
                 </div>
                 <div style="font-Family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);"
                     class="flex max-md:flex-col justify-center items-center">
                     <div class="flex flex-col gap-16 ">
+                       
                         <div class="flex justify-between items-center gap-5 max-sm:flex-col">
-                            <span class="font-semibold">Insira a senha antiga</span>
-                            <Input styleInput="input-transparente-claro-grande" conteudoInput="Senha Antiga"
-                                v-model="senhaAntiga" tipo="obrigatorio" @updateModelValue="(e) => {
-                                                                senhaAntiga = e
-                                                            }" />
-                        </div>
-                        <div class="flex justify-between items-center gap-5 max-sm:flex-col">
-                            <span class="font-semibold">Insira uma senha nova</span>
+                            <span class="">Insira uma senha nova</span>
                             <Input styleInput="input-transparente-claro-grande" conteudoInput="Senha Nova"
                                 v-model="senhaNova" tipo="password" :isInvalido="isInvalido"
                                 textoInvalido="Senha não é igual" @updateModelValue="(e) => {
@@ -35,12 +26,12 @@
                                     }" />
                         </div>
                         <div class="flex justify-between items-center gap-5 max-sm:flex-col">
-                            <span class="font-semibold">Confirme a nova senha</span>
+                            <span class="">Confirme a nova senha</span>
                             <Input styleInput="input-transparente-claro-grande" conteudoInput="Confirmar Senha"
                                 v-model="senhaConfirmada" tipo="password" :isInvalido="isInvalido"
                                 textoInvalido="Senha não é igual" @updateModelValue="(e) => {
-                                                                        senhaConfirmada = e
-                                                                    }" />
+                                        senhaConfirmada = e
+                                    }" />
                         </div>
                     </div>
                 </div>
@@ -79,7 +70,6 @@ let mensagemAlert = ref('')
 let usuario = ref({})
 let showAlert = ref(false)
 let senhaUsuario = ref('')
-let senhaAntiga = ref('')
 let senhaNova = ref('')
 let senhaConfirmada = ref('')
 const screenWidth = ref(window.innerWidth)
@@ -112,10 +102,10 @@ onMounted(async () => {
 
 
 function alteraSenha() {
-    if (senhaAntiga.value == senhaUsuario.value && senhaNova.value == senhaConfirmada.value) {
+    if (senhaNova.value == senhaConfirmada.value) {
         isInvalido.value = false
         usuario.value.senha = senhaNova.value
-        alert(usuario.senha)
+       
         conexao.atualizar(usuario.value, '/usuario')
     } else {
         isInvalido.value = true

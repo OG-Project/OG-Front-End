@@ -2,7 +2,7 @@
   <div :style="tamanhoPesquisa">
     <div v-if="temIcon">
       <Input :isInvalido="isInvalido" :textoInvalido="textoInvalido" :largura="props.largura" styleInput="input-transparente-claro" :icon="iconePesquisa" :fontSize="fontSize"
-        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa"
+        :conteudoInput="placeHolderPesquisa" v-model="conteudoDaPesquisa" :modelValue="conteudoDaPesquisa " :zerarInput="zeraInput"
         tipo="obrigatorio" @updateModelValue="(e) => {
     conteudoDaPesquisa = e
   }"></Input>
@@ -48,6 +48,7 @@ import VueCookies from "vue-cookies";
 import router from "@/router";
 import { onMounted } from "vue";
 
+
 let conteudoDaPesquisa = ref("");
 defineEmits(['itemSelecionado'])
 const props = defineProps({
@@ -68,7 +69,21 @@ const props = defineProps({
   textoInvalido: String,
   fontSize: String,
   tipo: String,
+  zeraInput:{
+    type: Boolean,
+    default: false
+  }
 });
+
+watch(()=> props.zeraInput, () =>{
+  zerarInput();
+})
+
+function zerarInput(){
+  if(props.zeraInput == true){
+    conteudoDaPesquisa.value = ''
+  }
+}
 
 let itemsIguais = ref(false);
 
@@ -81,7 +96,6 @@ function verificaSeSaoIguais() {
   for (const itemPesquisado of listaRenderizada.value) {
     if (conteudoDaPesquisa.value === itemPesquisado) {
       itemsIguais.value = true;
-      console.log(itemsIguais.value);
       return;
     } else {
       itemsIguais.value = false;

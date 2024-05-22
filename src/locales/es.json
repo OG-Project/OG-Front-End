@@ -118,7 +118,7 @@
     "E-mail": "Correo Electrónico",
     "Sobrenome": "Apellido",
     "Data de Nascimento": "Fecha de Nacimiento",
-    "Editar E-mail": "Editar Correo Electrónico",
+    "Editar E-mail": " Editar Información",
     "Confirmar Edição": "Confirmar Edición"
   },
   "privacidade": {
@@ -252,5 +252,16 @@
     "tarefasAtribuidas": "Tareas Asignadas",
     "informaciones": "Información",
     "dataInicial": "Fecha de Inicio"
+  },
+  "perfilInfo": {
+    "nome": "Nombre",
+    "sobrenome": "Apellido",
+    "email": "Correo Electrónico",
+    "dataNascimento": "Fecha de Nacimiento",
+    "equipesDe": "Equipos de",
+    "inicieUmChatCom": "Iniciar un chat con",
+    "oUsuarioPossuiOPerfilPrivado": "El usuario tiene el perfil privado",
+    "username": "Username",
+    "asEquipesDoUsuarioSaoPrivadas": "Los equipos del usuario son privados"
   }
 }

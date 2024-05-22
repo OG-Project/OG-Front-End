@@ -118,7 +118,7 @@
     "E-mail": "Электронная почта",
     "Sobrenome": "Фамилия",
     "Data de Nascimento": "Дата рождения",
-    "Editar E-mail": "Редактировать электронную почту",
+    "Editar E-mail": "Редактировать информацию",
     "Confirmar Edição": "Подтвердить редактирование"
   },
   "privacidade": {
@@ -252,5 +252,16 @@
     "tarefasAtribuidas": "Назначенные задачи",
     "informacoes": "Информация",
     "dataInicial": "Дата начала"
+  },
+  "perfilInfo": {
+    "nome": "Имя",
+    "sobrenome": "Фамилия",
+    "email": "Электронная почта",
+    "dataNascimento": "Дата рождения",
+    "equipesDe": "Команды",
+    "inicieUmChatCom": "Начать чат с",
+    "oUsuarioPossuiOPerfilPrivado": "Пользователь имеет закрытый профиль",
+    "username": "Имя пользователя",
+    "asEquipesDoUsuarioSaoPrivadas": "Команды пользователя закрыты"
   }
 }

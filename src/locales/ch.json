@@ -118,7 +118,7 @@
     "E-mail": "电子邮件",
     "Sobrenome": "姓",
     "Data de Nascimento": "出生日期",
-    "Editar E-mail": "编辑电子邮件",
+    "Editar E-mail": "编辑信息",
     "Confirmar Edição": "确认编辑"
   },
   "privacidade": {
@@ -252,5 +252,16 @@
     "tarefasAtribuidas": "分配的任务",
     "informacoes": "信息",
     "dataInicial": "起始日期"
+  },
+  "perfilInfo": {
+    "nome": "姓名",
+    "sobrenome": "姓",
+    "email": "电子邮件",
+    "dataNascimento": "出生日期",
+    "equipesDe": "团队",
+    "inicieUmChatCom": "开始聊天",
+    "oUsuarioPossuiOPerfilPrivado": "用户拥有私人资料",
+    "username": "用户名",
+    "asEquipesDoUsuarioSaoPrivadas": "用户的团队是私人的"
   }
 }

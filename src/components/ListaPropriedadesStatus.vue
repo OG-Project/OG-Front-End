@@ -631,7 +631,7 @@ async function removeStatus(statusRecebe) {
     let indice = listaStatus.value.findIndex((obj) => obj.status.nome === statusRecebe.status.nome);
     if (indice !== -1) {
         listaStatus.value.splice(indice, 1);
-        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removeStatus') + statusRecebe.status.nome, projetoHistorico.value, usuarioHistorico.value)
+        criaHistorico.criaHistoricoProjeto("Removeu o status" + statusRecebe.status.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     if (!projetoEdita.value) {
         criaStatusCookies()
@@ -643,7 +643,7 @@ async function removePropriedade(propriedadeRecebida) {
     let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome && obj.propriedade.tipo == propriedadeRecebida.propriedade.tipo);
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
-        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removePropriedade') + propriedadeRecebida.propriedade.nome, projetoHistorico.value, usuarioHistorico.value)
+        criaHistorico.criaHistoricoProjeto("Removeu a propriedade" + propriedadeRecebida.propriedade.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     criaPropriedadeCookies()
 

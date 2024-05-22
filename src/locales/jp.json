@@ -118,7 +118,7 @@
     "E-mail": "メールアドレス",
     "Sobrenome": "姓",
     "Data de Nascimento": "誕生日",
-    "Editar E-mail": "メールアドレスを編集",
+    "Editar E-mail": "情報を編集する",
     "Confirmar Edição": "編集を確認"
   },
   "privacidade": {
@@ -252,5 +252,16 @@
     "tarefasAtribuidas": "割り当てられたタスク",
     "informacoes": "情報",
     "dataInicial": "開始日"
+  },
+  "perfilInfo": {
+    "nome": "名前",
+    "sobrenome": "姓",
+    "email": "メールアドレス",
+    "dataNascimento": "誕生日",
+    "equipesDe": "チーム",
+    "inicieUmChatCom": "チャットを開始する",
+    "oUsuarioPossuiOPerfilPrivado": "ユーザーはプライベートプロフィールを持っています",
+    "username": "ユーザー名",
+    "asEquipesDoUsuarioSaoPrivadas": "ユーザーのチームはプライベートです"
   }
 }

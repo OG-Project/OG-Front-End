@@ -24,7 +24,7 @@
                     </template>
                 </draggable>
                 <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none"
-                    @click="store.criaTarefa(status.propriedade)">
+                    @click="store.criaTarefa(status.propriedade), VueCookies.set('idReloadTarefa', '0')">
                     <p :style="corDoTexto(status.propriedade)">+ Nova</p>
                 </button>
             </div>
@@ -200,13 +200,13 @@ function mudaStatus() {
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-                        valorPropriedadeTarefaPutPut.valor = {
+                        valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             numero: valorPropriedadeTarefaPut.valor.valor ?? null,
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-                        valorPropriedadeTarefaPutPut.valor = {
+                        valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             valores: valorPropriedadeTarefaPut.valor.valor ?? null,
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,

@@ -1,8 +1,8 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div class="flex flex-row w-full items-center ">
-            <div @click="router.push('/perfil')" v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
-                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
+            <div @click="router.push('/perfil')" v-if="screenWidth < 1024" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
+                <flechaMobilePerfil class=" "></flechaMobilePerfil>
             </div>
             <h1 v-if="screenWidth <= 740"
             style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
@@ -18,7 +18,7 @@
             class="pl-32 items-center max-sm:pl-12 max-mobileGrande:pl-8">
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10 ">
-                    <div class="flex  lg:flex-row gap-8  max-md:flex-col">
+                    <div class="flex justify-between lg:flex-row gap-8  max-md:flex-col">
                         <div class="text-2xl w-[60%] ">
                             <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaCaracteres') }}<br>
                             <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaConteudo') }}<br>
@@ -36,7 +36,7 @@
                             </Botao>
                         </div>
                     </div>
-                    <div class="flex  items-start lg:flex-row gap-8 max-md:flex-col">
+                    <div class="flex justify-between items-start lg:flex-row gap-8 max-md:flex-col">
                         <div class="gap-5">
                             <div class="text-2xl min-w-[60%] w-full flex flex-col">
                                 <div> {{ $t('seguranca.seuEmailAtual') }}</div>
