@@ -614,15 +614,15 @@ function click() {
 }
 
 .mobileGrandeId {
-  @apply w-[80vw] h-[5vh]
+  @apply w-[80vw] h-[5vh] 2xl:h-[5vh] xl:h-[8vh]
 }
 
 .mobileMedioId {
-  @apply w-[42vw] h-[5vh]
+  @apply w-[42vw] h-[5vh] 2xl:h-[5vh] xl:h-[8vh]
 }
 
 .mobilePadraoId {
-  @apply w-[48vw] h-[5vh]
+  @apply w-[48vw] h-[5vh] 2xl:h-[5vh] xl:h-[8vh]
 }
 
 .mobilePequenoId {

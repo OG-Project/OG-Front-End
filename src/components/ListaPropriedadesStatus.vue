@@ -36,11 +36,11 @@
                             <div v-if="tarefasAtribuidas"
                                 class="bg-[var(--roxoClaro)] rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
-                                Tarefas Atribuidas
+                                {{ t('criaProjeto.tarefasAtribuidas') }}
                             </div>
                             <div v-if="!tarefasAtribuidas"
                                 class="bg-[var(--backgroundItems)] rounded-md w-full p-1 flex justify-center items-center">
-                                <p>Não há tarefas</p>
+                                <p>{{ t('criaProjeto.naoHaTarefas') }}</p>
                             </div>
                         </div>
                         <botaoSair class="w-[5%] h-[20%]"  @click="removePropriedade(propriedade)"></botaoSair>
@@ -193,8 +193,10 @@ import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router/index'
 import botaoSair from '../imagem-vetores/botao-x.vue'
 import { criaHistoricoStore } from '../stores/criaHistorico'
+import { useI18n } from 'vue-i18n';
 const criaHistorico = criaHistoricoStore();
 
+const { t } = useI18n();
 const instance = getCurrentInstance();
 const route = useRoute();
 const conexao = conexaoBD();
@@ -629,7 +631,7 @@ async function removeStatus(statusRecebe) {
     let indice = listaStatus.value.findIndex((obj) => obj.status.nome === statusRecebe.status.nome);
     if (indice !== -1) {
         listaStatus.value.splice(indice, 1);
-        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removeStatus') + statusRecebe.status.nome, projetoHistorico.value, usuarioHistorico.value)
+        criaHistorico.criaHistoricoProjeto("Removeu o status" + statusRecebe.status.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     if (!projetoEdita.value) {
         criaStatusCookies()
@@ -641,7 +643,7 @@ async function removePropriedade(propriedadeRecebida) {
     let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome && obj.propriedade.tipo == propriedadeRecebida.propriedade.tipo);
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
-        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removePropriedade') + propriedadeRecebida.propriedade.nome, projetoHistorico.value, usuarioHistorico.value)
+        criaHistorico.criaHistoricoProjeto("Removeu a propriedade" + propriedadeRecebida.propriedade.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     criaPropriedadeCookies()
 

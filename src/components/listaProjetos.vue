@@ -2,7 +2,7 @@
     <div :style="{ height: height, width: width }" class="flex justify-center">
       <div class="listaProjetos overflow-auto ">
         <div class="divGeral sm:flex w-[100%] max-mobile:justify-center">
-          <div v-if="!kanbanAtivo && screenWidth > 620" class="flex w-full">
+          <div v-if="!kanbanAtivo && screenWidth > 750" class="flex w-full">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
              @click="ativarBotao('urgentes')">{{$t('projeto.URGENTES')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
@@ -12,7 +12,7 @@
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }"
              @click="ativarBotao('meus-projetos')">{{$t('projeto.MEUS PROJETOS')}}</button>
           </div>
-          <div v-if="!kanbanAtivo && screenWidth <= 620" class="flex w-full mobile:w-[80vw]">
+          <div v-if="!kanbanAtivo && screenWidth <= 766" class="flex w-full mobile:w-[80vw]">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
              @click="ativarBotao('urgentes')">{{$t('projeto.URGENTES')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
@@ -77,10 +77,10 @@
           </div>
           </div>
          
-          <div  v-if="!kanbanAtivo && screenWidth <= 620" class="iconeKanban mobile:ml-[88vw] mobile:mt-[-2.8vh]" @click="toggleKanban()">
+          <div  v-if="!kanbanAtivo && screenWidth <= 750" class="iconeKanban sm:ml-[5vw] mobile:ml-[88vw] mobile:mt-[-2.8vh] miniMobile:ml-[87vw] miniMobile:mt-[-3vh]" @click="toggleKanban()">
             <iconKanban class="icone"></iconKanban>
           </div>
-          <div  v-if="!kanbanAtivo && screenWidth > 620 " class="iconeKanban mobile:mt-[-2.8vh]" @click="toggleKanban()">
+          <div  v-if="!kanbanAtivo && screenWidth > 766 " class="iconeKanban mobile:mt-[-2.8vh]" @click="toggleKanban()">
             <iconKanban class="icone"></iconKanban>
           </div>
         </div>
@@ -95,7 +95,7 @@
         <div v-else-if="!mostrarMensagem">
           <div v-if="!kanbanAtivo" class="projetos" >
             <div v-for="projeto of filtrarPorCategoria(statusBotao).length ? filtrarPorCategoria(statusBotao) : projetos" :key="projeto.id" >
-              <cardProjetos v-if="screenWidth >= 620" class="cardProjetos" 
+              <cardProjetos v-if="screenWidth >=  766" class="cardProjetos" 
               :name="projeto.nome" 
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
@@ -361,6 +361,7 @@ const buscarCorPorCategoria = (categoria) => {
   async function entrarNoProjeto(projeto) {
   console.log(projeto)
   VueCookies.set("IdProjetoAtual", projeto.id, 30000)
+  VueCookies.set('idReloadProjeto', '0');
   router.push({ path: '/projeto' }).then(() => {
         window.location.reload()
     });
@@ -387,18 +388,22 @@ kanban-board {
 }
 
 .urgentes {
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
 }
 
 .naoIniciado{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#0034BA] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#0034BA] justify-center 
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
 }
 .prontos{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#389300] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)]; 
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#389300] justify-center 
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)]; 
 }
 
 .meusProjetos{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#8E00FF] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)];
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#8E00FF] justify-center 
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)];
 }
 
 .cardProjetos{
@@ -476,37 +481,6 @@ kanban-board {
 }
 .nenhumProjeto{
   @apply ml-[42%] mt-[22vh];
-}
-
-@media(max-width: 620px){
-  kanban-board {
-    width: 800px;
-    height: 600px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    overflow: auto;
-  }
-  .cardProjetos{
-    @apply mt-20 text-2xl;
-    max-width: calc(125% - 1px);
-  }
-  .iconeKanban{
-    @apply w-[60px] h-[60px] flex mt-[1.2vh];
-  }
-  .icone{
-    @apply w-[50px] h-[50px]
-  }
-  .iconeCard{
-    @apply flex justify-end  mr-[-0.5vw] mt-[1.2vh];
-  } 
-  .mensagemKanban{
-    @apply ml-[42%];
-  }
-  .nenhumProjeto{
-    @apply ml-[42%] mt-[22vh];
-  }
 }
 }
   </style>
