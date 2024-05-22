@@ -51,7 +51,7 @@ onMounted(async () => {
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   
-
+  console.log(usuario.value);
   let root = document.documentElement.style
   configuracao.value = usuario.value.configuracao
   console.log(configuracao.value);
@@ -82,8 +82,8 @@ onBeforeUpdate(async()=>{
         console.log(usuario.value);
 })
 
-
 onUpdated(()=>{
+
   if(route.path!='/login' ){
    console.log(usuario.value.configuracao.isTutorial);
    console.log(usuario.value.configuracao.rotaDoPasso);
