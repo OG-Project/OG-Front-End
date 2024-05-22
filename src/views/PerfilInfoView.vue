@@ -213,32 +213,7 @@ function verificaTemEquipe(equipes) {
     return false
 }
 
-async function iniciarChat() {
-    chat = {}
-    conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/chat/pessoal/' + usuario.value.id).then((response) => {
-        chat = response
-        if (chat == {}) {
-            conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/usuario').then((response) => {
-                let chat = {
-                    usuarios: [{
-                        id: usuario.value.id
-                    }, {
-                        id: response.id
-                    }]
-                }
-                console.log(chat.usuarios)
-                conexao.cadastrar(chat, '/chat/pessoal').then((response) => {
-                    console.log(response)
-                    localStorage.setItem('opcao', 1)
-                    router.push('/chat/' + usuario.value.id)
-                })
-            })
-        }else{
-            console.log("entrou")
-            router.push('/chat/' + usuario.value.id)
-        }
-    })
-}
+
 
 let Imagem = computed(() => {
     if (foto.value != null) {

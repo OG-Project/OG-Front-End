@@ -51,7 +51,7 @@
       <div class="projetos ">
         <div v-for="projeto of listaProjetos" :key="projeto.id">
           <div class="flex w-[100%]">
-            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
+            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgressoProjeto(projeto)"
               :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
               :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)" :tempoAtuacao="projeto.tempoAtuacao" >
