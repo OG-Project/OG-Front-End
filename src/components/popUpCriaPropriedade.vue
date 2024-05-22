@@ -5,7 +5,7 @@
             <div class="w-full h-full flex flex-col justify-between items-center">
                 <div class="flex justify-center h-[30%] items-end">
 
-                    <Input styleInput="input-transparente-claro-grande" icon="../src/imagem-vetores/icon-lapis-preto.svg"
+                    <Input styleInput="input-transparente-claro-grande" icon="../src/imagemVetores/icon-lapis-preto.svg"
                      conteudoInput="Propriedade" direcao="direita"
                      v-model="nomePropriedade" tipo="obrigatorio"></Input>  
                      

@@ -35,7 +35,7 @@
             <div v-if="popUpStatus" class=" w-[100%] h-full flex justify-end">
                 <div class="w-[100%] h-[80%] flex flex-col  justify-center  bg-[var(--backgroundItemsClaros)]">
                     <div class="h-[30%] w-full flex justify-end">
-                        <img src="../../imagem-vetores/triangulo.svg">
+                        <img src="../../imagemVetores/triangulo.svg">
                     </div>
                     <div class="flex flex-row justify-between">
                         <div class="pl-2">

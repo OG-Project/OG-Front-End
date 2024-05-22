@@ -72,7 +72,7 @@
               {{$t('projeto.NENHUM PROJETO')}}
             </div>
             <div  v-if="kanbanAtivo" class="flex justify-center mt-10" >
-              <img src="../imagem-vetores/pasta.svg" alt="">
+              <img src="../imagemVetores/pasta.svg" alt="">
             </div>
           </div>
           </div>
@@ -89,7 +89,7 @@
             {{$t('projeto.NENHUM PROJETO')}}
           </div>
           <div v-if="!kanbanAtivo" class="flex justify-center mt-10" >
-            <img src="../imagem-vetores/pasta.svg" alt="">
+            <img src="../imagemVetores/pasta.svg" alt="">
           </div>
         </div>
         <div v-else-if="!mostrarMensagem">
@@ -128,8 +128,8 @@
   import KanbanProjetos from './kanbanProjetos.vue';
   import VueCookies from "vue-cookies";
   import { useRouter } from 'vue-router'
-  import iconCard from '../imagem-vetores/iconCard.vue';
-  import iconKanban from '../imagem-vetores/iconKanban.vue';
+  import iconCard from '../imagemVetores/iconCard.vue';
+  import iconKanban from '../imagemVetores/iconKanban.vue';
   const props = defineProps({
     height: { type: String, required: true },
     width: { type: String, required: true }
