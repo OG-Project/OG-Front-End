@@ -133,6 +133,7 @@ function redireciona(rota) {
   });
   if (rota == '/criaTarefa') {
     const criaTarefa = criaTarefaEBuscaStore();
+    VueCookies.set('idReloadTarefa', '0');
     criaTarefa.criaTarefa();
   }
 }

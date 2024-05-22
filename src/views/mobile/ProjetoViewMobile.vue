@@ -42,6 +42,16 @@ let idProjeto = VueCookies.get("IdProjetoAtual")
 let projeto = ref({})
 const banco = conexaoBD();
 
+function reloadTelaProjeto() {
+  const reload = VueCookies.get('idReloadProjeto');
+  if (reload == '0') {
+    console.log("reload")
+    VueCookies.set('idReloadProjeto', '1');
+    window.location.reload();
+  }
+}
+
+reloadTelaProjeto()
 
 const editaProjetoFunc = editaProjetoStore();
 onMounted(async() => {
