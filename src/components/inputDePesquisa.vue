@@ -42,7 +42,7 @@
 <script setup>
 import Input from "./Input.vue";
 import { createVNode, ref, watch } from "vue";
-import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
+import iconePesquisa from "../imagemVetores/iconePesquisa.svg";
 import { defineProps, defineEmits } from "vue";
 import VueCookies from "vue-cookies";
 import router from "@/router";

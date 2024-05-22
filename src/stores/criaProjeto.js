@@ -21,20 +21,22 @@ export const criaProjetoStore = defineStore('criaProjeto', {
   
   actions: {
     async criaProjeto(nome, descricao, equipes, propriedades, status, responsaveis, dataFinal) {
-      let equipeAtual = VueCookies.get("equipeSelecionada");
-      equipeAtual = await api.buscarUm(equipeAtual, "/equipe")
+      // let equipeAtual = VueCookies.get("equipeSelecionada");
+      // equipeAtual = await api.buscarUm(equipeAtual, "/equipe")
       let projetoCriado = Projeto
       let lista = []
       let projetoAux = {}
       projetoCriado.nome = nome;
       projetoCriado.descricao = descricao;
-      projetoCriado.projetoEquipes = [{ id: null, equipe: equipeAtual }];
+      projetoCriado.projetoEquipes = equipes;
       projetoCriado.propriedades = propriedades;
       projetoCriado.statusList = status;
       projetoCriado.responsaveis = responsaveis;
       projetoCriado.dataFinal = dataFinal
 
-      if(VueCookies.get("idAuxEquipe") != null && VueCookies.get("idAuxEquipe") != undefined && VueCookies.get("idAuxEquipe") != "" && VueCookies.get("idAuxEquipe") != "undefined"){
+      if(VueCookies.get("idAuxEquipe") != null 
+      && VueCookies.get("idAuxEquipe") != undefined 
+      && VueCookies.get("idAuxEquipe") != "" && VueCookies.get("idAuxEquipe") != "undefined"){
         api.cadastrarProjetoEquie(projetoCriado,VueCookies.get("idAuxEquipe") ,'/projeto').then(async (res) => {
           projetoAux = res.data;
           VueCookies.set("IdProjetoAtual", res.data.id)
@@ -58,7 +60,9 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       let equipes = []
       let membros = []
       let equipeAtual = VueCookies.get("equipeSelecionada");
-      equipeAtual = await api.buscarUm(equipeAtual, "/equipe")
+      if(equipeAtual!=null){
+        equipeAtual = await api.buscarUm(equipeAtual, "/equipe")
+      }
       for (const equipe of equipesConvidadas) {
         if (equipe.equipe.id != equipeAtual.id) {
           membros.push(await api.buscarUm(equipe.equipe.id, "/equipe/criador"))

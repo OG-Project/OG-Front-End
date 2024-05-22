@@ -35,8 +35,8 @@
 import BarraLateral from "../components/BarraLateral.vue";
 import { onBeforeMount, ref } from "vue";
 import Botao from "../components/Botao.vue";
-import notificacao from "../imagem-vetores/NotificacaoDinamic.vue";
-import UserIcon from "../imagem-vetores/UserIcon.svg";
+import notificacao from "../imagemVetores/NotificacaoDinamic.vue";
+import UserIcon from "../imagemVetores/UserIcon.svg";
 import Input from "./Input.vue";
 import router from "@/router";
 import { onMounted } from "vue";

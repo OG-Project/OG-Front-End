@@ -5,7 +5,7 @@
         :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados"
         @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')" @mouseover="expandirImagem"
         @mouseleave="reduzirImagem">
-      <img class="imagemEquipe bg-[#d7d7d7]" v-else src="../imagem-vetores/imagemEquipePadrao.svg"
+      <img class="imagemEquipe bg-[#d7d7d7]" v-else src="../imagemVetores/imagemEquipePadrao.svg"
         @click="abrePopUp(equipeSelecionada.equipe, 'engrenagem')">
       <h1 class="tituloEquipe ">{{ equipeEditar.nome }}</h1>
     </div>
@@ -51,10 +51,18 @@
       <div class="projetos ">
         <div v-for="projeto of listaProjetos" :key="projeto.id">
           <div class="flex w-[100%]">
+<<<<<<< HEAD
             <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
               :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
               :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)" :tempoAtuacao="projeto.tempoAtuacao" >
+=======
+            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"
+              :feito="calcularProgressoProjeto(projeto)" :name="projeto.nome" :descricao="projeto.descricao"
+              :comeco="formatarData(projeto.dataCriacao)"
+              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
+              :responsavel="listaResponsaveis" :tempoAtuacao="projeto.tempoAtuacao">
+>>>>>>> 67eb082fbfb7befd4122c7ee8cfc93f636e3f23e
             </CardProjetos>
           </div>
         </div>
@@ -73,8 +81,8 @@ import ListaMembrosEquipe from "../components/listaMembrosEquipe.vue";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import CardProjetos from "../components/cardProjetos.vue";
 import { useRouter } from 'vue-router'
-import engrenagem from "../imagem-vetores/engrenagem.vue";
-import membrosEquipeImagem from "../imagem-vetores/membrosEquipeImagem.vue";
+import engrenagem from "../imagemVetores/engrenagem.vue";
+import membrosEquipeImagem from "../imagemVetores/membrosEquipeImagem.vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('IdUsuarioCookie')
@@ -119,24 +127,24 @@ async function criarProjeto() {
   VueCookies.set("IdProjetoAtual")
 }
 
-async function verificaMembroPermissao(){
-     
-     const usuario = await banco.buscarUm(usuarioLogado,"/usuario")
-     console.log(usuario.equipes)
-     usuario.equipes.forEach((equipeUsuario) =>{
-        if(equipeUsuario.equipe.id == equipeSelecionada){
-            console.log(usuario);
-            if(equipeUsuario.criador){
-                retornoPermissao.value = true;
-                  return;
-            }
-            else if(equipeUsuario.permissao.length > 1){
-                  retornoPermissao.value = true;
-                  return;
-            }
-        } 
-    })
-    
+async function verificaMembroPermissao() {
+
+  const usuario = await banco.buscarUm(usuarioLogado, "/usuario")
+  console.log(usuario.equipes)
+  usuario.equipes.forEach((equipeUsuario) => {
+    if (equipeUsuario.equipe.id == equipeSelecionada) {
+      console.log(usuario);
+      if (equipeUsuario.criador) {
+        retornoPermissao.value = true;
+        return;
+      }
+      else if (equipeUsuario.permissao.length > 1) {
+        retornoPermissao.value = true;
+        return;
+      }
+    }
+  })
+
 }
 
 function formatarData(data) {
@@ -162,16 +170,50 @@ async function buscarProjetosEquipe() {
 
 }
 
-function calcularProgresso(projeto) {
-  if (!projeto.tarefas || projeto.tarefas.length == 0) {
-    return 0; // se não houver tarefas, o progresso é 0%
+function calcularProgressoProjeto(projeto) {
+  let totalSubTarefas = 0;
+  let tarefasConcluidas = 0;
+
+  if (projeto.categoria == "nao-iniciados") {
+    projeto.tarefas.forEach(tarefa => {
+      tarefa.subTarefas.forEach(subtarefa => {
+        subtarefa.concluido = false;
+      });
+    });
+
+    return 0;
+  } else if (projeto.categoria == "prontos") {
+    projeto.tarefas.forEach(tarefa => {
+      tarefa.subTarefas.forEach(subtarefa => {
+        subtarefa.concluido = true;
+      });
+    });
+
+    return 100;
   }
 
-  const totalTarefas = projeto.tarefas.length;
-  const tarefasConcluidas = projeto.tarefas.filter(tarefa => tarefa.concluida).length;
+  let quantidadeTarefasConcluidas =0;
+  projeto.tarefas.forEach(tarefa => {
+    let todasConcluidas = true;
+    tarefa.subTarefas.forEach(subtarefa => {
+      totalSubTarefas++;
+      tarefasConcluidas = true;
+      if (!subtarefa.concluido) { 
+        todasConcluidas = false;
+      }else{
+        quantidadeTarefasConcluidas++;
+      }
+    }); 
+  });
 
-  return Math.round((tarefasConcluidas / totalTarefas) * 100);
+  if (totalSubTarefas === 0) {
+    return 0; // Retorna 0 se não houver tarefas no projeto
+  } else {
+    return Math.floor((quantidadeTarefasConcluidas / totalSubTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
+  }
 }
+
+
 
 async function filtrarEquipe() {
   console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))

@@ -16,7 +16,7 @@
     </template>
     <script setup>
   import {onMounted, ref} from 'vue';
-  import userTodoPreto from '../imagem-vetores/userTodoPreto.vue'
+  import userTodoPreto from '../imagemVetores/userTodoPreto.vue'
   let fotoUrl= ref()
 
     const props = defineProps({

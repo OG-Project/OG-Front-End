@@ -11,23 +11,27 @@
                         <b>{{ name }}</b>
                     </div>
                     <div class="tempoAtuacao w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
-                        <img src="../imagem-vetores/relogio.svg">
+                        <img src="../imagemVetores/relogio.svg">
                     </div>
                     <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
                         <div class="flex justify-end">
-                            <img src="../imagem-vetores/triangulo.svg">
+                            <img src="../imagemVetores/triangulo.svg">
                         </div>
-                        Tempo de Atuação: {{ tempoAtuacao }}
+                        {{ $t('cardProjetos.tempoAtuacao') }}: {{ tempoAtuacao }}
                     </div>
                 </div>
 
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
+<<<<<<< HEAD
                     <b>Responsavel:</b> {{ responsaveis }}
+=======
+                    <b>{{$t('cardProjetos.responsavel')}}:</b> {{ responsavel }}
+>>>>>>> 67eb082fbfb7befd4122c7ee8cfc93f636e3f23e
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
-                    <b>Descrição:</b> {{ descricao }}
+                    <b>{{$t('cardProjetos.descricao')}}:</b> {{ descricao }}
                 </p>
             </div>
         </div>
@@ -214,7 +218,7 @@ function somePopUp() {
         }
         .cardTotal {
             @apply flex flex-col items-center justify-between relative w-[330px] h-[289px] bg-[var(--backgroundItemsClaros)] overflow-hidden mt-[3vh] ;
-            transition: transform 0.3s ease;
+            transition: transform 0.5s ease;
         }
         .barraCinzaGrafico {
             @apply relative text-white flex w-[70vw] h-5 justify-start bg-gray-500;

@@ -63,7 +63,6 @@ import { onUnmounted } from 'vue';
 import flecha from '../assets/flecha-mobile-perfil.vue'
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 import { onUpdated } from 'vue';
-import router from '../router';
 let perfil = perfilStore()
 let conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)
