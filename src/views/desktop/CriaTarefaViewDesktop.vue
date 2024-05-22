@@ -157,7 +157,6 @@
           class="flex h-[18vh] w-[80%] bg-[var(--backgroundItems)] ml-12 mt-4 overflow-auto">
           <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
             v-for="arquivo in tarefa.arquivos">
-            {{ console.log(arquivo) }}
             <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
               <img
                 v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
@@ -549,7 +548,6 @@ const banco = conexaoBD();
 function reloadTelaTarefa() {
   const reload = VueCookies.get('idReloadTarefa');
   if (reload == '0') {
-    console.log("reload")
     VueCookies.set('idReloadTarefa', '1');
     window.location.reload()
   }
@@ -558,16 +556,6 @@ function reloadTelaTarefa() {
 let listaDeUsuariosParaBusca = ref([]);
 
 reloadTelaTarefa()
-
-function veSeAPropriedadeTaNaTarefa(propriedade) {
-  console.log(propriedade);
-  if (propriedade.valor.valor != '') {
-    return true
-  }
-  else {
-    return false
-  }
-}
 
 let tempoAtuado;
 let horaEntrada;
@@ -673,7 +661,6 @@ function getIconSrc(arquivo) {
 
 function timerTempoAtuacao() {
   horaEntrada = new Date().getTime()
-  console.log(horaEntrada);
 }
 
 async function patchDaListaDePropriedades() {
@@ -707,20 +694,17 @@ async function patchDaListaDePropriedades() {
             id: props.valor.id,
             data: propsComValor.valor.valor
           }
-          console.log(valor.data);
           props.valor = valor
         }
       }
     }
   }
-  console.log(tarefa2);
   banco.atualizar(tarefa2, "/tarefa")
 }
 
 function veSeOStatusTaNaTarefa(status) {
   if (tarefa.value.status) {
     if (tarefa.value.status.id == status.id) {
-      console.log(true);
       return true
     }
     return false
@@ -817,11 +801,7 @@ async function criaTarefaNoConcluido() {
   tarefa.value.responsaveis.forEach(async (responsavel) => {
     let usuariosBanco = await banco.procurar("/usuario")
     usuariosBanco.forEach(usuarioBanco => {
-      console.log(usuarioBanco.username);
-      console.log(responsavel);
       if (usuarioBanco.username == responsavel) {
-        console.log(tarefaCriando);
-        console.log(usuarioBanco);
         let usuarioTarefa = {
           responsavel: usuarioBanco
         }
@@ -829,16 +809,13 @@ async function criaTarefaNoConcluido() {
       }
     });
   });
-  console.log(tarefaCriando)
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
-    console.log(tarefa.value.arquivos.length);
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
     }
     banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
-      console.log(response);
     });
     router.push('/projeto/kanban')
   });
@@ -940,8 +917,6 @@ async function criaPropriedade() {
     if (nomePropriedade.value != "") {
       const cria = criaPropriedadeTarefaStore();
       tipoPropriedade.value = tipoPropriedade.value.toUpperCase();
-      console.log(tipoPropriedade.value);
-      console.log(nomePropriedade.value);
 
       cria.criaPropriedade(
         nomePropriedade.value,
@@ -955,10 +930,8 @@ async function criaPropriedade() {
   projetoDaTarefa.value = await procuraProjetosDoBanco();
   nomePropriedade.value = "";
   tipoPropriedade.value = "";
-  console.log(projetoDaTarefa.value.propriedades);
   let tarefaAtual = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa");
   propriedades.value = tarefaAtual.valorPropriedadeTarefas;
-  console.log(propriedades.value);
   propriedadeSendoCriada.value = false;
 }
 async function calculaTempoAtuacao() {
@@ -970,7 +943,6 @@ async function calculaTempoAtuacao() {
   let horasSoma = 0
   if (tarefa.value.tempoAtuacao != null && tarefa.value.tempoAtuacao != undefined && tarefa.value.tempoAtuacao != 0 && tarefa.value.tempoAtuacao != "") {
     [horasSoma, minutosSoma, segundosSoma] = tarefa.value.tempoAtuacao.split(":").map(Number);
-    console.log(horasSoma)
   }
   const horaSaida = new Date().getTime();
   const diferenca = horaSaida - horaEntrada;
@@ -981,7 +953,6 @@ async function calculaTempoAtuacao() {
   segundos += segundosSoma;
   minutos += minutosSoma;
   horas += horasSoma;
-  console.log(horasSoma)
   minutos += Math.floor(segundos / 60);
   segundos = segundos % 60;
 
@@ -993,7 +964,6 @@ async function calculaTempoAtuacao() {
   horas = horas < 10 ? `0${horas}` : horas;
 
   tempoAtuado = `${horas}:${minutos}:${segundos}`;
-  console.log(tempoAtuado)
   let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   let tarefaCriando = {
     id: JSON.parse(VueCookies.get("IdTarefaCookies")),
@@ -1070,11 +1040,7 @@ async function calculaTempoAtuacao() {
   tarefa.value.responsaveis.forEach(async (responsavel) => {
     let usuariosBanco = await banco.procurar("/usuario")
     usuariosBanco.forEach(usuarioBanco => {
-      console.log(usuarioBanco.username);
-      console.log(responsavel);
       if (usuarioBanco.username == responsavel) {
-        console.log(tarefaCriando);
-        console.log(usuarioBanco);
         let usuarioTarefa = {
           responsavel: usuarioBanco
         }
@@ -1082,16 +1048,13 @@ async function calculaTempoAtuacao() {
       }
     });
   });
-  console.log(tarefaCriando)
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
-    console.log(tarefa.value.arquivos.length);
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
     }
     banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
-      console.log(response);
     });
   });
 }
@@ -1145,18 +1108,14 @@ async function puxaTarefaDaEdicao() {
 
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
-  console.log(tarefaAux.responsaveis);
-  console.log(tarefaAux);
   tarefa.value.nome = tarefaAux.nome;
   tarefa.value.descricao = tarefaAux.descricao;
   for (const comentarioId of tarefaAux.comentarios) {
     let comentario = await banco.buscarUm(comentarioId, "/comentario");
-    console.log(comentario);
     tarefa.value.comentarios.push(comentario);
   }
   for (const props of tarefaAux.valorPropriedadeTarefas) {
     if (props.propriedade.tipo == "SELECAO" && props.valor.valor == null) {
-      console.log("entrou no if");
       props.valor.selecao = []
     }
   }
@@ -1176,7 +1135,6 @@ async function puxaTarefaDaEdicao() {
 
 async function atualizaPropriedadesEStatus() {
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
-  console.log(IdTarefaCookies);
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
   status.value = projetoDaTarefa.value.statusList;
   propriedades.value = tarefaAux.valorPropriedadeTarefas;
@@ -1313,19 +1271,12 @@ async function adicionaExcluiStatusNaTarefa(status) {
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
-  console.log("Entrou na função");
   if (!estaNaTarefa) {
-    console.log("push");
     tarefa.value.propriedades.push(propriedade)
   }
   else {
-    console.log("antes de começar o for");
     for (let propriedadeForTarefa of tarefa.value.propriedades) {
-      console.log("começou o for");
-      console.log(propriedade.id);
-      console.log(propriedadeForTarefa.id);
       if (propriedadeForTarefa.propriedade.id == propriedade.propriedade.id) {
-        console.log("entrou pra deletar a propriedade ", propriedade);
         propriedade.valor.valor = propriedadeForTarefa.valor.valor
         tarefa.value.propriedades.splice(tarefa.value.propriedades.indexOf(propriedadeForTarefa), 1);
       }
@@ -1439,8 +1390,6 @@ const parametroDoFiltroPropriedade = ref(t('criaTarefa.sort_by')); // Definindo 
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 const listaFiltradaPropriedades = computed(() => {
-  console.log(parametroDoFiltroPropriedade.value);
-  console.log(t('criaTarefa.sort_by'));
   if (parametroDoFiltroPropriedade.value === t('criaTarefa.sort_by')) {
     return propriedades.value;
   }
@@ -1480,10 +1429,8 @@ function numeroDeSubTarefasConcluidas() {
 function veSeEResponsavelDaTarefa(usuario) {
   tarefa.value.responsaveis.forEach((responsavel) => {
     if (responsavel.username == usuario.username) {
-      console.log(true);
       return true;
     } else {
-      console.log(false);
       return false;
     }
   });
