@@ -51,18 +51,10 @@
       <div class="projetos ">
         <div v-for="projeto of listaProjetos" :key="projeto.id">
           <div class="flex w-[100%]">
-<<<<<<< HEAD
             <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
               :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
               :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)" :tempoAtuacao="projeto.tempoAtuacao" >
-=======
-            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"
-              :feito="calcularProgressoProjeto(projeto)" :name="projeto.nome" :descricao="projeto.descricao"
-              :comeco="formatarData(projeto.dataCriacao)"
-              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
-              :responsavel="listaResponsaveis" :tempoAtuacao="projeto.tempoAtuacao">
->>>>>>> 67eb082fbfb7befd4122c7ee8cfc93f636e3f23e
             </CardProjetos>
           </div>
         </div>

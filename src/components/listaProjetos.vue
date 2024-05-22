@@ -254,27 +254,6 @@ onMounted(() => {
   }
 }
 
-<<<<<<< HEAD
-=======
-async function obterNomesResponsaveis(projeto) {
-  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-    let responsaveisComNome = []
-    for (let responsavel of projeto.responsaveis) {
-      let responsavelAtual = await buscaResponsaveis(responsavel)
-      if(responsavelAtual!=null){
-        responsaveisComNome.push(responsavelAtual.username)
-        listaResponsaveis.value = responsaveisComNome
-      }
-      if (responsaveisComNome.length >= 0) {
-        listaResponsaveis.value = responsaveisComNome.join(', ');
-      }
-      
-    }
-  } else {
-    return "Não há responsáveis";
-  }
-}
->>>>>>> 67eb082fbfb7befd4122c7ee8cfc93f636e3f23e
 async function buscaResponsaveis(responsavel) {
   if(responsavel.idResponsavel!=null){
     return await banco.buscarUm(responsavel.idResponsavel, "/usuario")

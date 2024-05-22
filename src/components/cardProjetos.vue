@@ -17,17 +17,13 @@
                         <div class="flex justify-end">
                             <img src="../imagemVetores/triangulo.svg">
                         </div>
-                        {{ $t('cardProjetos.tempoAtuacao') }}: {{ tempoAtuacao }}
+                        {{ $t('cardProjetos.tempoDeAtuacao') }}: {{ tempoAtuacao }}
                     </div>
                 </div>
 
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-<<<<<<< HEAD
-                    <b>Responsavel:</b> {{ responsaveis }}
-=======
                     <b>{{$t('cardProjetos.responsavel')}}:</b> {{ responsavel }}
->>>>>>> 67eb082fbfb7befd4122c7ee8cfc93f636e3f23e
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
