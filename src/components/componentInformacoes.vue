@@ -83,7 +83,7 @@
                 </div>
                 <!-- conferir se de fato vamos usar isso de alteração -->
                 <div v-if="screenWidth>=1024">
-                        <div class="flex justify-end mr-[15%] mt-[20%]">
+                        <div class="flex justify-end mr-[15%] mt-[30%]">
                                 <Botao v-if="!editar" 
                                 :funcaoClick="alterarInformacoes" 
                                 preset="PadraoRoxo" 
@@ -99,7 +99,7 @@
                         </div>
                 </div>
                 <div v-else >
-                        <div class="flex justify-end mr-[15%] mt-[20%]">
+                        <div class="flex justify-end mr-[15%] mt-[30%]">
                                 <Botao v-if="!editar" 
                                 :funcaoClick="alterarInformacoes" 
                                 tamanhoPadrao="mobilemedio" 
