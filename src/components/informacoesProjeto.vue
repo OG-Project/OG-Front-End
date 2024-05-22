@@ -1,12 +1,12 @@
 <template>
     <div class="scrollBarInfo">
         <div class="h-[6%] pt-8 flex items-end justify-center">
-            <h1 class="text-3xl font-semibold">Informações</h1>
+            <h1 class="text-3xl font-semibold">{{$t('criaProjeto.informacoes')}}</h1>
         </div>
         <div class="  h-auto mt-4 mb-4 gap-4 w-[100%] flex flex-col justify-evenly ">
             <div class="flex pl-8 gap-2 " v-if="!mudaAlinhamentoNomeProjeto">
                 <div class="w-[60%] justify-start flex-row">
-                    <p>Nome do projeto:</p>
+                    <p>{{$t('criaTarefa.project_name')}}:</p>
                 </div>
                 <div class="w-[40%] justify-end flex-row ">
                     <p class="w-[100%] text-[var(--roxoAtencao)] break-all">{{ nomeProjeto }}</p>
@@ -14,7 +14,7 @@
             </div>
             <div class="flex flex-col pl-8 gap-2 " v-else>
                 <div class="w-[60%] justify-start flex-row">
-                    <p>Nome do projeto:</p>
+                    <p>{{$t('criaTarefa.project_name')}}:</p>
                 </div>
                 <div class="w-full justify-end flex-row ">
                     <p class="w-[100%] text-[var(--roxoAtencao)] break-all">{{ nomeProjeto }}</p>
@@ -22,7 +22,7 @@
             </div>
             <div class="flex pl-8 mt-4 pb-2">
                 <div class="w-[60%] justify-start flex-row">
-                    <p>Data Inicial:</p>
+                    <p>{{$t('criaProjeto.dataInicial')}}:</p>
                 </div>
                 <div class="w-[40%] justify-end flex-row">
                     <p class="text-[var(--roxoAtencao)]">{{ DataInicialProjeto }}</p>
@@ -30,7 +30,7 @@
             </div>
             <div class="flex pl-8">
                 <div class="w-[60%] justify-start flex-row">
-                    <p>Data Final:</p>
+                    <p>{{$t('criaProjeto.dataFinal')}}:</p>
                 </div>
                 <div class="w-[40%] justify-end flex-row">
                     <p class="text-[var(--roxoAtencao)]">{{ DataFinalProjeto }}</p>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="h-[4%] flex items-center justify-center p-2">
-            <h1 class="text-xl font-semibold">Status</h1>
+            <h1 class="text-xl font-semibold">{{$t('criaTarefa.status')}}</h1>
         </div>
         <div class="h-max flex items-center justify-center">
             <div class="flex flex-col items-center justify-center h-[80%] w-[80%] gap-3" v-if="temLista(listaStatus)">
@@ -55,15 +55,15 @@
             </div>
         </div>
         <div class="h-[4%] flex items-center justify-center p-6">
-            <h1 class="text-xl font-semibold">Propriedades</h1>
+            <h1 class="text-xl font-semibold">{{$t('criaTarefa.properties')}}</h1>
         </div>
         <div class="h-[35%] flex flex-col items-center justify-center p-8" v-if="!temLista(listaPropriedades)">
             <NotePad></NotePad>
-            <p class="text-center">Este projeto não possui nenhuma propriedade</p>
+            <p class="text-center">{{$t('criaTarefa.this_taks_has_no_properties')}}</p>
         </div>
         <div class="h-[35%] flex flex-col pl-4 gap-8" v-if="temLista(listaPropriedades)">
             <div v-for="propriedade of listaPropriedades" class="flex pl-8 gap-2 h-max">
-                <p>Nome Propriedade:</p>
+                <p>{{$t('criaTarefa.property_name')}}:</p>
                 <p class="text-center ">{{ propriedade.nome }}</p>
             </div>
         </div>

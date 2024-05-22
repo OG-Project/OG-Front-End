@@ -96,7 +96,7 @@
     "projetos": "Proyectos",
     "projeto": "Proyecto"
   },
-  "acessibilidade":{
+  "acessibilidade": {
     "Acessibilidade": "Accesibilidad",
     "Alterar Idioma": "Cambiar Idioma",
     "Digitar com a voz": "Escribir con voz",
@@ -111,7 +111,7 @@
     "Modo Claro": "Modo Claro",
     "Modo Escuro": "Modo Oscuro"
   },
-  "informacoes":{
+  "informacoes": {
     "Informações": "Información",
     "Nome": "Nombre",
     "Username": "Nombre de Usuario",
@@ -140,7 +140,7 @@
     "alterarEmail": "Cambiar Correo Electrónico",
     "deletarConta": "¿Desea eliminar su Cuenta?"
   },
-  "paginaAdm":{
+  "paginaAdm": {
     "listaDeTarefas": "Lista de Tareas",
     "tarefasDoSeuProjeto": "Tareas de tu Proyecto",
     "nomeDaTarefa": "Nombre de la Tarea",
@@ -152,7 +152,7 @@
     "emProgresso": "En Progreso",
     "prontas": "Listas",
     "totalMinutosTrabalhados": "Total de Minutos Trabajados",
-    "historico": "Histórico"   
+    "historico": "Histórico"
   },
   "criaEquipePopUp": {
     "nomeEquipe": "Nombre del Equipo",
@@ -166,78 +166,91 @@
     "membroAviso": "El miembro ya pertenece al equipo.",
     "voceAviso": "Ya perteneces al equipo.",
     "nomeObrigatorio": "El nombre del equipo es obligatorio"
-},
-"editarEquipePopUp": {
-  "equipeEditar": "Editar Equipo",
-  "deletar": "Eliminar",
-  "editar": "Editar",
-  "sair": "Salir",
-  "salvar": "Guardar cambios",
-  "alteracao": "No se detectaron cambios",
-  "edicao": "Edición completada",
-  "confirmar": "Confirmar"
-},
-"selectComponent": {
-  "edit": "editar",
-  "view": "ver"
-},
-"tutorial": {
-  "bemVindo": "¡Bienvenido!",
-  "mostraAtividades": "Aquí se muestran tus actividades más importantes",
-  "proximo": "Siguiente",
-  "dashboard": "Tablero",
-  "informacoes": "Información para gestionar tus tareas hechas y no hechas.",
-  "pular": "Omitir",
-  "voltar": "Volver",
-  "menu": "Menú",
-  "clique": "Haz clic para acceder al flujo del sistema",
-  "partes": "Partes importantes",
-  "equipe": "Equipo, aquí puedes ver tus equipos y crearlos. Haz clic para ver",
-  "crieEquipe": "Crear un Equipo",
-  "cliqueECrie": "Haz clic aquí para crear nuevos equipos",
-  "preencha": "Llena los campos",
-  "crieAEquipe": "Crea el Equipo",
-  "entreEquipe": "Únete al equipo creado",
-  "projetosEquipe": "Aquí puedes ver los proyectos del equipo",
-  "crieProjeto": "Haz clic para crear un proyecto",
-  "crieUmProjeto": "Crea un Proyecto",
-  "gerenciar": "Aquí gestionarás las tareas del proyecto en cuestión",
-  "crieTarefa": "Crea la primera tarea",
-  "preenchaTarefa": "Llena los campos para poder crear la tarea.",
-  "completar": "Haz clic aquí para completar",
-  "formas": "Hay diferentes formas de visualizar tus tareas como Kanban, Lista, Calendario y Línea de Tiempo",
-  "funcionalidades": "Existen más funcionalidades en el sitio, pero esto es lo esencial.",
-  "finalizar": "finalizar"
-},
-"confirmarPopUp": {
-  "confirmar": "¿Estás seguro?"
-},
-"historicoTarefa": {
-  "deletarSubTarefa": "Eliminó la subtarea ",
-  "editou": "Editó la tarea ",
-  "criaTarefa": "Creó la tarea ",
-  "criaSubTarefa": "Creó la subtarea ",
-  "status": "Cambiado el estado ",
-  "criaComentario": "Comentó en la tarea ",
-  "deletaComentario": "Eliminó un comentario ",
-  "concluiu": "Concluyó la subtarea "
-},
-"historicoProjeto": {
-  "editou": "Editó el proyecto",
-  "criou": "Creó el proyecto",
-  "addResponsavel": "Añadió un nuevo responsable",
-  "convidouEquipe": "Invitó a un equipo",
-  "removeEquipe": "Eliminó un equipo",
-  "removeResponsavel": "Eliminó al responsable",
-  "status": "Creó un nuevo estado",
-  "propriedade": "Creó una propiedad",
-  "removeStatus": "Eliminó el estado",
-  "removePropriedade": "Eliminó la propiedad",
-  "comentario": "Comentó en el proyecto",
-  "deletaTarefa": "Eliminó la tarea"
-
-}
-
-
-
+  },
+  "editarEquipePopUp": {
+    "equipeEditar": "Editar Equipo",
+    "deletar": "Eliminar",
+    "editar": "Editar",
+    "sair": "Salir",
+    "salvar": "Guardar cambios",
+    "alteracao": "No se detectaron cambios",
+    "edicao": "Edición completada",
+    "confirmar": "Confirmar"
+  },
+  "selectComponent": {
+    "edit": "editar",
+    "view": "ver"
+  },
+  "tutorial": {
+    "bemVindo": "¡Bienvenido!",
+    "mostraAtividades": "Aquí se muestran tus actividades más importantes",
+    "proximo": "Siguiente",
+    "dashboard": "Tablero",
+    "informacoes": "Información para gestionar tus tareas hechas y no hechas.",
+    "pular": "Omitir",
+    "voltar": "Volver",
+    "menu": "Menú",
+    "clique": "Haz clic para acceder al flujo del sistema",
+    "partes": "Partes importantes",
+    "equipe": "Equipo, aquí puedes ver tus equipos y crearlos. Haz clic para ver",
+    "crieEquipe": "Crear un Equipo",
+    "cliqueECrie": "Haz clic aquí para crear nuevos equipos",
+    "preencha": "Llena los campos",
+    "crieAEquipe": "Crea el Equipo",
+    "entreEquipe": "Únete al equipo creado",
+    "projetosEquipe": "Aquí puedes ver los proyectos del equipo",
+    "crieProjeto": "Haz clic para crear un proyecto",
+    "crieUmProjeto": "Crea un Proyecto",
+    "gerenciar": "Aquí gestionarás las tareas del proyecto en cuestión",
+    "crieTarefa": "Crea la primera tarea",
+    "preenchaTarefa": "Llena los campos para poder crear la tarea.",
+    "completar": "Haz clic aquí para completar",
+    "formas": "Hay diferentes formas de visualizar tus tareas como Kanban, Lista, Calendario y Línea de Tiempo",
+    "funcionalidades": "Existen más funcionalidades en el sitio, pero esto es lo esencial.",
+    "finalizar": "finalizar"
+  },
+  "confirmarPopUp": {
+    "confirmar": "¿Estás seguro?"
+  },
+  "historicoTarefa": {
+    "deletarSubTarefa": "Eliminó la subtarea ",
+    "editou": "Editó la tarea ",
+    "criaTarefa": "Creó la tarea ",
+    "criaSubTarefa": "Creó la subtarea ",
+    "status": "Cambiado el estado ",
+    "criaComentario": "Comentó en la tarea ",
+    "deletaComentario": "Eliminó un comentario ",
+    "concluiu": "Concluyó la subtarea "
+  },
+  "historicoProjeto": {
+    "editou": "Editó el proyecto",
+    "criou": "Creó el proyecto",
+    "addResponsavel": "Añadió un nuevo responsable",
+    "convidouEquipe": "Invitó a un equipo",
+    "removeEquipe": "Eliminó un equipo",
+    "removeResponsavel": "Eliminó al responsable",
+    "status": "Creó un nuevo estado",
+    "propriedade": "Creó una propiedad",
+    "removeStatus": "Eliminó el estado",
+    "removePropriedade": "Eliminó la propiedad",
+    "comentario": "Comentó en el proyecto",
+    "deletaTarefa": "Eliminó la tarea"
+  },
+  "cardProjetos": {
+    "tempoDeAtuacao": "Tiempo de Actuación",
+    "responsavel": "Responsable",
+    "descricao": "Descripción"
+  },
+  "criaProjeto": {
+    "nomeProjeto": "Nombre del Proyecto",
+    "descripcion": "Descripción",
+    "dataFinal": "Fecha de Finalización",
+    "conviar": "Invitar",
+    "responsavelPeloProjeto": "Responsable del Proyecto",
+    "equipesVinculadas": "Equipos Vinculados",
+    "naoHaTarefas": "No hay tareas",
+    "tarefasAtribuidas": "Tareas Asignadas",
+    "informaciones": "Información",
+    "dataInicial": "Fecha de Inicio"
+  }
 }

@@ -2,19 +2,19 @@
     <div class="gridTotal mt-[2%] overflow-hidden">
         <div class=" flex flex-col pl-[5%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio" conteudoInput="Nome Projeto"
+                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio" :conteudoInput="$t('criaProjeto.nomeProjeto')"
                     :isInvalido="semNome" textoInvalido="O Nome é obrigatorio" largura="30" altura="6" fontSize="1.5rem"
                     v-model="nomeProjeto" :modelValue="nomeProjeto" @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
             </div>
             <div class="h-[15%] w-max flex items-center">
-                <TextAreaPadrao placeholder="Descrição" resize="none" width="30vw " height="8vh" preset="transparente"
+                <TextAreaPadrao :placeholder="$t('criaProjeto.descricao')" resize="none" width="30vw " height="8vh" preset="transparente"
                     tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
             <div class="w-max h-max" @mouseenter="fazHoverPlaceHolder()" @mouseleave="fazBackPadraoPlaceHolder()">
                 <span :style="stylePlaceHolder" @mouseenter="fazBackPadraoPlaceHolder()"
-                    @mouseleave="fazHoverPlaceHolder()">{{ placeHolderDataFinalProjeto }}</span>
+                    @mouseleave="fazHoverPlaceHolder()">{{ $t('criaProjeto.dataFinal') }}</span>
                 <Input altura="2" fontSize="1rem" largura="13" tipo="date" v-model="dataFinalProjeto"
                     :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
                         dataFinalProjeto = e
@@ -29,7 +29,7 @@
                                 placeholder-select="Equipes" v-model="equipesRelacionadasProjeto"
                                 fonte-tamanho="0.9rem"></selectPadrao>
 
-                            <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
+                            <Botao preset="PadraoVazado" :texto="$t('criaProjeto.conviar')" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
                                 :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
                             </Botao>
 
@@ -37,7 +37,7 @@
                     </div>
                     <div class="flex flex-col  items-start justify-start gap-6 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
-                            place-holder-pesquisa="Responsáveis pelo projeto"
+                            :place-holder-pesquisa="$t('criaProjeto.responsavelPeloProjeto')"
                             @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem"
                             :is-invalido="semResponsavel" :texto-invalido="'Responsável é obrigatório'">
                         </inputDePesquisa>
@@ -65,7 +65,7 @@
             </div>
             <div class=" w-[96%] ">
                 <ListaConvidados altura="20vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas" class="w-[100%]"
+                    :listaConvidados="listaEquipesSelecionadas" :texto="$t('criaProjeto.equipesVinculadas')" class="w-[100%]"
                     @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>

@@ -368,7 +368,8 @@
             border-b-4
             hover:rounded-[4px] hover:border-4
              focus-within:border-red-600 
-            focus-within:border-4 focus-within:rounded-[4px];
+            focus-within:border-4 focus-within:rounded-[4px]
+            #{!important};
         }
     
     .styleInputPadrao {

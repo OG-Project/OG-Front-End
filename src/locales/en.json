@@ -57,7 +57,7 @@
     "nomePropriedade": "Property Name",
     "tipo": "Type",
     "status": "Status",
-    "no_date":"No date",
+    "no_date": "No date",
     "naoPossuiResponsavel": "No responsible assigned",
     "dashboard": "Dashboard",
     "no_subtasks": "No Subtasks",
@@ -166,75 +166,91 @@
     "membroAviso": "Member already belongs to the team.",
     "voceAviso": "You already belong to the team.",
     "nomeObrigatorio": "Team name is required"
-},
-"editarEquipePopUp": {
-  "equipeEditar": "Edit Team",
-  "deletar": "Delete",
-  "editar": "Edit",
-  "sair": "Leave",
-  "salvar": "Save changes",
-  "alteracao": "No changes detected",
-  "edicao": "Editing completed",
-  "confirmar": "Confirm"
-},
-"selectComponent": {
-  "edit": "edit",
-  "view": "view"
-},
-"tutorial": {
-  "bemVindo": "Welcome!!",
-  "mostraAtividades": "Here shows your most important activities",
-  "proximo": "Next",
-  "dashboard": "Dashboard",
-  "informacoes": "Information to manage your completed and pending tasks.",
-  "pular": "Skip",
-  "voltar": "Back",
-  "menu": "Menu",
-  "clique": "Click to access the system flow",
-  "partes": "Important parts",
-  "equipe": "Team, here you can view and create your teams. Click to see",
-  "crieEquipe": "Create a Team",
-  "cliqueECrie": "Click here to create new teams",
-  "preencha": "Fill in the fields",
-  "crieAEquipe": "Create the Team",
-  "entreEquipe": "Join the created team",
-  "projetosEquipe": "Here you can see team projects",
-  "crieProjeto": "Click to create a project",
-  "crieUmProjeto": "Create a Project",
-  "gerenciar": "Here you will manage the tasks of the project",
-  "crieTarefa": "Create the first task",
-  "preenchaTarefa": "Fill in the fields to create the task.",
-  "completar": "Click here to complete",
-  "formas": "There are different ways to view your tasks like Kanban, List, Calendar, and Timeline",
-  "funcionalidades": "There are more features on the site, but this is the essential.",
-  "finalizar": "finalize"
-},
-"confirmarPopUp": {
-  "confirmar": "Are you sure?"
-},
-"historicoTarefa": {
-  "deletarSubTarefa": "Deleted the subtask ",
-  "editou": "Edited the task ",
-  "criaTarefa": "Created the task ",
-  "criaSubTarefa": "Created the subtask ",
-  "status": "Changed the status ",
-  "criaComentario": "Commented on the task ",
-  "deletaComentario": "Deleted a comment ",
-  "concluiu": "Completed the subtask "
-},
-"historicoProjeto": {
-  "editou": "Edited the project",
-  "criou": "Created the project",
-  "addResponsavel": "Added a new responsible",
-  "convidouEquipe": "Invited a team",
-  "removeEquipe": "Removed a team",
-  "removeResponsavel": "Removed the responsible",
-  "status": "Created a new status",
-  "propriedade": "Created a property",
-  "removeStatus": "Removed the status",
-  "removePropriedade": "Removed the property",
-  "comentario": "Commented on the project",
-  "deletaTarefa": "Deleted the task"
-
-}
+  },
+  "editarEquipePopUp": {
+    "equipeEditar": "Edit Team",
+    "deletar": "Delete",
+    "editar": "Edit",
+    "sair": "Leave",
+    "salvar": "Save changes",
+    "alteracao": "No changes detected",
+    "edicao": "Editing completed",
+    "confirmar": "Confirm"
+  },
+  "selectComponent": {
+    "edit": "edit",
+    "view": "view"
+  },
+  "tutorial": {
+    "bemVindo": "Welcome!!",
+    "mostraAtividades": "Here shows your most important activities",
+    "proximo": "Next",
+    "dashboard": "Dashboard",
+    "informacoes": "Information to manage your completed and pending tasks.",
+    "pular": "Skip",
+    "voltar": "Back",
+    "menu": "Menu",
+    "clique": "Click to access the system flow",
+    "partes": "Important parts",
+    "equipe": "Team, here you can view and create your teams. Click to see",
+    "crieEquipe": "Create a Team",
+    "cliqueECrie": "Click here to create new teams",
+    "preencha": "Fill in the fields",
+    "crieAEquipe": "Create the Team",
+    "entreEquipe": "Join the created team",
+    "projetosEquipe": "Here you can see team projects",
+    "crieProjeto": "Click to create a project",
+    "crieUmProjeto": "Create a Project",
+    "gerenciar": "Here you will manage the tasks of the project",
+    "crieTarefa": "Create the first task",
+    "preenchaTarefa": "Fill in the fields to create the task.",
+    "completar": "Click here to complete",
+    "formas": "There are different ways to view your tasks like Kanban, List, Calendar, and Timeline",
+    "funcionalidades": "There are more features on the site, but this is the essential.",
+    "finalizar": "finalize"
+  },
+  "confirmarPopUp": {
+    "confirmar": "Are you sure?"
+  },
+  "historicoTarefa": {
+    "deletarSubTarefa": "Deleted the subtask ",
+    "editou": "Edited the task ",
+    "criaTarefa": "Created the task ",
+    "criaSubTarefa": "Created the subtask ",
+    "status": "Changed the status ",
+    "criaComentario": "Commented on the task ",
+    "deletaComentario": "Deleted a comment ",
+    "concluiu": "Completed the subtask "
+  },
+  "historicoProjeto": {
+    "editou": "Edited the project",
+    "criou": "Created the project",
+    "addResponsavel": "Added a new responsible",
+    "convidouEquipe": "Invited a team",
+    "removeEquipe": "Removed a team",
+    "removeResponsavel": "Removed the responsible",
+    "status": "Created a new status",
+    "propriedade": "Created a property",
+    "removeStatus": "Removed the status",
+    "removePropriedade": "Removed the property",
+    "comentario": "Commented on the project",
+    "deletaTarefa": "Deleted the task"
+  },
+  "cardProjetos": {
+    "tempoDeAtuacao": "Time of action",
+    "responsavel": "Responsible",
+    "descricao": "Description"
+  },
+  "criaProjeto": {
+    "nomeProjeto": "Project Name",
+    "descricao": "Description",
+    "dataFinal": "End Date",
+    "conviar": "Invite",
+    "responsavelPeloProjeto": "Project Manager",
+    "equipesVinculadas": "Linked Teams",
+    "naoHaTarefas": "No tasks",
+    "tarefasAtribuidas": "Assigned Tasks",
+    "informacoes": "Information",
+    "dataInicial": "Start Date"
+  }
 }

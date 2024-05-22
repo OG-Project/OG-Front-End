@@ -12,8 +12,8 @@
           <p v-else class="text-2xl" style="font-family:var(--fonteCorpo);font-size: var(--fonteCorpoTamanho);">{{
             $t('home.no_subtasks') }}</p>
           <div class="flex gap-4 pt-4">
-            <p>Feitas: {{ tarefasFeitas/2 }}</p>
-            <p>Não feitas: {{ tarefasNaoFeitas/2 }}</p>
+            <p>{{ $t('home.tarefasFeitas') }}: {{ tarefasFeitas/2 }}</p>
+            <p>{{ $t('home.tarefasNaoFeitas') }}: {{ tarefasNaoFeitas/2 }}</p>
           </div>
         </div>
       </div>
