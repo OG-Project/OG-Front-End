@@ -12,7 +12,7 @@
     <div class="h-[8vh] w-[50%] flex gap-8 justify-end mr-8">
       <div class="flex justify-between pt-3 w-[16vw]">
         <inputDePesquisa styleInput="input-claro-pequeno" largura="14" altura="10"
-          :conteudoInput="$t('navBar.pesquisar')" :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99]">
+          :placeHolderPesquisa="$t('navBar.pesquisar')" :lista-da-pesquisa="lista" tipo="NavBar" class="z-[99]">
         </inputDePesquisa>
       </div>
       <div class="flex items-center gap-8 w-[16%]">
@@ -35,8 +35,8 @@
 import BarraLateral from "../components/BarraLateral.vue";
 import { onBeforeMount, ref } from "vue";
 import Botao from "../components/Botao.vue";
-import notificacao from "../imagem-vetores/NotificacaoDinamic.vue";
-import UserIcon from "../imagem-vetores/UserIcon.svg";
+import notificacao from "../imagemVetores/NotificacaoDinamic.vue";
+import UserIcon from "../imagemVetores/UserIcon.svg";
 import Input from "./Input.vue";
 import router from "@/router";
 import { onMounted } from "vue";
@@ -133,6 +133,7 @@ function redireciona(rota) {
   });
   if (rota == '/criaTarefa') {
     const criaTarefa = criaTarefaEBuscaStore();
+    VueCookies.set('idReloadTarefa', '0');
     criaTarefa.criaTarefa();
   }
 }

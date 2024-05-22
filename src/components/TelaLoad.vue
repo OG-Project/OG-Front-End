@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import logo from '../imagem-vetores/logo.vue';
+import logo from '../imagemVetores/logo.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import { computed } from 'vue';
 

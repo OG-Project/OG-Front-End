@@ -1,14 +1,17 @@
 <template>
-    <div class="w-full h-[92%] flex">
+    <div class="w-full h-[92vh] flex">
         <div class="w-[20%] h-full">
             <div class="bg-[var(--roxoEscuro)] w-full h-[20%] flex justify-center items-end pb-[1%]">
-                <button class="text-white w-[50%] h-full flex flex-col justify-end items-center" @click="trocaLista(1)">
+                <button class="text-white w-[50%] h-full flex flex-col justify-end items-center" @click="trocaLista(1), router.push('/chat').then(() => {
+                    DefineListaDeMensagens()
+                });">
                     <p>Pessoal</p>
                     <div v-if="opcao2 == 1" class="w-[50%] h-[3%] bg-[var(--backgroundItemsClaros)]">
                     </div>
                 </button>
-                <button class="text-white w-[50%] h-full  flex flex-col justify-end items-center"
-                    @click="trocaLista(2)">
+                <button class="text-white w-[50%] h-full  flex flex-col justify-end items-center" @click="trocaLista(2), router.push('/chat').then(() => {
+                    DefineListaDeMensagens()
+                });">
                     <p>Equipes</p>
                     <div v-if="opcao2 == 2" class="w-[50%] h-[3%] bg-[var(--backgroundItems)]">
 
@@ -25,7 +28,7 @@
                             :src="'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados" alt="">
                     </div>
                     <div v-else class="w-[35%] h-[full] flex items-center justify-center">
-                        <img class="imgDePerfil" src="../../imagem-vetores/imagemEquipe.svg" alt="">
+                        <img class="imgDePerfil" src="../../imagemVetores/imagemEquipe.svg" alt="">
                     </div>
                     <div class="flex flex-col w-[65%] items-start justify-end gap-[10px]">
                         <div v-if="opcao2 == '1'">
@@ -42,23 +45,30 @@
             </div>
         </div>
         <div class="h-full w-full flex flex-col justify-end ">
-            <div class="scrollable">
-                <div v-for="mensagem of chat.mensagens" class=" w-full flex justify-end">
-                    <div v-if="mensagem.criador.id != usuarioLogado.id"
-                        class="w-full pl-[2.5%] flex flex-col items-start">
-                        <div class="text-[70%]">
-                            {{ mensagem.criador.username }}
-                        </div>
-                        <div class="max-w-[45%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-t-3xl rounded-r-3xl break-words">
-                            <div>
-                                {{ mensagem.mensagem }}
+
+            <div class="scrollable rotate-180">
+                <div class="rotate-180">
+                    <div v-for="mensagem of chat.mensagens" class=" w-full flex justify-end">
+                        <div v-if="mensagem.criador.id != usuarioLogado.id"
+                            class="w-full pl-[2.5%] flex flex-col items-start">
+                            <img class="imgDePerfil"
+                            :src="'data:' + mensagem.criador.foto.tipo + ';base64,' + mensagem.criador.foto.dados" alt="">
+                            <div class="text-[70%]">
+                                {{ mensagem.criador.username }}
+                            </div>
+                            <div
+                                class="max-w-[45%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-t-3xl rounded-r-3xl break-words">
+                                <div>
+                                    {{ mensagem.mensagem }}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div v-if="mensagem.criador.id == usuarioLogado.id"
-                        class="w-full flex pr-[2.5%] pt-[2%] justify-end ">
-                        <div class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white break-words">
-                            {{ mensagem.mensagem }}
+                        <div v-if="mensagem.criador.id == usuarioLogado.id"
+                            class="w-full flex pr-[2.5%] pt-[2%] justify-end ">
+                            <div
+                                class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white break-words">
+                                {{ mensagem.mensagem }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -78,12 +88,13 @@
 
 <script setup>
 import { conexaoBD } from '../../stores/conexaoBD';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import router from '@/router';
 import VueCookies from 'vue-cookies';
 import { set } from 'date-fns';
 import { webSocketStore } from '../../stores/webSocket';
 
+const scrollableElement = ref(null);
 let api = conexaoBD();
 let listaDeConversas = ref([]);
 let opcao2 = ref(localStorage.getItem('opcao'));
@@ -94,17 +105,15 @@ let listaDeMensagens = ref([]);
 let chat = ref({});
 let webSocket = webSocketStore();
 
-webSocket.url = "ws://localhost:8082/og/webSocket/chat/"+chat.value.id
+webSocket.url = "ws://localhost:8082/og/webSocket/chat/" + chat.value.id
 
 onMounted(async () => {
     usuarioLogado.value = await api.buscarUm(usuarioLogadoId.value, '/usuario')
     if (localStorage.getItem('opcao') != null) {
         trocaLista(localStorage.getItem('opcao'))
         setTimeout(() => {
-            trocaLista(localStorage.getItem('opcao'))
             defineSeEstaSelecionado()
             DefineListaDeMensagens()
-            document.getElementsByClassName("scrollable").scrollTop = document.getElementsByClassName("scrollable").scrollHeight;
         }, 10);
     }
 })
@@ -113,6 +122,7 @@ try {
     webSocket.esperaMensagem((retorno) => {
         webSocket.criaConexaoWebSocket()
         chat.value.mensagens.push(JSON.parse(retorno))
+
     })
 } catch (e) {
 }
@@ -145,9 +155,6 @@ async function trocaLista(opcao) {
         opcao2.value = "1";
         localStorage.setItem('opcao', '1')
     }
-    router.push('/chat').then(() => {
-        DefineListaDeMensagens()
-    });
 }
 
 async function DefineListaDeMensagens() {
@@ -188,7 +195,7 @@ function defineSeEstaSelecionado() {
 async function mandaMensagem() {
     let mensagem = {
         criador: {
-            id:usuarioLogado.value.id
+            id: usuarioLogado.value.id
         },
         mensagem: corpoDaMensagem.value,
     }
@@ -197,7 +204,6 @@ async function mandaMensagem() {
     })
     corpoDaMensagem.value = "";
 
-    document.getElementById("scrollable").scrollTop = document.getElementById("scrollable").scrollHeight;
 
 }
 
@@ -214,6 +220,8 @@ input:focus {
 
 .scrollable {
     overflow-y: scroll;
+    scroll-behavior: initial;
+
     /* para adicionar uma barra de rolagem vertical */
     scrollbar-color: "var(--backgroundItemsClaros)";
     /* oculta a barra de rolagem padrão do Firefox */
@@ -222,17 +230,20 @@ input:focus {
 }
 
 .scrollable::-webkit-scrollbar {
-    width: 0; /* largura zero para ocultar a barra de rolagem */
+    width: 0;
+    /* largura zero para ocultar a barra de rolagem */
 }
 
 /* Estilos para WebKit (Chrome, Safari, Opera) */
 .scrollable::-webkit-scrollbar-thumb {
-    background-color: transparent; /* cor transparente para ocultar o polegar da barra de rolagem */
+    background-color: transparent;
+    /* cor transparente para ocultar o polegar da barra de rolagem */
 }
 
 /* Estilo para as extremidades da barra de rolagem */
 .scrollable::-webkit-scrollbar-corner {
-    background: transparent; /* cor transparente para ocultar a borda entre as barras de rolagem */
+    background: transparent;
+    /* cor transparente para ocultar a borda entre as barras de rolagem */
 }
 
 /* Estilo para adicionar bordas arredondadas nas extremidades */

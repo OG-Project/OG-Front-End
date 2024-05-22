@@ -140,8 +140,8 @@
       </div>
       <div class="pl-12 mt-4">
         <div class="w-min h-min relative cursor-pointer">
-          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" :icon="iconAnexo" tamanhoDaBorda="2px"
-            :texto="$t('criaTarefa.attach')" tamanhoPadrao="pequeno" inverterCorIcon="sim"></Botao>
+          <Botao preset="PadraoVazadoIcon" class="cursor-pointer" tamanhoDaBorda="2px"
+            :texto="$t('criaTarefa.attach')" tamanhoPadrao="mobilepequeno" inverterCorIcon="sim"></Botao>
           <input type="file" class="absolute top-0 left-0 h-full w-full opacity-0 cursor-pointer"
             @change="e => gerarArquivo(e)">
         </div>
@@ -377,8 +377,8 @@
         </div>
       </div>
       <div class="w-[96%] flex justify-between fixed bottom-28 right-4 pt-8">
-        <Botao preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-        <Botao :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
+        <Botao tamanhoPadrao="mobilepequeno" preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
+        <Botao tamanhoPadrao="mobilepequeno" :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
@@ -387,17 +387,17 @@
 <script setup>
 import { format } from "date-fns";
 import Input from "../../components/Input.vue";
-import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
+import TrianguloStart from "../../imagemVetores/trianguloStart.vue";
 import Botao from "../../components/Botao.vue";
 import CheckBox from "../../components/checkBox.vue";
-import iconAnexo from "../../imagem-vetores/anexoIcon.svg";
+import iconAnexo from "../../imagemVetores/anexoIcon.svg";
 import TextAreaPadrao from "../../components/textAreaPadrao.vue";
 import { onUnmounted, ref, watch } from "vue";
 import selectPadrao from "../../components/selectPadrao.vue";
 import ColorPicker from "primevue/colorpicker";
-import BotaoX from "../../imagem-vetores/XPreto.svg";
+import BotaoX from "../../imagemVetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
-import iconeLapisPreto from "../../imagem-vetores/icon-lapis-preto.svg";
+import iconeLapisPreto from "../../imagemVetores/icon-lapis-preto.svg";
 import { computed } from "vue";
 import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
@@ -419,11 +419,11 @@ function reloadTelaTarefa() {
   if (reload == '0') {
     console.log("reload")
     VueCookies.set('idReloadTarefa', '1');
-    // window.location.reload();
+    window.location.reload();
   }
 }
 
-// reloadTelaTarefa()
+reloadTelaTarefa()
 
 function veSeAPropriedadeTaNaTarefa(propriedade) {
   for (const propriedadeFor of tarefa.value.propriedades) {
@@ -679,7 +679,7 @@ async function criaSubtarefa() {
     barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
     let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
-    criaHistorico.criaHistoricoTarefa("Criou a subTarefa " + subtarefaNova.nome, tarefaSubtarefa, usuario)
+    criaHistorico.criaHistoricoTarefa("Criou a subTarefa" + subtarefaNova.nome, tarefaSubtarefa, usuario)
   }
 }
 
@@ -704,7 +704,7 @@ async function deletaSubtarefa(subtarefa) {
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
   let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
-  criaHistorico.criaHistoricoTarefa("Deletou a subTarefa " + subtarefa.nome, tarefaSubtarefa, usuario)
+  criaHistorico.criaHistoricoTarefa("Deletou a subTarefa" + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 
 //Função utilizada para criar uma Propriedade
@@ -920,7 +920,7 @@ async function adicionaExcluiStatusNaTarefa(status) {
   veSeOStatusTaNaTarefa(status)
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
   let tarefaStatus = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
-  criaHistorico.criaHistoricoTarefa("Mudou o status ", tarefaStatus, usuario)
+  criaHistorico.criaHistoricoTarefa("Mudou o status", tarefaStatus, usuario)
 }
 
 function adicionaExcluiPropriedadeNaTarefa(propriedade, estaNaTarefa) {
@@ -976,7 +976,7 @@ async function enviaComentario(comentario) {
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
   let tarefaComentario = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
-  criaHistorico.criaHistoricoTarefa("Comentou na tarefa ", tarefaComentario, usuario)
+  criaHistorico.criaHistoricoTarefa("Comentou na tarefa", tarefaComentario, usuario)
 }
 
 //
@@ -987,7 +987,7 @@ async function deletaComentario(comentario) {
   tarefa.value.comentarios.forEach((comentarioParaDeletar) => {
     if (comentarioParaDeletar === comentario) {
       tarefa.value.comentarios.splice(tarefa.value.comentarios.indexOf(comentario), 1);
-      criaHistorico.criaHistoricoTarefa("Deletou um comentario ", tarefaComentario, usuario)
+      criaHistorico.criaHistoricoTarefa("Deletou um comentario", tarefaComentario, usuario)
     }
   });
 }
@@ -1025,9 +1025,9 @@ const listaFiltradaStatus = computed(() => {
   }
 });
 
-const parametroDoFiltroStatus = ref(); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+const parametroDoFiltroStatus = ref(t('criaTarefa.sort_by')); // Definindo parametroDoFiltroStatus como uma variável reativa com o valor de $t('criaTarefa.sort_by')
 
-const parametroDoFiltroPropriedade = ref(); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
+const parametroDoFiltroPropriedade = ref(t('criaTarefa.sort_by')); // Definindo parametroDoFiltroPropriedade como uma variável reativa com o valor de $t('criaTarefa.sort_by')
 //Função utilizada para contabilizar quantas subtarefas da lista já estão com o status de concluida
 
 const listaFiltradaPropriedades = computed(() => {
@@ -1103,7 +1103,7 @@ async function trocaStatusDaSubTarefa(subtarefa, index) {
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
   let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
   let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
-  criaHistorico.criaHistoricoTarefa("Concluiu a subTarefa " + subtarefa.nome, tarefaSubtarefa, usuario)
+  criaHistorico.criaHistoricoTarefa("Concluiu a subTarefa" + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 
 //Estilo da barra de porcentagem

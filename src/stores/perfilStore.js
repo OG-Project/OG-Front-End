@@ -21,6 +21,8 @@ export const perfilStore = defineStore('perfilStore', {
          isVisualizacaoEquipe:false,
          isVisualizacaoProjeto:false,
          isVisualizacaoPerfil:false,
+         alteradoSenha:false,
+         alteradoEmail:false,
          el:null,
          valueModel:'',
          tamanhoTitulo:6,
