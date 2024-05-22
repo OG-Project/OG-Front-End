@@ -143,7 +143,11 @@ function mostraSenhaConfirmacao() {
   }
 }
 
-function loginGoogle() {
+async function removeCookie() {
+  VueCookies.remove("JSESSIONID")
+  await loginGoogle()
+}
+async function loginGoogle(){
   window.location.href = "http://localhost:8082"
 }
 </script>
@@ -179,7 +183,7 @@ function loginGoogle() {
               <hr style="width: 35%; text-align: left; margin-left: 0" />
             </div>
             <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
-              :funcaoClick="loginGoogle"></Botao>
+              :funcaoClick="removeCookie"></Botao>
           </div>
         </Transition>
         <Transition name="registro">

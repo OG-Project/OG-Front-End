@@ -51,8 +51,9 @@
       <div class="projetos ">
         <div v-for="projeto of listaProjetos" :key="projeto.id">
           <div class="flex w-[100%]">
-            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
-              :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
+            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"
+              :feito="calcularProgressoProjeto(projeto)" :name="projeto.nome" :descricao="projeto.descricao"
+              :comeco="formatarData(projeto.dataCriacao)"
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
               :responsavel="listaResponsaveis" :tempoAtuacao="projeto.tempoAtuacao">
             </CardProjetos>
@@ -127,24 +128,24 @@ async function criarProjeto() {
   VueCookies.set("IdProjetoAtual")
 }
 
-async function verificaMembroPermissao(){
-     
-     const usuario = await banco.buscarUm(usuarioLogado,"/usuario")
-     console.log(usuario.equipes)
-     usuario.equipes.forEach((equipeUsuario) =>{
-        if(equipeUsuario.equipe.id == equipeSelecionada){
-            console.log(usuario);
-            if(equipeUsuario.criador){
-                retornoPermissao.value = true;
-                  return;
-            }
-            else if(equipeUsuario.permissao.length > 1){
-                  retornoPermissao.value = true;
-                  return;
-            }
-        } 
-    })
-    
+async function verificaMembroPermissao() {
+
+  const usuario = await banco.buscarUm(usuarioLogado, "/usuario")
+  console.log(usuario.equipes)
+  usuario.equipes.forEach((equipeUsuario) => {
+    if (equipeUsuario.equipe.id == equipeSelecionada) {
+      console.log(usuario);
+      if (equipeUsuario.criador) {
+        retornoPermissao.value = true;
+        return;
+      }
+      else if (equipeUsuario.permissao.length > 1) {
+        retornoPermissao.value = true;
+        return;
+      }
+    }
+  })
+
 }
 
 async function obterNomesResponsaveis(projeto) {
@@ -191,16 +192,50 @@ async function buscarProjetosEquipe() {
 
 }
 
-function calcularProgresso(projeto) {
-  if (!projeto.tarefas || projeto.tarefas.length == 0) {
-    return 0; // se não houver tarefas, o progresso é 0%
+function calcularProgressoProjeto(projeto) {
+  let totalSubTarefas = 0;
+  let tarefasConcluidas = 0;
+
+  if (projeto.categoria == "nao-iniciados") {
+    projeto.tarefas.forEach(tarefa => {
+      tarefa.subTarefas.forEach(subtarefa => {
+        subtarefa.concluido = false;
+      });
+    });
+
+    return 0;
+  } else if (projeto.categoria == "prontos") {
+    projeto.tarefas.forEach(tarefa => {
+      tarefa.subTarefas.forEach(subtarefa => {
+        subtarefa.concluido = true;
+      });
+    });
+
+    return 100;
   }
 
-  const totalTarefas = projeto.tarefas.length;
-  const tarefasConcluidas = projeto.tarefas.filter(tarefa => tarefa.concluida).length;
+  let quantidadeTarefasConcluidas =0;
+  projeto.tarefas.forEach(tarefa => {
+    let todasConcluidas = true;
+    tarefa.subTarefas.forEach(subtarefa => {
+      totalSubTarefas++;
+      tarefasConcluidas = true;
+      if (!subtarefa.concluido) { 
+        todasConcluidas = false;
+      }else{
+        quantidadeTarefasConcluidas++;
+      }
+    }); 
+  });
 
-  return Math.round((tarefasConcluidas / totalTarefas) * 100);
+  if (totalSubTarefas === 0) {
+    return 0; // Retorna 0 se não houver tarefas no projeto
+  } else {
+    return Math.floor((quantidadeTarefasConcluidas / totalSubTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
+  }
 }
+
+
 
 async function filtrarEquipe() {
   console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))

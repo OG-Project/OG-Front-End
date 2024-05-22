@@ -478,7 +478,7 @@ async function criaProjeto() {
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
-        router.push("/projeto");
+       
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")

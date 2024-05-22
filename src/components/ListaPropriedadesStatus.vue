@@ -96,7 +96,7 @@
                 </div>
                 <div class="flex flex-row justify-between" v-if="screenWidth >= 340">
                     <div class="pl-2">
-                        <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
+                        <Input largura="9" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
                     nomePropriedade = e
                 }">
