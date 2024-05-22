@@ -90,11 +90,16 @@ import alertTela from './alertTela.vue';
 import sair from '../imagem-vetores/Sair.vue';
 import equipe from '../imagem-vetores/equipe.vue';
 import { useI18n } from 'vue-i18n';
+
 import inputDePesquisa from './inputDePesquisa.vue';
 
 const { t } = useI18n()
 let listaDeUsuariosParaBusca = ref([]);
 let zerarInput = ref(false)
+
+import { criaNotificacao } from '../stores/criaNotificacao';
+const criaNotificacaoStore = criaNotificacao();
+
 
 onMounted (() =>{
     exibirMembrosNaLista();
@@ -143,8 +148,6 @@ const screenWidth = window.innerWidth;
 let select = [];
 let selectDisable = '';
 let usuarios = banco.procurar('/usuario');
-
-
 
 let equipeMembros = ref({
     nome: '',
@@ -453,9 +456,8 @@ async function enviaParaWebSocket(equipe,membrosConvidados) {
         }
 
     }
-    const webSocket = webSocketStore();
-    webSocket.url = "ws://localhost:8082/og/webSocket/usuario/2"
-    await webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+    console.log("teste")
+    criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 function funcaoPermissao(convidados){
@@ -511,7 +513,7 @@ async function confirmarConvites() {
         // Se o membro não foi removido anteriormente, convide-o normalmente
     }
     enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
-   
+    window.location.reload()
 }
 
 </script>

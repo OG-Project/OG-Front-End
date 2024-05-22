@@ -86,7 +86,7 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                         if (objetoNotificacao.conviteParaProjeto != null) {
                             notificacao.conviteParaProjeto.usuarioAceito.push({ usuario: { id: criador } })
                             notificacao.conviteParaProjeto.idEquipe = equipe.equipe.id
-                            notificacao.mensagem = "Convidou a "+equipe.equipe.nome+" para o projeto " + notificacao.conviteParaProjeto.projeto.nome
+                            notificacao.mensagem = "Convidou a "+equipe.equipe.nome+" para o projeto "
                             console.log(notificacao)
                         }
                         if (objetoNotificacao.conviteParaEquipe != null) {

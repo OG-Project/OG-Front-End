@@ -6,11 +6,12 @@
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
         <div class="w-[60%] h-full flex flex-col items-center">
-            <div class="w-[60%] h-[60%] border-b-4 text-[64px] flex items-end justify-between pb-[1%]">
-                <div class="h-[100%] flex items-end truncate">
-                   <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
+            <div class="w-[60%] h-[120px] border-b-4 flex flex-row items-end justify-between pb-[1%]">
+                <div class="h-[12vh] flex items-end">
+                    <p class="h-[8vh] w-[30vw] truncate flex items-center" style="font-size:var(--fonteTituloTamanho)">{{ projeto.nome }}</p>
                 </div>
-                <div class="flex items-end" v-if="isResponsavel" @click="router.push('/projeto/responsavel')">
+                <div class="flex items-end" v-if="verificaSeEResponsavel()"
+                    @click="router.push('/projeto/responsavel')">
                     <Dashboard></Dashboard>
                 </div>
             </div>
@@ -48,25 +49,29 @@
     </div>
     <div class="w-[80%] h-[3.5vh] flex flex-row justify-between align-bottom">
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
-            <button @click="router.push('/projeto/kanban')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/kanban')" v-bind="styleBotao()"
+                :style="{ backgroundColor: corKanban, paddingLeft: '1%', paddingRight: '1%' }">
                 Kanban
             </button>
-            <button @click="router.push('/projeto/lista')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/lista')" v-bind="styleBotao()"
+                :style="{ backgroundColor: corLista, paddingLeft: '1%', paddingRight: '1%' }">
                 Lista
             </button>
-            <button @click="router.push('/projeto/timeline')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/timeline')" v-bind="styleBotao()"
+                :style="{ backgroundColor: corTimeline, paddingLeft: '1%', paddingRight: '1%' }">
                 Linha Do Tempo
             </button>
-            <button @click="router.push('/projeto/calendario')" class="bg-[#CECCCE] px-[1%]">
+            <button @click="router.push('/projeto/calendario')" v-bind="styleBotao()"
+                :style="{ backgroundColor: corCalendario, paddingLeft: '1%', paddingRight: '1%' }">
                 Calendário
             </button>
         </div>
         <div v-if="$route.path === '/projeto/lista'"
-            class="flex justify-center items-center bg-[#CECCCE] px-2 w-[17%] h-[3.5vh]">
+            class="flex justify-center items-center bg-[var(--backgroundItemsClaros)] px-2 w-[17%] h-[3.5vh]">
             <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" placeholder="Propriedades Visiveis" filter
                 optionLabel="nome" :options="projeto.propriedades"
                 :pt="{ root: 'select', labelContainer: 'labelContainer' }"
-                class="bg-[#CECCCE] h-[3vh] w-[110%] flex justify-center items-center"
+                class="bg-[var(--backgroundItemsClaros)] h-[3vh] w-[110%] flex justify-center items-center"
                 :onclick="atualizaVisualizacao()"></MultiSelect>
         </div>
         
@@ -112,6 +117,11 @@ let funcaoAbrePopUp2 = ref(false);
 
 let visualizacao = ref({})
 let enviandoMensagem = ref(false)
+let corKanban = ref("var(--backgroundItemsClaros)")
+let corLista = ref("var(--backgroundItemsClaros)")
+let corTimeline = ref("var(--backgroundItemsClaros)")
+let corCalendario = ref("var(--backgroundItemsClaros)")
+
 let isResponsavel = ref(false)
 
 let number = ref();
@@ -131,20 +141,21 @@ onMounted(async () => {
     projeto.value = await api.buscarUm(projetoId, '/projeto')
     console.log(projeto.value)
     visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista')
-    if ( visualizacao.value.propriedadeVisiveis != null) {
+    if (visualizacao.value.propriedadeVisiveis != null) {
         listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
     }
     verificaSeEResponsavel()
     console.log(visualizacao.value)
     verificaSeEResponsavel()
     definePorcentagem()
+    styleBotao()
 })
 
-async function verificaSeEResponsavel(){
+async function verificaSeEResponsavel() {
     let usuario = VueCookies.get('IdUsuarioCookie')
     let responsaveis = projeto.value.responsaveis
     console.log(responsaveis)
-    if(responsaveis!=null){
+    if (responsaveis != null) {
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
                 isResponsavel.value= true
@@ -154,6 +165,33 @@ async function verificaSeEResponsavel(){
     }
     isResponsavel.value = false
     return
+}
+
+function styleBotao() {
+    if (window.location.href.includes("lista")) {
+        corLista.value = "var(--roxoClaro)"
+        corKanban.value = "var(--backgroundItemsClaros)"
+        corTimeline.value = "var(--backgroundItemsClaros)"
+        corCalendario.value = "var(--backgroundItemsClaros)"
+    }
+    if (window.location.href.includes("kanban")) {
+        corKanban.value = "var(--roxoClaro)"
+        corLista.value = "var(--backgroundItemsClaros)"
+        corTimeline.value = "var(--backgroundItemsClaros)"
+        corCalendario.value = "var(--backgroundItemsClaros)"
+    }
+    if (window.location.href.includes("timeline")) {
+        corTimeline.value = "var(--roxoClaro)"
+        corKanban.value = "var(--backgroundItemsClaros)"
+        corLista.value = "var(--backgroundItemsClaros)"
+        corCalendario.value = "var(--backgroundItemsClaros)"
+    }
+    if (window.location.href.includes("calendario")) {
+        corTimeline.value = "var(--backgroundItemsClaros)"
+        corKanban.value = "var(--backgroundItemsClaros)"
+        corLista.value = "var(--backgroundItemsClaros)"
+        corCalendario.value = "var(--roxoClaro)"
+    }
 }
 
 function atualizaVisualizacao() {
@@ -174,7 +212,6 @@ function enviaCookieTarefaNova() {
     localStorage.setItem("TarefaNaoFinalizada", "", new Date())
     VueCookies.set('idReloadTarefa', '0');
     criaTarefa.criaTarefa()
-    router.push('/criaTarefa')
 }
 function enviaCookieProjeto() {
     VueCookies.set('idReloadProjeto', '0');
@@ -190,12 +227,11 @@ function definePorcentagem() {
     let string = ""
     let porcentagem = 0
     defineSubTarefasConcluida(tarefas)
-
-    if (tarefas.length > 0) {
+    if (subtarefasConcluidas.value.length != 0 && subtarefasConcluidas.value != null) {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
+
     }
     string = "Progressão " + porcentagem + "%"
-    console.log(string)
     porcentagemDeConclusao.value = string
 }
 function defineSubTarefasConcluida(tarefas) {
@@ -214,10 +250,6 @@ function abreModalMensagem() {
 </script>
 
 <style lang="scss">
-.select {
-    outline: 4px solid #CECCCE;
-    border-radius: 0;
-}
 
 .select:active {
     border: none;

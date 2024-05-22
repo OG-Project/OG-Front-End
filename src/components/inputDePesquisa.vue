@@ -19,7 +19,7 @@
       <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
         @click="passaValorProInput(itemPesquisado)">
         <div :style="respostaPesquisa">
-          <p>{{ itemPesquisado }}</p>
+          <p class="truncate">{{ itemPesquisado }}</p>
         </div>
         <hr />
       </div>
@@ -30,8 +30,8 @@
       <div v-for="itemPesquisado in listaRenderizada" :style="espacoRespostasPesquisa"
         @click="passaValorProInput(itemPesquisado)">
         <div :style="respostaPesquisa">
-          <p class="w-[50%] pl-4">{{ itemPesquisado.nome }}</p>
-          <p class="w-[50%]">{{ itemPesquisado.tipo }}</p>
+          <p class="w-[50%] pl-4 truncate">{{ itemPesquisado.nome }}</p>
+          <p class="w-[50%] truncate">{{ itemPesquisado.tipo }}</p>
         </div>
         <hr />
       </div>
@@ -41,11 +41,12 @@
 </template>
 <script setup>
 import Input from "./Input.vue";
-import { createVNode, onMounted, ref, watch } from "vue";
+import { createVNode, ref, watch } from "vue";
 import iconePesquisa from "../imagem-vetores/iconePesquisa.svg";
 import { defineProps, defineEmits } from "vue";
 import VueCookies from "vue-cookies";
 import router from "@/router";
+import { onMounted } from "vue";
 
 
 let conteudoDaPesquisa = ref("");
@@ -87,6 +88,9 @@ function zerarInput(){
 let itemsIguais = ref(false);
 
 let listaRenderizada = ref([]);
+
+
+
 
 function verificaSeSaoIguais() {
   for (const itemPesquisado of listaRenderizada.value) {

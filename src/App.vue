@@ -29,7 +29,6 @@ const criaNotificacaoStore = criaNotificacao();
 const webSocket = webSocketStore();
 const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 webSocket.url = "ws://localhost:8082/og/webSocket/usuario/1"
-webSocket.criaConexaoWebSocket();
 
 const perfil = perfilStore()
 const { isVlibras } = storeToRefs(perfil);
@@ -836,7 +835,16 @@ tour.addSteps([
 </script>
 
 <template>
-  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] min-h-screen overflow-hidden">
+  <div v-show="isVlibras == true">
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+  </div>
+  <div class=" bg-[var(--backgroundPuro)] text-[var(--fonteCor)] min-h-screen  overflow-hidden">
+
     <Navbar v-if="!estaNoLogin && screenWidth >= 1024" />
     <tabBar v-if="!estaNoLogin && screenWidth < 1024" />
     <NavBarMobile v-if="!estaNoLogin && screenWidth < 1024" />
@@ -844,21 +852,13 @@ tour.addSteps([
   </div>
     <!-- Atraves do x e y você gerencia e utiliza do drag and drop -->
     <div ref="el" :style="style" style="position: fixed"
-    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max h-full" v-if="perfil.isTecladoAtivado">
+    class="bg-[#ececec] top-16 left-[67.8vw] absolute z-[99999] w-max " v-if="perfil.isTecladoAtivado">
     <div class=" flex flex-col items-center">
       <div class="flex w-full justify-between px-4 ">
         <svgIconMove class="w-[1vw] h-[3vh]" />
         <svgIconX @click="close" class="w-[1vw] h-[3vh]"></svgIconX>
       </div>
       <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
-    </div>
-  </div>
-  <div v-show="isVlibras == true">
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper>
-        <div class="vw-plugin-top-wrapper"></div>
-      </div>
     </div>
   </div>
   

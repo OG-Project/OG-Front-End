@@ -120,7 +120,7 @@ async function entrarNoProjeto(projeto) {
 async function criarProjeto() {
   VueCookies.set("idAuxEquipe", Number(equipeSelecionada))
   router.push({ path: '/criaProjeto' }).then(() => {
-    window.location.reload()
+    // window.location.reload()
   });
   VueCookies.set('idReloadProjeto', '0');
   VueCookies.set("projetoCookie");
@@ -418,7 +418,7 @@ function abrePopUp(equipe, tipo) {
   }
 
   .cardProjeto {
-    @apply mt-10 ml-[16vw] text-xl;
+    @apply mt-10 ml-[16.5vw] text-xl;
     max-width: calc(125% - 1px);
   }
 

@@ -4,7 +4,7 @@
             <div class="divTitulo">
                 <h1 class="titulo">{{$t('paginaAdm.historico')}}</h1>
             </div>
-            <div class="divHistorico overflow-y-auto">
+            <div class="divHistorico overflow-y">
                 <div  v-for="historico in historicos" :key="historico.id" class="div">
                    <img @click="router.push('/perfil/'+historico.criador.id)" v-if="historico.criador.foto != null" class="imgPerfil cursor-pointer" :src="`data:${historico.criador.foto.tipo};base64,${historico.criador.foto.dados}`" 
                    alt="">
@@ -24,10 +24,7 @@ import fundoPopUp from './fundoPopUp.vue';
 import userTodoPreto from '../imagem-vetores/userTodoPreto.vue';
 import { onMounted, ref, defineProps } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
-
-import VueCookies from "vue-cookies";
 import router from '../router';
-const usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 onMounted (async () =>{
@@ -158,7 +155,7 @@ function formatarData(data){
     @apply flex justify-center mt-10  text-3xl
 }
 .divHistorico{
-    @apply flex flex-wrap w-full h-full justify-center;
+    @apply flex-wrap w-full h-full justify-center;
     scrollbar-width: none;
 }
 .historico{

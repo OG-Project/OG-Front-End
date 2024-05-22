@@ -14,61 +14,71 @@
                     <Pessoa></Pessoa>
                 </div>
                 <div :style="notificacao.estilo">
-                    <div class="pr-1">
-                        {{ notificacao.notificacao.criador.username }}
-                        {{ notificacao.notificacao.mensagem }}
-                    </div>
-                    <button v-if="notificacao.notificacao.projeto != null"
-                        @click="trocarRota(notificacao.notificacao.projeto.id, '/projeto', 'IdProjetoAtual')">
-                        <p class="text-roxo truncate min-w-0">
-                            {{ notificacao.notificacao.projeto.nome }}
-                        </p>
-                    </button>
-                    <button v-if="notificacao.notificacao.equipe != null"
-                        @click="trocarRota(notificacao.notificacao.equipe.id, '/equipe/telaInicial', 'equipeSelecionada')">
-                        <p class="text-roxo truncate min-w-0">
-                            {{ notificacao.notificacao.equipe.nome }}
-                        </p>
-                    </button>
-                    <button v-if="notificacao.notificacao.tarefa != null"
-                        @click="trocarRota(notificacao.notificacao.tarefa.id, '/criaTarefa', 'IdTarefaCookies')">
-                        <p class="text-roxo truncate min-w-0">
-                            {{ notificacao.notificacao.tarefa.nome }}
-                        </p>
-                    </button>
-                    <div v-if="notificacao.notificacao.conviteParaEquipe != null || notificacao.notificacao.conviteParaProjeto != null"
-                        @click="trocarRota(notificacao.notificacao.projeto.id)" class="flex flex-row min-w-0">
-                        <div class="truncate min-w-0 flex flex-row">
-                            <button v-if="notificacao.notificacao.conviteParaEquipe != null" class="min-w-0">
-                                <div v-if="notificacao.notificacao.conviteParaEquipe.equipe != null" class="min-w-0">
-                                    <p class="truncate min-w-0">
-                                        {{ notificacao.notificacao.conviteParaEquipe.equipe.nome }}
-                                    </p>
-                                </div>
-                            </button>
-                            <button v-if="notificacao.notificacao.conviteParaProjeto != null" class="min-w-0">
-                                <div v-if="notificacao.notificacao.conviteParaProjeto.projeto != null" class="w-full">
-                                    <p class="truncate min-w-0">
-                                        {{ notificacao.notificacao.conviteParaProjeto.projeto.nome }}
-
-                                    </p>
-                                </div>
-                            </button>
+                    <div class="w-[80%]">
+                        <div v-if="!notificacao.hover2Segundos" class="pr-1 truncate">
+                            {{ notificacao.notificacao.criador.username }}
+                            {{ notificacao.notificacao.mensagem }}
+                        </div>
+                        <div v-else class="pr-1 w-[120%]">
+                            {{ notificacao.notificacao.criador.username }}
+                            {{ notificacao.notificacao.mensagem }}
+                        </div>
+                        <button v-if="notificacao.notificacao.projeto != null"
+                            @click="trocarRota(notificacao.notificacao.projeto.id, '/projeto', 'IdProjetoAtual')">
+                            <p class="text-roxo truncate">
+                                {{ notificacao.notificacao.projeto.nome }}
+                            </p>
+                        </button>
+                        <button v-if="notificacao.notificacao.equipe != null"
+                            @click="trocarRota(notificacao.notificacao.equipe.id, '/equipe/telaInicial', 'equipeSelecionada')">
+                            <p class="text-roxo truncate ">
+                                {{ notificacao.notificacao.equipe.nome }}
+                            </p>
+                        </button>
+                        <button v-if="notificacao.notificacao.tarefa != null"
+                            @click="trocarRota(notificacao.notificacao.tarefa.id, '/criaTarefa', 'IdTarefaCookies')">
+                            <p class="text-roxo truncate ">
+                                {{ notificacao.notificacao.tarefa.nome }}
+                            </p>
+                        </button>
+                        <div v-if="notificacao.notificacao.conviteParaEquipe != null || notificacao.notificacao.conviteParaProjeto != null"
+                            class="flex flex-row ">
+                            <div class="truncate  flex flex-row">
+                                <button v-if="notificacao.notificacao.conviteParaEquipe != null" class="">
+                                    <div v-if="notificacao.notificacao.conviteParaEquipe.equipe != null"
+                                        class="">
+                                        <p class="truncate ">
+                                            {{ notificacao.notificacao.conviteParaEquipe.equipe.nome }}
+                                        </p>
+                                    </div>
+                                </button>
+                                <button v-if="notificacao.notificacao.conviteParaProjeto != null" class="">
+                                    <div v-if="notificacao.notificacao.conviteParaProjeto.projeto != null"
+                                        class="">
+                                        <p class="truncate ">
+                                            {{ notificacao.notificacao.conviteParaProjeto.projeto.nome }}
+                                        </p>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="w-[25%] flex flex-row" @mouseenter="clearTimer()">
                         <div class="flex flex-row justify-end w-full gap-1"
                             v-if="notificacao.notificacao.conviteParaEquipe != null || notificacao.notificacao.conviteParaProjeto != null">
-                            <button class="text-white w-[50%] h-[100%] bg-red-600" @click="removerUsuarioALista(notificacao.notificacao)">
+                            <button class="text-white w-[50%] h-[100%] bg-red-600"
+                                @click="removerUsuarioALista(notificacao.notificacao)">
                                 X
                             </button>
-                            <button class="text-white w-[50%] h-[100%] bg-green-600" @click="adicionaUsuarioALista(notificacao.notificacao)">
+                            <button class="text-white w-[50%] h-[100%] bg-green-600"
+                                @click="adicionaUsuarioALista(notificacao.notificacao)">
                                 ✔
                             </button>
                         </div>
                     </div>
                 </div>
-                <div class="w-[10%] h-full flex justify-center items-center" @click="removerUsuarioALista(notificacao.notificacao)">
+                <div class="w-[10%] h-full flex justify-center items-center"
+                    @click="removerUsuarioALista(notificacao.notificacao)">
                     <Vector></Vector>
                 </div>
             </div>
@@ -90,7 +100,7 @@ import { set } from 'date-fns';
 let usuarioId = VueCookies.get('IdUsuarioCookie');
 let api = conexaoBD();
 let notificacoes = ref([]);
-let emit = defineEmits(['fecharPopUp'])
+let emit = defineEmits(['fecharPopUp','temNotificacao'])
 let estilo = ref({})
 let timeoutId = null;
 
@@ -100,7 +110,7 @@ onMounted(async () => {
 })
 
 async function defineNotificacoes() {
-    notificacoes.value = await api.buscarUm(usuarioId, '/notificacao/buscar')
+    notificacoes.value = await api.buscarUmaNotificacao(usuarioId, '/notificacao/buscar')
     console.log(notificacoes.value)
     let lista = []
     for (const notificacaoAux of notificacoes.value) {
@@ -140,6 +150,26 @@ function mudarEstilo(notificacao) {
 
 }
 
+function montaNotificacao(notificacao) {
+    let notificacaoAux = ""
+    notificacaoAux = notificacao.criador.username + " " + notificacao.mensagem
+    if (notificacao.projeto != null) {
+        notificacaoAux += " " + notificacao.projeto.nome
+    }
+    if (notificacao.equipe != null) {
+        notificacaoAux += " " + notificacao.equipe.nome
+    }
+    if (notificacao.tarefa != null) {
+        notificacaoAux += " " + notificacao.tarefa.nome
+    }
+    if (notificacao.conviteParaEquipe != null) {
+        notificacaoAux += " " + notificacao.conviteParaEquipe.equipe.nome
+    }
+    if (notificacao.conviteParaProjeto != null) {
+        notificacaoAux += " " + notificacao.conviteParaProjeto.projeto.nome
+    }
+}
+
 function startTimer(objeto) {
     timeoutId = setTimeout(() => {
         objeto.hover2Segundos = true;
@@ -155,10 +185,10 @@ function clearTimer(objeto) {
 }
 
 async function adicionaUsuarioALista(notificacao) {
-    let usuario = await api.buscarUm(usuarioId,"/usuario")
+    let usuario = await api.buscarUm(usuarioId, "/usuario")
     console.log(usuario);
     if (notificacao.conviteParaEquipe != null) {
-        api.adicionarUsuarios(usuarioId, notificacao.conviteParaEquipe.equipe.id,retornaPermissao(usuario,notificacao.conviteParaEquipe.permissoes),'/usuario/add')
+        api.adicionarUsuarios(usuarioId, notificacao.conviteParaEquipe.equipe.id, retornaPermissao(usuario, notificacao.conviteParaEquipe.permissoes), '/usuario/add')
         notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito) => {
             if (usuarioAceito.usuario.id == usuarioId) {
                 usuarioAceito.aceito = true
@@ -187,12 +217,12 @@ async function adicionaUsuarioALista(notificacao) {
 
 }
 function removerUsuarioALista(notificacao) {
-    api.deletarEquipe(notificacao.id, '/notificacao').then(() => {
+    api.deletarEquipe(notificacao.id, '/notificacao').then((response) => {
         defineNotificacoes()
     })
 }
 
-function retornaPermissao(usuario,permissoes) {
+function retornaPermissao(usuario, permissoes) {
     for (const permissao of permissoes) {
         if (usuario.id == permissao.usuarioId) {
             return permissao.permissao

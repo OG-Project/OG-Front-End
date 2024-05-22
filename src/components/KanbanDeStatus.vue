@@ -1,16 +1,13 @@
 <template>
-    <div class="w-min h-[40%] justify-start flex  gap-[5vw]">
+    <div class="w-min h-[25%] justify-start flex gap-[5vw]">
         {{ console.log(lista) }}
         <div v-for="status of lista" class="w-auto flex h-full">
-            <div :style="status.style"  @dragover="retornaStatusNovo(status.propriedade)">
+            <div :style="status.style" @dragover="retornaStatusNovo(status.propriedade)">
 
                 <div
                     class="w-[80%] p-[1%] flex bg-[var(--backgroundPuro)] justify-center font-Poppins font-medium text-[1vw] rounded-md">
-                    <div class="w-[90%] flex justify-center">
+                    <div class="w-full flex justify-center">
                         {{ status.propriedade.nome }}
-                    </div>
-                    <div class="w-[10%]">
-                        <img src="../assets/image 3.png">
                     </div>
                 </div>
                 <draggable class="min-h-[15px] min-w-full flex flex-col items-center justify-center"
@@ -19,51 +16,53 @@
                     <template #item="{ element: tarefa }">
                         <div class="w-full h-full flex items-center justify-center"
                             @dragstart="(() => { tarefaDrag = tarefa })">
-                            <div class="w-[80%] pt-[2vh]" v-if="tarefa != null">
-                                <CardTarefas :tarefa=tarefa preset="1"></cardTarefas>
+                            <div class="w-[80%] pt-[2vh]" v-if="tarefa != null && tarefa.nome != null">
+                                <CardTarefas :tarefa=tarefa preset="1" v-on:deleta-tarefa="deletarTarefa($event)">
+                                </cardTarefas>
                             </div>
                         </div>
                     </template>
                 </draggable>
-                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none" @click="store.criaTarefa() ,VueCookies.set('idReloadTarefa', '0'), router.push('/criaTarefa').then(() => {
-                    window.location.reload()
-
-        });">
+                <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none"
+                    @click="store.criaTarefa(status.propriedade), VueCookies.set('idReloadTarefa', '0')">
                     <p :style="corDoTexto(status.propriedade)">+ Nova</p>
                 </button>
             </div>
         </div>
-        <span class="pr-4">
+        <span class="pr-4 ">
 
-            <button class="novaPropriedade " @click="popUpStatus = true">
+            <button class="novaPropriedade" @click="abrePopUp()">
                 <h1>+Novo</h1>
             </button>
+            <div v-if="popUpStatus" class=" w-[100%] h-full flex justify-end">
+                <div class="w-[100%] h-[80%] flex flex-col  justify-center  bg-[var(--backgroundItemsClaros)]">
+                    <div class="h-[30%] w-full flex justify-end">
+                        <img src="../imagem-vetores/triangulo.svg">
+                    </div>
+                    <div class="flex flex-row justify-between">
+                        <div class="pl-2">
+                            <Input largura="8" conteudoInput="Nome do Status" fontSize="1rem" altura="2"
+                                v-model="nomeStatus"  @updateModelValue="(e) => { nomeStatus = e }"></Input>
+                        </div>
+                        <div class="pr-2">
+                            <ColorPicker v-model="corStatus" class="rounded-sm" />
+                        </div>
+
+                    </div>
+                    <div class="flex flex-col h-full">
+                        <div class="flex justify-between h-[60%]">
+                            <div class="pl-2 pt-2 pb-2">
+                                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="fechaPopUp"></Botao>
+                            </div>
+                            <div class="pr-2 pt-2 pb-2">
+                                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
+                                </Botao>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </span>
-    </div>
-    <div v-if="popUpStatus == true">
-        <div class="flex justify-end">
-            <img src="../imagem-vetores/triangulo.svg">
-        </div>
-        <div class="flex flex-row justify-between">
-            <div class="pl-2">
-                <Input largura="10" conteudoInput="Nome Propriedade" fontSize="1rem" altura="2"
-                    v-model="nomeStatus"></Input>
-            </div>
-            <div class="pr-2">
-                <ColorPicker v-model="corStatus" class="rounded-sm" />
-            </div>
-
-        </div>
-        <div class="flex justify-between">
-            <div class="pl-2 pt-2 pb-2">
-                <Botao preset="Sair" tamanhoPadrao="pequeno" :funcaoClick="popUpStatus = false"></Botao>
-            </div>
-            <div class="pr-2 pt-2 pb-2">
-
-                <Botao preset="Confirmar" tamanhoPadrao="pequeno" :funcaoClick="criaStatusBack">
-                </Botao>
-            </div>
-        </div>
     </div>
 </template>
 
@@ -80,6 +79,7 @@ import { funcaoPopUpStore } from '../stores/funcaoPopUp'
 import ColorPicker from 'primevue/colorpicker';
 import tinycolor from "tinycolor2";
 import router from '@/router'
+import Input from '../components/Input.vue';
 
 let api = conexaoBD()
 let projetoApi = api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
@@ -93,7 +93,8 @@ let popUpStatus = ref(false);
 let isFirstLoad = ref(true);
 const propriedadeAtual = ref("STATUS");
 const funcaoPopUp = funcaoPopUpStore()
-
+let nomeStatus = ref("")
+let corStatus = ref("")
 
 onMounted(() => {
     cookies()
@@ -118,6 +119,10 @@ function verificaCorTexto(status) {
     }
 }
 
+function fechaPopUp() {
+    popUpStatus.value = false
+}
+
 function corDoTexto(status) {
     return {
         color: verificaCorTexto(status)
@@ -127,6 +132,37 @@ function corDoTexto(status) {
 function retornaStatusNovo(status) {
     statusNovo = status
     console.log(status);
+}
+
+function abrePopUp() {
+    popUpStatus.value = true
+}
+
+function criaStatusBack() {
+    console.log(nomeStatus.value);
+    if (nomeStatus.value != "") {
+        let statusCriado = {
+            nome: nomeStatus.value,
+            cor: corStatus.value
+        }
+        projeto.value.statusList.push(statusCriado)
+        api.atualizar(projeto.value, "/projeto").then(() => {
+            defineListaDePropriedades()
+            fechaPopUp()
+        })
+    }
+}
+
+function deletarTarefa(id) {
+    console.log(id)
+    lista.value.forEach((status) => {
+        status.tarefas.forEach((tarefa, index) => {
+            if (tarefa.id == id) {
+                status.tarefas.splice(index, 1)
+            }
+        })
+    })
+    api.deletarTarefa("/tarefa", id)
 }
 
 function mudaStatus() {
@@ -164,13 +200,13 @@ function mudaStatus() {
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "NUMERO") {
-                        valorPropriedadeTarefaPutPut.valor = {
+                        valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             numero: valorPropriedadeTarefaPut.valor.valor ?? null,
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
                         }
                     } if (valorPropriedadeTarefaPut.propriedade.tipo == "SELECAO") {
-                        valorPropriedadeTarefaPutPut.valor = {
+                        valorPropriedadeTarefaPut.valor = {
                             id: valorPropriedadeTarefaPut.valor.id,
                             valores: valorPropriedadeTarefaPut.valor.valor ?? null,
                             valor: valorPropriedadeTarefaPut.valor.valor ?? null,
@@ -211,10 +247,6 @@ function ordenaTarefas() {
 
 }
 
-
-function fechaPopUp() {
-    popUpStatus = false
-}
 async function defineListaDePropriedades() {
     let listaDePropriedades = []
     projeto.value = (await (projetoApi))
@@ -237,7 +269,7 @@ async function defineListaDePropriedades() {
                     flexDirection: "column",
                     backgroundColor: ("#" + status.cor),
                     paddingTop: "5px",
-                    boxShadow: " 0px 5px 7px rgb(99, 99, 99)"
+                    boxShadow: " 0px 5px 7px #222222"
                 }
             }
             listaDePropriedades.push(tarefa2)
@@ -271,12 +303,12 @@ function verificaListaVaziaBoolean(tarefas) {
     overflow-y: scroll;
     overflow-x: auto;
     position: relative;
-    box-shadow: "0px 2px rgb(189, 189, 189)";
+    box-shadow: "0px 2px #222222";
 }
 
 .novaPropriedade {
-    @apply w-[15vw] h-[50%] bg-[#A79DB0] flex justify-center items-center text-[2vw] p-[3.2vw];
-    box-shadow: 0px 5px 7px rgb(99, 99, 99);
+    @apply w-[15vw] h-[50%] bg-[#A79DB0] flex justify-center items-center text-[2vw] p-[3.2vw] bg-[var(--backgroundItemsClaros)];
+    box-shadow: 0px 5px 7px #222222;
 
 }
 </style>

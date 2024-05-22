@@ -372,8 +372,12 @@ async function atualizarEquipe() {
             mensagemError.value = "";
 
             // Verifica se houve alterações nos campos antes de atualizar
-            if (equipeAtualizar.nome != equipe.nome || equipeAtualizar.descricao != equipe.descricao) {
+            if (equipeAtualizar.nome != equipe.nome || equipeAtualizar.descricao != equipe.descricao || imagemSelecionada.value) {
                 banco.atualizar(equipeAtualizar, "/equipe")
+                mensagem.value = ""
+                mensagemCor.value = ""
+                mensagem.value = t('editarEquipePopUp.edicao');;
+                mensagemCor.value = '#29CD00'
             } else {
                 mensagem.value = ""
                 mensagemCor.value = ""
@@ -389,6 +393,7 @@ async function atualizarEquipe() {
                 };
             } else {
                 // Caso contrário, manter a imagem da equipe anterior
+
                 equipeAtualizar.foto = equipe.foto;
             }
         }
@@ -411,8 +416,6 @@ async function atualizarEquipe() {
         mensagem.value = t('editarEquipePopUp.edicao');;
         mensagemCor.value = '#29CD00'
     }
-
-   window.location.reload();
 }
 
 // Função para converter o arquivo para base64
@@ -436,6 +439,7 @@ async function enviarFotoParaBackend(id) {
 
         const equipeId = id;
         await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
+        imagemSelecionada.value = null
     } catch (error) {
     }
 }

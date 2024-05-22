@@ -11,6 +11,7 @@ export const criaEquipeStore = defineStore('criaEquipe',{
     actions:{
         criaEquipe(equipe){
             let api = conexaoBD();
+            console.log("teste")
             return api.cadastrar(equipe,"/equipe");
         },
         

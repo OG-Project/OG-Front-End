@@ -1,7 +1,7 @@
 <template>
-    <div class="fixed z-[9999] top-8 flex justify-end right-4">
+    <div class="fixed w-full z-[9999] top-8 flex justify-end right-4">
         <div class="card" :class="{ 'fade-in': show, 'fade-out': !show }" id="messeger">
-            <div class="flex justify-center">
+            <div class="flex justify-center items-center">
                 <div class="divCor" :style="{ backgroundColor: cor }"></div>
                 <div class="gap-[1%] flex flex-row">
                     <div class="icon">
@@ -13,7 +13,7 @@
                     <div class=" icon">
                         <sucessIcon  v-if="cor == '#29CD00'"></sucessIcon>
                     </div>
-                    <div class="card-titulo" >
+                    <div class="card-titulo" :style="{ width: largura }" >
                         <h2 class="text-black" :style="{ 'mensagem': mensagem }">{{ mensagem }}</h2>
                     </div>
                 </div>
@@ -31,7 +31,9 @@
     const instance = getCurrentInstance();
     const props = defineProps({
         mensagem: String,
-        cor: String // Adicionei a propriedade "cor"
+        cor: String,
+        largura: String
+        // Adicionei a propriedade "cor"
     });
 
     function limparMensagem() {
@@ -53,7 +55,7 @@
 
 <style scoped>
     .card {
-        @apply flex flex-wrap justify-start 2xl:w-[17vw] 2xl:h-[6vh] xl:w-[22vw] xl:h-[6vh] lg:w-[26vw] lg:h-[6vh] md:w-[34vw] md:h-[6vh] bg-[var(--brancoNeve)] shadow-md;
+        @apply flex flex-wrap justify-start max-w-max 2xl:h-[6vh] xl:h-[6vh] lg:h-[6vh]  md:h-[6vh] bg-[var(--brancoNeve)] shadow-md;
         transition: all 0.6s ease-in; /* Adicionando a animação de easy-in-out */
     }
 
@@ -67,7 +69,7 @@
     }
 
     .card-titulo {
-        @apply truncate  flex 2xl:w-[13vw] xl:w-[18vw] lg:w-[18vw] md:w-[24vw] text-base text-[var(--fonteCor)] font-semibold items-center justify-start md:text-sm  md:ml-0;
+        @apply truncate  flex 2xl:w-[15vw] xl:w-[18vw] lg:w-[18vw] md:w-[24vw] text-base text-[var(--fonteCor)] font-semibold items-center justify-start md:text-sm  md:ml-0;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
