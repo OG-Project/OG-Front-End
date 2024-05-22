@@ -23,7 +23,7 @@
 
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>{{$t('cardProjetos.responsavel')}}:</b> {{ responsavel }}
+                    <b>{{$t('cardProjetos.responsavel')}}:</b> {{ responsaveis }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -106,6 +106,7 @@ let alinhamento = ref(43);
 const screenWidth = window.innerWidth;
 
 onMounted(async () => {
+    console.log(props.responsaveisIds)
     const nomesResponsaveis = await buscaResponsaveis(props.responsaveisIds);
     responsaveis.value = nomesResponsaveis.join(', ');
     

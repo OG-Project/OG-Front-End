@@ -4,7 +4,7 @@
             <div class="divTitulo">
                 <h1 class="titulo">{{$t('paginaAdm.historico')}}</h1>
             </div>
-            <div class="divHistorico overflow-y">
+            <div class="divHistorico overflow-y-auto">
                 <div  v-for="historico in historicos" :key="historico.id" class="div">
                    <img @click="router.push('/perfil/'+historico.criador.id)" v-if="historico.criador.foto != null" class="imgPerfil cursor-pointer" :src="`data:${historico.criador.foto.tipo};base64,${historico.criador.foto.dados}`" 
                    alt="">
