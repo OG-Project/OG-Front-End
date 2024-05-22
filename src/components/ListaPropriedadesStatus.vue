@@ -36,11 +36,11 @@
                             <div v-if="tarefasAtribuidas"
                                 class="bg-[var(--roxoClaro)] rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
-                                Tarefas Atribuidas
+                                {{ t('criaProjeto.tarefasAtribuidas') }}
                             </div>
                             <div v-if="!tarefasAtribuidas"
                                 class="bg-[var(--backgroundItems)] rounded-md w-full p-1 flex justify-center items-center">
-                                <p>Não há tarefas</p>
+                                <p>{{ t('criaProjeto.naoHaTarefas') }}</p>
                             </div>
                         </div>
                         <botaoSair class="w-[5%] h-[20%]"  @click="removePropriedade(propriedade)"></botaoSair>
@@ -85,18 +85,18 @@
         <div class="w-full flex flex-row justify-end gap-3 sticky" @click="colocaCorPadrao()"
             v-if="funcaoPopUp.variavelModal == false">
             <p>Nova</p>
-            <img src="../imagem-vetores/sinalDeMaisIcon.svg">
+            <img src="../imagemVetores/sinalDeMaisIcon.svg">
         </div>
 
         <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
 
             <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
                 <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
+                    <img src="../imagemVetores/triangulo.svg">
                 </div>
                 <div class="flex flex-row justify-between" v-if="screenWidth >= 340">
                     <div class="pl-2">
-                        <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
+                        <Input largura="9" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
                     nomePropriedade = e
                 }">
@@ -137,7 +137,7 @@
 
             <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
                 <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
+                    <img src="../imagemVetores/triangulo.svg">
                 </div>
                 <div class="flex flex-row justify-between">
 
@@ -191,10 +191,12 @@ import sortBy from 'sort-by';
 import { useRoute } from 'vue-router';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router/index'
-import botaoSair from '../imagem-vetores/botao-x.vue'
+import botaoSair from '../imagemVetores/botaoX.vue'
 import { criaHistoricoStore } from '../stores/criaHistorico'
+import { useI18n } from 'vue-i18n';
 const criaHistorico = criaHistoricoStore();
 
+const { t } = useI18n();
 const instance = getCurrentInstance();
 const route = useRoute();
 const conexao = conexaoBD();
@@ -629,7 +631,7 @@ async function removeStatus(statusRecebe) {
     let indice = listaStatus.value.findIndex((obj) => obj.status.nome === statusRecebe.status.nome);
     if (indice !== -1) {
         listaStatus.value.splice(indice, 1);
-        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removeStatus') + statusRecebe.status.nome, projetoHistorico.value, usuarioHistorico.value)
+        criaHistorico.criaHistoricoProjeto("Removeu o status" + statusRecebe.status.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     if (!projetoEdita.value) {
         criaStatusCookies()
@@ -641,7 +643,7 @@ async function removePropriedade(propriedadeRecebida) {
     let indice = listaPropriedades.value.findIndex((obj) => obj.propriedade.nome === propriedadeRecebida.propriedade.nome && obj.propriedade.tipo == propriedadeRecebida.propriedade.tipo);
     if (indice !== -1) {
         listaPropriedades.value.splice(indice, 1);
-        criaHistorico.criaHistoricoProjeto(t('historicoProjeto.removePropriedade') + propriedadeRecebida.propriedade.nome, projetoHistorico.value, usuarioHistorico.value)
+        criaHistorico.criaHistoricoProjeto("Removeu a propriedade" + propriedadeRecebida.propriedade.nome, projetoHistorico.value, usuarioHistorico.value)
     }
     criaPropriedadeCookies()
 

@@ -5,7 +5,7 @@
                 <h1 class="flex text-6xl font-semibold ">{{ $t('projeto.PROJETOS') }}</h1>
                 <p class="bordaTitulo"></p>    
             </div>
-            <div v-if="screenWidth >= 620" class="flex justify-end mx-10 mt-[-5vh] mb-5">
+            <div v-if="screenWidth >= 750" class="flex justify-end mx-10 mt-[-5vh] mb-5">
                 <Botao  preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim" corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="medio"  :texto="$t('projeto.NOVO PROJETO')" tamanhoDaFonte="1rem" :funcaoClick="enviaTelaCriaProjeto"></Botao> 
             </div>  
             <div v-else class="flex justify-center mx-10 mt-[2vh] mb-10">
@@ -14,7 +14,7 @@
         </div>
         
         <div class="flex justify-center">
-            <listaProjetos v-if="screenWidth >= 620" width="95vw" height="73vh">
+            <listaProjetos v-if="screenWidth >= 750" width="95vw" height="73vh">
             </listaProjetos>
             <listaProjetos v-else width="95vw" height="59vh">
             </listaProjetos>

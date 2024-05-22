@@ -1,8 +1,8 @@
 <template>
     <div class="w-[75vw] h-[92vh] flex flex-col">
         <div class="flex flex-row w-full items-center ">
-            <div @click="router.push('/perfil')" v-if="screenWidth <= 768" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
-                <flechaMobilePerfil class=" w-[50%] max-mobile:w-[80%] max-mobileGrande:w-[30%]  h-full"></flechaMobilePerfil>
+            <div @click="router.push('/perfil')" v-if="screenWidth < 1024" class="w-[15%] flex items-center   justify-center max-mobileGrande:w-[30%]">
+                <flechaMobilePerfil class=" "></flechaMobilePerfil>
             </div>
             <h1 v-if="screenWidth <= 740"
             style="font-Family:var(--fonteTitulo);font-size: var(--fonteTituloTamanhoMobile);"
@@ -18,7 +18,7 @@
             class="pl-32 items-center max-sm:pl-12 max-mobileGrande:pl-8">
             <div class="flex justify-start">
                 <div class="flex flex-col gap-10 ">
-                    <div class="flex  lg:flex-row gap-8  max-md:flex-col">
+                    <div class="flex justify-between lg:flex-row gap-8  max-md:flex-col">
                         <div class="text-2xl w-[60%] ">
                             <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaCaracteres') }}<br>
                             <span class="text-[var(--roxo)]">*</span>{{ $t('seguranca.senhaConteudo') }}<br>
@@ -27,7 +27,7 @@
                             a este dispositivo, mas é possível que sua conta
                             seja desconectada de outros dispositivos. -->
                         </div>
-                        <div>
+                        <div v-if="!isLogadoGoogle" >
                             <Botao v-if="screenWidth >= 640" :funcaoClick="abrePopUp" :parametrosFuncao="['senha']"
                                 preset="PadraoRoxo" :texto="$t('seguranca.alterarSenha')">
                             </Botao>
@@ -36,7 +36,7 @@
                             </Botao>
                         </div>
                     </div>
-                    <div class="flex  items-start lg:flex-row gap-8 max-md:flex-col">
+                    <div class="flex justify-between items-start lg:flex-row gap-8 max-md:flex-col">
                         <div class="gap-5">
                             <div class="text-2xl min-w-[60%] w-full flex flex-col">
                                 <div> {{ $t('seguranca.seuEmailAtual') }}</div>
@@ -52,7 +52,7 @@
                                 desconectar a conta do Google.
                             </div>
                         </div>
-                        <div class="w-[45%] flex md:justify-end">
+                        <div v-if="!isLogadoGoogle" class="w-[45%] flex md:justify-end">
                             <Botao v-if="screenWidth >= 640" :funcaoClick="abrePopUp" :parametrosFuncao="['email']"
                                 preset="PadraoRoxo" :texto="$t('seguranca.alterarEmail')">
                             </Botao>
@@ -70,9 +70,12 @@
         </div>
 
     </div>
+    <alertTela v-if="alteradoSenha" :key="alteradoSenha"  mensagem="Senha Alterada" cor="#29CD00" ></alertTela>
+    <alertTela v-if="alteradoEmail" :key="alteradoEmail"  mensagem="Email Alterado" cor="#29CD00" ></alertTela>
     <alterarSenha v-if="popUpSenha && screenWidth <= 1024" ></alterarSenha>
     <alterarEmail v-if="popUpEmail  && screenWidth <= 1024"></alterarEmail>
     <ConfirmaPopUp v-if="popUpDeletar  && screenWidth <= 1024"></ConfirmaPopUp>
+    
 </template>
 
 <script setup>
@@ -87,11 +90,13 @@ import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue';
 import ConfirmaPopUp from '../components/ConfirmaPopUp.vue'
 import alterarEmail from '../components/alterarEmail.vue';
 import alterarSenha from '../components/alterarSenha.vue';
+import alertTela from './alertTela.vue';
+
 import { storeToRefs } from 'pinia';
 import router from '../router';
 const PerfilStore = perfilStore()
 const conexao = conexaoBD()
-const { popUpSenha, popUpEmail,popUpDeletar } = storeToRefs(PerfilStore)
+const { popUpSenha, popUpEmail,popUpDeletar,alteradoEmail,alteradoSenha } = storeToRefs(PerfilStore)
 import { useI18n } from 'vue-i18n';
 import { onUpdated } from 'vue';
 const screenWidth = ref(window.innerWidth)
@@ -100,18 +105,27 @@ watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
 })
 
+watch(() => alteradoSenha, () => {
+        setTimeout(() => {
+            alteradoSenha=!alteradoSenha
+                }, 5000);
+})
+watch(() => alteradoEmail, () => {
+        setTimeout(() => {
+            alteradoEmail=!alteradoEmail
+                }, 5000);
+})
+
 let funcaoPopUp = funcaoPopUpStore()
-let usuario;
-
-let isLogadoGoogle = false;
-
-
+let usuario=ref({});
+let isLogadoGoogle =ref(false);
 let email = ref('');
 
 onMounted(async () => {
-    usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'), '/usuario')
-    console.log(usuario)
-    email.value = usuario.email
+    usuario.value = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'), '/usuario')
+    console.log(usuario.value)
+    email.value = usuario.value.email
+    isLogadoGoogle.value=usuario.value.isGoogleLogado
     window.addEventListener('resize', () => {
         screenWidth.value = window.innerWidth
     })

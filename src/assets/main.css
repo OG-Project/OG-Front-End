@@ -27,7 +27,7 @@
     --roxoClaro: hsl(var(--hueRoxo) 100 85);
     --fonteTitulo:'Source Sans 3';
     --fonteCorpo:'Poppins';
-    --fonteTituloTamanho:6vh ;
+    --fonteTituloTamanho:6vh;
     --fonteCorpoTamanho:2vh;
     --backgroundPuro: #ffffff;
     --backgroundItems: #f8f8f8; 
