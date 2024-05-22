@@ -11,13 +11,13 @@
                         <b>{{ name }}</b>
                     </div>
                     <div class="tempoAtuacao w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
-                        <img src="../imagem-vetores/relogio.svg">
+                        <img src="../imagemVetores/relogio.svg">
                     </div>
                     <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
                         <div class="flex justify-end">
-                            <img src="../imagem-vetores/triangulo.svg">
+                            <img src="../imagemVetores/triangulo.svg">
                         </div>
-                        {{ $t('cardProjetos.tempoAtuacao') }}: {{ tempoAtuacao }}
+                        {{ $t('cardProjetos.tempoDeAtuacao') }}: {{ tempoAtuacao }}
                     </div>
                 </div>
 

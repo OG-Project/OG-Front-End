@@ -28,7 +28,7 @@
                             :src="'data:' + equipe.equipe.foto.tipo + ';base64,' + equipe.equipe.foto.dados" alt="">
                     </div>
                     <div v-else class="w-[35%] h-[full] flex items-center justify-center">
-                        <img class="imgDePerfil" src="../../imagem-vetores/imagemEquipe.svg" alt="">
+                        <img class="imgDePerfil" src="../../imagemVetores/imagemEquipe.svg" alt="">
                     </div>
                     <div class="flex flex-col w-[65%] items-start justify-end gap-[10px]">
                         <div v-if="opcao2 == '1'">
@@ -51,6 +51,8 @@
                     <div v-for="mensagem of chat.mensagens" class=" w-full flex justify-end">
                         <div v-if="mensagem.criador.id != usuarioLogado.id"
                             class="w-full pl-[2.5%] flex flex-col items-start">
+                            <img class="imgDePerfil"
+                            :src="'data:' + mensagem.criador.foto.tipo + ';base64,' + mensagem.criador.foto.dados" alt="">
                             <div class="text-[70%]">
                                 {{ mensagem.criador.username }}
                             </div>

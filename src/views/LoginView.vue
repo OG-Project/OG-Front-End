@@ -2,20 +2,20 @@
 import { useRouter } from "vue-router";
 import Botao from "../components/Botao.vue";
 import Input from "../components/Input.vue";
-import iconeGoogle from "../imagem-vetores/iconeGoogle.svg";
-import iconeLinkedin from "../imagem-vetores/iconeLinkedin.svg";
-import iconePessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
-import iconeSenhaLogin from "../imagem-vetores/iconeCadeadoSenhaLogin.svg";
-import imgVetorSenha from "../imagem-vetores/iconeCadeadoSenhaLogin.svg";
-import imgEmailRegistro from "../imagem-vetores/iconeEmailRegistro.svg";
-import imgPessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
+import iconeGoogle from "../imagemVetores/iconeGoogle.svg";
+import iconeLinkedin from "../imagemVetores/iconeLinkedin.svg";
+import iconePessoaLogin from "../imagemVetores/iconePessoaLogin.svg";
+import iconeSenhaLogin from "../imagemVetores/iconeCadeadoSenhaLogin.svg";
+import imgVetorSenha from "../imagemVetores/iconeCadeadoSenhaLogin.svg";
+import imgEmailRegistro from "../imagemVetores/iconeEmailRegistro.svg";
+import imgPessoaLogin from "../imagemVetores/iconePessoaLogin.svg";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import { criaUsuarioStore } from "../stores/criarUsuario.js";
-import olho from "../imagem-vetores/olho.svg";
-import olhoOculto from "../imagem-vetores/olhoOculto.svg";
+import olho from "../imagemVetores/olho.svg";
+import olhoOculto from "../imagemVetores/olhoOculto.svg";
 import { ref } from "vue";
-import Logo from "../imagem-vetores/logo.vue";
+import Logo from "../imagemVetores/logo.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
 
@@ -158,7 +158,7 @@ async function loginGoogle(){
       <div class="h-[100vh] w-[70%] flex items-center justify-center flex-col">
         <div class="flex items-center justify-center flex-col h-full">
           <Logo class="tamanhoDaLogoLogin" />
-          <img class="tamanhoDoNomeLogin" src="../imagem-vetores/nome.svg" />
+          <img class="tamanhoDoNomeLogin" src="../imagemVetores/nome.svg" />
         </div>
       </div>
       <div id="bordaCinza">
@@ -281,7 +281,7 @@ async function loginGoogle(){
 }
 
 #imagemDeFundoLogin {
-  background-image: url(../imagem-vetores/BG1.svg);
+  background-image: url(../imagemVetores/BG1.svg);
   background-color: #ffffff;
   height: 100vh;
   width: 100vw;

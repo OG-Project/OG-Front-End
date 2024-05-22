@@ -41,8 +41,8 @@
 </template>
 <script setup>
 import SelectPadrao from './selectPadrao.vue';
-import sair from '../imagem-vetores/Sair.vue'
-import userTodoPreto from '../imagem-vetores/userTodoPreto.vue'
+import sair from '../imagemVetores/Sair.vue'
+import userTodoPreto from '../imagemVetores/userTodoPreto.vue'
 
 import { defineProps, onUpdated, ref } from 'vue';
 import { getCurrentInstance } from 'vue';
@@ -69,12 +69,17 @@ const props = defineProps({
   }
 })
 
-let opcaoEscolhida = ref(t('selectComponent.edit'))
+let opcaoEscolhida = ref("")
 
-function enviaOpcao(convidado){
+
+function enviaOpcao(convidado) {
   instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
 }
-const opcoesSelect = [t('selectComponent.view'),t('selectComponent.edit')];
+const opcoesSelect = ['View', 'Edit'];
+
+const imagemIcon = {
+  height: props.altDaImagemIcon,
+}
 
 const removerConvidado = (convidado) => {
   // Emitir um evento para notificar o componente pai sobre a exclusão do convidado

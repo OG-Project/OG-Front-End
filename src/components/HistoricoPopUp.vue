@@ -21,7 +21,7 @@
 </template>
 <script setup>
 import fundoPopUp from './fundoPopUp.vue';
-import userTodoPreto from '../imagem-vetores/userTodoPreto.vue';
+import userTodoPreto from '../imagemVetores/userTodoPreto.vue';
 import { onMounted, ref, defineProps } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router';
