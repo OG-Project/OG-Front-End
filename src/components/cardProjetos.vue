@@ -11,11 +11,11 @@
                         <b>{{ name }}</b>
                     </div>
                     <div class="tempoAtuacao w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
-                        <img src="../imagemVetores/relogio.svg">
+                        <relogio></relogio> 
                     </div>
                     <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
                         <div class="flex justify-end">
-                            <img src="../imagemVetores/triangulo.svg">
+                            <triangulo></triangulo>
                         </div>
                         {{ $t('cardProjetos.tempoDeAtuacao') }}: {{ tempoAtuacao }}
                     </div>
@@ -68,6 +68,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { conexaoBD } from "../stores/conexaoBD.js";
+import relogio from '../imagemVetores/relogio.vue';
+import triangulo from './../imagemVetores/triangulo.vue'
 
 const banco = conexaoBD();
 
@@ -103,6 +105,7 @@ const props = defineProps({
 let responsaveis = ref([]); // Inicialmente exibir "Carregando..." até que os nomes dos responsáveis sejam carregados
 let verTempoAtuacao = ref(false);
 let alinhamento = ref(43);
+
 const screenWidth = window.innerWidth;
 
 onMounted(async () => {

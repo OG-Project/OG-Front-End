@@ -69,7 +69,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       console.log(objeto);
       this.loading = true;
       try {
-
+        
         return axios.put(this.url + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
 
       } finally {
