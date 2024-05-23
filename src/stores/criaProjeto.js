@@ -6,11 +6,8 @@ import VueCookies from "vue-cookies";
 import { id } from "date-fns/locale";
 import { criaNotificacao } from '../stores/criaNotificacao.js';
 import { criaHistoricoStore } from '../stores/criaHistorico.js'
-
-
-
-let api = conexaoBD();
 const criaNotificacaoStore = criaNotificacao();
+let api = conexaoBD();
 
 export const criaProjetoStore = defineStore('criaProjeto', {
   state: () => {
@@ -42,7 +39,8 @@ export const criaProjetoStore = defineStore('criaProjeto', {
           VueCookies.set("IdProjetoAtual", res.data.id)
           const criaHistorico = criaHistoricoStore();
           let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
-          criaHistorico.criaHistoricoProjeto("Criou o Projeto", projetoAux, usuario)
+          console.log(usuario)
+          criaHistorico.criaHistoricoProjeto("Criou o projeto", projetoAux, usuario)
           this.enviaParaWebSocket(equipes, projetoAux)
         })
       } else {

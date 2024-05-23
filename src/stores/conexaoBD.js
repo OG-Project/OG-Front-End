@@ -74,7 +74,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async atualizar(objeto, textoRequisicao) {
       this.loading = true;
       try {
-
+        
         return axios.put(this.url + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
 
       } finally {
