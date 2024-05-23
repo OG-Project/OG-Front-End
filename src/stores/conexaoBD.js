@@ -10,7 +10,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     return {
       api: axios.get("http://localhost:8082/usuario", { withCredentials: true }),
       loading: true,
-      url:"http://localhost:8082"
+      url:"http://localhost:8082",
     }
   },
   actions: {
@@ -28,7 +28,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     logOut(){
       this.loading = true;
       try {
-        return axios.get(this.url + '/logOut', { withCredentials: true }).then(response => response.data)
+        return axios.post(this.url + '/logOut',"", { withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
         // console.log('Loading:', this.loading);
