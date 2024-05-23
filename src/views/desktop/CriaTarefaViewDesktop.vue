@@ -550,6 +550,7 @@ function reloadTelaTarefa() {
   if (reload == '0') {
     VueCookies.set('idReloadTarefa', '1');
     window.location.reload()
+    tour.show(usuario.value.configuracao.ultimoPassoId,true)
   }
 }
 

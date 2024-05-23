@@ -5,6 +5,7 @@
         <img class="h-[40%]" @click="redireciona('/projetos')" :src="IconFolder" />
         <img class="h-[40%]" :src="IconNotification" />
         <img class="h-[40%]" @click="redireciona('/perfil/informacoes')" :src="IconConfig" />
+        <iconChatBar @click="redireciona('/chat')" class="h-[40%]"></iconChatBar>
     </div>
 </template>
 
@@ -18,6 +19,7 @@ import router from "@/router";
 import { onMounted, ref } from "vue"
 import VueCookies from "vue-cookies"
 import { conexaoBD } from "../stores/conexaoBD.js"
+import iconChatBar from "../assets/iconChatBar.vue"
 
 let conexao = conexaoBD();
 let configuracao = ref()

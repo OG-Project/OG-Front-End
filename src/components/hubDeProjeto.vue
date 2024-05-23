@@ -97,6 +97,7 @@ import comentarioProjeto from './comentarioProjeto.vue';
 import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca'
 import HistoricoPopUp from "../components/HistoricoPopUp.vue";
 import IconeHistorico from "../assets/historicoProjeto.vue";
+import { inject } from 'vue';
 
 
 
@@ -123,7 +124,7 @@ let corTimeline = ref("var(--backgroundItemsClaros)")
 let corCalendario = ref("var(--backgroundItemsClaros)")
 
 let isResponsavel = ref(false)
-
+const tour =inject('tour')
 let number = ref();
 let textoRequisicao = ref('');
 
@@ -213,11 +214,19 @@ watch(listaPropriedadeVisiveis, () => {
     emit('atualizaPropriedadesVisiveis', listaPropriedadeVisiveis.value)
 })
 
-function enviaCookieTarefaNova() {
+async function enviaCookieTarefaNova() {
     VueCookies.set("IdTarefaCookies", 0, new Date())
     localStorage.setItem("TarefaNaoFinalizada", "", new Date())
     VueCookies.set('idReloadTarefa', '0');
+    let usuario=await api.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    if(tour.isActive()){
+        usuario.configuracao.ultimoPassoId='step-15'
+        usuario.configuracao.rotaDoPasso='/criatarefa'
+        api.atualizar(usuario,'/usuario')
+        tour.next()
+    }
     criaTarefa.criaTarefa()
+    tour.show(usuario.value.configuracao.ultimoPassoId,true)
 }
 function enviaCookieProjeto() {
     VueCookies.set('idReloadProjeto', '0');

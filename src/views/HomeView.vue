@@ -13,7 +13,6 @@ import { ref, onMounted,watch } from 'vue'
 import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
 import router from '../router';
-import VueCookies from 'vue-cookies'
 import { conexaoBD } from "../stores/conexaoBD.js";
 
 
