@@ -96,7 +96,7 @@ import { storeToRefs } from 'pinia';
 import router from '../router';
 const PerfilStore = perfilStore()
 const conexao = conexaoBD()
-const { popUpSenha, popUpEmail,popUpDeletar,alteradoEmail,alteradoSenha } = storeToRefs(PerfilStore)
+let { popUpSenha, popUpEmail,popUpDeletar,alteradoEmail,alteradoSenha } = storeToRefs(PerfilStore)
 import { useI18n } from 'vue-i18n';
 import { onUpdated } from 'vue';
 const screenWidth = ref(window.innerWidth)
