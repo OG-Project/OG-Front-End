@@ -129,8 +129,6 @@ async function geraTutorial() {
   if(usuario.value.configuracao.isTutorial){
     if(usuario.value.configuracao.ultimoPassoId!='step-1'
       && usuario.value.configuracao.ultimoPassoId!=null){
-        console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
-        console.log(usuario.value.configuracao.rotaDoPasso);
         router.push(usuario.value.configuracao.rotaDoPasso)
         tour.show(usuario.value.configuracao.ultimoPassoId,true)
         openClose()

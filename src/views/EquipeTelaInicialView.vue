@@ -75,12 +75,14 @@ import CardProjetos from "../components/cardProjetos.vue";
 import { useRouter } from 'vue-router'
 import engrenagem from "../imagemVetores/engrenagem.vue";
 import membrosEquipeImagem from "../imagemVetores/membrosEquipeImagem.vue";
+import { inject } from "vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('IdUsuarioCookie')
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
 const listaProjetos = ref([]);
+const tour =inject('tour')
 let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal = false;
 let variavelEngrenagem = false;
@@ -114,6 +116,12 @@ async function criarProjeto() {
   router.push({ path: '/criaProjeto' }).then(() => {
     // window.location.reload()
   });
+  if(tour.isActive()){
+    usuarioLogado.configuracao.ultimoPassoId='step-10'
+    usuarioLogado.configuracao.rotaDoPasso='/crieprojeto'
+    banco.atualizar(usuarioLogado,'/usuario')
+    tour.next()
+  }
   VueCookies.set('idReloadProjeto', '0');
   VueCookies.set("projetoCookie");
   VueCookies.set("IdProjetoAtual")

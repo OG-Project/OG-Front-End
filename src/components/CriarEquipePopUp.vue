@@ -83,6 +83,7 @@ import { apple } from 'color-convert/conversions';
 import inputDePesquisa from './inputDePesquisa.vue';
 import { useI18n } from 'vue-i18n';
 import { criaNotificacao } from '../stores/criaNotificacao';
+import { inject } from 'vue';
 
 const { t } = useI18n();
 
@@ -100,6 +101,8 @@ let listaUsuariosConvidados = ref([])
 const screenWidth = window.innerWidth;
 let convidado = ref('');
 let usuarios = banco.procurar("/usuario");
+const tour=inject('tour')
+
 
 function limparMensagemErro() {
     mensagem.value = "";
@@ -360,6 +363,9 @@ async function cadastrarEquipe() {
         enviarFotoParaBackend(equipe);
         adicionaUsuarioLogado(equipe)
         enviaParaWebSocket(response.data, listaUsuariosConvidados.value);
+        if(tour.isActive){
+             
+        }
         window.location.reload();
     });
 };
