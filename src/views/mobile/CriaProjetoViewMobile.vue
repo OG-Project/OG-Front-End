@@ -409,6 +409,7 @@ async function criaProjeto() {
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
         criaHistorico.criaHistoricoProjeto("Editou o projeto", projeto, usuario)
         restauraCookies();
+        
     }
 
 }
