@@ -69,17 +69,17 @@ const props = defineProps({
   }
 })
 
-let opcaoEscolhida = ref(t('selectComponent.edit'))
+let opcaoEscolhida = ref("")
+
 
 function enviaOpcao(convidado) {
   instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
 }
+const opcoesSelect = [t('selectComponent.view'), t('selectComponent.edit')];
 
 const imagemIcon = {
   height: props.altDaImagemIcon,
 }
-const opcoesSelect = [t('selectComponent.view'),t('selectComponent.edit')];
-
 
 const removerConvidado = (convidado) => {
   // Emitir um evento para notificar o componente pai sobre a exclusão do convidado

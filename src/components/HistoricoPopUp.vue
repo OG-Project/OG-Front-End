@@ -86,8 +86,8 @@ function traducao(historico) {
         const projetoNome = historico.mensagem.replace('Criou o projeto', '').trim();
         return `${t('historicoProjeto.criou')} ${projetoNome}`;
     }
-    if (historico.mensagem.startsWith('Editou o Projeto')) {
-        const projetoNome = historico.mensagem.replace('Editou o Projeto', '').trim();
+    if (historico.mensagem.startsWith('Editou o projeto')) {
+        const projetoNome = historico.mensagem.replace('Editou o projeto', '').trim();
         return `${t('historicoProjeto.editou')} ${projetoNome}`;
     }
     if (historico.mensagem.startsWith('Adicionou um novo responsável')) {

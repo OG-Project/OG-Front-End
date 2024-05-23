@@ -485,7 +485,7 @@ async function criaProjeto() {
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
-        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
+        criaHistorico.criaHistoricoProjeto("Editou o projeto", projeto, usuario)
         router.push("/projeto");
     }
 }

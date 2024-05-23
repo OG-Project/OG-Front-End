@@ -141,11 +141,12 @@
   const projetoEmBaixoId = ref()
   const banco = conexaoBD();
   let projetos = ref([]);
-  const idUsuarioLogado = 1
+  const idUsuarioLogado = VueCookies.get("IdUsuarioCookie")
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
   const router = useRouter();
+
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;

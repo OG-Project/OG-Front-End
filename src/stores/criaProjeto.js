@@ -46,7 +46,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
           this.enviaParaWebSocket(equipes, projetoAux)
         })
       } else {
-        api.cadastrar(projetoCriado, '/projeto').then((res) => {
+        api.cadastrar(projetoCriado, '/projeto').then(async (res) => {
           console.log(res.data);
           projetoAux = res.data;
           VueCookies.set("IdProjetoAtual", res.data.id)

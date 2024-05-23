@@ -69,14 +69,22 @@ export const conexaoBD = defineStore('conexaoBD', {
       console.log(objeto);
       this.loading = true;
       try {
-        if (textoRequisicao == "/usuario") {
-          const idUsuario = VueCookies.get("IdUsuarioCookie")
-          return axios.put(this.url + textoRequisicao + "/" + idUsuario, objeto, { withCredentials: true }).then(response => response)
-        }
 
         return axios.put(this.url + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
 
       } finally {
+        this.loading = false;
+      }
+    },
+    async trocaSenha(id, senhaNova) {
+      this.loading = true;
+      try {
+        console.log(senhaNova);
+        console.log(id);
+        return axios.patch('http://localhost:8082/usuario/senha/' + id, senhaNova, { withCredentials: true }).then(response =>{
+          console.log(response) 
+        } )
+      }finally {
         this.loading = false;
       }
     },

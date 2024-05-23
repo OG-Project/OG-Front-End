@@ -60,7 +60,9 @@ import { storeToRefs } from 'pinia';
 import { conexaoBD } from '../stores/conexaoBD';
 import { watch } from 'vue';
 import { onUnmounted } from 'vue';
+import router from '../router';
 import flecha from '../assets/flecha-mobile-perfil.vue'
+// import router from '../router';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 import { onUpdated } from 'vue';
 let perfil = perfilStore()

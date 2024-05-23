@@ -19,7 +19,6 @@
                     @updateModelValue="(e) => { nome = e }"></Input>
             </div>
             <div class=" grid-template  flex w-full">
-
                 <inputDePesquisa :class="{ 'computedClasses': someCondition }" 
                     styleInput="input-transparente-claro" :largura="larguraInputConvidado()" 
                     :place-holder-pesquisa="$t('criaEquipePopUp.adicionarMembro')" v-model="convidado" :zera-input="zerarInput"
