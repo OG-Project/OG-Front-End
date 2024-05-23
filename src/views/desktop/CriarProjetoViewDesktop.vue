@@ -130,6 +130,7 @@ const route = useRoute();
 const webSocket = webSocketStore();
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
 import botaoX from '../../imagemVetores/botaoX.vue';
+import { inject } from 'vue';
 
 const criaHistorico = criaHistoricoStore();
 
@@ -166,13 +167,15 @@ let isResponsavel = ref(false)
 let naoPodeDeletar = ref(false)
 let usuario;
 let usuarioId = VueCookies.get('IdUsuarioCookie')
+const tour=inject('tour')
 
 function reloadTelaTarefa() {
     const reload = VueCookies.get('idReloadProjeto');
     if (reload == '0') {
         console.log("reload")
         VueCookies.set('idReloadProjeto', '1');
-        window.location.reload();
+            window.location.reload();
+            tour.show(usuario.configuracao.ultimoPassoId,true)
     }
 }
 
