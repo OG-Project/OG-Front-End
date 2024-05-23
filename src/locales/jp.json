@@ -109,7 +109,8 @@
     "Corpo de Texto": "本文",
     "Cores": "色",
     "Modo Claro": "ライトモード",
-    "Modo Escuro": "ダークモード"
+    "Modo Escuro": "ダークモード",
+    "alerta":"これがあなたの体験に影響を与える可能性があります"
   },
   "informacoes": {
     "Informações": "情報",
@@ -119,7 +120,8 @@
     "Sobrenome": "姓",
     "Data de Nascimento": "誕生日",
     "Editar E-mail": "情報を編集する",
-    "Confirmar Edição": "編集を確認"
+    "Confirmar Edição": "編集を確認",
+    "alerta":"変更が成功しました"
   },
   "privacidade": {
     "Privacidade": "プライバシー",

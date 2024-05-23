@@ -109,7 +109,8 @@
     "Corpo de Texto": "正文",
     "Cores": "颜色",
     "Modo Claro": "明亮模式",
-    "Modo Escuro": "暗黑模式"
+    "Modo Escuro": "暗黑模式",
+    "alerta":"这可能会影响您的体验"
   },
   "informacoes": {
     "Informações": "信息",
@@ -119,7 +120,8 @@
     "Sobrenome": "姓",
     "Data de Nascimento": "出生日期",
     "Editar E-mail": "编辑信息",
-    "Confirmar Edição": "确认编辑"
+    "Confirmar Edição": "确认编辑",
+    "alerta":"修改成功"
   },
   "privacidade": {
     "Privacidade": "隐私",

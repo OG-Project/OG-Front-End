@@ -117,7 +117,7 @@
                         </div>
                 </div>
         </div>
-        <alertTela v-if="alterado" :key="alterado" cor="#29CD00" mensagem="Alterado com Sucesso" />
+        <alertTela v-if="alterado" :key="alterado" cor="#29CD00" :mensagem="$t('informacoes.alerta')" />
 </template>
 
 <script setup>

@@ -109,7 +109,8 @@
     "Corpo de Texto": "Текст",
     "Cores": "Цвета",
     "Modo Claro": "Светлый режим",
-    "Modo Escuro": "Темный режим"
+    "Modo Escuro": "Темный режим",
+    "alerta":"Это может повлиять на ваш опыт"
   },
   "informacoes": {
     "Informações": "Информация",
@@ -119,7 +120,8 @@
     "Sobrenome": "Фамилия",
     "Data de Nascimento": "Дата рождения",
     "Editar E-mail": "Редактировать информацию",
-    "Confirmar Edição": "Подтвердить редактирование"
+    "Confirmar Edição": "Подтвердить редактирование",
+    "alerta":"Изменено успешно"
   },
   "privacidade": {
     "Privacidade": "Конфиденциальность",

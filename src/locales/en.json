@@ -109,7 +109,8 @@
     "Corpo de Texto": "Body Text",
     "Cores": "Colors",
     "Modo Claro": "Light Mode",
-    "Modo Escuro": "Dark Mode"
+    "Modo Escuro": "Dark Mode",
+    "alerta":"This may affect your experience"
   },
   "informacoes": {
     "Informações": "Information",
@@ -119,7 +120,8 @@
     "Sobrenome": "Last Name",
     "Data de Nascimento": "Date of Birth",
     "Editar E-mail": "Edit Information",
-    "Confirmar Edição": "Confirm Edit"
+    "Confirmar Edição": "Confirm Edit",
+    "alerta":"Successfully Changed"
   },
   "privacidade": {
     "Privacidade": "Privacy",

@@ -110,7 +110,7 @@
 
         </div>
     </div>
-    <alertTela v-if="alterado" mensagem="Isso pode afetar sua experiência" :key="alterado" :largura="screenWidth.value>=1024?  '15vw':'22vw'"cor="#8E00FF" /> 
+    <alertTela v-if="alterado" :mensagem="$t('aparencia.alerta')" :key="alterado" :largura="screenWidth.value>=1024?  '15vw':'22vw'"cor="#8E00FF" /> 
 </template>
 
 <script setup>
