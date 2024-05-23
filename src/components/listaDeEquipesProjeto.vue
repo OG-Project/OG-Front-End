@@ -139,6 +139,7 @@ async function listaDeEquipes() {
     })
 }
 
+
 async function adicionarEquipe() {
     console.log(equipeConvidada.value);
     const equipeDoProjeto = listaEquipes.value.find(equipe => equipe.nome === equipeConvidada.value);

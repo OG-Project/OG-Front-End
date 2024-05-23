@@ -491,14 +491,14 @@ async function criaProjeto() {
         criaProjeto.criaProjeto(nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value)
         restauraCookies();
-
+        router.push("/projeto");
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
-        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
+        criaHistorico.criaHistoricoProjeto("Editou o projeto", projeto, usuario)
         router.push("/projeto");
     }
 }

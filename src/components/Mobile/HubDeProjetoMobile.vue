@@ -6,9 +6,8 @@
     </div>
     <div class="w-full h-[13vh] flex  items-center ">
         <div class="w-[90%] h-[20vh] flex flex-col items-center ">
-            <div class="w-[80%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]"
-                style="font-size:var(--fonteTituloTamanho)">
-                <div class="h-[100%] flex items-end truncate">
+            <div class="w-[80%] h-[55%] border-b-4 flex items-end justify-between pb-[1%]">
+                <div class="h-[10vh] flex items-end truncate text-[4vh]">
                     <p class="h-[60%] pt-[2vh] truncate">{{ projeto.nome }}</p>
                 </div>
             </div>

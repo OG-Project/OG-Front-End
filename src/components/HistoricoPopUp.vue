@@ -4,7 +4,7 @@
             <div class="divTitulo">
                 <h1 class="titulo">{{$t('paginaAdm.historico')}}</h1>
             </div>
-            <div class="divHistorico overflow-y">
+            <div class="divHistorico overflow-y-auto">
                 <div  v-for="historico in historicos" :key="historico.id" class="div">
                    <img @click="router.push('/perfil/'+historico.criador.id)" v-if="historico.criador.foto != null" class="imgPerfil cursor-pointer" :src="`data:${historico.criador.foto.tipo};base64,${historico.criador.foto.dados}`" 
                    alt="">
@@ -86,8 +86,8 @@ function traducao(historico) {
         const projetoNome = historico.mensagem.replace('Criou o projeto', '').trim();
         return `${t('historicoProjeto.criou')} ${projetoNome}`;
     }
-    if (historico.mensagem.startsWith('Editou o Projeto')) {
-        const projetoNome = historico.mensagem.replace('Editou o Projeto', '').trim();
+    if (historico.mensagem.startsWith('Editou o projeto')) {
+        const projetoNome = historico.mensagem.replace('Editou o projeto', '').trim();
         return `${t('historicoProjeto.editou')} ${projetoNome}`;
     }
     if (historico.mensagem.startsWith('Adicionou um novo responsável')) {

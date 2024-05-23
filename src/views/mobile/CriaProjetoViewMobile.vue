@@ -407,8 +407,9 @@ async function criaProjeto() {
         let usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
-        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
+        criaHistorico.criaHistoricoProjeto("Editou o projeto", projeto, usuario)
         restauraCookies();
+        
     }
 
 }

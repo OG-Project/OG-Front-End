@@ -180,10 +180,9 @@ onMounted(async () => {
 });
 
 async function iniciarChat() {
-    chat = {}
     conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/chat/pessoal/' + usuario.value.id).then((response) => {
-        chat = response
-        if (chat == {}) {
+        if (response == "") {
+
             conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/usuario').then((response) => {
                 let chat = {
                     usuarios: [{
@@ -212,8 +211,6 @@ function verificaTemEquipe(equipes) {
     }
     return false
 }
-
-
 
 let Imagem = computed(() => {
     if (foto.value != null) {

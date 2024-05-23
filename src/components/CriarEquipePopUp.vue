@@ -19,10 +19,12 @@
                     @updateModelValue="(e) => { nome = e }"></Input>
             </div>
             <div class=" grid-template  flex w-full">
-                <Input :class="{ 'computedClasses': someCondition }" @updateModelValue="(e) => { usuarioConvidado = e }"
-                    styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                    icon="../src/imagem-vetores/adicionarPessoa.svg" :conteudoInput="$t('criaEquipePopUp.adicionarMembro')"
-                    v-model="usuarioConvidado"></Input>
+                <inputDePesquisa :class="{ 'computedClasses': someCondition }" 
+                    styleInput="input-transparente-claro" :largura="larguraInputConvidado()" 
+                    :place-holder-pesquisa="$t('criaEquipePopUp.adicionarMembro')" v-model="convidado" :zera-input="zerarInput"
+                    @updateModelValue="(e) => { convidado = e }" icon="../src/imagem-vetores/adicionarPessoa.svg" ref="inputPesquisa"
+                      :lista-da-pesquisa=listaDeUsuariosParaBusca @item-selecionado="pegaValorSelecionadoPesquisa" >
+                </inputDePesquisa>
             </div>
             <div v-if="screenWidth >= 750" class="grid-template flex w-full mt-[1vh]">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"

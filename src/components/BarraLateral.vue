@@ -75,7 +75,7 @@ import VueCookies from "vue-cookies";
 import { conexaoBD } from '../stores/conexaoBD';
 import tutorialIcon from '../assets/tutorialIcon.vue';
 import { inject } from 'vue'
-import iconChat from '../assets/iconChat.vue'
+import iconChat from '../assets/iconChatBar.vue'
 
 
 const tour = inject('tour')
@@ -86,7 +86,6 @@ let usuario = ref({})
 function openClose() {
   // if(tour.isActive()){
   //   if(tour.getCurrentStep().id=='step-3'){
-  //     console.log(tour.getCurrentStep().id);
   //     tour.next()
   //   }
   // }
@@ -97,12 +96,9 @@ onMounted(async () => {
   colocaUsuarioId()
 })
 
-
 function colocaUsuarioId() {
-  console.log("teste")
   banco.getCookie().then((res) => {
     usuario.value = res;
-    console.log(res.id)
     VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
     verificaTarefasFeitas();
   })
@@ -132,26 +128,22 @@ function redirecionamento(local) {
 }
 
 async function geraTutorial() {
-  console.log(usuario);
   if (usuario.value.configuracao.isTutorial) {
     if (usuario.value.configuracao.ultimoPassoId != 'step-1'
       && usuario.value.configuracao.ultimoPassoId != null) {
-      console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
-      console.log(usuario.value.configuracao.rotaDoPasso);
       router.push(usuario.value.configuracao.rotaDoPasso)
       tour.show(usuario.value.configuracao.ultimoPassoId, true)
       openClose()
     } else {
-      // console.log(route.path);
       tour.start()
       openClose()
     }
   } else {
     usuario.value.configuracao.isTutorial = true
     banco.atualizar(usuario.value, '/usuario')
-    console.log(usuario.value.configuracao.rotaDoPasso);
     router.push(usuario.value.configuracao.rotaDoPasso)
     tour.show(usuario.value.configuracao.ultimoPassoId, true)
+
     openClose()
   }
 }

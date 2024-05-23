@@ -79,6 +79,19 @@ let tarefasFeitas = ref(0);
 let tarefasNaoFeitas = ref(0);
 let totalTarefas = ref(0);
 
+function reloadHome() {
+  const reload = VueCookies.get('idReloadHome');
+  if (reload == '0') {
+    console.log('reload');
+    VueCookies.set('idReloadHome', '1');
+    
+    setTimeout(() => {
+      window.location.reload();
+    }, 0.5); // 2000 ms = 2 seconds
+  }
+}
+
+reloadHome();
 
 async function verificaTarefasFeitas() {
   const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
@@ -87,7 +100,6 @@ async function verificaTarefasFeitas() {
     projetosDoBanco.forEach(projeto => {
       projeto.tarefas.forEach(tarefa => {
         tarefa.subTarefas.forEach(subtarefa => {
-          console.log(subtarefa);
           if (subtarefa.concluido == true) {
             tarefasFeitas.value++;
           } else {
@@ -96,8 +108,6 @@ async function verificaTarefasFeitas() {
         });
       });
     });
-    console.log(tarefasFeitas.value);
-    console.log(tarefasNaoFeitas.value);
     porcentagemTarefasFeitas();
   });
 }
@@ -106,8 +116,6 @@ function porcentagemTarefasFeitas() {
   let totalSubTarefas = tarefasFeitas.value + tarefasNaoFeitas.value;
   quantidadeTarefasFeitas.value = (tarefasFeitas.value / totalSubTarefas) * 100;
   quantidadeNaoTarefasFeitas.value = (tarefasNaoFeitas.value / totalSubTarefas) * 100;
-  console.log(quantidadeTarefasFeitas.value);
-  console.log(quantidadeNaoTarefasFeitas.value);
   const data = {
     labels: ["Feito", "Não Feito"],
     datasets: [
@@ -191,9 +199,7 @@ onMounted(() => {
 )
 
 function colocaUsuarioId() {
-  console.log("teste")
   banco.getCookie().then((res) => {
-    console.log(res.id)
     VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
     verificaTarefasFeitas();
   })
