@@ -63,6 +63,7 @@ export const criaProjetoStore = defineStore('criaProjeto', {
       if(equipeAtual!=null){
         equipeAtual = await api.buscarUm(equipeAtual, "/equipe")
       }
+      console.log(equipesConvidadas)
       for (const equipe of equipesConvidadas) {
         if (equipe.equipe.id != equipeAtual.id) {
           membros.push(await api.buscarUm(equipe.equipe.id, "/equipe/criador"))

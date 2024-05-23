@@ -46,7 +46,6 @@ let usuario = ref()
 let configuracao = ref()
 
 onMounted(async () => {
-  VerificaPrazoDoProjeto()
   usuario.value =
     await banco.buscarUm(
       JSON.parse(
@@ -121,43 +120,6 @@ function change(a) {
 }
 function close() {
   perfil.isTecladoAtivado = !perfil.isTecladoAtivado
-}
-
-function VerificaPrazoDoProjeto() {
-  banco.procurar("/projeto").then((projetos) => {
-    let dataAtual = new Date();
-    let dias = 0;
-    for (let i = 0; i < projetos.length; i++) {
-      let dataProjeto = new Date(projetos[i].dataFinal);
-      let diferenca = dataProjeto.getTime() - dataAtual.getTime();
-      dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
-      if (dias < 7 && projetos[i].dataFinal != null && projetos[i].dataFinal > dataAtual) {
-        enviaParaWebSocket(projetos[i], dias)
-      }
-    }
-  });
-}
-
-function enviaParaWebSocket(projetoAux, dias) {
-  let teste = {
-    equipes: [
-      {
-        equipe: {
-          membros: [
-            {
-              id: usuarioLogadoId
-            }
-          ]
-        }
-      }
-    ],
-    notificao: {
-      mensagem: "Restam " + dias + " Para o fim do projeto",
-      projeto: projetoAux
-    }
-  }
-  console.log(teste)
-  criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 const screenWidth = ref(window.innerWidth)
