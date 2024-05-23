@@ -2,20 +2,20 @@
     <div class="gridTotal mt-[2%] overflow-hidden">
         <div class=" flex flex-col pl-[5%] overflow-hidden gap-10">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio" :conteudoInput="$t('criaProjeto.nomeProjeto')"
-                    :isInvalido="semNome" textoInvalido="O Nome é obrigatorio" largura="30" altura="6" fontSize="1.5rem"
-                    v-model="nomeProjeto" :modelValue="nomeProjeto" @updateModelValue="(e) => {
+                <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio"
+                    :conteudoInput="$t('criaProjeto.nomeProjeto')" :isInvalido="semNome"
+                    textoInvalido="O Nome é obrigatorio" largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"
+                    :modelValue="nomeProjeto" @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
             </div>
             <div class="h-[15%] w-max flex items-center">
-                <TextAreaPadrao :placeholder="$t('criaProjeto.descricao')" resize="none" width="30vw " height="8vh" preset="transparente"
-                    tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
+                <TextAreaPadrao :placeholder="$t('criaProjeto.descricao')" resize="none" width="30vw " height="8vh"
+                    preset="transparente" tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
             <div class="w-max h-max" @mouseenter="fazHoverPlaceHolder()" @mouseleave="fazBackPadraoPlaceHolder()">
-                <span :style="stylePlaceHolder" @mouseenter="fazBackPadraoPlaceHolder()"
-                    @mouseleave="fazHoverPlaceHolder()">{{ $t('criaProjeto.dataFinal') }}</span>
-                <Input altura="2" fontSize="1rem" largura="13" tipo="date" v-model="dataFinalProjeto"
+                
+                <Input altura="2"  :conteudoInput="$t('criaProjeto.dataFinal')+' :'" tipoInput="float" fontSize="1rem" largura="13" tipo="date" v-model="dataFinalProjeto"
                     :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
                         dataFinalProjeto = e
                     }" />
@@ -29,8 +29,9 @@
                                 placeholder-select="Equipes" v-model="equipesRelacionadasProjeto"
                                 fonte-tamanho="0.9rem"></selectPadrao>
 
-                            <Botao preset="PadraoVazado" :texto="$t('criaProjeto.conviar')" tamanho-da-borda="2px" tamanhoPadrao="pequeno"
-                                :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
+                            <Botao preset="PadraoVazado" :texto="$t('criaProjeto.conviar')" tamanho-da-borda="2px"
+                                tamanhoPadrao="pequeno" :funcaoClick="colocaListaEquipes"
+                                :parametrosFuncao="[equipesRelacionadasProjeto]">
                             </Botao>
 
                         </div>
@@ -47,13 +48,12 @@
                                 <div v-for="responsavel of responsaveisProjeto ">
                                     <div
                                         class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem]    w-max flex flex-row items-center gap-1 ">
-                                        <img src="../../imagem-vetores/userTodoPreto.svg">
+                                        <img src="../../imagemVetores/userTodoPreto.svg">
                                         <p>{{ responsavel }}</p>
                                         <div class="w-full flex justify-end pr-2">
                                             <div class="w-[40%]">
-                                                <img src="../../imagem-vetores/botao-x.svg"
-                                                    @click="removeResponsavel(responsavel)"
-                                                    v-if="responsaveisProjeto.length != 1">
+                                                <BotaoX @click="removeResponsavel(responsavel)"
+                                                    v-if="responsaveisProjeto.length != 1"></BotaoX>
                                             </div>
                                         </div>
                                     </div>
@@ -65,8 +65,8 @@
             </div>
             <div class=" w-[96%] ">
                 <ListaConvidados altura="20vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesSelecionadas" :texto="$t('criaProjeto.equipesVinculadas')" class="w-[100%]"
-                    @foi-clicado="removeListaEquipeConvidadas">
+                    :listaConvidados="listaEquipesSelecionadas" :texto="$t('criaProjeto.equipesVinculadas')"
+                    class="w-[100%]" @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>
         </div>
@@ -117,7 +117,7 @@ import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
-import Sair from "../../imagem-vetores/Sair.svg";
+import Sair from "../../imagemVetores/Sair.svg";
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
@@ -129,6 +129,7 @@ const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
+import botaoX from '../../imagemVetores/botaoX.vue';
 
 const criaHistorico = criaHistoricoStore();
 
@@ -167,36 +168,49 @@ let usuario;
 let usuarioId = VueCookies.get('IdUsuarioCookie')
 
 function reloadTelaTarefa() {
-  const reload = VueCookies.get('idReloadProjeto');
-  if (reload == '0') {
-    console.log("reload")
-    VueCookies.set('idReloadProjeto', '1');
-    window.location.reload();
-  }
+    const reload = VueCookies.get('idReloadProjeto');
+    if (reload == '0') {
+        console.log("reload")
+        VueCookies.set('idReloadProjeto', '1');
+        window.location.reload();
+    }
 }
 
 reloadTelaTarefa()
 
 onMounted(async () => {
-
+    usuario = await conexao.buscarUm(usuarioId, "/usuario")
     if (idProjeto != undefined && idProjeto != "undefined") {
         projeto.value = await conexao.buscarUm(idProjeto, '/projeto')
     }
     if (idEquipe != undefined && idEquipe != "undefined") {
         equipeSelecionada.value = (await conexao.buscarUm(idEquipe, '/equipe'))
+        let listaEquipe = [equipeSelecionada.value.nome]
+        colocaListaEquipes(listaEquipe)
+    }else{
+        colocaEquipePadraoUsuario()
     }
-    usuario = await conexao.buscarUm(usuarioId, "/usuario")
     verificaEdicaoProjeto();
     defineSelect()
     pesquisaBancoUserName();
     buscaProjetoCookies();
     mandaDataInformacoes();
-    let listaEquipe = [equipeSelecionada.value.nome]
-    colocaListaEquipes(listaEquipe)
+    colocaResponsavelPadrao();
     listaEquipesConvidadas.value = [];
     placeHolderDataFinalProjeto.value = "Data final:"
 })
 
+
+async function colocaEquipePadraoUsuario(){
+    let listaEquipes = await conexao.procurar('/equipe')
+    listaEquipes.forEach(equipe => {
+        if(equipe.nome == 'Equipe do '+usuario.username){
+            equipeSelecionada.value = equipe;
+        }
+    });
+    let listaEquipe = [equipeSelecionada.value.nome]
+    colocaListaEquipes(listaEquipe)
+}
 
 
 onUpdated(() => {
@@ -208,6 +222,14 @@ function limparMensagemErro() {
     mensagem.value = "";
 }
 
+
+function colocaResponsavelPadrao() {
+    let listaAux = [usuario.username]
+    responsaveisProjeto.value = listaAux
+    listaAuxResponsaveisProjeto.push(usuario.username)
+    adicionaResponsaveisProjeto(usuario.username)
+}
+
 function voltaPagina() {
     router.go(-1)
 }
@@ -215,7 +237,7 @@ function voltaPagina() {
 stylePlaceHolder.value = {
     position: "absolute",
     left: "2.7%",
-    width: "11%",
+    width: "10%",
     height: "2.5%",
     zIndex: "10",
     backgroundColor: "var(--backgroundPuro)",
@@ -321,16 +343,14 @@ function buscaProjetoCookies() {
 
 async function buscaRascunhoCriacaoProjeto() {
     if (!projetoEdita.value && VueCookies.get("projetoCookie") != "undefined") {
-
         const variavelCookieProjeto = (VueCookies.get('projetoCookie'))
         descricaoProjeto.value = variavelCookieProjeto.descricao;
         nomeProjeto.value = variavelCookieProjeto.nome;
         dataFinalProjeto.value = variavelCookieProjeto.dataFinal;
-
         if (variavelCookieProjeto.equipes != []
             && variavelCookieProjeto.equipes != undefined
             && variavelCookieProjeto.equipes != "undefined"
-            && variavelCookieProjeto.equipes != null) {
+            && variavelCookieProjeto.equipes != null && variavelCookieProjeto.equipes != "") {
 
             listaEquipesSelecionadas.value = variavelCookieProjeto.equipes.map((x) => x)
             variavelCookieProjeto.equipes.forEach(EquipeAtual => {
@@ -342,22 +362,15 @@ async function buscaRascunhoCriacaoProjeto() {
                 listaEquipeEnviaBack.push(objetoEnviaBack)
             })
         }
-        if (variavelCookieProjeto.responsaveis != []
-            && variavelCookieProjeto.responsaveis != undefined
-            && variavelCookieProjeto.responsaveis != "undefined"
-            && variavelCookieProjeto.responsaveis != null && variavelCookieProjeto.responsaveis.length != 0) {
+        if (variavelCookieProjeto.responsaveis.length != 0) {
             responsaveisProjeto.value = variavelCookieProjeto.responsaveis
             listaAuxResponsaveisProjeto = variavelCookieProjeto.responsaveis
             variavelCookieProjeto.responsaveis.forEach(responsavel => {
                 adicionaResponsaveisProjeto(responsavel)
             })
-        } 
-    } else {
-            let usuario = await conexao.buscarUm(idUsuario, "/usuario")
-            responsaveisProjeto.value.push(usuario.username)
-            listaAuxResponsaveisProjeto.push(usuario.username)
-            adicionaResponsaveisProjeto(usuario)
         }
+    }
+
 }
 
 async function buscaProjetoEditar() {
@@ -485,7 +498,7 @@ async function criaProjeto() {
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
             , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
         restauraCookies();
-        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
+        criaHistorico.criaHistoricoProjeto("Editou o projeto", projeto, usuario)
         router.push("/projeto");
     }
 }
@@ -538,7 +551,7 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     })
     console.log(listaBackEquipe)
     listaEquipeEnviaBack = listaBackEquipe;
-    
+
 }
 
 function verificaIdProjetoEquipe(equipe, projeto) {

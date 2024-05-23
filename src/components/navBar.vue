@@ -35,8 +35,8 @@
 import BarraLateral from "../components/BarraLateral.vue";
 import { onBeforeMount, ref } from "vue";
 import Botao from "../components/Botao.vue";
-import notificacao from "../imagem-vetores/NotificacaoDinamic.vue";
-import UserIcon from "../imagem-vetores/UserIcon.svg";
+import notificacao from "../imagemVetores/NotificacaoDinamic.vue";
+import UserIcon from "../imagemVetores/UserIcon.svg";
 import Input from "./Input.vue";
 import router from "@/router";
 import { onMounted } from "vue";
@@ -57,7 +57,6 @@ onMounted(async () => {
 
 
 function colocaUsuarioId(){
-  console.log("teste")
   banco.getCookie().then((res) =>{
     usuarioCookies.value= res;
     VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
@@ -78,7 +77,6 @@ function criaListaDePesquisa() {
   banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie")).then((usuario) => {
     usuario.equipes.forEach(equipe => {
       banco.procurar("/projeto/buscarProjetos/" + equipe.id).then((projetos) => {
-        console.log(projetos);
         projetos.forEach(projeto => {
           listaDePesquisa.push({
             id: projeto.id,

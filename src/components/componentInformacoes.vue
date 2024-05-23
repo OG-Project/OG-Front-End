@@ -17,7 +17,7 @@
                 font-size: var(--fonteCorpoTamanho);" 
                 class="flex justify-center w-full  miniMobile:flex-wrap  gap-8">
                 <div class="flex flex-col 2xl:w-max md:w-[493px] sm:w-[493px] gap-y-10">
-                        <div class="flex items-center justify-between gap-5 ">
+                        <div class="flex items-center miniMobile:flex-wrap justify-between gap-5 ">
                                 <span class="">{{ $t('informacoes.Nome') }}</span>
                                 <Input 
                                 styleInput="input-transparente-claro" 
@@ -31,7 +31,7 @@
                                 }"
                                         />
                                 </div>
-                                <div class="flex items-center justify-between gap-5">
+                                <div class="flex items-center miniMobile:flex-wrap justify-between gap-5">
                                         <span class="">{{ $t('informacoes.Username') }}</span>
                                         <Input 
                                         
@@ -49,7 +49,7 @@
                                 </div>
                                 
                                 <div class="flex flex-col 2xl:w-max sm:w-[493px] gap-y-10">
-                                        <div class="flex justify-between items-center gap-5">
+                                        <div class="flex justify-between miniMobile:flex-wrap items-center gap-5">
                                                 <span class="">{{ $t('informacoes.Sobrenome') }}</span>
                                                 <Input 
                                                 styleInput="input-transparente-claro-grande" 
@@ -64,7 +64,7 @@
                                         />
                                 </div>
                                 <!-- @updateModelValue -->
-                                <div class="flex justify-between items-center gap-5">
+                                <div class="flex justify-between miniMobile:flex-wrap items-center gap-5">
                                         <span class="">{{ $t('informacoes.Data de Nascimento') }}</span>
                                         <Input 
                                         styleInput="input-transparente-claro-grande" 
@@ -83,7 +83,7 @@
                 </div>
                 <!-- conferir se de fato vamos usar isso de alteração -->
                 <div v-if="screenWidth>=1024">
-                        <div class="flex justify-end mr-[15%] mt-[30%]">
+                        <div class="flex justify-end mr-[15%] mt-[29%]">
                                 <Botao v-if="!editar" 
                                 :funcaoClick="alterarInformacoes" 
                                 preset="PadraoRoxo" 

@@ -50,11 +50,8 @@ onMounted(async () => {
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
-
-
   let root = document.documentElement.style
   configuracao.value = usuario.value.configuracao
-  console.log(configuracao.value);
   perfil.isVlibras = configuracao.value.isLibras
   perfil.isTecladoVirtual = configuracao.value.isTecladoVirtual
   perfil.isVoiceMaker = configuracao.value.isDigitarVoz
@@ -65,7 +62,6 @@ onMounted(async () => {
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + 'vh')
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
-  console.log(configuracao.value.isDark);
   if (configuracao.value.isDark) {
     root.setProperty('--backgroundPuro', '#0F0F0F')
     root.setProperty('--backgroundItems', '#222222')
@@ -116,8 +112,7 @@ function press(b) {
   }
 
 }
-webSocket.esperaMensagem((mensagem) => {
-  console.log("a")
+webSocket.esperaMensagem((mensagem) => { 
   teste(JSON.parse(mensagem))
 });
 
@@ -129,43 +124,6 @@ function change(a) {
 }
 function close() {
   perfil.isTecladoAtivado = !perfil.isTecladoAtivado
-}
-
-function VerificaPrazoDoProjeto() {
-  banco.procurar("/projeto").then((projetos) => {
-    let dataAtual = new Date();
-    let dias = 0;
-    for (let i = 0; i < projetos.length; i++) {
-      let dataProjeto = new Date(projetos[i].dataFinal);
-      let diferenca = dataProjeto.getTime() - dataAtual.getTime();
-      dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
-      if (dias < 7 && projetos[i].dataFinal != null && projetos[i].dataFinal > dataAtual) {
-        enviaParaWebSocket(projetos[i], dias)
-      }
-    }
-  });
-}
-
-function enviaParaWebSocket(projetoAux, dias) {
-  let teste = {
-    equipes: [
-      {
-        equipe: {
-          membros: [
-            {
-              id: usuarioLogadoId
-            }
-          ]
-        }
-      }
-    ],
-    notificao: {
-      mensagem: "Restam " + dias + " Para o fim do projeto",
-      projeto: projetoAux
-    }
-  }
-
-  webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
 }
 
 const screenWidth = ref(window.innerWidth)

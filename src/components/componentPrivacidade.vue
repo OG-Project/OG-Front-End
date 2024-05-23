@@ -51,9 +51,11 @@ import { conexaoBD } from '../stores/conexaoBD.js';
 import { onBeforeMount, onMounted, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { Usuario } from '../models/usuario';
+import router from '../router';
 import flechaMobilePerfil from '../assets/flecha-mobile-perfil.vue'
 import { onUpdated } from 'vue';
 import router from '../router';
+
 const perfil = perfilStore()
 const conexao = conexaoBD()
 const { fonteTitulo } = storeToRefs(perfil)

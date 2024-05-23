@@ -85,18 +85,18 @@
         <div class="w-full flex flex-row justify-end gap-3 sticky" @click="colocaCorPadrao()"
             v-if="funcaoPopUp.variavelModal == false">
             <p>Nova</p>
-            <img src="../imagem-vetores/sinalDeMaisIcon.svg">
+            <img src="../imagemVetores/sinalDeMaisIcon.svg">
         </div>
 
         <div v-if="funcaoPopUp.variavelModal == true" class=" h-full  flex flex-row  justify-end">
 
             <div class="animation" v-if="opcaoSelecionadaNaTabela == 'propriedade' || opcaoSelecionadaNaTabela == ''">
                 <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
+                    <img src="../imagemVetores/triangulo.svg">
                 </div>
                 <div class="flex flex-row justify-between" v-if="screenWidth >= 340">
                     <div class="pl-2">
-                        <Input largura="8" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
+                        <Input largura="9" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
                     nomePropriedade = e
                 }">
@@ -137,7 +137,7 @@
 
             <div class="animation" v-if="opcaoSelecionadaNaTabela == 'status'">
                 <div class="flex justify-end">
-                    <img src="../imagem-vetores/triangulo.svg">
+                    <img src="../imagemVetores/triangulo.svg">
                 </div>
                 <div class="flex flex-row justify-between">
 
@@ -191,7 +191,7 @@ import sortBy from 'sort-by';
 import { useRoute } from 'vue-router';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router/index'
-import botaoSair from '../imagem-vetores/botao-x.vue'
+import botaoSair from '../imagemVetores/botaoX.vue'
 import { criaHistoricoStore } from '../stores/criaHistorico'
 import { useI18n } from 'vue-i18n';
 const criaHistorico = criaHistoricoStore();

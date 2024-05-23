@@ -2,7 +2,7 @@
       <fundoPopUp :largura="larguraPopUp()" :altura="tamanhoPopUp()">
       <div class="divGeral mb-[65vh]" >
           <div class="primeiraDiv">
-            <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
+            <img class="imagemEquipe" @click="router.push('/perfil/'+ equipeMembros.id)" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
             <equipe class="imagemEquipe" v-else></equipe>
              <h1 class="equipeNome xl:mt-5 lg:mt-3 md:mt-3 text-4xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
           </div>
@@ -87,9 +87,10 @@ import { ref, onMounted } from 'vue';
 import VueCookies from "vue-cookies";
 import {webSocketStore} from "../stores/webSocket.js";
 import alertTela from './alertTela.vue';
-import sair from '../imagem-vetores/Sair.vue';
-import equipe from '../imagem-vetores/equipe.vue';
+import sair from '../imagemVetores/Sair.vue';
+import equipe from '../imagemVetores/equipe.vue';
 import { useI18n } from 'vue-i18n';
+import router from '../router';
 
 import inputDePesquisa from './inputDePesquisa.vue';
 

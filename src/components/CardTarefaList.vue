@@ -11,11 +11,10 @@
         <template #item="{ element: tarefa, index }">
           <div class="flex flex-row truncate h-[6vh] bg-[var(--backgroundItemsClaros)] py-[1%] select-none"
             v-if="tarefa.nome != null" @click="trocaRota(tarefa)">
-
-            <div class="border-r-2 flex items-center justify-center w-[185px] truncate h-full">
+            <div :class="'border-r-2 flex items-center w-[185px] truncate h-full ' + (tarefa.nome.length<'17' ? 'justify-center' : 'justify-start pl-[2%]')  ">
               {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
             </div>
-            <div class="border-r-2 flex items-center justify-start w-[185px] truncate  h-full"
+            <div :class="'border-r-2 flex items-center w-[185px] truncate h-full ' + (tarefa.descricao.length<'17' ? 'justify-center' : 'justify-start pl-[2%]')  "
               v-if="tarefa.descricao != null">
               {{ tarefa.descricao.charAt(0).toUpperCase() + tarefa.descricao.slice(1) }}
             </div>
@@ -23,7 +22,7 @@
               <p>Não Tem Valor</p>
             </div>
             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
-              <div class="border-r-2 flex items-center justify-center w-[185px] truncate  h-full"
+              <div :class="'border-r-2 flex items-center w-[185px] truncate h-full ' + (propriedade.propriedade.tipo=='DATA' ? 'justify-center' : propriedade.valor.valor.length<'17' ? 'justify-center' : 'justify-start pl-[2%]')  "
                 v-if="funcaoVerificaPropriedade(propriedade, tarefa)">
                 <div v-if="propriedade.valor.valor == null || propriedade.valor.valor == ''"
                   class=" flex items-center justify-center w-[185px]  h-full">
@@ -60,7 +59,7 @@ import { format } from 'date-fns';
 import router from '../router';
 import VueCookies from 'vue-cookies';
 import draggable from "vuedraggable";
-import NotePad from '../imagem-vetores/NotePad.vue';
+import NotePad from '../imagemVetores/NotePad.vue';
 
 let api = conexaoBD()
 let projetoId = VueCookies.get("IdProjetoAtual")
@@ -86,8 +85,11 @@ const props = defineProps({
 })
 
 async function transformaEmObject() {
-  projeto.value = await api.buscarUm(projetoId, '/projeto')
-  // visualizacaoPromise = api.procurar("/visualizacaoEmLista/" + projeto.id)
+await api.buscarUm(projetoId, '/projeto').then((response)=>{
+    console.log(response)
+    projeto.value = response
+    ordenaTarefas()
+  })
   visualizacao = await visualizacaoPromise
 }
 
@@ -122,6 +124,7 @@ function funcaoVerificaPropriedade(valorPropriedadeTarefa, tarefa) {
 }
 
 function ordenaTarefas() {
+  console.log(projeto.value)
   projeto.value.tarefas.sort((tarefa, tarefa2) => {
     if (tarefa.nome != null && tarefa2.nome != null) {
       return tarefa.indice[1].indice - tarefa2.indice[1].indice
@@ -140,7 +143,7 @@ function onDragEnd() {
         status: tarefa.status,
         cor: tarefa.cor,
         status: tarefa.status,
-        valorPropriedadeTarefas: [...tarefa.valorPropriedadeTarefas],
+        valorPropriedadeTarefas: tarefa.valorPropriedadeTarefas,
         comentarios: tarefa.comentarios,
         arquivos: tarefa.arquivos,
         indice: tarefa.indice,
@@ -173,7 +176,9 @@ function onDragEnd() {
         }
       }
       console.log(tarefaPut)
-      await api.atualizar(tarefaPut, '/tarefa')
+      await api.atualizar(tarefaPut, '/tarefa').then((response) => {
+        console.log(response)
+      })
     }
   })
 }

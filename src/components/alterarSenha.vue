@@ -35,22 +35,18 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex justify-center " v-if="screenWidth < 640">
+                <div class="flex justify-end " v-if="screenWidth < 640">
                     <Botao :funcaoClick="alteraSenha" preset="PadraoVazado" texto="Confirmar" tamanhoDaBorda="2px"
                         tamanhoDaFonte="2.0vh" tamanhoPadrao="mobilemedio" />
                 </div>
-                <div class="flex justify-center " v-else>
+                <div class="flex justify-end " v-else>
                     <Botao :funcaoClick="alteraSenha" preset="PadraoVazado" texto="Confirmar" tamanhoDaBorda="2px"
                         tamanhoDaFonte="2.0vh" />
                 </div>
             </div>
         </fundoPopUp>
-        <div class="w-[40%] h-[10%]">
-            <alertTela v-if="mensagemAlert != ''" :mensagem="mensagemAlert" :cor="'#CD0000'"
-                @acabou-o-tempo="limpaMensagemError"></alertTela>
-        </div>
+            <!-- <alertTela v-if="alterado" :key="alterado" mensagem="Senha Alterada" :cor="'#8E00FF'"></alertTela> -->
     </div>
-
 </template>
 
 <script setup>
@@ -66,17 +62,12 @@ let perfil = perfilStore()
 let conexao = conexaoBD()
 
 let isInvalido = ref(false)
-let mensagemAlert = ref('')
 let usuario = ref({})
-let showAlert = ref(false)
 let senhaUsuario = ref('')
 let senhaNova = ref('')
 let senhaConfirmada = ref('')
+let alterado=ref(false)
 const screenWidth = ref(window.innerWidth)
-
-watch(usuario, (a) => {
-
-})
 
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth
@@ -87,9 +78,6 @@ onUpdated(() => {
 })
 
 
-function limpaMensagemError() {
-    mensagemAlert.value = ''
-}
 window.addEventListener('resize', () => {
     screenWidth.value = window.innerWidth
 })
@@ -97,16 +85,19 @@ onMounted(async () => {
     usuario.value = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'), '/usuario')
     senhaUsuario.value = usuario.value.senha
 
-    mensagemAlert.value = '';
 })
 
 
 function alteraSenha() {
     if (senhaNova.value == senhaConfirmada.value) {
         isInvalido.value = false
-        usuario.value.senha = senhaNova.value
-       
-        conexao.atualizar(usuario.value, '/usuario')
+        // usuario.value.senha = senhaNova.value
+        let a={
+            senhaNova:senhaNova.value
+        }
+        conexao.trocaSenha(usuario.value.id,a)
+        perfil.alteradoSenha=!perfil.alteradoSenha
+        perfil.popUpSenha=!perfil.popUpSenha
     } else {
         isInvalido.value = true
     }

@@ -230,9 +230,6 @@ const router = createRouter({
 })
 router.beforeEach(async (to)=>{
   // const rotasPublicas=['/login']
-
-  console.log(to.fullPath);
-  console.log(VueCookies.get('JWT'));
   if(VueCookies.get('JWT')==null && to.path!='/login' && to.path!='/landingPage'){
    return {path:'/login'}
   } 

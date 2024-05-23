@@ -79,6 +79,8 @@ function alteraEmail(){
             usuario.value.email=emailNovo.value
             conexao.atualizar(usuario.value,'/usuario')
             isEmailInvalido.value=false
+            perfil.alteradoEmail=!perfil.alteradoEmail
+            perfil.popUpEmail=!perfil.popUpEmail
         }
     }else{
         isEmailInvalido.value=true

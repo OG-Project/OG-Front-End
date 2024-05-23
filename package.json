@@ -51,10 +51,20 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.4.0",
     "autoprefixer": "^10.4.16",
+    "html-webpack-plugin": "^5.6.0",
     "postcss": "^8.4.31",
     "sass": "^1.69.5",
     "tailwindcss": "^3.3.5",
     "vite": "^4.4.11",
-    "vuedraggable": "^4.1.0"
-  }
+    "vuedraggable": "^4.1.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4",
+    "webpack-merge": "^5.10.0"
+  },
+  "description": "OG Project é um projeto em equipe, cujo o objetivo é criar um gerenciador de tarefas que seja capaz de organizar questões e atividades empresariais e pessoais de forma intuitiva e dinâmica \u0000 \u0000",
+  "main": "postcss.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

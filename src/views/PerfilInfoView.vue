@@ -109,7 +109,10 @@ import { conexaoBD } from '../stores/conexaoBD';
 import { onMounted, computed, ref, onUpdated, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useMouseInElement, useWindowSize } from '@vueuse/core'
-import VueCookies from 'vue-cookies';
+import router from '../router';
+import VueCookies from 'vue-cookies'
+import AlertTela from '../components/alertTela.vue';
+
 
 const route = useRoute()
 

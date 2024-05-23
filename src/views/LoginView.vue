@@ -2,24 +2,26 @@
 import { useRouter } from "vue-router";
 import Botao from "../components/Botao.vue";
 import Input from "../components/Input.vue";
-import iconeGoogle from "../imagem-vetores/iconeGoogle.svg";
-import iconeLinkedin from "../imagem-vetores/iconeLinkedin.svg";
-import iconePessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
-import iconeSenhaLogin from "../imagem-vetores/iconeCadeadoSenhaLogin.svg";
-import imgVetorSenha from "../imagem-vetores/iconeCadeadoSenhaLogin.svg";
-import imgEmailRegistro from "../imagem-vetores/iconeEmailRegistro.svg";
-import imgPessoaLogin from "../imagem-vetores/iconePessoaLogin.svg";
+import iconeGoogle from "../imagemVetores/iconeGoogle.svg";
+import iconeLinkedin from "../imagemVetores/iconeLinkedin.svg";
+import iconePessoaLogin from "../imagemVetores/iconePessoaLogin.svg";
+import iconeSenhaLogin from "../imagemVetores/iconeCadeadoSenhaLogin.svg";
+import imgVetorSenha from "../imagemVetores/iconeCadeadoSenhaLogin.svg";
+import imgEmailRegistro from "../imagemVetores/iconeEmailRegistro.svg";
+import imgPessoaLogin from "../imagemVetores/iconePessoaLogin.svg";
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from "vue-cookies";
 import { criaUsuarioStore } from "../stores/criarUsuario.js";
-import olho from "../imagem-vetores/olho.svg";
-import olhoOculto from "../imagem-vetores/olhoOculto.svg";
+import olho from "../imagemVetores/olho.svg";
+import olhoOculto from "../imagemVetores/olhoOculto.svg";
 import { ref } from "vue";
-import Logo from "../imagem-vetores/logo.vue";
+import Logo from "../imagemVetores/logo.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
+import { criaNotificacao } from "../stores/criaNotificacao";
 
 const router = useRouter();
+const criaNotificacaoStore = criaNotificacao()
 
 let conteudoFormulario = {
   gap: "4vh",
@@ -46,20 +48,17 @@ async function fazerLogin() {
   usuarioSecurity.username = usuarioLogin.value
   usuarioSecurity.password = senhaUsuarioLogin.value
   let error;
-  
   await banco.login(usuarioSecurity).catch(e => {
-    alert("Login invalido")
     error = e
   })
-  console.log(error);
   if (error != 'undefined') {
     // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
     // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
     banco.getCookie().then((usuario) => {
-      console.log("entrou aqui");
       usuarioLogin.value = "";
       senhaUsuarioLogin.value = "";
       VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
+      VerificaPrazoDoProjeto()
       router.push('/home').then(() => {
         window.location.reload()
       })
@@ -67,9 +66,46 @@ async function fazerLogin() {
     })
 
   }else{
-    console.log("aaaaa");
     usuarioOuSenhaInvalida.value = true
   }
+}
+
+
+function VerificaPrazoDoProjeto() {
+  banco.procurar("/projeto").then((projetos) => {
+    let dataAtual = new Date();
+    let dias = 0;
+    for (let i = 0; i < projetos.length; i++) {
+      let dataProjeto = new Date(projetos[i].dataFinal);
+      let diferenca = dataProjeto.getTime() - dataAtual.getTime();
+      dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
+      if (dias < 7 && projetos[i].dataFinal != null && dias >= 1 ) {
+        enviaParaWebSocket(projetos[i], dias)
+      }
+    }
+  });
+}
+
+function enviaParaWebSocket(projetoAux, dias) {
+  let usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
+  let teste = {
+    equipes: [
+      {
+        equipe: {
+          membros: [
+            {
+              id: usuarioLogadoId
+            }
+          ]
+        }
+      }
+    ],
+    notificao: {
+      mensagem: "Restam " + dias + " dias para o fim do projeto",
+      projeto: projetoAux
+    }
+  }
+  criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 function trocaDeTela() {
@@ -143,7 +179,12 @@ function mostraSenhaConfirmacao() {
   }
 }
 
-function loginGoogle() {
+async function removeCookie() {
+  VueCookies.remove("JSESSIONID")
+  await loginGoogle()
+}
+async function loginGoogle(){
+  VueCookies.set('idReloadHome', '0');
   window.location.href = "http://localhost:8082"
 }
 </script>
@@ -154,7 +195,7 @@ function loginGoogle() {
       <div class="h-[100vh] w-[70%] flex items-center justify-center flex-col">
         <div class="flex items-center justify-center flex-col h-full">
           <Logo class="tamanhoDaLogoLogin" />
-          <img class="tamanhoDoNomeLogin" src="../imagem-vetores/nome.svg" />
+          <img class="tamanhoDoNomeLogin" src="../imagemVetores/nome.svg" />
         </div>
       </div>
       <div id="bordaCinza">
@@ -179,7 +220,7 @@ function loginGoogle() {
               <hr style="width: 35%; text-align: left; margin-left: 0" />
             </div>
             <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
-              :funcaoClick="loginGoogle"></Botao>
+              :funcaoClick="removeCookie"></Botao>
           </div>
         </Transition>
         <Transition name="registro">
@@ -277,7 +318,7 @@ function loginGoogle() {
 }
 
 #imagemDeFundoLogin {
-  background-image: url(../imagem-vetores/BG1.svg);
+  background-image: url(../imagemVetores/BG1.svg);
   background-color: #ffffff;
   height: 100vh;
   width: 100vw;

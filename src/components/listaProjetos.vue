@@ -72,7 +72,7 @@
               {{$t('projeto.NENHUM PROJETO')}}
             </div>
             <div  v-if="kanbanAtivo" class="flex justify-center mt-10" >
-              <img src="../imagem-vetores/pasta.svg" alt="">
+              <img src="../imagemVetores/pasta.svg" alt="">
             </div>
           </div>
           </div>
@@ -89,7 +89,7 @@
             {{$t('projeto.NENHUM PROJETO')}}
           </div>
           <div v-if="!kanbanAtivo" class="flex justify-center mt-10" >
-            <img src="../imagem-vetores/pasta.svg" alt="">
+            <img src="../imagemVetores/pasta.svg" alt="">
           </div>
         </div>
         <div v-else-if="!mostrarMensagem">
@@ -100,7 +100,7 @@
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :responsavel="listaResponsaveis"
+              :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)"
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
@@ -109,7 +109,7 @@
                 :descricao="projeto.descricao" 
                 :comeco="formatarData(projeto.dataCriacao)" 
                 :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-                :responsavel="listaResponsaveis"
+                :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)"
                 :feito="calcularProgressoProjeto(projeto)"
                 :tempo-atuacao="projeto.tempoAtuacao"
                 @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
@@ -128,8 +128,8 @@
   import KanbanProjetos from './kanbanProjetos.vue';
   import VueCookies from "vue-cookies";
   import { useRouter } from 'vue-router'
-  import iconCard from '../imagem-vetores/iconCard.vue';
-  import iconKanban from '../imagem-vetores/iconKanban.vue';
+  import iconCard from '../imagemVetores/iconCard.vue';
+  import iconKanban from '../imagemVetores/iconKanban.vue';
   const props = defineProps({
     height: { type: String, required: true },
     width: { type: String, required: true }
@@ -141,12 +141,12 @@
   const projetoEmBaixoId = ref()
   const banco = conexaoBD();
   let projetos = ref([]);
-  const idUsuarioLogado = 1
+  const idUsuarioLogado = VueCookies.get("IdUsuarioCookie")
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
   const router = useRouter();
-  let listaResponsaveis = ref([])
+
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;
@@ -155,16 +155,8 @@
 
   
 onMounted(() => {
-  buscaProjetoBanco()
   buscarProjetos();
 })
-
-async function buscaProjetoBanco() {
-  let projeto = await banco.procurar("/projeto")
-  projeto.forEach((projeto) => {
-    obterNomesResponsaveis(projeto)
-  })
-}
 
   const ativarBotao = (botao) => {
 
@@ -189,6 +181,7 @@ async function buscaProjetoBanco() {
     const projetosEquipe = [];
 
     for (const equipeUsuario of equipesUsuario.value) {
+        console.log(equipeUsuario.equipe.id);
         const projetosDaEquipe = await banco.buscarProjetosEquipe(equipeUsuario.equipe.id, "/projeto/buscarProjetos");
         projetosEquipe.push(...projetosDaEquipe); 
       }
@@ -220,65 +213,53 @@ async function buscaProjetoBanco() {
   }
 
   function calcularProgressoProjeto(projeto) {
-    let totalTarefas = 0;
-    let tarefasConcluidas = 0;
+  let totalSubTarefas = 0;
+  let tarefasConcluidas = 0;
 
-    if (projeto.categoria == "nao-iniciados") {
-      projeto.tarefas.forEach(tarefa => {
+  if (projeto.categoria == "nao-iniciados") {
+    projeto.tarefas.forEach(tarefa => {
       tarefa.subTarefas.forEach(subtarefa => {
         subtarefa.concluido = false;
       });
-      });
+    });
 
-      return 0; // Retorna 0% de progresso se o projeto estiver na categoria "Não Iniciados"    
-      } else if (projeto.categoria == "prontos") {
-        projeto.tarefas.forEach(tarefa => {
+    return 0;
+  } else if (projeto.categoria == "prontos") {
+    projeto.tarefas.forEach(tarefa => {
       tarefa.subTarefas.forEach(subtarefa => {
         subtarefa.concluido = true;
       });
-      });
-
-      return 100;// Retorna 100% de progresso se o projeto estiver na categoria "Prontos"
-      }
-
-    projeto.tarefas.forEach(tarefa => {
-        totalTarefas++;
-        let todasConcluidas = true;
-        tarefa.subTarefas.forEach(subtarefa => {
-            if (!subtarefa.concluido) {
-                todasConcluidas = false;
-            }
-        });
-        if (todasConcluidas) {
-            tarefasConcluidas++;
-        }
     });
 
-    if (totalTarefas === 0) {
-        return 0; // Retorna 0 se não houver tarefas no projeto
-    } else {
-            return Math.floor((tarefasConcluidas / totalTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
-    }
-}
+    return 100;
+  }
 
-async function obterNomesResponsaveis(projeto) {
-  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-    let responsaveisComNome = []
-    for (let responsavel of projeto.responsaveis) {
-      let responsavelAtual = await buscaResponsaveis(responsavel)
-      responsaveisComNome.push(responsavelAtual.username)
-      listaResponsaveis.value = responsaveisComNome
-      if (responsaveisComNome.length >= 0) {
-        listaResponsaveis.value = responsaveisComNome.join(', ');
+  let quantidadeTarefasConcluidas =0;
+  projeto.tarefas.forEach(tarefa => {
+    let todasConcluidas = true;
+    tarefa.subTarefas.forEach(subtarefa => {
+      totalSubTarefas++;
+      tarefasConcluidas = true;
+      if (!subtarefa.concluido) { 
+        todasConcluidas = false;
+      }else{
+        quantidadeTarefasConcluidas++;
       }
-      
-    }
+    }); 
+  });
+
+  if (totalSubTarefas === 0) {
+    return 0; // Retorna 0 se não houver tarefas no projeto
   } else {
-    return "Não há responsáveis";
+    return Math.floor((quantidadeTarefasConcluidas / totalSubTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
   }
 }
+
 async function buscaResponsaveis(responsavel) {
-  return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
+  if(responsavel.idResponsavel!=null){
+    return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
+  }
+  return null;
 
 }
 

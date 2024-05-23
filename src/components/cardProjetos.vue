@@ -11,19 +11,19 @@
                         <b>{{ name }}</b>
                     </div>
                     <div class="tempoAtuacao w-[20%] flex items-end justify-end" @mouseenter="tempoDeAtuacaoPopUp()">
-                        <img src="../imagem-vetores/relogio.svg">
+                        <relogio></relogio> 
                     </div>
                     <div @mouseleave="somePopUp()" v-if="verTempoAtuacao" class="animation">
                         <div class="flex justify-end">
-                            <img src="../imagem-vetores/triangulo.svg">
+                            <triangulo></triangulo>
                         </div>
-                        {{ $t('cardProjetos.tempoAtuacao') }}: {{ tempoAtuacao }}
+                        {{ $t('cardProjetos.tempoDeAtuacao') }}: {{ tempoAtuacao }}
                     </div>
                 </div>
 
                 <!-- falta colocar os tres pontos por linha-->
                 <div class="h-[28px] truncate line-clamp-3 overflow-hidden">
-                    <b>{{$t('cardProjetos.responsavel')}}:</b> {{ responsavel }}
+                    <b>{{$t('cardProjetos.responsavel')}}:</b> {{ responsaveis }}
                 </div>
                 <!-- falta colocar os tres pontos por paragrafo-->
                 <p class=" h-[75px] tresPontosCSS">
@@ -67,6 +67,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { conexaoBD } from "../stores/conexaoBD.js";
+import relogio from '../imagemVetores/relogio.vue';
+import triangulo from './../imagemVetores/triangulo.vue'
+
+const banco = conexaoBD();
+
 const props = defineProps({
     name: {
         type: String,
@@ -74,8 +80,9 @@ const props = defineProps({
     descricao: {
         type: String,
     },
-    responsavel: {
-        type: String,
+    responsaveisIds: {
+        type: Array, 
+        default: () => [] 
     },
     feito: {
         type: Number,
@@ -94,14 +101,29 @@ const props = defineProps({
     }
 
 })
-let verTempoAtuacao = ref(false)
-let alinhamento = ref(43)
+
+let responsaveis = ref([]); // Inicialmente exibir "Carregando..." até que os nomes dos responsáveis sejam carregados
+let verTempoAtuacao = ref(false);
+let alinhamento = ref(43);
+
 const screenWidth = window.innerWidth;
 
-// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-onMounted(() =>{
-    console.log(props.responsavel);
-})
+onMounted(async () => {
+    console.log(props.responsaveisIds)
+    const nomesResponsaveis = await buscaResponsaveis(props.responsaveisIds);
+    responsaveis.value = nomesResponsaveis.join(', ');
+    
+});
+
+async function buscaResponsaveis(responsaveisIds) {
+    const nomesResponsaveis = [];
+    for (const responsavelId of responsaveisIds) {
+        const responsavel = await banco.buscarUm(responsavelId, "/usuario");
+        nomesResponsaveis.push(responsavel.username);
+        }
+        return nomesResponsaveis;
+   
+}
 
 const grafico = {
     display: "flex",

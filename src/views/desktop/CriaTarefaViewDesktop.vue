@@ -514,17 +514,17 @@
 <script setup>
 import { format } from "date-fns";
 import Input from "../../components/Input.vue";
-import NotePad from "../../imagem-vetores/NotePad.vue";
+import NotePad from "../../imagemVetores/NotePad.vue";
 import Botao from "../../components/Botao.vue";
 import CheckBox from "../../components/checkBox.vue";
-import iconAnexo from "../../imagem-vetores/anexoIcon.svg";
+import iconAnexo from "../../imagemVetores/anexoIcon.svg";
 import TextAreaPadrao from "../../components/textAreaPadrao.vue";
 import { onUnmounted, ref, watch } from "vue";
 import selectPadrao from "../../components/selectPadrao.vue";
 import ColorPicker from "primevue/colorpicker";
-import BotaoX from "../../imagem-vetores/XPreto.svg";
+import BotaoX from "../../imagemVetores/XPreto.svg";
 import InputNumber from "primevue/inputnumber";
-import iconeLapisPreto from "../../imagem-vetores/icon-lapis-preto.svg";
+import iconeLapisPreto from "../../imagemVetores/icon-lapis-preto.svg";
 import { computed } from "vue";
 import { onUpdated, onMounted } from "vue";
 import VueCookies from "vue-cookies";
@@ -532,7 +532,7 @@ import tinycolor from "tinycolor2";
 import { conexaoBD } from "../../stores/conexaoBD.js";
 import { criaPropriedadeTarefaStore } from "../../stores/criaPropriedadeTarefa";
 import router from "../../router";
-import TrianguloStart from "../../imagem-vetores/trianguloStart.vue";
+import TrianguloStart from "../../imagemVetores/trianguloStart.vue";
 import { useI18n } from 'vue-i18n';
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
 import route from "color-convert/route";
@@ -817,7 +817,7 @@ async function criaTarefaNoConcluido() {
     }
     banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
     });
-    router.push('/projeto/kanban')
+    router.push('/projeto')
   });
 }
 

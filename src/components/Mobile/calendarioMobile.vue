@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col w-full h-full relative justify-center items-center overflow-y-scroll overflow-x-hidden">
+    <div class="flex flex-col w-full h-full relative justify-start items-start overflow-y-scroll overflow-x-hidden">
         <div class="sticky top-0 h-[20%] w-full bg-[var(--backgroundItems)] flex justify-center z-10">
             <div class="flex flex-row w-full ">
                 <div class="flex w-full">
@@ -27,27 +27,27 @@
                 </div>
             </div>
         </div>
-        <div class="w-full h-[80%] flex flex-col items-center scroll-auto overflow-x-auto">
-            <div class="w-[98%] gap-[5%] flex row justify-between ">
-                <div class="w-[14.25%] flex justify-start">
+        <div class="w-full h-[80%] flex flex-col items-start overflow-x-auto over">
+            <div class=" pl-[1%] flex justify-end items-start">
+                <div class="w-[24vw] flex justify-start">
                     <h1>Domingo</h1>
                 </div>
-                <div class="w-[14.25%] flex justify-start">
+                <div class="w-[24vw] flex justify-start">
                     <h1>Segunda</h1>
                 </div>
-                <div class="w-[14.25%] flex justify-start">
+                <div class="w-[24vw] flex justify-start">
                     <h1>Terça</h1>
                 </div>
-                <div class="w-[14.25%] flex justify-start">
+                <div class="w-[24vw] flex justify-start">
                     <h1>Quarta</h1>
                 </div>
-                <div class="w-[14.25%] flex justify-start">
+                <div class="w-[24vw] flex justify-start">
                     <h1>Quinta</h1>
                 </div>
-                <div class="w-[14.25%] flex justify-start">
+                <div class="w-[24vw] flex justify-start">
                     <h1>Sexta</h1>
                 </div>
-                <div class="w-[14.25%] flex justify-start">
+                <div class="w-[24vw] flex justify-start">
                     <h1>Sábado</h1>
                 </div>
             </div>
@@ -65,8 +65,8 @@
                                 <div v-bind="verificaQauntidadetarefa(dia)" class="w-max flex flex-row h-full"
                                     @dragend="trocaDiaEIndice(tarefa, diaNovo, indiceNovo)"
                                     @dragover="retornaDiaEIndice(dia, indice)">
-                                    <cardTarefas :tarefa=tarefa.tarefa altura="1vh" largura="7vw" preset="2">
-                                    </cardTarefas>
+                                    <cardTarefaMobile :tarefa=tarefa.tarefa altura="1vh" largura="7vw" preset="2">
+                                    </cardTarefaMobile>
                                 </div>
                             </div>
                         </div>
@@ -89,6 +89,7 @@ import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../../stores/conexaoBD';
 import sortBy from 'sort-by'
 import VueCookies from 'vue-cookies';
+import cardTarefaMobile from '../Mobile/cardTarefaMobile.vue'
 
 let data = Date.now()
 let diaNovo = ref()
@@ -218,23 +219,46 @@ async function verificaTarefasDoDia(dia) {
 function hover(dia) {
     if (dia != null) {
         if (dia.temTres) {
-            dia.style = {
-                height: "max-content",
-                width: "100%",
-                display: "flex",
-                overflow: "hidden",
-                flexDirection: "column",
-                gap: "8px",
-                paddingBottom: "1%",
-                backgroundColor: "[var(--backgroundItemsClaros)]",
-                borderBottomLeftRadius: "10%",
-                borderBottomRightRadius: "10%",
-                zIndex: "0",
-                boxShadow: "0px 6px 6px rgb(145, 145, 145)",
+            if (getDate(dia.dia) == getDate(Date.now()) && getMonth(dia.dia) == getMonth(Date.now()) && getYear(dia.dia) == getYear(Date.now())) {
+                border = "1px solid purple"
+                dia.style = {
+                    height: "max-content",
+                    width: "21.5vw",
+                    display: "flex",
+                    overflow: "hidden",
+                    flexDirection: "column",
+                    gap: "8px",
+                    paddingBottom: "1%",
+                    backgroundColor: "var(--backgroundItems)",
+                    borderBottomLeftRadius: "10%",
+                    borderBottomRightRadius: "10%",
+                    zIndex: "0",
+                    boxShadow: "0px 6px 6px rgb(145, 145, 145)",
+                    border: border,
+                    borderTop: "none"
+                }
+            } else {
+                dia.style = {
+                    height: "max-content",
+                    width: "21.5vw",
+                    display: "flex",
+                    overflow: "hidden",
+                    flexDirection: "column",
+                    gap: "8px",
+                    paddingBottom: "1%",
+                    backgroundColor: "var(--backgroundItems)",
+                    borderBottomLeftRadius: "10%",
+                    borderBottomRightRadius: "10%",
+                    zIndex: "0",
+                    boxShadow: "0px 6px 6px rgb(145, 145, 145)",
+                    border: border,
+                    borderTop: "none"
+                }
             }
             dia.temTres = false
         }
     }
+    border = "none"
 }
 
 
@@ -394,8 +418,8 @@ function onDragEnd(tarefas) {
         height: 100%;
         display: grid;
         grid-template-rows: repeat(6, 29%);
-        grid-template-columns: repeat(7, 62%);
-        justify-content: center;
+        grid-template-columns: repeat(7, 90%);
+        justify-content: start;
         align-items: start;
         gap: 5%;
     }

@@ -72,7 +72,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import NotePad from '../imagem-vetores/NotePad.vue'
+import NotePad from '../imagemVetores/NotePad.vue'
 
 const props = defineProps({
     nomeProjeto: String,
