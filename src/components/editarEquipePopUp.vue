@@ -283,8 +283,8 @@ function larguraInput() {
     if (screenWidth <= 768) {
         return '25';
     } if (screenWidth > 768 && screenWidth <= 1024) {
-        return '28';
-    } if (screenWidth > 1024 && screenWidth < 1440) {
+        return '25';
+    } if (screenWidth > 1024 && screenWidth <= 1440) {
         return '25';
     } if (screenWidth > 1440 && screenWidth < 1620) {
         return '20';

@@ -117,7 +117,7 @@ import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
-import Sair from "../../imagemVetores/Sair.svg";
+
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
@@ -129,7 +129,7 @@ const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
-import botaoX from '../../imagemVetores/botaoX.vue';
+
 import { inject } from 'vue';
 
 const criaHistorico = criaHistoricoStore();
@@ -277,7 +277,7 @@ function fazPlaceHolderDataFinalProjeto() {
 
 function excluiProjeto() {
     conexao.deletar(idProjeto, "/projeto").then(() => {
-        voltaPagina()
+        router.push('/home')
     })
 }
 
