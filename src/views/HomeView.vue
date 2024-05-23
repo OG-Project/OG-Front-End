@@ -15,7 +15,7 @@ import HomeViewMobile from './mobile/HomeViewMobile.vue';
 import router from '../router';
 import VueCookies from 'vue-cookies'
 import { conexaoBD } from "../stores/conexaoBD.js";
-import VueCookies from 'vue-cookies';
+
 
 const banco = conexaoBD();
 // https://dontpad.com/02-05-2024gks
