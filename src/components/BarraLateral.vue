@@ -75,7 +75,7 @@ import VueCookies from "vue-cookies";
 import { conexaoBD } from '../stores/conexaoBD';
 import tutorialIcon from '../assets/tutorialIcon.vue';
 import { inject } from 'vue'
-import iconChat from '../assets/iconChat.vue'
+import iconChat from '../assets/iconChatBar.vue'
 
 
 const tour = inject('tour')
@@ -116,6 +116,7 @@ function redirecionamento(local) {
       VueCookies.remove('IdTarefaCookies');
       VueCookies.remove('IdProjetoAtual');
       VueCookies.remove('JWT');
+      VueCookies.remove('JSESSIONID');
       VueCookies.remove('equipeSelecionada');
       window.location.reload();
     }

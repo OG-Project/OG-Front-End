@@ -11,7 +11,7 @@
     </div>
     <div class="divCel flex justify-end">
       <div id="step-10" class="botaoProjetos flex mt-[-3vh] mr-[1vw]" v-if="retornoPermissao">
-        <Botao v-if="screenWidth >= 620" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim"
+        <Botao v-if="screenWidth >= 750" preset="PadraoVazado" tamanhoDaBorda="2px" sombreado="sim"
           corBordaHover="var(--roxo)" corBorda="var(--roxo)" tamanhoPadrao="pequeno"
           :texto="'+ ' + $t('equipes.projeto')" tamanhoDaFonte="1rem" :funcaoClick="criarProjeto">
         </Botao>
@@ -35,7 +35,7 @@
         <membrosEquipeImagem
           class="membrosEquipeImagem w-[18px] h-[18px] 2xl:mt-[0vh] xl:mt-[0.2vh] lg:mt-[0.3vh] md:mt-[0.3vh]"
           :class="{ 'imagem-hover-membros': hoverMembros }"></membrosEquipeImagem>
-        <p v-if="screenWidth >= 620"
+        <p v-if="screenWidth >= 750"
           class="flex items-center 2xl:ml-2 2xl:mt-1 xl:ml-2 xl:mt-1 lg:ml-3 lg:mt-2 md:ml-3 md:mt-2 text-md"
           :class="{ 'imagem-hover-membros': hoverMembros }">{{ numeroMembrosLimitado() }}</p>
       </div>
@@ -51,10 +51,10 @@
       <div class="projetos ">
         <div v-for="projeto of listaProjetos" :key="projeto.id">
           <div class="flex w-[100%]">
-            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgresso(projeto)"
+            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgressoProjeto(projeto)"
               :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
-              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
-              :responsavel="listaResponsaveis" :tempoAtuacao="projeto.tempoAtuacao">
+              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
+              :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)" :tempoAtuacao="projeto.tempoAtuacao" >
             </CardProjetos>
           </div>
         </div>
@@ -85,21 +85,13 @@ let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal = false;
 let variavelEngrenagem = false;
 let variavelMembros = false;
-let listaResponsaveis = ref([]);
+
 let retornoPermissao = ref(false);
 const banco = conexaoBD();
 
 onMounted(() => {
-  buscaProjeto();
   verificaMembroPermissao();
 })
-
-async function buscaProjeto() {
-  let projeto = await banco.procurar("/projeto")
-  projeto.forEach((projeto) => {
-    obterNomesResponsaveis(projeto)
-  })
-}
 
 let equipeEditar = ref({
   nome: '',
@@ -127,44 +119,23 @@ async function criarProjeto() {
   VueCookies.set("IdProjetoAtual")
 }
 
-async function verificaMembroPermissao(){
-     
-     const usuario = await banco.buscarUm(usuarioLogado,"/usuario")
-     console.log(usuario.equipes)
-     usuario.equipes.forEach((equipeUsuario) =>{
-        if(equipeUsuario.equipe.id == equipeSelecionada){
-            console.log(usuario);
-            if(equipeUsuario.criador){
-                retornoPermissao.value = true;
-                  return;
-            }
-            else if(equipeUsuario.permissao.length > 1){
-                  retornoPermissao.value = true;
-                  return;
-            }
-        } 
-    })
-    
-}
+async function verificaMembroPermissao() {
 
-async function obterNomesResponsaveis(projeto) {
-  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-    let responsaveisComNome = []
-    for (let responsavel of projeto.responsaveis) {
-      let responsavelAtual = await buscaResponsaveis(responsavel)
-      responsaveisComNome.push(responsavelAtual.username)
-      listaResponsaveis.value = responsaveisComNome
-      if (responsaveisComNome.length >= 0) {
-        listaResponsaveis.value = responsaveisComNome.join(', ');
+  const usuario = await banco.buscarUm(usuarioLogado, "/usuario")
+  console.log(usuario.equipes)
+  usuario.equipes.forEach((equipeUsuario) => {
+    if (equipeUsuario.equipe.id == equipeSelecionada) {
+      console.log(usuario);
+      if (equipeUsuario.criador) {
+        retornoPermissao.value = true;
+        return;
+      }
+      else if (equipeUsuario.permissao.length > 1) {
+        retornoPermissao.value = true;
+        return;
       }
     }
-  } else {
-    return "Não há responsáveis";
-  }
-}
-
-async function buscaResponsaveis(responsavel) {
-  return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
+  })
 
 }
 
@@ -191,16 +162,50 @@ async function buscarProjetosEquipe() {
 
 }
 
-function calcularProgresso(projeto) {
-  if (!projeto.tarefas || projeto.tarefas.length == 0) {
-    return 0; // se não houver tarefas, o progresso é 0%
+function calcularProgressoProjeto(projeto) {
+  let totalSubTarefas = 0;
+  let tarefasConcluidas = 0;
+
+  if (projeto.categoria == "nao-iniciados") {
+    projeto.tarefas.forEach(tarefa => {
+      tarefa.subTarefas.forEach(subtarefa => {
+        subtarefa.concluido = false;
+      });
+    });
+
+    return 0;
+  } else if (projeto.categoria == "prontos") {
+    projeto.tarefas.forEach(tarefa => {
+      tarefa.subTarefas.forEach(subtarefa => {
+        subtarefa.concluido = true;
+      });
+    });
+
+    return 100;
   }
 
-  const totalTarefas = projeto.tarefas.length;
-  const tarefasConcluidas = projeto.tarefas.filter(tarefa => tarefa.concluida).length;
+  let quantidadeTarefasConcluidas =0;
+  projeto.tarefas.forEach(tarefa => {
+    let todasConcluidas = true;
+    tarefa.subTarefas.forEach(subtarefa => {
+      totalSubTarefas++;
+      tarefasConcluidas = true;
+      if (!subtarefa.concluido) { 
+        todasConcluidas = false;
+      }else{
+        quantidadeTarefasConcluidas++;
+      }
+    }); 
+  });
 
-  return Math.round((tarefasConcluidas / totalTarefas) * 100);
+  if (totalSubTarefas === 0) {
+    return 0; // Retorna 0 se não houver tarefas no projeto
+  } else {
+    return Math.floor((quantidadeTarefasConcluidas / totalSubTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
+  }
 }
+
+
 
 async function filtrarEquipe() {
   console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
@@ -278,7 +283,9 @@ function abrePopUp(equipe, tipo) {
 }
 
 .corDiv {
-  @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh] md:ml-[5vw] md:mt-[-5vh] 2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
+  @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh] md:ml-[5vw] md:mt-[-5vh] 
+  2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw] border-transparent border-b-[var(--roxo)] 
+  border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
 
 }
 
@@ -315,12 +322,13 @@ function abrePopUp(equipe, tipo) {
 }
 
 .listaProjetos {
-  @apply mt-[11vh] w-[95vw] h-[65vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
+  @apply 2xl:mt-[11vh] xl:mt-[8vh] lg:mt-[9vh] md:mt-[12vh] w-[95vw] h-[65vh] bg-[var(--backgroundItems)] shadow-md shadow-[var(--backgroundItems)];
   flex: 1 1 px;
 }
 
 .imagemEquipe {
-  @apply flex ml-5 2xl:mt-2 xl:mt-5 lg:mt-20 md:mt-[12vh] 2xl:h-[80px] 2xl:w-[80px] xl:h-[80px] xl:w-[80px] lg:w-[80px] lg:h-[80px] md:h-[80px] md:w-[80px] rounded-full;
+  @apply flex ml-5 2xl:mt-2 xl:mt-5 lg:mt-20 md:mt-[12vh] 2xl:h-[80px] 2xl:w-[80px] xl:h-[80px] xl:w-[80px] 
+  lg:w-[80px] lg:h-[80px] md:h-[80px] md:w-[80px] rounded-full;
   transition: transform 0.3s ease;
 }
 
@@ -383,6 +391,45 @@ function abrePopUp(equipe, tipo) {
     @apply mt-[0.3vh]
   }
 
+}
+
+@media(min-width: 621px) and (max-width: 767px){
+  .botaoIcone {
+    @apply  w-[55px] h-[55px] mt-[8vh] mr-5
+  }
+
+  .listaProjetos {
+    @apply mt-0 h-[60vh];
+  }
+
+  .botaoProjetos {
+    @apply flex mt-[8vh] mr-[2vw];
+  }
+
+  .tituloEquipe {
+    @apply w-[60vw]
+  }
+
+  .corDiv {
+    @apply w-[80vw] ml-[10vw] mt-[5vh]
+  }
+
+  .imagemEquipe {
+    @apply w-[60px] h-[60px]
+  }
+
+  .divCel {
+    @apply mt-0;
+  }
+
+  .cardProjeto {
+    @apply mt-10 ml-[16.5vw] text-xl;
+    max-width: calc(125% - 1px);
+  }
+
+  .membrosEquipeImagem {
+    @apply mt-[0.6vh] ml-[1.25vw]
+  }
 }
 
 @media(max-width: 620px) {

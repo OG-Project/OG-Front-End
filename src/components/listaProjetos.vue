@@ -2,7 +2,7 @@
     <div :style="{ height: height, width: width }" class="flex justify-center">
       <div class="listaProjetos overflow-auto ">
         <div class="divGeral sm:flex w-[100%] max-mobile:justify-center">
-          <div v-if="!kanbanAtivo && screenWidth > 620" class="flex w-full">
+          <div v-if="!kanbanAtivo && screenWidth > 750" class="flex w-full">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
              @click="ativarBotao('urgentes')">{{$t('projeto.URGENTES')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
@@ -12,7 +12,7 @@
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'meus-projetos' }"
              @click="ativarBotao('meus-projetos')">{{$t('projeto.MEUS PROJETOS')}}</button>
           </div>
-          <div v-if="!kanbanAtivo && screenWidth <= 620" class="flex w-full mobile:w-[80vw]">
+          <div v-if="!kanbanAtivo && screenWidth <= 766" class="flex w-full mobile:w-[80vw]">
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'urgentes' }"
              @click="ativarBotao('urgentes')">{{$t('projeto.URGENTES')}}</button>
             <button class="botaoStatus" :class="{ 'bordaRoxa': statusBotao === 'prontos' }"
@@ -77,10 +77,10 @@
           </div>
           </div>
          
-          <div  v-if="!kanbanAtivo && screenWidth <= 620" class="iconeKanban mobile:ml-[88vw] mobile:mt-[-2.8vh]" @click="toggleKanban()">
+          <div  v-if="!kanbanAtivo && screenWidth <= 750" class="iconeKanban sm:ml-[5vw] mobile:ml-[88vw] mobile:mt-[-2.8vh] miniMobile:ml-[87vw] miniMobile:mt-[-3vh]" @click="toggleKanban()">
             <iconKanban class="icone"></iconKanban>
           </div>
-          <div  v-if="!kanbanAtivo && screenWidth > 620 " class="iconeKanban mobile:mt-[-2.8vh]" @click="toggleKanban()">
+          <div  v-if="!kanbanAtivo && screenWidth > 766 " class="iconeKanban mobile:mt-[-2.8vh]" @click="toggleKanban()">
             <iconKanban class="icone"></iconKanban>
           </div>
         </div>
@@ -95,12 +95,12 @@
         <div v-else-if="!mostrarMensagem">
           <div v-if="!kanbanAtivo" class="projetos" >
             <div v-for="projeto of filtrarPorCategoria(statusBotao).length ? filtrarPorCategoria(statusBotao) : projetos" :key="projeto.id" >
-              <cardProjetos v-if="screenWidth >= 620" class="cardProjetos" 
+              <cardProjetos v-if="screenWidth >=  766" class="cardProjetos" 
               :name="projeto.nome" 
               :descricao="projeto.descricao" 
               :comeco="formatarData(projeto.dataCriacao)" 
               :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :responsavel="listaResponsaveis"
+              :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)"
               :feito="calcularProgressoProjeto(projeto)"
               :tempo-atuacao="projeto.tempoAtuacao"
               @click="entrarNoProjeto(projeto)"></cardProjetos>
@@ -109,7 +109,7 @@
                 :descricao="projeto.descricao" 
                 :comeco="formatarData(projeto.dataCriacao)" 
                 :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-                :responsavel="listaResponsaveis"
+                :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)"
                 :feito="calcularProgressoProjeto(projeto)"
                 :tempo-atuacao="projeto.tempoAtuacao"
                 @click="entrarNoProjeto(projeto)" marginRight="8vw"></cardProjetos>
@@ -141,12 +141,12 @@
   const projetoEmBaixoId = ref()
   const banco = conexaoBD();
   let projetos = ref([]);
-  const idUsuarioLogado = 1
+  const idUsuarioLogado = VueCookies.get("IdUsuarioCookie")
   let mostrarMensagem = ref(false);
   let equipesUsuario = ref ([]);
   let usuarioLogado = ref();
   const router = useRouter();
-  let listaResponsaveis = ref([])
+
   const filtrarPorCategoria = (categoria) => {
     return projetos.value.filter(p => {
       return p.categoria === categoria;
@@ -155,16 +155,8 @@
 
   
 onMounted(() => {
-  buscaProjetoBanco()
   buscarProjetos();
 })
-
-async function buscaProjetoBanco() {
-  let projeto = await banco.procurar("/projeto")
-  projeto.forEach((projeto) => {
-    obterNomesResponsaveis(projeto)
-  })
-}
 
   const ativarBotao = (botao) => {
 
@@ -189,6 +181,7 @@ async function buscaProjetoBanco() {
     const projetosEquipe = [];
 
     for (const equipeUsuario of equipesUsuario.value) {
+        console.log(equipeUsuario.equipe.id);
         const projetosDaEquipe = await banco.buscarProjetosEquipe(equipeUsuario.equipe.id, "/projeto/buscarProjetos");
         projetosEquipe.push(...projetosDaEquipe); 
       }
@@ -220,65 +213,53 @@ async function buscaProjetoBanco() {
   }
 
   function calcularProgressoProjeto(projeto) {
-    let totalTarefas = 0;
-    let tarefasConcluidas = 0;
+  let totalSubTarefas = 0;
+  let tarefasConcluidas = 0;
 
-    if (projeto.categoria == "nao-iniciados") {
-      projeto.tarefas.forEach(tarefa => {
+  if (projeto.categoria == "nao-iniciados") {
+    projeto.tarefas.forEach(tarefa => {
       tarefa.subTarefas.forEach(subtarefa => {
         subtarefa.concluido = false;
       });
-      });
+    });
 
-      return 0; // Retorna 0% de progresso se o projeto estiver na categoria "Não Iniciados"    
-      } else if (projeto.categoria == "prontos") {
-        projeto.tarefas.forEach(tarefa => {
+    return 0;
+  } else if (projeto.categoria == "prontos") {
+    projeto.tarefas.forEach(tarefa => {
       tarefa.subTarefas.forEach(subtarefa => {
         subtarefa.concluido = true;
       });
-      });
-
-      return 100;// Retorna 100% de progresso se o projeto estiver na categoria "Prontos"
-      }
-
-    projeto.tarefas.forEach(tarefa => {
-        totalTarefas++;
-        let todasConcluidas = true;
-        tarefa.subTarefas.forEach(subtarefa => {
-            if (!subtarefa.concluido) {
-                todasConcluidas = false;
-            }
-        });
-        if (todasConcluidas) {
-            tarefasConcluidas++;
-        }
     });
 
-    if (totalTarefas === 0) {
-        return 0; // Retorna 0 se não houver tarefas no projeto
-    } else {
-            return Math.floor((tarefasConcluidas / totalTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
-    }
-}
+    return 100;
+  }
 
-async function obterNomesResponsaveis(projeto) {
-  if (projeto.responsaveis && Array.isArray(projeto.responsaveis) && projeto.responsaveis.length > 0) {
-    let responsaveisComNome = []
-    for (let responsavel of projeto.responsaveis) {
-      let responsavelAtual = await buscaResponsaveis(responsavel)
-      responsaveisComNome.push(responsavelAtual.username)
-      listaResponsaveis.value = responsaveisComNome
-      if (responsaveisComNome.length >= 0) {
-        listaResponsaveis.value = responsaveisComNome.join(', ');
+  let quantidadeTarefasConcluidas =0;
+  projeto.tarefas.forEach(tarefa => {
+    let todasConcluidas = true;
+    tarefa.subTarefas.forEach(subtarefa => {
+      totalSubTarefas++;
+      tarefasConcluidas = true;
+      if (!subtarefa.concluido) { 
+        todasConcluidas = false;
+      }else{
+        quantidadeTarefasConcluidas++;
       }
-      
-    }
+    }); 
+  });
+
+  if (totalSubTarefas === 0) {
+    return 0; // Retorna 0 se não houver tarefas no projeto
   } else {
-    return "Não há responsáveis";
+    return Math.floor((quantidadeTarefasConcluidas / totalSubTarefas) * 100); // Retorna a porcentagem de tarefas concluídas
   }
 }
+
 async function buscaResponsaveis(responsavel) {
-  return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
+  if(responsavel.idResponsavel!=null){
+    return await banco.buscarUm(responsavel.idResponsavel, "/usuario")
+  }
+  return null;
 
 }
 
@@ -354,6 +335,7 @@ const buscarCorPorCategoria = (categoria) => {
   async function entrarNoProjeto(projeto) {
   console.log(projeto)
   VueCookies.set("IdProjetoAtual", projeto.id, 30000)
+  VueCookies.set('idReloadProjeto', '0');
   router.push({ path: '/projeto' }).then(() => {
         window.location.reload()
     });
@@ -380,18 +362,22 @@ kanban-board {
 }
 
 .urgentes {
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#D27200] justify-center
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
 }
 
 .naoIniciado{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#0034BA] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#0034BA] justify-center 
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2 shadow-md  shadow-[var(--backgroundItems)];
 }
 .prontos{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#389300] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)]; 
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#389300] justify-center 
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)]; 
 }
 
 .meusProjetos{
-  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#8E00FF] justify-center items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)];
+  @apply flex 2xl:w-[22.6vw] xl:w-[22.6vw] lg:w-[22.5vw] md:w-[21.5vw] h-[7vh] bg-[#8E00FF] justify-center 
+  items-center 2xl:mx-2 xl:mx-1 lg:mx-1 md:mx-2  shadow-md  shadow-[var(--backgroundItems)];
 }
 
 .cardProjetos{
@@ -469,37 +455,6 @@ kanban-board {
 }
 .nenhumProjeto{
   @apply ml-[42%] mt-[22vh];
-}
-
-@media(max-width: 620px){
-  kanban-board {
-    width: 800px;
-    height: 600px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    overflow: auto;
-  }
-  .cardProjetos{
-    @apply mt-20 text-2xl;
-    max-width: calc(125% - 1px);
-  }
-  .iconeKanban{
-    @apply w-[60px] h-[60px] flex mt-[1.2vh];
-  }
-  .icone{
-    @apply w-[50px] h-[50px]
-  }
-  .iconeCard{
-    @apply flex justify-end  mr-[-0.5vw] mt-[1.2vh];
-  } 
-  .mensagemKanban{
-    @apply ml-[42%];
-  }
-  .nenhumProjeto{
-    @apply ml-[42%] mt-[22vh];
-  }
 }
 }
   </style>

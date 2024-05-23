@@ -2,7 +2,7 @@
     <fundoPopUp v-if="!editando" largura="" :altura="tamanhoPopUp()">
         <div class="divGeral">
             <div class=" grid-template flex w-full">
-                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">{{ $t('editarEquipePopUp.equipeEditar')  }}</h1>
+                <h1 class="titulo flex font-semibold xl:text-3xl md:text-2xl color-[#000]">{{ $t('editarEquipePopUp.equipeEditar')  }}</h1>
             </div>
 
             <div class=" grid-template  flex w-full mt-[1vh] p-5">
@@ -10,8 +10,8 @@
                     :src="'data:' + equipeEditar.foto.tipo + ';base64,' + equipeEditar.foto.dados" alt="">
                 <equipe class="imagem" v-else></equipe>
                 <div class="styleH1Padrao">
-                    <h1 class="nomeEquipe flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[var(--fonteCor)] "
-                        :title="equipeEditar.nome"> {{ truncarNome(equipeEditar.nome, larguraNomeEquipe()) }}</h1>
+                    <h1 class="nomeEquipe truncate flex 2xl:h-[3vh] 2xl:w-[12vw] xl:w-[22vw] lg:w-[25vw] md:w-[21vw] text-xl text-[var(--fonteCor)] "
+                        :title="equipeEditar.nome"> {{ equipeEditar.nome }}</h1>
                 </div>
             </div>
             <div class=" grid-template flex w-full mt-[1vh]">
@@ -68,28 +68,32 @@
     <fundoPopUp v-if="editando" largura="" :altura="tamanhoPopUp()">
         <div class="divGeral">
             <div class=" grid-template flex w-full">
-                <h1 class="tituloEditar flex font-semibold xl:text-3xl md:text-2xl sm:text-xs color-[#000]">{{$t('criaEquipePopUp.equipe')}}</h1>
+                <h1 class="tituloEditar flex font-semibold xl:text-3xl md:text-2xl color-[#000]">{{$t('criaEquipePopUp.equipe')}}</h1>
             </div>
             <div class=" grid-template  flex w-full mt-[1vh] p-5">
                 <div class="relative">
                     <input type="file" @change="handleFileUpload" class=" h-16 opacity-0 w-full absolute">
-                    <div class="rounded-full bg-[#D7D7D7] flex items-center justify-center 2xl:w-[70px] 2xl:h-[70px] xl:w-[70px] xl:h-[70px] lg:w-[65px] lg:h-[65px] md:w-[60px] md:h-[60px]">
+                    <div class="divImagem  rounded-full bg-[#D7D7D7] flex items-center justify-center 2xl:w-[70px] 2xl:h-[70px] xl:w-[70px] xl:h-[70px] lg:w-[65px] lg:h-[65px] md:w-[60px] md:h-[60px]">
                         <img class="imagem" :class="{ 'imagem-arredondada': imagemSelecionadaUrl }" :src="imagemExibicao"
                         alt="Imagem Selecionada">
                     </div>
                 </div>
-                <Input :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
+                <Input class="inputEquipe" :class="{ 'computedClasses': someCondition }" styleInput="input-transparente-claro"
                     :largura="larguraInput()" :conteudoInput="$t('criaEquipePopUp.nomeEquipe')"  v-model="nome" @updateModelValue="(e)=> {nome=e}"></Input>
             </div>
             <div class=" grid-template flex w-full mt-[1vh]">
-                <textAreaPadrao
-                    class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] w-full  justify-center"
+                <textAreaPadrao 
+                    v-if="screenWidth >= 621"  class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] sm:w-[67vw] sm:h-[8vh] w-full justify-center"
                     height="20vh" resize="none" tamanho-da-fonte="1rem" :placeholder="$t('criaEquipePopUp.descricao')"
+                    v-model="descricao" @updateModelValue="(e)=> {descricao= e}"></textAreaPadrao>
+                    <textAreaPadrao 
+                    v-else class="flex 2xl:w-[18vw] xl:h-[10vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[8vh] sm:w-[67vw] sm:h-[8vh] w-full justify-center"
+                    height="50vh" resize="none" tamanho-da-fonte="1rem" :placeholder="$t('criaEquipePopUp.descricao')"
                     v-model="descricao" @updateModelValue="(e)=> {descricao= e}"></textAreaPadrao>
             </div>
             <div
                 class="botaoSalvar flex justify-end 2xl:mt-[22vh] xl:mt-[24vh] lg:mt-[27vh] md:mt-[28vh] 2xl:mx-[2vw] xl:mx-[3vw] lg:mx-[3vw] md:mx-[4vw]">
-                <Botao v-if="screenWidth >= 620" preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.salvar')"
+                <Botao v-if="screenWidth >= 750" preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('editarEquipePopUp.salvar')"
                     tamanhoDaFonte="1rem" :funcaoClick="atualizarEquipe">
                 </Botao>
                 <Botao v-else preset="PadraoRoxo" tamanhoPadrao="mobilepadrao" :texto="$t('editarEquipePopUp.salvar')"
@@ -150,7 +154,7 @@ let mensagemCor = ref("");
 function tamanhoPopUp() {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 620) {
-        return '50vh'
+        return '100vh'
     }
     else {
         return '60vh'
@@ -271,7 +275,10 @@ async function editarEquipe() {
 function larguraInput() {
     const screenWidth = window.innerWidth;
     if (screenWidth <= 620) {
-        return '50'
+        return '62'
+    }
+    if(screenWidth <= 750){
+        return '55'
     }
     if (screenWidth <= 768) {
         return '25';
@@ -365,8 +372,12 @@ async function atualizarEquipe() {
             mensagemError.value = "";
 
             // Verifica se houve alterações nos campos antes de atualizar
-            if (equipeAtualizar.nome != equipe.nome || equipeAtualizar.descricao != equipe.descricao) {
+            if (equipeAtualizar.nome != equipe.nome || equipeAtualizar.descricao != equipe.descricao || imagemSelecionada.value) {
                 banco.atualizar(equipeAtualizar, "/equipe")
+                mensagem.value = ""
+                mensagemCor.value = ""
+                mensagem.value = t('editarEquipePopUp.edicao');;
+                mensagemCor.value = '#29CD00'
             } else {
                 mensagem.value = ""
                 mensagemCor.value = ""
@@ -382,9 +393,11 @@ async function atualizarEquipe() {
                 };
             } else {
                 // Caso contrário, manter a imagem da equipe anterior
+
                 equipeAtualizar.foto = equipe.foto;
             }
         }
+        
     });
 
     equipeEditar.value.nome = equipeAtualizar.nome;
@@ -404,8 +417,7 @@ async function atualizarEquipe() {
         mensagem.value = t('editarEquipePopUp.edicao');;
         mensagemCor.value = '#29CD00'
     }
-
-   window.location.reload();
+    window.location.reload()
 }
 
 // Função para converter o arquivo para base64
@@ -429,6 +441,7 @@ async function enviarFotoParaBackend(id) {
 
         const equipeId = id;
         await banco.cadastrarFoto(equipeId, imagemSelecionada.value);
+        imagemSelecionada.value = null
     } catch (error) {
     }
 }
@@ -454,7 +467,7 @@ async function enviarFotoParaBackend(id) {
     }
 
     .textArea {
-        @apply truncate flex 2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+        @apply flex 2xl:w-[18vw] xl:h-[20vh] xl:w-[35vw] lg:w-[36vw] md:w-[38vw] md:h-[18vh] w-full bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
         border-bottom: 'solid 4px #620BA7';
     }
 
@@ -569,20 +582,169 @@ async function enviarFotoParaBackend(id) {
         }
     }
 
-    @media(max-width: 620px) {
+    @media(max-width: 320px){
         .titulo {
-            @apply text-4xl;
+            @apply text-3xl mt-[-12vh];
+        }
+        .divImagem{
+            @apply w-[50px] h-[50px]
         }
         .alert{
             @apply mr-4
         }
         .textArea {
-            @apply flex w-[70vw] h-[20vh] bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+            @apply flex w-[90vw] h-[40vh] bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+            border-bottom: 'solid 4px #620BA7';
+        }
+        .styleH1Padrao{
+            @apply flex w-[60vw]
+        }
+        .nomeEquipe {
+            @apply flex h-[3vh] w-[90vw] text-xl text-[#877E7E];
+        }
+
+        .imagem {
+            @apply w-[40px] h-[40px]
+        }
+        .divGeral {
+            @apply w-full h-full flex justify-center p-5 flex-col;
+        }
+
+        .tituloEditar {
+            @apply text-5xl mt-[-10vh];
+        }
+
+        .botaoSalvar {
+            @apply flex justify-end ml-14 mt-20;
+        }
+    }
+
+    @media(min-width: 321px) and (max-width: 375px){
+        .titulo {
+            @apply text-5xl mt-[-12vh];
+        }
+        .divImagem{
+            @apply w-[50px] h-[50px]
+        }
+        .alert{
+            @apply mr-4
+        }
+        .textArea {
+            @apply flex w-[93vw] h-[40vh] bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+            border-bottom: 'solid 4px #620BA7';
+        }
+        .styleH1Padrao{
+            @apply flex w-[60vw]
+        }
+        .nomeEquipe {
+            @apply flex h-[3vh] w-[90vw] text-xl text-[#877E7E];
+        }
+
+        .imagem {
+            @apply w-[40px] h-[40px]
+        }
+        .divGeral {
+            @apply w-full h-full flex justify-center p-5 flex-col;
+        }
+
+        .tituloEditar {
+            @apply text-5xl mt-[-10vh];
+        }
+
+        .botaoSalvar {
+            @apply flex justify-end ml-14 mt-20;
+        }
+    }
+
+    @media(min-width: 376px) and (max-width: 424px){
+        .titulo {
+            @apply text-5xl mt-[-12vh];
+        }
+        .divImagem{
+            @apply w-[50px] h-[50px]
+        }
+        .alert{
+            @apply mr-4
+        }
+        .textArea {
+            @apply flex w-[93vw] h-[40vh] bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+            border-bottom: 'solid 4px #620BA7';
+        }
+        .styleH1Padrao{
+            @apply flex w-[60vw]
+        }
+        .nomeEquipe {
+            @apply flex h-[3vh] w-[90vw] text-xl text-[#877E7E];
+        }
+
+        .imagem {
+            @apply w-[40px] h-[40px]
+        }
+        .divGeral {
+            @apply w-full h-full flex justify-center p-5 flex-col;
+        }
+
+        .tituloEditar {
+            @apply text-5xl mt-[-10vh];
+        }
+
+        .botaoSalvar {
+            @apply flex justify-end ml-14 mt-20;
+        }
+    }
+
+    @media(min-width: 425px) and (max-width: 620px) {
+        .titulo {
+            @apply text-5xl mt-[-12vh];
+        }
+        .divImagem{
+            @apply w-[50px] h-[50px]
+        }
+        .alert{
+            @apply mr-4
+        }
+        .textArea {
+            @apply flex w-[93vw] h-[40vh] bg-[#D7D7D7] text-black text-lg border-transparent border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
+            border-bottom: 'solid 4px #620BA7';
+        }
+        .styleH1Padrao{
+            @apply flex w-[60vw]
+        }
+        .nomeEquipe {
+            @apply flex h-[3vh] w-[90vw] text-xl text-[#877E7E];
+        }
+
+        .imagem {
+            @apply w-[40px] h-[40px]
+        }
+        .divGeral {
+            @apply w-full h-full flex justify-center p-5 flex-col;
+        }
+
+        .tituloEditar {
+            @apply text-5xl mt-[-10vh];
+        }
+
+        .botaoSalvar {
+            @apply flex justify-end ml-14 mt-20;
+        }
+    }
+
+    @media(min-width: 621px) and (max-width: 767px){
+        .titulo {
+            @apply text-5xl;
+        }
+        .alert{
+            @apply mr-4
+        }
+        .textArea {
+            @apply flex w-[70vw] h-[20vh] bg-[#D7D7D7] text-black text-xl border-transparent 
+            border-b-[var(--roxo)] border-b-2 focus-within:border-[var(--roxo)] focus-within:border-4;
             border-bottom: 'solid 4px #620BA7';
         }
 
         .nomeEquipe {
-            @apply flex h-[3vh] w-[50vw] text-xl text-[#877E7E];
+            @apply flex h-[3vh] w-[60vw] text-xl text-[#877E7E];
         }
 
         .imagem {
@@ -594,13 +756,18 @@ async function enviarFotoParaBackend(id) {
         }
 
         .tituloEditar {
-            @apply text-4xl;
+            @apply text-5xl ;
+        }
+
+        .botao{
+            @apply flex-row justify-center mt-[20vw]
         }
 
         .botaoSalvar {
-            @apply flex justify-end ml-14 mt-20;
+            @apply flex justify-center ml-5 mt-[25vh];
         }
-    }
+        
+      }
 
 }
 </style>

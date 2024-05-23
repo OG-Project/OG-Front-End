@@ -112,7 +112,7 @@ function enviaComentario(comentario) {
         ,projeto.statusList, projeto.responsaveis, projeto.dataFinal
         ,projeto.tempoAtuacao, projeto.categoria, projeto.indexLista, comentariosProjetoFront.value, projeto.tarefas)
          // passar todos os dados do projeto 
-         criaHistorico.criaHistoricoProjeto("Comentou no projeto", projeto.value, usuarioCookies.value);
+         criaHistorico.criaHistoricoProjeto("Comentou no projeto", projeto, usuarioCookies.value);
 }
 function formatarData(data) {
     let dataFormatada = new Date(data)

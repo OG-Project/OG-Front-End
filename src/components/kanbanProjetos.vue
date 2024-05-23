@@ -90,5 +90,14 @@
         @apply ml-5 text-xl w-[60vw]
        }
     }
+
+    @media(min-width: 621px) and (max-width: 750px){
+      .imagem{
+        @apply w-[30px] h-[30px] mt-[-4.5vh] ml-[18vw]
+       }
+       .card-titulo{
+        @apply ml-5 text-xl w-[14vw]
+       }
+    }
     </style>
     

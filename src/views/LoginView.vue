@@ -36,6 +36,7 @@ let senhaUsuarioLogin = ref("");
 let usuarioCadastro = ref("");
 let emailCadastro = ref("");
 let senhaCadastro = ref("");
+let usuarioOuSenhaInvalida = ref(false);
 let confirmarSenhaCadastro = ref("");
 let usuarioSecurity = {
   username: "",
@@ -47,6 +48,7 @@ async function fazerLogin() {
   let error;
   await banco.login(usuarioSecurity).catch(e => {
     alert("Login invalido")
+    
     error = e
   })
   console.log(error);
@@ -64,6 +66,9 @@ async function fazerLogin() {
       return
     })
 
+  }else{
+    console.log("aaaaa");
+    usuarioOuSenhaInvalida.value = true
   }
 }
 
@@ -138,7 +143,11 @@ function mostraSenhaConfirmacao() {
   }
 }
 
-function loginGoogle() {
+async function removeCookie() {
+  VueCookies.remove("JSESSIONID")
+  await loginGoogle()
+}
+async function loginGoogle(){
   window.location.href = "http://localhost:8082"
 }
 </script>
@@ -157,10 +166,10 @@ function loginGoogle() {
           <div v-if="tipo === 'login'" :style="conteudoFormulario">
             <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
             <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
-              v-model="usuarioLogin" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
+              v-model="usuarioLogin" :isInvalido="usuarioOuSenhaInvalida" textoInvalido="Usuario ou senha invalida" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
             <div class="flex flex-row w-full justify-center items-center pl-7">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-                v-model="senhaUsuarioLogin" :tipo="vizualizacaoDeSenha"
+                v-model="senhaUsuarioLogin" :isInvalido="usuarioOuSenhaInvalida" textoInvalido="Usuario ou senha invalida" :tipo="vizualizacaoDeSenha"
                 @updateModelValue="(e) => { senhaUsuarioLogin = e; }"></Input>
               <button class="h-[100%] w-[6%]" @click="mostraSenhas">
                 <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
@@ -174,7 +183,7 @@ function loginGoogle() {
               <hr style="width: 35%; text-align: left; margin-left: 0" />
             </div>
             <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
-              :funcaoClick="loginGoogle"></Botao>
+              :funcaoClick="removeCookie"></Botao>
           </div>
         </Transition>
         <Transition name="registro">
@@ -186,7 +195,7 @@ function loginGoogle() {
               v-model="emailCadastro" @updateModelValue="(e) => { emailCadastro = e; }"></Input>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-                v-model="senhaCadastro" :tipo="vizualizacaoDeSenha"
+                v-model="senhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenha"
                 @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhas">
                 <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
@@ -194,7 +203,7 @@ function loginGoogle() {
             </div>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Confirmar Senha"
-                v-model="confirmarSenhaCadastro" :tipo="vizualizacaoDeSenhaConfirmacao"
+                v-model="confirmarSenhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenhaConfirmacao"
                 @updateModelValue="(e) => { confirmarSenhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
                 <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />

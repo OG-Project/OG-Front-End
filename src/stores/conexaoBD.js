@@ -25,9 +25,9 @@ export const conexaoBD = defineStore('conexaoBD', {
 
     },
 
-    getCookie(){
+    getCookie() {
       // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
-    // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
+      // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
       this.loading = true;
       try {
         return axios.get(this.url+"/cookie" , { withCredentials: true }).then(response =>  {return response.data})
@@ -42,7 +42,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.post(this.url + "/login", usuarioLogin, { withCredentials: true }).then(response => {
           alert(response.data.value)
           VueCookies.set("JWT", response.data.value)
-        }).catch((error)=>{
+        }).catch((error) => {
           console.log(error)
         })
       } finally {
@@ -69,14 +69,22 @@ export const conexaoBD = defineStore('conexaoBD', {
       console.log(objeto);
       this.loading = true;
       try {
-        if (textoRequisicao == "/usuario") {
-          const idUsuario = VueCookies.get("IdUsuarioCookie")
-          return axios.put(this.url + textoRequisicao + "/" + idUsuario, objeto, { withCredentials: true }).then(response => response)
-        }
 
         return axios.put(this.url + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
 
       } finally {
+        this.loading = false;
+      }
+    },
+    async trocaSenha(id, senhaNova) {
+      this.loading = true;
+      try {
+        console.log(senhaNova);
+        console.log(id);
+        return axios.patch('http://localhost:8082/usuario/senha/' + id, senhaNova, { withCredentials: true }).then(response =>{
+          console.log(response) 
+        } )
+      }finally {
         this.loading = false;
       }
     },
@@ -167,7 +175,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async buscarUm(id, textoRequisicao) {
       this.loading = true;
       try {
-        return (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
+        return await (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
       } finally {
         this.loading = false;
       }
@@ -216,7 +224,7 @@ export const conexaoBD = defineStore('conexaoBD', {
         const formData = new FormData();
         formData.append('foto', foto);
 
-  
+
         // Faça a requisição PATCH para enviar a image
 
         const response = await axios.patch(this.url + `/equipe/${equipeId}`, formData, {
@@ -253,7 +261,7 @@ export const conexaoBD = defineStore('conexaoBD', {
           return response.data
 
         });
-       
+
 
       } catch (error) {
         console.error('Erro ao cadastrar a foto:', error);

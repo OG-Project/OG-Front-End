@@ -365,8 +365,8 @@ async function pegaValorSelecionadoPesquisa(valorPesquisa) {
 }
 
 async function adicionaResponsaveisProjeto(usuarioRecebe) {
-    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
-    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+    let projeto = await conexao.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     if (usuarioRecebe.id == undefined) {
         let listaAux = (await conexao.procurar('/usuario'))
         listaAux.forEach(usuario => {
@@ -404,10 +404,10 @@ async function criaProjeto() {
     } else {
         const editaProjeto = editaProjetoStore()
         let projeto = await conexao.buscarUm(idProjeto, "/projeto")
-        let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+        let usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
         editaProjeto.editaProjeto(idProjeto, nomeProjeto.value, descricaoProjeto.value, listaEquipeEnviaBack, listaPropriedades.value
         , listaStatus.value, listaResponsaveisBack, dataFinalProjeto.value, projeto.tempoAtuacao, projeto.categoria,projeto.indexLista, projeto.comentarios, projeto.tarefas)
-        criaHistorico.criaHistoricoProjeto("Editou o Projeto", projeto, usuario)
+        criaHistorico.criaHistoricoProjeto("Editou o projeto", projeto, usuario)
         restauraCookies();
     }
 
@@ -422,8 +422,8 @@ function restauraCookies() {
 
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     const listaEquipes = await conexao.procurar('/equipe');
-    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
-    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+    let projeto = await conexao.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     let equipeVinculada;
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
@@ -476,8 +476,8 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
 }
 
 async function removeListaEquipeConvidadas(equipeRemover) {
-    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
-    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+    let projeto = await conexao.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     let listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada = listaEquipes.find((equipe) => equipe.nome == equipeRemover.nome);
     let indice = listaEquipesSelecionadas.value.findIndex((obj) => obj.nome === equipeVinculada.nome);
@@ -495,8 +495,8 @@ async function removeListaEquipeConvidadas(equipeRemover) {
 }
 
 async function removeResponsavel(responsavelRemover) {
-    let projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
-    let usuario = await api.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
+    let projeto = await conexao.buscarUm(VueCookies.get('IdProjetoAtual'),"/projeto")
+    let usuario = await conexao.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
     let listaUsuarios = await conexao.procurar('/usuario');
     responsaveisProjeto.value.forEach((objetoAtual) => {
         if (objetoAtual.username == responsavelRemover.username) {
