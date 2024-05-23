@@ -75,7 +75,9 @@ let opcaoEscolhida = ref("")
 function enviaOpcao(convidado) {
   instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
 }
+
 const opcoesSelect = [t('selectComponent.view'), t('selectComponent.edit')];
+
 
 const imagemIcon = {
   height: props.altDaImagemIcon,
