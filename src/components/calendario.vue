@@ -5,8 +5,7 @@
                 <div class="flex w-full">
                     <div class="w-[50%] h-full ml-[7%] flex flex-row items-center gap-4">
                         <button @click="setaEsquerda()" class="w-[5%]">
-                            <div
-                                class="w-[23px] h-[23px] rounded-full border-[1px] flex justify-center items-center">
+                            <div class="w-[23px] h-[23px] rounded-full border-[1px] flex justify-center items-center">
 
                                 <div class="setaEsquerda"></div>
 
@@ -19,8 +18,7 @@
                             format(new Date(data), "MMMM", { locale: ptBR }).slice(1) }}
                         </div>
                         <button @click="setaDireita()" class="w-[5%]">
-                            <div
-                                class="w-[23px] h-[23px] rounded-full border-[1px]  flex justify-center items-center">
+                            <div class="w-[23px] h-[23px] rounded-full border-[1px]  flex justify-center items-center">
                                 <div class="setaDireita"></div>
                             </div>
                         </button>
@@ -72,7 +70,8 @@
                         </div>
                     </div>
                     <div class="w-full h-[20%] flex justify-center items-center">
-                        <div class="w-[40%] h-[15%] bg-[var(--backgroundItemsClaros)] flex items-end" v-if="dia.temTres == true"></div>
+                        <div class="w-[40%] h-[15%] bg-[var(--backgroundItemsClaros)] flex items-end"
+                            v-if="dia.temTres == true"></div>
                     </div>
                 </div>
             </div>
@@ -111,9 +110,9 @@ onMounted(async () => {
 function ordenaTarefas() {
     calendario.value.forEach(dia => {
         dia.listaDeTarefas.sort((tarefa, tarefa2) => {
-          if (tarefa.tarefa.nome != null && tarefa2.tarefa.nome != null) {
-            return tarefa.tarefa.indice[0].indice - tarefa2.tarefa.indice[0].indice
-          }
+            if (tarefa.tarefa.nome != null && tarefa2.tarefa.nome != null) {
+                return tarefa.tarefa.indice[0].indice - tarefa2.tarefa.indice[0].indice
+            }
         })
     })
 }
@@ -217,24 +216,48 @@ async function verificaTarefasDoDia(dia) {
 function hover(dia) {
     if (dia != null) {
         if (dia.temTres) {
-            dia.style = {
-                height: "max-content",
-                width: "11.5%",
-                display: "flex",
-                overflow: "hidden",
-                flexDirection: "column",
-                gap: "8px",
-                position: "absolute",
-                paddingBottom: "1%",
-                backgroundColor: "var(--backgroundItems)",
-                borderBottomLeftRadius: "10%",
-                borderBottomRightRadius: "10%",
-                zIndex: "0",
-                boxShadow: "0px 6px 6px rgb(145, 145, 145)",
+            if (getDate(dia.dia) == getDate(Date.now()) && getMonth(dia.dia) == getMonth(Date.now()) && getYear(dia.dia) == getYear(Date.now())) {
+                border = "1px solid purple"
+                dia.style = {
+                    height: "max-content",
+                    width: "11.4%",
+                    display: "flex",
+                    overflow: "hidden",
+                    flexDirection: "column",
+                    gap: "8px",
+                    position: "absolute",
+                    paddingBottom: "1%",
+                    backgroundColor: "var(--backgroundItems)",
+                    borderBottomLeftRadius: "10%",
+                    borderBottomRightRadius: "10%",
+                    zIndex: "0",
+                    boxShadow: "0px 6px 6px rgb(145, 145, 145)",
+                    border: border,
+                    borderTop: "none"
+                }
+            } else {
+                dia.style = {
+                    height: "max-content",
+                    width: "11.5%",
+                    display: "flex",
+                    overflow: "hidden",
+                    flexDirection: "column",
+                    gap: "8px",
+                    position: "absolute",
+                    paddingBottom: "1%",
+                    backgroundColor: "var(--backgroundItems)",
+                    borderBottomLeftRadius: "10%",
+                    borderBottomRightRadius: "10%",
+                    zIndex: "0",
+                    boxShadow: "0px 6px 6px rgb(145, 145, 145)",
+                    border: border,
+                    borderTop: "none"
+                }
             }
             dia.temTres = false
         }
     }
+    border = "none"
 }
 
 
@@ -250,7 +273,7 @@ function setaDireita() {
 }
 async function trocaDiaEIndice(tarefa, dia, indice) {
     console.log(dia.listaDeTarefas)
-    tarefa.propriedade.valor.valor = format(new Date(dia.dia), "yyyy-MM-dd")+"T"+ new Date(tarefa.propriedade.valor.valor).toLocaleTimeString()
+    tarefa.propriedade.valor.valor = format(new Date(dia.dia), "yyyy-MM-dd") + "T" + new Date(tarefa.propriedade.valor.valor).toLocaleTimeString()
     let indiceDaTarefaAtual = dia.listaDeTarefas.indexOf(tarefa)
     dia.listaDeTarefas.splice(indiceDaTarefaAtual, 1)
     dia.listaDeTarefas.splice(indice, 0, tarefa)
@@ -272,7 +295,7 @@ function verificaQauntidadetarefa(dia) {
 }
 
 function onDragEnd(tarefas) {
-console.log(tarefas)
+    console.log(tarefas)
     let tarefaPut = {}
     tarefas.forEach(async (tarefaAux, index) => {
         let tarefa = tarefaAux.tarefa
@@ -403,8 +426,8 @@ console.log(tarefas)
     .setaEsquerda {
         width: 7px;
         height: 7px;
-        border-left: 2px solid ;
-        border-bottom: 2px solid ;
+        border-left: 2px solid;
+        border-bottom: 2px solid;
         border-radius: 10%;
         transform: rotate(45deg);
     }
@@ -412,8 +435,8 @@ console.log(tarefas)
     .setaDireita {
         width: 7px;
         height: 7px;
-        border-right: 2px solid ;
-        border-top: 2px solid ;
+        border-right: 2px solid;
+        border-top: 2px solid;
         border-radius: 10%;
         transform: rotate(45deg);
     }

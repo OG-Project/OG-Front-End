@@ -9,7 +9,7 @@
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/timeline')"
                     class="w-[100%] h-screen flex justify-center items-center">
-                    <timeLine></timeLine>
+                    <timelineMobile></timelineMobile>
                 </div> 
                 <div v-if="defineOpcao(route.path, '/projeto/kanban')"
                     class="w-full h-screen flex justify-start px-4 items-center overflow-x-auto" >
@@ -34,6 +34,8 @@ import { conexaoBD } from '../../stores/conexaoBD';
 import { useRoute } from 'vue-router';
 import { editaProjetoStore } from '../../stores/editaProjeto';
 import VueCookies from 'vue-cookies';
+import timelineMobile from '../../components/Mobile/timelineMobile.vue';
+
 let tempoAtuado;
 let horaEntrada;
 let listaDePropriedadesVisiveis = ref([])

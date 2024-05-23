@@ -11,8 +11,7 @@
         <template #item="{ element: tarefa, index }">
           <div class="flex flex-row truncate h-[6vh] bg-[var(--backgroundItemsClaros)] py-[1%] select-none"
             v-if="tarefa.nome != null" @click="trocaRota(tarefa)">
-
-            <div class="border-r-2 flex items-center justify-center w-[185px] truncate h-full">
+            <div :class="'border-r-2 flex items-center w-[185px] truncate h-full' + (tarefa.nome.length>20 ? 'justify-center' : tarefa.nome.length<20 ? 'justify-center' :'')  ">
               {{ tarefa.nome.charAt(0).toUpperCase() + tarefa.nome.slice(1) }}
             </div>
             <div class="border-r-2 flex items-center justify-start w-[185px] truncate  h-full"

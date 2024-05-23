@@ -49,15 +49,17 @@
             <div class="scrollable rotate-180">
                 <div class="rotate-180">
                     <div v-for="mensagem of chat.mensagens" class=" w-full flex justify-end">
-                        <div v-if="mensagem.criador.id != usuarioLogado.id"
-                            class="w-full pl-[2.5%] flex flex-col items-start">
+                        <div class="pl-[2.5%]" v-if="mensagem.criador.id != usuarioLogado.id">
                             <img class="imgDePerfil"
                             :src="'data:' + mensagem.criador.foto.tipo + ';base64,' + mensagem.criador.foto.dados" alt="">
-                            <div class="text-[70%]">
+                        </div>
+                        <div v-if="mensagem.criador.id != usuarioLogado.id"
+                            class="w-full pl-[0.5%] pt-[1%] flex flex-col items-start">
+                            <div class="text-[100%]">
                                 {{ mensagem.criador.username }}
                             </div>
                             <div
-                                class="max-w-[45%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-t-3xl rounded-r-3xl break-words">
+                                class="max-w-[45%] min-w-[5%] p-[1.5%] bg-[var(--backgroundItemsClaros)] rounded-b-3xl rounded-r-3xl break-words flex">
                                 <div>
                                     {{ mensagem.mensagem }}
                                 </div>
@@ -66,7 +68,7 @@
                         <div v-if="mensagem.criador.id == usuarioLogado.id"
                             class="w-full flex pr-[2.5%] pt-[2%] justify-end ">
                             <div
-                                class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-t-3xl rounded-l-3xl text-white break-words">
+                                class="max-w-[45%] p-[1.5%] bg-[var(--roxoEscuro)] rounded-b-3xl rounded-l-3xl text-white break-words">
                                 {{ mensagem.mensagem }}
                             </div>
                         </div>
@@ -120,6 +122,7 @@ onMounted(async () => {
 
 try {
     webSocket.esperaMensagem((retorno) => {
+        console.log(JSON.parse(retorno));
         webSocket.criaConexaoWebSocket()
         chat.value.mensagens.push(JSON.parse(retorno))
 
@@ -194,9 +197,7 @@ function defineSeEstaSelecionado() {
 
 async function mandaMensagem() {
     let mensagem = {
-        criador: {
-            id: usuarioLogado.value.id
-        },
+        criador:usuarioLogado.value,
         mensagem: corpoDaMensagem.value,
     }
     await api.cadastrar(mensagem, '/mensagem/' + chat.value.id).then((response) => {
