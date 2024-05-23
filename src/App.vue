@@ -177,11 +177,7 @@ import { onBeforeUpdate } from "vue";
       <KeyBoard @onChange="change" @onKeyPress="press"></KeyBoard>
     </div>
   </div>
-<<<<<<< HEAD
   <tutorial></tutorial>
-=======
-
->>>>>>> ae29beec2e60f5059711566a42699286c72cf406
   <TelaLoad></TelaLoad>
 </template>
 <style scoped></style>
