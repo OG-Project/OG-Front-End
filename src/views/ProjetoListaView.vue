@@ -27,6 +27,7 @@ import listaProjetos from '../components/listaProjetos.vue';
 import router from "@/router";
 import VueCookies from 'vue-cookies';
 const screenWidth = window.innerWidth;
+
 function enviaTelaCriaProjeto(){
 VueCookies.set("idAuxEquipe")
     router.push('/criaProjeto').then(() => {
@@ -36,7 +37,7 @@ VueCookies.set("idAuxEquipe")
 </script>
 <style scoped>
 .bordaTitulo{
-    @apply absolute z-50 border-transparent justify-center mt-16
+    @apply absolute z-40 border-transparent justify-center mt-16
     border-b-gray-300   
     border-b-4
     items-center

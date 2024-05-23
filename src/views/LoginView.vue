@@ -148,6 +148,7 @@ async function removeCookie() {
   await loginGoogle()
 }
 async function loginGoogle(){
+  VueCookies.set('idReloadHome', '0');
   window.location.href = "http://localhost:8082"
 }
 </script>

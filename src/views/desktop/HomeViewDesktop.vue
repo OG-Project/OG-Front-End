@@ -79,6 +79,19 @@ let tarefasFeitas = ref(0);
 let tarefasNaoFeitas = ref(0);
 let totalTarefas = ref(0);
 
+function reloadHome() {
+  const reload = VueCookies.get('idReloadHome');
+  if (reload == '0') {
+    console.log('reload');
+    VueCookies.set('idReloadHome', '1');
+    
+    setTimeout(() => {
+      window.location.reload();
+    }, 0.5); // 2000 ms = 2 seconds
+  }
+}
+
+reloadHome();
 
 async function verificaTarefasFeitas() {
   const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));
