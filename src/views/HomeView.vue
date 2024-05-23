@@ -13,6 +13,7 @@ import { ref, onMounted,watch } from 'vue'
 import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
 import router from '../router';
+import VueCookies from 'vue-cookies'
 import { conexaoBD } from "../stores/conexaoBD.js";
 import VueCookies from 'vue-cookies';
 
@@ -29,7 +30,6 @@ onMounted(() => {
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
-  console.log("entrou na home on mounted");
   colocaUsuarioId();
   reloadHome()
 })
@@ -48,9 +48,7 @@ function reloadHome() {
 
 
 function colocaUsuarioId(){
-  console.log("teste")
   banco.getCookie().then((res) =>{
-  console.log(res.id)
   VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
   buscaConfiguracaoesPadrao();
  })
