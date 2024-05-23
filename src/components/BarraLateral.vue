@@ -128,7 +128,6 @@ function redirecionamento(local) {
 }
 
 async function geraTutorial() {
-<<<<<<< HEAD
   console.log(usuario);
   if(usuario.value.configuracao.isTutorial){
     if(usuario.value.configuracao.ultimoPassoId!='step-1'
@@ -138,15 +137,6 @@ async function geraTutorial() {
         openClose()
     }else{
       // console.log(route.path);
-=======
-  if (usuario.value.configuracao.isTutorial) {
-    if (usuario.value.configuracao.ultimoPassoId != 'step-1'
-      && usuario.value.configuracao.ultimoPassoId != null) {
-      router.push(usuario.value.configuracao.rotaDoPasso)
-      tour.show(usuario.value.configuracao.ultimoPassoId, true)
-      openClose()
-    } else {
->>>>>>> ae29beec2e60f5059711566a42699286c72cf406
       tour.start()
       openClose()
     }

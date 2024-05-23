@@ -109,8 +109,7 @@
     "Corpo de Texto": "Corpo de Texto",
     "Cores": "Cores",
     "Modo Claro": "Modo Claro",
-    "Modo Escuro": "Modo Escuro",
-    "alerta":"Isso pode afetar sua experiência"
+    "Modo Escuro": "Modo Escuro"
   },
   "informacoes": {
     "Informações": "Informações",
@@ -120,8 +119,7 @@
     "Sobrenome": "Sobrenome",
     "Data de Nascimento": "Data de Nascimento",
     "Editar E-mail": "Editar Informações",
-    "Confirmar Edição": "Confirmar Edição",
-    "alerta":"Alterado com Sucesso"
+    "Confirmar Edição": "Confirmar Edição"
   },
   "privacidade": {
     "Privacidade": "Privacidade",

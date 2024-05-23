@@ -240,10 +240,15 @@ function tamanhoFontTitulo(tamanho) {
     else if (tamanho == 'Grande') {
         perfil.tamanhoTitulo = 7
     }
+    
     // VueCookies.set('fonteTituloTamanho',JSON.stringify(perfil.tamanhoTitulo))
     root.style.setProperty('--fonteTituloTamanho', perfil.tamanhoTitulo + "vh")
     usuario.value.configuracao.fonteTituloTamanho = perfil.tamanhoTitulo
     conexao.atualizar(usuario.value, '/usuario')
+    alterado.value=!alterado.value
+                setTimeout(() => {
+                        alterado.value=!alterado.value
+                }, 5000);
 
 }
 function tamanhoFontCorpo(tamanho) {
@@ -260,6 +265,10 @@ function tamanhoFontCorpo(tamanho) {
     root.style.setProperty('--fonteCorpoTamanho', perfil.tamanhoCorpo + "vh")
     usuario.value.configuracao.fonteCorpoTamanho = perfil.tamanhoCorpo
     conexao.atualizar(usuario.value, '/usuario')
+    alterado.value=!alterado.value
+                setTimeout(() => {
+                        alterado.value=!alterado.value
+                }, 5000);
 }
 
 
