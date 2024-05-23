@@ -42,11 +42,11 @@
                     <h1 :style="{ fontFamily: fonteTitulo }"
                         class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
                         {{ perfil.username }}
-                    </h1>
-                    <div class="flex items-center gap-4">
+                    </h1> 
+                </div>
+                <div class="flex items-center gap-4 pl-14 mb-6" v-if="VueCookies.get('IdUsuarioCookie') != usuario.id">
                         <iconChat @click="iniciarChat()" class="cursor-pointer"></iconChat>
                         <p>{{ $t('perfilInfo.inicieUmChatCom') }} {{ perfil.username }}</p>
-                    </div>
                 </div>
                 <div :style="{ fontFamily: fonteCorpo }" class="flex sm:flex-wrap justify-center gap-8">
                     <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
@@ -180,9 +180,11 @@ onMounted(async () => {
 });
 
 async function iniciarChat() {
+    let chat = {}
     conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/chat/pessoal/' + usuario.value.id).then((response) => {
-        if (response == "") {
-
+        chat = response
+        console.log(response);
+        if (chat == '') {
             conexao.buscarUm(VueCookies.get("IdUsuarioCookie"), '/usuario').then((response) => {
                 let chat = {
                     usuarios: [{
