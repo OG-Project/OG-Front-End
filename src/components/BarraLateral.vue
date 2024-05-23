@@ -112,6 +112,7 @@ function redirecionamento(local) {
   router.push(local).then(() => {
     openClose();
     if (local == '/login') {
+      banco.logOut();
       VueCookies.remove('IdUsuarioCookie');
       VueCookies.remove('IdTarefaCookies');
       VueCookies.remove('IdProjetoAtual');
