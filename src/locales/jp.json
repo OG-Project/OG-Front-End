@@ -109,7 +109,12 @@
     "Corpo de Texto": "本文",
     "Cores": "色",
     "Modo Claro": "ライトモード",
-    "Modo Escuro": "ダークモード"
+    "Modo Escuro": "ダークモード",
+    "normal": "ノーマル",
+    "pequeno": "小さい",
+    "grande": "大きい",
+    "mensagemAlert": "これがあなたの体験に影響を与える可能性があります"
+    
   },
   "informacoes": {
     "Informações": "情報",
@@ -119,7 +124,8 @@
     "Sobrenome": "姓",
     "Data de Nascimento": "誕生日",
     "Editar E-mail": "情報を編集する",
-    "Confirmar Edição": "編集を確認"
+    "Confirmar Edição": "編集を確認",
+    "alterado": "正常に変更されました"
   },
   "privacidade": {
     "Privacidade": "プライバシー",
@@ -138,7 +144,9 @@
     "contaConectadaGoogle": "接続されたアカウント。 あなたのアカウントはGoogleアカウントに接続されています。 ここでメールアドレスを変更すると、Googleアカウントとの接続が解除されます。",
     "alterarSenha": "パスワードを変更する",
     "alterarEmail": "メールアドレスを変更する",
-    "deletarConta": "アカウントを削除しますか？"
+    "deletarConta": "アカウントを削除しますか？",
+    "senha": "パスワードが変更されました",
+    "email": "メールが変更されました"
   },
   "paginaAdm": {
     "listaDeTarefas": "タスクリスト",

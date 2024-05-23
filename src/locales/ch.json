@@ -109,7 +109,11 @@
     "Corpo de Texto": "正文",
     "Cores": "颜色",
     "Modo Claro": "明亮模式",
-    "Modo Escuro": "暗黑模式"
+    "Modo Escuro": "暗黑模式",
+    "normal": "正常",
+    "pequeno": "小",
+    "grande": "大",
+    "mensagemAlert": "这可能会影响您的体验"
   },
   "informacoes": {
     "Informações": "信息",
@@ -119,7 +123,8 @@
     "Sobrenome": "姓",
     "Data de Nascimento": "出生日期",
     "Editar E-mail": "编辑信息",
-    "Confirmar Edição": "确认编辑"
+    "Confirmar Edição": "确认编辑",
+    "alterado": "成功更改"
   },
   "privacidade": {
     "Privacidade": "隐私",
@@ -138,7 +143,9 @@
     "contaConectadaGoogle": "连接的帐户。您的帐户已连接到Google帐户。在此更改电子邮件地址将断开与Google帐户的连接。",
     "alterarSenha": "更改密码",
     "alterarEmail": "更改电子邮件",
-    "deletarConta": "您是否要删除您的账户？"
+    "deletarConta": "您是否要删除您的账户？",
+    "senha": "密码已更改",
+    "email": "电子邮件已更改"
   },
   "paginaAdm": {
     "listaDeTarefas": "任务清单",

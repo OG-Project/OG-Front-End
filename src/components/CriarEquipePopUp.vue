@@ -290,7 +290,7 @@ function larguraInputConvidado() {
     } if (screenWidth > 1024 && screenWidth <= 1440) {
         return '33';
     } if (screenWidth > 1440 && screenWidth < 1920) {
-        return '10';
+        return '16';
     } else {
         return '16';
     }
