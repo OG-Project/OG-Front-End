@@ -284,11 +284,14 @@ function larguraInput() {
         return '25';
     } if (screenWidth > 768 && screenWidth <= 1024) {
         return '28';
-    } if (screenWidth > 1024 && screenWidth < 1920) {
+    } if (screenWidth > 1024 && screenWidth < 1440) {
         return '25';
-    } if (screenWidth > 1440 && screenWidth < 1920) {
+    } if (screenWidth > 1440 && screenWidth < 1620) {
         return '20';
-    } else {
+    }if(  screenWidth > 1620 && screenWidth <= 1920){
+        return '12';
+    }
+     else {
         return '13';
     }
 };

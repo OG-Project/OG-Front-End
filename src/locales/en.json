@@ -109,7 +109,11 @@
     "Corpo de Texto": "Body Text",
     "Cores": "Colors",
     "Modo Claro": "Light Mode",
-    "Modo Escuro": "Dark Mode"
+    "Modo Escuro": "Dark Mode",
+    "normal": "Normal",
+    "pequeno": "Small",
+    "grande": "Large",
+    "mensagemAlert": "This may affect your experience"
   },
   "informacoes": {
     "Informações": "Information",
@@ -119,7 +123,8 @@
     "Sobrenome": "Last Name",
     "Data de Nascimento": "Date of Birth",
     "Editar E-mail": "Edit Information",
-    "Confirmar Edição": "Confirm Edit"
+    "Confirmar Edição": "Confirm Edit",
+    "alterado": "Successfully Changed"
   },
   "privacidade": {
     "Privacidade": "Privacy",
@@ -138,7 +143,9 @@
     "contaConectadaGoogle": "Connected account. Your account is connected to a Google account. Changing the email address here will disconnect the Google account.",
     "alterarSenha": "Change Password",
     "alterarEmail": "Change Email",
-    "deletarConta": "Do you want to delete your Account?"
+    "deletarConta": "Do you want to delete your Account?",
+    "senha": "Password Changed",
+    "email": "Email Changed"
   },
   "paginaAdm": {
     "listaDeTarefas": "Task List",
