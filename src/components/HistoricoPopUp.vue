@@ -11,7 +11,7 @@
                    <userTodoPreto v-else class="imgPerfil"></userTodoPreto>
                     <div class="historico">
                        <h1 class="mensagem 2xl:mr-14 xl:mr-14  w-[50%] xl:w-[80%] lg:w-[90%] md:w-[90%] ">{{ traducao(historico) }}</h1>
-                       <h1 class="criador flex items-center 2xl:mr-[0vw] xl:mr-[-10vw] lg:mr-[-18vw] md:mr-[-20vw] 2xl:w-[0%] xl:w-[0%] lg:w-[0vw] md:w-[0vw]">{{ historico.criador.username}}</h1>
+                       <h1 class="criador flex items-center 2xl:mr-[0vw] xl:mr-[-10vw] lg:mr-[-18vw] md:mr-[-20vw] 2xl:w-[0%] xl:w-[0%] lg:w-[0vw] md:w-[0vw]">{{ truncarNome(historico.criador.username, larguraTruncar()) }}</h1>
                        <h1 class="data w-[10%]">{{ formatarData( historico.dataDeEnvio) }}</h1>
                     </div>
                 </div>
@@ -27,10 +27,37 @@ import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
+const screenWidth = window.innerWidth;
 onMounted (async () =>{
     buscarHistorico();
 
 });
+
+const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
+
+function larguraTruncar(){
+    if (screenWidth <= 620) {
+        return '4'
+    }
+    if(screenWidth <= 750){
+        return '4'
+    }
+    if (screenWidth <= 768) {
+        return '4';
+    } else if (screenWidth > 768 && screenWidth <= 1024) {
+        return '4';
+    } else if (screenWidth > 1024 && screenWidth < 1920) {
+        return '6';
+    } else if (screenWidth > 1920 && screenWidth < 2560) {
+        return '8';
+    } else if (screenWidth == 1920) {
+        return '8';
+    }
+    else if (screenWidth >= 2560) {
+        return '8';
+    }
+
+}
 
 const props = defineProps({
     textoRequisicao: String,

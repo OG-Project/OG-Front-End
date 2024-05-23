@@ -45,11 +45,7 @@
                                 </div>
                             </div>
                             <div v-if="isLogadoGoogle" class="text-2xl w-[470px]">
-                                Login com a conta do Google ativado
-                                Conta conectada
-                                Sua conta está conectada a uma conta do Google.
-                                Alterar o endereço de e-mail aqui vai
-                                desconectar a conta do Google.
+                                {{ $t('seguranca.loginGoogleAtivado') + ", " + $t('seguranca.contaConectadaGoogle')  }} 
                             </div>
                         </div>
                         <div v-if="!isLogadoGoogle" class="w-[45%] flex md:justify-end">
@@ -70,8 +66,8 @@
         </div>
 
     </div>
-    <alertTela v-if="alteradoSenha" :key="alteradoSenha"  mensagem="Senha Alterada" cor="#29CD00" ></alertTela>
-    <alertTela v-if="alteradoEmail" :key="alteradoEmail"  mensagem="Email Alterado" cor="#29CD00" ></alertTela>
+    <alertTela v-if="alteradoSenha" :key="alteradoSenha"  :mensagem="t('seguranca.senha')" cor="#29CD00" ></alertTela>
+    <alertTela v-if="alteradoEmail" :key="alteradoEmail"  :mensagem="t('seguranca.email')" cor="#29CD00" ></alertTela>
     <alterarSenha v-if="popUpSenha && screenWidth <= 1024" ></alterarSenha>
     <alterarEmail v-if="popUpEmail  && screenWidth <= 1024"></alterarEmail>
     <ConfirmaPopUp v-if="popUpDeletar  && screenWidth <= 1024"></ConfirmaPopUp>
@@ -100,6 +96,7 @@ let { popUpSenha, popUpEmail,popUpDeletar,alteradoEmail,alteradoSenha } = storeT
 import { useI18n } from 'vue-i18n';
 import { onUpdated } from 'vue';
 const screenWidth = ref(window.innerWidth)
+const { t } = useI18n();
 
 watch(() => window.innerWidth, () => {
     screenWidth.value = window.innerWidth

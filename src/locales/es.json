@@ -109,7 +109,11 @@
     "Corpo de Texto": "Cuerpo del Texto",
     "Cores": "Colores",
     "Modo Claro": "Modo Claro",
-    "Modo Escuro": "Modo Oscuro"
+    "Modo Escuro": "Modo Oscuro",
+    "normal": "Normal",
+    "pequeno": "Pequeño",
+    "grande": "Grande",
+    "mensagemAlert": "Esto puede afectar su experiencia"
   },
   "informacoes": {
     "Informações": "Información",
@@ -119,7 +123,8 @@
     "Sobrenome": "Apellido",
     "Data de Nascimento": "Fecha de Nacimiento",
     "Editar E-mail": " Editar Información",
-    "Confirmar Edição": "Confirmar Edición"
+    "Confirmar Edição": "Confirmar Edición",
+    "alterado": "Cambiado con Éxito"
   },
   "privacidade": {
     "Privacidade": "Privacidad",
@@ -138,7 +143,9 @@
     "contaConectadaGoogle": "Cuenta conectada. Su cuenta está conectada a una cuenta de Google. Cambiar la dirección de correo electrónico aquí desconectará la cuenta de Google.",
     "alterarSenha": "Cambiar Contraseña",
     "alterarEmail": "Cambiar Correo Electrónico",
-    "deletarConta": "¿Desea eliminar su Cuenta?"
+    "deletarConta": "¿Desea eliminar su Cuenta?",
+    "senha": "Contraseña Cambiada",
+    "email": "Correo Electrónico Cambiado"
   },
   "paginaAdm": {
     "listaDeTarefas": "Lista de Tareas",

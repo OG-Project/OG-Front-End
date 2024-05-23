@@ -110,7 +110,7 @@
 
         </div>
     </div>
-    <alertTela v-if="alterado" mensagem="Isso pode afetar sua experiência" :key="alterado" :largura="screenWidth.value>=1024?  '15vw':'22vw'"cor="#8E00FF" /> 
+    <alertTela v-if="alterado" :mensagem="t('aparencia.mensagemAlert')" :key="alterado" :largura="screenWidth.value>=1024?  '15vw':'22vw'"cor="#8E00FF" /> 
 </template>
 
 <script setup>
@@ -127,6 +127,10 @@ import CheckBox from './checkBox.vue';
 import { conexaoBD } from '../stores/conexaoBD';
 import router from '../router';
 import alertTela from './alertTela.vue';
+import { useI18n } from 'vue-i18n';
+
+
+const { t } = useI18n();
 const perfil = perfilStore()
 const conexao = conexaoBD()
 
@@ -166,8 +170,8 @@ let tamanhoTitulos = ref([])
 let isDark=ref(false)
 let alterado=ref(false)
 
-tamanhoTitulos.value = ['Pequeno', 'Normal', 'Grande']
-tamanhoCorpos.value = ['Pequeno', 'Normal', 'Grande']
+tamanhoTitulos.value = [t('aparencia.pequeno'), t('aparencia.normal'), t('aparencia.grande')]
+tamanhoCorpos.value = [t('aparencia.pequeno'), t('aparencia.normal'), t('aparencia.grande')]
 fontsCorpo.value = ['Poppins', 'Source Sans 3', 'Cormorant Garamond', 'Merriweather', 'Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans']
 fontsTitulo.value = ['Poppins', 'Source Sans 3', 'Cormorant Garamond', 'Merriweather', 'Proza Libre', 'Quattrocento Sans', 'Quattrocento', 'work Sans'];
 function gerarBooleano(id){
@@ -231,13 +235,13 @@ function fontTituloEscolhida(f) {
     // VueCookies.set('fonteTitulo',JSON.stringify(perfil.fonteTitulo))
 }
 function tamanhoFontTitulo(tamanho) {
-    if (tamanho == 'Pequeno') {
+    if (tamanho == t('aparencia.pequeno')) {
         perfil.tamanhoTitulo = 5
     }
-    else if (tamanho == 'Normal') {
+    else if (tamanho == t('aparencia.normal')) {
         perfil.tamanhoTitulo = 6
     }
-    else if (tamanho == 'Grande') {
+    else if (tamanho == t('aparencia.grande')) {
         perfil.tamanhoTitulo = 7
     }
     // VueCookies.set('fonteTituloTamanho',JSON.stringify(perfil.tamanhoTitulo))
@@ -247,13 +251,13 @@ function tamanhoFontTitulo(tamanho) {
 
 }
 function tamanhoFontCorpo(tamanho) {
-    if (tamanho == 'Pequeno') {
+    if (tamanho == t('aparencia.pequeno')) {
         perfil.tamanhoCorpo = 1.5
     }
-    else if (tamanho == 'Normal') {
+    else if (tamanho == t('aparencia.normal')) {
         perfil.tamanhoCorpo = 2
     }
-    else if (tamanho == 'Grande') {
+    else if (tamanho == t('aparencia.grande')) {
         perfil.tamanhoCorpo = 2.5
     }
     // VueCookies.set('fonteCorpoTamanho',JSON.stringify(perfil.tamanhoCorpo))

@@ -13,8 +13,8 @@
                     xl:h-[85%]" />
             </div>
             <div :class="{ overflowScroll: temMaisDeQuatro(equipes) }" class="scroll w-[80%] h-[45%] py-2">
-                <div class="flex flex-col items-center gap-9">
-                    <p>{{ $t('perfilInfo.equipesDe') }} {{ perfil.username }}</p>
+                <div class="flex flex-col items-center gap-9 ">
+                    <p class="break-words w-[100%]"> {{ $t('perfilInfo.equipesDe')+ " :" }} {{ perfil.username }}</p>
                     <div v-for="i in equipes" v-if="isVisualizaEquipes"
                         class="cardEquipe shadow-md flex sm:flex-wrap sm:justify-center 2xl:justify-start py-[5%] gap-4 items-center w-[80%] h-[100%] bg-[var(--backgroundItemsClaros)]">
                         <img v-if="i.equipe.foto != null" class="w-[2vw] h-[50%] 2xl:ml-6 "
@@ -40,12 +40,12 @@
             <div class="flex flex-col justify-around" v-if="isVisualizaPerfil == true">
                 <div class="flex items-center">
                     <h1 :style="{ fontFamily: fonteTitulo }"
-                        class="m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
+                        class="truncate m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
                         {{ perfil.username }}
                     </h1>
-                    <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-4 truncate">
                         <iconChat @click="iniciarChat()" class="cursor-pointer"></iconChat>
-                        <p>{{ $t('perfilInfo.inicieUmChatCom') }} {{ perfil.username }}</p>
+                        <p class="truncate">{{ $t('perfilInfo.inicieUmChatCom') }} {{ perfil.username }}</p>
                     </div>
                 </div>
                 <div :style="{ fontFamily: fonteCorpo }" class="flex sm:flex-wrap justify-center gap-8">
