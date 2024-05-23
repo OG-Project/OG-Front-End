@@ -106,6 +106,7 @@ let alinhamento = ref(43);
 const screenWidth = window.innerWidth;
 
 onMounted(async () => {
+    console.log(props.responsaveisIds)
     const nomesResponsaveis = await buscaResponsaveis(props.responsaveisIds);
     responsaveis.value = nomesResponsaveis.join(', ');
     
