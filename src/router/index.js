@@ -206,6 +206,14 @@ const router = createRouter({
         requiresAuth:true
       }
     },
+    {
+      path: '/landingPage',
+      name: 'LandingPage',
+      component: () => import('../views/LandingPageView.vue'),
+      meta:{
+        requiresAuth:false
+      }
+    }
     // {
     //   path: '/404',
     //   name: 'notFound.index',
@@ -225,7 +233,7 @@ router.beforeEach(async (to)=>{
 
   console.log(to.fullPath);
   console.log(VueCookies.get('JWT'));
-  if(VueCookies.get('JWT')==null && to.path!='/login'){
+  if(VueCookies.get('JWT')==null && to.path!='/login' && to.path!='/landingPage'){
    return {path:'/login'}
   } 
   else if(VueCookies.get('JWT')!=null && to.path=='/login' ){

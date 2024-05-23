@@ -28,26 +28,26 @@
             </div>
         </div>
         <div class="w-full h-[80%] flex flex-col items-center scroll-auto overflow-x-auto">
-            <div class="w-[85%] gap-[2.5%]  flex row justify-between ">
-                <div class="w-[14%] flex justify-start">
+            <div class="w-[98%] gap-[5%] flex row justify-between ">
+                <div class="w-[14.25%] flex justify-start">
                     <h1>Domingo</h1>
                 </div>
-                <div class="w-[14%] flex justify-start">
+                <div class="w-[14.25%] flex justify-start">
                     <h1>Segunda</h1>
                 </div>
-                <div class="w-[14%] flex justify-start">
+                <div class="w-[14.25%] flex justify-start">
                     <h1>Terça</h1>
                 </div>
-                <div class="w-[14%] flex justify-start">
+                <div class="w-[14.25%] flex justify-start">
                     <h1>Quarta</h1>
                 </div>
-                <div class="w-[14%] flex justify-start">
+                <div class="w-[14.25%] flex justify-start">
                     <h1>Quinta</h1>
                 </div>
-                <div class="w-[14%] flex justify-start">
+                <div class="w-[14.25%] flex justify-start">
                     <h1>Sexta</h1>
                 </div>
-                <div class="w-[14%] flex justify-start">
+                <div class="w-[14.25%] flex justify-start">
                     <h1>Sábado</h1>
                 </div>
             </div>

@@ -46,9 +46,9 @@ async function fazerLogin() {
   usuarioSecurity.username = usuarioLogin.value
   usuarioSecurity.password = senhaUsuarioLogin.value
   let error;
+  
   await banco.login(usuarioSecurity).catch(e => {
     alert("Login invalido")
-    
     error = e
   })
   console.log(error);
@@ -226,14 +226,14 @@ function loginGoogle() {
               <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
             </button>
           </div>
-          <Botao :funcaoClick="fazerLogin" preset="PadraoRoxo" texto="Acessar" tamanhoPadrao="grande"></Botao>
+          <Botao :funcaoClick="fazerLogin" preset="PadraoRoxo" texto="Acessar" tamanhoPadrao="mobilemedio"></Botao>
 
-          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Criar Conta" tamanhoPadrao="medio"></Botao>
+          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco"  texto="Criar Conta" tamanhoPadrao="mobilemedio"></Botao>
           <div class="flex items-center justify-center w-[70%]">
             <hr style="width: 40%; text-align: left; margin-left: 0" />
             <hr style="width: 40%; text-align: left; margin-left: 0" />
           </div>
-          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
+          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" tamanhoPadrao="mobilepequeno" ladoDoIcon="row-reverse"
             :funcaoClick="loginGoogle"></Botao>
         </div>
         <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
@@ -258,8 +258,8 @@ function loginGoogle() {
               <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
             </button>
           </div>
-          <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="grande"></Botao>
-          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="medio"></Botao>
+          <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="mobilemedio"></Botao>
+          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="mobilepequeno"></Botao>
         </div>
     </div>
   </div>

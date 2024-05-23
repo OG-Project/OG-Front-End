@@ -264,5 +264,12 @@
     "oUsuarioPossuiOPerfilPrivado": "O usuário possui o perfil privado",
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "As equipes do usuário são privadas"
+  },
+  "landingPage":{
+    "organizacaoAoSeuAlcance": "Organização ao seu alcance",
+    "facilGerenciar": "Descubra como é fácil gerenciar suas tarefas. Comece hoje!",
+    "comeceAgora": "Comece agora",
+    "vidaTarefa": "Nossa vida é baseada em tarefas. Seja no trabalho, em casa ou na escola, sempre temos algo a fazer, a OG veio para facilitar a sua vida. Com uma organização simples e intuitiva, você pode gerenciar suas tarefas de forma eficiente e sem complicações.",
+    "simplificar": "Simplificar sua rotina nunca foi tão fácil. Com o OG, você tem um sistema de gerenciamento de tarefas projetado para ser direto, intuitivo e sem complicações. Organize, priorize e conclua suas tarefas com facilidade."
   }
 }
