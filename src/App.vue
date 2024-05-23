@@ -46,15 +46,14 @@ let usuario = ref()
 let configuracao = ref()
 
 onMounted(async () => {
+  VerificaPrazoDoProjeto()
   usuario.value =
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
   
-  console.log(usuario.value);
   let root = document.documentElement.style
   configuracao.value = usuario.value.configuracao
-  console.log(configuracao.value);
   perfil.isVlibras = configuracao.value.isLibras
   perfil.isTecladoVirtual = configuracao.value.isTecladoVirtual
   perfil.isVoiceMaker = configuracao.value.isDigitarVoz
@@ -65,7 +64,6 @@ onMounted(async () => {
   root.setProperty('--fonteTitulo', configuracao.value.fonteTitulo)
   root.setProperty('--fonteTituloTamanho', configuracao.value.fonteTituloTamanho + 'vh')
   root.setProperty('--fonteCorpoTamanho', configuracao.value.fonteCorpoTamanho + 'vh')
-  console.log(configuracao.value.isDark);
   if (configuracao.value.isDark) {
     root.setProperty('--backgroundPuro', '#0F0F0F')
     root.setProperty('--backgroundItems', '#222222')
@@ -79,22 +77,17 @@ onBeforeUpdate(async()=>{
     await banco.buscarUm(
       JSON.parse(
         VueCookies.get('IdUsuarioCookie')), '/usuario')
-        console.log(usuario.value);
 })
 
 onUpdated(()=>{
 
   if(route.path!='/login' ){
-   console.log(usuario.value.configuracao.isTutorial);
-   console.log(usuario.value.configuracao.rotaDoPasso);
     if(usuario.value.configuracao.isTutorial){
       if(usuario.value.configuracao.ultimoPassoId!='step-1'
         && usuario.value.configuracao.ultimoPassoId!=null){
-          console.log(tour.getById(usuario.value.configuracao.ultimoPassoId));
           router.push(usuario.value.configuracao.rotaDoPasso)
           tour.show(usuario.value.configuracao.ultimoPassoId,true)
       }else{
-        console.log(route.path);
         tour.start()
       }
     }
@@ -163,8 +156,8 @@ function enviaParaWebSocket(projetoAux, dias) {
       projeto: projetoAux
     }
   }
-
-  webSocket.enviaMensagemWebSocket(JSON.stringify(teste))
+  console.log(teste)
+  criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 const screenWidth = ref(window.innerWidth)
