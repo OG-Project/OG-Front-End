@@ -113,6 +113,12 @@ function redirecionamento(local) {
         VueCookies.remove('IdTarefaCookies');
         VueCookies.remove('IdProjetoAtual');
         VueCookies.remove('equipeSelecionada');
+        VueCookies.remove('equipeEditada')
+        VueCookies.remove("idAuxEquipe")
+        VueCookies.remove("idReloadProjeto")
+        VueCookies.remove('propriedadeCookie')
+        VueCookies.remove("projetoCookie")
+        VueCookies.remove('statusCookie')
         window.location.reload();
       });
 
