@@ -13,7 +13,9 @@ import { ref, onMounted,watch } from 'vue'
 import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
 import router from '../router';
+import VueCookies from 'vue-cookies'
 import { conexaoBD } from "../stores/conexaoBD.js";
+import VueCookies from 'vue-cookies';
 
 const banco = conexaoBD();
 // https://dontpad.com/02-05-2024gks
@@ -28,14 +30,25 @@ onMounted(() => {
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
-  console.log("entrou na home on mounted");
   colocaUsuarioId();
+  reloadHome()
 })
 
+function reloadHome() {
+  const reload = VueCookies.get('idReloadHome');
+  if (reload == '0') {
+    console.log('reload');
+    VueCookies.set('idReloadHome', '1');
+    
+    setTimeout(() => {
+      window.location.reload();
+    }, 0.5); // 2000 ms = 2 seconds
+  }
+}
+
+
 function colocaUsuarioId(){
-  console.log("teste")
   banco.getCookie().then((res) =>{
-  console.log(res.id)
   VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
   buscaConfiguracaoesPadrao();
  })

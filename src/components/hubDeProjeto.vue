@@ -130,23 +130,24 @@ let textoRequisicao = ref('');
 
 async function abrePopUp(objeto, tipo) {
         number.value = objeto;
-        console.log(number.value.id)
         textoRequisicao.value = tipo;
         funcaoAbrePopUp.value = true;
         funcaoPopUp.variavelModal = true;
-        console.log(textoRequisicao.value)
         
 }
 
 onMounted(async () => {
+    let visualizacaoAux = ref({})
     projeto.value = await api.buscarUm(projetoId, '/projeto')
-    console.log(projeto.value)
-    visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista')
+    console.log(listaPropriedadeVisiveis.value)
+    visualizacao.value = await api.buscarUm(projetoId, '/visualizacaoEmLista').then((response)=>{
+        visualizacaoAux.value = response
+    })
+    visualizacao.value = visualizacaoAux.value
     if (visualizacao.value.propriedadeVisiveis != null) {
         listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
     }
     verificaSeEResponsavel()
-    console.log(visualizacao.value)
     verificaSeEResponsavel()
     definePorcentagem()
     styleBotao()
@@ -155,7 +156,6 @@ onMounted(async () => {
 async function verificaSeEResponsavel() {
     let usuario = VueCookies.get('IdUsuarioCookie')
     let responsaveis = projeto.value.responsaveis
-    console.log(responsaveis)
     if (responsaveis != null) {
         for (const responsavel of responsaveis) {
             if (responsavel.idResponsavel == usuario) {
@@ -197,8 +197,14 @@ function styleBotao() {
 
 function atualizaVisualizacao() {
     setTimeout(() => {
+    console.log(listaPropriedadeVisiveis.value)
+    console.log( visualizacao.value)
+    if( listaPropriedadeVisiveis.value!=''){
         visualizacao.value.propriedadeVisiveis = listaPropriedadeVisiveis.value
-        api.atualizar(visualizacao.value, '/visualizacaoEmLista')
+        api.atualizar(visualizacao.value, '/visualizacaoEmLista').then((response) => {
+            console.log(response)
+        })
+    }
     }, 1000)
 }
 

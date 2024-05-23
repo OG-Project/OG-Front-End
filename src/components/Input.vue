@@ -58,7 +58,7 @@
                 @focus="$emit('clickInput',perfil.el=$event.target)"
                 @input="$emit('updateModelValue', $event.target.value)" 
                 class="peer" 
-                placeholder=" "  > 
+                placeholder=""  > 
                 <div class="flex items-center justify-center">
                     <svgIconMic 
                     @click="mic" 

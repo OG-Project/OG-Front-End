@@ -10,7 +10,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     return {
       api: axios.get("http://localhost:8082/usuario", { withCredentials: true }),
       loading: true,
-      url:"http://localhost:8082"
+      url:"http://localhost:8082",
     }
   },
   actions: {
@@ -20,11 +20,19 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.get(this.url + textoRequisicao, { withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
-        // console.log('Loading:', this.loading);
       }
 
     },
 
+    logOut(){
+      this.loading = true;
+      try {
+        return axios.post(this.url + '/logOut',"", { withCredentials: true }).then(response => response.data)
+      } finally {
+        this.loading = false;
+        // console.log('Loading:', this.loading);
+      }
+    },
     getCookie() {
       // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
       // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
@@ -33,7 +41,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.get(this.url+"/cookie" , { withCredentials: true }).then(response =>  {return response.data})
       } finally {
         this.loading = false;
-        console.log('Loading:', this.loading);
       }
     },
     login(usuarioLogin) {
@@ -43,7 +50,6 @@ export const conexaoBD = defineStore('conexaoBD', {
           alert(response.data.value)
           VueCookies.set("JWT", response.data.value)
         }).catch((error) => {
-          console.log(error)
         })
       } finally {
         this.loading = false;
@@ -66,10 +72,9 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async atualizar(objeto, textoRequisicao) {
-      console.log(objeto);
       this.loading = true;
       try {
-
+        
         return axios.put(this.url + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
 
       } finally {
@@ -79,10 +84,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async trocaSenha(id, senhaNova) {
       this.loading = true;
       try {
-        console.log(senhaNova);
-        console.log(id);
         return axios.patch('http://localhost:8082/usuario/senha/' + id, senhaNova, { withCredentials: true }).then(response =>{
-          console.log(response) 
         } )
       }finally {
         this.loading = false;
@@ -273,7 +275,6 @@ export const conexaoBD = defineStore('conexaoBD', {
         // Crie um FormData e adicione a imagem a ele
         const formData = new FormData();
         formData.append('foto', foto);
-        console.log(formData.get("foto"))
         // Faça a requisição PATCH para enviar a imagem
         const response = await axios.patch(this.url + `/usuario/${idUsuario}`, formData, {
           headers: {

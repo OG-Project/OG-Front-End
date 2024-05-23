@@ -73,6 +73,20 @@ async function pegaUsuario() {
     return usuario;
 }
 
+function reloadHome() {
+  const reload = VueCookies.get('idReloadHome');
+  if (reload == '0') {
+    console.log('reload');
+    VueCookies.set('idReloadHome', '1');
+    
+    setTimeout(() => {
+      window.location.reload();
+    }, 0.5); // 2000 ms = 2 seconds
+  }
+}
+
+reloadHome();
+
 async function autenticarUsuario(id) {
     let usuarios = banco.procurar("/usuario");
     let listaUsuarios = await usuarios;

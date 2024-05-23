@@ -23,7 +23,7 @@
             class="nome-convidado w-[10vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1 truncate ">
             {{ convidado.username == null ? convidado.nome : convidado.username }}</h2>
           <template v-if="listaConvidados.length > 0">
-            <sair class="imgIcon" @click="$emit('foiClicado', convidado)"></sair>
+            <sair class="imgIcon" @click="$emit('foiClicado', convidado),removerUsuarioALista(convidado)"></sair>
           </template>
 
           <!-- Renderiza o SelectPadrao apenas se houver usuários convidados -->
@@ -81,6 +81,14 @@ const opcoesSelect = [t('selectComponent.view'), t('selectComponent.edit')];
 
 const imagemIcon = {
   height: props.altDaImagemIcon,
+}
+
+function removerUsuarioALista(convidado) {
+    if(convidado.username==null){
+      api.buscarUm(convidado.id, '/conviteEquipe').then((response) => {
+        api.deletarEquipe(notificacao.id, '/notificacao')
+      })
+    }
 }
 
 const removerConvidado = (convidado) => {

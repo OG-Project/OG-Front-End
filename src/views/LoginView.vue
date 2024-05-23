@@ -18,8 +18,10 @@ import { ref } from "vue";
 import Logo from "../imagemVetores/logo.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
+import { criaNotificacao } from "../stores/criaNotificacao";
 
 const router = useRouter();
+const criaNotificacaoStore = criaNotificacao()
 
 let conteudoFormulario = {
   gap: "4vh",
@@ -47,19 +49,16 @@ async function fazerLogin() {
   usuarioSecurity.password = senhaUsuarioLogin.value
   let error;
   await banco.login(usuarioSecurity).catch(e => {
-    alert("Login invalido")
-    
     error = e
   })
-  console.log(error);
   if (error != 'undefined') {
     // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
     // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
     banco.getCookie().then((usuario) => {
-      console.log("entrou aqui");
       usuarioLogin.value = "";
       senhaUsuarioLogin.value = "";
       VueCookies.set("IdUsuarioCookie", usuario.id, 100000000000)
+      VerificaPrazoDoProjeto()
       router.push('/home').then(() => {
         window.location.reload()
       })
@@ -67,9 +66,46 @@ async function fazerLogin() {
     })
 
   }else{
-    console.log("aaaaa");
     usuarioOuSenhaInvalida.value = true
   }
+}
+
+
+function VerificaPrazoDoProjeto() {
+  banco.procurar("/projeto").then((projetos) => {
+    let dataAtual = new Date();
+    let dias = 0;
+    for (let i = 0; i < projetos.length; i++) {
+      let dataProjeto = new Date(projetos[i].dataFinal);
+      let diferenca = dataProjeto.getTime() - dataAtual.getTime();
+      dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
+      if (dias < 7 && projetos[i].dataFinal != null && dias >= 1 ) {
+        enviaParaWebSocket(projetos[i], dias)
+      }
+    }
+  });
+}
+
+function enviaParaWebSocket(projetoAux, dias) {
+  let usuarioLogadoId = VueCookies.get("IdUsuarioCookie");
+  let teste = {
+    equipes: [
+      {
+        equipe: {
+          membros: [
+            {
+              id: usuarioLogadoId
+            }
+          ]
+        }
+      }
+    ],
+    notificao: {
+      mensagem: "Restam " + dias + " dias para o fim do projeto",
+      projeto: projetoAux
+    }
+  }
+  criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 function trocaDeTela() {
@@ -148,6 +184,7 @@ async function removeCookie() {
   await loginGoogle()
 }
 async function loginGoogle(){
+  VueCookies.set('idReloadHome', '0');
   window.location.href = "http://localhost:8082"
 }
 </script>
@@ -230,14 +267,14 @@ async function loginGoogle(){
               <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
             </button>
           </div>
-          <Botao :funcaoClick="fazerLogin" preset="PadraoRoxo" texto="Acessar" tamanhoPadrao="grande"></Botao>
+          <Botao :funcaoClick="fazerLogin" preset="PadraoRoxo" texto="Acessar" tamanhoPadrao="mobilemedio"></Botao>
 
-          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Criar Conta" tamanhoPadrao="medio"></Botao>
+          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco"  texto="Criar Conta" tamanhoPadrao="mobilemedio"></Botao>
           <div class="flex items-center justify-center w-[70%]">
             <hr style="width: 40%; text-align: left; margin-left: 0" />
             <hr style="width: 40%; text-align: left; margin-left: 0" />
           </div>
-          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" ladoDoIcon="row-reverse"
+          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" tamanhoPadrao="mobilepequeno" ladoDoIcon="row-reverse"
             :funcaoClick="loginGoogle"></Botao>
         </div>
         <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
@@ -262,8 +299,8 @@ async function loginGoogle(){
               <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
             </button>
           </div>
-          <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="grande"></Botao>
-          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="medio"></Botao>
+          <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="mobilemedio"></Botao>
+          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="mobilepequeno"></Botao>
         </div>
     </div>
   </div>
