@@ -259,7 +259,20 @@
     "naoHaTarefas": "タスクはありません",
     "tarefasAtribuidas": "割り当てられたタスク",
     "informacoes": "情報",
-    "dataInicial": "開始日"
+    "dataInicial": "開始日",
+    "edita": "プロジェクトを編集",
+    "propriedades": "プロパティ",
+    "status": "ステータス",
+    "buscar": "検索",
+    "texto": "テキスト",
+    "todos": "すべて",
+    "numero": "番号",
+    "data": "日付",
+    "nova": "新しい",
+    "cria": "プロジェクトを作成",
+    "tipo": "タイプ",
+    "nomePropriedade": "プロパティ名",
+    "nomeStatus": "ステータス名"
   },
   "perfilInfo": {
     "nome": "名前",
@@ -271,5 +284,21 @@
     "oUsuarioPossuiOPerfilPrivado": "ユーザーはプライベートプロフィールを持っています",
     "username": "ユーザー名",
     "asEquipesDoUsuarioSaoPrivadas": "ユーザーのチームはプライベートです"
+  },
+  "hubProjeto": {
+    "progresso": "進行",
+    "tarefa": "タスク",
+    "kanban": "カンバン",
+    "lista": "リスト",
+    "linha": "タイムライン",
+    "calendario": "カレンダー",
+    "propriedades": "表示プロパティ",
+    "novo": "新しい"
+  },
+  "lista": {
+    "naoTem": "値がありません",
+    "naoHa": "タスクはありません",
+    "nome": "名前",
+    "descricao": "説明"
   }
 }

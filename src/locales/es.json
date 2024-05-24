@@ -258,7 +258,20 @@
     "naoHaTarefas": "No hay tareas",
     "tarefasAtribuidas": "Tareas Asignadas",
     "informaciones": "Información",
-    "dataInicial": "Fecha de Inicio"
+    "dataInicial": "Fecha de Inicio",
+      "edita": "Editar Proyecto",
+      "propriedades": "Propiedades",
+      "status": "Estado",
+      "buscar": "Buscar por",
+      "texto": "Texto",
+      "todos": "Todos",
+      "numero": "Número",
+      "data": "Fecha",
+      "nova": "nueva",
+      "cria": "Crear Proyecto",
+      "tipo": "Tipo",
+      "nomePropriedade": "Nombre de Propiedad",
+      "nomeStatus": "Nombre de Estado"
   },
   "perfilInfo": {
     "nome": "Nombre",
@@ -270,5 +283,21 @@
     "oUsuarioPossuiOPerfilPrivado": "El usuario tiene el perfil privado",
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "Los equipos del usuario son privados"
-  }
+  },
+  "hubProjeto": {
+    "progresso": "Progreso",
+    "tarefa": "Tarea",
+    "kanban": "Kanban",
+    "lista": "Lista",
+    "linha": "Línea de Tiempo",
+    "calendario": "Calendario",
+    "propriedades": "Propiedades Visibles",
+    "novo": "Nuevo"
+  },
+  "lista": {
+    "naoTem": "Sin Valor",
+    "naoHa": "No hay Tareas",
+    "nome": "Nombre",
+    "descricao": "Descripción"
+  } 
 }

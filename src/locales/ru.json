@@ -258,7 +258,20 @@
     "naoHaTarefas": "Нет задач",
     "tarefasAtribuidas": "Назначенные задачи",
     "informacoes": "Информация",
-    "dataInicial": "Дата начала"
+    "dataInicial": "Дата начала",
+    "edita": "Редактировать проект",
+    "propriedades": "Свойства",
+    "status": "Статус",
+    "buscar": "Поиск",
+    "texto": "Текст",
+    "todos": "Все",
+    "numero": "Номер",
+    "data": "Дата",
+    "nova": "новый",
+    "cria": "Создать проект",
+    "tipo": "Тип",
+    "nomePropriedade": "Имя свойства",
+    "nomeStatus": "Имя статуса"
   },
   "perfilInfo": {
     "nome": "Имя",
@@ -270,5 +283,21 @@
     "oUsuarioPossuiOPerfilPrivado": "Пользователь имеет закрытый профиль",
     "username": "Имя пользователя",
     "asEquipesDoUsuarioSaoPrivadas": "Команды пользователя закрыты"
+  },
+  "hubProjeto": {
+    "progresso": "Прогресс",
+    "tarefa": "Задача",
+    "kanban": "Канбан",
+    "lista": "Список",
+    "linha": "Хронология",
+    "calendario": "Календарь",
+    "propriedades": "Видимые свойства",
+    "novo": "Новый"
+  },
+  "lista": {
+    "naoTem": "Нет значения",
+    "naoHa": "Нет задач",
+    "nome": "Имя",
+    "descricao": "Описание"
   }
 }

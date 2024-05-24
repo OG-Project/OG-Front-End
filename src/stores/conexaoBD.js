@@ -157,10 +157,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         this.loading = false;
       }
     },
-    async buscarProjetosUsuario(userId, textoRequisicao) {
+    async buscarEquipesUsuario(id, textoRequisicao) {
       this.loading = true;
       try {
-        return await ((await axios.get(this.url + `${textoRequisicao}/${userId}`, { withCredentials: true })).data)
+        return await ((await axios.get(this.url + `${textoRequisicao}/${id}`, { withCredentials: true })).data)
       } finally {
         this.loading = false;
       }
