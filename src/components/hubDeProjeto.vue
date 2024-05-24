@@ -1,7 +1,7 @@
 <template>
     <div v-if="enviandoMensagem" class="absolute w-full h-full z-[5]" @click="abreModalMensagem()">
     </div>
-    <div v-if="funcaoPopUp.variavelModal == true && funcaoAbrePopUp2" class="flex justify-center">
+    <div  v-if="variavel == true && funcaoPopUp.variavelModal" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
@@ -33,7 +33,7 @@
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
             <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
-                @click="mudaVariavelBooleana()">
+                @click="abrePopUp(null, 'equipes')">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
             <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
@@ -77,7 +77,7 @@
         
     </div>
     <HistoricoPopUp :texto-requisicao="textoRequisicao"
-    :id="number.id" v-if="funcaoAbrePopUp && funcaoPopUp.variavelModal"></HistoricoPopUp>
+    :id="number.id" v-if="variavelHistorico == true && funcaoPopUp.variavelModal"></HistoricoPopUp>
 </template>
 
 <script setup>
@@ -127,13 +127,23 @@ let isResponsavel = ref(false)
 const tour =inject('tour')
 let number = ref();
 let textoRequisicao = ref('');
+let variavelHistorico = ref(false)
+let variavel = ref(false)
 
 async function abrePopUp(objeto, tipo) {
+    if (tipo == 'projeto') {
         number.value = objeto;
+        variavelHistorico.value = true;
+        variavel.value = false;
         textoRequisicao.value = tipo;
-        funcaoAbrePopUp.value = true;
-        funcaoPopUp.variavelModal = true;
-        
+        funcaoPopUp.abrePopUp()
+    } else {
+        variavelHistorico.value = false;
+        variavel.value = true;
+        mudaVariavelBooleana();
+
+
+    }
 }
 
 onMounted(async () => {
@@ -234,7 +244,6 @@ function enviaCookieProjeto() {
 }
 function mudaVariavelBooleana() {
     funcaoPopUp.abrePopUp()
-    funcaoAbrePopUp2.value=true
 }
 
 function definePorcentagem() {
