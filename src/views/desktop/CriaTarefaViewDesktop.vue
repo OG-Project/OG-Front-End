@@ -550,6 +550,7 @@ function reloadTelaTarefa() {
   if (reload == '0') {
     VueCookies.set('idReloadTarefa', '1');
     window.location.reload()
+    tour.show(usuario.value.configuracao.ultimoPassoId,true)
   }
 }
 
@@ -1159,6 +1160,7 @@ async function pesquisaBancoUserName() {
 }
 
 onMounted(async () => {
+  colocaCookieProjeto();
   timerTempoAtuacao();
   puxaTarefaDaEdicao();
   pesquisaBancoUserName()
@@ -1192,8 +1194,26 @@ onMounted(async () => {
 onUnmounted(() => {
   calculaTempoAtuacao()
 })
-//Variaveis utilizadas para verificar se o popup abre ou fecha
 
+
+async function colocaCookieProjeto(){
+  let cookieProjeto = VueCookies.get("idProjetoAtual")
+  if(cookieProjeto == null || cookieProjeto == 'undefined' || cookieProjeto =="" || cookieProjeto ==undefined){
+      let usuario = await (banco.buscarUm(usuarioId,"/usuario"));
+      let equipeAtual
+      usuario.equipes.forEach(equipe => {
+        if(equipe.equipe.nome == ("Equipe do "+ usuario.username)){
+          equipeAtual = equipe.equipe
+        }
+      });
+     
+      let projeto = await( banco.buscarProjetosEquipe(equipeAtual.id,"/projeto/buscarProjetos"))
+
+      VueCookies.set("idProjetoAtual",projeto.id)
+  }
+}
+
+//Variaveis utilizadas para verificar se o popup abre ou fecha
 // Supondo que você tenha um array chamado comentarios no seu componente
 function exibirComentarios() {
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));

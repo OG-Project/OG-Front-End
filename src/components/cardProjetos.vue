@@ -149,8 +149,6 @@ function somePopUp() {
     verTempoAtuacao.value = false
 }
 
-// const truncarNome = (nome, comprimentoMaximo) => (nome.length > comprimentoMaximo ? `${nome.slice(0, comprimentoMaximo)}...` : nome);
-
 </script>
 
 <style scoped>
