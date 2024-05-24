@@ -16,7 +16,7 @@
         <!-- davi cala a porra da boca -->
         <div class="w-[55%] justify-center min-h-[5%] pl-12 mt-4">
           <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false" class=""
-            place-holder-pesquisa="Responsáveis pela tarefa" @item-selecionado="pegaValorSelecionadoPesquisa"
+            :place-holder-pesquisa="t('criaTarefa.responsaveisPelaTarefa')" @item-selecionado="pegaValorSelecionadoPesquisa"
             largura="16" fontSize="1rem">
           </inputDePesquisa>
           <div v-if="tarefa.responsaveis != ''" class="scrollListaResponsaveis" v-dragscroll>
@@ -340,7 +340,7 @@
                     <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id" class="w-full">
                       <div v-if="propriedade.propriedade.tipo === 'TEXTO'" class="flex items-center justify-start">
                         <div class="w-[15%] pl-4 flex items-center justify-start">
-                          <p class="truncate">{{ propriedade.propriedade.nome }}: </p>
+                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p><span>:</span>
                         </div>
                         <div class="w-[58%] flex items-center justify-center">
                           <Input styleInput="input-transparente-claro-pequeno"
@@ -348,26 +348,25 @@
                             @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                           </Input>
                         </div>
-                        <p class="w-[27%] pr-7 flex items-start ">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                        <p class="w-[27%] pr-7 flex items-start ">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto') }}</p>
                       </div>
                       <div v-if="propriedade.propriedade.tipo === 'DATA'"
                         class="flex items-center justify-around w-full">
                         <div class="w-[15%] pl-4 flex items-center justify-start">
-                          <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
+                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p><span>:</span>
                         </div>
                         <div class="w-[58%] flex items-center justify-center">
                           <input @input="patchDaListaDePropriedades()"
                             class="border-2 w-[75%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
                             type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
                         </div>
-                        <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo
-                          }}
+                        <p class="w-[27%] pr-2 flex items-start justify-start">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data') }}
                         </p>
                       </div>
                       <div v-if="propriedade.propriedade.tipo === 'NUMERO'"
                         class="flex items-center justify-start w-full">
                         <div class="w-[15%] pl-4 flex items-center justify-start">
-                          <p class="flex items-start justify-start">{{ propriedade.propriedade.nome }}: </p>
+                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p><span>:</span>
                         </div>
                         <div class="w-[58%] flex items-center justify-center">
                           <Input styleInput="input-transparente-claro-pequeno"
@@ -375,8 +374,7 @@
                             @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                           </Input>
                         </div>
-                        <p class="w-[27%] pr-2 flex items-start justify-start">Tipo: {{ propriedade.propriedade.tipo
-                          }}
+                        <p class="w-[27%] pr-2 flex items-start justify-start">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero') }}
                         </p>
                       </div>
                       <!-- <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
@@ -580,32 +578,16 @@ let projetoDaTarefa = ref();
 
 //Estilização usando Java Script
 
-let estiloBotaoPropriedades = ref({
-  borderBottom: "solid 4px #620BA7",
-});
-
-let estiloOpcaoClicadoPropriedades = {
-  borderBottom: "solid 4px #620BA7",
-};
-
-let estiloBotaoStatus = ref({
-  borderBottom: "solid 4px transparent",
-});
-
-let estiloOpcaoClicadoStatus = {
-  borderBottom: "solid 4px #620BA7",
-};
-
 //Varaivel utilizada para armazenar quantos arquivos foram atrelados a tarefa
 let numeroDeArquivos = ref(0);
 
 //Variáveis usadas na hora de criar uma propriedade
 
 async function deletaTarefa() {
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
-  let projeto = await banco.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
-  let tarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
-  criaHistorico.criaHistoricoProjeto("Deletou a tarefa" + tarefa.nome, projeto, usuario)
+  // let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  // let projeto = await banco.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
+  // let tarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  // criaHistorico.criaHistoricoProjeto("Deletou a tarefa" + tarefa.nome, projeto, usuario)
   banco.deletarTarefa("/tarefa", VueCookies.get("IdTarefaCookies"));
   router.push("/projeto").then(() => {
     // window.location.reload();

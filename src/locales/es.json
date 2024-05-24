@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Responsables de la Tarea",
     "properties": "Propiedades",
     "task_color": "Color de la Tarea",
     "subtasks": "Subtareas",
@@ -284,6 +285,12 @@
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "Los equipos del usuario son privados"
   },
+  "chat": {
+    "pessoal": "Personal",
+    "equipes": "Equipos",
+    "digiteUmaMensagem": "Escribe un mensaje",
+    "chat": "Chat"
+  },
   "hubProjeto": {
     "progresso": "Progreso",
     "tarefa": "Tarea",
@@ -298,6 +305,7 @@
     "naoTem": "Sin Valor",
     "naoHa": "No hay Tareas",
     "nome": "Nombre",
-    "descricao": "Descripción"
+    "descricao": "Descripción",
+    "notificacoes": "Notificaciones"
   } 
 }

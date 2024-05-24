@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "任务负责人",
     "properties": "属性",
     "task_color": "任务颜色",
     "subtasks": "子任务",
@@ -284,6 +285,12 @@
     "username": "用户名",
     "asEquipesDoUsuarioSaoPrivadas": "用户的团队是私人的"
   },
+  "chat": {
+    "pessoal": "个人",
+    "equipes": "团队",
+    "digiteUmaMensagem": "输入消息",
+    "chat": "聊天"
+  },
   "hubProjeto": {
     "progresso": "进度",
     "tarefa": "任务",
@@ -298,6 +305,7 @@
     "naoTem": "没有值",
     "naoHa": "没有任务",
     "nome": "名称",
-    "descricao": "描述"
+    "descricao": "描述",
+    "notificacoes": "通知"
   }
 }

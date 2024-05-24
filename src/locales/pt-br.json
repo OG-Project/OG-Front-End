@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Responsáveis pela tarefa",
     "properties": "Propriedades",
     "task_color": "Cor da Tarefa",
     "subtasks": "SubTarefas",
@@ -301,6 +302,12 @@
     "historia": "História",
     "historiaTexto": "A OG Project foi formada em 2023 por um grupo de amigos que acreditavam que a organização é a chave para o sucesso."
   },
+  "chat": {
+    "pessoal": "Pessoal",
+    "equipes": "Equipes",
+    "digiteUmaMensagem": "Digite uma mensagem",
+    "chat": "Chat"
+  },
   "hubProjeto":{
     "progresso": "Progressão",
     "tarefa": "Tarefa",
@@ -315,6 +322,7 @@
     "naoTem": "Não Tem Valor",
     "naoHa": "Não há Tarefas",
     "nome": "Nome",
-    "descricao": "Descrição"
+    "descricao": "Descrição",
+    "notificacoes": "Notificações"
   }
 }

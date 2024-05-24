@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "タスクの責任者",
     "properties": "プロパティ",
     "task_color": "タスクの色",
     "subtasks": "サブタスク",
@@ -285,6 +286,12 @@
     "username": "ユーザー名",
     "asEquipesDoUsuarioSaoPrivadas": "ユーザーのチームはプライベートです"
   },
+  "chat": {
+    "pessoal": "個人用",
+    "equipes": "チーム",
+    "digiteUmaMensagem": "メッセージを入力",
+    "chat": "チャット"
+  },
   "hubProjeto": {
     "progresso": "進行",
     "tarefa": "タスク",
@@ -299,6 +306,7 @@
     "naoTem": "値がありません",
     "naoHa": "タスクはありません",
     "nome": "名前",
-    "descricao": "説明"
+    "descricao": "説明",
+    "notificacoes": "通知"
   }
 }
