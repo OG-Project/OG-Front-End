@@ -41,7 +41,6 @@ import VueCookies from 'vue-cookies';
 let tempoAtuado;
 let horaEntrada;
 let listaDePropriedadesVisiveis = ref([])
-let horaSaida;
 let idProjeto = VueCookies.get("IdProjetoAtual")
 let projeto = ref({})
 const banco = conexaoBD();

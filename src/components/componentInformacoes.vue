@@ -117,7 +117,7 @@
                         </div>
                 </div>
         </div>
-        <alertTela v-if="alterado" :key="alterado" cor="#29CD00" mensagem="Alterado com Sucesso" />
+        <alertTela v-if="alterado" :key="alterado" cor="#29CD00" :mensagem="t('informacoes.alterado')" />
 </template>
 
 <script setup>
@@ -133,6 +133,10 @@ import router from '../router';
 import alertTela from './alertTela.vue';
 const conexao=conexaoBD()
 import flecha from '../assets/flecha-mobile-perfil.vue';
+import { useI18n } from 'vue-i18n';
+
+
+const { t } = useI18n();
 // console.log(conexao
 const screenWidth = ref(window.innerWidth)
 

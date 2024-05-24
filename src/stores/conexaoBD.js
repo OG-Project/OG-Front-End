@@ -47,13 +47,15 @@ export const conexaoBD = defineStore('conexaoBD', {
       this.loading = true;
       try {
         return axios.post(this.url + "/login", usuarioLogin, { withCredentials: true }).then(response => {
-          alert(response.data.value)
           VueCookies.set("JWT", response.data.value)
         }).catch((error) => {
         })
       } finally {
         this.loading = false;
       }
+    },
+    atualizaNotificacao(id){
+      return axios.patch(this.url +"/notificacao/visto/"+id,"",{withCredentials : true})
     },
     cadastrar(objeto, textoRequisicao) {
       this.loading = true;
@@ -158,10 +160,10 @@ export const conexaoBD = defineStore('conexaoBD', {
         this.loading = false;
       }
     },
-    async buscarProjetosUsuario(userId, textoRequisicao) {
+    async buscarEquipesUsuario(id, textoRequisicao) {
       this.loading = true;
       try {
-        return await ((await axios.get(this.url + `${textoRequisicao}/${userId}`, { withCredentials: true })).data)
+        return await ((await axios.get(this.url + `${textoRequisicao}/${id}`, { withCredentials: true })).data)
       } finally {
         this.loading = false;
       }
@@ -184,6 +186,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     },
     async buscarUmaNotificacao(id, textoRequisicao) {
       try {
+        console.log(id);
         return (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
       } finally {
         this.loading = false;

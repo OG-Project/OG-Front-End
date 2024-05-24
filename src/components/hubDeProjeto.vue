@@ -1,7 +1,7 @@
 <template>
     <div v-if="enviandoMensagem" class="absolute w-full h-full z-[5]" @click="abreModalMensagem()">
     </div>
-    <div v-if="funcaoPopUp.variavelModal == true && funcaoAbrePopUp2" class="flex justify-center">
+    <div  v-if="variavel == true && funcaoPopUp.variavelModal" class="flex justify-center">
         <ListaDeEquipesProjeto :boolean="listaDeEquipes"></ListaDeEquipesProjeto>
     </div>
     <div class="w-full h-[25vh] flex  items-center ">
@@ -22,7 +22,7 @@
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
             <button id="step-14" class="w-[20%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="enviaCookieTarefaNova()">
-                +Tarefa
+                +{{ $t('hubProjeto.tarefa') }}
             </button>
             <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="abreModalMensagem()">
@@ -33,7 +33,7 @@
                 <IconEngrenagem1></IconEngrenagem1>
             </button>
             <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
-                @click="mudaVariavelBooleana()">
+                @click="abrePopUp(null, 'equipes')">
                 <ImagemPessoasProjeto></ImagemPessoasProjeto>
             </button>
             <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
@@ -51,24 +51,24 @@
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
             <button @click="router.push('/projeto/kanban')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corKanban, paddingLeft: '1%', paddingRight: '1%' }">
-                Kanban
+                {{ $t('hubProjeto.kanban') }}
             </button>
             <button @click="router.push('/projeto/lista')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corLista, paddingLeft: '1%', paddingRight: '1%' }">
-                Lista
+                {{ $t('hubProjeto.lista') }}
             </button>
             <button @click="router.push('/projeto/timeline')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corTimeline, paddingLeft: '1%', paddingRight: '1%' }">
-                Linha Do Tempo
+                {{ $t('hubProjeto.linha') }}
             </button>
             <button @click="router.push('/projeto/calendario')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corCalendario, paddingLeft: '1%', paddingRight: '1%' }">
-                Calendário
+                {{ $t('hubProjeto.calendario') }}
             </button>
         </div>
         <div v-if="$route.path === '/projeto/lista'"
             class="flex justify-center items-center bg-[var(--backgroundItemsClaros)] px-2 w-[17%] h-[3.5vh]">
-            <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" placeholder="Propriedades Visiveis" filter
+            <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" :placeholder="$t('hubProjeto.propriedades')" filter
                 optionLabel="nome" :options="projeto.propriedades"
                 :pt="{ root: 'select', labelContainer: 'labelContainer' }"
                 class="bg-[var(--backgroundItemsClaros)] h-[3vh] w-[110%] flex justify-center items-center"
@@ -77,7 +77,7 @@
         
     </div>
     <HistoricoPopUp :texto-requisicao="textoRequisicao"
-    :id="number.id" v-if="funcaoAbrePopUp && funcaoPopUp.variavelModal"></HistoricoPopUp>
+    :id="number.id" v-if="variavelHistorico == true && funcaoPopUp.variavelModal"></HistoricoPopUp>
 </template>
 
 <script setup>
@@ -97,9 +97,10 @@ import comentarioProjeto from './comentarioProjeto.vue';
 import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca'
 import HistoricoPopUp from "../components/HistoricoPopUp.vue";
 import IconeHistorico from "../assets/historicoProjeto.vue";
+import { inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-
-
+const { t } = useI18n()
 let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
@@ -123,16 +124,26 @@ let corTimeline = ref("var(--backgroundItemsClaros)")
 let corCalendario = ref("var(--backgroundItemsClaros)")
 
 let isResponsavel = ref(false)
-
+const tour =inject('tour')
 let number = ref();
 let textoRequisicao = ref('');
+let variavelHistorico = ref(false)
+let variavel = ref(false)
 
 async function abrePopUp(objeto, tipo) {
+    if (tipo == 'projeto') {
         number.value = objeto;
+        variavelHistorico.value = true;
+        variavel.value = false;
         textoRequisicao.value = tipo;
-        funcaoAbrePopUp.value = true;
-        funcaoPopUp.variavelModal = true;
-        
+        funcaoPopUp.abrePopUp()
+    } else {
+        variavelHistorico.value = false;
+        variavel.value = true;
+        mudaVariavelBooleana();
+
+
+    }
 }
 
 onMounted(async () => {
@@ -213,11 +224,19 @@ watch(listaPropriedadeVisiveis, () => {
     emit('atualizaPropriedadesVisiveis', listaPropriedadeVisiveis.value)
 })
 
-function enviaCookieTarefaNova() {
+async function enviaCookieTarefaNova() {
     VueCookies.set("IdTarefaCookies", 0, new Date())
     localStorage.setItem("TarefaNaoFinalizada", "", new Date())
     VueCookies.set('idReloadTarefa', '0');
+    let usuario=await api.buscarUm(VueCookies.get('IdUsuarioCookie'),'/usuario')
+    if(tour.isActive()){
+        usuario.configuracao.ultimoPassoId='step-15'
+        usuario.configuracao.rotaDoPasso='/criatarefa'
+        api.atualizar(usuario,'/usuario')
+        tour.next()
+    }
     criaTarefa.criaTarefa()
+    tour.show(usuario.value.configuracao.ultimoPassoId,true)
 }
 function enviaCookieProjeto() {
     VueCookies.set('idReloadProjeto', '0');
@@ -225,7 +244,6 @@ function enviaCookieProjeto() {
 }
 function mudaVariavelBooleana() {
     funcaoPopUp.abrePopUp()
-    funcaoAbrePopUp2.value=true
 }
 
 function definePorcentagem() {
@@ -237,7 +255,7 @@ function definePorcentagem() {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
 
     }
-    string = "Progressão " + porcentagem + "%"
+    string = t('hubProjeto.progresso')+ " " + porcentagem + "%"
     porcentagemDeConclusao.value = string
 }
 function defineSubTarefasConcluida(tarefas) {

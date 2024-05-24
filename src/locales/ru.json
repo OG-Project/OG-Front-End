@@ -110,7 +110,11 @@
     "Corpo de Texto": "Текст",
     "Cores": "Цвета",
     "Modo Claro": "Светлый режим",
-    "Modo Escuro": "Темный режим"
+    "Modo Escuro": "Темный режим",
+    "normal": "Нормальный",
+    "pequeno": "Маленький",
+    "grande": "Большой",
+    "mensagemAlert": "Это может повлиять на ваш опыт"
   },
   "informacoes": {
     "Informações": "Информация",
@@ -120,7 +124,8 @@
     "Sobrenome": "Фамилия",
     "Data de Nascimento": "Дата рождения",
     "Editar E-mail": "Редактировать информацию",
-    "Confirmar Edição": "Подтвердить редактирование"
+    "Confirmar Edição": "Подтвердить редактирование",
+    "alterado": "Успешно изменено"
   },
   "privacidade": {
     "Privacidade": "Конфиденциальность",
@@ -139,7 +144,9 @@
     "contaConectadaGoogle": "Подключенный аккаунт. Ваш аккаунт подключен к аккаунту Google. Изменение адреса электронной почты здесь отключит аккаунт Google.",
     "alterarSenha": "Изменить пароль",
     "alterarEmail": "Изменить адрес электронной почты",
-    "deletarConta": "Хотите удалить свою учетную запись?"
+    "deletarConta": "Хотите удалить свою учетную запись?",
+    "senha": "Пароль изменен",
+    "email": "Электронная почта изменена"
   },
   "paginaAdm": {
     "listaDeTarefas": "Список задач",
@@ -252,7 +259,20 @@
     "naoHaTarefas": "Нет задач",
     "tarefasAtribuidas": "Назначенные задачи",
     "informacoes": "Информация",
-    "dataInicial": "Дата начала"
+    "dataInicial": "Дата начала",
+    "edita": "Редактировать проект",
+    "propriedades": "Свойства",
+    "status": "Статус",
+    "buscar": "Поиск",
+    "texto": "Текст",
+    "todos": "Все",
+    "numero": "Номер",
+    "data": "Дата",
+    "nova": "новый",
+    "cria": "Создать проект",
+    "tipo": "Тип",
+    "nomePropriedade": "Имя свойства",
+    "nomeStatus": "Имя статуса"
   },
   "perfilInfo": {
     "nome": "Имя",
@@ -268,6 +288,24 @@
   "chat": {
     "pessoal": "Личный",
     "equipes": "Команды",
-    "digiteUmaMensagem": "Введите сообщение"
+    "digiteUmaMensagem": "Введите сообщение",
+    "chat": "Чат"
+  },
+  "hubProjeto": {
+    "progresso": "Прогресс",
+    "tarefa": "Задача",
+    "kanban": "Канбан",
+    "lista": "Список",
+    "linha": "Хронология",
+    "calendario": "Календарь",
+    "propriedades": "Видимые свойства",
+    "novo": "Новый"
+  },
+  "lista": {
+    "naoTem": "Нет значения",
+    "naoHa": "Нет задач",
+    "nome": "Имя",
+    "descricao": "Описание",
+    "notificacoes": "Уведомления"
   }
 }

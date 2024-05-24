@@ -110,7 +110,11 @@
     "Corpo de Texto": "正文",
     "Cores": "颜色",
     "Modo Claro": "明亮模式",
-    "Modo Escuro": "暗黑模式"
+    "Modo Escuro": "暗黑模式",
+    "normal": "正常",
+    "pequeno": "小",
+    "grande": "大",
+    "mensagemAlert": "这可能会影响您的体验"
   },
   "informacoes": {
     "Informações": "信息",
@@ -120,7 +124,8 @@
     "Sobrenome": "姓",
     "Data de Nascimento": "出生日期",
     "Editar E-mail": "编辑信息",
-    "Confirmar Edição": "确认编辑"
+    "Confirmar Edição": "确认编辑",
+    "alterado": "成功更改"
   },
   "privacidade": {
     "Privacidade": "隐私",
@@ -139,7 +144,9 @@
     "contaConectadaGoogle": "连接的帐户。您的帐户已连接到Google帐户。在此更改电子邮件地址将断开与Google帐户的连接。",
     "alterarSenha": "更改密码",
     "alterarEmail": "更改电子邮件",
-    "deletarConta": "您是否要删除您的账户？"
+    "deletarConta": "您是否要删除您的账户？",
+    "senha": "密码已更改",
+    "email": "电子邮件已更改"
   },
   "paginaAdm": {
     "listaDeTarefas": "任务清单",
@@ -252,7 +259,20 @@
     "naoHaTarefas": "没有任务",
     "tarefasAtribuidas": "分配的任务",
     "informacoes": "信息",
-    "dataInicial": "起始日期"
+    "dataInicial": "起始日期",
+    "edita": "编辑项目",
+    "propriedades": "属性",
+    "status": "状态",
+    "buscar": "搜索",
+    "texto": "文本",
+    "todos": "所有",
+    "numero": "编号",
+    "data": "日期",
+    "nova": "新的",
+    "cria": "创建项目",
+    "tipo": "类型",
+    "nomePropriedade": "属性名称",
+    "nomeStatus": "状态名称"
   },
   "perfilInfo": {
     "nome": "姓名",
@@ -268,6 +288,24 @@
   "chat": {
     "pessoal": "个人",
     "equipes": "团队",
-    "digiteUmaMensagem": "输入消息"
+    "digiteUmaMensagem": "输入消息",
+    "chat": "聊天"
+  },
+  "hubProjeto": {
+    "progresso": "进度",
+    "tarefa": "任务",
+    "kanban": "看板",
+    "lista": "列表",
+    "linha": "时间轴",
+    "calendario": "日历",
+    "propriedades": "可见属性",
+    "novo": "新的"
+  },
+  "lista": {
+    "naoTem": "没有值",
+    "naoHa": "没有任务",
+    "nome": "名称",
+    "descricao": "描述",
+    "notificacoes": "通知"
   }
 }

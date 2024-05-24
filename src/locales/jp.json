@@ -110,7 +110,12 @@
     "Corpo de Texto": "本文",
     "Cores": "色",
     "Modo Claro": "ライトモード",
-    "Modo Escuro": "ダークモード"
+    "Modo Escuro": "ダークモード",
+    "normal": "ノーマル",
+    "pequeno": "小さい",
+    "grande": "大きい",
+    "mensagemAlert": "これがあなたの体験に影響を与える可能性があります"
+    
   },
   "informacoes": {
     "Informações": "情報",
@@ -120,7 +125,8 @@
     "Sobrenome": "姓",
     "Data de Nascimento": "誕生日",
     "Editar E-mail": "情報を編集する",
-    "Confirmar Edição": "編集を確認"
+    "Confirmar Edição": "編集を確認",
+    "alterado": "正常に変更されました"
   },
   "privacidade": {
     "Privacidade": "プライバシー",
@@ -139,7 +145,9 @@
     "contaConectadaGoogle": "接続されたアカウント。 あなたのアカウントはGoogleアカウントに接続されています。 ここでメールアドレスを変更すると、Googleアカウントとの接続が解除されます。",
     "alterarSenha": "パスワードを変更する",
     "alterarEmail": "メールアドレスを変更する",
-    "deletarConta": "アカウントを削除しますか？"
+    "deletarConta": "アカウントを削除しますか？",
+    "senha": "パスワードが変更されました",
+    "email": "メールが変更されました"
   },
   "paginaAdm": {
     "listaDeTarefas": "タスクリスト",
@@ -252,7 +260,20 @@
     "naoHaTarefas": "タスクはありません",
     "tarefasAtribuidas": "割り当てられたタスク",
     "informacoes": "情報",
-    "dataInicial": "開始日"
+    "dataInicial": "開始日",
+    "edita": "プロジェクトを編集",
+    "propriedades": "プロパティ",
+    "status": "ステータス",
+    "buscar": "検索",
+    "texto": "テキスト",
+    "todos": "すべて",
+    "numero": "番号",
+    "data": "日付",
+    "nova": "新しい",
+    "cria": "プロジェクトを作成",
+    "tipo": "タイプ",
+    "nomePropriedade": "プロパティ名",
+    "nomeStatus": "ステータス名"
   },
   "perfilInfo": {
     "nome": "名前",
@@ -268,6 +289,24 @@
   "chat": {
     "pessoal": "個人用",
     "equipes": "チーム",
-    "digiteUmaMensagem": "メッセージを入力"
+    "digiteUmaMensagem": "メッセージを入力",
+    "chat": "チャット"
+  },
+  "hubProjeto": {
+    "progresso": "進行",
+    "tarefa": "タスク",
+    "kanban": "カンバン",
+    "lista": "リスト",
+    "linha": "タイムライン",
+    "calendario": "カレンダー",
+    "propriedades": "表示プロパティ",
+    "novo": "新しい"
+  },
+  "lista": {
+    "naoTem": "値がありません",
+    "naoHa": "タスクはありません",
+    "nome": "名前",
+    "descricao": "説明",
+    "notificacoes": "通知"
   }
 }

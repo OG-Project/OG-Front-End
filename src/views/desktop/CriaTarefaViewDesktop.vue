@@ -548,6 +548,7 @@ function reloadTelaTarefa() {
   if (reload == '0') {
     VueCookies.set('idReloadTarefa', '1');
     window.location.reload()
+    tour.show(usuario.value.configuracao.ultimoPassoId,true)
   }
 }
 
@@ -577,22 +578,6 @@ let projetoDaTarefa = ref();
 
 //Estilização usando Java Script
 
-let estiloBotaoPropriedades = ref({
-  borderBottom: "solid 4px #620BA7",
-});
-
-let estiloOpcaoClicadoPropriedades = {
-  borderBottom: "solid 4px #620BA7",
-};
-
-let estiloBotaoStatus = ref({
-  borderBottom: "solid 4px transparent",
-});
-
-let estiloOpcaoClicadoStatus = {
-  borderBottom: "solid 4px #620BA7",
-};
-
 //Varaivel utilizada para armazenar quantos arquivos foram atrelados a tarefa
 let numeroDeArquivos = ref(0);
 
@@ -608,6 +593,7 @@ async function deletaTarefa() {
     // window.location.reload();
     VueCookies.remove("IdTarefaCookies");
   });
+  
 }
 
 let nomePropriedade = ref("");
@@ -1046,8 +1032,6 @@ async function calculaTempoAtuacao() {
       }
     });
   });
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
-  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
@@ -1157,6 +1141,7 @@ async function pesquisaBancoUserName() {
 }
 
 onMounted(async () => {
+  colocaCookieProjeto();
   timerTempoAtuacao();
   puxaTarefaDaEdicao();
   pesquisaBancoUserName()
@@ -1190,8 +1175,26 @@ onMounted(async () => {
 onUnmounted(() => {
   calculaTempoAtuacao()
 })
-//Variaveis utilizadas para verificar se o popup abre ou fecha
 
+
+async function colocaCookieProjeto(){
+  let cookieProjeto = VueCookies.get("idProjetoAtual")
+  if(cookieProjeto == null || cookieProjeto == 'undefined' || cookieProjeto =="" || cookieProjeto ==undefined){
+      let usuario = await (banco.buscarUm(usuarioId,"/usuario"));
+      let equipeAtual
+      usuario.equipes.forEach(equipe => {
+        if(equipe.equipe.nome == ("Equipe do "+ usuario.username)){
+          equipeAtual = equipe.equipe
+        }
+      });
+     
+      let projeto = await( banco.buscarProjetosEquipe(equipeAtual.id,"/projeto/buscarProjetos"))
+
+      VueCookies.set("idProjetoAtual",projeto.id)
+  }
+}
+
+//Variaveis utilizadas para verificar se o popup abre ou fecha
 // Supondo que você tenha um array chamado comentarios no seu componente
 function exibirComentarios() {
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));

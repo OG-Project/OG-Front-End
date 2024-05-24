@@ -80,9 +80,9 @@
                 <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto"
                     v-if="projetoEdita && isResponsavel && responsaveisProjeto.length == 1 && !naoPodeDeletar"></Botao>
-                <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.cria')" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
-                <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.edita')" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"
                     v-if="projetoEdita && isResponsavel"></Botao>
 
@@ -117,7 +117,7 @@ import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
-import Sair from "../../imagemVetores/Sair.svg";
+
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
@@ -129,7 +129,8 @@ const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
-import botaoX from '../../imagemVetores/botaoX.vue';
+
+import { inject } from 'vue';
 
 const criaHistorico = criaHistoricoStore();
 
@@ -166,13 +167,15 @@ let isResponsavel = ref(false)
 let naoPodeDeletar = ref(false)
 let usuario;
 let usuarioId = VueCookies.get('IdUsuarioCookie')
+const tour=inject('tour')
 
 function reloadTelaTarefa() {
     const reload = VueCookies.get('idReloadProjeto');
     if (reload == '0') {
         console.log("reload")
         VueCookies.set('idReloadProjeto', '1');
-        window.location.reload();
+            window.location.reload();
+            tour.show(usuario.configuracao.ultimoPassoId,true)
     }
 }
 
@@ -274,7 +277,7 @@ function fazPlaceHolderDataFinalProjeto() {
 
 function excluiProjeto() {
     conexao.deletar(idProjeto, "/projeto").then(() => {
-        voltaPagina()
+        router.push('/home')
     })
 }
 

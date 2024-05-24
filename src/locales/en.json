@@ -110,7 +110,11 @@
     "Corpo de Texto": "Body Text",
     "Cores": "Colors",
     "Modo Claro": "Light Mode",
-    "Modo Escuro": "Dark Mode"
+    "Modo Escuro": "Dark Mode",
+    "normal": "Normal",
+    "pequeno": "Small",
+    "grande": "Large",
+    "mensagemAlert": "This may affect your experience"
   },
   "informacoes": {
     "Informações": "Information",
@@ -120,7 +124,8 @@
     "Sobrenome": "Last Name",
     "Data de Nascimento": "Date of Birth",
     "Editar E-mail": "Edit Information",
-    "Confirmar Edição": "Confirm Edit"
+    "Confirmar Edição": "Confirm Edit",
+    "alterado": "Successfully Changed"
   },
   "privacidade": {
     "Privacidade": "Privacy",
@@ -139,7 +144,9 @@
     "contaConectadaGoogle": "Connected account. Your account is connected to a Google account. Changing the email address here will disconnect the Google account.",
     "alterarSenha": "Change Password",
     "alterarEmail": "Change Email",
-    "deletarConta": "Do you want to delete your Account?"
+    "deletarConta": "Do you want to delete your Account?",
+    "senha": "Password Changed",
+    "email": "Email Changed"
   },
   "paginaAdm": {
     "listaDeTarefas": "Task List",
@@ -252,7 +259,20 @@
     "naoHaTarefas": "No tasks",
     "tarefasAtribuidas": "Assigned Tasks",
     "informacoes": "Information",
-    "dataInicial": "Start Date"
+    "dataInicial": "Start Date",
+    "edita": "Edit Project",
+    "propriedades": "Properties",
+    "status": "Status",
+    "buscar": "Search for",
+    "texto": "Text",
+    "todos": "All",
+    "numero": "Number",
+    "data": "Date",
+    "nova": "new",
+    "cria": "Create Project",
+    "tipo": "Type",
+    "nomePropriedade": "Property Name",
+    "nomeStatus": "Status Name"
   },
   "perfilInfo": {
     "nome": "Name",
@@ -268,6 +288,24 @@
   "chat": {
     "pessoal": "Personal",
     "equipes": "Teams",
-    "digiteUmaMensagem": "Type a message"
+    "digiteUmaMensagem": "Type a message",
+    "chat": "Chat"
+  },
+  "hubProjeto": {
+    "progresso": "Progress",
+    "tarefa": "Task",
+    "kanban": "Kanban",
+    "lista": "List",
+    "linha": "Timeline",
+    "calendario": "Calendar",
+    "propriedades": "Visible Properties",
+    "novo": "New"
+  },
+  "lista": {
+    "naoTem": "No Value",
+    "naoHa": "No Tasks",
+    "nome": "Name",
+    "descricao": "Description",
+    "notificacoes": "Notifications"
   }
 }

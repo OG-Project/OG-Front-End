@@ -46,7 +46,7 @@
             </div>
             <div class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/chat')">
               <iconChat></iconChat>
-              <div>{{ 'Chat' }}</div>
+              <div>{{ $t('chat.chat') }}</div>
             </div>
           </div>
           <div class="w-full flex-col flex gap-6 ml-4 mb-4 justify-end items-start" @click="redirecionamento('/login')">
@@ -128,13 +128,15 @@ function redirecionamento(local) {
 }
 
 async function geraTutorial() {
-  if (usuario.value.configuracao.isTutorial) {
-    if (usuario.value.configuracao.ultimoPassoId != 'step-1'
-      && usuario.value.configuracao.ultimoPassoId != null) {
-      router.push(usuario.value.configuracao.rotaDoPasso)
-      tour.show(usuario.value.configuracao.ultimoPassoId, true)
-      openClose()
-    } else {
+  console.log(usuario);
+  if(usuario.value.configuracao.isTutorial){
+    if(usuario.value.configuracao.ultimoPassoId!='step-1'
+      && usuario.value.configuracao.ultimoPassoId!=null){
+        router.push(usuario.value.configuracao.rotaDoPasso)
+        tour.show(usuario.value.configuracao.ultimoPassoId,true)
+        openClose()
+    }else{
+      // console.log(route.path);
       tour.start()
       openClose()
     }

@@ -110,7 +110,12 @@
     "Corpo de Texto": "Corpo de Texto",
     "Cores": "Cores",
     "Modo Claro": "Modo Claro",
-    "Modo Escuro": "Modo Escuro"
+    "Modo Escuro": "Modo Escuro", 
+    "normal": " Normal",
+    "pequeno": "Pequeno",
+    "grande": "Grande",
+    "mensagemAlert": "Isso pode afetar sua experiência"
+    
   },
   "informacoes": {
     "Informações": "Informações",
@@ -120,7 +125,8 @@
     "Sobrenome": "Sobrenome",
     "Data de Nascimento": "Data de Nascimento",
     "Editar E-mail": "Editar Informações",
-    "Confirmar Edição": "Confirmar Edição"
+    "Confirmar Edição": "Confirmar Edição",
+    "alterado": "Alterado com Sucesso"
   },
   "privacidade": {
     "Privacidade": "Privacidade",
@@ -139,7 +145,9 @@
     "contaConectadaGoogle": "Conta conectada. Sua conta está conectada a uma conta do Google. Alterar o endereço de e-mail aqui vai desconectar a conta do Google.",
     "alterarSenha": "Alterar Senha",
     "alterarEmail": "Alterar E-mail",
-    "deletarConta": "Deseja deletar sua Conta?"
+    "deletarConta": "Deseja deletar sua Conta?",
+    "senha": "Senha Alterada",
+    "email": "Email Alterado"
   },
   "paginaAdm": {
     "listaDeTarefas": "Lista de Tarefas",
@@ -253,7 +261,20 @@
     "tarefasAtribuidas": "Tarefas Atribuídas",
     "informacoes": "Informações",
     "dataInicial" : "Data Inicial",
-    "dataFinal" : "Data Final"
+    "dataFinal" : "Data Final",
+    "edita": "Editar Projeto",
+    "propriedades": "Propriedades",
+    "status": "Status",
+    "buscar": "Buscar por",
+    "texto": "Texto",
+    "todos": "Todos",
+    "numero": "Número",
+    "data": "Data",
+    "nova": "nova",
+    "cria": "Criar Projeto",
+    "tipo": "Tipo",
+    "nomePropriedade": "Nome Propriedade",
+    "nomeStatus": "Nome Status"
   },
   "perfilInfo": {
     "nome": "Nome",
@@ -284,6 +305,24 @@
   "chat": {
     "pessoal": "Pessoal",
     "equipes": "Equipes",
-    "digiteUmaMensagem": "Digite uma mensagem"
+    "digiteUmaMensagem": "Digite uma mensagem",
+    "chat": "Chat"
+  },
+  "hubProjeto":{
+    "progresso": "Progressão",
+    "tarefa": "Tarefa",
+    "kanban": "Kanban",
+    "lista": "Lista",
+    "linha": "Linha Do Tempo",
+    "calendario": "Calendário",
+    "propriedades": "Propriedades Vísiveis",
+    "novo": "Novo"
+  },
+  "lista":{
+    "naoTem": "Não Tem Valor",
+    "naoHa": "Não há Tarefas",
+    "nome": "Nome",
+    "descricao": "Descrição",
+    "notificacoes": "Notificações"
   }
 }

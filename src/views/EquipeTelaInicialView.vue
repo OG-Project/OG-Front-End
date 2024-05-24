@@ -75,12 +75,14 @@ import CardProjetos from "../components/cardProjetos.vue";
 import { useRouter } from 'vue-router'
 import engrenagem from "../imagemVetores/engrenagem.vue";
 import membrosEquipeImagem from "../imagemVetores/membrosEquipeImagem.vue";
+import { inject } from "vue";
 
 const equipeSelecionada = VueCookies.get('equipeSelecionada')
 const usuarioLogado = VueCookies.get('IdUsuarioCookie')
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
 const listaProjetos = ref([]);
+const tour =inject('tour')
 let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal = false;
 let variavelEngrenagem = false;
@@ -88,10 +90,6 @@ let variavelMembros = false;
 
 let retornoPermissao = ref(false);
 const banco = conexaoBD();
-
-onMounted(() => {
-  verificaMembroPermissao();
-})
 
 let equipeEditar = ref({
   nome: '',
@@ -114,6 +112,12 @@ async function criarProjeto() {
   router.push({ path: '/criaProjeto' }).then(() => {
     // window.location.reload()
   });
+  if(tour.isActive()){
+    usuarioLogado.configuracao.ultimoPassoId='step-10'
+    usuarioLogado.configuracao.rotaDoPasso='/crieprojeto'
+    banco.atualizar(usuarioLogado,'/usuario')
+    tour.next()
+  }
   VueCookies.set('idReloadProjeto', '0');
   VueCookies.set("projetoCookie");
   VueCookies.set("IdProjetoAtual")
@@ -209,7 +213,12 @@ function calcularProgressoProjeto(projeto) {
 
 async function filtrarEquipe() {
   console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
-  equipeEditar.value = await (banco.buscarUm(equipeSelecionada, "/equipe"))
+  let usuario = await (banco.buscarUm(usuarioLogado, "/usuario"))
+  usuario.equipes.forEach((equipeUsuario)=>{
+      if(equipeUsuario.equipe.id == equipeSelecionada){
+        equipeEditar.value = equipeUsuario.equipe;
+      }
+  })
 }
 filtrarEquipe();
 
@@ -228,6 +237,7 @@ async function buscarMembrosEquipe() {
 onMounted(() => {
   buscarMembrosEquipe();
   buscarProjetosEquipe();
+  verificaMembroPermissao();
 });
 
 watch(() => VueCookies.get('equipeSelecionada'), async (newValue, oldValue) => {
