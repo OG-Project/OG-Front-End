@@ -16,11 +16,16 @@
         </inputDePesquisa>
       </div>
       <div class="flex items-center gap-8 w-[16%]">
-        <div v-if="TemNotificacao">
+        <div v-if="temNotificao">
+          <button @click="marcaNotificaoComoLida()">
+            <notificaoNaoLida></notificaoNaoLida>
+          </button>
         </div>
-        <button @click="notificacaoBoolean = true, TemNotificacao = false">
-          <notificacao />
-        </button>
+        <div v-else>
+          <button @click="marcaNotificaoComoLida()">
+            <notificacao />
+          </button>
+        </div>
         <img @click="redireciona('/perfil/informacoes')" v-if="usuarioCookies"
           class="shadow-2xl h-[60px] w-[60px] rounded-full"
           :src="'data:' + usuarioCookies.foto.tipo + ';base64,' + usuarioCookies.foto.dados" />
@@ -36,6 +41,7 @@ import BarraLateral from "../components/BarraLateral.vue";
 import { onBeforeMount, ref } from "vue";
 import Botao from "../components/Botao.vue";
 import notificacao from "../imagemVetores/NotificacaoDinamic.vue";
+import notificaoNaoLida from '../assets/notificacaoNaoLida.vue'
 import UserIcon from "../imagemVetores/UserIcon.svg";
 import Input from "./Input.vue";
 import router from "@/router";
@@ -45,36 +51,63 @@ import { conexaoBD } from "../stores/conexaoBD.js";
 import { criaTarefaEBuscaStore } from "../stores/criaTarefaEBusca"
 import popUpNotificacao from "../components/popUpNotificacao.vue";
 import inputDePesquisa from "./inputDePesquisa.vue";
+import { criaNotificacao } from "../stores/criaNotificacao";
 import { inject } from "vue";
 const tour = inject('tour')
-let TemNotificacao = ref(false);
 const banco = conexaoBD();
-
+const IdUsuarioCookie = VueCookies.get("IdUsuarioCookie")
+const criaNotificacaoStore = criaNotificacao();
+let temNotificao = ref(false)
 onMounted(async () => {
   colocaUsuarioId()
+  
 });
 
 
 
-function colocaUsuarioId(){
-  banco.getCookie().then((res) =>{
-    usuarioCookies.value= res;
+async function marcaNotificaoComoLida(){
+  notificacaoBoolean.value = true 
+  let notificacoes = await (banco.buscarUmaNotificacao(IdUsuarioCookie,"/notificacao/buscar"))
+  notificacoes.forEach((notificacao) =>{
+    if(!notificacao.visto){
+      temNotificao.value = false;
+      banco.atualizaNotificacao(notificacao.id);
+    }
+  })
+}
+
+
+function colocaUsuarioId() {
+  banco.getCookie().then((res) => {
+    usuarioCookies.value = res;
     VueCookies.set("IdUsuarioCookie", res.id, 100000000000)
     verificaTarefasFeitas();
- })
+  })
 }
 onBeforeMount(() => {
   lista.value = criaListaDePesquisa();
+  verificaNotificaoNaoLida();
 });
 
 let lista = ref();
+
+async function verificaNotificaoNaoLida(){
+  let notificacoes = await (banco.buscarUmaNotificacao(IdUsuarioCookie,"/notificacao/buscar"))
+  notificacoes.forEach((notificacao) =>{
+    if(!notificacao.visto){
+      temNotificao.value = true;
+      return
+    }
+  })
+
+}
 
 // tour.addSteps([
 // ])
 // tour.cancel()
 function criaListaDePesquisa() {
   let listaDePesquisa = [];
-  banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie")).then((usuario) => {
+  banco.procurar("/usuario/" + IdUsuarioCookie).then((usuario) => {
     usuario.equipes.forEach(equipe => {
       banco.procurar("/projeto/buscarProjetos/" + equipe.id).then((projetos) => {
         projetos.forEach(projeto => {
