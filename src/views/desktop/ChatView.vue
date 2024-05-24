@@ -5,14 +5,14 @@
                 <button class="text-white w-[50%] h-full flex flex-col justify-end items-center" @click="trocaLista(1), router.push('/chat').then(() => {
                     DefineListaDeMensagens()
                 });">
-                    <p>Pessoal</p>
+                    <p>{{ $t('chat.pessoal') }}</p>
                     <div v-if="opcao2 == 1" class="w-[50%] h-[3%] bg-[var(--backgroundItemsClaros)]">
                     </div>
                 </button>
                 <button class="text-white w-[50%] h-full  flex flex-col justify-end items-center" @click="trocaLista(2), router.push('/chat').then(() => {
                     DefineListaDeMensagens()
                 });">
-                    <p>Equipes</p>
+                    <p>{{ $t('chat.equipes') }}</p>
                     <div v-if="opcao2 == 2" class="w-[50%] h-[3%] bg-[var(--backgroundItems)]">
 
                     </div>
@@ -79,7 +79,7 @@
                 <div class="h-[80%] w-full flex justify-center">
                     <div class="w-[95%] h-[90%] bg-[var(--backgroundItemsClaros)] flex justify-center">
                         <input type="text" class="w-[95%] h-full bg-[var(--backgroundItemsClaros)]"
-                            v-model="corpoDaMensagem" placeholder="Digite Uma Mensagem"
+                            v-model="corpoDaMensagem" :placeholder="$t('chat.digiteUmaMensagem')"
                             @keypress.enter="mandaMensagem()">
                     </div>
                 </div>

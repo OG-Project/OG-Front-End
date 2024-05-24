@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Responsáveis pela tarefa",
     "properties": "Propriedades",
     "task_color": "Cor da Tarefa",
     "subtasks": "SubTarefas",
@@ -279,5 +280,10 @@
     "sobreTexto": "Nós somos um pequeno grupo de desenvolvedores que acredita que a organização é a chave para o sucesso. Por isso, criamos a OG Project.",
     "historia": "História",
     "historiaTexto": "A OG Project foi formada em 2023 por um grupo de amigos que acreditavam que a organização é a chave para o sucesso."
+  },
+  "chat": {
+    "pessoal": "Pessoal",
+    "equipes": "Equipes",
+    "digiteUmaMensagem": "Digite uma mensagem"
   }
 }

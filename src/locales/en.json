@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Task Managers",
     "properties": "Properties",
     "task_color": "Task Color",
     "subtasks": "Subtasks",
@@ -263,5 +264,10 @@
     "oUsuarioPossuiOPerfilPrivado": "The user has a private profile",
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "The user's teams are private"
+  },
+  "chat": {
+    "pessoal": "Personal",
+    "equipes": "Teams",
+    "digiteUmaMensagem": "Type a message"
   }
 }

@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Ответственные за задачу",
     "properties": "Свойства",
     "task_color": "Цвет задачи",
     "subtasks": "Подзадачи",
@@ -263,5 +264,10 @@
     "oUsuarioPossuiOPerfilPrivado": "Пользователь имеет закрытый профиль",
     "username": "Имя пользователя",
     "asEquipesDoUsuarioSaoPrivadas": "Команды пользователя закрыты"
+  },
+  "chat": {
+    "pessoal": "Личный",
+    "equipes": "Команды",
+    "digiteUmaMensagem": "Введите сообщение"
   }
 }

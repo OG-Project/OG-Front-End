@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Responsables de la Tarea",
     "properties": "Propiedades",
     "task_color": "Color de la Tarea",
     "subtasks": "Subtareas",
@@ -263,5 +264,10 @@
     "oUsuarioPossuiOPerfilPrivado": "El usuario tiene el perfil privado",
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "Los equipos del usuario son privados"
+  },
+  "chat": {
+    "pessoal": "Personal",
+    "equipes": "Equipos",
+    "digiteUmaMensagem": "Escribe un mensaje"
   }
 }

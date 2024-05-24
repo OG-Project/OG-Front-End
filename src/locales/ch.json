@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "任务负责人",
     "properties": "属性",
     "task_color": "任务颜色",
     "subtasks": "子任务",
@@ -263,5 +264,10 @@
     "oUsuarioPossuiOPerfilPrivado": "用户拥有私人资料",
     "username": "用户名",
     "asEquipesDoUsuarioSaoPrivadas": "用户的团队是私人的"
+  },
+  "chat": {
+    "pessoal": "个人",
+    "equipes": "团队",
+    "digiteUmaMensagem": "输入消息"
   }
 }
