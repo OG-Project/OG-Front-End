@@ -11,7 +11,10 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue';
 import { conexaoBD } from '../stores/conexaoBD';
-let api = conexaoBD()
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
+let api = conexaoBD();
 let listaDeNomesVisiveis = ref([])
 let projeto2 = {}
 let visualizacao = {}
@@ -29,8 +32,8 @@ watch(() => props.listaDePropriedadesVisiveis, async () => {
 
 async function defineListaDeNomes() {
     listaDeNomesVisiveis.value = []
-    listaDeNomesVisiveis.value.push("nome")
-    listaDeNomesVisiveis.value.push("Descrição")
+    listaDeNomesVisiveis.value.push(t('lista.nome'))
+    listaDeNomesVisiveis.value.push(t('lista.descricao'))
     for (const propriedade of props.listaDePropriedadesVisiveis) {
         listaDeNomesVisiveis.value.push(propriedade.nome)
     }

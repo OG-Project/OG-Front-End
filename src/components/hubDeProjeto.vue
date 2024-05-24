@@ -22,7 +22,7 @@
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
             <button id="step-14" class="w-[20%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="enviaCookieTarefaNova()">
-                +Tarefa
+                +{{ $t('hubProjeto.tarefa') }}
             </button>
             <button class="w-[7%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="abreModalMensagem()">
@@ -51,24 +51,24 @@
         <div class="pl-[7%] w-[80%] h-[100%] flex flex-row gap-[0.3%]">
             <button @click="router.push('/projeto/kanban')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corKanban, paddingLeft: '1%', paddingRight: '1%' }">
-                Kanban
+                {{ $t('hubProjeto.kanban') }}
             </button>
             <button @click="router.push('/projeto/lista')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corLista, paddingLeft: '1%', paddingRight: '1%' }">
-                Lista
+                {{ $t('hubProjeto.lista') }}
             </button>
             <button @click="router.push('/projeto/timeline')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corTimeline, paddingLeft: '1%', paddingRight: '1%' }">
-                Linha Do Tempo
+                {{ $t('hubProjeto.linha') }}
             </button>
             <button @click="router.push('/projeto/calendario')" v-bind="styleBotao()"
                 :style="{ backgroundColor: corCalendario, paddingLeft: '1%', paddingRight: '1%' }">
-                Calendário
+                {{ $t('hubProjeto.calendario') }}
             </button>
         </div>
         <div v-if="$route.path === '/projeto/lista'"
             class="flex justify-center items-center bg-[var(--backgroundItemsClaros)] px-2 w-[17%] h-[3.5vh]">
-            <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" placeholder="Propriedades Visiveis" filter
+            <MultiSelect v-model="listaPropriedadeVisiveis" isFocus="false" :placeholder="$t('hubProjeto.propriedades')" filter
                 optionLabel="nome" :options="projeto.propriedades"
                 :pt="{ root: 'select', labelContainer: 'labelContainer' }"
                 class="bg-[var(--backgroundItemsClaros)] h-[3vh] w-[110%] flex justify-center items-center"
@@ -98,9 +98,9 @@ import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca'
 import HistoricoPopUp from "../components/HistoricoPopUp.vue";
 import IconeHistorico from "../assets/historicoProjeto.vue";
 import { inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 
-
-
+const { t } = useI18n()
 let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
@@ -255,7 +255,7 @@ function definePorcentagem() {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
 
     }
-    string = "Progressão " + porcentagem + "%"
+    string = t('hubProjeto.progresso')+ " " + porcentagem + "%"
     porcentagemDeConclusao.value = string
 }
 function defineSubTarefasConcluida(tarefas) {

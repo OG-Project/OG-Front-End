@@ -258,7 +258,20 @@
     "naoHaTarefas": "没有任务",
     "tarefasAtribuidas": "分配的任务",
     "informacoes": "信息",
-    "dataInicial": "起始日期"
+    "dataInicial": "起始日期",
+    "edita": "编辑项目",
+    "propriedades": "属性",
+    "status": "状态",
+    "buscar": "搜索",
+    "texto": "文本",
+    "todos": "所有",
+    "numero": "编号",
+    "data": "日期",
+    "nova": "新的",
+    "cria": "创建项目",
+    "tipo": "类型",
+    "nomePropriedade": "属性名称",
+    "nomeStatus": "状态名称"
   },
   "perfilInfo": {
     "nome": "姓名",
@@ -270,5 +283,21 @@
     "oUsuarioPossuiOPerfilPrivado": "用户拥有私人资料",
     "username": "用户名",
     "asEquipesDoUsuarioSaoPrivadas": "用户的团队是私人的"
+  },
+  "hubProjeto": {
+    "progresso": "进度",
+    "tarefa": "任务",
+    "kanban": "看板",
+    "lista": "列表",
+    "linha": "时间轴",
+    "calendario": "日历",
+    "propriedades": "可见属性",
+    "novo": "新的"
+  },
+  "lista": {
+    "naoTem": "没有值",
+    "naoHa": "没有任务",
+    "nome": "名称",
+    "descricao": "描述"
   }
 }

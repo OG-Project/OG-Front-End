@@ -258,7 +258,20 @@
     "naoHaTarefas": "No tasks",
     "tarefasAtribuidas": "Assigned Tasks",
     "informacoes": "Information",
-    "dataInicial": "Start Date"
+    "dataInicial": "Start Date",
+    "edita": "Edit Project",
+    "propriedades": "Properties",
+    "status": "Status",
+    "buscar": "Search for",
+    "texto": "Text",
+    "todos": "All",
+    "numero": "Number",
+    "data": "Date",
+    "nova": "new",
+    "cria": "Create Project",
+    "tipo": "Type",
+    "nomePropriedade": "Property Name",
+    "nomeStatus": "Status Name"
   },
   "perfilInfo": {
     "nome": "Name",
@@ -270,5 +283,21 @@
     "oUsuarioPossuiOPerfilPrivado": "The user has a private profile",
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "The user's teams are private"
+  },
+  "hubProjeto": {
+    "progresso": "Progress",
+    "tarefa": "Task",
+    "kanban": "Kanban",
+    "lista": "List",
+    "linha": "Timeline",
+    "calendario": "Calendar",
+    "propriedades": "Visible Properties",
+    "novo": "New"
+  },
+  "lista": {
+    "naoTem": "No Value",
+    "naoHa": "No Tasks",
+    "nome": "Name",
+    "descricao": "Description"
   }
 }

@@ -611,6 +611,7 @@ async function deletaTarefa() {
     // window.location.reload();
     VueCookies.remove("IdTarefaCookies");
   });
+  
 }
 
 let nomePropriedade = ref("");
@@ -1049,8 +1050,6 @@ async function calculaTempoAtuacao() {
       }
     });
   });
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
-  criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     if (tarefa.value.arquivos.length != 0) {
       banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))

@@ -80,9 +80,9 @@
                 <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto"
                     v-if="projetoEdita && isResponsavel && responsaveisProjeto.length == 1 && !naoPodeDeletar"></Botao>
-                <Botao preset="PadraoVazado" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.cria')" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
-                <Botao preset="PadraoVazado" texto="Editar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
+                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.edita')" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"
                     v-if="projetoEdita && isResponsavel"></Botao>
 

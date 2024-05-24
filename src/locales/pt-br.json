@@ -260,7 +260,20 @@
     "tarefasAtribuidas": "Tarefas Atribuídas",
     "informacoes": "Informações",
     "dataInicial" : "Data Inicial",
-    "dataFinal" : "Data Final"
+    "dataFinal" : "Data Final",
+    "edita": "Editar Projeto",
+    "propriedades": "Propriedades",
+    "status": "Status",
+    "buscar": "Buscar por",
+    "texto": "Texto",
+    "todos": "Todos",
+    "numero": "Número",
+    "data": "Data",
+    "nova": "nova",
+    "cria": "Criar Projeto",
+    "tipo": "Tipo",
+    "nomePropriedade": "Nome Propriedade",
+    "nomeStatus": "Nome Status"
   },
   "perfilInfo": {
     "nome": "Nome",
@@ -287,5 +300,21 @@
     "sobreTexto": "Nós somos um pequeno grupo de desenvolvedores que acredita que a organização é a chave para o sucesso. Por isso, criamos a OG Project.",
     "historia": "História",
     "historiaTexto": "A OG Project foi formada em 2023 por um grupo de amigos que acreditavam que a organização é a chave para o sucesso."
+  },
+  "hubProjeto":{
+    "progresso": "Progressão",
+    "tarefa": "Tarefa",
+    "kanban": "Kanban",
+    "lista": "Lista",
+    "linha": "Linha Do Tempo",
+    "calendario": "Calendário",
+    "propriedades": "Propriedades Vísiveis",
+    "novo": "Novo"
+  },
+  "lista":{
+    "naoTem": "Não Tem Valor",
+    "naoHa": "Não há Tarefas",
+    "nome": "Nome",
+    "descricao": "Descrição"
   }
 }
