@@ -107,7 +107,7 @@ let listaDeMensagens = ref([]);
 let chat = ref({});
 let webSocket = webSocketStore();
 
-webSocket.url = "ws://localhost:8082/og/webSocket/chat/" + chat.value.id
+webSocket.url = "ws://localhost:8082/og/webSocket/chat/1"
 
 onMounted(async () => {
     usuarioLogado.value = await api.buscarUm(usuarioLogadoId.value, '/usuario')

@@ -54,6 +54,9 @@ export const conexaoBD = defineStore('conexaoBD', {
         this.loading = false;
       }
     },
+    atualizaNotificacao(id){
+      return axios.patch(this.url +"/notificacao/visto/"+id,"",{withCredentials : true})
+    },
     cadastrar(objeto, textoRequisicao) {
       this.loading = true;
       try {
@@ -183,6 +186,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     },
     async buscarUmaNotificacao(id, textoRequisicao) {
       try {
+        console.log(id);
         return (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
       } finally {
         this.loading = false;

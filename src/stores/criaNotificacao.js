@@ -8,12 +8,14 @@ import VueCookies from "vue-cookies";
 export const criaNotificacao = defineStore('criaNotificacao', {
     state: () => {
         return {
-            notificacaoInicial: ''
+            notificacaoInicial: '',
+            temNotificao : false
         }
     },
 
     actions: {
         mandarNotificacao(objeto) {
+            this.temNotificao = true
             let api = conexaoBD();
             let objetoNotificacao = objeto.notificao
             let equipes = objeto.equipes
