@@ -23,7 +23,7 @@
             class="nome-convidado w-[10vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1 truncate ">
             {{ convidado.username == null ? convidado.nome : convidado.username }}</h2>
           <template v-if="listaConvidados.length > 0">
-            <sair class="imgIcon" @click="$emit('foiClicado', convidado),removerUsuarioALista(convidado)"></sair>
+            <sair class="imgIcon" @click="$emit('foiClicado', convidado), removerUsuarioALista(convidado)"></sair>
           </template>
 
           <!-- Renderiza o SelectPadrao apenas se houver usuários convidados -->
@@ -47,9 +47,11 @@ import userTodoPreto from '../imagemVetores/userTodoPreto.vue'
 import { defineProps, onUpdated, ref } from 'vue';
 import { getCurrentInstance } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { conexaoBD } from '../stores/conexaoBD';
 
 const { t } = useI18n()
 const instance = getCurrentInstance();
+const api = conexaoBD();
 
 defineEmits(['foiClicado'])
 
@@ -84,11 +86,7 @@ const imagemIcon = {
 }
 
 function removerUsuarioALista(convidado) {
-    if(convidado.username==null){
-      api.buscarUm(convidado.id, '/conviteEquipe').then((response) => {
-        api.deletarEquipe(notificacao.id, '/notificacao')
-      })
-    }
+    api.retirarUsuario(convidado)
 }
 
 const removerConvidado = (convidado) => {

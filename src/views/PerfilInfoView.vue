@@ -205,7 +205,9 @@ async function iniciarChat() {
                 conexao.cadastrar(chat, '/chat/pessoal').then((response) => {
                     console.log(response)
                     localStorage.setItem('opcao', 1)
-                    router.push('/chat/' + usuario.value.id)
+                    router.push('/chat/' + usuario.value.id).then(() => {
+                        enviaParaWebSocket(usuario.value, [response.usuarios[0]])
+                    })
                 })
             })
         } else {
@@ -213,6 +215,29 @@ async function iniciarChat() {
             router.push('/chat/' + usuario.value.id)
         }
     })
+}
+
+async function enviaParaWebSocket(equipe,membrosConvidados) {
+  let equipeAux = {
+      id: equipe.id,
+      nome: equipe.nome,
+      descricao: equipe.descricao,
+      membros: membrosConvidados
+  }
+  let teste = {
+      equipes: [{ equipe: equipeAux }],
+      notificao: {
+          mensagem: "Te Convidou para a Equipe",
+          conviteParaEquipe: {
+              equipe: equipe,
+              permissoes: funcaoPermissao(membrosConvidados)
+          }
+          
+      }
+
+  }
+  console.log("teste")
+  criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 function verificaTemEquipe(equipes) {

@@ -57,6 +57,10 @@ export const conexaoBD = defineStore('conexaoBD', {
     atualizaNotificacao(id){
       return axios.patch(this.url +"/notificacao/visto/"+id,"",{withCredentials : true})
     },
+    retirarUsuario(usuario){
+      console.log(usuario)
+      return axios.patch(this.url +"/notificacao/tirarUsuario",usuario,{withCredentials : true})
+    },
     cadastrar(objeto, textoRequisicao) {
       this.loading = true;
       try {

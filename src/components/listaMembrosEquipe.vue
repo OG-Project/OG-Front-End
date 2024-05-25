@@ -98,6 +98,7 @@ let listaDeUsuariosParaBusca = ref([]);
 let zerarInput = ref(false)
 
 import { criaNotificacao } from '../stores/criaNotificacao';
+import { set } from 'date-fns';
 const criaNotificacaoStore = criaNotificacao();
 
 
@@ -216,8 +217,14 @@ function mudaPermissaoMembroEquipe(usuario) {
 
 async function filtrarEquipe() {
   console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
-  equipeMembros.value = await (banco.buscarUm(equipeSelecionada, "/equipe"))
+  let usuario = await (banco.buscarUm(usuarioLogado, "/usuario"))
+  usuario.equipes.forEach((equipeUsuario)=>{
+      if(equipeUsuario.equipe.id == equipeSelecionada){
+        equipeMembros.value = equipeUsuario.equipe;
+      }
+  })
 }
+filtrarEquipe();
 
 function valorSelect(valor, convidado) {
   valorSelectSelecionado.value = valor
@@ -516,8 +523,11 @@ async function confirmarConvites() {
   } else {
       // Se o membro não foi removido anteriormente, convide-o normalmente
   }
-  enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
-  window.location.reload()
+  enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value).then(()=>{
+      setTimeout(() => {
+        //   window.location.reload();
+      }, 1000);
+  })
 }
 
 </script>
