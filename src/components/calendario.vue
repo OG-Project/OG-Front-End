@@ -80,13 +80,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch} from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, getDate } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import sortBy from 'sort-by'
 import VueCookies from 'vue-cookies';
+
+
+const props = defineProps({
+    listaTarefas: ref([])
+})
+       
 
 let data = Date.now()
 let diaNovo = ref()
@@ -96,15 +102,21 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 let cardDia
 let projeto = {}
-let tarefas = []
+let tarefas = ref (props.listaTarefas);
 let border = "none"
 
 getCalendario();
 
 onMounted(async () => {
-    projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'), '/projeto')
-    tarefas = projeto.tarefas;
-    getCalendario();
+    getCalendario()
+})
+
+
+watch(() => props.listaTarefas, async () => {
+    tarefas.value=props.listaTarefas
+    setTimeout(() =>{
+        getCalendario()
+    },100)
 })
 
 function ordenaTarefas() {
@@ -192,7 +204,7 @@ async function adicionaDiasALista(dias) {
 
 async function verificaTarefasDoDia(dia) {
     let lista = []
-    let tarefas2 = tarefas
+    let tarefas2 = tarefas.value
     tarefas2 = tarefas2.sort(sortBy('indice'))
     for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {

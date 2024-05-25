@@ -20,6 +20,13 @@
             </div>
         </div>
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
+            <div class="w-[60%] h-full flex items-center gap-8">
+                <span> Ver só as suas terefas</span>
+                <div  @click="mudaEstadoDeVerSuasTarefas()">
+                    <CheckBox :key="verSuaTarefas.valueOf" tamanho="pequeno" tipo="toggle"  :checked="verSuaTarefas" el-id="checkLibras">
+                    </CheckBox>
+                </div>
+            </div>
             <button id="step-14" class="w-[20%] border-2 border-[var(--roxo)] flex justify-center items-center"
                 @click="enviaCookieTarefaNova()">
                 +Tarefa
@@ -41,6 +48,8 @@
                 <IconeHistorico  class="w-[70%] h-[100%]  cursor-pointer">
                 </IconeHistorico>
             </button>
+
+            
             <div v-if="enviandoMensagem" class=" animation">
                 <comentarioProjeto></comentarioProjeto>
             </div>
@@ -98,9 +107,11 @@ import { criaTarefaEBuscaStore } from '../stores/criaTarefaEBusca'
 import HistoricoPopUp from "../components/HistoricoPopUp.vue";
 import IconeHistorico from "../assets/historicoProjeto.vue";
 import { inject } from 'vue';
+import CheckBox from '../components/checkBox.vue'
+import { getCurrentInstance } from 'vue';
 
-
-
+const instance = getCurrentInstance();
+let verSuaTarefas = ref(false)
 let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
@@ -176,6 +187,12 @@ async function verificaSeEResponsavel() {
     }
     isResponsavel.value = false
     return
+}
+
+
+function mudaEstadoDeVerSuasTarefas() {
+    verSuaTarefas.value = !verSuaTarefas.value;
+    instance.emit('verSuasTarefas', verSuaTarefas.value);
 }
 
 function styleBotao() {

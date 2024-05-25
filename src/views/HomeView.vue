@@ -14,6 +14,7 @@ import HomeViewDesktop from './desktop/HomeViewDesktop.vue';
 import HomeViewMobile from './mobile/HomeViewMobile.vue';
 import router from '../router';
 import { conexaoBD } from "../stores/conexaoBD.js";
+import VueCookies from "vue-cookies";
 
 
 const banco = conexaoBD();

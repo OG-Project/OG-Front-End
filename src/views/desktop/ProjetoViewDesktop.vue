@@ -1,27 +1,31 @@
 <template>
     <div class="w-full  flex flex-col items-center justify-end overflow-hidden">
-        <hubDeProjeto @trocaValor="(event) => opcao = event" @atualizaPropriedadesVisiveis="atualizaValorDaLista($event)"></hubDeProjeto>
+        <hubDeProjeto @trocaValor="(event) => opcao = event"
+            @atualizaPropriedadesVisiveis="atualizaValorDaLista($event)" @verSuasTarefas="atualizaListaDeTarefaVisivel">
+        </hubDeProjeto>
         <div id="step-17" class="w-full h-[63vh] flex justify-center items-end">
             <div class="divMaior ">
                 <div v-if="defineOpcao(route.path, '/projeto/calendario')"
                     class="w-[100%] h-screen flex justify-center items-center">
-                    <calendario></calendario>
+                    <calendario :listaTarefas="listaTarefaEnvio"></calendario>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/timeline')"
                     class="w-[100%] h-screen flex justify-center items-center">
                     <timeLine></timeLine>
-                </div> 
+                </div>
                 <div v-if="defineOpcao(route.path, '/projeto/kanban')"
-                    class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto" >
+                    class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto">
                     <KanbanDeStatus></KanbanDeStatus>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length < 7"
                     class="w-full max-w-full h-screen flex justify-center px-4 items-center overflow-x-auto">
-                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
+                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
+                    </cardList>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length >= 7"
                     class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto">
-                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis"></cardList>
+                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
+                    </cardList>
                 </div>
             </div>
         </div>
@@ -38,29 +42,56 @@ import { conexaoBD } from '../../stores/conexaoBD';
 import { useRoute } from 'vue-router';
 import { editaProjetoStore } from '../../stores/editaProjeto';
 import VueCookies from 'vue-cookies';
+import { Usuario } from '../../models/usuario';
 let tempoAtuado;
 let horaEntrada;
 let listaDePropriedadesVisiveis = ref([])
 let idProjeto = VueCookies.get("IdProjetoAtual")
+let IdUsuarioCookie = VueCookies.get("IdUsuarioCookie")
 let projeto = ref({})
+let listaTarefaEnvio = ref([]);
 const banco = conexaoBD();
+onMounted(async () => {
+    projeto.value = await banco.buscarUm(idProjeto, "/projeto")
+    timerTempoAtuacao();
+    atualizaListaDeTarefaVisivel(false);
+})
 
 function reloadTelaProjeto() {
-  const reload = VueCookies.get('idReloadProjeto');
-  if (reload == '0') {
-    console.log("reload")
-    VueCookies.set('idReloadProjeto', '1');
-    window.location.reload();
-  }
+    const reload = VueCookies.get('idReloadProjeto');
+    if (reload == '0') {
+        console.log("reload")
+        VueCookies.set('idReloadProjeto', '1');
+        window.location.reload();
+    }
 }
 
 reloadTelaProjeto()
 
+
+async function atualizaListaDeTarefaVisivel(verSuaTarefas) {
+    if (verSuaTarefas) {
+        let tarefas = projeto.value.tarefas
+        tarefas.forEach(tarefa => {
+            console.log(tarefa);
+            tarefa.responsaveis.forEach(async (responsavel) => {
+                if (responsavel.id == IdUsuarioCookie) {
+                    listaTarefaEnvio.value.push(tarefa)
+                }
+            })
+            return
+        });
+    } else {
+         banco.buscarUm(idProjeto, '/projeto').then((response)=>{
+            listaTarefaEnvio.value = response.tarefas;
+            return
+        })
+    }
+    listaTarefaEnvio.value=[]
+}
+
 const editaProjetoFunc = editaProjetoStore();
-onMounted(async() => {
-    projeto.value = await banco.buscarUm(idProjeto, "/projeto")
-    timerTempoAtuacao();
-})
+
 
 onUnmounted(() => {
     calculaTempoAtuacao()
@@ -124,7 +155,7 @@ async function atualizaProjetoBanco() {
     //(id: any, nome: any, descricao: any, equipes: any, propriedades: any, status: any, responsaveis: any, dataFinal: any, tempoAtuacao: any)
     console.log(projeto.projetoEquipes)
     editaProjetoFunc.editaProjeto(projeto.id, projeto.nome, projeto.descricao, projeto.projetoEquipes, projeto.propriedades
-    , projeto.statusList, projeto.responsaveis, projeto.dataFinal, tempoAtuado,projeto.categoria,projeto.indexLista,projeto.comentarios,projeto.tarefas)
+        , projeto.statusList, projeto.responsaveis, projeto.dataFinal, tempoAtuado, projeto.categoria, projeto.indexLista, projeto.comentarios, projeto.tarefas)
 }
 
 </script>
@@ -139,7 +170,8 @@ async function atualizaProjetoBanco() {
     background-color: var(--backgroundItems);
     clip-path: polygon(5% 0, 95% 0, 100% 9%, 100% 100%, 0 100%, 0 10%);
     position: relative;
-    border: 2px solid var(--backgroundItems);border-top: none;
+    border: 2px solid var(--backgroundItems);
+    border-top: none;
 
 }
 </style>
