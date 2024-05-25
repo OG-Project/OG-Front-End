@@ -272,7 +272,11 @@
     "cria": "Create Project",
     "tipo": "Type",
     "nomePropriedade": "Property Name",
-    "nomeStatus": "Status Name"
+    "nomeStatus": "Status Name",
+    "obrigatorio": "The Name is required",
+    "equipes": "Teams",
+    "responsavelObrigatorio": "Responsible person is required",
+    "dadosFaltando": "Project with missing data"
   },
   "perfilInfo": {
     "nome": "Name",
@@ -307,5 +311,29 @@
     "nome": "Name",
     "descricao": "Description",
     "notificacoes": "Notifications"
-  }
+  },
+  "timeline":{
+    "de": "of"
+},
+"calendario":{
+  "segunda": "Monday",
+  "terca": "Tuesday",
+  "quarta": "Wednesday",
+  "quinta": "Thursday",
+  "sexta": "Friday",
+  "sabado": "Saturday",
+  "domingo": "Sunday"
+},
+"comentario":{
+  "naoComentarios": "This project has no comments yet",
+  "comentar": "Comment",
+  "comentou": "commented:",
+  "comente": "Comment on the project"
+},
+"adicionaEquipe":{
+  "convidar": "invite",
+  "convites": "Invitations",
+  "confirmar": "Confirm",
+  "adicionaEquipe": "Add Team"
+}
 }

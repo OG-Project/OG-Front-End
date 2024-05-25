@@ -272,7 +272,11 @@
       "cria": "Crear Proyecto",
       "tipo": "Tipo",
       "nomePropriedade": "Nombre de Propiedad",
-      "nomeStatus": "Nombre de Estado"
+      "nomeStatus": "Nombre de Estado",
+      "obrigatorio": "El Nombre es obligatorio",
+      "equipes": "Equipos",
+      "responsavelObrigatorio": "Responsable es obligatorio",
+      "dadosFaltando": "Proyecto con datos faltantes"
   },
   "perfilInfo": {
     "nome": "Nombre",
@@ -307,5 +311,29 @@
     "nome": "Nombre",
     "descricao": "Descripción",
     "notificacoes": "Notificaciones"
-  } 
+  },
+  "timeline":{
+    "de": "de"
+},
+"calendario":{
+  "segunda": "Lunes",
+  "terca": "Martes",
+  "quarta": "Miércoles",
+  "quinta": "Jueves",
+  "sexta": "Viernes",
+  "sabado": "Sábado",
+  "domingo": "Domingo"
+},
+"comentario":{
+  "naoComentarios": "Este proyecto aún no tiene comentarios",
+  "comentar": "Comentar",
+  "comentou": "comentó:",
+  "comente": "Comenta en el proyecto"
+},
+"adicionaEquipe":{
+  "convidar": "invitar",
+  "convites": "Invitaciones",
+  "confirmar": "Confirmar",
+  "adicionaEquipe": "Agregar Equipo"
+}
 }

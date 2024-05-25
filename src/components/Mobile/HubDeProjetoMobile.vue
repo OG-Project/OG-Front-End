@@ -65,7 +65,9 @@ import KanbanIcon from '../../assets/KanbanIcon.vue'
 import ListaIcon from '../../assets/ListaIcon.vue'
 import TimelineIcon from '../../assets/TimelineIcon.vue'
 import CalendarioIcon from '../../assets/CalendarioIcon.vue'
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n()
 let criaTarefa = criaTarefaEBuscaStore()
 let listaPropriedadeVisiveis = ref([])
 let api = conexaoBD()
@@ -174,7 +176,7 @@ function definePorcentagem() {
         porcentagem = (100 / subtarefas.value.length * (subtarefasConcluidas.value.length)).toFixed(2)
 
     }
-    string = "Progressão " + porcentagem + "%"
+    string = t('hubProjeto.progresso')+ " " + porcentagem + "%"
     porcentagemDeConclusao.value = string
 }
 function defineSubTarefasConcluida(tarefas) {

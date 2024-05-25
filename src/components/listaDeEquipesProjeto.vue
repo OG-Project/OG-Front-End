@@ -20,19 +20,25 @@
             </div>
         </div>
         <div class="adiciona-membro">
-            <Input styleInput="input-transparente-claro" :largura="larguraInputConvidado()"
-                icon="../src/imagemVetores/adicionarPessoa.svg" conteudoInput="Adicionar Equipe"
-                v-model="equipeConvidada" :modelValue="equipeConvidada" @updateModelValue="(e) => {
-                    equipeConvidada = e
-                }"></Input>
+            <inputDePesquisa v-if="screenWidth >= 620" :class="{ 'computedClasses': someCondition }" 
+                styleInput="input-transparente-claro" :largura="larguraInputConvidado()" 
+                :place-holder-pesquisa="$t('adicionaEquipe.adicionaEquipe')"  :zera-input="zerarInput" ref="inputPesquisa"
+                  :lista-da-pesquisa=listaDeUsuariosParaBusca @item-selecionado="pegaValorSelecionadoPesquisa" >
+            </inputDePesquisa>
+            <inputDePesquisa v-else :class="{ 'computedClasses': someCondition }" 
+                  styleInput="input-transparente-claro" :largura="larguraInputConvidadoMobile()" 
+                  :place-holder-pesquisa="$t('adicionaEquipe.adicionaEquipe')"  :zera-input="zerarInput"
+                   icon="../src/imagem-vetores/adicionarPessoa.svg" ref="inputPesquisa"
+                    :lista-da-pesquisa=listaDeUsuariosParaBusca @item-selecionado="pegaValorSelecionadoPesquisa" >
+              </inputDePesquisa>
             <div class="flex mt-[1vh] ml-5">
                 <Botao class="flex justify-center " preset="PadraoVazado" tamanhoDaBorda="2px" tamanhoPadrao="pequeno"
-                    texto="convidar" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarEquipe"></Botao>
+                    :texto="$t('adicionaEquipe.convidar')" tamanhoDaFonte="0.9rem" :funcaoClick="adicionarEquipe"></Botao>
             </div>
         </div>
         <div class="div-lista absolute bottom-[15vh] xl:mt-[20vh] lg:mt-[4vh] md:mt-[4vh] ">
             <ListaConvidados :margin-left="marginLeftConvidado()" margin-right="2vw" texto="Convites"
-                mostrar-select="true" class="listaConvidados" altura="40vh"
+                 class="listaConvidados" altura="40vh"
                 caminho-da-imagem-icon="../src/imagemVetores/Sair.svg"
                 caminho-da-imagem-perfil="../src/imagemVetores/perfilPadrao.svg" :listaConvidados="equipesConvidadas">
             </ListaConvidados>
@@ -40,7 +46,7 @@
         <div class="botao absolute bottom-0 right-0 mb-4 mr-4">
             <div>
                 <div>
-                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" texto="Confirmar" tamanhoDaFonte="0.9rem"
+                    <Botao preset="PadraoRoxo" tamanhoPadrao="medio" :texto="$t('adicionaEquipe.confirmar')" tamanhoDaFonte="0.9rem"
                         :funcaoClick="confirmarConvites"></Botao>
                 </div>
             </div>
@@ -62,6 +68,7 @@ import VueCookies from "vue-cookies";
 import { webSocketStore } from '../stores/webSocket.js';
 import equipe from '../imagemVetores/equipe.vue';
 import { criaNotificacao } from '../stores/criaNotificacao';
+import inputDePesquisa from './inputDePesquisa.vue';
 
 const criaNotificacaoStore = criaNotificacao();
 let projetoAtual = ref(VueCookies.get('IdProjetoAtual'))
@@ -69,6 +76,7 @@ const banco = conexaoBD();
 onMounted(async () => {
     projetoAtual.value = await banco.buscarUm(projetoAtual.value, "/projeto")
     listaUsuarios();
+    pesquisaBancoName();
 }
 )
 
@@ -76,10 +84,12 @@ let listaEquipes = ref([]);
 let usuariosRemover = ref([]);
 let membrosEquipe = ref([]);
 let equipesConvidadas = ref([]);
+let listaDeUsuariosParaBusca = ref([]);
 let equipeConvidada = ref('');
 let equipesParaConvidar = ref([]);
 const screenWidth = window.innerWidth;
 const opcoesSelect = ['Edit', 'View'];
+let zerarInput = ref(false)
 
 let emit = defineEmits({
     boolean: Boolean
@@ -102,33 +112,69 @@ function larguraNomeEquipe() {
 
 function marginLeftConvidado() {
     if (screenWidth <= 768) {
-        return '6vw';
+        return '-5vw';
     } else if (screenWidth > 768 && screenWidth <= 1024) {
-        return '0vw';
+        return '-8vw';
     } else if (screenWidth > 1024 && screenWidth < 1920) {
-        return '0vw';
+        return '-4vw';
     } else if (screenWidth > 1920 && screenWidth < 2560) {
-        return '6vw'
+        return 'vw'
     } else if (screenWidth >= 2560) {
-        return '3vw';
+        return '1vw';
     }
 }
 
+async function pesquisaBancoName() {
+  let listaAux = (await banco.procurar('/equipe'))
+  listaAux.forEach(usuarioAtual => {
+      listaDeUsuariosParaBusca.value.push(usuarioAtual.nome);
+  });
+  return listaDeUsuariosParaBusca;
+}
 
-function larguraInputConvidado() {
-    if (screenWidth <= 768) {
-        return '24';
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
-        return '22';
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
-        return '19';
-    } else if (screenWidth >= 1920 && screenWidth > 2560) {
-        return '20';
-    } else if (screenWidth >= 2560) {
+async function pegaValorSelecionadoPesquisa(valorPesquisa) {
+    equipeConvidada.value = valorPesquisa
+}
+
+function larguraInputConvidado(){
+  if(screenWidth <= 620){
+        return '40'
+  }
+  if(screenWidth <= 680){
+      return '45'
+  }
+  if (screenWidth <= 768) {
+      return '23';
+  }if (screenWidth > 768 && screenWidth <= 1024) {
+      return '22';
+  }if (screenWidth > 1024 && screenWidth <= 1440) {
+      return '20';
+  }if (screenWidth > 1440 && screenWidth < 1620) {
+        return '28';
+    }if(  screenWidth > 1620 && screenWidth <= 1920){
+        return '16';
+    } if(  screenWidth > 1921 && screenWidth <= 2560){
         return '12';
-    }
+    } else if (screenWidth >= 2560) {
+      return '12';
+  }
 }
 
+function larguraInputConvidadoMobile(){
+  if(screenWidth <= 620){
+        return '70'
+  }
+  if(screenWidth <= 425){
+      return '60'
+  }
+  if(screenWidth <= 375){
+      return '35'
+  }
+  else if(screenWidth <= 320){
+      return '35'
+  }
+  
+}
 async function listaDeEquipes() {
     let equipes = projetoAtual.value.projetoEquipes
     let listaDeEquipes = await equipes;
@@ -153,7 +199,7 @@ async function adicionarEquipe() {
 
     // Verifica se o usuário já foi convidado
     if (equipesConvidadas != null) {
-        const equipeJaConvidada = equipesConvidadas.value.some(equipe => equipe.nome === equipeConvidada.value);
+        const equipeJaConvidada = equipesConvidadas.value.some(equipe => equipe.nome == equipeConvidada.value);
         console.log(equipeConvidada.value)
         if (equipeJaConvidada) {
             console.log("Você já convidou essa pessoa.");
@@ -220,8 +266,11 @@ async function confirmarConvites() {
         }
         equipes.push(equipeAux)
     }
-    enviaParaWebSocket(projetoAtual.value, equipes);
-
+    enviaParaWebSocket(projetoAtual.value, equipes).then(()=>{
+        window.location.reload();
+        
+    });
+   
 }
 
 </script>

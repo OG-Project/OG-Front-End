@@ -2,19 +2,19 @@
     <div class="flex flex-col items-center justify-center w-full h-[80%]">
         <div class=" flex flex-col  mt-[3%] gap-20 justify-center pl-3">
             <div class="flex items-start justify-start font-semibold">
-                <Input styleInput="input-transparente-claro-grande" type="text" conteudoInput="Nome Projeto"
+                <Input styleInput="input-transparente-claro-grande" type="text" :conteudoInput="$t('criaProjeto.nomeProjeto')"
                     largura="80" altura="6" fontSize="1.5rem" v-model="nomeProjeto" :modelValue="nomeProjeto"
                     @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
             </div>
             <div class="h-[15%] w-max flex items-center">
-                <TextAreaPadrao placeholder="Descrição" resize="none" width="80vw " height="8vh" preset="transparente"
+                <TextAreaPadrao :placeholder="$t('criaProjeto.descricao')" resize="none" width="80vw " height="8vh" preset="transparente"
                     tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
             <div class="w-max h-max" @mouseenter="fazHoverPlaceHolder()" @mouseleave="fazBackPadraoPlaceHolder()">
                 <Input altura="2" fontSize="1rem" largura="50" tipo="date" v-model="dataFinalProjeto" tipoInput="float"
-                    conteudoInput="Data Final: " :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
+                    :conteudoInput="$t('criaProjeto.dataFinal')+' :'" :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
                         dataFinalProjeto = e
                     }" />
 
@@ -22,16 +22,16 @@
             <div class="">
                 <div class="  flex flex-col gap-10">
                     <div class="w-[50%] grid grid-cols-2 gap-[100%]">
-                        <selectPadrao altura="4" largura="30" :listaSelect="listaSelecao" placeholder-select="Equipes"
+                        <selectPadrao altura="4" largura="30" :listaSelect="listaSelecao" :placeholder-select="$t('criaProjeto.equipes')"
                             v-model="equipesRelacionadasProjeto" fonte-tamanho="0.9rem"></selectPadrao>
 
-                        <Botao preset="PadraoVazado" texto="Convidar" tamanho-da-borda="2px" tamanhoPadrao="mobilePequeno"
+                        <Botao preset="PadraoVazado" :texto="$t('criaProjeto.conviar')" tamanho-da-borda="2px" tamanhoPadrao="mobilePequeno"
                             :funcaoClick="colocaListaEquipes" :parametrosFuncao="[equipesRelacionadasProjeto]">
                         </Botao>
                     </div>
                     <div class="flex flex-col  items-start justify-start gap-3 w-full ">
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
-                            place-holder-pesquisa="Responsáveis pelo projeto"
+                            :place-holder-pesquisa="$t('criaProjeto.responsavelPeloProjeto')"
                             @item-selecionado="pegaValorSelecionadoPesquisa" largura="50" fontSize="1rem">
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
@@ -53,7 +53,7 @@
             </div>
             <div class=" w-full ">
                 <ListaConvidados altura="25vh" altDaImagemIcon="2vh" lagImagemIcon="4vw"
-                    :listaConvidados="listaEquipesSelecionadas" texto="Equipes Vinculadas"
+                    :listaConvidados="listaEquipesSelecionadas" :texto="$t('criaProjeto.equipesVinculadas')"
                     :caminho-da-imagem-icon=srcIconListaEquipes @foi-clicado="removeListaEquipeConvidadas">
                 </ListaConvidados>
             </div>
@@ -63,10 +63,10 @@
                 @manda-lista-status-back="colocaListaStatus"></ListaPropiedadesStatus>
         </div>
         <div class="h-[10%]  flex-row  pb-28 ">
-            <Botao preset="PadraoRoxo" texto="Criar Projeto" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
+            <Botao preset="PadraoRoxo" :texto="$t('criaProjeto.cria')" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
                 tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
                 v-if="!projetoEdita"></Botao>
-            <Botao preset="PadraoRoxo" texto="Salvar Alterações" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
+            <Botao preset="PadraoRoxo" :texto="$t('criaProjeto.edita')" tamanho-da-borda="4px" tamanhoPadrao="mobilegrande"
                 tamanhoDaFonte="1.5vh" sombras='nao' :funcaoClick="criaProjeto"
                 v-if="projetoEdita"></Botao>
                 <div class="mt-4">
@@ -109,8 +109,10 @@ const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
-
 import { inject } from 'vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n()
 
 const criaHistorico = criaHistoricoStore();
 
@@ -457,11 +459,11 @@ async function criaProjeto() {
     if (nomeProjeto.value == "") {
         semResponsavel.value = false
         semNome.value = true
-        mensagem.value = "Projeto com dados faltando"
+        mensagem.value = t('criaProjeto.dadosFaltando')
         mensagemCor.value = "#CD0000"
         return
     } else if (responsaveisProjeto.value == "") {
-        mensagem.value = "Projeto com dados faltando"
+        mensagem.value = t('criaProjeto.dadosFaltando')
         mensagemCor.value = "#CD0000"
         semResponsavel.value = true
         semNome.value = false

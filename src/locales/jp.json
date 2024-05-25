@@ -273,7 +273,11 @@
     "cria": "プロジェクトを作成",
     "tipo": "タイプ",
     "nomePropriedade": "プロパティ名",
-    "nomeStatus": "ステータス名"
+    "nomeStatus": "ステータス名",
+    "obrigatorio": "名前は必須です",
+    "equipes": "チーム",
+    "responsavelObrigatorio": "責任者は必須です",
+    "dadosFaltando": "データが欠けているプロジェクト"
   },
   "perfilInfo": {
     "nome": "名前",
@@ -308,5 +312,29 @@
     "nome": "名前",
     "descricao": "説明",
     "notificacoes": "通知"
-  }
+  },
+  "timeline":{
+    "de": "の"
+},
+"calendario":{
+  "segunda": "月曜日",
+  "terca": "火曜日",
+  "quarta": "水曜日",
+  "quinta": "木曜日",
+  "sexta": "金曜日",
+  "sabado": "土曜日",
+  "domingo": "日曜日"
+},
+"comentario":{
+  "naoComentarios": "このプロジェクトにはまだコメントがありません",
+  "comentar": "コメントする",
+  "comentou": "コメントしました:",
+  "comente": "プロジェクトにコメントする"
+},
+"adicionaEquipe":{
+  "convidar": "招待する",
+  "convites": "招待状",
+  "confirmar": "確認する",
+  "adicionaEquipe": "チームを追加"
+}
 }

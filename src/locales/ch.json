@@ -272,7 +272,11 @@
     "cria": "创建项目",
     "tipo": "类型",
     "nomePropriedade": "属性名称",
-    "nomeStatus": "状态名称"
+    "nomeStatus": "状态名称",
+    "obrigatorio": "姓名是必填项",
+    "equipes": "团队",
+    "responsavelObrigatorio": "负责人是必需的",
+    "dadosFaltando": "数据缺失的项目"
   },
   "perfilInfo": {
     "nome": "姓名",
@@ -307,5 +311,29 @@
     "nome": "名称",
     "descricao": "描述",
     "notificacoes": "通知"
-  }
+  },
+  "timeline":{
+    "de": "的"
+},
+"calendario":{
+  "segunda": "星期一",
+  "terca": "星期二",
+  "quarta": "星期三",
+  "quinta": "星期四",
+  "sexta": "星期五",
+  "sabado": "星期六",
+  "domingo": "星期日"
+},
+"comentario":{
+  "naoComentarios": "这个项目还没有评论",
+  "comentar": "评论",
+  "comentou": "评论:",
+  "comente": "评论项目"
+},
+"adicionaEquipe":{
+  "convidar": "邀请",
+  "convites": "邀请函",
+  "confirmar": "确认",
+  "adicionaEquipe": "添加团队"
+}
 }
