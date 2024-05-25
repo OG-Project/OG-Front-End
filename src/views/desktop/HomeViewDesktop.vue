@@ -67,6 +67,7 @@ import PopUpTopicoMesHome from "../../components/popUpTopicoMesHome.vue";
 import { funcaoPopUpStore } from "../../stores/funcaoPopUp";
 import VueCookies from "vue-cookies";
 import { conexaoBD } from "../../stores/conexaoBD.js";
+import { criaTarefaEBuscaStore } from "../../stores/criaTarefaEBusca";
 
 const banco = conexaoBD();
 
@@ -92,6 +93,12 @@ function reloadHome() {
 }
 
 reloadHome();
+
+function testeCria(){
+  const criaTarefa = criaTarefaEBuscaStore();
+    VueCookies.set('idReloadTarefa', '0');
+    criaTarefa.criaTarefa();
+}
 
 async function verificaTarefasFeitas() {
   const equipeUsuario = await banco.procurar("/usuario/" + VueCookies.get("IdUsuarioCookie"));

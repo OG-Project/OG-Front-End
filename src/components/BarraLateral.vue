@@ -46,7 +46,7 @@
             </div>
             <div class="flex gap-6 justify-center items-center text-white " @click="redirecionamento('/chat')">
               <iconChat></iconChat>
-              <div>{{ 'Chat' }}</div>
+              <div>{{ $t('chat.chat') }}</div>
             </div>
           </div>
           <div class="w-full flex-col flex gap-6 ml-4 mb-4 justify-end items-start" @click="redirecionamento('/login')">

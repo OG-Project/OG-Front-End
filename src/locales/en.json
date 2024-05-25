@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Task Managers",
     "properties": "Properties",
     "task_color": "Task Color",
     "subtasks": "Subtasks",
@@ -288,6 +289,12 @@
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "The user's teams are private"
   },
+  "chat": {
+    "pessoal": "Personal",
+    "equipes": "Teams",
+    "digiteUmaMensagem": "Type a message",
+    "chat": "Chat"
+  },
   "hubProjeto": {
     "progresso": "Progress",
     "tarefa": "Task",
@@ -302,7 +309,8 @@
     "naoTem": "No Value",
     "naoHa": "No Tasks",
     "nome": "Name",
-    "descricao": "Description"
+    "descricao": "Description",
+    "notificacoes": "Notifications"
   },
   "timeline":{
     "de": "of"

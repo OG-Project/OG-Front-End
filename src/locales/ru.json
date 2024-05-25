@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Ответственные за задачу",
     "properties": "Свойства",
     "task_color": "Цвет задачи",
     "subtasks": "Подзадачи",
@@ -288,6 +289,12 @@
     "username": "Имя пользователя",
     "asEquipesDoUsuarioSaoPrivadas": "Команды пользователя закрыты"
   },
+  "chat": {
+    "pessoal": "Личный",
+    "equipes": "Команды",
+    "digiteUmaMensagem": "Введите сообщение",
+    "chat": "Чат"
+  },
   "hubProjeto": {
     "progresso": "Прогресс",
     "tarefa": "Задача",
@@ -302,7 +309,8 @@
     "naoTem": "Нет значения",
     "naoHa": "Нет задач",
     "nome": "Имя",
-    "descricao": "Описание"
+    "descricao": "Описание",
+    "notificacoes": "Уведомления"
   },
   "timeline":{
     "de": "из"

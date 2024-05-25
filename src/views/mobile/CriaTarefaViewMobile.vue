@@ -378,7 +378,7 @@
       </div>
       <div class="w-[96%] flex justify-between fixed bottom-28 right-4 pt-8">
         <Botao tamanhoPadrao="mobilepequeno" preset="Deletar" :funcaoClick="deletaTarefa" tamanhoDaBorda="2px" tamanhoDaFonte="1.5rem"></Botao>
-        <Botao tamanhoPadrao="mobilepequeno" :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" texto="Concluído" tamanhoDaBorda="2px"
+        <Botao tamanhoPadrao="mobilepequeno" :funcaoClick="criaTarefaNoConcluido" preset="PadraoRoxo" :texto="$t('criaTarefa.completed')" tamanhoDaBorda="2px"
           tamanhoDaFonte="1.5rem"></Botao>
       </div>
     </div>
@@ -460,23 +460,6 @@ const status = ref([]);
 let projetoDaTarefa = ref();
 
 //Estilização usando Java Script
-
-let estiloBotaoPropriedades = ref({
-  borderBottom: "solid 4px #620BA7",
-});
-
-let estiloOpcaoClicadoPropriedades = {
-  borderBottom: "solid 4px #620BA7",
-};
-
-let estiloBotaoStatus = ref({
-  borderBottom: "solid 4px transparent",
-});
-
-let estiloOpcaoClicadoStatus = {
-  borderBottom: "solid 4px #620BA7",
-};
-
 //Varaivel utilizada para armazenar quantos arquivos foram atrelados a tarefa
 let numeroDeArquivos = ref(0);
 
@@ -1112,7 +1095,7 @@ let barraPorcentagem = ref({
   width: porcentagemDeTarefasConcluidas.value + "%",
   height: "100%",
   borderRadius: "0px",
-  backgroundColor: "#620BA7",
+  backgroundColor: "var(--roxo)",
   border: "none",
   boxShadow: "none",
 });
