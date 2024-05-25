@@ -216,7 +216,9 @@ async function filtrarEquipe() {
   let usuario = await (banco.buscarUm(usuarioLogado, "/usuario"))
   usuario.equipes.forEach((equipeUsuario)=>{
       if(equipeUsuario.equipe.id == equipeSelecionada){
+        console.log(equipeEditar.value)
         equipeEditar.value = equipeUsuario.equipe;
+        
       }
   })
 }

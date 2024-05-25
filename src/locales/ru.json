@@ -271,7 +271,11 @@
     "cria": "Создать проект",
     "tipo": "Тип",
     "nomePropriedade": "Имя свойства",
-    "nomeStatus": "Имя статуса"
+    "nomeStatus": "Имя статуса",
+    "obrigatorio": "Имя обязательно",
+    "equipes": "Команды",
+    "responsavelObrigatorio": "Ответственный обязателен",
+    "dadosFaltando": "Проект с отсутствующими данными"
   },
   "perfilInfo": {
     "nome": "Имя",
@@ -299,5 +303,29 @@
     "naoHa": "Нет задач",
     "nome": "Имя",
     "descricao": "Описание"
-  }
+  },
+  "timeline":{
+    "de": "из"
+},
+"calendario":{
+  "segunda": "Понедельник",
+  "terca": "Вторник",
+  "quarta": "Среда",
+  "quinta": "Четверг",
+  "sexta": "Пятница",
+  "sabado": "Суббота",
+  "domingo": "Воскресенье"
+},
+"comentario":{
+  "naoComentarios": "У этого проекта еще нет комментариев",
+  "comentar": "Комментировать",
+  "comentou": "прокомментировал:",
+  "comente": "Прокомментируйте проект"
+},
+"adicionaEquipe":{
+  "convidar": "пригласить",
+  "convites": "Приглашения",
+  "confirmar": "Подтвердить",
+  "adicionaEquipe": "Добавить команду"
+}
 }

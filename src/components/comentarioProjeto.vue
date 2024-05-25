@@ -15,7 +15,7 @@
                     </div>
                     <div class="w-full pb-2 pr-2 flex justify-end max-w-full">
                         <div class="w-full flex pt-2">
-                            <p class="pr-2"> {{ comentario.autor.username }}</p> comentou: <p
+                            <p class="pr-2"> {{ comentario.autor.username }}</p> {{$t('comentario.comentou')}} <p
                                 class="text-[var(--roxoClaro)] pl-2 break-all w-[100%] "> {{ comentario.conteudo }}</p>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
         <div v-else class="w-full h-[70%] ">
             <div class="w-full h-full flex flex-col justify-center items-center ">
                 <iconMensagem class=" w-[60%] h-[50%]"></iconMensagem>
-                <p class="w-[70%] h-max">Esse projeto ainda não tem comentarios</p>
+                <p class="w-[70%] h-max">{{$t('comentario.naoComentarios')}}</p>
             </div>
         </div>
         <div class="w-[100%]  mt-4  shadow-lg min-h-[30%] max-h-[30%] flex flex-col justify-end">
@@ -42,14 +42,14 @@
             usuarioCookies.foto.dados
             " />
                 <div class="w-full pb-2 pr-2 pl-2 flex justify-end items-end">
-                    <TextAreaPadrao width="20vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
+                    <TextAreaPadrao width="20vw" height="8vh" class="pt-6 pb-4" :placeholder="$t('comentario.comente')"
                         tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado" v-if="screenWidth >= 700"></TextAreaPadrao>
-                        <TextAreaPadrao width="70vw" height="8vh" class="pt-6 pb-4" placeholder="Comente no projeto"
+                        <TextAreaPadrao width="70vw" height="8vh" class="pt-6 pb-4" :placeholder="$t('comentario.comente')"
                         tamanho-da-fonte="1rem" resize="vertical" v-model="comentarioSendoEnviado" v-else></TextAreaPadrao>
                 </div>
             </div>
             <div class=" w-full pb-2 pr-2 flex justify-end">
-                <Botao texto="Comentar" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
+                <Botao :texto="$t('comentario.comentar')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
                     :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
         </div>

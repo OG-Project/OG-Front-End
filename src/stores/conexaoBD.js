@@ -10,7 +10,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     return {
       api: axios.get("http://localhost:8082/usuario", { withCredentials: true }),
       loading: true,
-      url:"http://localhost:8082",
+      url:"http://localhost:8083",
     }
   },
   actions: {

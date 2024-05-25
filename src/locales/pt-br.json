@@ -273,7 +273,11 @@
     "cria": "Criar Projeto",
     "tipo": "Tipo",
     "nomePropriedade": "Nome Propriedade",
-    "nomeStatus": "Nome Status"
+    "nomeStatus": "Nome Status",
+    "obrigatorio": "O Nome é obrigatorio",
+    "equipes": "Equipes",
+    "responsavelObrigatorio": "Responsável é obrigatório",
+    "dadosFaltando": "Projeto com dados faltando"
   },
   "perfilInfo": {
     "nome": "Nome",
@@ -316,5 +320,29 @@
     "naoHa": "Não há Tarefas",
     "nome": "Nome",
     "descricao": "Descrição"
+  },
+  "timeline":{
+    "de": "de"
+  },
+  "calendario":{
+    "segunda": "Segunda",
+    "terca": "Terça",
+    "quarta": "Quarta",
+    "quinta": "Quinta",
+    "sexta": "Sexta",
+    "sabado": "Sábado",
+    "domingo": "Domingo"
+  },
+  "comentario":{
+   "naoComentarios": "Esse projeto ainda não tem comentarios",
+   "comentar": "Comentar",
+   "comentou": "comentou:",
+   "comente": "Comente no projeto"
+  },
+  "adicionaEquipe":{
+    "convidar": "convidar",
+    "convites": "Convites",
+    "confirmar": "Confirmar",
+    "adicionaEquipe": "Adicionar Equipe"
   }
 }

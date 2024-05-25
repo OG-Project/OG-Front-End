@@ -4,7 +4,7 @@
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio"
                     :conteudoInput="$t('criaProjeto.nomeProjeto')" :isInvalido="semNome"
-                    textoInvalido="O Nome é obrigatorio" largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"
+                    :textoInvalido="$t('criaProjeto.obrigatorio')" largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"
                     :modelValue="nomeProjeto" @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
@@ -26,7 +26,7 @@
                     <div>
                         <div class="w-[50%] grid grid-cols-2">
                             <selectPadrao altura="4" largura="8" :listaSelect="listaSelecao"
-                                placeholder-select="Equipes" v-model="equipesRelacionadasProjeto"
+                                :placeholder-select="$t('criaProjeto.equipes')" v-model="equipesRelacionadasProjeto"
                                 fonte-tamanho="0.9rem"></selectPadrao>
 
                             <Botao preset="PadraoVazado" :texto="$t('criaProjeto.conviar')" tamanho-da-borda="2px"
@@ -40,7 +40,7 @@
                         <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false"
                             :place-holder-pesquisa="$t('criaProjeto.responsavelPeloProjeto')"
                             @item-selecionado="pegaValorSelecionadoPesquisa" largura="13" fontSize="1rem"
-                            :is-invalido="semResponsavel" :texto-invalido="'Responsável é obrigatório'">
+                            :is-invalido="semResponsavel" :texto-invalido="$t('criaProjeto.responsavelObrigatorio')">
                         </inputDePesquisa>
                         <div v-if="responsaveisProjeto != ''" class="scrollListaResponsaveis" v-dragscroll>
                             <div
@@ -129,9 +129,10 @@ const conexao = conexaoBD();
 const route = useRoute();
 const webSocket = webSocketStore();
 import { criaHistoricoStore } from '../../stores/criaHistorico.js'
-
 import { inject } from 'vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n()
 const criaHistorico = criaHistoricoStore();
 
 var listaSelecao = ref([]);
@@ -479,11 +480,11 @@ async function criaProjeto() {
     if (nomeProjeto.value == "") {
         semResponsavel.value = false
         semNome.value = true
-        mensagem.value = "Projeto com dados faltando"
+        mensagem.value = t('criaProjeto.dadosFaltando')
         mensagemCor.value = "#CD0000"
         return
     } else if (responsaveisProjeto.value == "") {
-        mensagem.value = "Projeto com dados faltando"
+        mensagem.value = t('criaProjeto.dadosFaltando')
         mensagemCor.value = "#CD0000"
         semResponsavel.value = true
         semNome.value = false
