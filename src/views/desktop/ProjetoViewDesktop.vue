@@ -70,17 +70,21 @@ reloadTelaProjeto()
 
 
 async function atualizaListaDeTarefaVisivel(verSuaTarefas) {
+    let listaAuxParaAtualizar =[]
+    listaTarefaEnvio.value = []
     if (verSuaTarefas) {
         let tarefas = projeto.value.tarefas
         tarefas.forEach(tarefa => {
             console.log(tarefa);
-            tarefa.responsaveis.forEach(async (responsavel) => {
-                if (responsavel.id == IdUsuarioCookie) {
-                    listaTarefaEnvio.value.push(tarefa)
+            tarefa.responsaveis.forEach(async (tarefaResponsavel) => {
+                if (tarefaResponsavel.responsavel.id == Number(IdUsuarioCookie)) {
+                    listaAuxParaAtualizar.push(tarefa)
                 }
             })
-            return
+            listaTarefaEnvio.value = listaAuxParaAtualizar;
+            console.log(listaTarefaEnvio.value);
         });
+        return
     } else {
          banco.buscarUm(idProjeto, '/projeto').then((response)=>{
             listaTarefaEnvio.value = response.tarefas;

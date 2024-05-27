@@ -114,6 +114,7 @@ onMounted(async () => {
 
 watch(() => props.listaTarefas, async () => {
     tarefas.value=props.listaTarefas
+    console.log(props.listaTarefas);
     setTimeout(() =>{
         getCalendario()
     },100)

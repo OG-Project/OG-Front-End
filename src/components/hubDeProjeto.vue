@@ -169,7 +169,6 @@ onMounted(async () => {
         listaPropriedadeVisiveis.value = visualizacao.value.propriedadeVisiveis
     }
     verificaSeEResponsavel()
-    verificaSeEResponsavel()
     definePorcentagem()
     styleBotao()
 })
