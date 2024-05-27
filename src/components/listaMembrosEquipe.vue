@@ -342,15 +342,16 @@ function marginLeftConvidado() {
 
 function marginRightConvidado() {
   if (screenWidth <= 768) {
-      return '6vw';
+      return '7vw';
   } else if (screenWidth > 768 && screenWidth <= 1024) {
       return '4vw';
-  } else if (screenWidth > 1024 && screenWidth < 1920) {
-      return '4vw';
-  } else if (screenWidth > 1920 && screenWidth < 2560) {
-      return '6vw';
-  } else if (screenWidth == 1920) {
+  } else if (screenWidth > 1024 && screenWidth <= 1440) {
+      return '5vw';
+  } else if(screenWidth > 1440 && screenWidth < 1920){
       return '2vw';
+  }
+  else if (screenWidth >= 1920 && screenWidth < 2560) {
+      return '6vw';
   }
   else if (screenWidth >= 2560) {
       return '4.5vw';

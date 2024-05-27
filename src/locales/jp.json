@@ -304,7 +304,8 @@
     "linha": "タイムライン",
     "calendario": "カレンダー",
     "propriedades": "表示プロパティ",
-    "novo": "新しい"
+    "novo": "新しい",
+    "suaTarefa": "自分のタスクのみ表示する"
   },
   "lista": {
     "naoTem": "値がありません",

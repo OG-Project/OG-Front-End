@@ -584,10 +584,10 @@ let numeroDeArquivos = ref(0);
 //Variáveis usadas na hora de criar uma propriedade
 
 async function deletaTarefa() {
-  // let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
-  // let projeto = await banco.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
-  // let tarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
-  // criaHistorico.criaHistoricoProjeto("Deletou a tarefa" + tarefa.nome, projeto, usuario)
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let projeto = await banco.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
+  let tarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
+  criaHistorico.criaHistoricoProjeto("Deletou a tarefa" + tarefa.nome, projeto, usuario)
   banco.deletarTarefa("/tarefa", VueCookies.get("IdTarefaCookies"));
   router.push("/projeto").then(() => {
     // window.location.reload();
