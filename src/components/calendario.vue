@@ -13,9 +13,9 @@
                         </button>
                         <div class="text-[160%] w-[17%] flex justify-center">
                             {{ format(new Date(data), "MMMM", {
-                            locale: ptBR
+                            locale: idioma
                         }).charAt(0).toUpperCase() +
-                            format(new Date(data), "MMMM", { locale: ptBR }).slice(1) }}
+                            format(new Date(data), "MMMM", { locale: idioma }).slice(1) }}
                         </div>
                         <button @click="setaDireita()" class="w-[5%]">
                             <div class="w-[23px] h-[23px] rounded-full border-[1px]  flex justify-center items-center">
@@ -31,25 +31,25 @@
         </div>
         <div class="w-[85%] gap-[2.5%]  flex row justify-between ">
             <div class="w-[14%] flex justify-start">
-                <h1>Domingo</h1>
+                <h1>{{$t('calendario.domingo')}}</h1>
             </div>
             <div class="w-[14%] flex justify-start">
-                <h1>Segunda</h1>
+                <h1>{{$t('calendario.segunda')}}</h1>
             </div>
             <div class="w-[14%] flex justify-start">
-                <h1>Terça</h1>
+                <h1>{{$t('calendario.terca')}}</h1>
             </div>
             <div class="w-[14%] flex justify-start">
-                <h1>Quarta</h1>
+                <h1>{{$t('calendario.quarta')}}</h1>
             </div>
             <div class="w-[14%] flex justify-start">
-                <h1>Quinta</h1>
+                <h1>{{$t('calendario.quinta')}}</h1>
             </div>
             <div class="w-[14%] flex justify-start">
-                <h1>Sexta</h1>
+                <h1>{{$t('calendario.sexta')}}</h1>
             </div>
             <div class="w-[14%] flex justify-start">
-                <h1>Sábado</h1>
+                <h1>{{$t('calendario.sabado')}}</h1>
             </div>
         </div>
         <div class="h-[80%] w-[18.6%] flex flex-col justify-start">
@@ -80,14 +80,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch} from 'vue';
 import cardTarefas from './cardTarefas.vue'
 import { addDays, subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, getWeekOfMonth, getDate } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { ja, ru, zhCN, es, enUS, ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../stores/conexaoBD';
 import sortBy from 'sort-by'
 import VueCookies from 'vue-cookies';
+import { useI18n } from 'vue-i18n';
 
+
+
+const props = defineProps({
+    listaTarefas: ref([])
+})
+       
+const { t } = useI18n();
+
+let idioma = ref();
+let idiomaCookies = VueCookies.get('Idioma')
 let data = Date.now()
 let diaNovo = ref()
 let indiceNovo = ref()
@@ -96,7 +107,7 @@ let abrePopup = ref(false)
 let api = conexaoBD()
 let cardDia
 let projeto = {}
-let tarefas = []
+let tarefas = ref (props.listaTarefas);
 let border = "none"
 
 getCalendario();
@@ -105,7 +116,18 @@ onMounted(async () => {
     projeto = await api.buscarUm(VueCookies.get('IdProjetoAtual'), '/projeto')
     tarefas = projeto.tarefas;
     getCalendario();
+    mudarIdioma();
 })
+
+
+watch(() => props.listaTarefas, async () => {
+    tarefas.value=props.listaTarefas
+    
+    setTimeout(() =>{
+        getCalendario()
+    },100)
+
+});
 
 function ordenaTarefas() {
     calendario.value.forEach(dia => {
@@ -115,6 +137,27 @@ function ordenaTarefas() {
             }
         })
     })
+}
+
+function mudarIdioma(){
+   if(idiomaCookies == 'jp'){
+    idioma.value = ja 
+   }
+   if(idiomaCookies == 'en'){
+    idioma.value = enUS 
+   }
+   if(idiomaCookies == 'pt-BR'){
+    idioma.value = ptBR 
+   }
+   if(idiomaCookies == 'es'){
+    idioma.value = es 
+   }
+   if(idiomaCookies == 'zh'){
+    idioma.value = zhCN
+   }
+   if(idiomaCookies == 'ru'){
+    idioma.value = ru
+   }
 }
 
 function estilizaDia(dia) {
@@ -192,7 +235,7 @@ async function adicionaDiasALista(dias) {
 
 async function verificaTarefasDoDia(dia) {
     let lista = []
-    let tarefas2 = tarefas
+    let tarefas2 = tarefas.value
     tarefas2 = tarefas2.sort(sortBy('indice'))
     for (const tarefa of tarefas2) {
         for (const propriedade of tarefa.valorPropriedadeTarefas) {

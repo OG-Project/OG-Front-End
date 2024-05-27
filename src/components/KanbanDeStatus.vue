@@ -25,14 +25,14 @@
                 </draggable>
                 <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none"
                     @click="store.criaTarefa(status.propriedade), VueCookies.set('idReloadTarefa', '0')">
-                    <p :style="corDoTexto(status.propriedade)">+ Nova</p>
+                    <p :style="corDoTexto(status.propriedade)">+ {{$t('criaProjeto.nova')}}</p>
                 </button>
             </div>
         </div>
         <span class="pr-4 ">
 
             <button class="novaPropriedade" @click="abrePopUp()">
-                <h1>+Novo</h1>
+                <h1>+ {{$t('hubProjeto.novo')}}</h1>
             </button>
             <div v-if="popUpStatus" class=" w-[100%] h-full flex justify-end">
                 <div class="w-[100%] h-[80%] flex flex-col  justify-center  bg-[var(--backgroundItemsClaros)]">

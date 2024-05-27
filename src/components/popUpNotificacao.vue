@@ -5,7 +5,7 @@
             <SvgIconX></SvgIconX>
         </button>
         <div class="w-[35%] h-[7%] border-b-2 border-[var(--roxo)] flex justify-center mb-[10%]">
-            Notificações
+            {{ $t('lista.notificacoes') }}
         </div>
         <div class="w-full h-full gap-5 overflow-y-scroll overflow-x-hidden flex flex-col items-center">
             <div v-for="notificacao of notificacoes" class="border-[var(--roxo)] border-b-2 w-[90%] h-max flex"

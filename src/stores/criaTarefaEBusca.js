@@ -14,6 +14,16 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
   actions: {
     criaTarefa(status) {
       let api = conexaoBD();
+
+      if(!VueCookies.get("IdProjetoAtual")){
+        api.buscarUm(VueCookies.get("IdUsuarioCookie"), "/usuario").then((response) => {
+          VueCookies.set("equipeSelecionada", response.equipes[0].id, 100000000000);
+          api.buscarProjetosEquipe(response.equipes[0].id, "/projeto/buscarProjetos").then((response) => {
+            VueCookies.set("IdProjetoAtual", response[0].id, 100000000000);
+          })
+        })
+      }
+
       api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto").then((response) => {
         if (status == null) {
           console.log("AQUI");

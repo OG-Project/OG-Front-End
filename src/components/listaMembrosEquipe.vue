@@ -4,7 +4,7 @@
         <div class="primeiraDiv">
           <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
           <equipe class="imagemEquipe" v-else></equipe>
-           <h1 class="equipeNome xl:mt-5 lg:mt-3 md:mt-3 2xl:text-4xl xl:text-4xl lg:text-2xl md:text-xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
+           <h1 class="equipeNome  2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[70%] sm:w-full xl:mt-5 lg:mt-3 md:mt-3 2xl:text-4xl xl:text-4xl lg:text-2xl md:text-xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
         </div>
         <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
            <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
@@ -89,9 +89,8 @@ import {webSocketStore} from "../stores/webSocket.js";
 import alertTela from './alertTela.vue';
 import sair from '../imagemVetores/Sair.vue';
 import equipe from '../imagemVetores/equipe.vue';
-import { useI18n } from 'vue-i18n';
-
 import inputDePesquisa from './inputDePesquisa.vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n()
 let listaDeUsuariosParaBusca = ref([]);
@@ -105,7 +104,8 @@ const criaNotificacaoStore = criaNotificacao();
 onMounted (() =>{
   exibirMembrosNaLista();
   verificaMembroPermissao();
-  pesquisaBancoUserName()
+  pesquisaBancoUserName();
+  filtrarEquipe();
 }) 
 
 async function pesquisaBancoUserName() {
@@ -244,7 +244,7 @@ function mudaPermissaoUsuario(usuario) {
   })
 }
 
-filtrarEquipe();
+
 
 function verificaCriador(membro){
   let retorno = true;
@@ -559,7 +559,7 @@ async function confirmarConvites() {
 
 
 .imagemEquipe {
-  @apply 2xl:mr-5 xl:mt-3 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[60px] 2xl:w-[60px] xl:h-[60px] xl:w-[60px] lg:w-[50px] lg:h-[50px] md:w-[50px] md:h-[50px] rounded-full;
+  @apply flex items-center 2xl:mr-5 xl:mt-3 xl:mr-2 lg:mt-1 lg:mr-3 md:mt-1 md:mr-4 2xl:h-[60px] 2xl:w-[60px] xl:h-[60px] xl:w-[60px] lg:w-[50px] lg:h-[50px] md:w-[50px] md:h-[50px] rounded-full;
 }
 
 .div-lista {
@@ -614,7 +614,7 @@ async function confirmarConvites() {
 }
 
 .primeiraDiv {
-  @apply flex w-full 2xl:w-[100%] xl:w-[100%] lg:w-[40vw] md:w-[50vw] 2xl:h-[8vh] border-transparent border-b-4 justify-center focus-within:border-4;
+  @apply flex w-full items-center 2xl:w-[100%] xl:w-[100%] lg:w-[40vw] md:w-[50vw] 2xl:h-[8vh] border-transparent border-b-4 justify-center focus-within:border-4;
 }
 
 .imgEquipe {
@@ -660,7 +660,7 @@ async function confirmarConvites() {
               @apply w-[90%] h-[20vh] mt-10 ml-[10vw];
           }
           .equipeNome{
-              @apply flex text-4xl 2xl:mr-5 truncate mt-5;
+              @apply flex w-full text-4xl 2xl:mr-5 truncate mt-5;
           }
          
           .imgDePerfil{
@@ -728,7 +728,7 @@ async function confirmarConvites() {
            @apply w-[100vw] ml-[-5vw];
        }
        .equipeNome{
-            @apply flex text-2xl mt-6;
+            @apply flex w-full text-2xl mt-6;
        }
        .styleSelectPadraoBrancoMobile{
            @apply border-4 mt-[1.5vh] w-[15vw] ml-5
@@ -788,7 +788,7 @@ async function confirmarConvites() {
            @apply w-[100vw] ml-[-5vw];
        }
        .equipeNome{
-            @apply flex text-2xl mt-6;
+            @apply flex w-full text-2xl mt-6;
        }
        .styleSelectPadraoBrancoMobile{
            @apply border-4 mt-[1.5vh] w-[15vw] ml-5
@@ -850,7 +850,7 @@ async function confirmarConvites() {
            @apply w-[100vw] ml-[-6vw];
        }
        .equipeNome{
-            @apply flex text-2xl mt-6;
+            @apply flex w-full text-2xl mt-6;
        }
        .styleSelectPadraoBrancoMobile{
            @apply border-4 mt-[1.5vh] w-[20vw] ml-5
@@ -911,7 +911,7 @@ async function confirmarConvites() {
            @apply w-[100vw] ml-[-5vw];
        }
        .equipeNome{
-            @apply flex text-2xl mt-6;
+            @apply flex w-full text-2xl mt-6;
        }
        .styleSelectPadraoBrancoMobile{
            @apply border-4 mt-[1.5vh] w-[20vw] ml-5
@@ -972,7 +972,7 @@ async function confirmarConvites() {
               @apply w-[100vw] ml-[-5vw];
           }
           .equipeNome{
-              @apply flex text-3xl mt-5;
+              @apply flex w-full text-3xl mt-5;
           }
           .styleSelectPadraoBrancoMobile{
               @apply border-4 mt-[1.5vh] 

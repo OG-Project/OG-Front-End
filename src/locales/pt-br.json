@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Responsáveis pela tarefa",
     "properties": "Propriedades",
     "task_color": "Cor da Tarefa",
     "subtasks": "SubTarefas",
@@ -260,7 +261,24 @@
     "tarefasAtribuidas": "Tarefas Atribuídas",
     "informacoes": "Informações",
     "dataInicial" : "Data Inicial",
-    "dataFinal" : "Data Final"
+    "dataFinal" : "Data Final",
+    "edita": "Editar Projeto",
+    "propriedades": "Propriedades",
+    "status": "Status",
+    "buscar": "Buscar por",
+    "texto": "Texto",
+    "todos": "Todos",
+    "numero": "Número",
+    "data": "Data",
+    "nova": "nova",
+    "cria": "Criar Projeto",
+    "tipo": "Tipo",
+    "nomePropriedade": "Nome Propriedade",
+    "nomeStatus": "Nome Status",
+    "obrigatorio": "O Nome é obrigatorio",
+    "equipes": "Equipes",
+    "responsavelObrigatorio": "Responsável é obrigatório",
+    "dadosFaltando": "Projeto com dados faltando"
   },
   "perfilInfo": {
     "nome": "Nome",
@@ -287,5 +305,52 @@
     "sobreTexto": "Nós somos um pequeno grupo de desenvolvedores que acredita que a organização é a chave para o sucesso. Por isso, criamos a OG Project.",
     "historia": "História",
     "historiaTexto": "A OG Project foi formada em 2023 por um grupo de amigos que acreditavam que a organização é a chave para o sucesso."
+  },
+  "chat": {
+    "pessoal": "Pessoal",
+    "equipes": "Equipes",
+    "digiteUmaMensagem": "Digite uma mensagem",
+    "chat": "Chat"
+  },
+  "hubProjeto":{
+    "progresso": "Progressão",
+    "tarefa": "Tarefa",
+    "kanban": "Kanban",
+    "lista": "Lista",
+    "linha": "Linha Do Tempo",
+    "calendario": "Calendário",
+    "propriedades": "Propriedades Vísiveis",
+    "novo": "Novo"
+  },
+  "lista":{
+    "naoTem": "Não Tem Valor",
+    "naoHa": "Não há Tarefas",
+    "nome": "Nome",
+    "descricao": "Descrição",
+    "notificacoes": "Notificações"
+  },
+  "timeline":{
+    "de": "de"
+  },
+  "calendario":{
+    "segunda": "Segunda",
+    "terca": "Terça",
+    "quarta": "Quarta",
+    "quinta": "Quinta",
+    "sexta": "Sexta",
+    "sabado": "Sábado",
+    "domingo": "Domingo"
+  },
+  "comentario":{
+   "naoComentarios": "Esse projeto ainda não tem comentarios",
+   "comentar": "Comentar",
+   "comentou": "comentou:",
+   "comente": "Comente no projeto"
+  },
+  "adicionaEquipe":{
+    "convidar": "convidar",
+    "convites": "Convites",
+    "confirmar": "Confirmar",
+    "adicionaEquipe": "Adicionar Equipe"
   }
 }

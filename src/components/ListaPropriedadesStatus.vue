@@ -4,11 +4,11 @@
         <div>
             <div class="flex flex-row justify-between items-center border-b-2 border-[var(--roxo)]"
                 @click="buscandoPor()">
-                <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">Propriedades
+                <p @click="navegaPelaTabela('propriedade')" :style="verificaStyleNavTabela('propriedade')">{{ $t('criaProjeto.propriedades') }}
                 </p>
-                <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">Status</p>
+                <p @click="navegaPelaTabela('status')" :style="verificaStyleNavTabela('status')">{{$t('criaProjeto.status')}}</p>
                 <div class="min-w-[7vw]">
-                    <selectPadrao placeholder-select="Buscar por" v-model="buscarPor" :listaSelect="opcoesSelect"
+                    <selectPadrao :placeholder-select="$t('criaProjeto.buscar')" v-model="buscarPor" :listaSelect="opcoesSelect"
                         styleSelect="styleSelectSemBordaBaixo" fonteTamanho="1rem"></selectPadrao>
                 </div>
 
@@ -25,11 +25,11 @@
                             v-if="propriedade.verNomeCompleto == true">
                             <p class="w-[50%]  h-max break-words  bg-[var(--backgroundItemsClaros)] ">
                                 {{ propriedade.propriedade.nome }}</p>
-                            <p class="w-[50%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                            <p class="w-[50%]">{{ t('criaProjeto.tipo')}}: {{ propriedade.propriedade.tipo }}</p>
                         </div>
                         <div class="w-[50%] flex flex-row pb-4 pt-4" v-if="propriedade.verNomeCompleto == false">
                             <p class="w-[50%] truncate">{{ propriedade.propriedade.nome }}</p>
-                            <p class="w-[70%]">Tipo: {{ propriedade.propriedade.tipo }}</p>
+                            <p class="w-[70%]">{{ t('criaProjeto.tipo')}}: {{ propriedade.propriedade.tipo }}</p>
                         </div>
 
                         <div class=" w-[36%] ">
@@ -68,11 +68,11 @@
                             <div v-if="tarefasAtribuidas"
                                 class="bg-[var(--roxoClaro)] rounded-md w-full p-1 flex justify-center items-center "
                                 @click="mudaPaginaParaKanban()">
-                                Tarefas Atribuidas
+                                {{ t('criaProjeto.tarefasAtribuidas') }}
                             </div>
                             <div v-if="!tarefasAtribuidas"
                                 class="bg-[var(--backgroundItems)] rounded-md w-full p-1 flex justify-center items-center">
-                                <p>Não há tarefas</p>
+                                <p>{{ t('criaProjeto.naoHaTarefas') }}</p>
                             </div>
                         </div>
                         <botaoSair class="w-[5%] h-[20%] "  @click="removeStatus(status)"></botaoSair>
@@ -84,7 +84,7 @@
         </div>
         <div class="w-full flex flex-row justify-end gap-3 sticky" @click="colocaCorPadrao()"
             v-if="funcaoPopUp.variavelModal == false">
-            <p>Nova</p>
+            <p>{{$t('criaProjeto.nova')}}</p>
             <img src="../imagemVetores/sinalDeMaisIcon.svg">
         </div>
 
@@ -96,21 +96,21 @@
                 </div>
                 <div class="flex flex-row justify-between" v-if="screenWidth >= 340">
                     <div class="pl-2">
-                        <Input largura="9" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
+                        <Input largura="9" :conteudoInput="t('criaProjeto.nomePropriedade')" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
                     nomePropriedade = e
                 }">
                         </Input>
                     </div>
                     <div class="pr-2">
-                        <selectPadrao placeholderSelect="Tipo" :lista-select="tipoPropriedadeSelect" largura="10"
+                        <selectPadrao :placeholderSelect=" t('criaProjeto.tipo')" :lista-select="tipoPropriedadeSelect" largura="10"
                             altura="3.8" fonteTamanho="0.9rem" v-model="tipoPropriedade"> </selectPadrao>
                     </div>
 
                 </div>
                 <div class="flex flex-row justify-between w-full" v-else>
                     <div class="pl-2">
-                        <Input largura="30" conteudoInput="Nome Propriedade" fontSize="0.95rem" altura="2"
+                        <Input largura="30" :conteudoInput="t('criaProjeto.tipo')" fontSize="0.95rem" altura="2"
                             :modelValue="nomePropriedade" v-model="nomePropriedade" @updateModelValue="(e) => {
                     nomePropriedade = e
                 }">
@@ -142,14 +142,14 @@
                 <div class="flex flex-row justify-between">
 
                     <div class="pl-2" v-if="screenWidth >= 340">
-                        <Input largura="8" conteudoInput="Nome Status" fontSize="1rem" altura="2"
+                        <Input largura="8" :conteudoInput="t('criaProjeto.nomeStatus')" fontSize="1rem" altura="2"
                             :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
                     nomeStatus = e
                 }">
                         </Input>
                     </div>
                     <div class="pl-2" v-else>
-                        <Input largura="25" conteudoInput="Nome Status" fontSize="0.90rem" altura="2"
+                        <Input largura="25" :conteudoInput="t('criaProjeto.nomeStatus')" fontSize="0.90rem" altura="2"
                             :modelValue="nomeStatus" v-model="nomeStatus" @updateModelValue="(e) => {
                     nomeStatus = e
                 }">
@@ -320,14 +320,14 @@ function colocaCorPadrao() {
 
 function mudaPaginaParaKanban() {
     router.push('/projeto').then(() => {
-        window.location.reload()
+        // window.location.reload()
     });
 }
 
 async function buscandoPor() {
     listaSelecionada.value = []
     if (opcaoSelecionadaNaTabela.value == "propriedade" || opcaoSelecionadaNaTabela.value == "") {
-        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == "Todos") {
+        if (buscarPor.value == "" || buscarPor.value == "A-Z" || buscarPor.value == "Z-A" || buscarPor.value == t("criaProjeto.todos")) {
             listaSelecionada.value = listaPropriedades.value
             return;
         }
@@ -369,12 +369,23 @@ function filtroStatus(ordem) {
 function filtroPropriedades(listaRecebida, buscarPor) {
     var listaAux = []
     var listaAux1 = []
+    let comparacao=""
     listaAux = listaRecebida
     listaAux.forEach(opcaoAtual => {
 
         if (opcaoAtual.propriedade.tipo != "" && opcaoAtual.propriedade.tipo != undefined) {
-            if (opcaoAtual.propriedade.tipo.toLowerCase() == buscarPor.toLowerCase()) {
+            if(buscarPor == t("criaProjeto.texto")){
+                    comparacao = "texto"
+            }
+            if(buscarPor == t("criaProjeto.numero")){
+                    comparacao = "numero"
+            }
+            if(buscarPor == t("criaProjeto.data")){
+                    comparacao = "data"
+            }
+            if (opcaoAtual.propriedade.tipo.toLowerCase() == comparacao) {
                 listaAux1.push(opcaoAtual)
+                
             }
         }
     });
@@ -385,8 +396,8 @@ function filtroPropriedades(listaRecebida, buscarPor) {
 function navegaPelaTabela(opcaoSelecionada) {
     if (opcaoSelecionada == '' || opcaoSelecionada == 'propriedade') {
         opcaoSelecionadaNaTabela.value = 'propriedade';
-        opcoesSelect.value = ["Todos", "Texto", "Número", "Data"];
-        tipoPropriedadeSelect.value = ["Texto", "Número", "Data"]
+        opcoesSelect.value = [t('criaProjeto.todos'), t('criaProjeto.texto'),t('criaProjeto.numero'), t('criaProjeto.data')];
+        tipoPropriedadeSelect.value = [t('criaProjeto.texto'), t('criaProjeto.numero'), t('criaProjeto.data')]
 
     } else if (opcaoSelecionada == 'status') {
         opcaoSelecionadaNaTabela.value = 'status';
@@ -403,22 +414,23 @@ function buscaPropriedadeCookies() {
 }
 
 async function buscaPropriedadeBanco() {
+    console.log('busca')
     idProjeto = VueCookies.get("IdProjetoAtual");
     let projeto = await conexao.buscarUm(idProjeto, "/projeto")
     colocaListaTarefasDoProjeto(projeto.tarefas)
     if (projeto.propriedades != []) {
         projeto.propriedades.forEach((propriedade) => {
             if (propriedade.nome != '') {
-                if (propriedade.tipo == 'TEXTO') {
+                if (propriedade.tipo == t('criaProjeto.texto')) {
                     propriedade.tipo = "Texto"
                 }
-                if (propriedade.tipo == 'DATA') {
+                if (propriedade.tipo == t('criaProjeto.data')) {
                     propriedade.tipo = "Data"
                 }
                 if (propriedade.tipo == 'SELECAO') {
                     propriedade.tipo = "Seleção"
                 }
-                if (propriedade.tipo == 'NUMERO') {
+                if (propriedade.tipo == t('criaProjeto.numero')) {
                     propriedade.tipo = "Número"
                 }
                 criaPropriedadeCookies(propriedade);
@@ -454,8 +466,14 @@ function mandaProrpiedadesBack(listaPropriedadesRecebida) {
         if (objetoModificado.tipo == "Seleção") {
             objetoModificado.tipo = "SELECAO";
         }
-        if (objetoModificado.tipo == "Número") {
+        if (objetoModificado.tipo == t('criaProjeto.numero')) {
             objetoModificado.tipo = "NUMERO"
+        }
+        if(objetoModificado.tipo == t('criaProjeto.texto')){
+            objetoModificado.tipo = "TEXTO"
+        }
+        if(objetoModificado.tipo == t('criaProjeto.data')){
+            objetoModificado.tipo = "DATA"
         }
         objetoModificado.tipo = objetoModificado.tipo.toUpperCase()
         return objetoModificado;
@@ -519,6 +537,16 @@ function criaStatusBack() {
 }
 
 function criaPropriedadeBack() {
+   if(tipoPropriedade.value == t("criaProjeto.texto")){
+        tipoPropriedade.value = 'TEXTO'
+   }
+   if(tipoPropriedade.value == t("criaProjeto.numero")){
+        tipoPropriedade.value = 'NUMERO'
+   }
+   if(tipoPropriedade.value == t("criaProjeto.data")){
+      tipoPropriedade.value = 'DATA'
+   }
+    console.log(tipoPropriedade.value)
     if (nomePropriedade.value != "") {
         let propriedadeCriada = {
             nome: nomePropriedade.value,

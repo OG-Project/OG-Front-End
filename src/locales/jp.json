@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "タスクの責任者",
     "properties": "プロパティ",
     "task_color": "タスクの色",
     "subtasks": "サブタスク",
@@ -259,7 +260,24 @@
     "naoHaTarefas": "タスクはありません",
     "tarefasAtribuidas": "割り当てられたタスク",
     "informacoes": "情報",
-    "dataInicial": "開始日"
+    "dataInicial": "開始日",
+    "edita": "プロジェクトを編集",
+    "propriedades": "プロパティ",
+    "status": "ステータス",
+    "buscar": "検索",
+    "texto": "テキスト",
+    "todos": "すべて",
+    "numero": "番号",
+    "data": "日付",
+    "nova": "新しい",
+    "cria": "プロジェクトを作成",
+    "tipo": "タイプ",
+    "nomePropriedade": "プロパティ名",
+    "nomeStatus": "ステータス名",
+    "obrigatorio": "名前は必須です",
+    "equipes": "チーム",
+    "responsavelObrigatorio": "責任者は必須です",
+    "dadosFaltando": "データが欠けているプロジェクト"
   },
   "perfilInfo": {
     "nome": "名前",
@@ -271,5 +289,52 @@
     "oUsuarioPossuiOPerfilPrivado": "ユーザーはプライベートプロフィールを持っています",
     "username": "ユーザー名",
     "asEquipesDoUsuarioSaoPrivadas": "ユーザーのチームはプライベートです"
-  }
+  },
+  "chat": {
+    "pessoal": "個人用",
+    "equipes": "チーム",
+    "digiteUmaMensagem": "メッセージを入力",
+    "chat": "チャット"
+  },
+  "hubProjeto": {
+    "progresso": "進行",
+    "tarefa": "タスク",
+    "kanban": "カンバン",
+    "lista": "リスト",
+    "linha": "タイムライン",
+    "calendario": "カレンダー",
+    "propriedades": "表示プロパティ",
+    "novo": "新しい"
+  },
+  "lista": {
+    "naoTem": "値がありません",
+    "naoHa": "タスクはありません",
+    "nome": "名前",
+    "descricao": "説明",
+    "notificacoes": "通知"
+  },
+  "timeline":{
+    "de": "の"
+},
+"calendario":{
+  "segunda": "月曜日",
+  "terca": "火曜日",
+  "quarta": "水曜日",
+  "quinta": "木曜日",
+  "sexta": "金曜日",
+  "sabado": "土曜日",
+  "domingo": "日曜日"
+},
+"comentario":{
+  "naoComentarios": "このプロジェクトにはまだコメントがありません",
+  "comentar": "コメントする",
+  "comentou": "コメントしました:",
+  "comente": "プロジェクトにコメントする"
+},
+"adicionaEquipe":{
+  "convidar": "招待する",
+  "convites": "招待状",
+  "confirmar": "確認する",
+  "adicionaEquipe": "チームを追加"
+}
 }

@@ -91,10 +91,6 @@ let variavelMembros = false;
 let retornoPermissao = ref(false);
 const banco = conexaoBD();
 
-onMounted(() => {
-  verificaMembroPermissao();
-})
-
 let equipeEditar = ref({
   nome: '',
   descricao: ''
@@ -217,7 +213,14 @@ function calcularProgressoProjeto(projeto) {
 
 async function filtrarEquipe() {
   console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
-  equipeEditar.value = await (banco.buscarUm(equipeSelecionada, "/equipe"))
+  let usuario = await (banco.buscarUm(usuarioLogado, "/usuario"))
+  usuario.equipes.forEach((equipeUsuario)=>{
+      if(equipeUsuario.equipe.id == equipeSelecionada){
+        console.log(equipeEditar.value)
+        equipeEditar.value = equipeUsuario.equipe;
+        
+      }
+  })
 }
 filtrarEquipe();
 
@@ -236,6 +239,7 @@ async function buscarMembrosEquipe() {
 onMounted(() => {
   buscarMembrosEquipe();
   buscarProjetosEquipe();
+  verificaMembroPermissao();
 });
 
 watch(() => VueCookies.get('equipeSelecionada'), async (newValue, oldValue) => {

@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Responsables de la Tarea",
     "properties": "Propiedades",
     "task_color": "Color de la Tarea",
     "subtasks": "Subtareas",
@@ -258,7 +259,24 @@
     "naoHaTarefas": "No hay tareas",
     "tarefasAtribuidas": "Tareas Asignadas",
     "informaciones": "Información",
-    "dataInicial": "Fecha de Inicio"
+    "dataInicial": "Fecha de Inicio",
+      "edita": "Editar Proyecto",
+      "propriedades": "Propiedades",
+      "status": "Estado",
+      "buscar": "Buscar por",
+      "texto": "Texto",
+      "todos": "Todos",
+      "numero": "Número",
+      "data": "Fecha",
+      "nova": "nueva",
+      "cria": "Crear Proyecto",
+      "tipo": "Tipo",
+      "nomePropriedade": "Nombre de Propiedad",
+      "nomeStatus": "Nombre de Estado",
+      "obrigatorio": "El Nombre es obligatorio",
+      "equipes": "Equipos",
+      "responsavelObrigatorio": "Responsable es obligatorio",
+      "dadosFaltando": "Proyecto con datos faltantes"
   },
   "perfilInfo": {
     "nome": "Nombre",
@@ -270,5 +288,52 @@
     "oUsuarioPossuiOPerfilPrivado": "El usuario tiene el perfil privado",
     "username": "Username",
     "asEquipesDoUsuarioSaoPrivadas": "Los equipos del usuario son privados"
-  }
+  },
+  "chat": {
+    "pessoal": "Personal",
+    "equipes": "Equipos",
+    "digiteUmaMensagem": "Escribe un mensaje",
+    "chat": "Chat"
+  },
+  "hubProjeto": {
+    "progresso": "Progreso",
+    "tarefa": "Tarea",
+    "kanban": "Kanban",
+    "lista": "Lista",
+    "linha": "Línea de Tiempo",
+    "calendario": "Calendario",
+    "propriedades": "Propiedades Visibles",
+    "novo": "Nuevo"
+  },
+  "lista": {
+    "naoTem": "Sin Valor",
+    "naoHa": "No hay Tareas",
+    "nome": "Nombre",
+    "descricao": "Descripción",
+    "notificacoes": "Notificaciones"
+  },
+  "timeline":{
+    "de": "de"
+},
+"calendario":{
+  "segunda": "Lunes",
+  "terca": "Martes",
+  "quarta": "Miércoles",
+  "quinta": "Jueves",
+  "sexta": "Viernes",
+  "sabado": "Sábado",
+  "domingo": "Domingo"
+},
+"comentario":{
+  "naoComentarios": "Este proyecto aún no tiene comentarios",
+  "comentar": "Comentar",
+  "comentou": "comentó:",
+  "comente": "Comenta en el proyecto"
+},
+"adicionaEquipe":{
+  "convidar": "invitar",
+  "convites": "Invitaciones",
+  "confirmar": "Confirmar",
+  "adicionaEquipe": "Agregar Equipo"
+}
 }

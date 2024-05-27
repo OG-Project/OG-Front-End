@@ -1,5 +1,6 @@
 {
   "criaTarefa": {
+    "responsaveisPelaTarefa": "Ответственные за задачу",
     "properties": "Свойства",
     "task_color": "Цвет задачи",
     "subtasks": "Подзадачи",
@@ -258,7 +259,24 @@
     "naoHaTarefas": "Нет задач",
     "tarefasAtribuidas": "Назначенные задачи",
     "informacoes": "Информация",
-    "dataInicial": "Дата начала"
+    "dataInicial": "Дата начала",
+    "edita": "Редактировать проект",
+    "propriedades": "Свойства",
+    "status": "Статус",
+    "buscar": "Поиск",
+    "texto": "Текст",
+    "todos": "Все",
+    "numero": "Номер",
+    "data": "Дата",
+    "nova": "новый",
+    "cria": "Создать проект",
+    "tipo": "Тип",
+    "nomePropriedade": "Имя свойства",
+    "nomeStatus": "Имя статуса",
+    "obrigatorio": "Имя обязательно",
+    "equipes": "Команды",
+    "responsavelObrigatorio": "Ответственный обязателен",
+    "dadosFaltando": "Проект с отсутствующими данными"
   },
   "perfilInfo": {
     "nome": "Имя",
@@ -270,5 +288,52 @@
     "oUsuarioPossuiOPerfilPrivado": "Пользователь имеет закрытый профиль",
     "username": "Имя пользователя",
     "asEquipesDoUsuarioSaoPrivadas": "Команды пользователя закрыты"
-  }
+  },
+  "chat": {
+    "pessoal": "Личный",
+    "equipes": "Команды",
+    "digiteUmaMensagem": "Введите сообщение",
+    "chat": "Чат"
+  },
+  "hubProjeto": {
+    "progresso": "Прогресс",
+    "tarefa": "Задача",
+    "kanban": "Канбан",
+    "lista": "Список",
+    "linha": "Хронология",
+    "calendario": "Календарь",
+    "propriedades": "Видимые свойства",
+    "novo": "Новый"
+  },
+  "lista": {
+    "naoTem": "Нет значения",
+    "naoHa": "Нет задач",
+    "nome": "Имя",
+    "descricao": "Описание",
+    "notificacoes": "Уведомления"
+  },
+  "timeline":{
+    "de": "из"
+},
+"calendario":{
+  "segunda": "Понедельник",
+  "terca": "Вторник",
+  "quarta": "Среда",
+  "quinta": "Четверг",
+  "sexta": "Пятница",
+  "sabado": "Суббота",
+  "domingo": "Воскресенье"
+},
+"comentario":{
+  "naoComentarios": "У этого проекта еще нет комментариев",
+  "comentar": "Комментировать",
+  "comentou": "прокомментировал:",
+  "comente": "Прокомментируйте проект"
+},
+"adicionaEquipe":{
+  "convidar": "пригласить",
+  "convites": "Приглашения",
+  "confirmar": "Подтвердить",
+  "adicionaEquipe": "Добавить команду"
+}
 }
