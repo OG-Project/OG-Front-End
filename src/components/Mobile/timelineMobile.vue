@@ -17,10 +17,10 @@
                                     <div class="flex flex-row h-full items-center justify-center w-[90%]">
                                         <div class="text-[80%]">
                                             {{ format(data, "MMMM", {
-                                        locale: ptBR
+                                        locale: idioma
                                     }).charAt(0).toUpperCase() +
-                                        format(data, "MMMM", { locale: ptBR }).slice(1)}}
-                                        {{ " de " + getYear(data) }}
+                                        format(data, "MMMM", { locale: idioma }).slice(1)}}
+                                        {{  $t('timeline.de')+ " "  + getYear(data) }}
                                         </div>
                                     </div>
 
@@ -129,14 +129,15 @@
 import { ref, VueElement, watch, onMounted } from 'vue';
 import cardTarefas from '../cardTarefas.vue'
 import { subDays, startOfMonth, endOfMonth, eachDayOfInterval, format, getMonth, setMonth, getYear, setYear, setDate, getMinutes, setHours, parseISO } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
+import { ja, ru, zhCN, es, enUS, ptBR } from 'date-fns/locale';
 import { conexaoBD } from '../../stores/conexaoBD';
 import Carousel from 'primevue/carousel';
 import { Propriedade } from '../../models/Propriedade';
 import VueCookies from 'vue-cookies';
 import cardTarefaMobile from './cardTarefaMobile.vue';
+import { useI18n } from 'vue-i18n';
 
-
+const { t } = useI18n();
 
 let horaAtual = ref()
 
@@ -145,6 +146,8 @@ let setaRef = ref(null)
 let horaNova = ref()
 let tipoDeIntervalo = ref(1)
 let visualizacao = ref()
+let idioma = ref();
+let idiomaCookies = VueCookies.get('Idioma')
 defineVizualizacao()
 let diaSelecionado =
 {
@@ -171,12 +174,33 @@ onMounted(async () => {
         ordenaTarefas()
     })
     defineListaDeHoras()
+    mudarIdioma();
 })
 
 watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
     adicionaNaLista();
 });
 
+function mudarIdioma(){
+   if(idiomaCookies == 'jp'){
+    idioma.value = ja 
+   }
+   if(idiomaCookies == 'en'){
+    idioma.value = enUS 
+   }
+   if(idiomaCookies == 'pt-BR'){
+    idioma.value = ptBR 
+   }
+   if(idiomaCookies == 'es'){
+    idioma.value = es 
+   }
+   if(idiomaCookies == 'zh'){
+    idioma.value = zhCN
+   }
+   if(idiomaCookies == 'ru'){
+    idioma.value = ru
+   }
+}
 
 function retornaHoraEIndice(hora, indice) {
     horaNova = hora;

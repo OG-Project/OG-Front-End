@@ -19,14 +19,14 @@
               {{ tarefa.descricao.charAt(0).toUpperCase() + tarefa.descricao.slice(1) }}
             </div>
             <div v-if="tarefa.descricao == null" class="border-r-2 flex items-center justify-center w-[185px]  h-full">
-              <p>Não Tem Valor</p>
+              <p>{{$t('lista.naoTem')}}</p>
             </div>
             <div v-for="propriedade of tarefa.valorPropriedadeTarefas">
               <div :class="'border-r-2 flex items-center w-[185px] truncate h-full ' + (propriedade.propriedade.tipo=='DATA' ? 'justify-center' : propriedade.valor.valor.length<'17' ? 'justify-center' : 'justify-start pl-[2%]')  "
                 v-if="funcaoVerificaPropriedade(propriedade, tarefa)">
                 <div v-if="propriedade.valor.valor == null || propriedade.valor.valor == ''"
                   class=" flex items-center justify-center w-[185px]  h-full">
-                  <p>Não Tem Valor</p>
+                  <p>{{$t('lista.naoTem')}}</p>
                 </div>
                 <div v-if="propriedade.propriedade.tipo == 'DATA' && propriedade.valor.valor != null">
                   {{ format(new Date(propriedade.valor.valor), 'dd/MM/yyyy HH:mm') }}
@@ -47,7 +47,7 @@
   </div>
   <div v-else class="flex flex-col justify-center items-center">
     <NotePad></NotePad>
-    <p>Não há tarefas</p>
+    <p>{{$t('lista.naoHa')}}</p>
   </div>
 </template>
 
