@@ -127,6 +127,7 @@ watch(() => props.listaTarefas, async () => {
         getCalendario()
     },100)
 
+});
 
 function ordenaTarefas() {
     calendario.value.forEach(dia => {
