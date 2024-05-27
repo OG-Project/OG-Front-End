@@ -21,7 +21,7 @@
         </div>
         <div class="w-[35%] h-[20%] flex flex-row gap-3 justify-end">
             <div class="w-[60%] h-full flex items-center gap-8">
-                <span> Ver só as suas terefas</span>
+                <span> {{ $t('hubProjeto.suaTarefa') }}</span>
                 <div  @click="mudaEstadoDeVerSuasTarefas()">
                     <CheckBox :key="verSuaTarefas.valueOf" tamanho="pequeno" tipo="toggle"  :checked="verSuaTarefas" el-id="checkLibras">
                     </CheckBox>

@@ -260,9 +260,16 @@ async function equipeDoUsuarioLogado (){
     });
 };
 
-async function filtrarEquipe(){
-    equipeEditar.value = await(banco.buscarUm(equipeSelecionada, "/equipe"))
-
+async function filtrarEquipe() {
+  console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
+  let usuario = await (banco.buscarUm(idUsuarioLogado, "/usuario"))
+  usuario.equipes.forEach((equipeUsuario)=>{
+      if(equipeUsuario.equipe.id == equipeSelecionada){
+        console.log(equipeEditar.value)
+        equipeEditar.value = equipeUsuario.equipe;
+        
+      }
+  })
 }
 filtrarEquipe();
 

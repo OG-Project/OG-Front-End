@@ -303,7 +303,8 @@
     "linha": "时间轴",
     "calendario": "日历",
     "propriedades": "可见属性",
-    "novo": "新的"
+    "novo": "新的",
+    "suaTarefa": "仅查看您的任务"
   },
   "lista": {
     "naoTem": "没有值",
