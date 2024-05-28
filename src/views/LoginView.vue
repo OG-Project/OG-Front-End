@@ -40,8 +40,9 @@ let emailCadastro = ref("");
 let senhaCadastro = ref("");
 let emailInvalido = ref(false)
 let senhaInvalido = ref(false)
+let usuarioInvalido = ref(false)
+let textoUsuarioInvalido = ref('')
 let textoSenhaInvalida = ref('')
-let usuarioOuSenhaInvalida = ref(false);
 let caracterSpecias = [
   '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+',
   '[', ']', '{', '}', ';', ':', '|', ',', '<', '.', '>', '/',
@@ -147,57 +148,85 @@ onMounted(() => {
 async function cadastraUsuario() {
   const criarUsuario = criaUsuarioStore();
 
-
-  if (
-    emailCadastro.value.indexOf("@") > 0 &&
-    emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
-    emailCadastro.value.includes(".")
-  ) {
-    emailInvalido.value = true
-  } else {
-    emailInvalido.value = true
-  }
-  if (senhaCadastro.value.length>=8) {
-    if (senhaCadastro.value === confirmarSenhaCadastro.value && emailCadastro) {
-      criarUsuario.criaUsuario(
-        usuarioCadastro.value,
-        emailCadastro.value,
-        senhaCadastro.value
-      )
-      usuarioCadastro.value = "";
-      emailCadastro.value = "";
-      senhaCadastro.value = "";
-      confirmarSenhaCadastro.value = "";
-      emailInvalido.value = true
-      senhaInvalido.value = true
-      trocaDeTela();
-    } else if (senhaCadastro.value != confirmarSenhaCadastro.value) {
-      if (verificaLetrasSenha()) {
-        
+  if (usuarioCadastro.value != '') {
+    usuarioInvalido.value=false
+    // console.log(await banco.buscarUsuarioUsername(usuarioCadastro.value));
+    let usuario=await banco.buscarUsuarioUsername(usuarioCadastro.value)
+    console.log(usuario);
+    if(usuario==null){
+      usuarioInvalido.value=false
+      if (
+        emailCadastro.value.indexOf("@") > 0 &&
+        emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
+        emailCadastro.value.includes(".")
+      ) {
+        emailInvalido.value = false
+        if (senhaCadastro.value.length > 7) {
+          if (senhaCadastro.value === confirmarSenhaCadastro.value) {
+            console.log('a');
+            console.log(verificaLetrasSenha());
+            console.log(verificaCaracteresSenha());
+            if (verificaLetrasSenha() == true && verificaCaracteresSenha() == true) {
+              emailInvalido.value = false
+              senhaInvalido.value = false
+              usuarioInvalido.value = false
+              criarUsuario.criaUsuario(
+                usuarioCadastro.value,
+                emailCadastro.value,
+                senhaCadastro.value
+              )
+              usuarioCadastro.value = "";
+              emailCadastro.value = "";
+              senhaCadastro.value = "";
+              confirmarSenhaCadastro.value = "";
+              trocaDeTela();
+            } else if (verificaLetrasSenha() && !verificaCaracteresSenha()) {
+              senhaInvalido.value = true
+              textoSenhaInvalida.value = 'Senha necessita de caracteres especiais'
+            } else if (!verificaLetrasSenha() && verificaCaracteresSenha()) {
+              senhaInvalido.value = true
+              textoSenhaInvalida.value = 'Senha necessita de alguma letra'
+            } else {
+              senhaInvalido.value = true
+              textoSenhaInvalida.value = 'Senha necessita de alguma letra e caracteres especiais'
+            }
+          } else if (senhaCadastro.value != confirmarSenhaCadastro.value) {
+            textoSenhaInvalida.value = 'Senhas Divergentes'
+            senhaInvalido.value = true
+          }
+        } else {
+          senhaInvalido.value = true
+          textoSenhaInvalida.value = 'Senha contém menos de 8 caracteres'
+        }
       } else {
-        textoSenhaInvalida.value = 'Senhas Divergentes'
-        senhaInvalido.value = true
+        emailInvalido.value = true
       }
+      
+    }else{
+      usuarioInvalido.value=true
+      textoUsuarioInvalido.value='Username já usado'
     }
-  }else{
-    senhaInvalido.value=true
-    textoSenhaInvalida.value='Senha contém menos de 8 caracteres'
+  } else {
+    usuarioInvalido.value = true
+    textoUsuarioInvalido.value='Username precisa ter algo'
   }
 }
 
-function verificaLetrasSenha(){
+function verificaLetrasSenha() {
   for (let i = 0; i < senhaCadastro.value.length; i++) {
-    if(leters.includes(senhaCadastro.value[i])){
+    if (leters.includes(senhaCadastro.value[i])) {
       return true
-    } ;
+    };
   }
+  return false
 }
-function verificaCaracteresSenha(){
+function verificaCaracteresSenha() {
   for (let i = 0; i < senhaCadastro.value.length; i++) {
-    if(caracterSpecias.includes(senhaCadastro.value[i])){
+    if (caracterSpecias.includes(senhaCadastro.value[i])) {
       return true
-    } ;
+    };
   }
+  return false
 }
 
 let vizualizacaoDeSenha = ref("password");
@@ -273,20 +302,23 @@ async function loginGoogle() {
           <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
             <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
             <Input styleInput="input-transparente-escuro" :icon="imgPessoaLogin" conteudoInput="Usuario"
-              v-model="usuarioCadastro" @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
+              :isInvalido="usuarioInvalido" :textoInvalido="textoUsuarioInvalido" v-model="usuarioCadastro"
+              @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
             <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" conteudoInput="E-Mail"
-              v-model="emailCadastro" @updateModelValue="(e) => { emailCadastro = e; }"></Input>
+              v-model="emailCadastro" :isInvalido="emailInvalido" textoInvalido="Email faltando @ ou . "
+              @updateModelValue="(e) => { emailCadastro = e; }"></Input>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-                v-model="senhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenha"
-                @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
+                v-model="senhaCadastro" :isInvalido="senhaInvalido" :textoInvalido="textoSenhaInvalida"
+                :tipo="vizualizacaoDeSenha" @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhas">
                 <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
               </button>
             </div>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Confirmar Senha"
-                v-model="confirmarSenhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenhaConfirmacao"
+                v-model="confirmarSenhaCadastro" :textoInvalido="textoSenhaInvalida" :isInvalido="senhaInvalido"
+                :tipo="vizualizacaoDeSenhaConfirmacao"
                 @updateModelValue="(e) => { confirmarSenhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
                 <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
@@ -326,7 +358,8 @@ async function loginGoogle() {
       <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
         <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
         <Input styleInput="input-transparente-escuro" :icon="imgPessoaLogin" conteudoInput="Usuario"
-          v-model="usuarioCadastro" @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
+          :isInvalido="usuarioInvalido" :textoInvalido="textoUsuarioInvalido" v-model="usuarioCadastro"
+          @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
         <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" conteudoInput="E-Mail"
           v-model="emailCadastro" :isInvalido="emailInvalido" textoInvalido="Email faltando @ ou . "
           @updateModelValue="(e) => { emailCadastro = e; }"></Input>

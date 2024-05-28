@@ -1,7 +1,7 @@
 <template>
     <div class=""
     style="font-family: var(--fonteCorpo);">
-        <div class="styleInputPadraoIcon" 
+        <div class="styleInputPadraoIcon"  :class="{ 'Invalido': props.isInvalido}"
             v-if="icon!='null' && direcao!='direita' && tipoInput!='float'" 
             :style="estilizaDivInput">
             <div 
@@ -46,7 +46,7 @@
     
     
         <div class="styleInputPadrao flex items-center" 
-            v-if="icon=='null' & tipoInput=='float'">
+            v-if="icon=='null' & tipoInput=='float'" :class="{ 'Invalido': props.isInvalido}">
             <div class="estiloPlaceHolder">
                 
                 <input 
@@ -59,7 +59,7 @@
                 @input="$emit('updateModelValue', $event.target.value)" 
                 class="peer" 
                 placeholder=""  > 
-                <div class="flex items-center justify-center">
+                <div class="flex items-center justify-center" >
                     <svgIconMic 
                     @click="mic" 
                     v-show="isVoiceMaker" 
