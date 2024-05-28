@@ -2,9 +2,12 @@
     <fundoPopUp :largura="larguraPopUp()" :altura="tamanhoPopUp()">
     <div class="divGeral mb-[65vh]" >
         <div class="primeiraDiv">
-          <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
-          <equipe class="imagemEquipe" v-else></equipe>
-           <h1 class="equipeNome  2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[70%] sm:w-full xl:mt-5 lg:mt-3 md:mt-3 2xl:text-4xl xl:text-4xl lg:text-2xl md:text-xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
+            <div class="flex justify-center max-w-max">
+                <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
+                <equipe class="imagemEquipe" v-else></equipe>
+                <h1 class="equipeNome  2xl:w-[70%] xl:w-[80%] lg:w-[70%] md:w-[70%] sm:w-full xl:mt-5 lg:mt-3 md:mt-3 2xl:text-4xl xl:text-4xl lg:text-2xl md:text-xl  truncate ">
+               {{ equipeMembros.nome}}</h1>
+            </div>
         </div>
         <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
            <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">

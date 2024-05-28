@@ -306,6 +306,7 @@ function larguraInput() {
 async function removesse() {
     await banco.removerUsuarioDaEquipe(equipeSelecionada,idUsuarioLogado, "/usuario/removerUsuarioEquipe").then(response => {
             if (router.currentRoute.value.path == '/equipe') {
+                window.location.reload()
             } else {
                 router.push({ path: '/equipe' });
             }
