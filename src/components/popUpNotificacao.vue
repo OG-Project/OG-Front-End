@@ -196,9 +196,7 @@ async function adicionaUsuarioALista(notificacao) {
         notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito) => {
             if (usuarioAceito.usuario.id == usuarioId) {
                 usuarioAceito.aceito = true
-                console.log(notificacao)
-                let index = notificacao.receptores.indexOf(usuarioAceito.usuario)
-                notificacao.receptores.splice(index, 1)
+                removerUsuarioALista()
                 api.atualizar(notificacao, '/notificacao')
             }
         })
@@ -207,10 +205,8 @@ async function adicionaUsuarioALista(notificacao) {
         api.adicionarEquipe(notificacao.conviteParaProjeto.idEquipe, notificacao.conviteParaProjeto.projeto.id, '/projeto/add')
         notificacao.conviteParaProjeto.usuarioAceito.map((usuarioAceito) => {
             if (usuarioAceito.usuario.id == usuarioId) {
-                console.log(notificacao)
                 usuarioAceito.aceito = true
-                let index = notificacao.receptores.indexOf(usuarioAceito.usuario)
-                notificacao.receptores.splice(index, 1)
+                removerUsuarioALista()
                 api.atualizar(notificacao, '/notificacao')
             }
         })
