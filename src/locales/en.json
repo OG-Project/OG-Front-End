@@ -303,7 +303,8 @@
     "linha": "Timeline",
     "calendario": "Calendar",
     "propriedades": "Visible Properties",
-    "novo": "New"
+    "novo": "New",
+    "suaTarefa": "View only your tasks"
   },
   "lista": {
     "naoTem": "No Value",

@@ -14,7 +14,7 @@
           :key="convidado.name" :style="{ 'margin-left': marginLeft, 'margin-right': marginRight }">
           <!-- Renderiza as imagens apenas se houver usuários convidados -->
           <template v-if="listaConvidados.length > 0 && convidado.foto != null">
-            <img class="imgDePerfil" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`"
+            <img class="imgDePerfil" @click="router.push('/perfil/'+ convidado.id)" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`"
               :style="altDaImagemPerfil" />
 
           </template>
@@ -48,7 +48,7 @@ import { defineProps, onUpdated, ref } from 'vue';
 import { getCurrentInstance } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { conexaoBD } from '../stores/conexaoBD';
-
+import router from '../router';
 const { t } = useI18n()
 const instance = getCurrentInstance();
 const api = conexaoBD();
@@ -121,7 +121,7 @@ const removerConvidado = (convidado) => {
 }
 
 .imgDePerfil {
-  @apply rounded-full bg-cover bg-center flex justify-center flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw] 2xl:w-[60px] 2xl:h-[60px] xl:w-[60px] xl:h-[60px] lg:w-[55px] lg:h-[55px] md:w-[50px] md:h-[50px];
+  @apply rounded-full bg-cover bg-center flex justify-center flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw] 2xl:w-[50px] 2xl:h-[50px] xl:w-[60px] xl:h-[60px] lg:w-[55px] lg:h-[55px] md:w-[50px] md:h-[50px];
 }
 
 .imgPerfilPadrao {
