@@ -110,13 +110,6 @@ function press(b) {
   }
 
 }
-webSocket.esperaMensagem((mensagem) => { 
-  teste(JSON.parse(mensagem))
-});
-
-function teste(mensagem) {
-  criaNotificacaoStore.mandarNotificacao(mensagem);
-}
 
 function change(a) {
 }

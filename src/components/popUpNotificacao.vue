@@ -11,8 +11,13 @@
             <div v-for="notificacao of notificacoes" class="border-[var(--roxo)] border-b-2 w-[90%] h-max flex"
                 @mouseenter="startTimer(notificacao)" @mouseleave="clearTimer(notificacao)">
                 <div class="w-[10%] h-full flex justify-center items-center">
-                    <img @click="router.push('/perfil/'+ notificacao.notificacao.criador.id)"  v-if="notificacao.notificacao.criador.foto != null" class=" flex justify-start w-[40px] h-[40px] rounded-full mr-5 2xl:mt-1 xl:mt-2 lg:mt-2 md:mt-2  cursor-pointer" :src="`data:${notificacao.notificacao.criador.foto.tipo};base64,${notificacao.notificacao.criador.foto.dados}`">
-                    <userTodoPreto v-else class="flex justify-start w-[40px] h-[40px] rounded-full mr-5 2xl:mt-1 xl:mt-2 lg:mt-2 md:mt-2"></userTodoPreto>
+                    <img @click="router.push('/perfil/' + notificacao.notificacao.criador.id)"
+                        v-if="notificacao.notificacao.criador.foto != null"
+                        class=" flex justify-start w-[40px] h-[40px] rounded-full mr-5 2xl:mt-1 xl:mt-2 lg:mt-2 md:mt-2  cursor-pointer"
+                        :src="`data:${notificacao.notificacao.criador.foto.tipo};base64,${notificacao.notificacao.criador.foto.dados}`">
+                    <userTodoPreto v-else
+                        class="flex justify-start w-[40px] h-[40px] rounded-full mr-5 2xl:mt-1 xl:mt-2 lg:mt-2 md:mt-2">
+                    </userTodoPreto>
                 </div>
                 <div :style="notificacao.estilo">
                     <div class="w-[80%]">
@@ -46,16 +51,14 @@
                             class="flex flex-row ">
                             <div class="truncate  flex flex-row">
                                 <button v-if="notificacao.notificacao.conviteParaEquipe != null" class="">
-                                    <div v-if="notificacao.notificacao.conviteParaEquipe.equipe != null"
-                                        class="">
+                                    <div v-if="notificacao.notificacao.conviteParaEquipe.equipe != null" class="">
                                         <p class="truncate ">
                                             {{ notificacao.notificacao.conviteParaEquipe.equipe.nome }}
                                         </p>
                                     </div>
                                 </button>
                                 <button v-if="notificacao.notificacao.conviteParaProjeto != null" class="">
-                                    <div v-if="notificacao.notificacao.conviteParaProjeto.projeto != null"
-                                        class="">
+                                    <div v-if="notificacao.notificacao.conviteParaProjeto.projeto != null" class="">
                                         <p class="truncate ">
                                             {{ notificacao.notificacao.conviteParaProjeto.projeto.nome }}
                                         </p>
@@ -101,7 +104,7 @@ import { set } from 'date-fns';
 let usuarioId = VueCookies.get('IdUsuarioCookie');
 let api = conexaoBD();
 let notificacoes = ref([]);
-let emit = defineEmits(['fecharPopUp','temNotificacao'])
+let emit = defineEmits(['fecharPopUp', 'temNotificacao'])
 let estilo = ref({})
 let timeoutId = null;
 
@@ -193,9 +196,7 @@ async function adicionaUsuarioALista(notificacao) {
         notificacao.conviteParaEquipe.usuarioAceito.map((usuarioAceito) => {
             if (usuarioAceito.usuario.id == usuarioId) {
                 usuarioAceito.aceito = true
-                console.log(notificacao)
-                let index = notificacao.receptores.indexOf(usuarioAceito.usuario)
-                notificacao.receptores.splice(index, 1)
+                removerUsuarioALista()
                 api.atualizar(notificacao, '/notificacao')
             }
         })
@@ -204,10 +205,8 @@ async function adicionaUsuarioALista(notificacao) {
         api.adicionarEquipe(notificacao.conviteParaProjeto.idEquipe, notificacao.conviteParaProjeto.projeto.id, '/projeto/add')
         notificacao.conviteParaProjeto.usuarioAceito.map((usuarioAceito) => {
             if (usuarioAceito.usuario.id == usuarioId) {
-                console.log(notificacao)
                 usuarioAceito.aceito = true
-                let index = notificacao.receptores.indexOf(usuarioAceito.usuario)
-                notificacao.receptores.splice(index, 1)
+                removerUsuarioALista()
                 api.atualizar(notificacao, '/notificacao')
             }
         })
@@ -217,10 +216,13 @@ async function adicionaUsuarioALista(notificacao) {
     })
 
 }
-function removerUsuarioALista(notificacao) {
-    api.deletarEquipe(notificacao.id, '/notificacao').then((response) => {
-        defineNotificacoes()
+async function removerUsuarioALista() {
+    let usuario = await api.buscarUm(usuarioId,"/usuario").then((response) => {
+        api.retirarUsuario(response).then((response) => {
+            defineNotificacoes()
+        })
     })
+
 }
 
 function retornaPermissao(usuario, permissoes) {
