@@ -235,24 +235,26 @@ async function adicionaDiasALista(dias) {
 
 async function verificaTarefasDoDia(dia) {
     let lista = []
+    console.log(tarefas.value);
     let tarefas2 = tarefas.value
-    tarefas2 = tarefas2.sort(sortBy('indice'))
-    for (const tarefa of tarefas2) {
-        for (const propriedade of tarefa.valorPropriedadeTarefas) {
-            if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA" && tarefa.nome != null) {
-                if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
-                    let tarefaObjeto = {
-                        tarefa: tarefa,
-                        propriedade: propriedade
-                    }
-                    const tarefaDuplicada = lista.find((objeto) => objeto.tarefa == tarefaObjeto.tarefa)
-                    if (tarefaDuplicada == null) {
-                        lista.push(tarefaObjeto)
+    if(tarefas2!=null){
+        for (const tarefa of tarefas2) {
+            for (const propriedade of tarefa.valorPropriedadeTarefas) {
+                if (propriedade.valor.valor != null && propriedade.propriedade.tipo == "DATA" && tarefa.nome != null) {
+                    if (format(new Date(propriedade.valor.valor), 'yyyy-MM-dd') == format(new Date(dia), 'yyyy-MM-dd')) {
+                        let tarefaObjeto = {
+                            tarefa: tarefa,
+                            propriedade: propriedade
+                        }
+                        const tarefaDuplicada = lista.find((objeto) => objeto.tarefa == tarefaObjeto.tarefa)
+                        if (tarefaDuplicada == null) {
+                            lista.push(tarefaObjeto)
+                        }
                     }
                 }
-            }
+            };
         };
-    };
+    }
     return lista
 }
 
