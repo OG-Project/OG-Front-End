@@ -114,13 +114,13 @@ onMounted (() =>{
 async function pesquisaBancoUserName() {
   let listaAux = (await banco.procurar('/usuario'))
   listaAux.forEach(usuarioAtual => {
-      listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
+        listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
   });
   return listaDeUsuariosParaBusca;
 }
 
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
- usuarioConvidado.value = valorPesquisa
+        usuarioConvidado.value = valorPesquisa
 }
 
 function tamanhoPopUp() {
@@ -281,8 +281,6 @@ async function verificaMembroPermissao(){
   })
   
 }
- 
-
 
 async function removerMembro(membro) {
 
@@ -307,8 +305,6 @@ async function removerMembro(membro) {
 
 async function removeListaMembrosConvidados(membroConvidado){
   const index = membrosConvidados.value.findIndex(convidado => convidado == membroConvidado);
-  console.log(index)
-    // Remova o convidado da lista de convidados se encontrado
     if (index != -1) {
       membrosConvidados.value.splice(index, 1);
     }
@@ -337,7 +333,7 @@ function marginLeftConvidado() {
   } else if (screenWidth > 768 && screenWidth <= 1024) {
       return '0vw';
   } else if (screenWidth > 1024 && screenWidth < 1920) {
-      return '0vw';
+      return '2vw';
   } else if (screenWidth > 1920 && screenWidth < 2560) {
       return '6vw'
   } else if (screenWidth >= 2560) {
@@ -348,18 +344,21 @@ function marginLeftConvidado() {
 function marginRightConvidado() {
   if (screenWidth <= 768) {
       return '7vw';
-  } else if (screenWidth > 768 && screenWidth <= 1024) {
-      return '4vw';
-  } else if (screenWidth > 1024 && screenWidth <= 1440) {
-      return '5vw';
-  } else if(screenWidth > 1440 && screenWidth < 1920){
+  } else if (screenWidth > 768 && screenWidth < 1024) {
       return '2vw';
-  }
-  else if (screenWidth >= 1920 && screenWidth < 2560) {
+  } else if (screenWidth >= 1024 && screenWidth < 1440) {
+      return '6vw';
+  } else if(screenWidth >= 1440 && screenWidth < 1600){
       return '6vw';
   }
+  else if(screenWidth >= 1600 && screenWidth < 1920){
+      return '3vw';
+  }
+  else if (screenWidth >= 1920 && screenWidth < 2560) {
+      return '1vw';
+  }
   else if (screenWidth >= 2560) {
-      return '4.5vw';
+      return '0.5vw';
   }
 }
 
