@@ -14,10 +14,10 @@ export const conexaoBD = defineStore('conexaoBD', {
     }
   },
   actions: {
-    procurar(textoRequisicao) {
+    async procurar(textoRequisicao) {
       this.loading = true;
       try {
-        return axios.get(this.url + textoRequisicao, { withCredentials: true }).then(response => response.data)
+        return await axios.get(this.url + textoRequisicao).then(response => response.data)
       } finally {
         this.loading = false;
       }

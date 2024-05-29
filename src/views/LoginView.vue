@@ -150,7 +150,19 @@ async function cadastraUsuario() {
 
   if (usuarioCadastro.value != '') {
     usuarioInvalido.value=false
-    
+    let isUsernameExist=false;
+    let usuarios=ref()
+    await banco.procurar('/usuario').then(response=>{
+      usuarios.value=response
+    })
+    console.log(usuarios.value);
+    usuarios.value.forEach(element => {
+      if(element.username==usuarioCadastro){
+        isUsernameExist=true
+      }
+    });
+    if(!isUsernameExist){
+      usuarioInvalido.value=false
       if (
         emailCadastro.value.indexOf("@") > 0 &&
         emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
@@ -201,6 +213,10 @@ async function cadastraUsuario() {
       } else {
         emailInvalido.value = true
       }
+    }else {
+      usuarioInvalido.value=true
+      textoUsuarioInvalido.value='Username já existe'
+    }
       
   } else {
     usuarioInvalido.value = true
