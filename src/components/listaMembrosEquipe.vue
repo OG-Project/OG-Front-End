@@ -528,7 +528,7 @@ async function confirmarConvites() {
   }
   enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value).then(()=>{
       setTimeout(() => {
-        //   window.location.reload();
+          window.location.reload();
       }, 1000);
   })
 }
