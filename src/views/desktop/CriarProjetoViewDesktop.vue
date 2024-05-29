@@ -4,8 +4,8 @@
             <div class="flex items-start justify-start font-semibold">
                 <Input styleInput="input-transparente-claro-grande" tipo="obrigatorio"
                     :conteudoInput="$t('criaProjeto.nomeProjeto')" :isInvalido="semNome"
-                    :textoInvalido="$t('criaProjeto.obrigatorio')" largura="30" altura="6" fontSize="1.5rem" v-model="nomeProjeto"
-                    :modelValue="nomeProjeto" @updateModelValue="(e) => {
+                    :textoInvalido="$t('criaProjeto.obrigatorio')" largura="30" altura="6" fontSize="1.5rem"
+                    v-model="nomeProjeto" :modelValue="nomeProjeto" @updateModelValue="(e) => {
                         nomeProjeto = e
                     }"></Input>
             </div>
@@ -14,9 +14,10 @@
                     preset="transparente" tamanhoDaFonte="1.0rem" v-model="descricaoProjeto"></TextAreaPadrao>
             </div>
             <div class="w-max h-max" @mouseenter="fazHoverPlaceHolder()" @mouseleave="fazBackPadraoPlaceHolder()">
-                
-                <Input altura="2"  :conteudoInput="$t('criaProjeto.dataFinal')+' :'" tipoInput="float" fontSize="1rem" largura="13" tipo="date" v-model="dataFinalProjeto"
-                    :modelValue="dataFinalProjeto" @updateModelValue="(e) => {
+
+                <Input altura="2" :conteudoInput="$t('criaProjeto.dataFinal') + ' :'" tipoInput="float" fontSize="1rem"
+                    largura="13" tipo="date" v-model="dataFinalProjeto" :modelValue="dataFinalProjeto"
+                    @updateModelValue="(e) => {
                         dataFinalProjeto = e
                     }" />
 
@@ -80,10 +81,11 @@
                 <Botao preset="Deletar" texto="Deletar Projeto" tamanho-da-borda="4px" tamanhoPadrao="medio"
                     tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="excluiProjeto"
                     v-if="projetoEdita && isResponsavel && responsaveisProjeto.length == 1 && !naoPodeDeletar"></Botao>
-                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.cria')" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto" v-if="!projetoEdita"></Botao>
-                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.edita')" tamanho-da-borda="4px" tamanhoPadrao="medio"
-                    tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"
+                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.cria')" tamanho-da-borda="4px"
+                    tamanhoPadrao="medio" tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"
+                    v-if="!projetoEdita"></Botao>
+                <Botao preset="PadraoVazado" :texto="$t('criaProjeto.edita')" tamanho-da-borda="4px"
+                    tamanhoPadrao="medio" tamanhoDaFonte="2.5vh" sombras='nao' :funcaoClick="criaProjeto"
                     v-if="projetoEdita && isResponsavel"></Botao>
 
 
@@ -168,15 +170,15 @@ let isResponsavel = ref(false)
 let naoPodeDeletar = ref(false)
 let usuario;
 let usuarioId = VueCookies.get('IdUsuarioCookie')
-const tour=inject('tour')
+const tour = inject('tour')
 
 function reloadTelaTarefa() {
     const reload = VueCookies.get('idReloadProjeto');
     if (reload == '0') {
         console.log("reload")
         VueCookies.set('idReloadProjeto', '1');
-            window.location.reload();
-            tour.show(usuario.configuracao.ultimoPassoId,true)
+        window.location.reload();
+        tour.show(usuario.configuracao.ultimoPassoId, true)
     }
 }
 
@@ -187,15 +189,10 @@ onMounted(async () => {
     if (idProjeto != undefined && idProjeto != "undefined") {
         projeto.value = await conexao.buscarUm(idProjeto, '/projeto')
     }
-    if (idEquipe != undefined && idEquipe != "undefined") {
-        equipeSelecionada.value = (await conexao.buscarUm(idEquipe, '/equipe'))
-        let listaEquipe = [equipeSelecionada.value.nome]
-        colocaListaEquipes(listaEquipe)
-    }else{
-        colocaEquipePadraoUsuario()
-    }
+
     verificaEdicaoProjeto();
-    defineSelect()
+    colocaEquipeQueEstaCookies();
+    defineSelect();
     pesquisaBancoUserName();
     buscaProjetoCookies();
     mandaDataInformacoes();
@@ -205,10 +202,10 @@ onMounted(async () => {
 })
 
 
-async function colocaEquipePadraoUsuario(){
+async function colocaEquipePadraoUsuario() {
     let listaEquipes = await conexao.procurar('/equipe')
     listaEquipes.forEach(equipe => {
-        if(equipe.nome == 'Equipe do '+usuario.username){
+        if (equipe.nome == 'Equipe do ' + usuario.username) {
             equipeSelecionada.value = equipe;
         }
     });
@@ -324,7 +321,24 @@ async function defineSelect() {
         listaAux1.push(equipeAtual.nome);
         listaSelecao.value = listaAux1
     });
+
+
     return listaSelecao.value
+}
+
+function colocaEquipeQueEstaCookies() {
+    let listaAux = []
+    usuario.equipes.forEach((equipe) => listaAux.push(equipe.equipe))
+    listaAux.forEach(equipeAtual => {
+        if (idEquipe != undefined && idEquipe != "undefined") {
+            if (equipeAtual.id == idEquipe) {
+                let listaEquipe = [equipeAtual]
+                colocaListaEquipes(listaEquipe)
+            }
+        } else {
+            colocaEquipePadraoUsuario()
+        }
+    });
 }
 
 function colocaListaPropriedades(propriedades) {
@@ -517,6 +531,8 @@ function restauraCookies() {
 async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
     const listaEquipes = await conexao.procurar('/equipe');
     let equipeVinculada;
+    removeEquipesUndefined()
+
     if (equipeEscolhidaParaProjeto == "") {
         equipeVinculada = listaEquipes[0]
 
@@ -525,24 +541,35 @@ async function colocaListaEquipes(equipeEscolhidaParaProjeto) {
 
     } else {
         equipeVinculada = equipeEscolhidaParaProjeto;
+        console.log(equipeVinculada);
     }
-    if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
-        return;
+    console.log(listaEquipesSelecionadas.value);
+    if (listaEquipesSelecionadas.value[0]!=undefined) {
+        if (listaEquipesSelecionadas.value.find((equipeComparação) => equipeComparação.nome == equipeVinculada.nome) != undefined) {
+            return;
+        }
     }
     criaHistorico.criaHistoricoProjeto("Convidou uma equipe", projeto, usuario)
     listaEquipesSelecionadas.value.push(equipeVinculada)
+    
     transformaListaDeEquipeFrontEmListaBack(listaEquipesSelecionadas.value)
     defineSelect();
+}
+
+function removeEquipesUndefined(){
+    listaEquipesSelecionadas.value = listaEquipesSelecionadas.value.filter(equipe => equipe !== undefined);
 }
 
 async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
     let idProjetoEquipe = ""
     let equipeBack;
     let projeto
+    let listaSemUndefined = listaEquipeFront
+  
     if (projetoEdita.value) {
         projeto = await conexao.buscarUm(idProjeto, '/projeto')
     }
-    let listaBackEquipe = listaEquipeFront.map((equipeFront) => {
+    let listaBackEquipe = listaSemUndefined.map((equipeFront) => {
         if (projetoEdita.value) {
             idProjetoEquipe = verificaIdProjetoEquipe(equipeFront, projeto)
         }
@@ -553,7 +580,6 @@ async function transformaListaDeEquipeFrontEmListaBack(listaEquipeFront) {
             }
         }
     })
-    console.log(listaBackEquipe)
     listaEquipeEnviaBack = listaBackEquipe;
 
 }
