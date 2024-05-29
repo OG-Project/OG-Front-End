@@ -19,6 +19,9 @@ import Logo from "../imagemVetores/logo.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
 import { criaNotificacao } from "../stores/criaNotificacao";
+import alertTela from '../components/alertTela.vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const router = useRouter();
 const criaNotificacaoStore = criaNotificacao()
@@ -39,19 +42,28 @@ let usuarioCadastro = ref("");
 let emailCadastro = ref("");
 let senhaCadastro = ref("");
 let usuarioOuSenhaInvalida = ref(false);
+let emailInvalido = ref(false)
 let confirmarSenhaCadastro = ref("");
+let mensagem = ref("");
+let mensagemCor = ref("");
 let usuarioSecurity = {
   username: "",
   password: ""
 }
+
+function limparMensagemErro() {
+    mensagem.value = "";
+}
+
 async function fazerLogin() {
+  limparMensagemErro()
   usuarioSecurity.username = usuarioLogin.value
   usuarioSecurity.password = senhaUsuarioLogin.value
   let error;
   await banco.login(usuarioSecurity).catch(e => {
     error = e
   })
-  if (error != 'undefined') {
+  if (error == 'undefined') {
     // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
     // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
     banco.getCookie().then((usuario) => {
@@ -66,7 +78,12 @@ async function fazerLogin() {
     })
 
   }else{
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "Nome de usuário ou senha invalida";
+    mensagemCor.value = "#CD0000"
     usuarioOuSenhaInvalida.value = true
+
   }
 }
 
@@ -149,7 +166,18 @@ async function cadastraUsuario() {
       senhaCadastro.value = "";
       confirmarSenhaCadastro.value = "";
       trocaDeTela();
+    }else{
+      mensagem.value = ""
+      mensagemCor.value = ""
+      mensagem.value = "As senhas não são semelhantes";
+      mensagemCor.value = "#CD0000"
     }
+  }else{
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "Possui campos vazios ou e-mail inválido";
+    mensagemCor.value = "#CD0000"
+    emailInvalido.value = true
   }
 }
 
@@ -202,7 +230,7 @@ async function loginGoogle(){
         <Transition name="login">
           <div v-if="tipo === 'login'" :style="conteudoFormulario">
             <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
-            <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
+            <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="Nome de Usuário"
               v-model="usuarioLogin" :isInvalido="usuarioOuSenhaInvalida" textoInvalido="Usuario ou senha invalida" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
             <div class="flex flex-row w-full justify-center items-center pl-7">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
@@ -228,7 +256,8 @@ async function loginGoogle(){
             <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
             <Input styleInput="input-transparente-escuro" :icon="imgPessoaLogin" conteudoInput="Usuario"
               v-model="usuarioCadastro" @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
-            <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" conteudoInput="E-Mail"
+            <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" 
+            :isInvalido="emailInvalido" textoInvalido=" E-mail inválido" conteudoInput="E-Mail"
               v-model="emailCadastro" @updateModelValue="(e) => { emailCadastro = e; }"></Input>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
@@ -304,6 +333,10 @@ async function loginGoogle(){
         </div>
     </div>
   </div>
+  <div v-if="mensagem != ''">
+    <alertTela :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro">
+    </alertTela>
+</div>
 </template>
 <style scoped>
 #bordaCinza {

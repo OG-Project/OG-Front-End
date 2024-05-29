@@ -337,5 +337,20 @@
   "convites": "招待状",
   "confirmar": "確認する",
   "adicionaEquipe": "チームを追加"
-}
+},
+  "login": {
+    "nomeUsuario": "ユーザー名",
+    "senha": "パスワード",
+    "acesso": "アクセス",
+    "criar": "アカウントを作成",
+    "usuario": "ユーザー",
+    "email": "メール",
+    "confirmaSenha": "パスワードを確認",
+    "cadastrar": "登録",
+    "sair": "ログアウト",
+    "conecta": "ログイン",
+    "cadastro": "登録",
+    "senhaInvalida": "ユーザー名またはパスワードが無効です"
+  }
+
 }
