@@ -77,6 +77,7 @@ async function atualizaListaDeTarefaVisivel(verSuaTarefas) {
         tarefas.forEach(tarefa => {
             console.log(tarefa);
             tarefa.responsaveis.forEach(async (tarefaResponsavel) => {
+                lo
                 if (tarefaResponsavel.responsavel.id == Number(IdUsuarioCookie)) {
                     listaAuxParaAtualizar.push(tarefa)
                 }

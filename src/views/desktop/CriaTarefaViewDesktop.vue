@@ -1,8 +1,7 @@
 <template>
   <div class="bg-[var(--backgroundPuro)] relative flex flex-row min-h-[92vh] w-full">
-    <p v-if="veSeEResponsavelDaTarefa(VueCookies.get('IdUsuarioCookie')) == false" class="absolute top-1/3 left-1/3 text-3xl">
-      Você não pode editar essa tarefa </p>
-    <div :class="{ 'blurred': !veSeEResponsavelDaTarefa(VueCookies.get('IdUsuarioCookie')) == false }" class="flex">
+    
+    <div class="flex">
       <div class="w-[40vw] min-h-[96%] flex flex-col">
         <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
           <Input largura="32" altura="6" fontSize="2rem" :conteudoInput="$t('criaTarefa.task_name')"
@@ -19,13 +18,14 @@
             :place-holder-pesquisa="t('criaTarefa.responsaveisPelaTarefa')" @item-selecionado="pegaValorSelecionadoPesquisa"
             largura="16" fontSize="1rem">
           </inputDePesquisa>
-          <div v-if="tarefa.responsaveis != ''" class="scrollListaResponsaveis" v-dragscroll>
+          <div v-if="listaReponsaveis != ''" class="scrollListaResponsaveis" v-dragscroll>
             <div
               class=" bg-[var(--backgroundItems)] p-[0.50rem] rounded-sm border-transparent shadow-md flex flex-row items-center gap-2  w-max ">
-              <div v-for="responsavel of listaReponsaveis ">
+              {{ console.log(listaReponsaveis) }}
+              <div v-for="responsavel of listaReponsaveis">
                 <div class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem] w-max flex flex-row items-center gap-1 ">
                   <img src="../../imagem-vetores/userTodoPreto.svg">
-                  <p v-if="responsavel.username">{{ responsavel.username }}</p>
+                  <p v-if="responsavel">{{ responsavel}}</p>
                   <p v-else>{{ responsavel }}</p>
                   <div class="w-full flex justify-end pr-2">
                     <div class="w-[40%]">
@@ -783,12 +783,12 @@ async function criaTarefaNoConcluido() {
   tarefaCriando.status = tarefa.value.status;
   tarefaCriando.subTarefas = tarefa.value.subtarefas;
   tarefaCriando.tempoAtuacao = tarefa.value.tempoAtuacao;
-  tarefa.value.responsaveis.forEach(async (responsavel) => {
+  listaReponsaveis.value.forEach(async (responsavel) => {
     let usuariosBanco = await banco.procurar("/usuario")
     usuariosBanco.forEach(usuarioBanco => {
-      if (usuarioBanco.username == responsavel) {
+      if (usuarioBanco.username == responsavel.username || usuarioBanco.username == responsavel) {
         let usuarioTarefa = {
-          responsavel: usuarioBanco
+          idResponsavel: usuarioBanco.id
         }
         tarefaCriando.responsaveis.push(usuarioTarefa)
       }
@@ -804,6 +804,7 @@ async function criaTarefaNoConcluido() {
     });
     router.push('/projeto')
   });
+  console.log(tarefaCriando);
 }
 
 //Função que deleta status
@@ -949,97 +950,7 @@ async function calculaTempoAtuacao() {
   horas = horas < 10 ? `0${horas}` : horas;
 
   tempoAtuado = `${horas}:${minutos}:${segundos}`;
-  let tarefa2 = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
-  let tarefaCriando = {
-    id: JSON.parse(VueCookies.get("IdTarefaCookies")),
-    responsaveis: [],
-    status: [],
-    subTarefas: [],
-    comentarios: [],
-    valorPropriedadeTarefas: [],
-    cor: "FFFFFF",
-    descricao: null,
-    nome: null,
-    valorPropriedadeTarefas: [],
-    dataCriacao: null,
-    indice: [],
-    tempoAtuacao: "00:00:00",
-    responsaveis: []
-  }
-  tarefaCriando.nome = tarefa.value.nome;
-  tarefaCriando.descricao = tarefa.value.descricao;
-  for (const props of tarefa2.valorPropriedadeTarefas) {
-    for (const propsComValor of tarefa.value.propriedades) {
-      if (propsComValor.propriedade.id == props.propriedade.id) {
-        if (props.propriedade.tipo == "TEXTO") {
-          let valor = {
-            id: props.valor.id,
-            texto: propsComValor.valor.valor
-          }
-          props.valor = valor
-
-        }
-        else if (props.propriedade.tipo == "NUMERO") {
-          let valor = {
-            id: props.valor.id,
-            numero: propsComValor.valor.valor
-          }
-          props.valor = valor
-
-        }
-        else if (props.propriedade.tipo == "SELECAO") {
-          let valor = {
-            id: props.valor.id,
-            selecao: propsComValor.valor.valor
-          }
-          props.valor = valor
-
-        }
-        else if (props.propriedade.tipo == "DATA") {
-          let valor = {
-            id: props.valor.id,
-            data: propsComValor.valor.valor
-          }
-          props.valor = valor
-
-        }
-      }
-    }
-  }
-  let comentario = [];
-  tarefa.value.comentarios.forEach((comentarioFor) => {
-    comentario.push(comentarioFor);
-  });
-  tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
-  tarefaCriando.comentarios = comentario;
-  if(tarefa.value.corDaTarefa){
-    tarefaCriando.cor = tarefa.value.corDaTarefa;
-  }else{
-    tarefaCriando.cor = "620BA7";
-  }
-  tarefaCriando.indice = tarefa2.indice;
-  // tarefaCriando.responsaveis = tarefa.value.responsaveis;
-  tarefaCriando.status = tarefa.value.status;
-  tarefaCriando.subTarefas = tarefa.value.subtarefas;
-  tarefaCriando.tempoAtuacao = tempoAtuado;
-  tarefa.value.responsaveis.forEach(async (responsavel) => {
-    let usuariosBanco = await banco.procurar("/usuario")
-    usuariosBanco.forEach(usuarioBanco => {
-      if (usuarioBanco.username == responsavel) {
-        let usuarioTarefa = {
-          responsavel: usuarioBanco
-        }
-        tarefaCriando.responsaveis.push(usuarioTarefa)
-      }
-    });
-  });
-  banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
-    if (tarefa.value.arquivos.length != 0) {
-      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
-    }
-    banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
-    });
-  });
+  criaTarefaNoConcluido();
 }
 
 
@@ -1088,9 +999,9 @@ function getDownloadLink(arquivo) {
 }
 
 async function puxaTarefaDaEdicao() {
-
   let IdTarefaCookies = VueCookies.get("IdTarefaCookies");
   let tarefaAux = await banco.buscarUm(IdTarefaCookies, "/tarefa");
+  console.log(tarefaAux);
   tarefa.value.nome = tarefaAux.nome;
   tarefa.value.descricao = tarefaAux.descricao;
   for (const comentarioId of tarefaAux.comentarios) {
@@ -1109,12 +1020,16 @@ async function puxaTarefaDaEdicao() {
   });
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
+  let listaAux = []
   tarefaAux.responsaveis.forEach(async responsavel => {
     let usuarioAtual = await banco.buscarUm(responsavel.idResponsavel,"/usuario")
-    tarefa.value.responsaveis.push(usuarioAtual)
+    listaAux.push(usuarioAtual.username)
+    listaReponsaveis.value = listaAux;
+    
   });
   tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
   tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
+  console.log(tarefaAux);
 }
 
 async function atualizaPropriedadesEStatus() {
@@ -1185,7 +1100,7 @@ async function colocaListaResponsaveisPadrao(){
   let listaAux =[]
   tarefa.responsaveis.forEach(async (usuarioTarefa) =>{
     let usuarioAtual = await banco.buscarUm(usuarioTarefa.idResponsavel,"/usuario")
-    listaAux.push(usuarioAtual)
+    listaAux.push(usuarioAtual.username)
     listaReponsaveis.value = listaAux;
     console.log(listaReponsaveis.value);
   })
@@ -1442,8 +1357,10 @@ function numeroDeSubTarefasConcluidas() {
   return numeroDeSubTarefasC.value;
 }
 
+//Esta dando errado
+
 function veSeEResponsavelDaTarefa(usuario) {
-  tarefa.value.responsaveis.forEach(async (responsavel) => {
+  listaReponsaveis.value.forEach(async (responsavel) => {
     let usuarioAtual = banco.buscarUm(responsavel.idResponsavel,"/usuario")
     if (usuarioAtual.username == usuario.username) {
       return true;
