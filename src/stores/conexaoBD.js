@@ -293,15 +293,6 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
       return await ((await axios.get(this.url + `${textoRequisicao}/${equipeId}`, { withCredentials: true })).data)
 
-    },
-    async buscarUsuarioUsername(username){
-      console.log(username);
-      this.loading = true;
-      try{
-        return await ( axios.get(this.url+"/usuario/username",{username:username},{ withCredentials: true }).then(response=>response.data)).catch(error=>console.log(error))
-      }finally{
-        this.loading = false;
-      }
     }
   }
 }

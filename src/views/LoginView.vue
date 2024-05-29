@@ -150,11 +150,7 @@ async function cadastraUsuario() {
 
   if (usuarioCadastro.value != '') {
     usuarioInvalido.value=false
-    // console.log(await banco.buscarUsuarioUsername(usuarioCadastro.value));
-    let usuario=await banco.buscarUsuarioUsername(usuarioCadastro.value)
-    console.log(usuario);
-    if(usuario==null){
-      usuarioInvalido.value=false
+    
       if (
         emailCadastro.value.indexOf("@") > 0 &&
         emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
@@ -170,11 +166,15 @@ async function cadastraUsuario() {
               emailInvalido.value = false
               senhaInvalido.value = false
               usuarioInvalido.value = false
-              criarUsuario.criaUsuario(
-                usuarioCadastro.value,
-                emailCadastro.value,
-                senhaCadastro.value
-              )
+              try {
+                criarUsuario.criaUsuario(
+                  usuarioCadastro.value,
+                  emailCadastro.value,
+                  senhaCadastro.value
+                )
+              } catch (error) {
+                console.log(error);
+              }
               usuarioCadastro.value = "";
               emailCadastro.value = "";
               senhaCadastro.value = "";
@@ -202,10 +202,6 @@ async function cadastraUsuario() {
         emailInvalido.value = true
       }
       
-    }else{
-      usuarioInvalido.value=true
-      textoUsuarioInvalido.value='Username já usado'
-    }
   } else {
     usuarioInvalido.value = true
     textoUsuarioInvalido.value='Username precisa ter algo'
