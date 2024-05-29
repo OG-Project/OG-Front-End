@@ -11,15 +11,16 @@
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/timeline')"
                     class="w-[100%] h-screen flex justify-center items-center">
-                    <timeLine></timeLine>
+                    <timeLine :listaTarefas="listaTarefaEnvio"></timeLine>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/kanban')"
                     class="w-full max-w-full h-screen flex justify-start px-4 items-center overflow-x-auto">
-                    <KanbanDeStatus></KanbanDeStatus>
+                    {{ console.log(listaTarefaEnvio) }}
+                    <KanbanDeStatus :listaTarefas="listaTarefaEnvio"></KanbanDeStatus>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length < 7"
                     class="w-full max-w-full h-screen flex justify-center px-4 items-center overflow-x-auto">
-                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis">
+                    <cardList :projeto="projeto.value" :listaDePropriedadesVisiveis="listaDePropriedadesVisiveis" :listaTarefas="listaTarefaEnvio" >
                     </cardList>
                 </div>
                 <div v-if="defineOpcao(route.path, '/projeto/lista') && listaDePropriedadesVisiveis.length >= 7"
@@ -32,7 +33,7 @@
     </div>
 </template>
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref,watch } from 'vue';
 import calendario from '../../components/calendario.vue';
 import KanbanDeStatus from '../../components/KanbanDeStatus.vue';
 import timeLine from '../../components/timeLine.vue';
@@ -50,10 +51,18 @@ let idProjeto = VueCookies.get("IdProjetoAtual")
 let IdUsuarioCookie = VueCookies.get("IdUsuarioCookie")
 let projeto = ref({})
 let listaTarefaEnvio = ref([]);
+let opcao = false
 const banco = conexaoBD();
 onMounted(async () => {
     projeto.value = await banco.buscarUm(idProjeto, "/projeto")
     timerTempoAtuacao();
+    atualizaListaDeTarefaVisivel(false);
+})
+
+const route = useRoute()
+
+watch(() => route.path, () => {
+    console.log("Entrou");
     atualizaListaDeTarefaVisivel(false);
 })
 
@@ -62,7 +71,7 @@ function reloadTelaProjeto() {
     if (reload == '0') {
         console.log("reload")
         VueCookies.set('idReloadProjeto', '1');
-        window.location.reload();
+        window.location.reload(opcao?null:false);
     }
 }
 
@@ -70,6 +79,7 @@ reloadTelaProjeto()
 
 
 async function atualizaListaDeTarefaVisivel(verSuaTarefas) {
+    opcao = verSuaTarefas
     let listaAuxParaAtualizar =[]
     listaTarefaEnvio.value = []
     if (verSuaTarefas) {
@@ -77,6 +87,7 @@ async function atualizaListaDeTarefaVisivel(verSuaTarefas) {
         tarefas.forEach(tarefa => {
             console.log(tarefa);
             tarefa.responsaveis.forEach(async (tarefaResponsavel) => {
+                lo
                 if (tarefaResponsavel.responsavel.id == Number(IdUsuarioCookie)) {
                     listaAuxParaAtualizar.push(tarefa)
                 }
@@ -88,6 +99,7 @@ async function atualizaListaDeTarefaVisivel(verSuaTarefas) {
     } else {
          banco.buscarUm(idProjeto, '/projeto').then((response)=>{
             listaTarefaEnvio.value = response.tarefas;
+            console.log(listaTarefaEnvio.value);
             return
         })
     }
@@ -101,7 +113,6 @@ onUnmounted(() => {
     calculaTempoAtuacao()
 })
 
-const route = useRoute()
 
 function defineOpcao(rotaAtual, rota) {
     if (rotaAtual == rota) {

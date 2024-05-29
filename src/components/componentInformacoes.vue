@@ -160,6 +160,8 @@ async function alterarInformacoes(){
         usuario.value.email=PerfilStore.email
         usuario.value.username=PerfilStore.username
         usuario.value.sobrenome=PerfilStore.sobrenome
+        let dataFuso=new Date(PerfilStore.dataDeNascimento)
+        console.log(dataFuso);
         usuario.value.dataNascimento=PerfilStore.dataDeNascimento
         console.log(usuario.value);
         console.log(await conexao.atualizar(usuario.value,'/usuario'))
@@ -182,9 +184,11 @@ onBeforeMount(async ()=>{
         
         PerfilStore.email=usuario.value.email
         PerfilStore.username=usuario.value.username
-        let data=new Date(usuario.value.dataNascimento).toLocaleDateString()
-        data=data.split('/').reverse().join('-')
-        PerfilStore.dataDeNascimento=data
+        let data=new Date(usuario.value.dataNascimento).toISOString()
+        console.log(data);
+        data=data.split('T')
+        data[0]=data[0].split('/').reverse().join('-')
+        PerfilStore.dataDeNascimento=data[0]
 })
 onMounted(()=>{
         window.addEventListener('resize', () => {

@@ -119,6 +119,7 @@ function redirecionamento(local) {
         VueCookies.remove('propriedadeCookie')
         VueCookies.remove("projetoCookie")
         VueCookies.remove('statusCookie')
+        VueCookies.remove('JWT')
         window.location.reload();
       });
 

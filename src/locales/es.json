@@ -336,5 +336,19 @@
   "convites": "Invitaciones",
   "confirmar": "Confirmar",
   "adicionaEquipe": "Agregar Equipo"
+},
+"login": {
+  "nomeUsuario": "Nombre de usuario",
+  "senha": "Contraseña",
+  "acesso": "Acceder",
+  "criar": "Crear Cuenta",
+  "usuario": "Usuario",
+  "email": "Correo Electrónico",
+  "confirmaSenha": "Confirmar Contraseña",
+  "cadastrar": "Registrar",
+  "sair": "Salir",
+  "conecta": "CONECTARSE",
+  "cadastro": "REGISTRO",
+  "senhaInvalida": "Usuario o contraseña inválidos"
 }
 }

@@ -129,6 +129,7 @@ watch(() => props.listaTarefas, async () => {
 
 });
 
+
 function ordenaTarefas() {
     calendario.value.forEach(dia => {
         dia.listaDeTarefas.sort((tarefa, tarefa2) => {

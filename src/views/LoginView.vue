@@ -19,6 +19,9 @@ import Logo from "../imagemVetores/logo.vue";
 import { onMounted } from "vue";
 import { watch } from "vue";
 import { criaNotificacao } from "../stores/criaNotificacao";
+import alertTela from '../components/alertTela.vue';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const router = useRouter();
 const criaNotificacaoStore = criaNotificacao()
@@ -38,20 +41,46 @@ let senhaUsuarioLogin = ref("");
 let usuarioCadastro = ref("");
 let emailCadastro = ref("");
 let senhaCadastro = ref("");
+
+let emailInvalido = ref(false)
+let senhaInvalido = ref(false)
+let usuarioInvalido = ref(false)
+let textoUsuarioInvalido = ref('')
+let textoSenhaInvalida = ref('')
+let caracterSpecias = [
+  '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '-', '_', '=', '+',
+  '[', ']', '{', '}', ';', ':', '|', ',', '<', '.', '>', '/',
+  '?', '`', '~'
+]
+let leters = [
+  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
+  'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+  'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+  'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
 let usuarioOuSenhaInvalida = ref(false);
+let emailInvalido = ref(false)
 let confirmarSenhaCadastro = ref("");
+let mensagem = ref("");
+let mensagemCor = ref("");
 let usuarioSecurity = {
   username: "",
   password: ""
 }
+
+function limparMensagemErro() {
+    mensagem.value = "";
+}
+
 async function fazerLogin() {
+  limparMensagemErro()
   usuarioSecurity.username = usuarioLogin.value
   usuarioSecurity.password = senhaUsuarioLogin.value
   let error;
   await banco.login(usuarioSecurity).catch(e => {
     error = e
   })
-  if (error != 'undefined') {
+  console.log(error)
+  if (error == undefined) {
     // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
     // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
     banco.getCookie().then((usuario) => {
@@ -65,8 +94,14 @@ async function fazerLogin() {
       return
     })
 
+
   }else{
+    mensagem.value = ""
+    mensagemCor.value = ""
+    mensagem.value = "Nome de usuário ou senha invalida";
+    mensagemCor.value = "#CD0000"
     usuarioOuSenhaInvalida.value = true
+
   }
 }
 
@@ -79,7 +114,7 @@ function VerificaPrazoDoProjeto() {
       let dataProjeto = new Date(projetos[i].dataFinal);
       let diferenca = dataProjeto.getTime() - dataAtual.getTime();
       dias = Math.ceil(diferenca / (1000 * 60 * 60 * 24));
-      if (dias < 7 && projetos[i].dataFinal != null && dias >= 1 ) {
+      if (dias < 7 && projetos[i].dataFinal != null && dias >= 1) {
         enviaParaWebSocket(projetos[i], dias)
       }
     }
@@ -132,29 +167,92 @@ onMounted(() => {
 
 async function cadastraUsuario() {
   const criarUsuario = criaUsuarioStore();
-
-  if (
-    emailCadastro.value.indexOf("@") > 0 &&
-    emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
-    emailCadastro.value.includes(".")
-  ) {
-    if (senhaCadastro.value === confirmarSenhaCadastro.value) {
-      criarUsuario.criaUsuario(
-        usuarioCadastro.value,
-        emailCadastro.value,
-        senhaCadastro.value
-      )
-      usuarioCadastro.value = "";
-      emailCadastro.value = "";
-      senhaCadastro.value = "";
-      confirmarSenhaCadastro.value = "";
-      trocaDeTela();
-    }
+  if (usuarioCadastro.value != '') {
+    usuarioInvalido.value=false
+    
+      if (
+        emailCadastro.value.indexOf("@") > 0 &&
+        emailCadastro.value.indexOf("@") < emailCadastro.value.length - 1 &&
+        emailCadastro.value.includes(".")
+      ) {
+        emailInvalido.value = false
+        if (senhaCadastro.value.length > 7) {
+          if (senhaCadastro.value === confirmarSenhaCadastro.value) {
+            console.log('a');
+            console.log(verificaLetrasSenha());
+            console.log(verificaCaracteresSenha());
+            if (verificaLetrasSenha() == true && verificaCaracteresSenha() == true) {
+              emailInvalido.value = false
+              senhaInvalido.value = false
+              usuarioInvalido.value = false
+              try {
+                criarUsuario.criaUsuario(
+                  usuarioCadastro.value,
+                  emailCadastro.value,
+                  senhaCadastro.value
+                )
+              } catch (error) {
+                console.log(error);
+              }
+              usuarioCadastro.value = "";
+              emailCadastro.value = "";
+              senhaCadastro.value = "";
+              confirmarSenhaCadastro.value = "";
+              trocaDeTela();
+            } else if (verificaLetrasSenha() && !verificaCaracteresSenha()) {
+              senhaInvalido.value = true
+              textoSenhaInvalida.value = 'Senha necessita de caracteres especiais'
+            } else if (!verificaLetrasSenha() && verificaCaracteresSenha()) {
+              senhaInvalido.value = true
+              textoSenhaInvalida.value = 'Senha necessita de alguma letra'
+            } else {
+              senhaInvalido.value = true
+              textoSenhaInvalida.value = 'Senha necessita de alguma letra e caracteres especiais'
+            }
+          } else if (senhaCadastro.value != confirmarSenhaCadastro.value) {
+            textoSenhaInvalida.value = 'Senhas Divergentes'
+            senhaInvalido.value = true
+            mensagem.value = ""
+            mensagemCor.value = ""
+            mensagem.value = "As senhas não são semelhantes";
+            mensagemCor.value = "#CD0000"
+          }
+        } else {
+          senhaInvalido.value = true
+          textoSenhaInvalida.value = 'Senha contém menos de 8 caracteres'
+        }
+      } else {
+        emailInvalido.value = true
+        mensagem.value = ""
+        mensagemCor.value = ""
+        mensagem.value = "Possui campos vazios ou e-mail inválido";
+        mensagemCor.value = "#CD0000"
+        emailInvalido.value = true
+      }
+    
+      
+  } else {
+    usuarioInvalido.value = true
+    textoUsuarioInvalido.value='Username precisa ter algo'
   }
 }
 
-
-
+function verificaLetrasSenha() {
+  for (let i = 0; i < senhaCadastro.value.length; i++) {
+    if (leters.includes(senhaCadastro.value[i])) {
+      return true
+    };
+  }
+  return false
+}
+function verificaCaracteresSenha() {
+  for (let i = 0; i < senhaCadastro.value.length; i++) {
+    if (caracterSpecias.includes(senhaCadastro.value[i])) {
+      return true
+    };
+  }
+  return false
+}
 
 let vizualizacaoDeSenha = ref("password");
 let vizualizacaoDeSenhaConfirmacao = ref("password");
@@ -183,7 +281,7 @@ async function removeCookie() {
   VueCookies.remove("JSESSIONID")
   await loginGoogle()
 }
-async function loginGoogle(){
+async function loginGoogle() {
   VueCookies.set('idReloadHome', '0');
   window.location.href = "http://localhost:8082"
 }
@@ -202,11 +300,12 @@ async function loginGoogle(){
         <Transition name="login">
           <div v-if="tipo === 'login'" :style="conteudoFormulario">
             <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
-            <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
+            <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="Nome de Usuário"
               v-model="usuarioLogin" :isInvalido="usuarioOuSenhaInvalida" textoInvalido="Usuario ou senha invalida" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
             <div class="flex flex-row w-full justify-center items-center pl-7">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-                v-model="senhaUsuarioLogin" :isInvalido="usuarioOuSenhaInvalida" textoInvalido="Usuario ou senha invalida" :tipo="vizualizacaoDeSenha"
+                v-model="senhaUsuarioLogin" :isInvalido="usuarioOuSenhaInvalida"
+                textoInvalido="Usuario ou senha invalida" :tipo="vizualizacaoDeSenha"
                 @updateModelValue="(e) => { senhaUsuarioLogin = e; }"></Input>
               <button class="h-[100%] w-[6%]" @click="mostraSenhas">
                 <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
@@ -227,20 +326,23 @@ async function loginGoogle(){
           <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
             <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
             <Input styleInput="input-transparente-escuro" :icon="imgPessoaLogin" conteudoInput="Usuario"
+
               v-model="usuarioCadastro" @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
-            <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" conteudoInput="E-Mail"
+            <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" 
+            :isInvalido="emailInvalido" textoInvalido=" E-mail inválido" conteudoInput="E-Mail"
               v-model="emailCadastro" @updateModelValue="(e) => { emailCadastro = e; }"></Input>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-                v-model="senhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenha"
-                @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
+                v-model="senhaCadastro" :isInvalido="senhaInvalido" :textoInvalido="textoSenhaInvalida"
+                :tipo="vizualizacaoDeSenha" @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhas">
                 <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
               </button>
             </div>
             <div class="flex flex-row justify-center items-center pl-10">
               <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Confirmar Senha"
-                v-model="confirmarSenhaCadastro" :isInvalido="senhaDiferente" :tipo="vizualizacaoDeSenhaConfirmacao"
+                v-model="confirmarSenhaCadastro" :textoInvalido="textoSenhaInvalida" :isInvalido="senhaInvalido"
+                :tipo="vizualizacaoDeSenhaConfirmacao"
                 @updateModelValue="(e) => { confirmarSenhaCadastro = e; }"></Input>
               <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
                 <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
@@ -255,55 +357,61 @@ async function loginGoogle(){
   </div>
   <div v-if="screenWidth < 1024" class="h-[100vh]">
     <div id="bordaCinzaMobile">
-        <div v-if="tipo === 'login'" :style="conteudoFormulario">
-          <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
-          <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
-            v-model="usuarioLogin" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
-          <div class="flex flex-row w-full justify-center items-center pl-7">
-            <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-              v-model="senhaUsuarioLogin" :tipo="vizualizacaoDeSenha"
-              @updateModelValue="(e) => { senhaUsuarioLogin = e; }"></Input>
-            <button class="h-[100%] w-[6%]" @click="mostraSenhas">
-              <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
-            </button>
-          </div>
-          <Botao :funcaoClick="fazerLogin" preset="PadraoRoxo" texto="Acessar" tamanhoPadrao="mobilemedio"></Botao>
+      <div v-if="tipo === 'login'" :style="conteudoFormulario">
+        <h1 class="text-5xl text-[#FFFFFF]">LOGIN</h1>
+        <Input styleInput="input-transparente-escuro" :icon="iconePessoaLogin" conteudoInput="User"
+          v-model="usuarioLogin" @updateModelValue="(e) => { usuarioLogin = e; }"></Input>
+        <div class="flex flex-row w-full justify-center items-center pl-7">
+          <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
+            v-model="senhaUsuarioLogin" :tipo="vizualizacaoDeSenha"
+            @updateModelValue="(e) => { senhaUsuarioLogin = e; }"></Input>
+          <button class="h-[100%] w-[6%]" @click="mostraSenhas">
+            <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
+          </button>
+        </div>
+        <Botao :funcaoClick="fazerLogin" preset="PadraoRoxo" texto="Acessar" tamanhoPadrao="mobilemedio"></Botao>
 
-          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco"  texto="Criar Conta" tamanhoPadrao="mobilemedio"></Botao>
-          <div class="flex items-center justify-center w-[70%]">
-            <hr style="width: 40%; text-align: left; margin-left: 0" />
-            <hr style="width: 40%; text-align: left; margin-left: 0" />
-          </div>
-          <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" tamanhoPadrao="mobilepequeno" ladoDoIcon="row-reverse"
-            :funcaoClick="loginGoogle"></Botao>
+        <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Criar Conta" tamanhoPadrao="mobilemedio"></Botao>
+        <div class="flex items-center justify-center w-[70%]">
+          <hr style="width: 40%; text-align: left; margin-left: 0" />
+          <hr style="width: 40%; text-align: left; margin-left: 0" />
         </div>
-        <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
-          <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
-          <Input styleInput="input-transparente-escuro" :icon="imgPessoaLogin" conteudoInput="Usuario"
-            v-model="usuarioCadastro" @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
-          <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" conteudoInput="E-Mail"
-            v-model="emailCadastro" @updateModelValue="(e) => { emailCadastro = e; }"></Input>
-          <div class="flex flex-row justify-center items-center pl-10">
-            <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
-              v-model="senhaCadastro" :tipo="vizualizacaoDeSenha"
-              @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
-            <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhas">
-              <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
-            </button>
-          </div>
-          <div class="flex flex-row justify-center items-center pl-10">
-            <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Confirmar Senha"
-              v-model="confirmarSenhaCadastro" :tipo="vizualizacaoDeSenhaConfirmacao"
-              @updateModelValue="(e) => { confirmarSenhaCadastro = e; }"></Input>
-            <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
-              <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
-            </button>
-          </div>
-          <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="mobilemedio"></Botao>
-          <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="mobilepequeno"></Botao>
+        <Botao preset="PadraoBrancoIcon" :icon="iconeGoogle" texto="Google" tamanhoPadrao="mobilepequeno"
+          ladoDoIcon="row-reverse" :funcaoClick="loginGoogle"></Botao>
+      </div>
+      <div v-if="tipo === 'cadastro'" :style="conteudoFormulario">
+        <h1 class="text-5xl text-[#FFFFFF]">CADASTRO</h1>
+        <Input styleInput="input-transparente-escuro" :icon="imgPessoaLogin" conteudoInput="Usuario"
+          :isInvalido="usuarioInvalido" :textoInvalido="textoUsuarioInvalido" v-model="usuarioCadastro"
+          @updateModelValue="(e) => { usuarioCadastro = e; }"></Input>
+        <Input styleInput="input-transparente-escuro" :icon="imgEmailRegistro" conteudoInput="E-Mail"
+          v-model="emailCadastro" :isInvalido="emailInvalido" textoInvalido="Email faltando @ ou . "
+          @updateModelValue="(e) => { emailCadastro = e; }"></Input>
+        <div class="flex flex-row justify-center items-center pl-10">
+          <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Senha"
+            v-model="senhaCadastro" :tipo="vizualizacaoDeSenha" :isInvalido="senhaInvalido"
+            :textoInvalido="textoSenhaInvalida" @updateModelValue="(e) => { senhaCadastro = e; }"></Input>
+          <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhas">
+            <img :src="iconeDaSenha" class="h-[50%] w-[100%] invert ml-4" />
+          </button>
         </div>
+        <div class="flex flex-row justify-center items-center pl-10">
+          <Input styleInput="input-transparente-escuro" :icon="iconeSenhaLogin" conteudoInput="Confirmar Senha"
+            v-model="confirmarSenhaCadastro" :tipo="vizualizacaoDeSenhaConfirmacao" :isInvalido="senhaInvalido"
+            :textoInvalido="textoSenhaInvalida" @updateModelValue="(e) => { confirmarSenhaCadastro = e; }"></Input>
+          <button class="h-[100%] w-[6%] flex items-center justify-center" @click="mostraSenhaConfirmacao">
+            <img :src="iconeDaSenhaConfirmacao" class="h-[50%] w-[100%] invert ml-4" />
+          </button>
+        </div>
+        <Botao :funcaoClick="cadastraUsuario" preset="PadraoRoxo" texto="Cadastrar" tamanhoPadrao="mobilemedio"></Botao>
+        <Botao :funcaoClick="trocaDeTela" preset="PadraoBranco" texto="Sair" tamanhoPadrao="mobilepequeno"></Botao>
+      </div>
     </div>
   </div>
+  <div v-if="mensagem != ''">
+    <alertTela :mensagem="mensagem" :cor="mensagemCor" :key="mensagem" @acabou-o-tempo="limparMensagemErro">
+    </alertTela>
+</div>
 </template>
 <style scoped>
 #bordaCinza {
