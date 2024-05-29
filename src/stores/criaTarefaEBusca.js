@@ -12,11 +12,13 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
     }
   },
   actions: {
-    criaTarefa(status) {
+    async criaTarefa(status) {
       let api = conexaoBD();
-
+      let usuario= await api.buscarUm(VueCookies.get("IdUsuarioCookie"), "/usuario")
+      console.log("usuario responsavel: "+ usuario);
       if(!VueCookies.get("IdProjetoAtual")){
         api.buscarUm(VueCookies.get("IdUsuarioCookie"), "/usuario").then((response) => {
+          usuario = response
           VueCookies.set("equipeSelecionada", response.equipes[0].id, 100000000000);
           api.buscarProjetosEquipe(response.equipes[0].id, "/projeto/buscarProjetos").then((response) => {
             VueCookies.set("IdProjetoAtual", response[0].id, 100000000000);
@@ -39,7 +41,12 @@ export const criaTarefaEBuscaStore = defineStore('criaTarefaEBusca', {
         }
         localStorage.removeItem('TarefaNaoFinalizada');
         // Criar a tarefa e esperar pela resposta
-        api.cadastrar({ status: status }, '/tarefa/' + VueCookies.get("IdProjetoAtual"))
+        let usuarioTarefa= {
+          idResponsavel: usuario.id
+        }
+        let responsavies = []
+        responsavies.push(usuarioTarefa)
+        api.cadastrar({ status: status, responsaveis:responsavies }, '/tarefa/' + VueCookies.get("IdProjetoAtual"))
           .then(async (response) => {
             console.log(status);
             // Obter o ID da tarefa recém-criada
