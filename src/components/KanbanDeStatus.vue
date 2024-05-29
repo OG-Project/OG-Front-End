@@ -25,14 +25,14 @@
                 </draggable>
                 <button class="flex justify-start w-[80%] pb-[2vh] pt-[2vh] select-none"
                     @click="store.criaTarefa(status.propriedade), VueCookies.set('idReloadTarefa', '0')">
-                    <p :style="corDoTexto(status.propriedade)">+ {{$t('criaProjeto.nova')}}</p>
+                    <p :style="corDoTexto(status.propriedade)">+ {{ $t('criaProjeto.nova') }}</p>
                 </button>
             </div>
         </div>
         <span class="pr-4 ">
 
             <button class="novaPropriedade" @click="abrePopUp()">
-                <h1>+ {{$t('hubProjeto.novo')}}</h1>
+                <h1>+ {{ $t('hubProjeto.novo') }}</h1>
             </button>
             <div v-if="popUpStatus" class=" w-[100%] h-full flex justify-end">
                 <div class="w-[100%] h-[80%] flex flex-col  justify-center  bg-[var(--backgroundItemsClaros)]">
@@ -42,7 +42,7 @@
                     <div class="flex flex-row justify-between">
                         <div class="pl-2">
                             <Input largura="8" conteudoInput="Nome do Status" fontSize="1rem" altura="2"
-                                v-model="nomeStatus"  @updateModelValue="(e) => { nomeStatus = e }"></Input>
+                                v-model="nomeStatus" @updateModelValue="(e) => { nomeStatus = e }"></Input>
                         </div>
                         <div class="pr-2">
                             <ColorPicker v-model="corStatus" class="rounded-sm" />
@@ -96,12 +96,25 @@ const funcaoPopUp = funcaoPopUpStore()
 let nomeStatus = ref("")
 let corStatus = ref("")
 
+const props = defineProps({
+    listaTarefas: ref([])
+})
+
 onMounted(() => {
     cookies()
     defineListaDePropriedades().then(() => {
         ordenaTarefas()
     })
 })
+
+watch(() => props.listaTarefas, async () => {
+    setTimeout(() => {
+        defineListaDePropriedades().then(() => {
+            ordenaTarefas()
+        })
+    }, 100)
+
+});
 
 watch(propriedadeAtual, async () => {
     await defineListaDePropriedades()
@@ -253,7 +266,7 @@ async function defineListaDePropriedades() {
     if (propriedadeAtual.value == "STATUS") {
         for (const status of projeto.value.statusList) {
             let listaDeTarefas = []
-            for (const tarefa of projeto.value.tarefas) {
+            for (const tarefa of props.listaTarefas) {
                 if (tarefa.status != null && status.id == tarefa.status.id) {
                     listaDeTarefas.push(tarefa)
                 }

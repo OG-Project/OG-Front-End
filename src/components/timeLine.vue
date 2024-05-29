@@ -19,8 +19,8 @@
                                             {{ format(data, "MMMM", {
                                         locale: idioma
                                     }).charAt(0).toUpperCase() +
-                                        format(data, "MMMM", { locale: idioma }).slice(1)}}
-                                        {{  $t('timeline.de')+ " " + getYear(data) }}
+                                        format(data, "MMMM", { locale: idioma }).slice(1) }}
+                                            {{ $t('timeline.de') + " " + getYear(data) }}
                                         </div>
                                     </div>
 
@@ -37,7 +37,8 @@
                             </div>
                             <div class="flex justify-center w-full h-[50%]">
                                 <div class="w-[20%] flex flex-col justify-end items-center">
-                                    <button @click="mudaIntervalo()" class=" bg-[var(--backgroundItemsClaros)] w-[90%] h-[60%] rounded-xl">
+                                    <button @click="mudaIntervalo()"
+                                        class=" bg-[var(--backgroundItemsClaros)] w-[90%] h-[60%] rounded-xl">
                                         {{ visualizacao }}
                                     </button>
                                     <div>
@@ -164,9 +165,16 @@ let indiceNovo = ref()
 let listaDePropriedades = ref([])
 let projeto = {}
 let listaDeTarefasTeste = []
+
+const props = defineProps({
+    projeto: {},
+    listaDePropriedadesVisiveis: ref([]),
+    listaTarefas: ref([])
+})
+
 onMounted(async () => {
     projeto = await api.buscarUm(VueCookies.get("IdProjetoAtual"), "/projeto")
-    listaDeTarefasTeste = projeto.tarefas
+    listaDeTarefasTeste = props.listaTarefas
     getCalendario()
     adicionaNaLista().then(() => {
         ordenaTarefas()
@@ -175,29 +183,46 @@ onMounted(async () => {
     mudarIdioma();
 })
 
+
+
+watch(() => props.listaTarefas, async () => {
+    setTimeout(() => {
+        listaDeTarefasTeste = props.listaTarefas
+
+        getCalendario()
+        adicionaNaLista().then(() => {
+            ordenaTarefas()
+        })
+        defineListaDeHoras()
+        mudarIdioma();
+    }, 100)
+
+});
+
+
 watch(diaSelecionado.dia, (novoValor, valorAntigo) => {
     adicionaNaLista();
 });
 
-function mudarIdioma(){
-   if(idiomaCookies == 'jp'){
-    idioma.value = ja 
-   }
-   if(idiomaCookies == 'en'){
-    idioma.value = enUS 
-   }
-   if(idiomaCookies == 'pt-BR'){
-    idioma.value = ptBR 
-   }
-   if(idiomaCookies == 'es'){
-    idioma.value = es 
-   }
-   if(idiomaCookies == 'zh'){
-    idioma.value = zhCN
-   }
-   if(idiomaCookies == 'ru'){
-    idioma.value = ru
-   }
+function mudarIdioma() {
+    if (idiomaCookies == 'jp') {
+        idioma.value = ja
+    }
+    if (idiomaCookies == 'en') {
+        idioma.value = enUS
+    }
+    if (idiomaCookies == 'pt-BR') {
+        idioma.value = ptBR
+    }
+    if (idiomaCookies == 'es') {
+        idioma.value = es
+    }
+    if (idiomaCookies == 'zh') {
+        idioma.value = zhCN
+    }
+    if (idiomaCookies == 'ru') {
+        idioma.value = ru
+    }
 }
 
 function retornaHoraEIndice(hora, indice) {
@@ -551,8 +576,8 @@ function mudaIntervalo() {
     .setaEsquerda {
         width: 10px;
         height: 10px;
-        border-left: 2px solid ;
-        border-bottom: 2px solid ;
+        border-left: 2px solid;
+        border-bottom: 2px solid;
         border-radius: 10%;
         transform: rotate(45deg);
     }
@@ -566,8 +591,8 @@ function mudaIntervalo() {
     .setaDireita {
         width: 10px;
         height: 10px;
-        border-right: 2px solid ;
-        border-top: 2px solid ;
+        border-right: 2px solid;
+        border-top: 2px solid;
         border-radius: 10%;
         transform: rotate(45deg);
     }

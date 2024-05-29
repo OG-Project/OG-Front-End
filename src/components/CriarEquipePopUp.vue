@@ -363,11 +363,12 @@ async function cadastrarEquipe() {
         equipe = response.data
         enviarFotoParaBackend(equipe);
         adicionaUsuarioLogado(equipe)
-        enviaParaWebSocket(response.data, listaUsuariosConvidados.value);
+        enviaParaWebSocket(response.data, listaUsuariosConvidados.value).then(()=>{
+            window.location.reload();
+        })
         if(tour.isActive){
              
         }
-        window.location.reload();
     });
 };
 
