@@ -336,5 +336,19 @@
   "convites": "邀请函",
   "confirmar": "确认",
   "adicionaEquipe": "添加团队"
+},
+"login": {
+  "nomeUsuario": "用户名",
+  "senha": "密码",
+  "acesso": "登录",
+  "criar": "创建账户",
+  "usuario": "用户",
+  "email": "电子邮件",
+  "confirmaSenha": "确认密码",
+  "cadastrar": "注册",
+  "sair": "退出",
+  "conecta": "登录",
+  "cadastro": "注册",
+  "senhaInvalida": "用户名或密码无效"
 }
 }
