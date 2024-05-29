@@ -63,7 +63,8 @@ async function fazerLogin() {
   await banco.login(usuarioSecurity).catch(e => {
     error = e
   })
-  if (error == 'undefined') {
+  console.log(error)
+  if (error == undefined) {
     // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
     // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
     banco.getCookie().then((usuario) => {
