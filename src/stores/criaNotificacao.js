@@ -119,7 +119,9 @@ export const criaNotificacao = defineStore('criaNotificacao', {
                 criador = await api.buscarUm(criador, '/usuario')
                 notificacao.criador = criador
                 console.log(notificacao)
-                api.cadastrar(notificacao, '/notificacao' + rota)
+                api.cadastrar(notificacao, '/notificacao' + rota).then(response => {
+                    console.log(response);
+                })
             }, 100)
         }
     },

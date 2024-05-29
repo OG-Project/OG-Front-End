@@ -42,19 +42,11 @@
                     <h1 :style="{ fontFamily: fonteTitulo }"
                         class="truncate m-[5%] text-6xl border-b-4 border-[#CCC4CF] sm:pt-0 p-4 pr-32 w-max">
                         {{ perfil.username }}
-<<<<<<< HEAD
-                    </h1>
-                    <div class="flex items-center gap-4 truncate">
-                        <iconChat @click="iniciarChat()" class="cursor-pointer"></iconChat>
-                        <p class="truncate">{{ $t('perfilInfo.inicieUmChatCom') }} {{ perfil.username }}</p>
-                    </div>
-=======
                     </h1> 
                 </div>
-                <div class="flex items-center gap-4 pl-14 mb-6" v-if="VueCookies.get('IdUsuarioCookie') != usuario.id">
+                <div class="flex items-center gap-4 pl-14 mb-6 truncate" v-if="VueCookies.get('IdUsuarioCookie') != usuario.id">
                         <iconChat @click="iniciarChat()" class="cursor-pointer"></iconChat>
                         <p>{{ $t('perfilInfo.inicieUmChatCom') }} {{ perfil.username }}</p>
->>>>>>> ae29beec2e60f5059711566a42699286c72cf406
                 </div>
                 <div :style="{ fontFamily: fonteCorpo }" class="flex sm:flex-wrap justify-center gap-8">
                     <div class="flex flex-col xl:w-max sm:w-[493px] gap-y-10">
@@ -205,7 +197,9 @@ async function iniciarChat() {
                 conexao.cadastrar(chat, '/chat/pessoal').then((response) => {
                     console.log(response)
                     localStorage.setItem('opcao', 1)
-                    router.push('/chat/' + usuario.value.id)
+                    router.push('/chat/' + usuario.value.id).then(() => {
+                        enviaParaWebSocket(usuario.value, [response.usuarios[0]])
+                    })
                 })
             })
         } else {
@@ -213,6 +207,29 @@ async function iniciarChat() {
             router.push('/chat/' + usuario.value.id)
         }
     })
+}
+
+async function enviaParaWebSocket(equipe,membrosConvidados) {
+  let equipeAux = {
+      id: equipe.id,
+      nome: equipe.nome,
+      descricao: equipe.descricao,
+      membros: membrosConvidados
+  }
+  let teste = {
+      equipes: [{ equipe: equipeAux }],
+      notificao: {
+          mensagem: "Te Convidou para a Equipe",
+          conviteParaEquipe: {
+              equipe: equipe,
+              permissoes: funcaoPermissao(membrosConvidados)
+          }
+          
+      }
+
+  }
+  console.log("teste")
+  criaNotificacaoStore.mandarNotificacao(teste);
 }
 
 function verificaTemEquipe(equipes) {

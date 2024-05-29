@@ -2,9 +2,12 @@
     <fundoPopUp :largura="larguraPopUp()" :altura="tamanhoPopUp()">
     <div class="divGeral mb-[65vh]" >
         <div class="primeiraDiv">
-          <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
-          <equipe class="imagemEquipe" v-else></equipe>
-           <h1 class="equipeNome  2xl:w-[70%] xl:w-[70%] lg:w-[70%] md:w-[70%] sm:w-full xl:mt-5 lg:mt-3 md:mt-3 2xl:text-4xl xl:text-4xl lg:text-2xl md:text-xl 2xl:mr-5 truncate ">{{ equipeMembros.nome}}</h1>
+            <div class="flex justify-center max-w-max">
+                <img class="imagemEquipe" v-if="equipeMembros.foto" :src="'data:' + equipeMembros.foto.tipo + ';base64,' + equipeMembros.foto.dados" >
+                <equipe class="imagemEquipe" v-else></equipe>
+                <h1 class="equipeNome  2xl:w-[70%] xl:w-[80%] lg:w-[70%] md:w-[70%] sm:w-full xl:mt-5 lg:mt-3 md:mt-3 2xl:text-4xl xl:text-4xl lg:text-2xl md:text-xl  truncate ">
+               {{ equipeMembros.nome}}</h1>
+            </div>
         </div>
         <div class="div-membros flex flex-col overflow-y-auto scrollbar-thin" >
            <div class="divEquipe flex justify-center w-full" v-for="membro in listaMembros" :key="membro.id">
@@ -97,6 +100,7 @@ let listaDeUsuariosParaBusca = ref([]);
 let zerarInput = ref(false)
 
 import { criaNotificacao } from '../stores/criaNotificacao';
+import { set } from 'date-fns';
 const criaNotificacaoStore = criaNotificacao();
 
 
@@ -110,13 +114,13 @@ onMounted (() =>{
 async function pesquisaBancoUserName() {
   let listaAux = (await banco.procurar('/usuario'))
   listaAux.forEach(usuarioAtual => {
-      listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
+        listaDeUsuariosParaBusca.value.push(usuarioAtual.username);
   });
   return listaDeUsuariosParaBusca;
 }
 
 async function pegaValorSelecionadoPesquisa(valorPesquisa) {
- usuarioConvidado.value = valorPesquisa
+        usuarioConvidado.value = valorPesquisa
 }
 
 function tamanhoPopUp() {
@@ -223,6 +227,7 @@ async function filtrarEquipe() {
       }
   })
 }
+filtrarEquipe();
 
 function valorSelect(valor, convidado) {
   valorSelectSelecionado.value = valor
@@ -276,8 +281,6 @@ async function verificaMembroPermissao(){
   })
   
 }
- 
-
 
 async function removerMembro(membro) {
 
@@ -302,8 +305,6 @@ async function removerMembro(membro) {
 
 async function removeListaMembrosConvidados(membroConvidado){
   const index = membrosConvidados.value.findIndex(convidado => convidado == membroConvidado);
-  console.log(index)
-    // Remova o convidado da lista de convidados se encontrado
     if (index != -1) {
       membrosConvidados.value.splice(index, 1);
     }
@@ -332,7 +333,7 @@ function marginLeftConvidado() {
   } else if (screenWidth > 768 && screenWidth <= 1024) {
       return '0vw';
   } else if (screenWidth > 1024 && screenWidth < 1920) {
-      return '0vw';
+      return '2vw';
   } else if (screenWidth > 1920 && screenWidth < 2560) {
       return '6vw'
   } else if (screenWidth >= 2560) {
@@ -342,18 +343,22 @@ function marginLeftConvidado() {
 
 function marginRightConvidado() {
   if (screenWidth <= 768) {
-      return '6vw';
-  } else if (screenWidth > 768 && screenWidth <= 1024) {
-      return '4vw';
-  } else if (screenWidth > 1024 && screenWidth < 1920) {
-      return '4vw';
-  } else if (screenWidth > 1920 && screenWidth < 2560) {
-      return '6vw';
-  } else if (screenWidth == 1920) {
+      return '7vw';
+  } else if (screenWidth > 768 && screenWidth < 1024) {
       return '2vw';
+  } else if (screenWidth >= 1024 && screenWidth < 1440) {
+      return '6vw';
+  } else if(screenWidth >= 1440 && screenWidth < 1600){
+      return '6vw';
+  }
+  else if(screenWidth >= 1600 && screenWidth < 1920){
+      return '3vw';
+  }
+  else if (screenWidth >= 1920 && screenWidth < 2560) {
+      return '1vw';
   }
   else if (screenWidth >= 2560) {
-      return '4.5vw';
+      return '0.5vw';
   }
 }
 
@@ -521,8 +526,11 @@ async function confirmarConvites() {
   } else {
       // Se o membro não foi removido anteriormente, convide-o normalmente
   }
-  enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value);
-  window.location.reload()
+  enviaParaWebSocket(equipeMembros.value, membroParaConvidar.value).then(()=>{
+      setTimeout(() => {
+          window.location.reload();
+      }, 1000);
+  })
 }
 
 </script>

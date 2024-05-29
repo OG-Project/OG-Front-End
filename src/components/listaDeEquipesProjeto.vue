@@ -112,16 +112,20 @@ function larguraNomeEquipe() {
 
 function marginLeftConvidado() {
     if (screenWidth <= 768) {
-        return '-5vw';
-    } else if (screenWidth > 768 && screenWidth <= 1024) {
-        return '-8vw';
-    } else if (screenWidth > 1024 && screenWidth < 1920) {
-        return '-4vw';
-    } else if (screenWidth > 1920 && screenWidth < 2560) {
-        return 'vw'
-    } else if (screenWidth >= 2560) {
-        return '1vw';
-    }
+      return '-8vw';
+  } else if (screenWidth > 768 && screenWidth <= 1024) {
+      return '-8vw';
+  } else if (screenWidth > 1024 && screenWidth <= 1440) {
+      return '-4vw';
+  } else if(screenWidth > 1440 && screenWidth < 1920){
+      return '1vw';
+  }
+  else if (screenWidth >= 1920 && screenWidth < 2560) {
+      return '6vw';
+  }
+  else if (screenWidth >= 2560) {
+      return '2vw';
+  }
 }
 
 async function pesquisaBancoName() {

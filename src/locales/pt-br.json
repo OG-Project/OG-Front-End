@@ -320,7 +320,8 @@
     "linha": "Linha Do Tempo",
     "calendario": "Calendário",
     "propriedades": "Propriedades Vísiveis",
-    "novo": "Novo"
+    "novo": "Novo",
+    "suaTarefa": "Ver só as suas terefas"
   },
   "lista":{
     "naoTem": "Não Tem Valor",

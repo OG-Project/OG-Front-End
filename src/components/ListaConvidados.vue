@@ -9,12 +9,11 @@
 
       </div>
       <div class="flex items-center flex-col ml-5">
-        {{ console.log(convidado) }}
         <div class="w-full flex items-center justify-center mt-5 mb-2" v-for="convidado in listaConvidados"
           :key="convidado.name" :style="{ 'margin-left': marginLeft, 'margin-right': marginRight }">
           <!-- Renderiza as imagens apenas se houver usuários convidados -->
           <template v-if="listaConvidados.length > 0 && convidado.foto != null">
-            <img class="imgDePerfil" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`"
+            <img class="imgDePerfil" @click="router.push('/perfil/'+ convidado.id)" :src="`data:${convidado.foto.tipo};base64,${convidado.foto.dados}`"
               :style="altDaImagemPerfil" />
 
           </template>
@@ -23,14 +22,14 @@
             class="nome-convidado w-[10vw] md:text-sm xl:text-lg 2xl:mx-2 2xl:ml-2 xl:mx-10 xl:ml-2 lg:mx-3 lg:ml-2 md:ml-3 md:mx-1 truncate ">
             {{ convidado.username == null ? convidado.nome : convidado.username }}</h2>
           <template v-if="listaConvidados.length > 0">
-            <sair class="imgIcon" @click="$emit('foiClicado', convidado),removerUsuarioALista(convidado)"></sair>
+            <sair class="imgIcon" @click="$emit('foiClicado', convidado), removerUsuarioALista(convidado)"></sair>
           </template>
 
           <!-- Renderiza o SelectPadrao apenas se houver usuários convidados -->
           <template v-if="mostrarSelect">
             <template v-if="listaConvidados.length > 0">
 
-              <SelectPadrao class="selectEdit" styleSelect="select-cinza" :listaSelect="opcoesSelect"
+              <SelectPadrao class="selectEdit" styleSelect="select-cinza" :listaSelect="opcoesSelect" :placeholderSelect="placeholder(convidado)"
                 v-model="opcaoEscolhida" @update:modelValue="enviaOpcao(convidado)"></SelectPadrao>
             </template>
           </template>
@@ -44,12 +43,14 @@ import SelectPadrao from './selectPadrao.vue';
 import sair from '../imagemVetores/Sair.vue'
 import userTodoPreto from '../imagemVetores/userTodoPreto.vue'
 
-import { defineProps, onUpdated, ref } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import { getCurrentInstance } from 'vue';
 import { useI18n } from 'vue-i18n';
-
+import { conexaoBD } from '../stores/conexaoBD';
+import router from '../router';
 const { t } = useI18n()
 const instance = getCurrentInstance();
+const api = conexaoBD();
 
 defineEmits(['foiClicado'])
 
@@ -73,22 +74,46 @@ let opcaoEscolhida = ref("")
 
 
 function enviaOpcao(convidado) {
+  console.log("opcao",opcaoEscolhida.value)
   instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
+  salvaOpcao(convidado, opcaoEscolhida.value);
 }
 
-const opcoesSelect = [t('selectComponent.view'), t('selectComponent.edit')];
+// Salva a opção escolhida no local storage
+function salvaOpcao(convidado, opcao) {
+  localStorage.setItem(`opcao_${convidado.id}`, opcao);
+}
 
+// Recupera a opção salva do local storage
+function recuperaOpcao(convidado) {
+  return localStorage.getItem(`opcao_${convidado.id}`) || "view"; // padrão para "view"
+}
+
+let opcoesSelect = [t('selectComponent.view'), t('selectComponent.edit')];
+let opcaoPlaceholde = '';
+onMounted(() => {
+  props.listaConvidados.forEach(convidado => {
+    opcaoEscolhida.value = recuperaOpcao(convidado);
+  });
+});
+
+function placeholder(convidado){
+  const opcaoSalva = recuperaOpcao(convidado)
+  if(opcaoSalva == t('selectComponent.view')){
+    opcaoPlaceholde = t('selectComponent.view')
+  }else{
+    opcaoPlaceholde = t('selectComponent.edit')
+  }
+
+  return opcaoPlaceholde;
+}
 
 const imagemIcon = {
   height: props.altDaImagemIcon,
 }
 
 function removerUsuarioALista(convidado) {
-    if(convidado.username==null){
-      api.buscarUm(convidado.id, '/conviteEquipe').then((response) => {
-        api.deletarEquipe(notificacao.id, '/notificacao')
-      })
-    }
+    api.retirarUsuario(convidado)
 }
 
 const removerConvidado = (convidado) => {
@@ -123,7 +148,7 @@ const removerConvidado = (convidado) => {
 }
 
 .imgDePerfil {
-  @apply rounded-full bg-cover bg-center flex justify-center flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw] 2xl:w-[60px] 2xl:h-[60px] xl:w-[60px] xl:h-[60px] lg:w-[55px] lg:h-[55px] md:w-[50px] md:h-[50px];
+  @apply rounded-full bg-cover bg-center flex justify-center flex-col 2xl:ml-2 xl:ml-10 lg:ml-8 md:ml-[-1.5vw] 2xl:w-[50px] 2xl:h-[50px] xl:w-[60px] xl:h-[60px] lg:w-[55px] lg:h-[55px] md:w-[50px] md:h-[50px];
 }
 
 .imgPerfilPadrao {
