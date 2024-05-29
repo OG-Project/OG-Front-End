@@ -9,7 +9,6 @@
 
       </div>
       <div class="flex items-center flex-col ml-5">
-        {{ console.log(convidado) }}
         <div class="w-full flex items-center justify-center mt-5 mb-2" v-for="convidado in listaConvidados"
           :key="convidado.name" :style="{ 'margin-left': marginLeft, 'margin-right': marginRight }">
           <!-- Renderiza as imagens apenas se houver usuários convidados -->
@@ -30,7 +29,7 @@
           <template v-if="mostrarSelect">
             <template v-if="listaConvidados.length > 0">
 
-              <SelectPadrao class="selectEdit" styleSelect="select-cinza" :listaSelect="opcoesSelect"
+              <SelectPadrao class="selectEdit" styleSelect="select-cinza" :listaSelect="opcoesSelect" :placeholderSelect="placeholder(convidado)"
                 v-model="opcaoEscolhida" @update:modelValue="enviaOpcao(convidado)"></SelectPadrao>
             </template>
           </template>
@@ -44,7 +43,7 @@ import SelectPadrao from './selectPadrao.vue';
 import sair from '../imagemVetores/Sair.vue'
 import userTodoPreto from '../imagemVetores/userTodoPreto.vue'
 
-import { defineProps, onUpdated, ref } from 'vue';
+import { defineProps, onMounted, ref } from 'vue';
 import { getCurrentInstance } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { conexaoBD } from '../stores/conexaoBD';
@@ -75,11 +74,39 @@ let opcaoEscolhida = ref("")
 
 
 function enviaOpcao(convidado) {
+  console.log("opcao",opcaoEscolhida.value)
   instance.emit("opcaoSelecionada", opcaoEscolhida.value, convidado);
+  salvaOpcao(convidado, opcaoEscolhida.value);
 }
 
-const opcoesSelect = [t('selectComponent.view'), t('selectComponent.edit')];
+// Salva a opção escolhida no local storage
+function salvaOpcao(convidado, opcao) {
+  localStorage.setItem(`opcao_${convidado.id}`, opcao);
+}
 
+// Recupera a opção salva do local storage
+function recuperaOpcao(convidado) {
+  return localStorage.getItem(`opcao_${convidado.id}`) || "view"; // padrão para "view"
+}
+
+let opcoesSelect = [t('selectComponent.view'), t('selectComponent.edit')];
+let opcaoPlaceholde = '';
+onMounted(() => {
+  props.listaConvidados.forEach(convidado => {
+    opcaoEscolhida.value = recuperaOpcao(convidado);
+  });
+});
+
+function placeholder(convidado){
+  const opcaoSalva = recuperaOpcao(convidado)
+  if(opcaoSalva == t('selectComponent.view')){
+    opcaoPlaceholde = t('selectComponent.view')
+  }else{
+    opcaoPlaceholde = t('selectComponent.edit')
+  }
+
+  return opcaoPlaceholde;
+}
 
 const imagemIcon = {
   height: props.altDaImagemIcon,

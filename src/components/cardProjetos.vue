@@ -169,6 +169,12 @@ function somePopUp() {
         text-overflow: ellipsis;
     }
 
+    .animation {
+        @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
+        animation: myAnim 0.15s ease 0s 1 normal none;
+        background-color: var(--backgroundItems);
+    }
+
     .barraCinzaGrafico {
         @apply relative text-white flex w-72 justify-start bg-gray-500;
     }
@@ -252,12 +258,6 @@ function somePopUp() {
             .tempoAtuacao{
                 @apply flex justify-end ;
             }
-        }
-        .animation {
-            @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
-            animation: myAnim 0.15s ease 0s 1 normal none;
-            background-color: var(--backgroundItems);
-        }
     }
 
     @media(min-width: 426px) and (max-width: 620px){
@@ -299,11 +299,7 @@ function somePopUp() {
         .tempoAtuacao{
             @apply flex justify-end ;
         }
-        .animation {
-            @apply absolute left-16 top-1 w-[80%]  shadow-md flex justify-around flex-col max-miniMobile:w-[60%];
-            animation: myAnim 0.15s ease 0s 1 normal none;
-            background-color: var(--backgroundItems);
-        }   
+        
     }
 
     @media(min-width: 621px) and (max-width: 767px){
@@ -314,4 +310,5 @@ function somePopUp() {
         
       }
 
+}
 </style>
