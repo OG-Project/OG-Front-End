@@ -201,6 +201,9 @@ onMounted(() => {
   if (VueCookies.get("JWT") != null) {
     colocaUsuarioId()
   }
+  if(VueCookies.get("Idioma")){
+    VueCookies.set("Idioma", "pt-BR", 100000000000)
+  }
   verificaTarefasFeitas();
 }
 )

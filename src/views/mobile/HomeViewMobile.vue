@@ -124,6 +124,9 @@ async function verificaTarefasFeitas() {
 
 onMounted(async () => {
     usuarioCookies = await autenticarUsuario(usuarioId);
+    if(VueCookies.get("Idioma")){
+    VueCookies.set("Idioma", "pt-BR", 100000000000)
+  }
     trocaTopico(t('home.main_projects'))
     verificaTarefasFeitas();
 });

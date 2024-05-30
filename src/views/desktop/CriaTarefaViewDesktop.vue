@@ -808,7 +808,7 @@ async function criaTarefaNoConcluido() {
     });
   });
   
-  // router.push('/projeto')
+  router.push('/projeto')
   console.log(tarefaCriando);
   tarefa
 }
