@@ -10,7 +10,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     return {
       api: axios.get("http://localhost:8082/usuario", { withCredentials: true }),
       loading: true,
-      url:"http://localhost:8082",
+      url: "http://localhost:8082",
     }
   },
   actions: {
@@ -24,10 +24,10 @@ export const conexaoBD = defineStore('conexaoBD', {
 
     },
 
-    logOut(){
+    logOut() {
       this.loading = true;
       try {
-        return axios.post(this.url + '/logOut',"", { withCredentials: true }).then(response => response.data)
+        return axios.post(this.url + '/logOut', "", { withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
         // console.log('Loading:', this.loading);
@@ -38,7 +38,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
       this.loading = true;
       try {
-        return axios.get(this.url+"/cookie" , { withCredentials: true }).then(response =>  {return response.data})
+        return axios.get(this.url + "/cookie", { withCredentials: true }).then(response => { return response.data })
       } finally {
         this.loading = false;
       }
@@ -54,12 +54,12 @@ export const conexaoBD = defineStore('conexaoBD', {
         this.loading = false;
       }
     },
-    atualizaNotificacao(id){
-      return axios.patch(this.url +"/notificacao/visto/"+id,"",{withCredentials : true})
+    atualizaNotificacao(id) {
+      return axios.patch(this.url + "/notificacao/visto/" + id, "", { withCredentials: true })
     },
-    retirarUsuario(usuario){
+    retirarUsuario(usuario) {
       console.log(usuario)
-      return axios.patch(this.url +"/notificacao/tirarUsuario",usuario,{withCredentials : true})
+      return axios.patch(this.url + "/notificacao/tirarUsuario", usuario, { withCredentials: true })
     },
     cadastrar(objeto, textoRequisicao) {
       this.loading = true;
@@ -80,7 +80,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async atualizar(objeto, textoRequisicao) {
       this.loading = true;
       try {
-        
+
         return axios.put(this.url + textoRequisicao, objeto, { withCredentials: true }).then(response => response)
 
       } finally {
@@ -90,9 +90,9 @@ export const conexaoBD = defineStore('conexaoBD', {
     async trocaSenha(id, senhaNova) {
       this.loading = true;
       try {
-        return axios.patch('http://localhost:8082/usuario/senha/' + id, senhaNova, { withCredentials: true }).then(response =>{
-        } )
-      }finally {
+        return axios.patch('http://localhost:8082/usuario/senha/' + id, senhaNova, { withCredentials: true }).then(response => {
+        })
+      } finally {
         this.loading = false;
       }
     },
@@ -106,14 +106,14 @@ export const conexaoBD = defineStore('conexaoBD', {
     adicionarCriador(userId, equipeId) {
       this.loading = true;
       try {
-        return axios.patch(this.url+'/usuario/criador/' + userId + '/' + equipeId, "", { withCredentials: true })
+        return axios.patch(this.url + '/usuario/criador/' + userId + '/' + equipeId, "", { withCredentials: true })
       } finally {
         this.loading = false;
       }
     },
     deletar(id, textoRequisicao) {
-      try{
-      return axios.delete(this.url + `${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
+      try {
+        return axios.delete(this.url + `${textoRequisicao}/${id}`, { withCredentials: true }).then(response => {
 
         })
       } finally {
@@ -220,11 +220,11 @@ export const conexaoBD = defineStore('conexaoBD', {
       }
     },
     async deletarTarefa(textoRequisicao, id) {
-      try{
-      return await axios.delete(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => {
-      })
-      }finally {
-      this.loading = false;
+      try {
+        return await axios.delete(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => {
+        })
+      } finally {
+        this.loading = false;
       }
     },
     async cadastrarFoto(equipeId, foto) {
@@ -256,12 +256,13 @@ export const conexaoBD = defineStore('conexaoBD', {
       return await ((await axios.get(this.url + `/equipe/${equipeId}`, { withCredentials: true })).data)
     },
 
-    async patchDeArquivosNaTarefa(arquivos, id) {
+    async patchDeArquivosNaTarefa(arquivo, id) {
       try {
         // Deleta os arquivos existentes relacionados à tarefa
-        await axios.delete(this.url`/tarefa/arquivos/${id}`, { withCredentials: true });
-
-        const response = await axios.patch(this.url+"/tarefa/arquivos/" + id, arquivos, {
+        await axios.delete(this.url + `/tarefa/arquivos/${id}`, { withCredentials: true });
+        const formData = new FormData();
+        formData.append('arquivo', arquivo);
+        const response = await axios.patch(this.url + "/tarefa/arquivos/" + id, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           },

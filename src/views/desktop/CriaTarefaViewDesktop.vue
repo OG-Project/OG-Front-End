@@ -157,10 +157,11 @@
           class="flex h-[18vh] w-[80%] bg-[var(--backgroundItems)] ml-12 mt-4 overflow-auto">
           <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
             v-for="arquivo in tarefa.arquivos">
-            <a :href="arquivo.dados" download="" class="h-[65%] w-[100%] flex items-center justify-center">
+            {{ console.log(arquivo, "LIOG") }}
+            <a :href="arquivo.dados ?? mostraArquivoNaTela(arquivo)" download="" class="h-[65%] w-[100%] flex items-center justify-center">
               <img
                 v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
-                class="h-[100%] w-[100%]" :src="arquivo.dados">
+                class="h-[100%] w-[100%]" :src="arquivo.dados ?? mostraArquivoNaTela(arquivo)">
               <div v-else>
                 <img class="h-[65%]" :src='getIconSrc(arquivo)' />
               </div>
@@ -798,13 +799,18 @@ async function criaTarefaNoConcluido() {
   criaHistorico.criaHistoricoTarefa("Editou a tarefa", tarefaCriando, usuario)
   banco.atualizar(tarefaCriando, "/tarefa").then((response) => {
     if (tarefa.value.arquivos.length != 0) {
-      banco.patchDeArquivosNaTarefa(tarefa.value.arquivos, VueCookies.get("IdTarefaCookies"))
+      tarefa.value.arquivos.forEach(arquivo => {
+        banco.patchDeArquivosNaTarefa(arquivo, VueCookies.get("IdTarefaCookies"))
+      })
     }
     banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa").then((response) => {
+      console.log(response);
     });
-    router.push('/projeto')
   });
+  
+  // router.push('/projeto')
   console.log(tarefaCriando);
+  tarefa
 }
 
 //Função que deleta status
@@ -1043,6 +1049,10 @@ onUpdated(() => {
   update();
 });
 
+function mostraArquivoNaTela(arquivo) {
+  return URL.createObjectURL(arquivo)
+}
+
 function update() {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
@@ -1132,18 +1142,18 @@ function exibirComentarios() {
 let arquivoSelecionado = ref(null)
 function gerarArquivo(e) {
   let arquivo = e.target.files[0];
-  let reader = new FileReader();
-  reader.readAsDataURL(arquivo);
-  reader.onload = function () {
-    let arquivoBase64 = reader.result;
-    let arquivoParaOBanco = {
-      nome: arquivo.name,
-      tipo: arquivo.type,
-      dados: arquivoBase64,
-    };
-    tarefa.value.arquivos.push(arquivoParaOBanco);
+  // let reader = new FileReader();
+  // reader.readAsDataURL(arquivo);
+  // reader.onload = function () {
+    // let arquivoBase64 = reader.result;
+    // let arquivoParaOBanco = {
+    //   nome: arquivo.name,
+    //   tipo: arquivo.type,
+    //   dados: arquivoBase64,
+    // };
+    tarefa.value.arquivos.push(arquivo);
     update()
-  }
+  // }
 }
 
 function deletaArquivo(arquivo) {
