@@ -30,9 +30,6 @@ onMounted(() => {
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
-  if(VueCookies.get("Idioma") == null){
-    VueCookies.set('Idioma', 'pt-BR', 1000000)
-  }
   colocaUsuarioId();
   reloadHome()
 })
