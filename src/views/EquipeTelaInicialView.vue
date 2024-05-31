@@ -51,10 +51,12 @@
       <div class="projetos ">
         <div v-for="projeto of listaProjetos" :key="projeto.id">
           <div class="flex w-[100%]">
-            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto" :feito="calcularProgressoProjeto(projeto)"
-              :name="projeto.nome" :descricao="projeto.descricao" :comeco="formatarData(projeto.dataCriacao)"
-              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'" 
-              :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)" :tempoAtuacao="projeto.tempoAtuacao" >
+            <CardProjetos @click="entrarNoProjeto(projeto)" class="cardProjeto"
+              :feito="calcularProgressoProjeto(projeto)" :name="projeto.nome" :descricao="projeto.descricao"
+              :comeco="formatarData(projeto.dataCriacao)"
+              :final="projeto.dataFinal ? formatarData(projeto.dataFinal) : 'Indefinido'"
+              :responsaveisIds="projeto.responsaveis.map(responsavel => responsavel.idResponsavel)"
+              :tempoAtuacao="projeto.tempoAtuacao">
             </CardProjetos>
           </div>
         </div>
@@ -82,7 +84,7 @@ const usuarioLogado = VueCookies.get('IdUsuarioCookie')
 const funcaoPopUp = funcaoPopUpStore();
 const quantidadeMembros = ref([]);
 const listaProjetos = ref([]);
-const tour =inject('tour')
+const tour = inject('tour')
 let membrosEquipe = ref([]);
 funcaoPopUp.variavelModal = false;
 let variavelEngrenagem = false;
@@ -112,10 +114,10 @@ async function criarProjeto() {
   router.push({ path: '/criaProjeto' }).then(() => {
     // window.location.reload()
   });
-  if(tour.isActive()){
-    usuarioLogado.configuracao.ultimoPassoId='step-10'
-    usuarioLogado.configuracao.rotaDoPasso='/crieprojeto'
-    banco.atualizar(usuarioLogado,'/usuario')
+  if (tour.isActive()) {
+    usuarioLogado.configuracao.ultimoPassoId = 'step-10'
+    usuarioLogado.configuracao.rotaDoPasso = '/crieprojeto'
+    banco.atualizar(usuarioLogado, '/usuario')
     tour.next()
   }
   VueCookies.set('idReloadProjeto', '0');
@@ -188,18 +190,18 @@ function calcularProgressoProjeto(projeto) {
     return 100;
   }
 
-  let quantidadeTarefasConcluidas =0;
+  let quantidadeTarefasConcluidas = 0;
   projeto.tarefas.forEach(tarefa => {
     let todasConcluidas = true;
     tarefa.subTarefas.forEach(subtarefa => {
       totalSubTarefas++;
       tarefasConcluidas = true;
-      if (!subtarefa.concluido) { 
+      if (!subtarefa.concluido) {
         todasConcluidas = false;
-      }else{
+      } else {
         quantidadeTarefasConcluidas++;
       }
-    }); 
+    });
   });
 
   if (totalSubTarefas === 0) {
@@ -214,12 +216,12 @@ function calcularProgressoProjeto(projeto) {
 async function filtrarEquipe() {
   console.log(await (banco.buscarUm(equipeSelecionada, "/equipe")))
   let usuario = await (banco.buscarUm(usuarioLogado, "/usuario"))
-  usuario.equipes.forEach((equipeUsuario)=>{
-      if(equipeUsuario.equipe.id == equipeSelecionada){
-        console.log(equipeEditar.value)
-        equipeEditar.value = equipeUsuario.equipe;
-        
-      }
+  usuario.equipes.forEach((equipeUsuario) => {
+    if (equipeUsuario.equipe.id == equipeSelecionada) {
+      console.log(equipeEditar.value)
+      equipeEditar.value = equipeUsuario.equipe;
+
+    }
   })
 }
 filtrarEquipe();
@@ -295,9 +297,7 @@ function abrePopUp(equipe, tipo) {
 }
 
 .corDiv {
-  @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh] md:ml-[5vw] md:mt-[-5vh] 
-  2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw] border-transparent border-b-[var(--roxo)] 
-  border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
+  @apply flex 2xl:ml-[5vw] 2xl:mt-[5vh] xl:ml-[5vw] xl:mt-[5vh] lg:ml-[5vw] lg:mt-[1vh] md:ml-[5vw] md:mt-[-5vh] 2xl:h-[10vh] 2xl:w-[40vw] xl:h-[12vh] xl:w-[35vw] lg:h-[15vh] lg:w-[45vw] md:h-[20vh] md:w-[55vw] border-transparent border-b-[var(--roxo)] border-b-2 items-center focus-within:border-[var(--roxo)] focus-within:border-4;
 
 }
 
@@ -339,8 +339,7 @@ function abrePopUp(equipe, tipo) {
 }
 
 .imagemEquipe {
-  @apply flex ml-5 2xl:mt-2 xl:mt-5 lg:mt-20 md:mt-[12vh] 2xl:h-[80px] 2xl:w-[80px] xl:h-[80px] xl:w-[80px] 
-  lg:w-[80px] lg:h-[80px] md:h-[80px] md:w-[80px] rounded-full;
+  @apply flex ml-5 2xl:mt-2 xl:mt-5 lg:mt-20 md:mt-[12vh] 2xl:h-[80px] 2xl:w-[80px] xl:h-[80px] xl:w-[80px] lg:w-[80px] lg:h-[80px] md:h-[80px] md:w-[80px] rounded-full;
   transition: transform 0.3s ease;
 }
 
@@ -405,9 +404,9 @@ function abrePopUp(equipe, tipo) {
 
 }
 
-@media(min-width: 621px) and (max-width: 767px){
+@media(min-width: 621px) and (max-width: 767px) {
   .botaoIcone {
-    @apply  w-[55px] h-[55px] mt-[8vh] mr-5
+    @apply w-[55px] h-[55px] mt-[8vh] mr-5
   }
 
   .listaProjetos {
