@@ -53,8 +53,8 @@
                                         <p>{{ responsavel }}</p>
                                         <div class="w-full flex justify-end pr-2">
                                             <div class="w-[40%]">
-                                                <BotaoX @click="removeResponsavel(responsavel)"
-                                                    v-if="responsaveisProjeto.length != 1"></BotaoX>
+                                                <botaoX class="w-full h-full" @click="removeResponsavel(responsavel)"
+                                                    v-if="responsaveisProjeto.length != 1"></botaoX>
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@ import { editaProjetoStore } from '../../stores/editaProjeto'
 import { funcaoPopUpStore } from '../../stores/funcaoPopUp'
 import { Projeto } from '../../models/Projeto';
 import VueCookies from 'vue-cookies';
-
+import botaoX from '../../imagemVetores/botaoX.vue';
 import ListaPropiedadesStatus from "../../components/ListaPropriedadesStatus.vue";
 import informacoesProjeto from '../../components/informacoesProjeto.vue';
 import { useRoute } from 'vue-router';
@@ -332,7 +332,7 @@ function colocaEquipeQueEstaCookies() {
     listaAux.forEach(equipeAtual => {
         if (idEquipe != undefined && idEquipe != "undefined") {
             if (equipeAtual.id == idEquipe) {
-                let listaEquipe = [equipeAtual]
+                let listaEquipe = [equipeAtual.nome]
                 colocaListaEquipes(listaEquipe)
             }
         } else {
@@ -617,7 +617,6 @@ async function removeResponsavel(responsavelRemover) {
         if (objetoAtual.username == responsavelRemover.username) {
             let index = responsaveisProjeto.value.indexOf(responsavelRemover)
             responsaveisProjeto.value.splice(index, 1);
-            listaAuxResponsaveisProjeto.splice(index, 1)
             listaResponsaveisBack.splice(index, 1);
             criaHistorico.criaHistoricoProjeto("Removeu o responsavel" + responsavelRemover.username, projeto, usuario)
         }

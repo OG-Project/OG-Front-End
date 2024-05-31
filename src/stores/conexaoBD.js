@@ -17,7 +17,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async procurar(textoRequisicao) {
       this.loading = true;
       try {
-        return await axios.get(this.url + textoRequisicao).then(response => response.data)
+        return await axios.get(this.url + textoRequisicao,{ withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
       }
@@ -30,12 +30,9 @@ export const conexaoBD = defineStore('conexaoBD', {
         return axios.post(this.url + '/logOut',"", { withCredentials: true }).then(response => response.data)
       } finally {
         this.loading = false;
-        // console.log('Loading:', this.loading);
       }
     },
     getCookie() {
-      // Função banco.getCookie retorna um usuario do nosso sistema de acordo com o cookie salvo
-      // pode ser usada em inumeras verificações que nos fazemos para encontrar o usuario logado
       this.loading = true;
       try {
         return axios.get(this.url+"/cookie" , { withCredentials: true }).then(response =>  {return response.data})
@@ -183,7 +180,7 @@ export const conexaoBD = defineStore('conexaoBD', {
     async buscarUm(id, textoRequisicao) {
       this.loading = true;
       try {
-        return await (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
+        return (await axios.get(this.url + textoRequisicao + '/' + id, { withCredentials: true }).then(response => response.data))
       } finally {
         this.loading = false;
       }

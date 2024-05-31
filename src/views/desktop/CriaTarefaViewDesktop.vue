@@ -1046,7 +1046,6 @@ onUpdated(() => {
 function update() {
   reloadSubTarefas();
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
-  autenticaUsuarioCookies();
 }
 
 async function pesquisaBancoUserName() {
@@ -1068,6 +1067,7 @@ onMounted(async () => {
   procuraProjetosDoBanco();
   reloadSubTarefas();
   autenticarUsuario();
+  autenticaUsuarioCookies();
   tarefa.value = {
     nome: "",
     descricao: "",
