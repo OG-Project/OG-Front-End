@@ -1,6 +1,6 @@
 <template>
   <div class="bg-[var(--backgroundPuro)] relative flex flex-row min-h-[92vh] w-full">
-    
+
     <div class="flex">
       <div class="w-[40vw] min-h-[96%] flex flex-col">
         <div class="flex flex-row pl-12 items-center pr-6 mt-4 h-[10%] w-[100%]">
@@ -15,8 +15,8 @@
         <!-- davi cala a porra da boca -->
         <div class="w-[55%] justify-center min-h-[5%] pl-12 mt-4">
           <inputDePesquisa :lista-da-pesquisa=listaDeUsuariosParaBusca :tem-icon="false" class=""
-            :place-holder-pesquisa="t('criaTarefa.responsaveisPelaTarefa')" @item-selecionado="pegaValorSelecionadoPesquisa"
-            largura="16" fontSize="1rem">
+            :place-holder-pesquisa="t('criaTarefa.responsaveisPelaTarefa')"
+            @item-selecionado="pegaValorSelecionadoPesquisa" largura="16" fontSize="1rem">
           </inputDePesquisa>
           <div v-if="listaReponsaveis != ''" class="scrollListaResponsaveis" v-dragscroll>
             <div
@@ -25,7 +25,7 @@
               <div v-for="responsavel of listaReponsaveis">
                 <div class="bg-[var(--roxoClaro)] rounded-md p-[0.10rem] w-max flex flex-row items-center gap-1 ">
                   <img src="../../imagem-vetores/userTodoPreto.svg">
-                  <p v-if="responsavel">{{ responsavel}}</p>
+                  <p v-if="responsavel">{{ responsavel }}</p>
                   <p v-else>{{ responsavel }}</p>
                   <div class="w-full flex justify-end pr-2">
                     <div class="w-[40%]">
@@ -150,18 +150,22 @@
           </div>
         </div>
         <p class="pl-12 mt-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.files', {
-      arquivos:
-        tarefa.arquivos.length
-    }) }}</p>
+            arquivos:
+              tarefa.arquivos.length
+          }) }}</p>
         <div id="exploradorDeArquivos" v-if="tarefa.arquivos.length != 0"
           class="flex h-[18vh] w-[80%] bg-[var(--backgroundItems)] ml-12 mt-4 overflow-auto">
           <div class="relative w-[18%] mx-4 h-[100%] flex items-center justify-center flex-col"
-            v-for="arquivo in tarefa.arquivos">
-            {{ console.log(arquivo, "LIOG") }}
-            <a :href="arquivo.dados ?? mostraArquivoNaTela(arquivo)" download="" class="h-[65%] w-[100%] flex items-center justify-center">
-              <img
-                v-if="arquivo.tipo == 'image/jpeg' || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'"
-                class="h-[100%] w-[100%]" :src="arquivo.dados ?? mostraArquivoNaTela(arquivo)">
+            v-for="arquivo in listaArquivosFront">
+            <a :href="arquivo.dados" download=""
+              class="h-[65%] w-[100%] flex items-center justify-center">
+              <div
+                v-if="arquivo.tipo == 'image/jpeg'
+            || arquivo.tipo == 'image/png' || arquivo.tipo == 'image/gif' || arquivo.tipo == 'image/svg+xml' || arquivo.tipo == 'image/tiff' || arquivo.tipo == 'image/bmp'">
+                {{ console.log(arquivo) }}
+                <img class="h-[100%] w-[100%]" :src="arquivo.dados">
+              </div>
+
               <div v-else>
                 <img class="h-[65%]" :src='getIconSrc(arquivo)' />
               </div>
@@ -187,8 +191,8 @@
               <div :style="barraPorcentagem" class="corDaBarraDeProgresso"></div>
             </div>
             <p class="pl-4" style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.completed_tasks', {
-      porcentagem: porcentagemDeTarefasConcluidas.toFixed(2)
-    }) }}%</p>
+            porcentagem: porcentagemDeTarefasConcluidas.toFixed(2)
+          }) }}%</p>
           </div>
         </div>
         <!-- Sub Tarefa -->
@@ -204,11 +208,11 @@
                 <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.status') }}:</p>
                 <div v-if="subtarefa.concluido">
                   <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#7CC0E5]">{{
-      $t('criaTarefa.completed') }}</p>
+            $t('criaTarefa.completed') }}</p>
                 </div>
                 <div v-else>
                   <p style="font-family:var(--fonteCorpo);" class="flex items-center justify-center bg-[#C6B473]">{{
-      $t('criaTarefa.in_progress') }}</p>
+            $t('criaTarefa.in_progress') }}</p>
                 </div>
               </div>
               <img @click="deletaSubtarefa(subtarefa)" :src="BotaoX" class="h-full mr-8" />
@@ -226,10 +230,10 @@
 
               <img v-if="usuarioCookies.foto.tipo != null"
                 class="shadow-2xl h-[60px] w-[60px] mt-4 mr-4 ml-4 rounded-full" :src="'data:' +
-      usuarioCookies.foto.tipo +
-      ';base64,' +
-      usuarioCookies.foto.dados
-      " />
+            usuarioCookies.foto.tipo +
+            ';base64,' +
+            usuarioCookies.foto.dados
+            " />
               <div class="pb-2 flex flex-col items-end">
                 <TextAreaPadrao width="25vw" height="15vh" class="pt-6 pb-4"
                   :placeholder="$t('criaTarefa.task_description')" tamanho-da-fonte="1rem" resize="vertical"
@@ -263,22 +267,22 @@
                     </p>
 
                     <div v-if="comentarioSendoEditado &&
-      comentario.autor.username === usuarioCookies.username
-      ">
+            comentario.autor.username === usuarioCookies.username
+            ">
                       <TextAreaPadrao width="25vw" height="15vh" class="pt-4 pb-4" tamanho-da-fonte="1rem"
                         resize="vertical" v-model="comentario.conteudo"></TextAreaPadrao>
                     </div>
                     <div v-if="!comentarioSendoEditado ||
-      comentario.autor.username != usuarioCookies.username
-      ">
+            comentario.autor.username != usuarioCookies.username
+            ">
                       <p class="pt-4 pb-4 pr-4 break-all">
                         {{ comentario.conteudo }}
                       </p>
                     </div>
 
                     <div v-if="comentarioSendoEditado &&
-      comentario.autor.username === usuarioCookies.username
-      ">
+            comentario.autor.username === usuarioCookies.username
+            ">
                       <Botao :texto="$t('criaTarefa.edit')" preset="PadraoRoxo" tamanhoPadrao="pequeno"
                         :funcaoClick="editarComentario" :parametrosFuncao="comentario"></Botao>
                     </div>
@@ -341,7 +345,8 @@
                     <div v-if="propriedadeForTarefa.propriedade.id === propriedade.propriedade.id" class="w-full">
                       <div v-if="propriedade.propriedade.tipo === 'TEXTO'" class="flex items-center justify-start">
                         <div class="w-[15%] pl-4 flex items-center justify-start">
-                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p><span>:</span>
+                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p>
+                          <span>:</span>
                         </div>
                         <div class="w-[58%] flex items-center justify-center">
                           <Input styleInput="input-transparente-claro-pequeno"
@@ -349,25 +354,29 @@
                             @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                           </Input>
                         </div>
-                        <p class="w-[27%] pr-7 flex items-start ">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto') }}</p>
+                        <p class="w-[27%] pr-7 flex items-start ">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Texto')
+                          }}</p>
                       </div>
                       <div v-if="propriedade.propriedade.tipo === 'DATA'"
                         class="flex items-center justify-around w-full">
                         <div class="w-[15%] pl-4 flex items-center justify-start">
-                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p><span>:</span>
+                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p>
+                          <span>:</span>
                         </div>
                         <div class="w-[58%] flex items-center justify-center">
                           <input @input="patchDaListaDePropriedades()"
                             class="border-2 w-[75%] border-t-0 rounded-none border-x-0 rounded-lg border-b-[var(--roxo)] bg-transparent"
                             type="datetime-local" v-model="propriedadeForTarefa.valor.valor" />
                         </div>
-                        <p class="w-[27%] pr-2 flex items-start justify-start">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Data') }}
+                        <p class="w-[27%] pr-2 flex items-start justify-start">{{ $t('criaTarefa.type') }}: {{
+            $t('criaTarefa.Data') }}
                         </p>
                       </div>
                       <div v-if="propriedade.propriedade.tipo === 'NUMERO'"
                         class="flex items-center justify-start w-full">
                         <div class="w-[15%] pl-4 flex items-center justify-start">
-                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p><span>:</span>
+                          <p class="flex items-start justify-start truncate">{{ propriedade.propriedade.nome }}</p>
+                          <span>:</span>
                         </div>
                         <div class="w-[58%] flex items-center justify-center">
                           <Input styleInput="input-transparente-claro-pequeno"
@@ -375,7 +384,8 @@
                             @updateModelValue="(e) => { propriedadeForTarefa.valor.valor = e }">
                           </Input>
                         </div>
-                        <p class="w-[27%] pr-2 flex items-start justify-start">{{ $t('criaTarefa.type') }}: {{ $t('criaTarefa.Numero') }}
+                        <p class="w-[27%] pr-2 flex items-start justify-start">{{ $t('criaTarefa.type') }}: {{
+            $t('criaTarefa.Numero') }}
                         </p>
                       </div>
                       <!-- <div v-if="propriedade.propriedade.tipo === 'SELECAO'">
@@ -410,7 +420,7 @@
                   <p style="font-family:var(--fonteCorpo);" class="break-all">{{ statsAdd.nome }}</p>
                 </div>
                 <p style="font-family:var(--fonteCorpo);" class="w-[40%]">{{ $t('criaTarefa.color') }}: #{{
-    statsAdd.cor.toUpperCase() }}</p>
+            statsAdd.cor.toUpperCase() }}</p>
                 <div class="w-[30%] flex justify-between">
                   <ColorPicker disabled v-model="statsAdd.cor"
                     class="border-2 border-[var(--backgroundItems)] rounded-lg ml-16" />
@@ -429,7 +439,7 @@
     <div id="propriedadesOverflow" class="shadow-xl border-2 border-[var(--backgroundItems)]">
       <div class="min-h-[9%] pt-8 flex items-end justify-center">
         <h1 style="font-family:var(--fonteTitulo);" class="min-h-[9%] text-3xl font-semibold">{{
-      $t('criaTarefa.information') }}</h1>
+            $t('criaTarefa.information') }}</h1>
       </div>
       <div class="gap-4 h-auto pt-4 w-[100%] flex flex-col">
         <div class="flex pl-8">
@@ -458,7 +468,7 @@
           </div>
           <div class="w-[40%] justify-end flex-row">
             <p style="font-family:var(--fonteCorpo);" class="text-[var(--roxo)]"> {{ format(new
-      Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
+            Date(projetoDaTarefa.dataCriacao), "dd/MM/yyyy") }} </p>
           </div>
         </div>
       </div>
@@ -491,7 +501,7 @@
           <p style="font-family:var(--fonteCorpo);" class="pb-4 break-all">Nome: {{ propriedade.propriedade.nome }}</p>
           <div v-if="propriedade.propriedade.tipo === 'DATA'">
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }} {{
-      formatarData(propriedade.valor.valor) }}</p>
+            formatarData(propriedade.valor.valor) }}</p>
           </div>
           <div v-if="propriedade.propriedade.tipo === 'SELECAO'" class="flex">
             <p style="font-family:var(--fonteCorpo);">{{ $t('criaTarefa.value') }}</p>
@@ -549,7 +559,7 @@ function reloadTelaTarefa() {
   if (reload == '0') {
     VueCookies.set('idReloadTarefa', '1');
     window.location.reload()
-    tour.show(usuario.value.configuracao.ultimoPassoId,true)
+    tour.show(usuario.value.configuracao.ultimoPassoId, true)
   }
 }
 
@@ -594,7 +604,7 @@ async function deletaTarefa() {
     // window.location.reload();
     VueCookies.remove("IdTarefaCookies");
   });
-  
+
 }
 
 let nomePropriedade = ref("");
@@ -774,9 +784,9 @@ async function criaTarefaNoConcluido() {
   });
   tarefaCriando.valorPropriedadeTarefas = tarefa2.valorPropriedadeTarefas
   tarefaCriando.comentarios = comentario;
-  if(tarefa.value.corDaTarefa){
+  if (tarefa.value.corDaTarefa) {
     tarefaCriando.cor = tarefa.value.corDaTarefa;
-  }else{
+  } else {
     tarefaCriando.cor = "620BA7";
   }
   tarefaCriando.indice = tarefa2.indice;
@@ -807,7 +817,7 @@ async function criaTarefaNoConcluido() {
       console.log(response);
     });
   });
-  
+
   // router.push('/projeto')
   console.log(tarefaCriando);
   tarefa
@@ -860,8 +870,8 @@ async function criaSubtarefa() {
     numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
     porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
     barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
-    let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
-    let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+    let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+    let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
     criaHistorico.criaHistoricoTarefa("Criou a subTarefa" + subtarefaNova.nome, tarefaSubtarefa, usuario)
   }
 }
@@ -885,8 +895,8 @@ async function deletaSubtarefa(subtarefa) {
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
-  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   criaHistorico.criaHistoricoTarefa("Deletou a subTarefa" + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 
@@ -1021,17 +1031,19 @@ async function puxaTarefaDaEdicao() {
   }
   tarefa.value.corDaTarefa = tarefaAux.cor;
   tarefaAux.arquivos.forEach(arquivo => {
-    arquivo.dados = "data:" + arquivo.tipo + ";base64," + arquivo.dados;
+    let arquivoParaOFront = arquivo
+    arquivoParaOFront.dados = "data:" + arquivo.tipo + ";base64," + arquivo.dados;
     tarefa.value.arquivos.push(arquivo);
+    listaArquivosFront.value.push(arquivoParaOFront)
   });
   tarefa.value.status = tarefaAux.status;
   tarefa.value.subtarefas = tarefaAux.subTarefas;
   let listaAux = []
   tarefaAux.responsaveis.forEach(async responsavel => {
-    let usuarioAtual = await banco.buscarUm(responsavel.idResponsavel,"/usuario")
+    let usuarioAtual = await banco.buscarUm(responsavel.idResponsavel, "/usuario")
     listaAux.push(usuarioAtual.username)
     listaReponsaveis.value = listaAux;
-    
+
   });
   tarefa.value.tempoAtuacao = tarefaAux.tempoAtuacao;
   tarefa.value.propriedades = tarefaAux.valorPropriedadeTarefas;
@@ -1048,9 +1060,17 @@ async function atualizaPropriedadesEStatus() {
 onUpdated(() => {
   update();
 });
+const imagemBlob = ref(null)
 
 function mostraArquivoNaTela(arquivo) {
-  return URL.createObjectURL(arquivo)
+  const reader = new FileReader()
+  imagemBlob.value = new Blob([arquivo], { type: arquivo.type })
+  reader.readAsDataURL(imagemBlob.value)
+  reader.onload = function (event) {
+    // event.target.result contém a string Base64 do Blob
+    const base64String = event.target.result;
+    return (base64String); // Exibe a string Base64 no console
+  };
 }
 
 function update() {
@@ -1105,32 +1125,32 @@ onUnmounted(() => {
 })
 
 
-async function colocaListaResponsaveisPadrao(){
+async function colocaListaResponsaveisPadrao() {
   let tarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
-  let listaAux =[]
-  tarefa.responsaveis.forEach(async (usuarioTarefa) =>{
-    let usuarioAtual = await banco.buscarUm(usuarioTarefa.idResponsavel,"/usuario")
+  let listaAux = []
+  tarefa.responsaveis.forEach(async (usuarioTarefa) => {
+    let usuarioAtual = await banco.buscarUm(usuarioTarefa.idResponsavel, "/usuario")
     listaAux.push(usuarioAtual.username)
     listaReponsaveis.value = listaAux;
     console.log(listaReponsaveis.value);
   })
-  
+
 }
 
-async function colocaCookieProjeto(){
+async function colocaCookieProjeto() {
   let cookieProjeto = VueCookies.get("idProjetoAtual")
-  if(cookieProjeto == null || cookieProjeto == 'undefined' || cookieProjeto =="" || cookieProjeto ==undefined){
-      let usuario = await (banco.buscarUm(usuarioId,"/usuario"));
-      let equipeAtual
-      usuario.equipes.forEach(equipe => {
-        if(equipe.equipe.nome == ("Equipe do "+ usuario.username)){
-          equipeAtual = equipe.equipe
-        }
-      });
-     
-      let projeto = await( banco.buscarProjetosEquipe(equipeAtual.id,"/projeto/buscarProjetos"))
+  if (cookieProjeto == null || cookieProjeto == 'undefined' || cookieProjeto == "" || cookieProjeto == undefined) {
+    let usuario = await (banco.buscarUm(usuarioId, "/usuario"));
+    let equipeAtual
+    usuario.equipes.forEach(equipe => {
+      if (equipe.equipe.nome == ("Equipe do " + usuario.username)) {
+        equipeAtual = equipe.equipe
+      }
+    });
 
-      VueCookies.set("idProjetoAtual",projeto.id)
+    let projeto = await (banco.buscarProjetosEquipe(equipeAtual.id, "/projeto/buscarProjetos"))
+
+    VueCookies.set("idProjetoAtual", projeto.id)
   }
 }
 
@@ -1140,20 +1160,22 @@ function exibirComentarios() {
   localStorage.setItem("TarefaNaoFinalizada", JSON.stringify(tarefa.value));
 }
 let arquivoSelecionado = ref(null)
+let listaArquivosFront = ref([])
 function gerarArquivo(e) {
   let arquivo = e.target.files[0];
-  // let reader = new FileReader();
-  // reader.readAsDataURL(arquivo);
-  // reader.onload = function () {
-    // let arquivoBase64 = reader.result;
-    // let arquivoParaOBanco = {
-    //   nome: arquivo.name,
-    //   tipo: arquivo.type,
-    //   dados: arquivoBase64,
-    // };
-    tarefa.value.arquivos.push(arquivo);
-    update()
-  // }
+  let reader = new FileReader();
+  reader.readAsDataURL(arquivo);
+  reader.onload = function () {
+    let arquivoBase64 = reader.result;
+    let arquivoParaOFront = {
+      nome: arquivo.name,
+      tipo: arquivo.type,
+      dados: arquivoBase64,
+    };
+    listaArquivosFront.value.push(arquivoParaOFront);
+  }
+  tarefa.value.arquivos.push(arquivo);
+  update()
 }
 
 function deletaArquivo(arquivo) {
@@ -1206,8 +1228,8 @@ async function adicionaExcluiStatusNaTarefa(status) {
     tarefa.value.status = status;
   }
   veSeOStatusTaNaTarefa(status)
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
-  let tarefaStatus = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaStatus = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   criaHistorico.criaHistoricoTarefa("Mudou o status", tarefaStatus, usuario)
 }
 
@@ -1262,8 +1284,8 @@ async function enviaComentario(comentario) {
   });
   comentarioSendoEnviado.value = "";
   abreFechaComentarioBoolean.value = !abreFechaComentarioBoolean.value;
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
-  let tarefaComentario = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaComentario = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   criaHistorico.criaHistoricoTarefa("Comentou na tarefa", tarefaComentario, usuario)
 
 }
@@ -1371,7 +1393,7 @@ function numeroDeSubTarefasConcluidas() {
 
 function veSeEResponsavelDaTarefa(usuario) {
   listaReponsaveis.value.forEach(async (responsavel) => {
-    let usuarioAtual = banco.buscarUm(responsavel.idResponsavel,"/usuario")
+    let usuarioAtual = banco.buscarUm(responsavel.idResponsavel, "/usuario")
     if (usuarioAtual.username == usuario.username) {
       return true;
     } else {
@@ -1413,8 +1435,8 @@ async function trocaStatusDaSubTarefa(subtarefa, index) {
   numeroDeTarefasConcluidas.value = numeroDeSubTarefasConcluidas();
   porcentagemDeTarefasConcluidas.value = atualizaPorcentagemDeTarefasConcluidas();
   barraPorcentagem.value.width = porcentagemDeTarefasConcluidas.value + "%";
-  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'),"/usuario")
-  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"),"/tarefa")
+  let usuario = await banco.buscarUm(VueCookies.get('IdUsuarioCookie'), "/usuario")
+  let tarefaSubtarefa = await banco.buscarUm(VueCookies.get("IdTarefaCookies"), "/tarefa")
   criaHistorico.criaHistoricoTarefa("Concluiu a subTarefa" + subtarefa.nome, tarefaSubtarefa, usuario)
 }
 

@@ -257,6 +257,7 @@ export const conexaoBD = defineStore('conexaoBD', {
       try {
         // Deleta os arquivos existentes relacionados à tarefa
         await axios.delete(this.url + `/tarefa/arquivos/${id}`, { withCredentials: true });
+        
         const formData = new FormData();
         formData.append('arquivo', arquivo);
         const response = await axios.patch(this.url + "/tarefa/arquivos/" + id, formData, {
