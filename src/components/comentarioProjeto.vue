@@ -14,9 +14,10 @@
                      " />
                     </div>
                     <div class="w-full pb-2 pr-2 flex justify-end max-w-full">
-                        <div class="w-full flex pt-2">
-                            <p class="pr-2"> {{ comentario.autor.username }}</p> {{$t('comentario.comentou')}} <p
-                                class="text-[var(--roxoClaro)] pl-2 break-all w-[100%] "> {{ comentario.conteudo }}</p>
+                        <div class="w-full flex flex-col pt-2">
+                            <p class="pr-2"> {{ comentario.autor.username }}  {{$t('comentario.comentou')}} </p> 
+                            <p
+                                class="text-[var(--roxoClaro)] break-all w-[100%] "> {{ comentario.conteudo }}</p>
                         </div>
                     </div>
                     <div class="w-[20%] flex items-start">
@@ -49,7 +50,7 @@
                 </div>
             </div>
             <div class=" w-full pb-2 pr-2 flex justify-end">
-                <Botao :texto="$t('comentario.comentar')" preset="PadraoRoxo" tamanhoPadrao="pequeno" :funcaoClick="enviaComentario"
+                <Botao :texto="$t('comentario.comentar')" preset="PadraoRoxo" tamanhoPadrao="medio" :funcaoClick="enviaComentario"
                     :parametrosFuncao="[comentarioSendoEnviado, usuarioCookies]"></Botao>
             </div>
         </div>

@@ -225,10 +225,12 @@ function limparMensagemErro() {
 
 
 function colocaResponsavelPadrao() {
+    if(!projetoEdita.value){
     let listaAux = [usuario.username]
     responsaveisProjeto.value = listaAux
     listaAuxResponsaveisProjeto.push(usuario.username)
     adicionaResponsaveisProjeto(usuario.username)
+    }
 }
 
 function voltaPagina() {
