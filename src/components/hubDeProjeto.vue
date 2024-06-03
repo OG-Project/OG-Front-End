@@ -8,9 +8,11 @@
         <div class="w-[60%] h-full flex flex-col items-center">
             <div class="w-[60%] h-[120px] border-b-4 flex flex-row items-end justify-between pb-[1%]">
                 <div class="h-[12vh] flex items-end">
-                    <p class="h-[8vh] w-[30vw] truncate flex items-center" style="font-size:var(--fonteTituloTamanho)">{{ projeto.nome }}</p>
+                    <div class="h-[8vh] w-[30vw]  flex items-center">
+                        <p class=" w-full truncate" style="font-size:var(--fonteTituloTamanho)">{{ projeto.nome }}</p>
+                    </div>
                 </div>
-                <div class="flex items-end" v-if="verificaSeEResponsavel()"
+                <div class="flex items-end" v-if="isResponsavel"
                     @click="router.push('/projeto/responsavel')">
                     <Dashboard></Dashboard>
                 </div>

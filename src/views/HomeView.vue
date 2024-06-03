@@ -30,8 +30,8 @@ onMounted(() => {
   window.addEventListener('resize', () => {
       screenWidth.value = window.innerWidth
   })
-
-  if(VueCookies.get("Idioma") == null){
+  console.log(VueCookies.get("Idioma"));
+  if(VueCookies.get("Idioma") == undefined){
     VueCookies.set('Idioma', 'pt-BR', 1000000)
   }
   

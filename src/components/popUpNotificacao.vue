@@ -11,6 +11,7 @@
             <div v-for="notificacao of notificacoes" class="border-[var(--roxo)] border-b-2 w-[90%] h-max flex"
                 @mouseenter="startTimer(notificacao)" @mouseleave="clearTimer(notificacao)">
                 <div class="w-[10%] h-full flex justify-center items-center">
+                    {{ console.log(notificacao.notificacao) }}
                     <img @click="router.push('/perfil/' + notificacao.notificacao.criador.id)"
                         v-if="notificacao.notificacao.criador.foto != null"
                         class=" flex justify-start w-[40px] h-[40px] rounded-full mr-5 2xl:mt-1 xl:mt-2 lg:mt-2 md:mt-2  cursor-pointer"
